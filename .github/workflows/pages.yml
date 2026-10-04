@@ -49,7 +49,6 @@ jobs:
           sparse-checkout: |
             CHANGELOG.md
             server/help.yaml
-            docs/_data/help.yaml
           sparse-checkout-cone-mode: false
 
       - name: Check out the 6.x changelog
@@ -61,16 +60,10 @@ jobs:
           sparse-checkout: CHANGELOG.md
           sparse-checkout-cone-mode: false
 
-      # docs/_data/help.yaml is where the app kept the file before it moved to server/ ;
-      # the fallback goes once that move is on the app's main branch.
       - name: Bring in the changelogs and the settings help
         run: |
           mkdir -p _data
-          if [ -f _app/server/help.yaml ]; then
-            cp _app/server/help.yaml _data/help.yaml
-          else
-            cp _app/docs/_data/help.yaml _data/help.yaml
-          fi
+          cp _app/server/help.yaml _data/help.yaml
           front='---\nlayout: default\ntitle: Changelog\nnav_order: 10\n---\n\n'
           { printf -- "$front"; cat _app/CHANGELOG.md; } > changelog.md
           { printf -- "$front"; cat _app6/CHANGELOG.md; } > v6/changelog.md
