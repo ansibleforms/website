@@ -1,8 +1,10 @@
 version: 2
 
-# Dependabot NEVER proposes a major version : majors carry breaking changes by definition,
-# so they are done by hand. Updates are never grouped : every dependency gets its own pull
-# request, so each one can be reviewed and reverted on its own.
+# Dependabot keeps every dependency on its latest version, majors included : the Build check
+# builds both sites on each pull request, so a breaking major fails there before it merges.
+# The theme (just-the-docs) is a gem, so it is updated like the others. Updates are never
+# grouped : every dependency gets its own pull request, so each one can be reviewed and
+# reverted on its own.
 #
 # Every pull request title must pass the PR / Title check (Conventional Commits) : build for
 # the Ruby gems that build the site, ci for the workflow actions.
@@ -15,9 +17,6 @@ updates:
     commit-message:
       prefix: build
       include: scope
-    ignore:
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
 
   - package-ecosystem: github-actions
     directory: /
@@ -25,6 +24,3 @@ updates:
       interval: weekly
     commit-message:
       prefix: ci
-    ignore:
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
