@@ -71,6 +71,13 @@ collections:
     permalink: "/:collection/:path/"
     output: true
 
+# Sass : just-the-docs still uses @import, global built-in functions and darken(), which
+# Dart Sass deprecates. Silence them as the theme itself does in its own _config.yml
+# (just-the-docs issues 1541 and 1607) ; the warnings are the theme's to fix, not ours.
+sass:
+  quiet_deps: true
+  silence_deprecations: ['import']
+
 # Exclude from build
 exclude:
   - v6 # built on its own into /v6/
