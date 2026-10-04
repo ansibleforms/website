@@ -1,0 +1,14 @@
+# Jekyll
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Bundler
+.bundle/
+vendor/
+
+# Brought in from the app repository at build time (see .github/workflows/pages.yml)
+_app/
+_app6/
+_data/help.yaml

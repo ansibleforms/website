@@ -1,0 +1,30 @@
+version: 2
+
+# Dependabot NEVER proposes a major version : majors carry breaking changes by definition,
+# so they are done by hand. Updates are never grouped : every dependency gets its own pull
+# request, so each one can be reviewed and reverted on its own.
+#
+# Every pull request title must pass the PR / Title check (Conventional Commits) : build for
+# the Ruby gems that build the site, ci for the workflow actions.
+
+updates:
+  - package-ecosystem: bundler
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: build
+      include: scope
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
