@@ -17,19 +17,19 @@ AnsibleForms can be installed in a few ways.
 * **Native install** : You install everything manually, install all dependencies, build the code, start the code
 * **Use Docker** : Use the pre-built docker image
   * **Single container** : Install MySql and spin-up the docker image with the correct environment variables
-  * **Docker Compose** : [Download the docker-compose project](https://github.com/ansibleguy76/ansibleforms-docker-v6) and use docker-compose to start both MySql and AnsibleForms.  
-  * **Kubernetes** : [Download the helm project](https://github.com/ansibleguy76/ansibleforms-helm) and use Kubernetes to start AnsibleForms
+  * **Docker Compose** : [Download the docker-compose project](https://github.com/ansibleforms/docker/tree/v6) and use docker-compose to start both MySql and AnsibleForms.  
+  * **Kubernetes** : [Download the helm project](https://github.com/ansibleforms/ansibleforms-helm) and use Kubernetes to start AnsibleForms
 
 {: .note }
-> **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. For the old v5, use the old docker-compose project.
+> **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. These pages are for AnsibleForms 6, which uses the `v6` branch of the docker-compose project.
 
 ## Install using K8s
 
-To install AnsibleForms on Kubernetes using Helm, refer to the [ansibleforms-helm GitHub repository](https://github.com/ansibleguy76/ansibleforms-helm).  Just git clone, change the values.yaml or create your own values.yaml and overwrite.
+To install AnsibleForms on Kubernetes using Helm, refer to the [ansibleforms-helm GitHub repository](https://github.com/ansibleforms/ansibleforms-helm).  Just git clone, change the values.yaml or create your own values.yaml and overwrite.
 
 ## Install using Docker-Compose 
 
-The [docker-compose](https://github.com/ansibleguy76/ansibleforms-docker-v6), together with the environment variables should get you started.
+The [docker-compose](https://github.com/ansibleforms/docker/tree/v6), together with the environment variables should get you started.
 
 {: .warning }
 > **Note** You can also use Podman and Podman-Compose. The commands are similar (docker-> podman and docker-compose -> podman-compose)
@@ -63,10 +63,9 @@ cd /srv/apps
 # ubuntu or debian
 sudo apt-get install -y git
 
-‌sudo ‌git init
-sudo git clone https://github.com/ansibleguy76/ansibleforms-docker-v6.git
+sudo git clone -b v6 https://github.com/ansibleforms/docker.git ansibleforms-docker
 
-cd ansibleforms-docker-v6
+cd ansibleforms-docker
 ```
 
 ### Set proper permissions
@@ -134,21 +133,23 @@ The docker-compose project comes with the following folder structure :
 
 ```bash
 .
-├── data
-│   ├── certificates # folder that contains sample self-signed certificates - replace with your own
-│   ├── forms # folder that contains 1 or more yaml files with forms
-│   ├── forms_backups # folder to hold form backups
-│   ├── functions # folder for custom javascript functions
-│   ├── git # folder for git repos
-│   ├── images # folder for custom images
-│   ├── logs # folder that holds the logfiles
-│   ├── mysql
-│   │   ├── db # folder that holds the database files
-│   │   └── init # contains the sql files to initialize the database
-│   ├── playbooks # folder for your ansible playbooks and roles
-│   ├── ssh # folder for the client sshkey
-│   ├── config.yml # the master forms file 
-├── k8s # sample files to deploy on Kubernetes
+├── docker-compose.yml # the AnsibleForms and MySql containers
+├── .env # the settings, see the variables below
+└── data # everything that must survive an upgrade
+    ├── ansible # ansible.cfg, plus roles and collections you install
+    ├── forms # 1 or more yaml files with forms
+    ├── functions # custom javascript functions
+    ├── git # .gitconfig for repository connections
+    ├── mysql
+    │   ├── my.cnf # MySql settings
+    │   └── db # the database files (created at first start)
+    ├── playbooks # your ansible playbooks
+    ├── repositories # local clones of your git repositories
+    ├── ssh # the client sshkey (created at first start)
+    ├── config.yaml # categories, roles and constants
+    ├── certificates # self-signed certificates (created at first start) - replace with your own
+    ├── logs # the logfiles (created at first start)
+    └── forms_backups # form backups (created when needed)
 ```
 
 ## Install docker-image without Docker-Compose
@@ -240,7 +241,6 @@ cd /srv/apps
 
 # grab the code from github
 sudo yum install -y git
-sud o‌‌git init
 sudo git clone https://github.com/ansibleguy76/ansibleforms.git
 
 # enter the app project
@@ -391,8 +391,8 @@ Upgrading is as simple as
 
 ```bash
 cd /srv/apps/ansibleforms-docker
+sudo docker-compose pull
 sudo docker-compose down
-sudo docker pull ansibleguy/ansibleforms:latest
 sudo docker-compose up -d
 ```
 
