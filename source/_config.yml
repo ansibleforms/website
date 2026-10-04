@@ -73,13 +73,6 @@ collections:
 
 # Exclude from build
 exclude:
-  - README.md
-  - LICENSE.md
-  - CONTRIBUTING.md
-  - SECURITY.md
-  - Gemfile
-  - Gemfile.lock
-  - vendor
   - v6 # built on its own into /v6/
 
 # Plugins
