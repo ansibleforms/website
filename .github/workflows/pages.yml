@@ -8,6 +8,10 @@ name: Site
 #   server/help.yaml -> source/_data/help.yaml, the settings reference most pages render
 # The app owns both, so the site is rebuilt when the app releases : its release workflow
 # sends a repository_dispatch (app-release) here. The nightly run catches a lost one.
+#
+# The Helm chart repository is published here too, at ansibleforms.com/helm-charts/ : the
+# chart packages attached to the releases of ansibleforms/helm-charts, indexed at build
+# time. A chart release sends chart-release, and the nightly run catches a lost one.
 
 on:
   push:
@@ -15,7 +19,7 @@ on:
   pull_request:
     branches: [main]
   repository_dispatch:
-    types: [app-release]
+    types: [app-release, chart-release]
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
@@ -94,6 +98,52 @@ jobs:
         run: bundle exec jekyll build --source source/v6 --destination _site/v6 --baseurl "${{ steps.pages.outputs.base_path }}/v6"
         env:
           JEKYLL_ENV: production
+
+      - uses: azure/setup-helm@v5
+
+      # The Helm repository at /helm-charts/. Every chart release of ansibleforms/helm-charts
+      # is downloaded and indexed, so the index is rebuilt from scratch on every run and never
+      # kept as state. A failed download fails the build: deploying an index that silently
+      # lost versions would break every helm repo that points here.
+      - name: Publish the Helm chart repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SITE_URL: ${{ steps.pages.outputs.base_url || 'https://ansibleforms.com' }}
+        run: |
+          set -euo pipefail
+          out=_site/helm-charts
+          mkdir -p "$out"
+          tags="$(gh release list -R ansibleforms/helm-charts --limit 200 --exclude-drafts --exclude-pre-releases --json tagName --jq '.[].tagName')"
+          [ -n "$tags" ] || { echo "::error::ansibleforms/helm-charts has no releases to publish."; exit 1; }
+          for tag in $tags; do
+            gh release download "$tag" -R ansibleforms/helm-charts --dir "$out" --pattern '*.tgz' --clobber
+          done
+          helm repo index "$out" --url "${SITE_URL}/helm-charts/"
+
+          # The newest release has to be in the index, or something went missing on the way
+          latest="$(gh release view -R ansibleforms/helm-charts --json tagName --jq .tagName)"
+          grep -q "version: ${latest#v}\$" "$out/index.yaml" || {
+            echo "::error::The index does not contain $latest, the newest chart release."; exit 1; }
+          echo "Indexed $(ls "$out"/*.tgz | wc -l) chart packages, newest $latest"
+
+          # Artifact Hub reads its repository metadata from the root of the chart repository
+          gh api repos/ansibleforms/helm-charts/contents/artifacthub-repo.yml \
+            -H 'Accept: application/vnd.github.raw' > "$out/artifacthub-repo.yml"
+
+          cat > "$out/index.html" <<EOF
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>AnsibleForms Helm charts</title>
+          <h1>AnsibleForms Helm charts</h1>
+          <p>Add this repository with:</p>
+          <pre>helm repo add ansibleforms ${SITE_URL}/helm-charts/
+          helm repo update
+          helm search repo ansibleforms</pre>
+          <p>Or pull the chart straight from the OCI registry:</p>
+          <pre>helm pull oci://ghcr.io/ansibleforms/charts/ansibleforms</pre>
+          <p><a href="index.yaml">index.yaml</a> - the chart source is
+          <a href="https://github.com/ansibleforms/helm-charts">ansibleforms/helm-charts</a>.</p>
+          EOF
 
       - name: Upload artifact
         if: github.event_name != 'pull_request'
