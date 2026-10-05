@@ -30,7 +30,10 @@ bundle exec jekyll serve --source source
 
 ## Contributing
 
-Corrections and new pages are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues as [SECURITY.md](SECURITY.md) describes.
+Corrections and new pages are welcome. Start with these files:
+
+- [CONTRIBUTING.md](CONTRIBUTING.md): how to preview the site locally and open a pull request
+- [SECURITY.md](SECURITY.md): how to report a security issue
 
 ## License
 
