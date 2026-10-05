@@ -18,14 +18,29 @@ AnsibleForms can be installed in a few ways.
 * **Use Docker** : Use the pre-built docker image
   * **Single container** : Install MySql and spin-up the docker image with the correct environment variables
   * **Docker Compose** : [Download the docker-compose project](https://github.com/ansibleforms/docker/tree/v6) and use docker-compose to start both MySql and AnsibleForms.  
-  * **Kubernetes** : [Download the helm project](https://github.com/ansibleforms/helm-charts) and use Kubernetes to start AnsibleForms
+  * **Kubernetes** : [Install the Helm chart](#install-using-k8s) and use Kubernetes to start AnsibleForms
 
 {: .note }
 > **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. These pages are for AnsibleForms 6, which uses the `v6` branch of the docker-compose project.
 
 ## Install using K8s
 
-To install AnsibleForms on Kubernetes using Helm, refer to the [helm-charts GitHub repository](https://github.com/ansibleforms/helm-charts).  Just git clone, change the values.yaml or create your own values.yaml and overwrite.
+AnsibleForms has a Helm chart that deploys AnsibleForms and its MySQL database. Add the chart repository, write your values and install:
+
+```bash
+helm repo add ansibleforms https://ansibleforms.com/helm-charts/
+helm repo update
+helm show values ansibleforms/ansibleforms --version "~6" > my_values.yaml
+# edit my_values.yaml, then
+helm upgrade --install ansibleforms ansibleforms/ansibleforms --version "~6" \
+  --namespace ansibleforms --create-namespace \
+  --values my_values.yaml
+```
+
+`--version "~6"` keeps you on the 6.x charts, which run AnsibleForms 6; without it you get the newest chart, for AnsibleForms 7.
+The same charts are in the OCI registry as `oci://ghcr.io/ansibleforms/charts/ansibleforms`. Every 6.x value is described in the
+[values reference](https://github.com/ansibleforms/helm-charts/blob/release/6.x/charts/ansibleforms/VALUES.md), and storage, ingress,
+credentials and upgrades in the chart's [README](https://github.com/ansibleforms/helm-charts/tree/release/6.x/charts/ansibleforms).
 
 ## Install using Docker-Compose 
 

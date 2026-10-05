@@ -18,14 +18,28 @@ AnsibleForms can be installed in a few ways.
 * **Use Docker** : Use the pre-built docker image
   * **Single container** : Install MySql and spin-up the docker image with the correct environment variables
   * **Docker Compose** : [Download the docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySql and AnsibleForms.  
-  * **Kubernetes** : [Download the helm project](https://github.com/ansibleforms/helm-charts) and use Kubernetes to start AnsibleForms
+  * **Kubernetes** : [Install the Helm chart](#install-using-k8s) and use Kubernetes to start AnsibleForms
 
 {: .note }
 > **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. For AnsibleForms 6, use the `v6` branch of the docker-compose project.
 
 ## Install using K8s
 
-To install AnsibleForms on Kubernetes using Helm, refer to the [helm-charts GitHub repository](https://github.com/ansibleforms/helm-charts).  Just git clone, change the values.yaml or create your own values.yaml and overwrite.
+AnsibleForms has a Helm chart that deploys AnsibleForms and its MySQL database. Add the chart repository, write your values and install:
+
+```bash
+helm repo add ansibleforms https://ansibleforms.com/helm-charts/
+helm repo update
+helm show values ansibleforms/ansibleforms > my_values.yaml
+# edit my_values.yaml, then
+helm upgrade --install ansibleforms ansibleforms/ansibleforms \
+  --namespace ansibleforms --create-namespace \
+  --values my_values.yaml
+```
+
+The same chart is in the OCI registry as `oci://ghcr.io/ansibleforms/charts/ansibleforms`. Every value is described in the chart's
+[values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md), and storage, ingress,
+credentials and upgrades in its [README](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms).
 
 ## Install using Docker-Compose 
 
