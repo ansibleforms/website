@@ -391,8 +391,7 @@ The image is published as `ghcr.io/ansibleforms/ansibleforms` on the GitHub Cont
 Registry, which belongs to the project and does not rate-limit anonymous pulls. Docker Hub
 keeps a mirror, `ansibleguy/ansibleforms`, that gets every release, so existing installs
 that pull from there keep updating. `ghcr.io/ansibleforms/ansibleforms` starts at 7.1.2
-(and 6.5.2 for the 6.x line); older releases stay at `ghcr.io/opusprojects/ansibleforms`.
-Both registries use these tags:
+(and 6.5.2 for the 6.x line). Both registries use these tags:
 
 | Tag | Points to |
 |---|---|
