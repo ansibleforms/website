@@ -1,7 +1,7 @@
 # AnsibleForms website
 
 [![Site](https://github.com/ansibleforms/website/actions/workflows/pages.yml/badge.svg)](https://github.com/ansibleforms/website/actions/workflows/pages.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE.md)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 [![Website](https://img.shields.io/badge/site-ansibleforms.com-informational)](https://ansibleforms.com)
 
 The documentation website for [AnsibleForms](https://github.com/ansibleforms/ansibleforms), served at ansibleforms.com, written in Markdown.
@@ -38,4 +38,4 @@ Corrections and new pages are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) fo
 
 ## ⚖️ License
 
-[GPL-3.0](LICENSE.md), the same as AnsibleForms itself.
+[GPL-3.0](LICENSE), the same as AnsibleForms itself.
