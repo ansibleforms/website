@@ -18,14 +18,14 @@ AnsibleForms can be installed in a few ways.
 * **Use Docker** : Use the pre-built docker image
   * **Single container** : Install MySql and spin-up the docker image with the correct environment variables
   * **Docker Compose** : [Download the docker-compose project](https://github.com/ansibleforms/docker/tree/v6) and use docker-compose to start both MySql and AnsibleForms.  
-  * **Kubernetes** : [Download the helm project](https://github.com/ansibleforms/ansibleforms-helm) and use Kubernetes to start AnsibleForms
+  * **Kubernetes** : [Download the helm project](https://github.com/ansibleforms/helm-charts) and use Kubernetes to start AnsibleForms
 
 {: .note }
 > **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. These pages are for AnsibleForms 6, which uses the `v6` branch of the docker-compose project.
 
 ## Install using K8s
 
-To install AnsibleForms on Kubernetes using Helm, refer to the [ansibleforms-helm GitHub repository](https://github.com/ansibleforms/ansibleforms-helm).  Just git clone, change the values.yaml or create your own values.yaml and overwrite.
+To install AnsibleForms on Kubernetes using Helm, refer to the [helm-charts GitHub repository](https://github.com/ansibleforms/helm-charts).  Just git clone, change the values.yaml or create your own values.yaml and overwrite.
 
 ## Install using Docker-Compose 
 
