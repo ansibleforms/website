@@ -192,23 +192,23 @@ sudo mysql_secure_installation
 # set new password of choice
 ```
 
-### Get image from docker hub
-If you don't want to go through the hassle of a dockerbuild.  Run a docker image directly from docker hub.  
-  
-If you want, you can use the latest build from docker hub (https://hub.docker.com/repository/docker/ansibleguy/ansibleforms)
+### Get the image
+If you don't want to go through the hassle of a dockerbuild, run the published image directly:
+`ghcr.io/ansibleforms/ansibleforms:6` is the newest AnsibleForms 6 release on the GitHub Container Registry. The old
+Docker Hub repository (`ansibleguy/ansibleforms`) is no longer updated and gets no new 6.x patches.  
 Note that we have deployed the solution in the `/app` folder inside the docker.  So if you want your `config.yml`, logs, certificates and playbooks reachable from within the docker image, you have to use a mount path or persistent volume and make sure it's mounted under `/app/dist/persistent`.  
 Make sure you have your environment variables set.  Most variables fall back to defaults, but the MySQL database connection is mandatory.  The image contains ansible and python3.  The below command is merely an example. An example of a config.yml you can find here (https://github.com/ansibleguy76/ansibleforms/tree/main/server/persistent).
 
 ```bash
-docker run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/server/persistent,target=/app/dist/persistent --name ansibleforms -e DB_HOST=192.168.0.1 -e DB_USER=root -e DB_PASSWORD=password ansibleguy/ansibleforms
+docker run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/server/persistent,target=/app/dist/persistent --name ansibleforms -e DB_HOST=192.168.0.1 -e DB_USER=root -e DB_PASSWORD=password ghcr.io/ansibleforms/ansibleforms:6
 ```
 
 Once started :
 
 ```bash
 docker ps
-CONTAINER ID   IMAGE                     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
-d91f7b05b67e   ansibleguy/ansibleforms   "node ./dist/index.js"   7 seconds ago   Up 6 seconds   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp   ansibleforms
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+d91f7b05b67e   ghcr.io/ansibleforms/ansibleforms:6    "node ./dist/index.js"   7 seconds ago   Up 6 seconds   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp   ansibleforms
 ```
 
 ### Test the application

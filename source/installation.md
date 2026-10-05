@@ -193,7 +193,7 @@ sudo mysql_secure_installation
 ### Get the image
 If you don't want to go through the hassle of a dockerbuild, run the published image directly. It lives at
 [`ghcr.io/ansibleforms/ansibleforms`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms) on the GitHub Container Registry,
-and is mirrored on Docker Hub as `ansibleguy/ansibleforms` with the same tags (see [Image tags](#image-tags)).  
+(see [Image tags](#image-tags)).  
   
 Note that we have deployed the solution in the `/app` folder inside the docker.  So if you want your `config.yml`, logs, certificates and playbooks reachable from within the docker image, you have to use a mount path or persistent volume and make sure it's mounted under `/app/dist/persistent`.  
 Make sure you have your environment variables set.  Most variables fall back to defaults, but the MySQL database connection is mandatory.  The image contains ansible and python3.  The below command is merely an example. An example of a config.yml you can find here (https://github.com/ansibleforms/ansibleforms/tree/main/server/persistent).
@@ -402,10 +402,14 @@ The default admin user is :
 ## Image tags
 
 The image is published as `ghcr.io/ansibleforms/ansibleforms` on the GitHub Container
-Registry, which belongs to the project and does not rate-limit anonymous pulls. Docker Hub
-keeps a mirror, `ansibleguy/ansibleforms`, that gets every release, so existing installs
-that pull from there keep updating. `ghcr.io/ansibleforms/ansibleforms` starts at 7.1.2
-(and 6.5.2 for the 6.x line). Both registries use these tags:
+Registry, which belongs to the project and does not rate-limit anonymous pulls. It starts at
+7.1.2 (and 6.5.2 for the 6.x line), and every release from now on is published there only.
+
+The old Docker Hub repository, `ansibleguy/ansibleforms`, is no longer updated: it keeps the
+releases it already has, but gets no new version of either line. If you pull from it, switch
+to `ghcr.io/ansibleforms/ansibleforms` with the same tag to keep receiving updates.
+
+The tags:
 
 | Tag | Points to |
 |---|---|
