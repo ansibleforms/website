@@ -4,9 +4,9 @@
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
 [![Docs](https://img.shields.io/badge/docs-ansibleforms.com-informational)](https://ansibleforms.com)
 
-The source of the [AnsibleForms](https://github.com/ansibleforms/ansibleforms) documentation, published at
-[ansibleforms.com](https://ansibleforms.com). It is written in Markdown, built with Jekyll and Just the Docs,
-and deployed to GitHub Pages on every merge, every AnsibleForms release and every chart release.
+The source of the [AnsibleForms](https://github.com/ansibleforms/ansibleforms) documentation at
+[ansibleforms.com](https://ansibleforms.com), written in Markdown with Jekyll and Just the Docs and deployed
+to GitHub Pages on every merge and release.
 
 ## What's in it
 
