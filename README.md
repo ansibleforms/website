@@ -37,4 +37,4 @@ Corrections and new pages are welcome. Start with these files:
 
 ## License
 
-[GPL-3.0](LICENSE), the same as AnsibleForms itself.
+[GPL-3.0](LICENSE).
