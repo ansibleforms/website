@@ -1,41 +1,37 @@
 # AnsibleForms website
 
-[![Site](https://github.com/ansibleforms/website/actions/workflows/pages.yml/badge.svg)](https://github.com/ansibleforms/website/actions/workflows/pages.yml)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-[![Website](https://img.shields.io/badge/site-ansibleforms.com-informational)](https://ansibleforms.com)
+[![CI](https://img.shields.io/github/actions/workflow/status/ansibleforms/website/pages.yml?branch=main&label=CI)](https://github.com/ansibleforms/website/actions/workflows/pages.yml)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-ansibleforms.com-informational)](https://ansibleforms.com)
 
-The documentation website for [AnsibleForms](https://github.com/ansibleforms/ansibleforms), served at ansibleforms.com, written in Markdown.
+The source of the [AnsibleForms](https://github.com/ansibleforms/ansibleforms) documentation, published at
+[ansibleforms.com](https://ansibleforms.com). It is written in Markdown, built with Jekyll and Just the Docs,
+and deployed to GitHub Pages on every merge, every AnsibleForms release and every chart release.
 
-## ✨ Features
+## What's in it
+
+The site covers everything a user of AnsibleForms needs, from the first install to writing complex forms.
 
 - Installation, configuration and upgrade guides for every way to run AnsibleForms
 - A reference page for every form field type, with examples
-- Settings reference built from the app's own `help.yaml`, so it never drifts from the code
+- The settings reference, built from the app's own `help.yaml` so it never drifts from the code
 - The app's changelog, rebuilt into the site on every release
-- The 6.x documentation kept alongside, under `/v6/`
-- Built with Jekyll and Just the Docs, deployed to GitHub Pages by GitHub Actions
+- The Helm chart repository, served under `/helm-charts/`
+- The 6.x documentation, kept alongside under `/v6/`
 
-## 📚 Documentation
+## Previewing locally
 
-| Page | What it covers |
-|---|---|
-| [Introduction](https://ansibleforms.com/) | What AnsibleForms is and what it does |
-| [Installation](https://ansibleforms.com/installation) | Docker, Docker Compose, Kubernetes and native installs |
-| [Environment variables](https://ansibleforms.com/customization) | Every setting, built from the app's `help.yaml` |
-| [config.yaml](https://ansibleforms.com/config) | Categories, roles and constants |
-| [Forms](https://ansibleforms.com/forms/) | Writing forms, form fields and expressions |
-| [Upgrading to 7](https://ansibleforms.com/upgrade-7) | What changed in 7.0.0 and how to move over |
-| [Changelog](https://ansibleforms.com/changelog) | Every release of the app |
-| [Docs for 6.x](https://ansibleforms.com/v6/) | The documentation of the maintenance line |
+You need Ruby and Bundler. This serves the site on http://localhost:4000 and rebuilds it on every save:
 
-## 🤝 Contributing
+```bash
+bundle install
+bundle exec jekyll serve --source source
+```
 
-Corrections and new pages are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to preview the site locally and open a pull request.
+## Contributing
 
-## 👥 Authors
+Corrections and new pages are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Report security issues as [SECURITY.md](SECURITY.md) describes.
 
-- **Blai Peidro** — [github.com/blaipr](https://github.com/blaipr)
-
-## ⚖️ License
+## License
 
 [GPL-3.0](LICENSE), the same as AnsibleForms itself.
