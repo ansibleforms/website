@@ -8,7 +8,10 @@ nav_order: 5
 # Multistep forms
 {: .no_toc }
 
-Create sequential workflows with multistep forms.
+Run several playbooks or templates in sequence from one form
+{: .fs-6 .fw-300 }
+
+---
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -30,6 +33,8 @@ Create sequential workflows with multistep forms.
 {% endif %}
 
 ## Form-level property
+
+A multistep form defines its steps in a single form-level property:
 
 <table>
   <thead>
@@ -181,9 +186,11 @@ Besides `steps`, a multistep form accepts these form-level properties, documente
 
 ## Example
 
-Multistep forms run several jobs one after the other, each step launching its own playbook or AWX template. All steps share the form's fields: by default every step receives the full extravars, and a step's `key` sends it only that part of them.
+A multistep form runs several jobs in sequence, each step launching its own playbook or AWX template. All steps share the fields of the form: by default, every step receives the full extravars, and a step's `key` restricts it to that part of them.
 
 ### Create and configure a server
+
+Each step receives its own part of the extravars: an AWX step creates the server, an Ansible step configures its network, and a final step always sends a report:
 
 ```yaml
 name: Server Provisioning

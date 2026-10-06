@@ -6,10 +6,16 @@ nav_order: 4
 ---
 
 # Html Formfield
+{: .no_toc }
 
-A field for displaying rich HTML content, useful for instructions, formatted information, or custom visual elements within a form.
+Rich HTML content inside a form
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `html` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A field for displaying rich HTML content, useful for instructions, formatted inf
     {%- for example in html_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

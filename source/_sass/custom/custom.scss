@@ -1,0 +1,752 @@
+// ---------------------------------------------------------------------------------------
+// AnsibleForms theme : compiled into both the light and the dark stylesheet of
+// just-the-docs, so every colour below follows the active scheme ($color-scheme).
+// ---------------------------------------------------------------------------------------
+
+$af-is-dark: $color-scheme == dark;
+$af-accent-soft: rgba($link-color, if($af-is-dark, 0.14, 0.08));
+$af-shadow: if($af-is-dark, 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(16, 24, 40, 0.04));
+$af-shadow-lg: if($af-is-dark, 0 12px 32px rgba(0, 0, 0, 0.45), 0 12px 32px rgba(16, 24, 40, 0.08));
+$af-radius: 10px;
+$af-muted: if($af-is-dark, #8b909a, #6b7079);
+
+// ---------------------------------------------------------------------------------------
+// CSS variables : the scheme's colours, for the plain stylesheets in assets/css
+// ---------------------------------------------------------------------------------------
+
+:root {
+  --body-background-color: #{$body-background-color};
+  --body-heading-color: #{$body-heading-color};
+  --body-text-color: #{$body-text-color};
+  --link-color: #{$link-color};
+  --sidebar-color: #{$sidebar-color};
+  --border-color: #{$border-color};
+  --code-background-color: #{$code-background-color};
+  --af-accent-soft: #{$af-accent-soft};
+  --af-muted: #{$af-muted};
+}
+
+// ---------------------------------------------------------------------------------------
+// Typography
+// ---------------------------------------------------------------------------------------
+
+body {
+  font-feature-settings: "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main-content {
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.015em;
+  }
+
+  h1 {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-weight: 700;
+    margin-top: 2.5rem;
+  }
+
+  h3 {
+    font-weight: 650;
+  }
+
+  // the theme uppercases h4 ; keep it a normal sub-heading
+  h4 {
+    text-transform: none;
+    font-size: 1rem !important;
+    letter-spacing: 0;
+  }
+
+  a:not(.btn) {
+    text-decoration: none;
+    background-image: none;
+    border-bottom: 1px solid rgba($link-color, 0.3);
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-bottom-color: $link-color;
+    }
+  }
+
+  // heading anchors, the page TOC and links that only wrap an image stay unlined
+  .anchor-heading,
+  #markdown-toc a,
+  a:has(> img) {
+    border-bottom: 0 !important;
+  }
+
+  hr {
+    background-color: $border-color;
+    height: 1px;
+  }
+
+  img {
+    border-radius: $af-radius;
+    border: 1px solid $border-color;
+    box-shadow: $af-shadow-lg;
+  }
+
+  .fs-6.fw-300 {
+    color: $af-muted;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// Brand stripe and header
+// ---------------------------------------------------------------------------------------
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1000;
+  background: linear-gradient(90deg, $af-red, $af-orange);
+}
+
+// the top bar (search and links) stays in view while the page scrolls
+.main-header {
+  background: rgba($body-background-color, 0.85) !important;
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid $border-color !important;
+
+  @include mq(md) {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+}
+
+.side-bar .site-header {
+  border-bottom: 1px solid $border-color;
+}
+
+// the logo : centred, and sized by width. logo.png carries transparent space above and below
+// the artwork (it fills only the middle half of its height), so `contain` drew it small ;
+// at this width the artwork is ~32px high and the empty space falls outside the header
+.site-logo {
+  // 2px lower : the 3px brand stripe covers the top of the header, so this evens the
+  // visible space above and below the artwork
+  background-position: center calc(50% + 2px) !important;
+  background-size: 150px auto !important;
+}
+
+.aux-nav .site-button {
+  border-radius: 8px;
+  color: $body-text-color;
+  font-weight: 500;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background-color: $af-accent-soft;
+    color: $link-color;
+    background-image: none;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// Search
+// ---------------------------------------------------------------------------------------
+
+@include mq(md) {
+  .search {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem !important;
+    max-width: 36rem;
+  }
+
+  .search-input-wrap {
+    height: 2.5rem !important;
+    width: 100%;
+    overflow: visible;
+    border-radius: 999px;
+    box-shadow: none !important;
+  }
+
+  .search-input {
+    border-radius: 999px !important;
+    background-color: $sidebar-color !important;
+    border: 1px solid $border-color !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:focus {
+      border-color: rgba($link-color, 0.5) !important;
+      box-shadow: 0 0 0 3px $af-accent-soft;
+    }
+  }
+}
+
+.search-results {
+  border-radius: $af-radius;
+  box-shadow: $af-shadow-lg;
+}
+
+// ---------------------------------------------------------------------------------------
+// Sidebar navigation
+// ---------------------------------------------------------------------------------------
+
+.side-bar {
+  background-color: $sidebar-color;
+  border-right: 1px solid $border-color;
+}
+
+.nav-list {
+  .nav-list-item {
+    .nav-list-link {
+      color: $body-heading-color;
+      font-weight: 500;
+      margin: 1px 0.5rem;
+      // 32px from the sidebar edge, as the VERSION label and the arrows on the right
+      padding-left: calc(1.25rem + 4px);
+      border-radius: 8px;
+      background-image: none !important;
+      transition: background-color 0.15s ease, color 0.15s ease;
+
+      &:hover {
+        color: $link-color;
+        background-color: $af-accent-soft;
+      }
+
+      &.active {
+        color: $link-color;
+        font-weight: 650;
+        background-color: $af-accent-soft;
+        box-shadow: inset 3px 0 0 $link-color;
+      }
+    }
+
+    // the arrow as far from the right edge as the text is from the left, measured on the
+    // visible stroke (the chevron is drawn inside a wider box)
+    .nav-list-expander {
+      right: calc(1.2rem + 1px);
+      color: $af-muted;
+      border-radius: 8px;
+
+      &:hover {
+        background-image: none;
+        background-color: $af-accent-soft;
+        color: $link-color;
+      }
+    }
+
+    // the pages inside a section : lighter, hung off a thin guide line
+    .nav-list {
+      margin-left: 2rem;
+      padding-left: 0;
+      border-left: 1px solid $border-color;
+
+      .nav-list-item .nav-list-link {
+        color: $nav-child-link-color;
+        font-weight: 450;
+        margin-left: 0.35rem;
+        padding-left: 0.4rem;
+
+        &:hover,
+        &.active {
+          color: $link-color;
+        }
+      }
+    }
+  }
+}
+
+.site-footer {
+  color: $af-muted;
+}
+
+// docs version selector at the top of the menu (_includes/version_select.html) ;
+// on a phone it only shows with the menu open
+.version-select {
+  display: none;
+  align-items: center;
+  gap: 0.6rem;
+  align-self: stretch;
+  margin: 1rem 2rem 0;
+
+  @include mq(md) {
+    display: flex;
+  }
+
+  // capitals only : drop the room kept for descenders so the text centres on the select
+  label {
+    margin: 0;
+    padding-top: 0.12rem;
+    line-height: 1;
+    font-size: 0.7rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: $af-muted;
+  }
+
+  select {
+    flex: 1;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0.45rem 2rem 0.45rem 0.75rem;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $body-heading-color;
+    cursor: pointer;
+    border: 1px solid $border-color;
+    border-radius: 8px;
+    background-color: $body-background-color;
+    // chevron, drawn in the scheme's muted colour
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23#{str-slice(inspect($af-muted), 2)}' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 0.9rem;
+    box-shadow: $af-shadow;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover {
+      border-color: rgba($link-color, 0.4);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: rgba($link-color, 0.5);
+      box-shadow: 0 0 0 3px $af-accent-soft;
+    }
+  }
+}
+
+.side-bar:has(.site-nav.nav-open) .version-select {
+  display: flex;
+}
+
+@include mq(md) {
+  .side-bar .site-nav {
+    padding-top: 0.75rem;
+  }
+}
+
+// right-hand "On this page" list : no panel, just the guide line
+.right-toc {
+  background: transparent !important;
+  border-left: 1px solid $border-color !important;
+
+  a {
+    background-image: none !important;
+    text-decoration: none !important;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// Code
+// ---------------------------------------------------------------------------------------
+
+code {
+  font-size: 0.85em;
+}
+
+// inline code
+:not(pre, figure) > code {
+  padding: 0.12em 0.4em;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  background-color: $code-background-color;
+  color: $body-heading-color;
+}
+
+div.highlighter-rouge,
+figure.highlight {
+  border: 1px solid $border-color;
+  border-radius: $af-radius;
+  background-color: $code-background-color;
+  margin-bottom: 1rem;
+
+  > button {
+    border-radius: 8px;
+  }
+}
+
+div.highlighter-rouge div.highlight,
+figure.highlight pre {
+  border: 0 !important;
+  border-radius: $af-radius;
+  padding: 0.9rem 1rem !important;
+}
+
+pre,
+pre code,
+.highlight pre,
+.highlight code {
+  font-size: 0.82rem !important;
+  line-height: 1.6 !important;
+}
+
+// ---------------------------------------------------------------------------------------
+// Tables
+// ---------------------------------------------------------------------------------------
+
+.table-wrapper {
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  box-shadow: $af-shadow;
+}
+
+th,
+td {
+  border-left: 0 !important;
+  border-bottom: 1px solid $border-color !important;
+  padding: 0.75rem 1rem !important;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+th {
+  background-color: $sidebar-color !important;
+  color: $af-muted;
+  font-size: 0.75rem !important;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+tbody tr:hover td {
+  background-color: rgba($link-color, if($af-is-dark, 0.04, 0.018));
+}
+
+// the property tables rendered from help.yaml : the name as a code pill
+td > span[id] > strong {
+  display: inline-block;
+  font-family: $mono-font-family;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $link-color;
+  background-color: $af-accent-soft;
+  border-radius: 6px;
+  padding: 0.1rem 0.45rem;
+  margin-bottom: 0.3rem;
+  white-space: nowrap;
+}
+
+// ---------------------------------------------------------------------------------------
+// Callouts
+// ---------------------------------------------------------------------------------------
+
+@mixin af-callout($color) {
+  border: 1px solid rgba($color, if($af-is-dark, 0.35, 0.28));
+  border-left: 4px solid $color;
+  border-radius: $af-radius;
+  background-color: rgba($color, if($af-is-dark, 0.1, 0.06));
+  box-shadow: none;
+  padding: 0.85rem 1rem;
+}
+
+blockquote.note,
+p.note {
+  @include af-callout($blue-000);
+}
+
+blockquote.warning,
+p.warning {
+  @include af-callout($yellow-300);
+}
+
+// ---------------------------------------------------------------------------------------
+// Buttons
+// ---------------------------------------------------------------------------------------
+
+.btn {
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: none;
+  padding: 0.45rem 1.1rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.btn-primary {
+  background-image: linear-gradient(135deg, $af-red, darken($af-red, 8%));
+  box-shadow: none;
+
+  &:hover {
+    background-image: linear-gradient(135deg, lighten($af-red, 4%), $af-red);
+    box-shadow: none;
+  }
+}
+
+.btn-outline {
+  color: $body-heading-color;
+  border: 1px solid $border-color;
+  background-color: $body-background-color;
+  box-shadow: $af-shadow;
+
+  &:hover {
+    color: $link-color;
+    border-color: rgba($link-color, 0.4);
+    box-shadow: $af-shadow;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// Home page : hero, quick links and feature cards
+// ---------------------------------------------------------------------------------------
+
+.af-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin: 0.5rem 0 2.5rem;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  border: 1px solid $border-color;
+  overflow: hidden;
+  background:
+    radial-gradient(60rem 30rem at 110% -10%, rgba($af-orange, if($af-is-dark, 0.16, 0.14)), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 120%, rgba($af-red, if($af-is-dark, 0.18, 0.1)), transparent 60%),
+    $sidebar-color;
+
+  @media (min-width: 72rem) {
+    grid-template-columns: 1fr 1.2fr;
+    padding: 2.75rem;
+  }
+
+  h1 {
+    margin-top: 0 !important;
+    font-size: 2.6rem !important;
+    line-height: 1.1;
+
+    span {
+      background: linear-gradient(90deg, $af-red, $af-orange);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+  }
+
+  .af-hero-lead {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: $body-text-color;
+    margin: 1rem 0 1.75rem;
+  }
+
+  .af-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .btn {
+      margin: 0 !important;
+      padding: 0.6rem 1.3rem;
+    }
+  }
+
+  .af-hero-shot img {
+    display: block;
+    width: 100%;
+    border-radius: 12px;
+  }
+}
+
+// the home page grids hold 4 or 16 cards : 1, 2 or 4 columns keep every row full
+.af-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0 2rem;
+
+  @media (min-width: 40rem) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // 4 columns only where a card is still ~240px wide next to the "On this page" list
+  @media (min-width: 105rem) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// the quick links : the description wraps at the same width on every layout, so it is
+// two lines whether the card is 230px or 380px wide
+.af-quick .af-card strong + span {
+  max-width: 12.5rem;
+}
+
+// the capability grids : the first row shows, the button under the grid opens the rest
+.af-collapsible:not(.af-open) .af-card:nth-child(n+5) {
+  display: none;
+}
+
+.af-expand-wrap {
+  display: flex;
+  justify-content: center;
+  margin: -0.75rem 0 2rem;
+}
+
+.main-content a.af-card,
+.af-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border: 1px solid $border-color;
+  border-radius: 14px;
+  background-color: $body-background-color;
+  box-shadow: $af-shadow;
+  color: $body-text-color;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+  .af-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin-bottom: 0.4rem;
+    border-radius: 10px;
+    color: $link-color;
+    background-color: $af-accent-soft;
+    font-size: 1.05rem;
+  }
+
+  strong {
+    color: $body-heading-color;
+    font-size: 1rem;
+  }
+
+  strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  span {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  // the description always takes two lines, so the cards of a row line up
+  strong + span {
+    min-height: calc(2 * 1.55em);
+  }
+}
+
+.main-content a.af-card {
+  border-bottom: 1px solid $border-color;
+
+  .af-card-more {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    color: $link-color;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba($link-color, 0.35);
+    box-shadow: $af-shadow-lg;
+  }
+}
+
+// the 6.x home page keeps its older quick links : give them the card look
+.quick-nav-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid $border-color;
+  border-radius: 14px;
+  background-color: $body-background-color;
+  box-shadow: $af-shadow;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba($link-color, 0.35);
+    box-shadow: $af-shadow-lg;
+  }
+
+  h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+
+  p {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+    color: $af-muted;
+  }
+
+  a.btn {
+    width: 100%;
+    margin-top: auto;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// Tabs (assets/js/tabs.js) : alternatives of one step, such as Docker and Podman
+// ---------------------------------------------------------------------------------------
+
+.af-tabs {
+  margin: 1rem 0 1.5rem;
+}
+
+.af-tab-list {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 1px solid $border-color;
+  margin-bottom: 1rem;
+}
+
+.af-tab {
+  padding: 0.5rem 1rem;
+  margin-bottom: -1px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: $af-muted;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 8px 8px 0 0;
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    color: $body-heading-color;
+    background-color: $af-accent-soft;
+  }
+
+  &[aria-selected="true"] {
+    color: $link-color;
+    border-bottom-color: $link-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba($link-color, 0.5);
+    outline-offset: -2px;
+  }
+}
+
+.af-tab-panel[hidden] {
+  display: none;
+}
+

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Formfields
-nav_order: 6
+nav_order: 2.9
 has_children: true
 has_toc: false
 ---
@@ -9,19 +9,23 @@ has_toc: false
 # Formfields
 {: .no_toc }
 
-Formfields define the input controls in your forms. Each field type has its own properties and behaviors for collecting different types of data.
+The input controls of a form
+{: .fs-6 .fw-300 }
 
-AnsibleForms supports a wide variety of formfield types, from simple text inputs to structured lists and expressions. Choose the right field type based on the data you need to collect.
+---
+
+Formfields define the input controls of a form. Each field type has its own properties and behavior for collecting a particular kind of data.
+
+Pick the field type that matches the data to collect, from plain text to structured lists.
 
 ## Common Properties
 
 All formfields share two fundamental properties:
-- **name** (string, required): The unique identifier for the field
-- **type** (string, required): The field type - determines which page below describes the available properties
 
-Each field type has additional properties specific to its functionality. Click on a field type below to see its complete property reference.
+- **name** (string, required): the unique identifier of the field
+- **type** (string, required): the field type, which determines the page below that describes the available properties
 
-Browse the formfield types using the navigation sidebar, or refer to the table below:
+Each field type adds properties specific to its function. Select a field type in the navigation sidebar or in the table below to open its complete property reference:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}

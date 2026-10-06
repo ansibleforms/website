@@ -2,219 +2,245 @@
 layout: default
 title: Introduction
 nav_order: 1
-description: "AnsibleForms - Build awesome forms for Ansible automation"
+description: "AnsibleForms - Build dynamic, data-driven forms for Ansible automation"
 permalink: /
 ---
 
-# Introduction
-{: .fs-9 }
-
-Ansible is a great automation tool, but in the end, it's still a command-line application.  
-While AWX/Tower is a great GUI, it is lacking fancy forms that can grab data from several sources.
-
-That's where AnsibleForms comes in. It allows you to build awesome forms, build extravars and send it to Ansible or AWX/Tower.
-
----
+<div class="af-hero">
+  <div>
+    <h1 class="no_toc">Self-service forms for <span>Ansible</span></h1>
+    <p class="af-hero-lead">
+      Ansible is a powerful automation tool, but it remains a command-line application, and AWX/AAP/Ascender lacks
+      forms that collect data from several sources. AnsibleForms lets you build dynamic, data-driven forms, generate extravars
+      and send them to Ansible or AWX/AAP/Ascender.
+    </p>
+    <div class="af-hero-actions">
+      <a href="installation/" class="btn btn-primary">Get started</a>
+      <a href="forms/" class="btn btn-outline">Build your first form</a>
+    </div>
+  </div>
+  <div class="af-hero-shot">
+    <img src="assets/screenshots/dashboard.jpg" alt="The AnsibleForms dashboard">
+  </div>
+</div>
 
 ## Quick Navigation
 {: .no_toc }
 
-Get up and running quickly with AnsibleForms:
+Start with these guides to set up AnsibleForms:
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; align-items: stretch;">
-  <div class="quick-nav-card">
-    <h3>🚀 How to Install</h3>
-    <p>Get AnsibleForms running in minutes with Docker or manual setup</p>
-    <a href="installation" class="btn btn-primary">Installation Guide</a>
-  </div>
-  <div class="quick-nav-card">
-    <h3>⚙️ How to Customize</h3>
-    <p>Configure AnsibleForms with environment variables</p>
-    <a href="customization" class="btn btn-blue">Environment Variables</a>
-  </div>
-  <div class="quick-nav-card">
-    <h3>📝 Setup config.yaml</h3>
-    <p>Define roles, categories, and access control</p>
-    <a href="config" class="btn btn-green">Roles & Categories</a>
-  </div>
-  <div class="quick-nav-card">
-    <h3>📋 Build Your First Form</h3>
-    <p>Create powerful forms with fields, validations, and data sources</p>
-    <a href="forms" class="btn btn-purple">Forms Documentation</a>
-  </div>
+<div class="af-cards af-quick">
+  <a class="af-card" href="installation/">
+    <span class="af-card-icon"><i class="fa-solid fa-rocket"></i></span>
+    <strong>How to install</strong>
+    <span>Run it with Docker, Kubernetes or from source</span>
+    <span class="af-card-more">Installation guide &rarr;</span>
+  </a>
+  <a class="af-card" href="customization">
+    <span class="af-card-icon"><i class="fa-solid fa-sliders"></i></span>
+    <strong>How to customize</strong>
+    <span>Configure it with environment variables</span>
+    <span class="af-card-more">Environment variables &rarr;</span>
+  </a>
+  <a class="af-card" href="config/">
+    <span class="af-card-icon"><i class="fa-solid fa-user-shield"></i></span>
+    <strong>Set up config.yaml</strong>
+    <span>Define the roles, categories and access control</span>
+    <span class="af-card-more">Roles &amp; categories &rarr;</span>
+  </a>
+  <a class="af-card" href="forms/">
+    <span class="af-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+    <strong>Your first form</strong>
+    <span>Create forms with fields, validation and sources</span>
+    <span class="af-card-more">Forms documentation &rarr;</span>
+  </a>
 </div>
-
----
 
 ## Application Capabilities
 
-<table>
-  <thead>
-    <tr>
-      <th style="width: 25%;">Feature</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Categories</strong></td>
-      <td>Group multiple forms under categories</td>
-    </tr>
-    <tr>
-      <td><strong>Role based access</strong></td>
-      <td>Limit forms based on roles (users and groups)</td>
-    </tr>
-    <tr>
-      <td><strong>Advanced authentication</strong></td>
-      <td>Local authentication, LDAP, AzureAD and OIDC authentication</td>
-    </tr>
-    <tr>
-      <td><strong>Job History & Log</strong></td>
-      <td>See the history of your jobs, abort running and relaunch</td>
-    </tr>
-    <tr>
-      <td><strong>Environment variables</strong></td>
-      <td>Customizable with environment variables</td>
-    </tr>
-    <tr>
-      <td><strong>Credential manager</strong></td>
-      <td>Securely store, get and pass credentials to playbooks</td>
-    </tr>
-    <tr>
-      <td><strong>Repository integration</strong></td>
-      <td>Sync your forms config files, ansible playbooks and other required files with a git repo</td>
-    </tr>
-    <tr>
-      <td><strong>Ansible and AWX</strong></td>
-      <td>Forms can target a local ansible instance or AWX/Tower</td>
-    </tr>
-    <tr>
-      <td><strong>Swagger API</strong></td>
-      <td>Has a rest-api and Swagger documentation</td>
-    </tr>
-    <tr>
-      <td><strong>Job scheduling</strong></td>
-      <td>Schedule forms to run at a specific time (one-off) or on a recurring cron schedule</td>
-    </tr>
-    <tr>
-      <td><strong>Save &amp; load form data</strong></td>
-      <td>Store form submissions and reload them later to pre-fill a form without relaunching a job</td>
-    </tr>
-    <tr>
-      <td><strong>Role-based permissions</strong></td>
-      <td>Fine-grained role options control who can view logs, use the designer, schedule jobs, relaunch, and more</td>
-    </tr>
-    <tr>
-      <td><strong>Automated backups</strong></td>
-      <td>Built-in nightly backup with configurable retention</td>
-    </tr>
-    <tr>
-      <td><strong>Designer</strong></td>
-      <td>Although the forms are NOT built using a graphical designer, a YAML based editor/designer with validation is present</td>
-    </tr>
-  </tbody>
-</table>
+What AnsibleForms brings to your Ansible setup:
+
+<div class="af-cards af-collapsible" id="app-capabilities">
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-play"></i></span>
+    <strong>Automation platforms</strong>
+    <span>Run playbooks locally or on AWX, AAP or Ascender</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-user-shield"></i></span>
+    <strong>Role based access</strong>
+    <span>Limit forms to roles of users and groups</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-calendar-days"></i></span>
+    <strong>Job scheduling</strong>
+    <span>Run a form later, or on a cron schedule</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-comments"></i></span>
+    <strong>Chat assistant</strong>
+    <span>Fill in and launch forms by chatting</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-folder-tree"></i></span>
+    <strong>Categories</strong>
+    <span>Group the forms in a tree of categories</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-key"></i></span>
+    <strong>Authentication</strong>
+    <span>Local, LDAP, Entra ID and OIDC logins</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+    <strong>Job history</strong>
+    <span>See past jobs, abort running ones, relaunch</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-sliders"></i></span>
+    <strong>Configuration</strong>
+    <span>Set up the server with environment variables</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-vault"></i></span>
+    <strong>Credential manager</strong>
+    <span>Store credentials and pass them to playbooks</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-code-branch"></i></span>
+    <strong>Git repositories</strong>
+    <span>Sync forms and playbooks with Git</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-plug"></i></span>
+    <strong>REST API</strong>
+    <span>A REST API with Swagger documentation</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-floppy-disk"></i></span>
+    <strong>Stored jobs</strong>
+    <span>Save form data and load it later to pre-fill</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-user-lock"></i></span>
+    <strong>Role options</strong>
+    <span>Decide who may use each feature</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-database"></i></span>
+    <strong>Automated backups</strong>
+    <span>Nightly backups with configurable retention</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-pen-ruler"></i></span>
+    <strong>Designer</strong>
+    <span>Edit forms as YAML, with validation</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-robot"></i></span>
+    <strong>MCP server</strong>
+    <span>Let AI agents list and launch your forms</span>
+  </div>
+</div>
+
+<div class="af-expand-wrap">
+  <button type="button" class="btn btn-outline af-expand" aria-expanded="false" aria-controls="app-capabilities">Show all 16</button>
+</div>
 
 ## Form Capabilities
 
-<table>
-  <thead>
-    <tr>
-      <th style="width: 25%;">Feature</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Cascaded dropdowns</strong></td>
-      <td>Allow references between fields to create responsive, cascaded dropdown boxes</td>
-    </tr>
-    <tr>
-      <td><strong>Database sources</strong></td>
-      <td>Import data into fields from databases (MySQL, MSSQL, Postgres, Mongo, Oracle)</td>
-    </tr>
-    <tr>
-      <td><strong>Expression based sources</strong></td>
-      <td>Import data using serverside expressions (javascript), such as Rest API's, json-files, yaml-files, ... and filter, manipulate and sort them</td>
-    </tr>
-    <tr>
-      <td><strong>Local expressions</strong></td>
-      <td>Use the power of javascript (local browser sandbox) to calculate, manipulate, generate, ...</td>
-    </tr>
-    <tr>
-      <td><strong>Field dependencies</strong></td>
-      <td>Show/hide fields based on values of other fields</td>
-    </tr>
-    <tr>
-      <td><strong>Visualization</strong></td>
-      <td>Many nice visualizations, such as icons, images, colors, responsive grid-system, help descriptions, ...</td>
-    </tr>
-    <tr>
-      <td><strong>Field validations</strong></td>
-      <td>Many types of field validations, such as min, max, regex, in, ...</td>
-    </tr>
-    <tr>
-      <td><strong>Group fields</strong></td>
-      <td>Group fields together, vertically and horizontally</td>
-    </tr>
-    <tr>
-      <td><strong>Advanced output modelling</strong></td>
-      <td>Model your form content into objects, the way you want it</td>
-    </tr>
-    <tr>
-      <td><strong>Approval points</strong></td>
-      <td>Stop the execution of a form for approval</td>
-    </tr>
-    <tr>
-      <td><strong>Multistep forms</strong></td>
-      <td>Execute multiple playbooks in steps from a single form</td>
-    </tr>
-    <tr>
-      <td><strong>Nested / structured fields</strong></td>
-      <td>Build structured data with <code>list</code> and <code>yaml</code> fields backed by reusable subforms</td>
-    </tr>
-    <tr>
-      <td><strong>Scheduled forms</strong></td>
-      <td>Run a form on a cron schedule or at a one-off future time without manual submission</td>
-    </tr>
-    <tr>
-      <td><strong>Email notifications</strong></td>
-      <td>Send email notifications after form execution</td>
-    </tr>
-  </tbody>
-</table>
+What a single form can do:
 
-## Types of Form Fields
+<div class="af-cards af-collapsible" id="form-capabilities">
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-sitemap"></i></span>
+    <strong>Cascaded dropdowns</strong>
+    <span>Dropdowns that react to other fields</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-database"></i></span>
+    <strong>Database sources</strong>
+    <span>Query MySQL, Oracle, MongoDB and more</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-list-ol"></i></span>
+    <strong>Multistep forms</strong>
+    <span>Run several playbooks in steps from one form</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-shoe-prints"></i></span>
+    <strong>Wizard forms</strong>
+    <span>Split input across pages with Back and Next</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-code"></i></span>
+    <strong>Server expressions</strong>
+    <span>Fetch data from REST APIs, files and more</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-calculator"></i></span>
+    <strong>Local expressions</strong>
+    <span>JavaScript in the browser to compute values</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-eye"></i></span>
+    <strong>Field dependencies</strong>
+    <span>Show or hide fields based on other fields</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-palette"></i></span>
+    <strong>Visualization</strong>
+    <span>Icons, images, colors and a responsive grid</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-check-double"></i></span>
+    <strong>Field validations</strong>
+    <span>Min, max, regex, in and more</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-layer-group"></i></span>
+    <strong>Group fields</strong>
+    <span>Group fields vertically and horizontally</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-diagram-project"></i></span>
+    <strong>Output modelling</strong>
+    <span>Shape the extravars into your own objects</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-stamp"></i></span>
+    <strong>Approval points</strong>
+    <span>Pause a job until someone approves it</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-cubes"></i></span>
+    <strong>Structured fields</strong>
+    <span>Lists and objects backed by reusable subforms</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-stopwatch"></i></span>
+    <strong>Scheduled forms</strong>
+    <span>Run on a cron schedule or at a set time</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-envelope"></i></span>
+    <strong>Email notifications</strong>
+    <span>Send an email when a job finishes</span>
+  </div>
+  <div class="af-card">
+    <span class="af-card-icon"><i class="fa-solid fa-shield-halved"></i></span>
+    <strong>Launch validation</strong>
+    <span>Check every launch on the server</span>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th style="width: 25%;">Field Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<!-- Looked up BY NAME, like every other page does. The previous positional path
-     (help[1].help[2].help[1].items[1]) silently stopped resolving when help.yaml
-     grew, so this table rendered with an empty body : no error, no rows, and
-     nothing to notice unless you knew the field types belonged here. -->
-{% assign help = site.data.help %}
-{% assign formsyaml = help | where: "link", "forms" | first %}
-{% assign form_object = formsyaml.help | where: "name", "Form" | first %}
-{% assign formfield = form_object.help | where: "name", "Formfield" | first %}
-{% assign formfile = formfield.items | where: "name", "type" | first %}
-{% for type in formfile.choices %}
-    <tr>
-      <td><strong>{{ type.name }}</strong></td>
-      <!-- markdownify : see docs/formfields/index.md - an unfiltered description
-           puts a live <script> tag in the cell and truncates the table -->
-      <td>{{ type.description | markdownify }}</td>
-    </tr>
-{% endfor %}
-  </tbody>
-</table>
+<div class="af-expand-wrap">
+  <button type="button" class="btn btn-outline af-expand" aria-expanded="false" aria-controls="form-capabilities">Show all 16</button>
+</div>
 
-## Used Technologies
+## Tech stack
+
+What AnsibleForms is built with:
 
 <table>
   <thead>
@@ -247,3 +273,17 @@ Get up and running quickly with AnsibleForms:
 
 {: .warning }
 > **Requirements depend on how you plan to install AnsibleForms.** [See the installation section to learn more.](installation)
+
+<script>
+  /* the capability grids show their first row ; the button below each one shows the rest (a // comment would swallow the script : the theme puts the page on one line) */
+  document.querySelectorAll('.af-expand').forEach(function (button) {
+    var grid = document.getElementById(button.getAttribute('aria-controls'));
+    var label = button.textContent;
+    button.addEventListener('click', function () {
+      var open = grid.classList.toggle('af-open');
+      button.setAttribute('aria-expanded', open);
+      button.textContent = open ? 'Show less' : label;
+      if (!open) grid.scrollIntoView({ block: 'nearest' });
+    });
+  });
+</script>

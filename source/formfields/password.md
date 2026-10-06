@@ -6,10 +6,16 @@ nav_order: 7
 ---
 
 # Password Formfield
+{: .no_toc }
 
-A masked text input field for securely collecting passwords, secrets, tokens, or other sensitive text values.
+A masked value, for passwords, secrets and tokens
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `password` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A masked text input field for securely collecting passwords, secrets, tokens, or
     {%- for example in password_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

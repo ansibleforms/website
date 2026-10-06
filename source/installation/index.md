@@ -9,34 +9,34 @@ has_toc: false
 # Installation
 {: .no_toc }
 
-How to install AnsibleForms
+Choose an installation method for AnsibleForms
 {: .fs-6 .fw-300 }
 
 ---
 
-AnsibleForms can be installed in a few ways. Each one has a page of its own:
+AnsibleForms supports several installation methods, each described on its own page:
 
-* **[Docker](docker.html)** : Install MySQL and spin-up the pre-built docker image with the correct environment variables
-* **[Docker Compose](docker-compose.html)** : [Download the docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySQL and AnsibleForms
-* **[From source](from-source.html)** : You install everything manually, install all dependencies, build the code, start the code
-* **[Kubernetes](kubernetes.html)** : Install the Helm chart and use Kubernetes to start AnsibleForms and its MySQL database
+* **[Docker](docker.html)** : install MySQL and run the pre-built Docker image with the required environment variables
+* **[Docker Compose](docker-compose.html)** : [download the docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySQL and AnsibleForms
+* **[From source](from-source.html)** : install all dependencies manually, then build and start the code
+* **[Kubernetes](kubernetes.html)** : install the Helm chart and use Kubernetes to start AnsibleForms and its MySQL database
 
 {: .note }
-> **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. For AnsibleForms 6, use the `v6` branch of the docker-compose project.
+> **Recommendation** The Docker image is the recommended installation method. It includes all dependencies and can be set up quickly.
 
 To move an existing installation to a newer release, see [Upgrading](../upgrading/).
 
 ## Image tags
 
 The image is published as `ghcr.io/ansibleforms/ansibleforms` on the GitHub Container
-Registry, which belongs to the project and does not rate-limit anonymous pulls. It starts at
-7.1.2 (and 6.5.2 for the 6.x line), and every release from now on is published there only.
+Registry, which belongs to the project and does not rate-limit anonymous pulls. Publication there starts at
+7.1.2 (and 6.5.2 for the 6.x line), and all later releases are published there only.
 
-The old Docker Hub repository, `ansibleguy/ansibleforms`, is no longer updated: it keeps the
-releases it already has, but gets no new version of either line. If you pull from it, switch
+The old Docker Hub repository, `ansibleguy/ansibleforms`, is no longer updated. It keeps its existing
+releases but receives no new versions of either line. If you pull from it, switch
 to `ghcr.io/ansibleforms/ansibleforms` with the same tag to keep receiving updates.
 
-The tags:
+The following tags are available:
 
 | Tag | Points to |
 |---|---|
@@ -44,10 +44,8 @@ The tags:
 | `7`, `6` | the newest release of that major version |
 | `7.0`, `6.5` | the newest release of that minor version |
 | `7.0.1`, `6.5.3` | exactly that release |
-| `7.1.0-rc.560.1` | a release candidate, built from a pull request to test it |
-| `latest-rc` | the newest release candidate - or `latest`, when that is newer |
 
-`latest` only ever moves forward: a patch for an older major version (say 6.5.3, released
-after 7.0.0) moves `6` and `6.5`, never `latest`. To stay on a major version, use its
-number (`6`) instead of `latest`. A release candidate is for testing only: once its fix is
-released, move to `latest` (or the version) yourself.
+`latest` only moves forward: a patch for an older major version (for example 6.5.3, released
+after 7.0.0) moves `6` and `6.5`, but never `latest`.
+
+To stay on a major version, use its number (`6`) instead of `latest`.

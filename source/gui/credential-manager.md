@@ -8,6 +8,9 @@ nav_order: 18
 # Credential Manager
 {: .no_toc }
 
-Securely store and manage credentials used by playbooks.
+Securely store and manage credentials used by playbooks
+{: .fs-6 .fw-300 }
+
+---
 
 ![Credential Manager](../assets/screenshots/credentials.jpg)

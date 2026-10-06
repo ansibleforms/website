@@ -18,11 +18,11 @@ Read credentials from HashiCorp Vault, from KV v1 or v2 or a dynamic secrets eng
 
 ## Store fields
 
-Besides the [fields every store has](./#adding-a-store), a HashiCorp Vault store takes these:
+In addition to the [fields every store has](./#adding-a-store), a HashiCorp Vault store has these fields:
 
 | Field | Meaning |
 |---|---|
-| Token | A token with read access to the paths your credentials use. Nothing renews it. |
+| Token | A token with read access to the paths your credentials use. AnsibleForms does not renew it. |
 | Namespace | Vault Enterprise namespace, sent as `X-Vault-Namespace`. |
 | KV version | `2` (default) or `1`. |
 | Default mount | Used for a reference without a slash, e.g. `myapp` becomes `secret/data/myapp`. |
@@ -34,17 +34,10 @@ is inserted when you leave it out.
 
 ## Dynamic database credentials
 
-{: .warning }
-> **Experimental.** Tested against a simulated Vault, not yet against a live database secrets
-> engine. Please report what you find.
-
 A reference of the form `<mount>/creds/<role>`, e.g. `database/creds/readonly`, reads from a
 dynamic secrets engine such as Vault's database engine. Vault then creates a new database
-account for each read, valid for the lease.
+account for each read, valid for the duration of the lease.
 
-- AnsibleForms reuses the account for 80% of its lease rather than for the store's cache
-  time, so it does not create an account on every query. A store with cache `0` still reads
-  every time.
-- Vault returns only `username` and `password`. Put host, port, database type and database
-  name in the credential row, and point the row at the store with `database/creds/<role>`.
-- Nothing revokes the lease early; the account expires when Vault ends the lease.
+- An account is reused for 80% of its lease, not the cache time; with cache `0`, every query reads a new one.
+- Vault returns only a user and password: put the rest of the connection in the credential row.
+- The lease is never revoked early; the account expires when Vault ends the lease.

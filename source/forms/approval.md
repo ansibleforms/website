@@ -8,6 +8,11 @@ nav_order: 7
 # Approval Points
 {: .no_toc }
 
+Pause a job until someone approves it
+{: .fs-6 .fw-300 }
+
+---
+
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
 {% assign form_object = formsyaml.help | where: "name", "Form" | first %}
@@ -16,6 +21,8 @@ nav_order: 7
 {{ approval_object.description | markdownify }}
 
 ## Attributes
+
+The attributes of an approval point:
 
 <table>
   <thead>
@@ -55,6 +62,8 @@ nav_order: 7
 
 {% for example in approval_object.examples %}
 ### {{ forloop.index }}) {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

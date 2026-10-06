@@ -6,10 +6,16 @@ nav_order: 5
 ---
 
 # File Formfield
+{: .no_toc }
 
-A file upload field for collecting files like configuration files, certificates, or other document types from users.
+Upload files, such as configuration files or certificates
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `file` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A file upload field for collecting files like configuration files, certificates,
     {%- for example in file_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

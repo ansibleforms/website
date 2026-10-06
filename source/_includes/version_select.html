@@ -1,0 +1,14 @@
+{%- comment -%}
+  Docs version selector, shown at the top of the menu. The versions are listed in
+  _config.yml (docs_versions), and docs_version marks the one this site documents.
+  The urls are absolute on purpose : relative_url would put the 6.x site's /v6 prefix
+  in front of the link back to the current docs.
+{%- endcomment -%}
+<div class="version-select">
+  <label for="version-select">Version</label>
+  <select id="version-select" onchange="window.location.href = this.value">
+    {%- for version in site.docs_versions %}
+    <option value="{{ version.url }}"{% if version.name == site.docs_version %} selected{% endif %}>{{ version.title }}</option>
+    {%- endfor %}
+  </select>
+</div>

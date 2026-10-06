@@ -40,17 +40,31 @@ search:
 # Navigation
 nav_sort: case_insensitive
 
+# Docs versions : the selector at the top of the menu (_includes/version_select.html)
+docs_version: "6"
+docs_versions:
+  - name: "7"
+    title: "7.x (latest)"
+    url: "/"
+  - name: "6"
+    title: "6.x"
+    url: "/v6/"
+
 # Aux links (top right)
 aux_links:
-  "Current docs":
-    - "/"
   "GitHub":
     - "https://github.com/ansibleforms/ansibleforms"
   "Image":
     - "https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms"
 
+# Open the aux links (GitHub, Image) in a new tab
+aux_links_new_tab: true
+
 # Footer
 footer_content: "Copyright &copy; 2023-2026 AnsibleForms. All rights reserved."
+
+# Copy button on code blocks
+enable_copy_code_button: true
 
 # Code highlighting
 kramdown:

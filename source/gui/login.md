@@ -8,6 +8,9 @@ nav_order: 1
 # Login
 {: .no_toc }
 
-User authentication page with support for local, LDAP, Entra ID and OIDC authentication.
+The user authentication page, with support for local, LDAP, Entra ID and OIDC authentication
+{: .fs-6 .fw-300 }
+
+---
 
 ![Login](../assets/screenshots/login.jpg)

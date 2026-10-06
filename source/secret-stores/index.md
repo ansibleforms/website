@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Secret stores
-nav_order: 2.7
+nav_order: 3.5
 has_children: true
 has_toc: false
 ---
@@ -9,14 +9,13 @@ has_toc: false
 # Secret stores
 {: .no_toc }
 
-Read credentials from an external secret manager instead of storing the password in
-AnsibleForms.
-
-## Table of contents
-{: .no_toc .text-delta }
+Read credentials from a secret manager instead of storing them in AnsibleForms
+{: .fs-6 .fw-300 }
 
 1. TOC
 {:toc}
+
+---
 
 ## How it works
 
@@ -39,6 +38,8 @@ nothing in your forms.
 
 ## Adding a store
 
+Every store has the following fields:
+
 | Field | Meaning |
 |---|---|
 | Name | How credentials refer to the store. |
@@ -48,9 +49,8 @@ nothing in your forms.
 | Ignore certificates / CA bundle | TLS verification. Leave the bundle empty to trust the system CAs. |
 | Extra options | Options specific to the type, as a JSON object. |
 
-**Test connection** proves the store answers and accepts AnsibleForms, without reading a
-secret. The **Status** page checks every store, and for a Vault warns when its token
-expires within 7 days.
+**Test connection** checks access without reading a secret. The **Status** page checks every store, and warns 7 days
+before a Vault token expires.
 
 Each secret manager has a page of its own:
 
@@ -66,8 +66,8 @@ reference**. Leave user and password empty.
 
 ### Inline, without a credential row
 
-Anywhere a credential name is accepted: `fnCredentials`, `fnRestBasic`, the `credentials:`
-of a form, and the `dbConfig` of a query.
+Anywhere a credential name is accepted, you can reference a store directly instead (`fnCredentials`, `fnRestBasic`,
+a form's `credentials:`, a query's `dbConfig`).
 
 ```javascript
 fn.fnCredentials('secret:vault:secret/myapp/prod')   // secret:<store>:<reference>
@@ -81,17 +81,14 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   dbConfig: secret:vault:secret/cmdb/db
 ```
 
-Without a credential row the secret must carry the whole connection. For a database that
-means `db_type` (`mysql`, `mssql`, `postgres`, `oracle` or `mongodb`) and a host, under the
-key names below, e.g.:
+Without a credential row, a database secret needs at least a `db_type` and a host, for example:
 
 ```json
 { "username": "forms", "password": "...", "host": "cmdb.example.com", "port": 3306,
   "db_type": "mysql", "database": "cmdb" }
 ```
 
-A secret without `db_type` is treated as a plain credential: user and password, with the
-other keys passed through. A query on it assumes `mysql`, like a credential row without a type.
+Without `db_type`, the secret is a plain credential (user, password and any other keys), and a query on it assumes `mysql`.
 
 ### Key names
 
@@ -109,7 +106,7 @@ A secret is mapped to a credential with these aliases. Other keys are passed thr
 For a credential row, host, port and database name from the secret are used only where the
 row leaves them empty.
 
-A secret with another shape can be reshaped with a `jq` expression, the third argument of
+A secret with a different structure can be reshaped with a `jq` expression, passed as the third argument of
 `fnCredentials`:
 
 ```javascript
@@ -118,6 +115,8 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 ```
 
 ## In the config seed
+
+Stores can also be declared in the config seed, like the other admin objects:
 
 ```yaml
 secret_stores:
@@ -138,18 +137,12 @@ credentials:
       is_database: true
 ```
 
-See [Config seed](../seed).
+For details, see [Config seed](../seed).
 
 ## Upgrading from the VAULT_* variables
 
 Before 7.1 the only store was a HashiCorp Vault configured with `VAULT_*` environment
 variables, and a credential pointed at it with **Vault path**.
 
-- **The first 7.x start that finds them imports the variables once** as a secret store named
-  `vault`, with the token encrypted in the database, and records that it did. From then on the
-  variables are ignored: change the Vault on the Secret stores page, and remove the variables
-  from your environment. As long as they are still set, each start logs a warning. A store you
-  delete later is not imported again. If a store named `vault` already exists, it is kept and
-  the variables are not imported.
-- **Credentials with a `vault_path`** are pointed at the store `vault` by the upgrade.
-  `vault_path` is still accepted by the API and the seed in 7.x and is removed in 8.
+- **The variables are imported once** as a store named `vault`; remove them afterwards.
+- **Credentials with a `vault_path`** now use that store; `vault_path` goes away in 8.

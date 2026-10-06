@@ -8,6 +8,11 @@ nav_order: 8
 # Email Notifications
 {: .no_toc }
 
+Send an email when a job finishes
+{: .fs-6 .fw-300 }
+
+---
+
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
 {% assign form_object = formsyaml.help | where: "name", "Form" | first %}
@@ -16,6 +21,8 @@ nav_order: 8
 {{ notifications_object.description | markdownify }}
 
 ## Attributes
+
+The attributes of the `notifications` object:
 
 <table>
   <thead>
@@ -76,6 +83,8 @@ nav_order: 8
 
 {% for example in notifications_object.examples %}
 ### {{ forloop.index }}) {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

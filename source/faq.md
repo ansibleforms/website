@@ -5,48 +5,54 @@ nav_order: 9
 ---
 
 # Frequently Asked Questions
+{: .no_toc }
 
-Common questions and answers about AnsibleForms features and usage.
+Common questions and answers about AnsibleForms
+{: .fs-6 .fw-300 }
+
+---
 
 ## Getting Started
 
 ### Deployment topology: single instance only
 
-AnsibleForms is designed to run as a **single instance**. Running multiple replicas behind a load balancer is **not supported** today.
+AnsibleForms is designed to run as a **single instance**. Running multiple replicas behind a load balancer is currently **not supported**.
 
 **Why:**
 - Schema migrations run at startup and assume they are the only writer.
-- The scheduler / cron loop is in-process; two instances would fire each scheduled job twice.
-- The job runner tracks state in memory and in the DB; concurrent runners can corrupt job state.
+- The scheduler (cron loop) runs in-process, so two instances would fire each scheduled job twice.
+- The job runner tracks state in memory and in the database, so concurrent runners can corrupt job state.
 
-**Recommendation:** run a single active instance with restart-on-failure (e.g. `restart: unless-stopped` in Docker / a Kubernetes Deployment with `replicas: 1`), and back up the database plus the persistent volume. If you need true HA, that would require a separate worker service to own migrations, scheduling and job execution — which does not exist yet.
+**Recommendation:** run a single active instance that restarts on failure (for example, `restart: unless-stopped` in Docker, or a Kubernetes Deployment with `replicas: 1`), and back up both the database and the persistent volume. True high availability would require a separate worker service that owns migrations, scheduling and job execution; such a service does not exist yet.
 
 ### Multi-Repository Form Management
 
-Use multiple git repositories for forms.
+Use multiple Git repositories for forms.
 
-AnsibleForms supports loading forms from multiple git repositories simultaneously. Forms from all repositories with the "Use for forms" switch enabled are automatically merged together.
+Forms from every Git repository with "Use for forms" enabled are merged automatically.
 
 **How it works:**
 - Configure multiple repositories in Settings → Repositories
 - Enable the "Use for forms" switch on each repository you want to load forms from
 - Each repository can contain a `forms/` directory with form YAML files
-- All forms from all repositories are merged together automatically
-- Forms with duplicate names will trigger a warning (first one wins)
+- The forms of all repositories are merged automatically
+- Duplicate form names trigger a warning (the first one wins)
 
 **Configuration File Discovery:**
-- AnsibleForms will use the FIRST config.yaml found across all form repositories
+- AnsibleForms uses the **first** config.yaml found across all form repositories
 - If multiple config files are found, a warning is logged
-- You can have a single central config repository for shared categories/roles/constants
-- Or use the local `persistent/config.yaml` file (checked if no repository config found)
+- You can keep a single central config repository for shared categories, roles and constants
+- Alternatively, use the local `persistent/config.yaml` file (checked when no repository config is found)
 
 **Best Practices:**
-- Keep config.yaml in only ONE repository or use the local persistent/config.yaml
-- Organize forms by team/project using separate repositories
+- Keep config.yaml in only **one** repository, or use the local persistent/config.yaml
+- Organize forms by team or project in separate repositories
 - Use unique form names across all repositories to avoid conflicts
 - Repository order matters: forms are loaded in database order
 
 **Example Setup:**
+
+The following layout separates the central configuration from the forms of two teams:
 
 ```yaml
 Repository 1 (Central Config):
@@ -63,18 +69,19 @@ Repository 3 (Server Team):
     - backup_restore.yaml
 ```
 
-All forms appear together in the UI, automatically merged!
+All forms are merged automatically and appear together in the UI.
 
 ### About Repositories
 
-Sometimes you want collaboration and versioning and then git repositories are perfect.  
-In version 5.0.0 you can now manage git repositories.  
-Every repository is a subfolder of the repositories-path (`REPO_PATH` environment variable).  
-Just go to settings / repositories and start managing repositories. You can either add ssh-based repositories (with public key/known hosts) or https based repositories, public or private with username/password/token.
+Git repositories provide collaboration and versioning, and AnsibleForms can manage them since version 5.0.0.  
+Every repository is a subfolder of the repositories path (the `REPO_PATH` environment variable).  
+Manage repositories under **Settings > Repositories**. You can add SSH-based repositories (with a public key and known hosts) or HTTPS-based repositories, either public or private with a username, password or token.
 
-**Since version 6.1.0**, you can add multiple repositories and use specific switches to control what they're used for:
+**Since version 6.1.0**, you can add multiple repositories and use switches to control what each one is used for.
 
 #### Repository Switches (6.1.0+)
+
+Each repository has four switches; turn on the ones that match what it holds:
 
 - **use for config** - Repository contains config.yaml (categories, roles, constants)
 - **use for forms** - Repository contains forms (supports multiple repositories, forms are merged)
@@ -90,9 +97,11 @@ Each repository can contain subfolders or files directly in the root:
 - **playbooks/** subfolder or root - Ansible playbooks (when using "use for playbooks")
 - **vars/** subfolder or root - Vars files (when using "use for vars files")
 
-If a subfolder doesn't exist, AnsibleForms will fall back to the repository root.
+If a subfolder does not exist, AnsibleForms falls back to the repository root.
 
 #### Single Repository vs Multiple Repositories
+
+A setup can use a single repository for everything, or separate repositories per purpose.
 
 **Single repository approach** (all in one):
 - Enable all switches on one repository
@@ -101,17 +110,17 @@ If a subfolder doesn't exist, AnsibleForms will fall back to the repository root
 **Multiple repository approach** (separated):
 - Use separate repositories for config, forms, playbooks, and vars files
 - Each repository can have files directly in root (no subfolders needed)
-- Forms can come from multiple repositories (will be merged)
+- Forms can come from multiple repositories (they are merged)
 
 **Important notes:**
-- Only ONE repository should have "use for config" enabled (warning if multiple)
-- Only ONE repository should have "use for playbooks" enabled (playbooks cannot be merged)
-- Only ONE repository should have "use for vars files" enabled
-- MULTIPLE repositories can have "use for forms" enabled (forms will be merged)
+- Only **one** repository should have "use for config" enabled (a warning is logged if several do)
+- Only **one** repository should have "use for playbooks" enabled (playbooks cannot be merged)
+- Only **one** repository should have "use for vars files" enabled
+- **Multiple** repositories can have "use for forms" enabled (their forms are merged)
 
 #### Configuration Priority
 
-Config loading (first match wins):
+The configuration is loaded from the first of these sources that matches:
 1. Database (if imported)
 2. Repository with "use for config" enabled
 3. Repository with "use for forms" enabled (backwards compatibility)
@@ -119,9 +128,9 @@ Config loading (first match wins):
 
 #### Additional Features
 
-You can choose if the repository must be cloned when AnsibleForms starts, and you can add cron-schedule to schedule recurring pull-actions.  
-Additionally, in the swagger interface, you will find a clone and pull rest api for webhooks.  
-In case you want long-lived access tokens for the webhooks, create one under [Profile > API token](profile#api-token), for roles with the `extendedTokenExpiration` option. The login API's `expiryDays` parameter does the same.
+You can choose whether a repository is cloned when AnsibleForms starts, and you can add a cron schedule for recurring pulls.  
+The Swagger interface also provides clone and pull REST API endpoints for webhooks.  
+For a long-lived access token for webhooks, create one under [Profile > API token](profile/api-token.html), for roles with the `extendedTokenExpiration` option. The login API's `expiryDays` parameter does the same.
 
 ### VS Code Validation for Form Files
 
@@ -147,7 +156,7 @@ This works for both single-form files (a YAML dict) and multi-form files (a YAML
       values: [dev, staging, prod]
 ```
 
-VS Code will highlight unknown properties, missing required fields, and wrong types as you type.
+VS Code highlights unknown properties, missing required fields and incorrect types as you type.
 
 ## Job Management
 
@@ -155,10 +164,13 @@ VS Code will highlight unknown properties, missing required fields, and wrong ty
 
 Relaunch jobs with form data (v6.0.3).
 
-AnsibleForms supports relaunching jobs with pre-filled form data. When you click the relaunch button in the jobs page, the form will open with all field values from the previous job submission.
+AnsibleForms can relaunch jobs with pre-filled form data. When you click the relaunch button on the jobs page, the form opens with all field values from the previous job submission.
 
 **Security Features:**
-- Password fields are automatically excluded from storage and retrieval for security
+
+Relaunch data is stored with the following safeguards:
+
+- Password fields are automatically excluded from storage and retrieval
 - Raw form data is stored separately from processed extravars (before model transformations)
 
 **Permission Control:**
@@ -175,25 +187,27 @@ Users must have the `allowJobRelaunch` role option enabled (admins have this by 
 ```yaml
 roles:
   - name: operators
+    groups:
+      - local/operators
     options:
       allowJobRelaunch: true  # Allow this role to relaunch jobs
 ```
 
-**Most Restrictive Logic:** Relaunch is only available if BOTH conditions are met:
-1. Form does NOT have `allowRelaunch: false`
-2. User role has `allowJobRelaunch: true` (or user is admin)
+**Most Restrictive Logic:** Relaunch is only available when **both** conditions are met:
+1. The form does **not** have `allowRelaunch: false`
+2. The user's role has `allowJobRelaunch: true` (or the user is an admin)
 
 **How it works:**
 - Raw form data is saved in the database on job submission (excluding passwords)
-- Clicking relaunch navigates to the form with `?prefillJobId=<id>` parameter
-- Form loads with all previous values, respecting field dependencies and async queries
+- Clicking relaunch opens the form with the `?prefillJobId=<id>` parameter
+- The form loads with all previous values, respecting field dependencies and asynchronous queries
 - Users can modify values before resubmitting
 
 ### Job Log File
 
 Track progress via a job-specific log file (v6.1.2).
 
-AnsibleForms can display a **job-specific log file** alongside the Ansible output, making it easy to track the progress of long-running custom modules that would otherwise produce no visible feedback during execution.
+AnsibleForms can display a **job-specific log file** alongside the Ansible output. This lets you track the progress of long-running custom modules that would otherwise produce no visible feedback during execution.
 
 {: .note }
 > This feature only works for direct Ansible jobs. AWX / Ansible Tower jobs are not supported.
@@ -204,6 +218,8 @@ AnsibleForms can display a **job-specific log file** alongside the Ansible outpu
 - The log file is displayed in a separate **Logfile** panel below the main Ansible output, with full ANSI colour support
 
 **Log file path convention:**
+
+The log file must be written to this path:
 
 ```
 <playbook_dir>/.joblogs/job_log_<jobid>.log
@@ -220,40 +236,35 @@ Pass this variable to any role or custom module that should write progress to th
 **Responsibilities of the playbook / module developer:**
 - **Create** the log file (and its `.joblogs/` directory) at the start of the operation
 - **Write** meaningful progress messages as the operation proceeds
-- **Delete** the file when it is no longer needed (e.g. at the start of a new run to avoid stale data)
+- **Delete** the file when it is no longer needed (for example, at the start of a new run to avoid stale data)
 
 **ANSI colour coding is supported.**  
-You can use standard ANSI escape codes (e.g. `\033[92m` for green, `\033[91m` for red) in your log messages and they will be rendered as colours in the UI. This is ideal for distinguishing success, warning, and error states at a glance.
+Standard ANSI escape codes (for example, `\033[92m` for green and `\033[91m` for red) in your log messages are rendered as colours in the UI, so success, warning and error states can be distinguished at a glance.
 
 **Typical use case:**  
-A custom Python Ansible module that performs a long sequence of API calls or data operations (e.g. a SnapMirror DR workflow) can append one line per step to the log file. The operator watching the job in AnsibleForms will see live progress in the Logfile panel as each polling cycle refreshes the output.
+A custom Python Ansible module that performs a long sequence of API calls or data operations (for example, a SnapMirror DR workflow) can append one line per step to the log file. An operator watching the job in AnsibleForms then sees live progress in the Logfile panel each time a polling cycle refreshes the output.
 
 ### Jobid
 
-Pass the current jobid.
+Pass the current job ID.
 
-Ansible Forms automatically sends the current jobid in the extravars.  
-You don't need to do anything.  
-It is sent as `__jobid__`.
+AnsibleForms automatically sends the current job ID in the extravars as `__jobid__`; no configuration is required.
 
 ### Userinfo
 
 Pass the current user.
 
-Ansible Forms automatically sends the userinformation in the extravars.  
-You don't need to do anything.  
-It is sent as `ansibleforms_user`.
+AnsibleForms automatically sends the user information in the extravars as `ansibleforms_user`; no configuration is required.
 
-You can choose how much of it is sent.  `EXTRAVARS_USER_FIELDS` takes a comma
-separated list of top level keys (`username,email,type`), or `none` to send nothing; a form
-can override it with its own `userExtravars` property.  The default is the whole object, as
-before.  The form side `__user__` below comes from the login token and is never affected.
+You can choose how much of it is sent. `EXTRAVARS_USER_FIELDS` takes a comma-separated list of top-level keys
+(`username,email,type`), or `none` to send nothing; a form can override it with its own `userExtravars` property.
+The default is the whole object, as before. The form-side `__user__` described below comes from the login token and is never affected.
 
 ### Userinfo Form
 
 Access current user info in the form (v4.0.2).
 
-The field `__user__` is automatically added in the form.
+The field `__user__` is automatically added to the form and can be referenced in expressions:
 
 ```yaml
 expression: $(__user__)
@@ -268,13 +279,13 @@ expression: $(__user__.roles)
 
 Make cascaded dropdowns.
 
-`enum` fields (AKA dropdown boxes) can contain placeholders in their `query` or `expression` property in the format of `$(another_field)` or `$(another_field[0].name)`.  
-The moment the referenced field changes, the referencing field gets re-evaluated, resulting in dynamic and cascading dropdown boxes.  
-The power of this concept lies in the client web-application that is re-evaluating fields every 100ms.  With current processors and the chromium engine, this should be a very seamless experience.
+`enum` fields (dropdown boxes) can contain placeholders in their `query` or `expression` property, in the format `$(another_field)` or `$(another_field[0].name)`.  
+As soon as the referenced field changes, the referencing field is re-evaluated, which results in dynamic, cascading dropdown boxes.  
+The client web application re-evaluates fields every 100 ms; with current processors and the Chromium engine, this makes for a seamless experience.
 
 {: .note }
-> When you reference another enum field, you reference the selected values, NOT the full dropdown list. Use the `placeholderColumn`-property or a dot-notation like `$(city.name)`.  
-> **New in v4.0.20**: setting placeholderColumn to "*" will output the entire record, instead of a single column.
+> A reference to another enum field returns the selected values, **not** the full dropdown list. Use the `placeholderColumn` property or dot notation such as `$(city.name)`.  
+> **New in v4.0.20**: setting placeholderColumn to "*" outputs the entire record instead of a single column.
 
 ```yaml
 - type: enum
@@ -346,15 +357,15 @@ The power of this concept lies in the client web-application that is re-evaluati
 
 Reference another field's value.
 
-Placeholders are references to other fields in the forms.  
-A placeholder is always in the format `$(reference)`. Expressions or queries can contain placeholders.  
-If the placeholder is pointing to a simple field (text, number, password), it will hold that field's value.  
-If the placeholder is pointing to a object-based-enum field, then you must either use the `placeholderColumn`-property or a dot-notation like `$(city.name)`.  
-If the placeholder is pointing to an expression field, then either the full object is returned or you can have an advanced placeholder reference like `$(myarray[0].name)` where you can create javascript-like references.
+Placeholders are references to other fields in the form.  
+A placeholder always has the format `$(reference)`, and both expressions and queries can contain placeholders.  
+A placeholder that points to a simple field (text, number, password) holds that field's value.  
+A placeholder that points to an object-based enum field must use either the `placeholderColumn` property or dot notation such as `$(city.name)`.  
+A placeholder that points to an expression field returns the full object, or you can use an advanced, JavaScript-like reference such as `$(myarray[0].name)`.
 
 {: .important }
-> Important to know is that the placeholder is replaced BEFORE the evaluation of the expression. If you expect the result to be a string, then you must wrap it with quotes!  
-> **New in v4.0.20**: setting placeholderColumn to "*" will output the entire record, instead of a single column.
+> The placeholder is replaced **before** the expression is evaluated. If you expect the result to be a string, you must wrap it in quotes.  
+> **New in v4.0.20**: setting placeholderColumn to "*" outputs the entire record instead of a single column.
 
 ```yaml
 - name: field1
@@ -388,30 +399,27 @@ If the placeholder is pointing to an expression field, then either the full obje
 
 Hide a field.
 
-You can hide a field using the field property `hide`.  
-Or you can show/hide a field dynamically using the field properties `dependencies` and `dependencyFn`.
+Hide a field with the field property `hide`, or show and hide it dynamically with the field properties `dependencies` and `dependencyFn`.
 
 ### Group Fields
 
 Group fields together in a block.
 
-Use the field property `group`. Fields with the same group name will be grouped in a block.
+Use the field property `group`. Fields with the same group name are grouped in a block.
 
 ### Field Validation
 
 Validate a field.
 
-Have a look at the many validation field properties such as `regex`, `minValue`, `notIn`, ...
+Use the validation field properties, such as `regex`, `minValue` and `notIn`.
 
 ### Default Value on Enum
 
 Enum default value.
 
-There is obviously the field property `default` you can use to manipulate a default.  
-And with `enum` fields, you can use `__auto__` for example to automatically select the first item.  
+The field property `default` sets a default value, and on `enum` fields you can use values such as `__auto__` to select the first item automatically.
 
-But sometimes you want to have a dynamic default, based on an expression.  
-See the below example how we accomplish this.
+For a dynamic default based on an expression, move the default item to the top of the list, as in the following example.
 
 ```yaml
 # using client javascript manipulation
@@ -442,10 +450,9 @@ See the below example how we accomplish this.
 
 Expression default value.
 
-For text, number or date fields, you can use the `default` property to set a default value.  
-But what if you want this to be dynamic? Like an expression?  
+For text, number or date fields, the `default` property sets a static default value.
 
-You can do this in 2 ways:  
+To make the default dynamic, based on an expression, use one of two properties:
 * `editable`: use the editable property to make an expression-field editable
 * `evalDefault`: use the evalDefault property to evaluate the default as an expression
 
@@ -492,7 +499,7 @@ You can do this in 2 ways:
 
 ### What is the difference between a wizard and a multistep form?
 
-A **wizard** and a **multistep** form sound similar but operate on different layers — and they can be combined.
+A **wizard** and a **multistep** form sound similar, but they operate on different layers and can be combined.
 
 | | [`steps`](forms/multistep.html) (Multistep) | [`wizard`](forms/wizard.html) |
 |---|---|---|
@@ -507,11 +514,13 @@ A **wizard** and a **multistep** form sound similar but operate on different lay
 
 #### Multistep only
 
-A `type: multistep` form runs one playbook/template per step. The user fills a single page of fields, presses Submit, and the executor runs each step sequentially:
+A `type: multistep` form runs one playbook or template per step. The user fills in a single page of fields and presses Submit, and the executor runs each step sequentially:
 
 ```yaml
 - name: Provision host
   type: multistep
+  roles:
+    - public
   steps:
     - name: Create host
       type: ansible
@@ -526,11 +535,13 @@ A `type: multistep` form runs one playbook/template per step. The user fills a s
 
 #### Wizard only
 
-A `wizard:` block on an `ansible` (or `awx`) form turns input collection into a multi-page experience. Only **one** job runs at the end — the merged extravars from all pages are sent to a single playbook/template:
+A `wizard:` block on an `ansible` (or `awx`) form spreads input collection over multiple pages. Only **one** job runs at the end: the merged extravars from all pages are sent to a single playbook or template.
 
 ```yaml
 - name: Provision host
   type: ansible
+  roles:
+    - public
   playbook: provision.yml
   wizard:
     - subform: basics
@@ -553,15 +564,17 @@ A `wizard:` block on an `ansible` (or `awx`) form turns input collection into a 
       type: text
 ```
 
-A read-only review page is appended automatically as the last wizard page — you do not declare it in YAML.
+A read-only review page is appended automatically as the last wizard page; you do not declare it in YAML.
 
 #### Combined (wizard on top of multistep)
 
-A wizard can be layered on top of a multistep form. The user fills the wizard pages, presses Submit, and **then** the multistep execution kicks off. By matching a wizard step's `defaultModel` with a multistep step's [`key`](forms/multistep.html#step_key), you can route **one wizard page to one multistep step**:
+A wizard can be layered on top of a multistep form. The user fills in the wizard pages and presses Submit, and **then** the multistep execution starts. By matching a wizard step's `defaultModel` with a multistep step's [`key`](forms/multistep.html#step_key), you can route **one wizard page to one multistep step**:
 
 ```yaml
 - name: Provision and verify host
   type: multistep
+  roles:
+    - public
   wizard:
     - subform: basics
       title: Basics
@@ -580,17 +593,17 @@ A wizard can be layered on top of a multistep form. The user fills the wizard pa
       key: network                    # only sees the network page payload
 ```
 
-`key` is a single-level lookup, so use a flat name in `defaultModel` (e.g. `defaultModel: basics`, not `defaultModel: input.basics`) when you want them to match.
+`key` is a single-level lookup, so use a flat name in `defaultModel` (for example, `defaultModel: basics`, not `defaultModel: input.basics`) when you want them to match.
 
 See the [Wizard page](forms/wizard.html) for the full property reference.
 
 ### How do I conditionally show or skip wizard steps?
 
-Use `when:` to **hide** a step entirely, or `optional: true` to allow the user to **skip** a visible step. They are independent and should generally not be combined.
+Use `when:` to **hide** a step entirely, or `optional: true` to let the user **skip** a visible step. The two are independent and should generally not be combined.
 
 #### `when:` — conditional visibility
 
-The step is hidden when the expression evaluates falsy. The user never sees it and its values are not collected. The expression can read earlier steps via `__parent__.<stepname>.<field>`:
+The step is hidden when the expression evaluates to a falsy value. The user never sees it, and its values are not collected. The expression can read earlier steps through `__parent__.<stepname>.<field>`:
 
 ```yaml
 wizard:
@@ -619,10 +632,10 @@ wizard:
     optional: true
 ```
 
-The user can land on the Advanced page, fill nothing, hit Next, and proceed straight to the review page.
+The user can open the Advanced page, leave it empty, press Next and proceed directly to the review page.
 
 {: .note }
-> `when:` is about *visibility*; `optional:` is about *whether the page is required to complete*. Don't combine them — if you want a page to disappear, use `when:`; if you want it visible-but-skippable, use `optional:`.
+> `when:` controls *visibility*; `optional:` controls *whether the page must be completed*. Do not combine them: to make a page disappear, use `when:`; to keep it visible but skippable, use `optional:`.
 
 ### How do I reference values from an earlier wizard step?
 
@@ -631,11 +644,16 @@ Use `$(__parent__.<stepname>.<field>)` inside any field of a later step.
 The `name` of a wizard step (defaults to its `subform` name) is the namespace under which its values are exposed to later steps:
 
 ```yaml
-wizard:
-  - subform: basics            # step name defaults to "basics"
-    title: Basics
-  - subform: network
-    title: Network
+- name: Provision host
+  type: ansible
+  playbook: provision.yml
+  roles:
+    - public
+  wizard:
+    - subform: basics          # step name defaults to "basics"
+      title: Basics
+    - subform: network
+      title: Network
 
 - name: basics
   type: subform
@@ -653,7 +671,7 @@ wizard:
       default: $(__parent__.basics.hostname).local
 ```
 
-This is the same `__parent__` mechanism used by `list` and `yaml` subforms — see [How do I access parent form data inside a subform?](#how-do-i-access-parent-form-data-inside-a-subform).
+This is the same `__parent__` mechanism that `list` and `yaml` subforms use; see [How do I access parent form data inside a subform?](#how-do-i-access-parent-form-data-inside-a-subform).
 
 ## Security & Credentials
 
@@ -661,9 +679,9 @@ This is the same `__parent__` mechanism used by `list` and `yaml` subforms — s
 
 Pass credentials.
 
-Credentials can be added in several ways:
-* using the field-property `asCredential`  
-* using the `credentials` form-property (key-value pairs)
+Credentials can be passed in several ways:
+* using the field property `asCredential`  
+* using the `credentials` form property (key-value pairs)
 * using an extravar called `__credentials__`
 
 ```yaml
@@ -691,6 +709,9 @@ fields:
 # Method 2 : using credentials form-property   
 name: myplaybook
 type: ansible
+playbook: myplaybook.yaml
+roles:
+  - public
 credentials:
   vc_cred: vcenter
   ad_cred: ad
@@ -707,55 +728,57 @@ fields:
 
 ### Recovering a lost admin password
 
-If you've lost the password for the local `admin` account (and you don't have any other admin user available), you can use the `REINIT_ADMIN` recovery hatch. **This is not a runtime auth bypass** — it only forces a one-time reset of the local admin account at startup, then lets normal authentication proceed.
+If you have lost the password of the local `admin` account and no other admin user is available, use the `REINIT_ADMIN` recovery option. **This is not a runtime authentication bypass**: it only forces a one-time reset of the local admin account at startup, after which normal authentication proceeds.
 
 **How it works**
 
 When `REINIT_ADMIN=1` is set at startup, AnsibleForms will:
 
 1. Ensure the `admins` group exists (creating it if missing).
-2. Look up the local admin user (default username `admin`, override via `ADMIN_USERNAME`).
+2. Look up the local admin user (default username `admin`, overridden by `ADMIN_USERNAME`).
 3. If it exists, reset its password to the value of `ADMIN_PASSWORD` and re-attach it to the `admins` group.
-4. If it doesn't exist, create it (same as a fresh install).
-5. Log the action loudly so it shows up in your logs.
+4. If it does not exist, create it (as on a fresh install).
+5. Log the action prominently so that it is visible in the logs.
 
 **Steps**
 
 1. Stop AnsibleForms.
-2. Set the env vars (use a strong password):
+2. Set the environment variables (use a strong password):
    ```bash
    ADMIN_USERNAME=admin
    ADMIN_PASSWORD=YourNewStrongPasswordHere
    REINIT_ADMIN=1
    ```
    In Docker Compose, add them to the `environment:` block of the AnsibleForms service.
-3. Start AnsibleForms. Watch the logs for a line like:
+3. Start AnsibleForms and watch the logs for a line such as:
    ```
    REINIT_ADMIN: admin user 'admin' has been recreated. UNSET REINIT_ADMIN now.
    ```
 4. Log in with `admin` / `YourNewStrongPasswordHere`.
-5. **Unset `REINIT_ADMIN` (or set it back to `0`)** and restart so accidental future restarts don't keep resetting the admin password.
+5. **Unset `REINIT_ADMIN` (or set it back to `0`)** and restart, so that future restarts do not reset the admin password again.
 
 **Notes**
 
-- If you were locked out because LDAP was the only configured login method and broke, the recovered local `admin` account always falls back to local DB auth — that's enough to get back in and fix LDAP.
-- The previous `ENABLE_BYPASS` env var is gone. It allowed login as admin with any password and was unsafe to leave enabled. `REINIT_ADMIN` only resets the password and stops there; normal auth runs after that.
-- Existing sessions and tokens are not invalidated by `REINIT_ADMIN` — only the password hash and group membership are changed.
+- If you were locked out because LDAP was the only configured login method and it failed, the recovered local `admin` account always falls back to local database authentication, which is enough to log in and fix LDAP.
+- The former `ENABLE_BYPASS` environment variable has been removed. It allowed login as admin with any password and was unsafe to leave enabled. `REINIT_ADMIN` only resets the password; normal authentication applies afterwards.
+- `REINIT_ADMIN` does not invalidate existing sessions and tokens; only the password hash and group membership change.
 
 ### Restricting REST helper destinations (allow/deny lists)
 
-The `fn.fnRestBasic`, `fn.fnRestAdvanced`, `fn.fnRestJwt` and `fn.fnRestJwtSecure` helpers can be called from form `expression` properties to fetch data over HTTP. By default, expression authors can target **any** URL the AnsibleForms host can reach. On a sensitive network you may want to limit this.
+The `fn.fnRestBasic`, `fn.fnRestAdvanced`, `fn.fnRestJwt` and `fn.fnRestJwtSecure` helpers can be called from form `expression` properties to fetch data over HTTP. By default, expression authors can target **any** URL that the AnsibleForms host can reach, which you may want to limit on a sensitive network.
 
-Two environment variables provide allow- and deny-lists:
+Two environment variables provide an allow list and a deny list:
 
 | Variable | Behaviour |
 |---|---|
 | `REST_ALLOWED_HOSTS` | Comma-separated hostnames or CIDRs. When set, **only** these targets are allowed. |
-| `REST_DENIED_HOSTS` | Comma-separated hostnames or CIDRs. Always blocked. Wins over the allow-list. |
+| `REST_DENIED_HOSTS` | Comma-separated hostnames or CIDRs. Always blocked. Takes precedence over the allow list. |
 
 Hostnames are matched case-insensitively against the URL host. CIDRs are matched against every IP the host resolves to, so `10.0.0.0/8` blocks any DNS name that resolves into the private range.
 
 **Examples:**
+
+The first line allows only two hosts; the second blocks specific targets:
 
 ```bash
 # Whitelist: only your two API partners are reachable
@@ -766,7 +789,7 @@ REST_DENIED_HOSTS=169.254.169.254,127.0.0.0/8,internal-admin.example
 ```
 
 {: .warning }
-> **This guard only protects the AnsibleForms Node.js process.** Once a playbook runs, Ansible itself can reach anything from the host — outside AF's control. Use these lists to stop form authors from turning expressions into a metadata-service / internal-UI proxy; do not rely on them as a network firewall.
+> **This guard only protects the AnsibleForms Node.js process.** Once a playbook runs, Ansible itself can reach anything from the host, outside the control of AnsibleForms. Use these lists to prevent form authors from turning expressions into a proxy for metadata services or internal UIs; do not rely on them as a network firewall.
 
 ### HashiCorp Vault Integration
 
@@ -774,7 +797,7 @@ Credentials can read their user and password from HashiCorp Vault, configured as
 **secret store**. See [Secret stores](secret-stores). The `VAULT_*` environment variables
 of earlier versions are imported once as the store `vault` at the first 7.x start.
 
-For secrets used only inside one playbook you can also use the `community.hashi_vault`
+For secrets used only inside one playbook, you can also use the `community.hashi_vault`
 lookup plugin, which reads from Vault directly and bypasses AnsibleForms.
 
 ## Integration
@@ -783,8 +806,7 @@ lookup plugin, which reads from Vault directly and bypasses AnsibleForms.
 
 Query information from AWX or Ansible Automation Platform.
 
-Sometimes you want to create dropdown boxes, with data from AWX or Tower.  
-You can use `fn.fnRestBasic` or `fn.fnRestJwtSecure` to do this.
+To populate dropdown boxes with data from AWX or Tower, use `fn.fnRestBasic` or `fn.fnRestJwtSecure`.
 
 ```yaml
 name: Query awx
@@ -852,12 +874,12 @@ fields:
 
 ### Customization
 
-Customize Ansible Forms.
+Customize AnsibleForms.
 
-Ansible Forms is a web-app. If you run it natively in nodejs, you could replace files or change them.  
-But more recommended is to run it as a docker-image and add volume or file mappings. Our docker-compose projects already map directories to make the database, playbooks, logs, certificates and ssh-keys persistent. Nothing is keeping you from adding more mappings. A custom logo is uploaded on the **Logo** settings page.  
-There is also a `custom.js` file where you can add your own javascript functions to use in expressions. Just like you can address our functions with the prefix `fn.` (fn.fnRestBasic for example) you can access the custom functions with prefix `fnc.`.  
-And you can add your own jq definitions as well in the same way with the `jq.custom.definitions` file.
+AnsibleForms is a web application. When you run it natively in Node.js, you can replace or change its files.  
+The recommended approach, however, is to run it as a Docker image and add volume or file mappings. The Docker Compose projects already map directories to keep the database, playbooks, logs, certificates and SSH keys persistent, and you can add more mappings. A custom logo is uploaded on the **Logo** settings page.  
+The `custom.js` file holds your own JavaScript functions for use in expressions. The built-in functions use the prefix `fn.` (for example, fn.fnRestBasic); custom functions use the prefix `fnc.`.  
+In the same way, you can add your own jq definitions in the `jq.custom.definitions` file.
 
 ```yaml
 volumes:
@@ -875,14 +897,14 @@ volumes:
 
 Enable ytt.
 
-In the case you want to use ytt, it can be enabled by setting `USE_YTT=1`.  
-Read more info about ytt (https://carvel.dev/ytt/).
+To use ytt, set `USE_YTT=1`.  
+For more information about ytt, see https://carvel.dev/ytt/.
 
 {: .important }  
-> This feature has not been heavily tested and was added as an enhancement with no feedback after it was added.  
-> When using ytt, you must disable the designer, the designer will convert the yaml files to intermediate json and will drop the ytt syntax (which is yaml comments).
+> This feature has not been extensively tested, and no feedback has been received since it was added as an enhancement.  
+> When using ytt, you must disable the designer: the designer converts the YAML files to intermediate JSON and drops the ytt syntax (which consists of YAML comments).
 
-A `lib` directory needs to exist within the root directory and is automatically included for the ytt call.
+A `lib` directory must exist in the root directory; it is automatically included in the ytt call.
 Data can be provided globally by setting prefixed environment variables:  
 
 ```bash
@@ -891,7 +913,7 @@ YTT_VAR_INVENTORY_PATH=/tmp/inventory.yml
 YTT_VAR_default_host=localhost
 ```  
 
-Or by providing library data files:
+Alternatively, provide library data files:
 
 ```bash
 YTT_LIB_DATA_DEMO=/tmp/demo_data.yml
@@ -902,7 +924,7 @@ YTT_LIB_DATA_DEMO=/tmp/demo_data.yml
 message: 'hello demo'
 ```
 
-**The library `demo` needs to exist in the ytt context (lib/_ytt_lib/demo/values.yml)**
+**The library `demo` must exist in the ytt context (lib/_ytt_lib/demo/values.yml)**
 
 ```yaml
 # lib/_ytt_lib/demo/values.yml
@@ -911,7 +933,7 @@ message: 'hello demo'
 demo: {}
 ```  
 
-Then, the loaded data can be used:
+The loaded data can then be used:
 
 ```yaml
 # config.yaml
@@ -937,25 +959,31 @@ constants:
 
 Control per-role UI permissions with role options.
 
-Beyond restricting which forms a role can see, AnsibleForms has a set of **role options** that give finer control over what users of a role can do in the UI. Options are additive — admins always have full access.
+Beyond restricting which forms a role can see, AnsibleForms provides **role options** that give finer control over what users of a role can do in the UI. Options are additive, and admins always have full access.
 
-See the full option reference in [config.yaml → Role options](config#Role_options).
+See the full option reference in [config.yaml → Role options](config/roles#Role_options).
 
-Common examples:
+The following examples show common options:
 
 ```yaml
 roles:
   - name: operators
+    groups:
+      - local/operators
     options:
       showJobs: true          # can view job history and output
       showLogs: true          # can view the server log
       allowJobRelaunch: true  # can relaunch previous jobs
       allowVerboseMode: true  # can enable verbose output on a run
   - name: designers
+    groups:
+      - local/designers
     options:
       showDesigner: true      # can open the YAML designer
       showSettings: false     # cannot access settings
   - name: schedulers
+    groups:
+      - local/schedulers
     options:
       allowScheduledJobs: true  # can schedule forms - admin-level, see the schedules question
       allowPlannedJobs: true    # can plan a form to run once at a set time
@@ -963,13 +991,13 @@ roles:
 ```
 
 {: .note }
-> Most role options have a default (many default to `true`). If an option is explicitly set on a role it is always used. If it is not set, admins are allowed; non-admins fall back to the option's default value.
+> Most role options have a default (many default to `true`). An option that is explicitly set on a role is always used. When it is not set, admins are allowed and non-admins fall back to the option's default value.
 
 ### How do I implement custom RBAC logic in my playbooks or forms?
 
-User identity is available in both the frontend and backend at every execution.
+User identity is available in both the frontend and the backend at every execution.
 
-At every form submission AnsibleForms automatically injects the current user's full identity into the extravars sent to Ansible:
+On every form submission, AnsibleForms automatically injects the current user's full identity into the extravars sent to Ansible:
 
 ```yaml
 ansibleforms_user:
@@ -986,9 +1014,9 @@ ansibleforms_user:
     # ...all resolved role options
 ```
 
-This means your playbook or any custom Ansible module can use `ansibleforms_user` directly to make fine-grained decisions — for example, only allowing certain groups to modify production inventory, or writing an audit trail with the submitter's username.
+Your playbook or any custom Ansible module can therefore use `ansibleforms_user` directly for fine-grained decisions, for example to allow only certain groups to modify the production inventory, or to write an audit trail with the submitter's username.
 
-In the **frontend**, the same object is available via the special `__user__` field:
+In the **frontend**, the same object is available through the special `__user__` field:
 
 ```yaml
 fields:
@@ -1000,10 +1028,6 @@ fields:
 
   - name: target_env
     type: enum
-    values:
-      - dev
-      - staging
-      - production
     # hide the production option for non-admins by cross-referencing __user__
     expression: |
       $(__user__.roles).includes('admin')
@@ -1015,15 +1039,17 @@ fields:
 
 **Typical patterns:**
 
-- **Cross-reference an RBAC config file or database** — load a YAML/JSON file (via `fn.fnReadYamlFile` or an expression) that maps groups to allowed resources, then filter based on `$(__user__.groups)`
-- **Audit trail** — pass `ansibleforms_user.username` as an extra variable to write who triggered the job
-- **Dynamic field values** — show a different set of enum choices, pre-fill fields, or hide sections based on the user's groups or roles
-- **Playbook-side authorization** — assert that `ansibleforms_user.groups` contains a required group before the playbook proceeds, as a defence-in-depth check independent of the form's `roles` list
+The user identity supports patterns such as the following:
+
+- **Cross-reference an RBAC config file or database**: load a YAML or JSON file (with `fn.fnReadYamlFile` or an expression) that maps groups to allowed resources, then filter on `$(__user__.groups)`
+- **Audit trail**: pass `ansibleforms_user.username` as an extra variable to record who triggered the job
+- **Dynamic field values**: show a different set of enum choices, pre-fill fields, or hide sections based on the user's groups or roles
+- **Playbook-side authorization**: assert that `ansibleforms_user.groups` contains a required group before the playbook proceeds, as a defence-in-depth check independent of the form's `roles` list
 
 {: .note }
 > The object above is what is sent by default. If the instance sets `EXTRAVARS_USER_FIELDS`,
-> or the form sets `userExtravars`, only the keys named there are sent — so a playbook that
-> asserts on `ansibleforms_user.groups` needs `groups` to be one of them. The frontend
+> or the form sets `userExtravars`, only the keys named there are sent, so a playbook that
+> asserts on `ansibleforms_user.groups` requires `groups` to be one of them. The frontend
 > `__user__` field comes from the login token and is never trimmed by either setting.
 
 ## Job Scheduling
@@ -1032,22 +1058,28 @@ fields:
 
 Run forms on a schedule or at a future time (v6.1.5).
 
-AnsibleForms supports two scheduling modes via the job scheduling feature:
+The job scheduling feature supports two modes:
 
-- **Cron schedule** — submit the form and it will run repeatedly on a cron expression (e.g. every night at 2 AM)
-- **One-off / run later** — submit the form to run once at a specific future date and time
+- **Cron schedule**: the form runs repeatedly according to a cron expression (for example, every night at 2 AM)
+- **One-off / run later**: the form runs once at a specific future date and time
 
 **Requirements:**
-- Cron schedules need the role option `allowScheduledJobs: true` (default for admins only)
-- One-off runs need the role option `allowPlannedJobs: true` (default true)
+
+Each mode requires a role option:
+
+- Cron schedules require the role option `allowScheduledJobs: true` (default for admins only)
+- One-off runs require the role option `allowPlannedJobs: true` (default true)
 
 **How it works:**
-1. Open a form and fill in the values
-2. Instead of clicking **Submit**, open the dropdown next to it and pick **Schedule (Recurring)** or **Run Later (One-time)**
-3. Choose a cron expression or a specific date/time
-4. A schedule is created and the job runs automatically at the configured time; a one-time schedule is deleted after it ran
 
-Schedules can be viewed, edited, and deleted on the **Schedules** page (linked from the jobs page).
+To schedule a form:
+
+1. Open a form and fill in the values
+2. Instead of clicking **Submit**, open the dropdown next to it and select **Schedule (Recurring)** or **Run Later (One-time)**
+3. Choose a cron expression or a specific date and time
+4. A schedule is created and the job runs automatically at the configured time; a one-time schedule is deleted after it has run
+
+Schedules can be viewed, edited and deleted on the **Schedules** page (linked from the jobs page).
 
 {: .warning }
 > Treat `allowScheduledJobs` as an admin-level option. Schedules are not owned by the user who created them: every user with the option sees and can change all schedules. A schedule also runs with admin rights, for any form, whatever the creator's own access. Grant it only to roles you would trust as admins.
@@ -1058,19 +1090,25 @@ Schedules can be viewed, edited, and deleted on the **Schedules** page (linked f
 
 Store form submissions for later use (v6.1.5).
 
-The **Store** and **Load from Store** actions let you save a snapshot of form field values in the database and reload them later — without triggering a job run. This is useful for saving complex configurations you want to reuse across multiple submissions.
+The **Store** and **Load from Store** actions save a snapshot of form field values in the database and reload it later, without triggering a job run. This is useful for complex configurations that you reuse across multiple submissions.
 
 **Requirements:**
+
+Storing form data requires one role option:
+
 - The user's role must have `allowStoredJobs: true` (the default)
 
 **How it works:**
+
+To store and reload form data:
+
 1. Fill in the form
-2. Pick **Store** in the dropdown next to **Submit** — the current field values are saved under a name you choose
+2. Select **Store** in the dropdown next to **Submit**; the current field values are saved under a name you choose
 3. Later, open the same form and click **Load from Store** to restore the saved values
-4. Review / adjust and submit as usual
+4. Review or adjust the values and submit as usual
 
 {: .note }
-> Password fields are never stored. Stored data is tied to the form name — loading from a different form will not work.
+> Password fields are never stored. Stored data is tied to the form name, so it cannot be loaded into a different form.
 
 ## Nested Forms & Structured Fields
 
@@ -1078,11 +1116,13 @@ The **Store** and **Load from Store** actions let you save a snapshot of form fi
 
 Use `list` and `yaml` fields with subforms (6.2.0+).
 
-For collecting complex structured data — like a list of servers, a set of network interfaces, or a single nested object — use the `list` or `yaml` field types together with a `subform`.
+To collect complex structured data, such as a list of servers, a set of network interfaces or a single nested object, use the `list` or `yaml` field type together with a `subform`.
 
-A **subform** is a reusable form fragment (defined with `type: subform`) that is never shown as a standalone tile. It exists solely to be referenced by fields in other forms. See the [Subform docs](forms/subform.html) for full reference.
+A **subform** is a reusable form fragment (defined with `type: subform`) that is never shown as a standalone tile. It exists solely to be referenced by fields in other forms. See the [Subform docs](forms/subform.html) for the full reference.
 
 **Collecting a list of structured rows — `list` field:**
+
+A `list` field opens the referenced subform once per row:
 
 ```yaml
 - name: Server
@@ -1099,6 +1139,8 @@ A **subform** is a reusable form fragment (defined with `type: subform`) that is
 
 - name: Deploy to servers
   type: ansible
+  roles:
+    - public
   playbook: deploy.yml
   fields:
     - name: servers
@@ -1106,7 +1148,7 @@ A **subform** is a reusable form fragment (defined with `type: subform`) that is
       subform: Server   # opens Server subform in a drilldown editor per row
 ```
 
-The `servers` extravar sent to Ansible will be an array of objects: `[{hostname: "web1", ip: "10.0.0.1"}, ...]`
+The `servers` extravar sent to Ansible is an array of objects: `[{hostname: "web1", ip: "10.0.0.1"}, ...]`
 
 **Editing a single structured object — `yaml` field:**
 
@@ -1137,7 +1179,7 @@ fields:
 
 **Upload and download — `list` and `yaml` fields:**
 
-Both field types support client-side file transfer via two optional properties:
+Both field types support client-side file transfer through two optional properties:
 
 ```yaml
 fields:
@@ -1160,7 +1202,7 @@ fields:
 
 Reference parent field values from within a subform via `__parent__` (v6.3.0+).
 
-When a subform opens — whether triggered by a **`list`** field (each row editor) or a **`yaml`** field in subform mode — AnsibleForms automatically injects a special read-only field called `__parent__` into the subform. It contains a snapshot of **every field value in the parent form at the time the subform was opened**, including constants and vars.
+When a subform opens, whether from a **`list`** field (each row editor) or a **`yaml`** field in subform mode, AnsibleForms automatically injects a special read-only field called `__parent__` into the subform. It contains a snapshot of **every field value in the parent form at the time the subform was opened**, including constants and vars.
 
 This lets subform fields use expressions that reference parent data without any extra configuration.
 
@@ -1181,11 +1223,11 @@ __parent__:
 ```
 
 {: .note }
-> `__parent__` is **not sent to Ansible** — it is stripped from extravars just like `__user__`. It is purely a frontend helper for expressions inside subforms.
+> `__parent__` is **not sent to Ansible**; like `__user__`, it is stripped from the extravars. It is purely a frontend helper for expressions inside subforms.
 
 #### Accessing parent values in subform expressions
 
-Use the standard `$(...)` expression syntax:
+Reference parent values with the standard `$(...)` expression syntax:
 
 ```yaml
 - name: NodeConfig
@@ -1211,10 +1253,6 @@ Use the standard `$(...)` expression syntax:
 
     - name: node_type
       type: enum
-      values:
-        - standard
-        - high-memory
-        - gpu
       # only offer gpu nodes in production
       expression: |
         '$(__parent__.environment)' === 'production'
@@ -1225,6 +1263,8 @@ Use the standard `$(...)` expression syntax:
 
 - name: Deploy cluster
   type: ansible
+  roles:
+    - public
   playbook: deploy_cluster.yml
   fields:
     - name: environment
@@ -1243,11 +1283,11 @@ Use the standard `$(...)` expression syntax:
 
 #### Nested subforms
 
-`__parent__` always refers to the **immediate parent** form. If you nest a `list` inside a subform that is itself opened from a parent form, the inner subform's `__parent__` will be the middle subform's data. Chain multiple levels by referencing `$(__parent__.__parent__.someField)` if the middle subform also propagates its own `__parent__`.
+`__parent__` always refers to the **immediate parent** form. If you nest a `list` inside a subform that is itself opened from a parent form, the inner subform's `__parent__` holds the middle subform's data. To reach further levels, chain references such as `$(__parent__.__parent__.someField)` if the middle subform also propagates its own `__parent__`.
 
 ### How do I migrate from `table` / `tableFields` to `list` / `subform`?
 
-The `table` field and the `tableFields` property were deprecated in 6.2.0 and removed in 7.0.0. A form that still uses them fails validation. To migrate:
+The `table` field and the `tableFields` property were deprecated in 6.2.0 and removed in 7.0.0, and a form that still uses them fails validation. To migrate:
 
 1. Extract the columns from `tableFields` into a new `type: subform` form with regular `formfields`
 2. Replace the `table` field with a `list` field that references the subform via `subform: MySubformName`
@@ -1256,6 +1296,8 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 ```yaml
 - name: Manage users
   type: ansible
+  roles:
+    - public
   playbook: users.yml
   fields:
     - name: users
@@ -1279,6 +1321,8 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 
 - name: Manage users
   type: ansible
+  roles:
+    - public
   playbook: users.yml
   fields:
     - name: users
@@ -1288,13 +1332,15 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 
 #### Migrating `from` in `tableFields` to `__parent__` expressions
 
-The `from` property available in `tableFields` enum columns let you populate dropdown choices from another field in the parent form. In a `subform`, this is replaced by an `expression` that reads the same value via `__parent__`.
+The `from` property of `tableFields` enum columns populated dropdown choices from another field in the parent form. In a `subform`, it is replaced by an `expression` that reads the same value through `__parent__`.
 
 **Before — `tableFields` with `from`:**
 
 ```yaml
 - name: Manage members
   type: ansible
+  roles:
+    - public
   playbook: members.yml
   fields:
     - name: available_departments
@@ -1330,6 +1376,8 @@ The `from` property available in `tableFields` enum columns let you populate dro
 
 - name: Manage members
   type: ansible
+  roles:
+    - public
   playbook: members.yml
   fields:
     - name: available_departments
@@ -1344,5 +1392,5 @@ The `from` property available in `tableFields` enum columns let you populate dro
 ```
 
 {: .note }
-> `$(__parent__.available_departments)` returns the **current value** of that field — so if it is a dynamic expression field itself, the subform will always see the latest evaluated result from the parent.
+> `$(__parent__.available_departments)` returns the **current value** of that field, so if that field is itself a dynamic expression field, the subform always sees the latest evaluated result from the parent.
 

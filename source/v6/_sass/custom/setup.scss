@@ -1,0 +1,30 @@
+// ---------------------------------------------------------------------------------------
+// Theme setup : loaded by just-the-docs after its default variables and before the colour
+// schemes. The light scheme only sets !default values, so what is set here wins for light ;
+// the dark scheme (color_schemes/dark.scss) sets its own values afterwards.
+// ---------------------------------------------------------------------------------------
+
+// Brand : the red of the AnsibleForms logo, and a darker shade that reads well on white
+$af-red: #ed1c24;
+$af-red-dark: #c8141b;
+$af-orange: #ff7a45;
+
+// Typography : Inter for text, JetBrains Mono for code (both loaded in head_custom.html)
+$body-font-family: "Inter", system-ui, -apple-system, "Segoe UI", roboto, "Helvetica Neue", arial, sans-serif;
+$mono-font-family: "JetBrains Mono", "SFMono-Regular", menlo, consolas, monospace;
+$body-line-height: 1.5;
+$content-line-height: 1.7;
+
+// Light colours
+$body-background-color: #ffffff;
+$body-heading-color: #16181d;
+$body-text-color: #3d414a;
+$link-color: $af-red-dark;
+$nav-child-link-color: #4b505a;
+$sidebar-color: #faf7f6;
+$base-button-color: #f4f2f1;
+$btn-primary-color: $af-red-dark;
+$code-background-color: #f7f7f9;
+$table-background-color: #ffffff;
+$search-background-color: #ffffff;
+$border-color: #ebe6e4;

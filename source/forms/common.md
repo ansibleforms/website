@@ -6,10 +6,16 @@ nav_order: 1
 ---
 
 # Common Form Properties
+{: .no_toc }
+
+Properties shared by every form type
+{: .fs-6 .fw-300 }
+
+---
 
 These properties apply to **all form types** — `ansible`, `awx`, `multistep`, and `subform`.
 
-Every other property is type-specific and documented on the respective form type page.
+All other properties are type-specific and documented on the page of the respective form type.
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -19,6 +25,8 @@ Every other property is type-specific and documented on the respective form type
 {{ form_object.description | markdownify }}
 
 ## Properties
+
+The properties shared by all form types:
 
 <table>
   <thead>
