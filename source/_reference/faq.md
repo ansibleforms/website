@@ -1084,6 +1084,35 @@ Schedules can be viewed, edited and deleted on the **Schedules** page (linked fr
 {: .warning }
 > Treat `allowScheduledJobs` as an admin-level option. Schedules are not owned by the user who created them: every user with the option sees and can change all schedules. A schedule also runs with admin rights, for any form, whatever the creator's own access. Grant it only to roles you would trust as admins.
 
+### Which cron expressions can I use?
+
+A recurring schedule takes a standard 5-field cron expression (minute, hour, day of month, month, day of week).
+
+| Expression | Runs |
+|---|---|
+| `*/15 * * * *` | Every 15 minutes |
+| `0 * * * *` | Every hour, on the hour |
+| `0 */6 * * *` | Every 6 hours, at 00:00, 06:00, 12:00 and 18:00 |
+| `0 2 * * *` | Every day at 02:00 |
+| `30 7 * * 1-5` | Monday to Friday at 07:30 |
+| `0 8 * * MON` | Every Monday at 08:00 (day and month names are accepted) |
+| `0 0 1 * *` | At midnight on the first day of every month |
+| `0 22 L * *` | At 22:00 on the last day of every month |
+| `0 6 * * 1#1` | At 06:00 on the first Monday of every month |
+| `*/30 * * * * *` | Every 30 seconds (an optional sixth field in front is the second) |
+
+When both the day of the month and the day of the week are set, the schedule runs when either matches: `0 0 13 * 5` runs on
+the 13th and on every Friday. The server refuses an expression it cannot run, or one that can never occur (`0 0 30 2 *`).
+
+On the **Schedules** page, the cron editor describes the expression and previews its next runs. It does not accept nicknames
+such as `@daily`, the `?` wildcard or the `W` (nearest weekday) modifier, so keep to the forms in the table.
+
+{: .note }
+> **Time zone** Cron schedules run in the server's time zone, set with [`LOG_TZ`](customization/logging.html#env_LOG_TZ)
+> (default `UTC`), not in the time zone of your profile or your browser. `0 2 * * *` with `LOG_TZ=Europe/Madrid` runs at 02:00
+> Madrid time all year, following daylight saving time. The cron editor previews the next runs in that same zone. Repository
+> pull schedules use the same zone.
+
 ## Save & Load Form Data
 
 ### How do I save and reload form data without running a job?

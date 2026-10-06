@@ -17,6 +17,8 @@ Fill in and launch forms through a conversation
 
 ---
 
+For administrators who switch it on, and the users who chat with it: fill in and launch forms through a conversation.
+
 A chat button on every page opens an
 assistant that finds the right form, asks for missing information, offers the form's own
 choices as buttons, and shows a summary with a **Launch** button. A job starts only when the user clicks it.
@@ -49,7 +51,9 @@ the user clicks Launch   -> AnsibleForms resolves the form again and launches ex
 
 Each topic has a page of its own:
 
-* **[Switching it on](switching-it-on.html)** : enable the assistant and offer forms in it
-* **[Providers](providers.html)** : the language model behind the assistant, and proxies
-* **[Privacy and limits](privacy-and-limits.html)** : what leaves the network, and the limits per user
-* **[Relaunching and audit](relaunching-and-audit.html)** : relaunching from the chat, the audit trail and the limitations
+| Page | What it covers |
+|---|---|
+| [Switching it on](switching-it-on.html) | Enable the assistant and offer forms in it |
+| [Providers](providers.html) | The language model behind the assistant, and proxies |
+| [Privacy and limits](privacy-and-limits.html) | What leaves the network, and the limits per user |
+| [Relaunching and audit](relaunching-and-audit.html) | Relaunching from the chat, the audit trail and the limitations |

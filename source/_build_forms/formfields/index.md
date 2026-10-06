@@ -14,6 +14,8 @@ The input controls of a form
 
 ---
 
+For form authors: the field types a form can hold, and the properties each one supports.
+
 Formfields define the input controls of a form. Each field type has its own properties and behavior for collecting a particular kind of data.
 
 Pick the field type that matches the data to collect, from plain text to structured lists.

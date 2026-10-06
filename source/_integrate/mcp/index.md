@@ -17,6 +17,8 @@ Let AI agents use your forms through the Model Context Protocol
 
 ---
 
+For administrators and integrators: let MCP clients list, fill in and launch forms as the user whose token they hold.
+
 AnsibleForms can serve a
 [Model Context Protocol](https://modelcontextprotocol.io) server, so that an MCP client, such as
 a chat backend or an IDE assistant, can list the forms a user may use, determine their fields,
@@ -39,6 +41,8 @@ but the server does not enforce this.
 
 Each topic has a page of its own:
 
-* **[Setup](setup.html)** : switch the server on and authenticate the client
-* **[Tools](tools.html)** : the tools an agent uses to fill in, approve and relaunch forms
-* **[Limitations](limitations.html)** : expressions run on the server, and what the MCP server does not do
+| Page | What it covers |
+|---|---|
+| [Setup](setup.html) | Switch the server on and authenticate the client |
+| [Tools](tools.html) | The tools an agent uses to fill in, approve and relaunch forms |
+| [Limitations](limitations.html) | Expressions run on the server, and what the MCP server does not do |

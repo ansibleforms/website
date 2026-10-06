@@ -14,6 +14,8 @@ Compute field values with JavaScript, in the browser or on the server
 
 ---
 
+For form authors: fill fields dynamically with JavaScript, computed in the browser or fetched on the server.
+
 The `expression` attribute of a form field lets you create dynamic forms with JavaScript expressions.
 
 ## Introduction
@@ -40,9 +42,11 @@ Because expressions are evaluated with the JavaScript `eval` function, code inje
 
 Each topic has a page of its own:
 
-* **[Local expressions](local.html)** : JavaScript that runs in the browser sandbox
-* **[Remote expressions](remote.html)** : server-side functions for dates, networks, files, SSH and numbered names
-* **[REST APIs](rest-apis.html)** : call REST APIs with basic, token or custom authentication
-* **[Credentials](credentials.html)** : read a stored credential
-* **[Sorting](sorting.html)** : sort arrays with a sorting object
-* **[jq queries](jq.html)** : reshape data with jq
+| Page | What it covers |
+|---|---|
+| [Local expressions](local.html) | JavaScript that runs in the browser sandbox |
+| [Remote expressions](remote.html) | Server-side functions for dates, networks, files, SSH and numbered names |
+| [REST APIs](rest-apis.html) | Call REST APIs with basic, token or custom authentication |
+| [Credentials](credentials.html) | Read a stored credential |
+| [Sorting](sorting.html) | Sort arrays with a sorting object |
+| [jq queries](jq.html) | Reshape data with jq |

@@ -17,9 +17,10 @@ Check every launch of a form on the server
 
 ---
 
-Check every launch of a form on the server, both its validation rules and the extravars the
-job runs with, regardless of who or what launches it: the browser, a script calling the REST
-API, or an AI agent through the MCP server.
+For administrators and form authors: have the server check every launch, its rules and its extravars, whoever sends it.
+
+The check applies regardless of who or what launches the form: the browser, a script calling the REST API,
+or an AI agent through the MCP server.
 
 ## Why it exists
 
@@ -60,10 +61,12 @@ browser shows is refused by the server with the same text.
 
 Each topic has a page of its own:
 
-* **[Switching it on](switching-it-on.html)** : for the whole instance, or for one form
-* **[Log and enforce](log-and-enforce.html)** : what each mode does with a launch that breaks the rules
-* **[List rows](list-rows-and-subforms.html)** : how rows of list fields are validated
-* **[File uploads](file-uploads.html)** : how file fields are validated
-* **[Passwords](passwords.html)** : how password fields are validated and kept out of APIs
-* **[Relaunching](relaunching.html)** : how a relaunched job is validated
-* **[Rolling it out](rolling-it-out.html)** : move an instance to enforce, and the known limitations
+| Page | What it covers |
+|---|---|
+| [Switching it on](switching-it-on.html) | For the whole instance, or for one form |
+| [Log and enforce](log-and-enforce.html) | What each mode does with a launch that breaks the rules |
+| [List rows](list-rows-and-subforms.html) | How rows of list fields are validated |
+| [File uploads](file-uploads.html) | How file fields are validated |
+| [Passwords](passwords.html) | How password fields are validated and kept out of APIs |
+| [Relaunching](relaunching.html) | How a relaunched job is validated |
+| [Rolling it out](rolling-it-out.html) | Move an instance to enforce, and the known limitations |

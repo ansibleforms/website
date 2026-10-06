@@ -14,6 +14,8 @@ Define the forms your users fill in
 
 ---
 
+For form authors: how forms are written in YAML, where they are loaded from, and the properties of each form type.
+
 Forms are the core of AnsibleForms. Each form is a web interface that collects user input and runs an Ansible playbook or an AWX/AAP/Ascender template with that data.
 
 Forms are defined in YAML files in the forms folder. Each YAML file contains either a single form or a list of forms, and subfolders can be used to organize them.
@@ -38,16 +40,20 @@ AnsibleForms loads forms from the following locations:
 {: .warning }
 > **Note:** When "use for forms" is enabled on multiple repositories, all their forms are merged. Form names must be unique across repositories to avoid conflicts.
 
-## Form properties
+---
+
+## In this section
 
 The following pages describe the form properties in detail:
 
-- **[Common properties](common.html)** — properties that apply to all form types (`name`, `description`, `help`, `type`, `fields`)
-- **[Ansible forms](ansible.html)** — properties specific to `type: ansible`
-- **[AWX forms](awx.html)** — properties specific to `type: awx`
-- **[Multistep forms](multistep.html)** — properties specific to `type: multistep`
-- **[Wizard](wizard.html)** — split a form's input across multiple pages (works on top of any executable form type)
-- **[Subform](subform.html)** — subforms use only the common properties
-- **[Approval Points](approval.html)** — pause a job until it is approved (`approval`)
-- **[Notifications](notifications.html)** — send emails on job status or events (`notifications`)
-- **[Job Status Actions](job-status-action.html)** — act on the form when a job changes status (`onSubmit`, `onSuccess`, ...)
+| Page | What it covers |
+|---|---|
+| [Common properties](common.html) | Properties that apply to all form types (`name`, `description`, `help`, `type`, `fields`) |
+| [Ansible forms](ansible.html) | Properties specific to `type: ansible` |
+| [AWX forms](awx.html) | Properties specific to `type: awx` |
+| [Multistep forms](multistep.html) | Properties specific to `type: multistep` |
+| [Wizard](wizard.html) | Split a form's input across multiple pages (works on top of any executable form type) |
+| [Subform](subform.html) | Subforms use only the common properties |
+| [Approval Points](approval.html) | Pause a job until it is approved (`approval`) |
+| [Notifications](notifications.html) | Send emails on job status or events (`notifications`) |
+| [Job Status Actions](job-status-action.html) | Act on the form when a job changes status (`onSubmit`, `onSuccess`, ...) |

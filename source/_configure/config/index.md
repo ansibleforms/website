@@ -14,6 +14,8 @@ Categories, roles and constants for all forms
 
 ---
 
+For administrators: the config.yaml file that holds the categories, roles and constants shared by all forms.
+
 AnsibleForms uses a config.yaml file to configure categories, roles and constants. If no file is provided, one is generated with a minimal configuration. The configuration can also be imported into the database, which removes the need for a config.yaml file.
 
 ---
@@ -57,10 +59,12 @@ AnsibleForms loads the config.yaml file in the following order (first match wins
 
 ---
 
-## Attributes
+## In this section
 
 The file has three top-level attributes, and each has a page of its own:
 
-* **[Categories](categories.html)** : group the forms on the dashboard in a tree of categories with icons
-* **[Roles](roles.html)** : map users and groups to roles, and set what each role may do
-* **[Constants](constants.html)** : free objects that every form can reuse
+| Page | What it covers |
+|---|---|
+| [Categories](categories.html) | Group the forms on the dashboard in a tree of categories with icons |
+| [Roles](roles.html) | Map users and groups to roles, and set what each role may do |
+| [Constants](constants.html) | Free objects that every form can reuse |

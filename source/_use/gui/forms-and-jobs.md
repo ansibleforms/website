@@ -92,6 +92,7 @@ Forms can be split into multiple steps for complex workflows.
 
 ## Schedules
 
-Schedule forms to run at specific times or intervals.
+Schedule forms to run at specific times or intervals. The [cron examples](../faq.html#which-cron-expressions-can-i-use) list common
+expressions, and explain which time zone a schedule runs in.
 
 ![Schedules](../assets/screenshots/schedules.jpg)

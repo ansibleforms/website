@@ -17,6 +17,10 @@ Read credentials from a secret manager instead of storing them in AnsibleForms
 
 ---
 
+For administrators: connect a secret manager, and let credentials read their user and password from it.
+
+---
+
 ## How it works
 
 A **secret store** is a connection to a secret manager, added under
@@ -54,8 +58,10 @@ before a Vault token expires.
 
 Each secret manager has a page of its own:
 
-* **[HashiCorp Vault](hashicorp-vault.html)** : KV v1 and v2 with token authentication, and dynamic database credentials
-* **[CyberArk](cyberark.html)** : the Central Credential Provider (CCP) of CyberArk's Application Access Manager
+| Page | What it covers |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html) | KV v1 and v2 with token authentication, and dynamic database credentials |
+| [CyberArk](cyberark.html) | The Central Credential Provider (CCP) of CyberArk's Application Access Manager |
 
 ## Using a store
 

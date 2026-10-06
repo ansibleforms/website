@@ -18,6 +18,8 @@ Your account, preferences, password, permissions and API tokens
 
 ---
 
+For every user: your own account, preferences, password, permissions and API tokens.
+
 Open your profile from the avatar at the top right: **Profile**.
 
 ## Opening a view
@@ -41,8 +43,10 @@ Views your roles do not allow are hidden; their address opens the first view ins
 
 Each topic is described on its own page:
 
-* **[Account](account.html)** : who you are signed in as
-* **[Preferences](preferences.html)** : language, theme and time zone
-* **[Password](password.html)** : change the password of a local account
-* **[Permissions](permissions.html)** : what your roles allow you to do
-* **[API token](api-token.html)** : create a token for scripts and AI agents
+| Page | What it covers |
+|---|---|
+| [Account](account.html) | Who you are signed in as |
+| [Preferences](preferences.html) | Language, theme and time zone |
+| [Password](password.html) | Change the password of a local account |
+| [Permissions](permissions.html) | What your roles allow you to do |
+| [API token](api-token.html) | Create a token for scripts and AI agents |

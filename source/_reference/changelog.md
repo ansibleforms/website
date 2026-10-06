@@ -2,6 +2,7 @@
 layout: default
 title: Changelog
 nav_order: 3
+gh_edit_link: false
 ---
 
 # Changelog

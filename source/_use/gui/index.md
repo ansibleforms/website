@@ -14,9 +14,17 @@ A visual tour of the AnsibleForms web interface, from the dashboard to advanced 
 
 ---
 
-The screens are grouped by what you do with them, one page per group:
+For every user and administrator: the screens of the web interface, grouped by what you do with them.
 
-* **[Forms and jobs](forms-and-jobs.html)** : signing in, the dashboard, filling in a form and following its jobs
-* **[Designer and git](designer-and-git.html)** : editing forms and keeping them in git
-* **[Administration](administration.html)** : settings, authentication, credentials, backups and logs
-* **[Personal settings](personal-settings.html)** : your profile and the dark theme
+---
+
+## In this section
+
+Each group of screens has a page of its own:
+
+| Page | What it covers |
+|---|---|
+| [Forms and jobs](forms-and-jobs.html) | Signing in, the dashboard, filling in a form and following its jobs |
+| [Designer and git](designer-and-git.html) | Editing forms and keeping them in git |
+| [Administration](administration.html) | Settings, authentication, credentials, backups and logs |
+| [Personal settings](personal-settings.html) | Your profile and the dark theme |

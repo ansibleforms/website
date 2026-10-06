@@ -14,6 +14,8 @@ Launch forms and manage AnsibleForms from scripts
 
 ---
 
+For developers and automation engineers: launch forms and manage AnsibleForms from scripts.
+
 Everything the web interface does goes through the REST API, so scripts and other tools can do the same.
 
 ## Overview
@@ -25,10 +27,14 @@ The API is served under `/api/v2` on the AnsibleForms server:
 * **Launch validation** : jobs launched through the API can be checked like browser launches
   (see [Launch validation](../launch-validation/)).
 
+---
+
 ## In this section
 
 Each topic has a page of its own:
 
-* **[Authentication](authentication.html)** : log in, refresh the token, or use a long-lived token
-* **[Jobs](jobs.html)** : launch a form, follow the job, abort, relaunch or approve it
-* **[Responses and errors](responses.html)** : the shape of a response, and the status codes
+| Page | What it covers |
+|---|---|
+| [Authentication](authentication.html) | Log in, refresh the token, or use a long-lived token |
+| [Jobs](jobs.html) | Launch a form, follow the job, abort, relaunch or approve it |
+| [Responses and errors](responses.html) | The shape of a response, and the status codes |

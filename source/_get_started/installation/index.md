@@ -14,17 +14,27 @@ Choose an installation method for AnsibleForms
 
 ---
 
+For administrators setting up a new instance: pick an installation method, then follow its page.
+
+---
+
+## In this section
+
 AnsibleForms supports several installation methods, each described on its own page:
 
-* **[Docker](docker.html)** : install MySQL and run the pre-built Docker image with the required environment variables
-* **[Docker Compose](docker-compose.html)** : [download the docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySQL and AnsibleForms
-* **[From source](from-source.html)** : install all dependencies manually, then build and start the code
-* **[Kubernetes](kubernetes.html)** : install the Helm chart and use Kubernetes to start AnsibleForms and its MySQL database
+| Page | What it covers |
+|---|---|
+| [Docker](docker.html) | Install MySQL and run the pre-built Docker image with the required environment variables |
+| [Docker Compose](docker-compose.html) | Download the [docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySQL and AnsibleForms |
+| [From source](from-source.html) | Install all dependencies manually, then build and start the code |
+| [Kubernetes](kubernetes.html) | Install the Helm chart and use Kubernetes to start AnsibleForms and its MySQL database |
 
 {: .note }
 > **Recommendation** The Docker image is the recommended installation method. It includes all dependencies and can be set up quickly.
 
 To move an existing installation to a newer release, see [Upgrading](../upgrading/).
+
+---
 
 ## Image tags
 

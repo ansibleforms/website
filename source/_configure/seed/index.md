@@ -17,8 +17,7 @@ Declare the admin objects in a file
 
 ---
 
-Declare the admin objects in a file instead of creating them in the interface, so that a whole
-instance can be rebuilt from git on an empty database.
+For administrators who provision from git: declare the admin objects in a file, so an instance can be rebuilt on an empty database.
 
 ---
 
@@ -51,8 +50,10 @@ Users and groups are left out: they come from LDAP or OAuth2, and the first admi
 
 Each topic has a page of its own:
 
-* **[Example](example.html)** : a complete seed file, section by section
-* **[Managed objects](managed-objects.html)** : how the seed owns the objects it lists, and how it keeps secrets out
-* **[Reloading and startup](reloading.html)** : change the file without a restart, and what happens at startup
-* **[Kubernetes](kubernetes.html)** : provision AnsibleForms from a ConfigMap and Secrets
-* **[Editing and audit](environment-and-audit.html)** : lock the settings pages, and what the audit log records
+| Page | What it covers |
+|---|---|
+| [Example](example.html) | A complete seed file, section by section |
+| [Managed objects](managed-objects.html) | How the seed owns the objects it lists, and how it keeps secrets out |
+| [Reloading and startup](reloading.html) | Change the file without a restart, and what happens at startup |
+| [Kubernetes](kubernetes.html) | Provision AnsibleForms from a ConfigMap and Secrets |
+| [Editing and audit](environment-and-audit.html) | Lock the settings pages, and what the audit log records |

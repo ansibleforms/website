@@ -63,6 +63,15 @@ aux_links_new_tab: true
 # Footer
 footer_content: "Copyright &copy; 2023-2026 AnsibleForms. All rights reserved."
 
+# "Edit this page on GitHub" at the bottom of every page : the link opens the page's source
+# in the website repository (a page opts out with gh_edit_link: false in its front matter)
+gh_edit_link: true
+gh_edit_link_text: "Edit this page on GitHub"
+gh_edit_repository: "https://github.com/ansibleforms/website"
+gh_edit_branch: "main"
+gh_edit_source: source/v6
+gh_edit_view_mode: "edit"
+
 # Copy button on code blocks
 enable_copy_code_button: true
 
