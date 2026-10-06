@@ -42,7 +42,8 @@ Every other property is type-specific and documented on the respective form type
         <p>
           <strong>{{ var.short }}</strong><br>
           {% if var.docsObjectLink %}
-          <a href="{{ var.docsObjectLink | relative_url }}">🔗 
+          {% assign link_start = var.docsObjectLink | slice: 0 %}
+          <a href="{% if link_start == '/' %}{{ var.docsObjectLink | relative_url }}{% else %}{{ var.docsObjectLink }}{% endif %}">🔗 
           {% endif %}
           {% if var.allowed != nil %}
           <span class="af-type">{{ var.allowed }}</span>

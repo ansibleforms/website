@@ -13,7 +13,6 @@ The `expression` formfield-attribute is a powerful feature in AnsibleForms that 
 The expression attribute can be used on multiple formfield types:
 - `enum` field - to populate dropdown options dynamically
 - `expression` field - to grab or generate any form of data
-- `table` field - to populate table data dynamically  
 
 JavaScript expressions are evaluated either on the **server side** (default) or on the **client side** using the field property `runLocal`.
 
@@ -52,7 +51,7 @@ Use string manipulations to apply naming conventions.
 Use math to make calculations.
 
 ```javascript
-round($(field1)*$(field2)*Math.PI)   // Math.PI is native javascript
+Math.round($(field1)*$(field2)*Math.PI)   // Math.round and Math.PI are native javascript
 ```
 
 ### Conversions
@@ -67,14 +66,14 @@ Convert bytes to gigabytes.
 
 ```javascript
 fnToTable($(my_array_field),{
-  tableClass = '',
-  escapeHtml = true,
-  emptyCell = '',
-  includeHeader = true
+  tableClass: '',
+  escapeHtml: true,
+  emptyCell: '',
+  includeHeader: true
 })
 
 // output : an html-table representation of the array of objects taken from another field called "my_array_field"
-// tip : add tableClass = 'table table-striped table-bordered' for bootstrap styling
+// tip : add tableClass: 'table table-striped table-bordered' for bootstrap styling
 ```
 
 ### Get a Name with Incremental Numbering
@@ -109,8 +108,8 @@ To make your life easy, AnsibleForms comes with a custom helper to keep your cod
 ```javascript
 /* 
   fnArray.from($(your_array_field))                               // custom helper library
-      .filterBy({property1:'value1'},{property2:'value2'}, ...}}  // filters the array by property value (* wildcards allowed)
-      .regexBy({property1:'regex1'},{property2:'regex2'}, ...}}   // filters the array by property matched against regex
+      .filterBy({property1:'value1',property2:'value2', ...})     // filters the array by property value (* wildcards allowed)
+      .regexBy({property1:'regex1',property2:'regex2', ...})      // filters the array by property matched against regex
       .distinctBy('property1','property2', ...)                   // will make the array entries unique by property
       .selectAttr({prop1:'property1',prop2:'property2'})          // only selects a certain property, and you can relabel them
       .sortBy('property1','-property2', ...)                      // will order the array.  To have descending add a "-" (minus) before the property
@@ -278,7 +277,7 @@ fn.fnSsh('root','172.16.0.1','ls -la')
 // - user : the ssh user
 // - host : the host
 // - command : the command to trigger by ssh
-// - jq-expression : an optional jq-expression (https://jsplay.org)  
+// - jq-expression : an optional jq-expression (https://jqplay.org)  
 //  
 // You must use 'known_hosts' and 'public-key' to setup non-interactive password-less authentication.
 // In the settings you can find the public-key and add your target-host to known_hosts
@@ -287,7 +286,7 @@ fn.fnSsh('root','172.16.0.1','ls -la')
 ### List Files in a Directory
 
 ```javascript
-fn.fnLs('/tmp',{ resursive: true, regex: '.*\\.log$', metadata: true })
+fn.fnLs('/tmp',{ recursive: true, regex: '.*\\.log$', metadata: true })
 
 // fn.fnLs(path,options)
 // - path : path to directory
@@ -302,12 +301,14 @@ fn.fnLs('/tmp',{ resursive: true, regex: '.*\\.log$', metadata: true })
 ```javascript
 fn.fnParseHtmlWithRegex('https://ansibleguy.com','<h2.*?>(.*?)</h2>','g')
 
-// fn.fnParseHtmlWithRegex(url,regex,flags)
+// fn.fnParseHtmlWithRegex(url,regex,flags,credential)
 // - url : url to html page
 // - regex : a regular expression with at least one group ( )
-// - flags : regex flags (such as g,i,m)
+// - flags : regex flags (such as g,i,m), defaults to 'g'
+// - credential : an optional credential name, used for basic authentication
 //
-// it will grab the html source and return an array with all the group matches
+// it will grab the html source and return an array with one object per match :
+// { fullMatch, groups (the numbered group matches), namedGroups }
 ```
 
 ### Get DNS Info
@@ -327,7 +328,7 @@ fn.fnReadJsonFile('/tmp/file.json','.[].name')
 
 // fn.fnReadJsonFile(path,jq-expression)
 // - path : path to json file
-// - jq-expression : an optional jq-expression (https://jsplay.org)
+// - jq-expression : an optional jq-expression (https://jqplay.org)
 ```
 
 ### Read YAML File
@@ -337,7 +338,7 @@ fn.fnReadYamlFile('/tmp/file.yaml','.[].name')
 
 // fn.fnReadYamlFile(path,jq-expression)
 // - path : path to yaml file
-// - jq-expression : an optional jq-expression (https://jsplay.org)
+// - jq-expression : an optional jq-expression (https://jqplay.org)
 ```
 
 ### REST API with Basic Authentication
@@ -348,7 +349,7 @@ fn.fnRestBasic(
   'https://resturl/api/',
   '',
   'name_of_credential_in_database',
-  '[.records[] | {name:.name, email:.email, spouse:.relations.spouse}'],
+  '[.records[] | {name:.name, email:.email, spouse:.relations.spouse}]',
   'name',
   false
 )
@@ -356,11 +357,11 @@ fn.fnRestBasic(
 // output : a full json object coming from rest, json transformed with jq, result sorted and transformed by javascript.
 
 // fn.fnRestBasic(method,url,body,credentialname,jq-expression,sort-object)
-// - method : get,post,put,patch,delete
+// - method : get,post,put,delete
 // - url : url to restapi (can for example contain a placeholder like 'https://$(serverfield.fqdn)/api/'
 // - body : in case of post and put
 // - credential-name : it will lookup the credentials as you have saved in the gui
-// - jq-expression : an optional jq-expression (https://jsplay.org)
+// - jq-expression : an optional jq-expression (https://jqplay.org)
 // - sort object : a sort object to order the result
 // - hasBigInt : a boolean indicating if it should convert Int64 to string
 ```
@@ -381,11 +382,11 @@ fn.fnRestJwt(
 // output : a full json object coming from rest, json transformed with jq, result sorted, first by age, then by name
 
 // fn.fnRestJwt(method,url,body,token,jq-expression,sort-object)
-// - method : get,post,put,patch,delete
+// - method : get,post,put,delete
 // - url : url to restapi (can for example contain a placeholder like 'https://$(serverfield.fqdn)/api/'
 // - body : in case of post and put
 // - token : it will be add as a Bearer Authorization header
-// - jq-expression : an optional jq-expression (https://jsplay.org)
+// - jq-expression : an optional jq-expression (https://jqplay.org)
 // - sort-object : a sort object to sort the result
 // - hasBigInt : a boolean indicating if it should convert Int64 to string
 // - tokenPrefix : a prefix, defaults to 'Bearer' (v5.0.0)
@@ -407,11 +408,11 @@ fn.fnRestJwtSecure(
 // output : a full json object coming from rest, json transformed with jq, result sorted, first by age, then by name
 
 // fn.fnRestJwtSecure(method,url,body,token,jq-expression,sort-object)
-// - method : get,post,put,patch,delete
+// - method : get,post,put,delete
 // - url : url to restapi (can for example contain a placeholder like 'https://$(serverfield.fqdn)/api/'
 // - body : in case of post and put
 // - credential_name : Encrypted credential will be looked up.  The password will be the token.
-// - jq-expression : an optional jq-expression (https://jsplay.org)
+// - jq-expression : an optional jq-expression (https://jqplay.org)
 // - sort-object : a sort object to sort the result   
 // - hasBigInt : a boolean indicating if it should convert Int64 to string 
 // - tokenPrefix : a prefix, defaults to 'Bearer' (v5.0.0)
@@ -434,11 +435,11 @@ fn.fnRestAdvanced(
 // output : a full json object coming from rest, json transformed with jq, result sorted descending by name
 
 // fn.fnRestAdvanced(method,url,body,{myheader:'value'},jq-expression,sort-object)
-// - method : get,post,put,patch,delete
+// - method : get,post,put,delete
 // - url : url to restapi (can for example contain a placeholder like 'https://$(serverfield.fqdn)/api/'
 // - body : in case of post and put
 // - headers: an object of headers
-// - jq-expression : an optional jq-expression (https://jsplay.org)
+// - jq-expression : an optional jq-expression (https://jqplay.org)
 // - sort-object : a sorting object to order the results
 // - hasBigInt : a boolean indicating if it should convert Int64 to string
 // - raw : return data and response_headers  
@@ -454,16 +455,16 @@ fn.fnRestAdvanced(
 ```javascript
 fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 
-// Try to use `fnRestBasic` and `fnRestJwtSecured` if possible, this avoids passwords and tokens going over the network.
+// Try to use `fnRestBasic` and `fnRestJwtSecure` if possible, this avoids passwords and tokens going over the network.
 
-// output : a credential object with all properties (username, password, host, port)
+// output : a credential object with all properties (user, password, host, port)
 ```
 
 The exact name is tried first. When no credential has that name, the name is used as a regex, and then the fallback.
 
 #### Credentials from a secret store
 
-A credential that names a [secret store](secret-stores.md) gets its `user` and `password`
+A credential that names a [secret store](secret-stores) gets its `user` and `password`
 from that store at runtime. `fn.fnCredentials('myapp')` keeps working unchanged.
 
 A secret can also be read without a credential row, wherever a credential name is accepted
@@ -474,7 +475,7 @@ fn.fnCredentials('secret:vault:secret/ontap')   // secret:<store>:<reference>
 fn.fnCredentials('vault:secret/ontap')          // the store named `vault`
 ```
 
-The keys of the secret are mapped as described under [Key names](secret-stores.md#key-names).
+The keys of the secret are mapped as described under [Key names](secret-stores#key-names).
 A secret with another shape is reshaped with a `jq` expression as the third argument:
 
 ```javascript
@@ -513,14 +514,14 @@ In all the data-fetching functions you have the option to sort your data using t
 ### Run a JSON Query (jq) on an Object
 
 ```javascript
-fn.fnJq($(settings),'.mapping | keys',{name:{ignoreCase:true,direction:'desc'}})
+fn.fnJq($(settings),'.mapping | keys')
 
-// output : a full json object taken from another field called "settings", converted by jq, and sorted desc on property "name"
+// output : a full json object taken from another field called "settings", converted by jq
 
-// fn.fnJq(object, jq, sort-object)
+// fn.fnJq(object, jq)
 // - object, for example read from rest or yaml file
-// - jq-expression : an optional jq-expression (https://jsplay.org)
-// - sort-object : a sorting object to order the results
+// - jq-expression : a jq-expression (https://jqplay.org)
+// - wrap the result in fn.fnSort to order it
 ```
 
 ### Built-in JQ Functions

@@ -173,6 +173,7 @@ forms:
   - name: Create customer
     type: ansible
     playbook: customer.yaml
+    roles: [public]
     fields:
       - name: name
         type: text
@@ -241,7 +242,6 @@ A list can be pre-filled from three sources. In every case the produced rows mus
     - username
     - email
   expression: fn.fnRestBasic('get','https://api.example.com/users','','my_api_cred','')
-  refresh: true            # add a refresh button (or '30s' for auto-refresh)
 ```
 
 #### From a database query (`dbConfig` + `query`)
@@ -309,6 +309,7 @@ forms:
   - name: My Form
     type: ansible
     playbook: people.yaml
+    roles: [public]
     fields:
       - name: people
         type: list
@@ -337,10 +338,6 @@ forms:
 
       - name: node_type
         type: enum
-        values:
-          - standard
-          - high-memory
-          - gpu
         # only offer gpu in production environments (parent field)
         expression: |
           '$(__parent__.environment)' === 'production'
@@ -352,6 +349,7 @@ forms:
   - name: Deploy cluster
     type: ansible
     playbook: deploy.yml
+    roles: [public]
     fields:
       - name: environment
         type: enum

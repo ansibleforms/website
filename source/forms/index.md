@@ -21,7 +21,7 @@ Every form in AnsibleForms is configured with a set of properties. See **[Common
 
 
 
-## How forms are loading
+## How forms are loaded
 
 AnsibleForms loads forms from the following locations:
 
@@ -45,3 +45,6 @@ Every form is configured via a set of properties. See the sub-pages for details:
 - **[Multistep forms](multistep.html)** — properties specific to `type: multistep`
 - **[Wizard](wizard.html)** — split a form's input across multiple pages (works on top of any executable form type)
 - **[Subform](subform.html)** — subforms only use the common properties
+- **[Approval Points](approval.html)** — pause a job until it is approved (`approval`)
+- **[Notifications](notifications.html)** — send emails on job status or events (`notifications`)
+- **[Job Status Actions](job-status-action.html)** — act on the form when a job changes status (`onSubmit`, `onSuccess`, ...)

@@ -66,7 +66,7 @@ Get up and running quickly with AnsibleForms:
     </tr>
     <tr>
       <td><strong>Advanced authentication</strong></td>
-      <td>Local authentication, Ldap, AzureAD and OIDC authentication</td>
+      <td>Local authentication, LDAP, AzureAD and OIDC authentication</td>
     </tr>
     <tr>
       <td><strong>Job History & Log</strong></td>
@@ -131,7 +131,7 @@ Get up and running quickly with AnsibleForms:
     </tr>
     <tr>
       <td><strong>Database sources</strong></td>
-      <td>Import data into fields from databases (MySql, MSSql, Postgres, Mongo, Oracle)</td>
+      <td>Import data into fields from databases (MySQL, MSSQL, Postgres, Mongo, Oracle)</td>
     </tr>
     <tr>
       <td><strong>Expression based sources</strong></td>
@@ -151,7 +151,7 @@ Get up and running quickly with AnsibleForms:
     </tr>
     <tr>
       <td><strong>Field validations</strong></td>
-      <td>Many types of field validations, such min,max,regex,in, ...</td>
+      <td>Many types of field validations, such as min, max, regex, in, ...</td>
     </tr>
     <tr>
       <td><strong>Group fields</strong></td>

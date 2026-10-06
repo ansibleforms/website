@@ -170,6 +170,7 @@ A refused call is a tool error whose structured content carries a `code` and the
 | `access_denied` | the user's roles do not grant the form or job, or verbose mode |
 | `not_found` | no such form, subform or job |
 | `unsupported` | a wizard form, a subform on its own, a file field, or a `relaunch_job` that would need a shown password field |
+| `invalid_request` | a request the server refuses as malformed |
 | `internal_error` | anything else |
 
 ## runLocal expressions
@@ -201,5 +202,5 @@ Server-side expressions (without `runLocal`) go through the same
   (`vms[1].disks[0].size (missing)` in the message). At most 500 rows per call, all levels
   together.
 - An enum left on `__auto__` is never filled in with its first option: the caller chooses.
-- Every MCP request is one entry in the audit log (action "MCP request"), the job itself is
+- Every MCP request is one entry in the audit log (action "MCP request (AI agent)"), the job itself is
   recorded under the user as for any other launch.

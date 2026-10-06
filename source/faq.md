@@ -35,7 +35,7 @@ AnsibleForms supports loading forms from multiple git repositories simultaneousl
 - Forms with duplicate names will trigger a warning (first one wins)
 
 **Configuration File Discovery:**
-- AnsibleForms will use the FIRST config.yaml (or config.yaml) found across all form repositories
+- AnsibleForms will use the FIRST config.yaml found across all form repositories
 - If multiple config files are found, a warning is logged
 - You can have a single central config repository for shared categories/roles/constants
 - Or use the local `persistent/config.yaml` file (checked if no repository config found)
@@ -184,7 +184,7 @@ roles:
 2. User role has `allowJobRelaunch: true` (or user is admin)
 
 **How it works:**
-- Raw form data is saved to disk on job submission (excluding passwords)
+- Raw form data is saved in the database on job submission (excluding passwords)
 - Clicking relaunch navigates to the form with `?prefillJobId=<id>` parameter
 - Form loads with all previous values, respecting field dependencies and async queries
 - Users can modify values before resubmitting
@@ -334,7 +334,7 @@ The power of this concept lies in the client web-application that is re-evaluati
   label: Select a datacenter
   default: __auto__         # default can be "__auto__" (first item) or "__all__" (all items) or "__none__" (no default)
   multiple: true
-  pctColumns
+  pctColumns:
   - capacity_pct
   outputObject: true
   required: true
@@ -661,7 +661,7 @@ This is the same `__parent__` mechanism used by `list` and `yaml` subforms — s
 
 Pass credentials.
 
-Credentials can be add in several ways:
+Credentials can be added in several ways:
 * using the field-property `asCredential`  
 * using the `credentials` form-property (key-value pairs)
 * using an extravar called `__credentials__`
@@ -680,10 +680,12 @@ fields:
 - name: vc_cred
   type: expression
   runLocal: true
+  asCredential: true
   expression: "'vcenter'"
 - name: ad_cred
   type: expression
   runLocal: true
+  asCredential: true
   expression: "'ad'"
 
 # Method 2 : using credentials form-property   
@@ -742,7 +744,7 @@ When `REINIT_ADMIN=1` is set at startup, AnsibleForms will:
 
 ### Restricting REST helper destinations (allow/deny lists)
 
-The `fn.fnRestBasic`, `fn.fnRestAdvanced`, `fn.fnRestJwt` and `fn.fnRestNtlm` helpers can be called from form `expression` properties to fetch data over HTTP. By default, expression authors can target **any** URL the AnsibleForms host can reach. On a sensitive network you may want to limit this.
+The `fn.fnRestBasic`, `fn.fnRestAdvanced`, `fn.fnRestJwt` and `fn.fnRestJwtSecure` helpers can be called from form `expression` properties to fetch data over HTTP. By default, expression authors can target **any** URL the AnsibleForms host can reach. On a sensitive network you may want to limit this.
 
 Two environment variables provide allow- and deny-lists:
 
@@ -769,7 +771,7 @@ REST_DENIED_HOSTS=169.254.169.254,127.0.0.0/8,internal-admin.example
 ### HashiCorp Vault Integration
 
 Credentials can read their user and password from HashiCorp Vault, configured as a
-**secret store**. See [Secret stores](secret-stores.md). The `VAULT_*` environment variables
+**secret store**. See [Secret stores](secret-stores). The `VAULT_*` environment variables
 of earlier versions are imported once as the store `vault` at the first 7.x start.
 
 For secrets used only inside one playbook you can also use the `community.hashi_vault`
@@ -782,7 +784,7 @@ lookup plugin, which reads from Vault directly and bypasses AnsibleForms.
 Query information from AWX or Ansible Automation Platform.
 
 Sometimes you want to create dropdown boxes, with data from AWX or Tower.  
-You can use `fn.fnRestBasic` or `fn.fnRestJwtSecure` to query to do this.
+You can use `fn.fnRestBasic` or `fn.fnRestJwtSecure` to do this.
 
 ```yaml
 name: Query awx
@@ -812,7 +814,7 @@ fields:
       - name
     valueColumn: id # => we want the organisation field to hold the id !!
   - name: __template__  # use this special name to override the template from the form
-    label: Inventory
+    label: Template
     type: enum
     default: __auto__
     expression: "fn.fnRestJwtSecure('get','https://172.16.50.1/api/v2/job_templates?organization=$(organization)','','awx_rest','[.results[]]')"
@@ -828,7 +830,7 @@ fields:
       - name
     valueColumn: name    
   - name: __awxCredentials__  # use this special name to override the credentials from the form
-    label: Inventory
+    label: Credentials
     type: enum
     expression: "fn.fnRestJwtSecure('get','https://172.16.50.1/api/v2/credentials?organization=$(organization)','','awx_rest','[.results[]]')"
     multiple: true
@@ -837,7 +839,7 @@ fields:
       - name
     valueColumn: name     
   - name: __executionEnvironment__  # use this special name to override the executionEnvironment from the form
-    label: Inventory
+    label: Execution environment
     type: enum
     expression: "fn.fnRestJwtSecure('get','https://172.16.50.1/api/v2/execution_environments?organization=$(organization)','','awx_rest','[.results[]]')"
     default: __auto__
@@ -853,9 +855,9 @@ fields:
 Customize Ansible Forms.
 
 Ansible Forms is a web-app. If you run it natively in nodejs, you could replace files or change them.  
-But more recommended is to run it as a docker-image and add volume or file mappings. Our docker-compose projects already maps directories to make the database, playbooks, logs, certificates and ssh-keys persistent. Nothing is keeping you from adding more mappings to, for example, override the logo.  
+But more recommended is to run it as a docker-image and add volume or file mappings. Our docker-compose projects already map directories to make the database, playbooks, logs, certificates and ssh-keys persistent. Nothing is keeping you from adding more mappings. A custom logo is uploaded on the **Logo** settings page.  
 There is also a `custom.js` file where you can add your own javascript functions to use in expressions. Just like you can address our functions with the prefix `fn.` (fn.fnRestBasic for example) you can access the custom functions with prefix `fnc.`.  
-And you can add your own jq definitions as well in the same way with the `jq.custom.definitions.js`
+And you can add your own jq definitions as well in the same way with the `jq.custom.definitions` file.
 
 ```yaml
 volumes:
@@ -863,12 +865,10 @@ volumes:
   - ./data:/app/dist/persistent
   # Map custom functions for js expressions and jq
   - ./data/functions/custom.js:/app/dist/src/functions/custom.js
-  - ./data/functions/jq.custom.definitions.js:/app/dist/src/functions/jq.custom.definitions.js
+  - ./data/functions/jq.custom.definitions:/app/dist/src/functions/jq.custom.definitions
   # Map custom sshkey to local node .ssh location
   - ./data/ssh:$HOME_DIR/.ssh
-  - ./data/git/.gitconfig:$HOME_DIR/.gitconfig    
-  # Map custom logo
-  - ./data/mylogo.svg:/app/dist/views/assets/img/logo_ansible_forms_full_white.svg
+  - ./data/git/.gitconfig:$HOME_DIR/.gitconfig
 ```
 
 ### Enable YTT
@@ -902,7 +902,7 @@ YTT_LIB_DATA_DEMO=/tmp/demo_data.yml
 message: 'hello demo'
 ```
 
-**The library `demo` needs to exists in the ytt context (lib/_ytt_lib/demo/values.yml)**
+**The library `demo` needs to exist in the ytt context (lib/_ytt_lib/demo/values.yml)**
 
 ```yaml
 # lib/_ytt_lib/demo/values.yml
@@ -939,7 +939,7 @@ Control per-role UI permissions with role options.
 
 Beyond restricting which forms a role can see, AnsibleForms has a set of **role options** that give finer control over what users of a role can do in the UI. Options are additive — admins always have full access.
 
-See the full option reference in [config.yaml → Role options](config.html#role-options).
+See the full option reference in [config.yaml → Role options](config#Role_options).
 
 Common examples:
 
@@ -947,7 +947,8 @@ Common examples:
 roles:
   - name: operators
     options:
-      showLogs: true          # can view job history and output
+      showJobs: true          # can view job history and output
+      showLogs: true          # can view the server log
       allowJobRelaunch: true  # can relaunch previous jobs
       allowVerboseMode: true  # can enable verbose output on a run
   - name: designers
@@ -956,8 +957,9 @@ roles:
       showSettings: false     # cannot access settings
   - name: schedulers
     options:
-      allowJobScheduling: true  # can schedule forms
-      allowJobStoring: true     # can save and load form data
+      allowScheduledJobs: true  # can schedule forms (recurring or one-time)
+      allowPlannedJobs: true    # can plan a form to run once at a set time
+      allowStoredJobs: true     # can save and load form data
 ```
 
 {: .note }
@@ -1036,16 +1038,16 @@ AnsibleForms supports two scheduling modes via the job scheduling feature:
 - **One-off / run later** — submit the form to run once at a specific future date and time
 
 **Requirements:**
-- The user's role must have `allowJobScheduling: true`
-- The form must not have `allowRelaunch: false` (scheduling uses the same pre-fill mechanism)
+- Cron schedules need the role option `allowScheduledJobs: true` (default for admins only)
+- One-off runs need the role option `allowPlannedJobs: true` (default true)
 
 **How it works:**
 1. Open a form and fill in the values
-2. Instead of clicking **Submit**, click **Schedule**
+2. Instead of clicking **Submit**, open the dropdown next to it and pick **Schedule (Recurring)** or **Run Later (One-time)**
 3. Choose a cron expression or a specific date/time
-4. The job appears in the job list with a scheduled status and runs automatically at the configured time
+4. A schedule is created and the job runs automatically at the configured time; a one-time schedule is deleted after it ran
 
-Scheduled jobs can be viewed, edited, and cancelled from the job history page.
+Schedules can be viewed, edited, and deleted on the **Schedules** page (linked from the jobs page).
 
 ## Save & Load Form Data
 
@@ -1053,15 +1055,15 @@ Scheduled jobs can be viewed, edited, and cancelled from the job history page.
 
 Store form submissions for later use (v6.1.5).
 
-The **Store** and **Load from store** actions let you save a snapshot of form field values to disk and reload them later — without triggering a job run. This is useful for saving complex configurations you want to reuse across multiple submissions.
+The **Store** and **Load from Store** actions let you save a snapshot of form field values in the database and reload them later — without triggering a job run. This is useful for saving complex configurations you want to reuse across multiple submissions.
 
 **Requirements:**
-- The user's role must have `allowJobStoring: true`
+- The user's role must have `allowStoredJobs: true` (the default)
 
 **How it works:**
 1. Fill in the form
-2. Click **Store** — the current field values are saved under a name you choose
-3. Later, open the same form and click **Load from store** to restore the saved values
+2. Pick **Store** in the dropdown next to **Submit** — the current field values are saved under a name you choose
+3. Later, open the same form and click **Load from Store** to restore the saved values
 4. Review / adjust and submit as usual
 
 {: .note }
@@ -1080,24 +1082,25 @@ A **subform** is a reusable form fragment (defined with `type: subform`) that is
 **Collecting a list of structured rows — `list` field:**
 
 ```yaml
-forms:
-  - name: Server
-    type: subform
-    fields:
-      - name: hostname
-        type: text
-        required: true
-      - name: ip
-        type: text
-        regex: ^\d+\.\d+\.\d+\.\d+$
+- name: Server
+  type: subform
+  fields:
+    - name: hostname
+      type: text
+      required: true
+    - name: ip
+      type: text
+      regex:
+        expression: ^\d+\.\d+\.\d+\.\d+$
+        description: Must be an IPv4 address
 
-  - name: Deploy to servers
-    type: ansible
-    playbook: deploy.yml
-    fields:
-      - name: servers
-        type: list
-        subform: Server   # opens Server subform in a drilldown editor per row
+- name: Deploy to servers
+  type: ansible
+  playbook: deploy.yml
+  fields:
+    - name: servers
+      type: list
+      subform: Server   # opens Server subform in a drilldown editor per row
 ```
 
 The `servers` extravar sent to Ansible will be an array of objects: `[{hostname: "web1", ip: "10.0.0.1"}, ...]`
@@ -1182,58 +1185,57 @@ __parent__:
 Use the standard `$(...)` expression syntax:
 
 ```yaml
-forms:
-  - name: NodeConfig
-    type: subform
-    fields:
-      - name: node_name
-        type: text
-        label: Node name
-        required: true
+- name: NodeConfig
+  type: subform
+  fields:
+    - name: node_name
+      type: text
+      label: Node name
+      required: true
 
-      - name: image
-        type: enum
-        label: Image
-        # default to the parent form's chosen image
-        expression: "'$(__parent__.default_image)'"
-        runLocal: true
+    - name: image
+      type: enum
+      label: Image
+      # default to the parent form's chosen image
+      expression: "'$(__parent__.default_image)'"
+      runLocal: true
 
-      - name: is_production
-        type: expression
-        hide: true
-        runLocal: true
-        expression: "'$(__parent__.environment)' === 'production'"
+    - name: is_production
+      type: expression
+      hide: true
+      runLocal: true
+      expression: "'$(__parent__.environment)' === 'production'"
 
-      - name: node_type
-        type: enum
-        values:
-          - standard
-          - high-memory
-          - gpu
-        # only offer gpu nodes in production
-        expression: |
-          '$(__parent__.environment)' === 'production'
-            ? ['standard', 'high-memory', 'gpu']
-            : ['standard', 'high-memory']
-        runLocal: true
-        default: __auto__
+    - name: node_type
+      type: enum
+      values:
+        - standard
+        - high-memory
+        - gpu
+      # only offer gpu nodes in production
+      expression: |
+        '$(__parent__.environment)' === 'production'
+          ? ['standard', 'high-memory', 'gpu']
+          : ['standard', 'high-memory']
+      runLocal: true
+      default: __auto__
 
-  - name: Deploy cluster
-    type: ansible
-    playbook: deploy_cluster.yml
-    fields:
-      - name: environment
-        type: enum
-        values: [dev, staging, production]
+- name: Deploy cluster
+  type: ansible
+  playbook: deploy_cluster.yml
+  fields:
+    - name: environment
+      type: enum
+      values: [dev, staging, production]
 
-      - name: default_image
-        type: text
-        default: ubuntu-22.04
+    - name: default_image
+      type: text
+      default: ubuntu-22.04
 
-      - name: nodes
-        type: list
-        subform: NodeConfig
-        columns: [node_name, node_type]
+    - name: nodes
+      type: list
+      subform: NodeConfig
+      columns: [node_name, node_type]
 ```
 
 #### Nested subforms
@@ -1249,38 +1251,36 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 
 **Before:**
 ```yaml
-forms:
-  - name: Manage users
-    type: ansible
-    playbook: users.yml
-    fields:
-      - name: users
-        type: table
-        tableFields:
-          - name: username
-            type: text
-          - name: email
-            type: text
+- name: Manage users
+  type: ansible
+  playbook: users.yml
+  fields:
+    - name: users
+      type: table
+      tableFields:
+        - name: username
+          type: text
+        - name: email
+          type: text
 ```
 
 **After:**
 ```yaml
-forms:
-  - name: User
-    type: subform
-    fields:
-      - name: username
-        type: text
-      - name: email
-        type: text
+- name: User
+  type: subform
+  fields:
+    - name: username
+      type: text
+    - name: email
+      type: text
 
-  - name: Manage users
-    type: ansible
-    playbook: users.yml
-    fields:
-      - name: users
-        type: list
-        subform: User
+- name: Manage users
+  type: ansible
+  playbook: users.yml
+  fields:
+    - name: users
+      type: list
+      subform: User
 ```
 
 #### Migrating `from` in `tableFields` to `__parent__` expressions
@@ -1290,56 +1290,54 @@ The `from` property available in `tableFields` enum columns let you populate dro
 **Before — `tableFields` with `from`:**
 
 ```yaml
-forms:
-  - name: Manage members
-    type: ansible
-    playbook: members.yml
-    fields:
-      - name: available_departments
-        type: expression
-        expression: "['HR','Engineering','Finance']"
-        runLocal: true
-        hide: true
+- name: Manage members
+  type: ansible
+  playbook: members.yml
+  fields:
+    - name: available_departments
+      type: expression
+      expression: "['HR','Engineering','Finance']"
+      runLocal: true
+      hide: true
 
-      - name: members
-        type: table
-        tableFields:
-          - name: department
-            type: enum
-            from: available_departments   # pulls choices from the parent field above
-          - name: firstname
-            type: text
+    - name: members
+      type: table
+      tableFields:
+        - name: department
+          type: enum
+          from: available_departments   # pulls choices from the parent field above
+        - name: firstname
+          type: text
 ```
 
 **After — subform with `__parent__` expression:**
 
 ```yaml
-forms:
-  - name: Member
-    type: subform
-    fields:
-      - name: department
-        type: enum
-        # replaces "from: available_departments"
-        expression: "$(__parent__.available_departments)"
-        runLocal: true
+- name: Member
+  type: subform
+  fields:
+    - name: department
+      type: enum
+      # replaces "from: available_departments"
+      expression: "$(__parent__.available_departments)"
+      runLocal: true
 
-      - name: firstname
-        type: text
+    - name: firstname
+      type: text
 
-  - name: Manage members
-    type: ansible
-    playbook: members.yml
-    fields:
-      - name: available_departments
-        type: expression
-        expression: "['HR','Engineering','Finance']"
-        runLocal: true
-        hide: true
+- name: Manage members
+  type: ansible
+  playbook: members.yml
+  fields:
+    - name: available_departments
+      type: expression
+      expression: "['HR','Engineering','Finance']"
+      runLocal: true
+      hide: true
 
-      - name: members
-        type: list
-        subform: Member
+    - name: members
+      type: list
+      subform: Member
 ```
 
 {: .note }

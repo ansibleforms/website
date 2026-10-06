@@ -50,10 +50,10 @@ Four things, all needed:
 
 1. **`ENABLE_CHAT=1`** - the environment variable (restart). See [customization](customization).
 2. **A model provider** - Settings -> Connections -> **Chat assistant**: provider, model, API
-   key (stored encrypted), optional base URL, limits. The **Test connection** button makes one
+   key (stored encrypted), optional base URL, limits. The **Test Connection** button makes one
    tiny call. On Kubernetes, declare it in the [config seed](seed) instead.
 3. **Forms that take part** - `enableForChat: true` on each form the assistant may offer
-   (the designer: form settings -> Chat assistant). It is the only allowlist: a form without
+   (the designer: form settings -> **Offer in the chat assistant**). It is the only allowlist: a form without
    it is never discussed, even for a user who may open it.
 4. **Users who may use it** - the role option `allowChat` (default: true). Set
    `allowChat: false` on a role to keep its members out.
@@ -159,7 +159,7 @@ recorded as any other settings change.
 ## Limitations
 
 - **Wizard forms** cannot take part (`enableForChat` is refused on them), nor can the fields
-  the assistant does not fill in: passwords, file uploads and `table` fields.
+  the assistant does not fill in: passwords and file uploads.
 - Replies come in one piece; there is no streaming yet.
 - The model can misunderstand. The summary card shows exactly what will be sent - read it
   before you click.
