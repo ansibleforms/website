@@ -159,11 +159,14 @@ body::before {
 // ---------------------------------------------------------------------------------------
 
 @include mq(md) {
+  // centred over the content : here in the room left of the header links (Theme, GitHub, Image),
+  // so it can never run into them
   .search {
     display: flex;
     align-items: center;
     padding: 0 1rem !important;
     max-width: 36rem;
+    margin: 0 auto;
   }
 
   .search-input-wrap {
@@ -184,6 +187,20 @@ body::before {
       border-color: rgba($link-color, 0.5) !important;
       box-shadow: 0 0 0 3px $af-accent-soft;
     }
+  }
+}
+
+// once the "On this page" list shows (right-toc.css, 90rem), the content column is the header
+// minus 2rem on the left and 23rem on the right : centre the box on that column, not on the bar
+@media (min-width: 90rem) {
+  .main-header .search {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 10.5rem);
+    width: 36rem;
+    margin: 0;
+    transform: translateX(-50%);
   }
 }
 
