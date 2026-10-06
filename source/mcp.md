@@ -52,7 +52,8 @@ tool argument would end up in the language model's context and its chat history.
 - **A chat backend** logs the user in itself, keeps the refresh token and passes the access
   token on every MCP call.
 - **An IDE client** needs a token that lives long enough to configure once. A role with the
-  `extendedTokenExpiration` option may log in with `?expiryDays=<n>` on the login url for a token valid that many days.
+  `extendedTokenExpiration` option creates one under [Profile > API token](profile#api-token),
+  or logs in with `?expiryDays=<n>` on the login url for a token valid that many days.
 
 For example, with Claude Code:
 

@@ -121,7 +121,7 @@ Config loading (first match wins):
 
 You can choose if the repository must be cloned when AnsibleForms starts, and you can add cron-schedule to schedule recurring pull-actions.  
 Additionally, in the swagger interface, you will find a clone and pull rest api for webhooks.  
-In case you want long-lived access tokens for the webhooks, with swagger you can pass an expiryDays parameter (for admin roles only) and create long-lived tokens.
+In case you want long-lived access tokens for the webhooks, create one under [Profile > API token](profile#api-token), for roles with the `extendedTokenExpiration` option. The login API's `expiryDays` parameter does the same.
 
 ### VS Code Validation for Form Files
 
