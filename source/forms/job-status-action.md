@@ -8,7 +8,10 @@ nav_order: 9
 # Job Status Actions
 {: .no_toc }
 
-Lifecycle hooks for form execution.
+Act on the form when its job is submitted, succeeds, fails or finishes
+{: .fs-6 .fw-300 }
+
+---
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -17,14 +20,17 @@ Lifecycle hooks for form execution.
 
 {{ jobstatus_object.description | markdownify }}
 
-You can use these hooks:
-- `onSubmit` - Triggered when the form is submitted
-- `onSuccess` - Triggered when the job completes successfully
-- `onFailure` - Triggered when the job fails
-- `onFinish` - Triggered when the job finishes (regardless of status)
-- `onAbort` - Triggered when the job is aborted
+The following hooks are available:
+
+- `onSubmit` - triggered when the form is submitted
+- `onSuccess` - triggered when the job completes successfully
+- `onFailure` - triggered when the job fails
+- `onFinish` - triggered when the job finishes, regardless of its status
+- `onAbort` - triggered when the job is aborted
 
 ## Attributes
+
+The attributes of a job status action:
 
 <table>
   <thead>
@@ -64,6 +70,8 @@ You can use these hooks:
 
 {% for example in jobstatus_object.examples %}
 ### {{ forloop.index }}) {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

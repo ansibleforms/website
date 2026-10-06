@@ -6,10 +6,16 @@ nav_order: 8
 ---
 
 # Checkbox Formfield
+{: .no_toc }
 
-A boolean selection field for collecting true/false values, commonly used for enabling/disabling options or setting flags.
+A true or false value, to enable an option or set a flag
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `checkbox` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A boolean selection field for collecting true/false values, commonly used for en
     {%- for example in checkbox_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

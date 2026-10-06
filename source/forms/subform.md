@@ -8,7 +8,12 @@ nav_order: 4
 # Subform
 {: .no_toc }
 
-A subform is a reusable form fragment. It is not shown in the tile view and cannot be submitted directly. Instead it is referenced by:
+A reusable form fragment for list fields, yaml fields and wizard pages
+{: .fs-6 .fw-300 }
+
+---
+
+A subform is a reusable form fragment. It does not appear in the tile view and cannot be submitted directly. Instead, it is referenced by:
 
 - A [`list`](/formfields/list.html) field — opens the subform as a drilldown editor for each row
 - A [`yaml`](/formfields/yaml.html) field with the `subform` property — opens the subform as a drilldown editor for a single object
@@ -35,7 +40,7 @@ A subform is a reusable form fragment. It is not shown in the tile view and cann
 
 Subforms have **no type-specific properties**. They use only the [common form properties](common.html): `name`, `description`, `help`, `type`, and `fields`.
 
-When a subform is a wizard page, its `description` and `help` are the defaults for the step's `title` and `help`, and it can also set `showHelp` to expand that help on load.
+When a subform serves as a wizard page, its `description` and `help` provide the defaults for the step's `title` and `help`. It can also set `showHelp` to expand that help when the page loads.
 
-Execution properties (`playbook`, `template`, `roles`, `inventory`, etc.) are not applicable to subforms — a subform is never submitted directly.
+Execution properties (`playbook`, `template`, `roles`, `inventory`, etc.) do not apply to subforms, because a subform is never submitted directly.
 

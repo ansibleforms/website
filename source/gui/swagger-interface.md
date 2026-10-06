@@ -8,6 +8,9 @@ nav_order: 21
 # Swagger Interface
 {: .no_toc }
 
-Interactive API documentation and testing via Swagger UI.
+Interactive API documentation and testing via Swagger UI
+{: .fs-6 .fw-300 }
+
+---
 
 ![Swagger Interface](../assets/screenshots/swagger.jpg)

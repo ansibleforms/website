@@ -6,10 +6,16 @@ nav_order: 2
 ---
 
 # Textarea Formfield
+{: .no_toc }
 
-A multi-line text input field for collecting longer text content like descriptions, comments, or configuration snippets.
+Multi-line text, such as a description or a configuration snippet
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `textarea` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A multi-line text input field for collecting longer text content like descriptio
     {%- for example in textarea_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

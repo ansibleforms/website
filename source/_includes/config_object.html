@@ -1,0 +1,125 @@
+{%- comment -%}
+  A config.yaml object (Category or Role) as a property table, rendered from help.yaml.
+  Include as: {% include config_object.html name="Role" %}
+{%- endcomment -%}
+{% assign help = site.data.help %}
+{% assign formsyaml = help | where: "link", "forms" | first %}
+{% assign category_role_objects = formsyaml.help %}
+{% for f in category_role_objects %}
+{% if f.name == include.name %}
+
+{{ f.description | markdownify }}
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% assign groups = f.items | map: "group" | uniq | sort_natural %}
+    {% for group in groups %}
+    {% assign group_properties = f.items  | where: "group",group %}
+    {% if group %}
+    <tr>
+      <th id="{{ f.name }}_{{ group }}_group" colspan="2" class="af-group-header">
+        {{ group }}
+      </th>
+    </tr>
+    {% endif %}
+    {% for var in group_properties %}
+    <tr>
+      <td>
+        <span id="{{f.name}}_{{ var.name }}"><strong>{{ var.name }}</strong></span><br>
+        <span class="af-type">{{ var.type}}</span>
+        {% if var.required==true %}<span class="af-required"> / required</span>{% endif %}
+        {% if var.unique==true %}<span class="af-unique"> / unique</span>{% endif %}
+        <br>
+        {% if var.version %}<span class="af-version">added in version {{var.version}}</span>{% endif %}
+      </td>
+      <td>
+        <p>
+          <strong>{{var.short}}</strong><br>
+          {% if var.docsObjectLink %}
+          {% assign link_start = var.docsObjectLink | slice: 0 %}
+          <a href="{% if link_start == '#' %}{{ var.docsObjectLink }}{% else %}{{ var.docsObjectLink | relative_url }}{% endif %}">🔗 
+          {% endif %}
+          {% if var.allowed != nil %}
+          <span class="af-type">{{ var.allowed }}</span>
+          {% endif %}
+          {% if var.docsObjectLink %}
+          </a>
+          {% endif %}
+        </p>
+        <p>
+          {{ var.description | markdownify }}
+        </p>
+        {% if var.choices.size > 0 %}
+        <div>
+          <strong>Choices:</strong><br>
+          <ul class="af-choices-list">
+            {% for c in var.choices %}
+            <li>
+              {% if c.name == var.default %}
+              <span title="{{ c.description }}" class="af-default-choice">{{ c.name }} (default)</span>
+              {% else %}
+              <span title="{{ c.description }}">{{ c.name }}</span>
+              {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% elsif var.default != nil %}               
+        <div>
+          <strong>Default:</strong><br>
+          <span>{{ var.default }}</span>
+        </div>   
+        {% endif %}   
+        {% if var.with_types!=nil %}
+        <div>
+          <strong class="af-with-types">Only available with types:</strong><br>
+          <span>{{ var.with_types }}</span>
+          <br><br>
+        </div>
+        {% endif %}                          
+        {% for c in var.changelog %}
+        <div class="af-changelog">
+          {% if c.type == "added" %}
+          <div class="af-changelog-header">
+            <span class="af-badge af-badge-added">Added</span>
+            <span class="af-badge af-badge-version">{{ c.version }}</span>
+          </div>
+          {% endif %}
+          <p>
+            {{ c.description | markdownify }}
+          </p>
+        </div>
+        {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% if f.examples %}          
+    <tr>
+      <th id="{{ f.name }}_examples" colspan="2">
+        Examples
+      </th>
+    </tr>
+    <tr>
+      <td colspan="2">
+        {% for e in f.examples %}
+        <div>
+          <p id="{{ f.name }}_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
+{% highlight yaml %}
+{{ e.code }}
+{% endhighlight %}
+        </div>
+        {% endfor %}            
+      </td>
+    </tr>      
+    {% endif %}
+  </tbody>
+</table>
+{% endif %}
+{% endfor %}

@@ -1,0 +1,76 @@
+{%- comment -%}
+  One top-level attribute of config.yaml (categories, roles or constants) as a property
+  table, rendered from help.yaml. Include as:
+  {% include config_attribute.html name="categories" %}
+{%- endcomment -%}
+{% assign help = site.data.help %}
+{% assign formsyaml = help | where: "link", "forms" | first %}
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for var in formsyaml.items %}
+{% if var.name == include.name %}
+    <tr>
+      <td>
+        <span id="formsyaml_{{ var.name }}"><strong>{{ var.name }}</strong></span><br>
+        <span class="af-type">{{ var.type}}</span>
+        {% if var.required==true %}<span class="af-required"> / required</span>{% endif %}
+        {% if var.unique==true %}<span class="af-unique"> / unique</span>{% endif %}
+        <br>
+        {% if var.version %}<span class="af-version">added in version {{ var.version }}</span>{% endif %}
+      </td>
+      <td>
+        <p>
+          <strong>{{ var.short }}</strong><br>
+          {% if var.docsObjectLink %}
+          {% assign link_start = var.docsObjectLink | slice: 0 %}
+          {% assign object_link = var.docsObjectLink %}
+          {% if object_link == '#category-object' %}{% assign object_link = 'categories.html#category-object' %}{% endif %}
+          {% if object_link == '#role-object' %}{% assign object_link = 'roles.html#role-object' %}{% endif %}
+          <a href="{% if link_start == '#' %}{{ object_link }}{% else %}{{ var.docsObjectLink | relative_url }}{% endif %}">🔗 
+          {% endif %}
+          {% if var.allowed != nil %}
+          <span class="af-type">{{ var.allowed }}</span>
+          {% endif %}
+          {% if var.docsObjectLink %}
+          </a>
+          {% endif %}
+        </p>
+        <p>
+          {{ var.description | markdownify }}
+        </p>
+        {% for c in var.changelog %}
+        <div class="af-changelog">
+          {% if c.type == "added" %}
+          <div class="af-changelog-header">
+            <span class="af-badge af-badge-added">Added</span>
+            <span class="af-badge af-badge-version">{{ c.version }}</span>
+          </div>
+          {% endif %}
+          <p>
+            {{ c.description | markdownify }}
+          </p>
+        </div>
+        {% endfor %}
+        {% if var.examples %}
+        <p><strong>Examples:</strong></p>
+        {% endif %}
+        {% for e in var.examples %}
+        <div>
+          <p><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
+{% highlight yaml %}
+{{ e.code }}
+{% endhighlight %}
+        </div>
+        {% endfor %}
+      </td>
+    </tr>
+{% endif %}
+{% endfor %}
+  </tbody>
+</table>

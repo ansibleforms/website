@@ -6,10 +6,16 @@ nav_order: 9
 ---
 
 # Radio Formfield
+{: .no_toc }
 
-A single selection field allowing users to choose one option from a set of mutually exclusive choices, ideal for mode selection.
+One choice from a set of mutually exclusive options
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `radio` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A single selection field allowing users to choose one option from a set of mutua
     {%- for example in radio_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

@@ -8,7 +8,7 @@ nav_order: 1
 # Docker
 {: .no_toc }
 
-Run the AnsibleForms image on its own, next to a MySQL server of your own
+Run the AnsibleForms image with Docker or Podman, next to a MySQL server of your own
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -16,42 +16,90 @@ Run the AnsibleForms image on its own, next to a MySQL server of your own
 
 ---
 
-Running the image without docker-compose needs good Linux skills and some knowledge about containers
+You can run AnsibleForms as a standalone container with Docker or Podman, connected to a MySQL database.
 
 ## Prerequisites
 
-* **Docker** : Install docker and have it running
-* **MySQL** : Install MySQL and have it running
+Before you start, you need:
+
+* **Docker or Podman** : one of them installed and running
+* **MySQL** : installed and running
 
 ## Install MySQL
 
-Below is just an example of how you could install MySQL
+Install MySQL 8+, or MariaDB, on a server that the container can reach. Pick your Linux distribution:
+
+<div class="af-tabs" data-tab-group="linux">
+<div class="af-tab-list" role="tablist">
+<button type="button" role="tab" class="af-tab" data-tab="ubuntu" aria-selected="true">Ubuntu</button>
+<button type="button" role="tab" class="af-tab" data-tab="debian" aria-selected="false">Debian</button>
+<button type="button" role="tab" class="af-tab" data-tab="rhel" aria-selected="false">RHEL / Rocky / Alma</button>
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="ubuntu" markdown="1">
+
+Ubuntu ships MySQL 8:
 
 ```bash
-wget https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm
-sudo rpm -ivh mysql57-community-release-el7-9.noarch.rpm
-sudo yum install mysql-server
-sudo systemctl start mysqld
-sudo grep 'temporary password' /var/log/mysqld.log
+sudo apt-get update
+sudo apt-get install -y mysql-server
+sudo systemctl enable --now mysql
 sudo mysql_secure_installation
-# the above will be interactive
-# do NOT disallow remote access
-# set new password of choice
 ```
 
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="debian" markdown="1" hidden>
+
+Debian ships MariaDB in place of MySQL, which AnsibleForms also supports:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y mariadb-server
+sudo systemctl enable --now mariadb
+sudo mariadb-secure-installation
+```
+
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="rhel" markdown="1" hidden>
+
+RHEL 8 and later, and its rebuilds, ship MySQL 8 in AppStream:
+
+```bash
+sudo dnf install -y mysql-server
+sudo systemctl enable --now mysqld
+sudo mysql_secure_installation
+```
+
+</div>
+</div>
+
+AnsibleForms connects to the database over the network, as `DB_USER` with `DB_PASSWORD`. Keep remote root login enabled
+when the secure installation script asks, or create a dedicated account. On Ubuntu and Debian the server listens on
+localhost only: set `bind-address` in its configuration so that the container can reach it.
+
 ## Get the image
-If you don't want to go through the hassle of a dockerbuild, run the published image directly. It lives at
-[`ghcr.io/ansibleforms/ansibleforms`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms) on the GitHub Container Registry,
-(see [Image tags](./#image-tags)).  
-  
-Note that we have deployed the solution in the `/app` folder inside the docker.  So if you want your `config.yaml`, forms, logs, certificates and playbooks reachable from within the docker image, you have to use a mount path or persistent volume and make sure it's mounted under `/app/dist/persistent`.  
-Make sure you have your environment variables set.  Most variables fall back to defaults, but the MySQL database connection (`DB_HOST`, `DB_PORT`, `DB_USER` and `DB_PASSWORD`) is mandatory.  The image contains ansible and python3.  The below command is merely an example. An example of a config.yaml you can find in the [docker-compose project](https://github.com/ansibleforms/docker/blob/main/data/config.yaml).
+
+Run the published image from the GitHub Container Registry (see [Image tags](./#image-tags)):
+
+[`ghcr.io/ansibleforms/ansibleforms`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms)
+
+Mount a folder or volume at `/app/dist/persistent` for your `config.yaml`, forms, playbooks, logs and certificates.
+
+Only the database connection (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`) is required; the other variables have defaults.
+
+For example (a sample `config.yaml` is in the [docker-compose project](https://github.com/ansibleforms/docker/blob/main/data/config.yaml)):
+
+<div class="af-tabs" data-tab-group="engine">
+<div class="af-tab-list" role="tablist">
+<button type="button" role="tab" class="af-tab" data-tab="docker" aria-selected="true">Docker</button>
+<button type="button" role="tab" class="af-tab" data-tab="podman" aria-selected="false">Podman</button>
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="docker" markdown="1">
 
 ```bash
 docker run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/server/persistent,target=/app/dist/persistent --name ansibleforms -e DB_HOST=192.168.0.1 -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=password ghcr.io/ansibleforms/ansibleforms:7
 ```
 
-Once started :
+Once started, the container is listed:
 
 ```bash
 docker ps
@@ -59,14 +107,34 @@ CONTAINER ID   IMAGE                                  COMMAND                  C
 d91f7b05b67e   ghcr.io/ansibleforms/ansibleforms:7    "node ./index.js"        7 seconds ago   Up 6 seconds   0.0.0.0:8000->8000/tcp, :::8000->8000/tcp   ansibleforms
 ```
 
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="podman" markdown="1" hidden>
+
+Podman takes the same options and does not require a service:
+
+```bash
+podman run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/server/persistent,target=/app/dist/persistent --name ansibleforms -e DB_HOST=192.168.0.1 -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=password ghcr.io/ansibleforms/ansibleforms:7
+```
+
+Once started, the container is listed:
+
+```bash
+podman ps
+```
+
+</div>
+</div>
+
 ## Test the application
 
-* Surf to : http://your_ip:8000 (or https, if you set `HTTPS=1`)
-* Login with admin / AnsibleForms!123 (or the password you set with `ADMIN_PASSWORD`)
-* Next steps :
-  * Start creating your forms by adding yaml files to the `forms` folder or using the built-in designer
-  * Add your own playbooks under the `playbooks` folder of the mounted persistent folder
-  * Add LDAP connection
+Once the container is up, open AnsibleForms in a browser:
+
+* Open `http://your_ip:8000` (or HTTPS, if you set `HTTPS=1`)
+* Log in as `admin` / `AnsibleForms!123` (or with the password you set with `ADMIN_PASSWORD`)
+* Next steps:
+  * Create forms by adding YAML files to the `forms` folder or by using the built-in designer
+  * Add your playbooks to the `playbooks` folder of the mounted persistent folder
+  * Add an LDAP connection
   * Add users and groups
-  * Add AWX connection
-  * Add credentials for custom external connections such as other MySQL servers or credentials for rest api's or to pass to ansible playbooks
+  * Add an AWX connection
+  * Add credentials for external connections, such as other MySQL servers or REST APIs, or to pass to Ansible playbooks

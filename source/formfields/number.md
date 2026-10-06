@@ -6,10 +6,16 @@ nav_order: 6
 ---
 
 # Number Formfield
+{: .no_toc }
 
-A numeric input field with validation for collecting integer or decimal values like ports, quantities, or IDs.
+An integer or decimal value, such as a port or a quantity
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `number` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A numeric input field with validation for collecting integer or decimal values l
     {%- for example in number_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

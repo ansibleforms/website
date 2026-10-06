@@ -8,7 +8,10 @@ nav_order: 2
 # Ansible Forms
 {: .no_toc }
 
-Ansible forms execute a local Ansible Core playbook when submitted.
+Forms that run a local Ansible playbook
+{: .fs-6 .fw-300 }
+
+---
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}

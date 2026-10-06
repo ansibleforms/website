@@ -1,24 +1,43 @@
 /* AnsibleForms Documentation - Data Table Styling */
 
-/* Type display */
+/* Type display : a small chip */
 .af-type {
-  color: var(--link-color);
+  display: inline-block;
+  padding: 0.05rem 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+  border-radius: 999px;
+}
+
+[data-theme="dark"] .af-type {
+  color: #7aa7ff;
+  background: rgba(122, 167, 255, 0.12);
 }
 
 /* Required flag */
 .af-required {
+  font-size: 0.75rem;
+  font-weight: 600;
   color: #d73a49;
 }
 
 /* Unique flag */
 .af-unique {
-  color: #f9c513;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #b7791f;
 }
 
 /* Version info */
 .af-version {
-  font-style: italic;
+  font-size: 0.75rem;
   color: #22863a;
+}
+
+[data-theme="dark"] .af-version {
+  color: #56d364;
 }
 
 /* Group header */
@@ -29,7 +48,7 @@
 }
 
 /* Dark mode group header */
-[data-color-mode="dark"] .af-group-header {
+[data-theme="dark"] .af-group-header {
   background-color: rgba(34, 134, 58, 0.3) !important;
 }
 
@@ -37,8 +56,9 @@
 .af-changelog {
   padding: 0.75rem;
   margin: 0.5rem 0;
-  background: rgba(0, 123, 255, 0.1);
+  background: var(--af-accent-soft);
   border-left: 3px solid var(--link-color);
+  border-radius: 8px;
 }
 
 /* Changelog header spacing */
@@ -49,9 +69,10 @@
 /* Base badge style */
 .af-badge {
   color: white;
-  padding: 0.2rem 0.4rem;
-  font-size: 0.8rem;
-  border-radius: 3px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
 }
 
 /* Added badge */

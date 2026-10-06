@@ -1,0 +1,19 @@
+// Dark colour scheme : replaces the theme's own dark.scss, with the brand red as accent
+$color-scheme: dark;
+$body-background-color: #15161a;
+$body-heading-color: #f3f4f6;
+$body-text-color: #c5c8cf;
+$link-color: #ff6b70;
+$nav-child-link-color: #a9adb6;
+$sidebar-color: #1b1c21;
+$base-button-color: #2a2c33;
+$btn-primary-color: #d0161d;
+$code-background-color: #0f1116;
+$code-linenumber-color: #e6edf3;
+$feedback-color: darken($sidebar-color, 3%);
+$table-background-color: #1b1c21;
+$search-background-color: #23252b;
+$search-result-preview-color: #c5c8cf;
+$border-color: #2c2e36;
+
+@import "./vendor/accessible-pygments/github-dark";

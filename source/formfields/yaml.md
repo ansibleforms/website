@@ -6,10 +6,16 @@ nav_order: 14
 ---
 
 # YAML Formfield
+{: .no_toc }
 
-A dedicated YAML editor field with syntax highlighting, validation, and file import/export capabilities for structured configuration data.
+Structured data in a YAML editor, with validation and file import
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `yaml` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -108,6 +114,8 @@ A dedicated YAML editor field with syntax highlighting, validation, and file imp
 
 ### {{ example.name }}
 
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
+
 ```yaml
 {{ example.code }}
 ```
@@ -119,56 +127,55 @@ A dedicated YAML editor field with syntax highlighting, validation, and file imp
 
 ## Accessing parent form data via `__parent__`
 
-When a `yaml` field uses `subform` mode, AnsibleForms automatically injects a `__parent__` variable into the subform containing a snapshot of **all parent form field values** at the time the editor opens (including constants and vars).
+When a `yaml` field uses `subform` mode, AnsibleForms injects a `__parent__` variable into the subform. It holds a snapshot of **all parent form field values** at the time the editor opens, including constants and vars.
 
-Use it with the standard `$(...)` expression syntax in the subform's field definitions:
+Reference it with the standard `$(...)` expression syntax in the field definitions of the subform:
 
 ```yaml
-forms:
-  - name: NetworkConfig
-    type: subform
-    fields:
-      - name: interface
-        type: text
-        label: Interface
-        required: true
+- name: NetworkConfig
+  type: subform
+  fields:
+    - name: interface
+      type: text
+      label: Interface
+      required: true
 
-      - name: vlan
-        type: enum
-        label: VLAN
-        # filter available VLANs based on the parent's selected region
-        query: "select id,name from vlans where region='$(__parent__.region)'"
-        dbConfig:
-          name: MYDB
-          type: mysql
-        valueColumn: id
-        placeholderColumn: name
+    - name: vlan
+      type: enum
+      label: VLAN
+      # filter available VLANs based on the parent's selected region
+      query: "select id,name from vlans where region='$(__parent__.region)'"
+      dbConfig:
+        name: MYDB
+        type: mysql
+      valueColumn: id
+      placeholderColumn: name
 
-      - name: mtu
-        type: number
-        label: MTU
-        # default to 9000 in production, 1500 elsewhere
-        default: "'$(__parent__.environment)' === 'production' ? 9000 : 1500"
-        evalDefault: true
+    - name: mtu
+      type: number
+      label: MTU
+      # default to 9000 in production, 1500 elsewhere
+      default: "'$(__parent__.environment)' === 'production' ? 9000 : 1500"
+      evalDefault: true
 
-  - name: Configure server
-    type: ansible
-    playbook: configure.yml
-    roles: [public]
-    fields:
-      - name: environment
-        type: enum
-        values: [dev, staging, production]
+- name: Configure server
+  type: ansible
+  playbook: configure.yml
+  roles: [public]
+  fields:
+    - name: environment
+      type: enum
+      values: [dev, staging, production]
 
-      - name: region
-        type: enum
-        values: [eu-west-1, us-east-1, ap-southeast-1]
+    - name: region
+      type: enum
+      values: [eu-west-1, us-east-1, ap-southeast-1]
 
-      - name: nic
-        type: yaml
-        label: Network interface
-        subform: NetworkConfig
+    - name: nic
+      type: yaml
+      label: Network interface
+      subform: NetworkConfig
 ```
 
 {: .note }
-> `__parent__` is stripped from Ansible extravars — it is a **frontend-only** helper. It is never sent to your playbook.
+> `__parent__` is a **frontend-only** helper. It is stripped from the Ansible extravars and never sent to the playbook.

@@ -23,7 +23,7 @@
   
   /* Adjust main content to make room */
   .main-content-wrap {
-    padding-right: 22rem !important;
+    padding-right: 23rem !important; /* the 20rem list, its 1rem offset and a 2rem gap, as on the left */
   }
 }
 

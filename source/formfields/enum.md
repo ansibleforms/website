@@ -6,10 +6,16 @@ nav_order: 10
 ---
 
 # Enum Formfield
+{: .no_toc }
 
-A powerful dropdown field with filtering and search capabilities, perfect for long lists or categorized options with single or multiple selection.
+A dropdown with search, for single or multiple choices
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `enum` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A powerful dropdown field with filtering and search capabilities, perfect for lo
     {%- for example in enum_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}
