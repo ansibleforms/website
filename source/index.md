@@ -16,7 +16,7 @@ permalink: /
     </p>
     <div class="af-hero-actions">
       <a href="installation/" class="btn btn-primary">Install AnsibleForms</a>
-      <a href="forms/" class="btn btn-outline">Build your first form</a>
+      <a href="first-form.html" class="btn btn-outline">Build your first form</a>
     </div>
   </div>
   <div class="af-hero-shot">
@@ -48,7 +48,7 @@ Start with these guides to set up AnsibleForms:
     <span>Define the roles, categories and access control</span>
     <span class="af-card-more">Roles &amp; categories &rarr;</span>
   </a>
-  <a class="af-card" href="forms/">
+  <a class="af-card" href="first-form.html">
     <span class="af-card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
     <strong>Your first form</strong>
     <span>Create forms with fields, validation and sources</span>

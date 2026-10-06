@@ -68,7 +68,7 @@ jobs:
         run: |
           mkdir -p source/_data
           cp _app/server/help.yaml source/_data/help.yaml
-          front='---\nlayout: default\ntitle: Changelog\nnav_order: 2\n---\n\n'
+          front='---\nlayout: default\ntitle: Changelog\nnav_order: 3\n---\n\n'
           { printf -- "$front"; cat _app/CHANGELOG.md; } > source/_reference/changelog.md
           { printf -- "$front"; cat _app6/CHANGELOG.md; } > source/v6/_reference/changelog.md
 

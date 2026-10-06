@@ -85,6 +85,9 @@ highlighter: rouge
 # The permalink keeps every page on the url it had before the groups existed :
 # _configure/seed/index.md is still /seed/, faq.md still /faq.html.
 collections:
+  introduction:
+    permalink: "/:path:output_ext"
+    output: true
   get_started:
     permalink: "/:path:output_ext"
     output: true
@@ -106,6 +109,10 @@ collections:
 
 just_the_docs:
   collections:
+    introduction:
+      name: Introduction
+      icon: circle-info
+      nav_fold: true
     get_started:
       name: Get started
       icon: rocket
