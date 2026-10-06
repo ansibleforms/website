@@ -19,7 +19,7 @@ Pull the new image, remove the old container and start a new one with the same `
 docker pull ghcr.io/ansibleforms/ansibleforms:7
 docker stop ansibleforms
 docker rm ansibleforms
-docker run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/server/persistent,target=/app/dist/persistent --name ansibleforms -e DB_HOST=192.168.0.1 -e DB_USER=root -e DB_PASSWORD=password ghcr.io/ansibleforms/ansibleforms:7
+docker run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/server/persistent,target=/app/dist/persistent --name ansibleforms -e DB_HOST=192.168.0.1 -e DB_PORT=3306 -e DB_USER=root -e DB_PASSWORD=password ghcr.io/ansibleforms/ansibleforms:7
 ```
 
 Your forms, playbooks, logs and certificates live in the mounted `/app/dist/persistent` folder and the data in MySQL, so both are kept.

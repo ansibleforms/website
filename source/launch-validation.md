@@ -230,7 +230,7 @@ file name) are checked against the real upload.
 - A password may be stored in the database - the job's stored extravars hold it, so an
   approval can continue the job and a plain relaunch can replay it. It is used on the server
   only.
-- **No API ever returns one.** A job read through the API (REST v1 and v2, the MCP server's
+- **No API ever returns one.** A job read through the API (the REST API, the MCP server's
   `get_job`) masks every `password` field of its form at its model path - also inside list
   rows and yaml subforms - on top of [`MASK_EXTRAVARS_REGEX`](customization), which catches
   other secrets by key name.

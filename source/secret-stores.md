@@ -201,7 +201,7 @@ credentials:
       is_database: true
 ```
 
-See [Config seed](seed.md).
+See [Config seed](seed).
 
 ## Upgrading from the VAULT_* variables
 

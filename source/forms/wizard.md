@@ -24,6 +24,8 @@ A read-only **review page** is appended automatically at the end of every wizard
 
 When the user submits, the **collected values from all steps are merged into a single extravars payload** and sent to the underlying playbook / template / multistep — exactly as if the user had filled in one big form.
 
+A form with a `wizard` does not need its own `fields`, but it cannot set `launchValidation` or `enableForChat`, and a `subform` cannot have a `wizard` itself.
+
 {: .note }
 > Wondering how `wizard` differs from a `multistep` form, or how the two combine? See the FAQ entry [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form).
 
@@ -79,7 +81,7 @@ When the user submits, the **collected values from all steps are merged into a s
     {% assign group_properties = wizard_object.items  | where: "group",group %}
     {% if group %}
     <tr>
-      <th id="{{ wizard_object.name }}_{{ group }}_group" colspan="2" class="af-group-header">
+      <th id="wizard_{{ group }}_group" colspan="2" class="af-group-header">
         {{ group }}
       </th>
     </tr>
@@ -155,7 +157,7 @@ When the user submits, the **collected values from all steps are merged into a s
     {% endfor %}
     {% if wizard_object.examples %}
     <tr>
-      <th id="{{ wizard_object.name }}_examples" colspan="2">
+      <th id="wizard_examples" colspan="2">
         Examples
       </th>
     </tr>
@@ -163,7 +165,7 @@ When the user submits, the **collected values from all steps are merged into a s
       <td colspan="2">
         {% for e in wizard_object.examples %}
         <div>
-          <p id="{{ wizard_object.name }}_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
+          <p id="wizard_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
 {% highlight yaml %}
 {{ e.code }}
 {% endhighlight %}
@@ -181,7 +183,7 @@ When the user submits, the **collected values from all steps are merged into a s
 
 A wizard can be layered on top of a [`multistep`](multistep.html) form. Pair each wizard step's `defaultModel` with the matching multistep step's [`key`](multistep.html#step_key) and each playbook/template will receive only the values from its own wizard page.
 
-See the FAQ for a worked example and the merged-extravars layout: [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form) (section *Combined — wizard on top of multistep*).
+See the FAQ for a worked example and the merged-extravars layout: [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form) (section *Combined (wizard on top of multistep)*).
 
 ## See also
 

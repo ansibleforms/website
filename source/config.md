@@ -23,7 +23,7 @@ The config.yaml file contains the configuration for categories, roles, and const
 **VIDEO**: [Create your first form](https://www.youtube.com/watch?v=lIhYZ9Et5Ic)
 
 The file below is a minimal sample config.yaml file to start with.  
-It has only the required `default` category and the required `admin` and `public` roles.
+It has only the required `Default` category and the required `admin` and `public` roles.
 
 ```yaml
 categories: # a list of categories to group forms
@@ -77,7 +77,8 @@ AnsibleForms loads the config.yaml file in the following order (first match wins
         <p>
           <strong>{{ var.short }}</strong><br>
           {% if var.docsObjectLink %}
-          <a href="{{ var.docsObjectLink | relative_url }}">🔗 
+          {% assign link_start = var.docsObjectLink | slice: 0 %}
+          <a href="{% if link_start == '#' %}{{ var.docsObjectLink }}{% else %}{{ var.docsObjectLink | relative_url }}{% endif %}">🔗 
           {% endif %}
           {% if var.allowed != nil %}
           <span class="af-type">{{ var.allowed }}</span>
@@ -159,7 +160,8 @@ AnsibleForms loads the config.yaml file in the following order (first match wins
         <p>
           <strong>{{var.short}}</strong><br>
           {% if var.docsObjectLink %}
-          <a href="{{ var.docsObjectLink | relative_url }}">🔗 
+          {% assign link_start = var.docsObjectLink | slice: 0 %}
+          <a href="{% if link_start == '#' %}{{ var.docsObjectLink }}{% else %}{{ var.docsObjectLink | relative_url }}{% endif %}">🔗 
           {% endif %}
           {% if var.allowed != nil %}
           <span class="af-type">{{ var.allowed }}</span>
@@ -240,18 +242,8 @@ AnsibleForms loads the config.yaml file in the following order (first match wins
 {% endif %}
 {% endfor %}
 
-AnsibleForms loads the config.yaml file in the following order (first match wins):
-
-1. **FROM DATABASE** - If config is imported into the database (highest priority)
-2. **FROM REPOSITORY (use_for_config)** - Repository with "use for config" switch enabled
-3. **FROM REPOSITORY (use_for_forms)** - Repository with "use for forms" switch enabled (backwards compatibility)
-4. **FROM LOCAL FILE** - The local `config.yaml` file (CONFIG_PATH environment variable)
-
-{: .warning }
-> Only ONE repository should have "use for config" enabled. If multiple are enabled, a warning will be logged and the first one will be used.
-
 ## Next Steps
 
-- [Categories](config/categories) - Learn about organizing forms
-- [Roles](config/roles) - Set up RBAC
-- [Constants](config/constants) - Define global variables
+- [Categories](#category-object) - Learn about organizing forms
+- [Roles](#role-object) - Set up RBAC
+- [Constants](#formsyaml_constants) - Define global variables

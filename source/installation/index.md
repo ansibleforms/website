@@ -16,10 +16,10 @@ How to install AnsibleForms
 
 AnsibleForms can be installed in a few ways. Each one has a page of its own:
 
-* **[Docker](docker.html)** : Install MySql and spin-up the pre-built docker image with the correct environment variables
-* **[Docker Compose](docker-compose.html)** : [Download the docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySql and AnsibleForms
+* **[Docker](docker.html)** : Install MySQL and spin-up the pre-built docker image with the correct environment variables
+* **[Docker Compose](docker-compose.html)** : [Download the docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySQL and AnsibleForms
 * **[From source](from-source.html)** : You install everything manually, install all dependencies, build the code, start the code
-* **[Kubernetes](kubernetes.html)** : Install the Helm chart and use Kubernetes to start AnsibleForms and its MySql database
+* **[Kubernetes](kubernetes.html)** : Install the Helm chart and use Kubernetes to start AnsibleForms and its MySQL database
 
 {: .note }
 > **Recommendation** Out of experience, I recommend the use of the docker-image. It has all (many) dependencies installed and can be setup very quickly. For AnsibleForms 6, use the `v6` branch of the docker-compose project.

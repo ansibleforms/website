@@ -12,6 +12,7 @@ A subform is a reusable form fragment. It is not shown in the tile view and cann
 
 - A [`list`](/formfields/list.html) field — opens the subform as a drilldown editor for each row
 - A [`yaml`](/formfields/yaml.html) field with the `subform` property — opens the subform as a drilldown editor for a single object
+- A [`wizard`](wizard.html) step — renders the subform as one page of the wizard
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -33,6 +34,8 @@ A subform is a reusable form fragment. It is not shown in the tile view and cann
 ## Properties
 
 Subforms have **no type-specific properties**. They use only the [common form properties](common.html): `name`, `description`, `help`, `type`, and `fields`.
+
+When a subform is a wizard page, its `description` and `help` are the defaults for the step's `title` and `help`, and it can also set `showHelp` to expand that help on load.
 
 Execution properties (`playbook`, `template`, `roles`, `inventory`, etc.) are not applicable to subforms — a subform is never submitted directly.
 

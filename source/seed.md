@@ -139,7 +139,7 @@ needs `ENABLE_CHAT=1`; see the [Chat assistant](chat) page.
 
 ## Single-row sections are all or nothing
 
-`awx`, `credentials`, `oauth2` and `repositories` are lists, and each item is its own record.
+`awx`, `secret_stores`, `credentials`, `oauth2` and `repositories` are lists, and each item is its own record.
 `ldap` and `settings` are different: they are **one row**, so the read-only flag is one flag
 covering the whole row. Declaring only part of such a section would freeze fields the seed
 never writes — a seed setting just `url` made the Mail page answer 403 for SMTP changes that
@@ -175,7 +175,7 @@ A reference that cannot be resolved is a **fatal error**. It is not left as-is a
 not blanked: storing the literal string `${SEED_LDAP_PW}` as a bind password produces
 something that authenticates against nothing while looking perfectly configured.
 
-Credentials can also take their user and password from a [secret store](secret-stores.md)
+Credentials can also take their user and password from a [secret store](secret-stores)
 instead, with `secret_store` and `secret_ref`. `vault_path` still works in 7.x and is removed in 8.
 
 ## Managed objects

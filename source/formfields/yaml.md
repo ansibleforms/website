@@ -148,12 +148,13 @@ forms:
         type: number
         label: MTU
         # default to 9000 in production, 1500 elsewhere
-        expression: "'$(__parent__.environment)' === 'production' ? 9000 : 1500"
-        runLocal: true
+        default: "'$(__parent__.environment)' === 'production' ? 9000 : 1500"
+        evalDefault: true
 
   - name: Configure server
     type: ansible
     playbook: configure.yml
+    roles: [public]
     fields:
       - name: environment
         type: enum

@@ -37,7 +37,7 @@ You can use these hooks:
     {% for var in jobstatus_object.items %}
     <tr>
       <td>
-        <span id="{{jobstatus_object.name}}_{{ var.name }}"><strong>{{ var.name }}</strong></span><br>
+        <span id="jobstatus_{{ var.name }}"><strong>{{ var.name }}</strong></span><br>
         <span class="af-type">{{ var.type}}</span>
         {% if var.required==true %}<span class="af-required"> / required</span>{% endif %}
         {% if var.unique==true %}<span class="af-unique"> / unique</span>{% endif %}

@@ -11,7 +11,7 @@ has_toc: false
 
 Formfields define the input controls in your forms. Each field type has its own properties and behaviors for collecting different types of data.
 
-AnsibleForms supports a wide variety of formfield types, from simple text inputs to complex tables and expressions. Choose the right field type based on the data you need to collect.
+AnsibleForms supports a wide variety of formfield types, from simple text inputs to structured lists and expressions. Choose the right field type based on the data you need to collect.
 
 ## Common Properties
 

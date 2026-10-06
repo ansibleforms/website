@@ -7,7 +7,7 @@ nav_order: 3
 
 # Datetime Formfield
 
-A date and time picker field for collecting temporal values with various precision levels (date, datetime, time, month, year).
+A date and time picker field for collecting temporal values with various precision levels (date, datetime, time, week, month, year).
 
 ## Properties
 
