@@ -4,7 +4,7 @@ name: Site
 # it ; main deploys.
 #
 # Two files come from the app repository at build time, never as a copy kept here :
-#   CHANGELOG.md     -> source/changelog.md (and source/v6/changelog.md from release/6.x)
+#   CHANGELOG.md     -> source/_reference/changelog.md (and source/v6/_reference/changelog.md from release/6.x)
 #   server/help.yaml -> source/_data/help.yaml, the settings reference most pages render
 # The app owns both, so the site is rebuilt when the app releases : its release workflow
 # sends a repository_dispatch (app-release) here. The nightly run catches a lost one.
@@ -68,9 +68,9 @@ jobs:
         run: |
           mkdir -p source/_data
           cp _app/server/help.yaml source/_data/help.yaml
-          front='---\nlayout: default\ntitle: Changelog\nnav_order: 10\n---\n\n'
-          { printf -- "$front"; cat _app/CHANGELOG.md; } > source/changelog.md
-          { printf -- "$front"; cat _app6/CHANGELOG.md; } > source/v6/changelog.md
+          front='---\nlayout: default\ntitle: Changelog\nnav_order: 2\n---\n\n'
+          { printf -- "$front"; cat _app/CHANGELOG.md; } > source/_reference/changelog.md
+          { printf -- "$front"; cat _app6/CHANGELOG.md; } > source/v6/_reference/changelog.md
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1

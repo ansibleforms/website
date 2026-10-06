@@ -18,8 +18,8 @@ The site is everything under `source/`. Most of it is written here, but two file
 
 | File on the site | Comes from | Edit it in |
 |---|---|---|
-| `source/changelog.md` | `CHANGELOG.md` of the app | nowhere — release-please writes it on release |
-| `source/v6/changelog.md` | `CHANGELOG.md` on the app's `release/6.x` | nowhere — release-please writes it |
+| `source/_reference/changelog.md` | `CHANGELOG.md` of the app | nowhere — release-please writes it on release |
+| `source/v6/_reference/changelog.md` | `CHANGELOG.md` on the app's `release/6.x` | nowhere — release-please writes it |
 | `source/_data/help.yaml` | `server/help.yaml` of the app | the app repository |
 | `/helm-charts/` (the Helm chart repository) | the chart packages of the `ansibleforms/helm-charts` releases, indexed at build time | the `helm-charts` repository |
 | everything else in `source/` | this repository | here |

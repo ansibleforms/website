@@ -23,4 +23,5 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 group :jekyll_plugins do
   gem "jekyll-seo-tag", "~> 2.9"
   gem "jekyll-include-cache", "~> 0.3"
+  gem "jekyll-redirect-from", "~> 0.16"
 end

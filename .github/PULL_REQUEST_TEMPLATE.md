@@ -11,4 +11,4 @@ squash commit. See CONTRIBUTING.md.
 
 - [ ] Branch is named `<type>/<description>` and the title is a Conventional Commit
 - [ ] Previewed with `bundle exec jekyll serve --source source`, or the **Build** check is enough for this change
-- [ ] `source/changelog.md` and `source/_data/help.yaml` are NOT edited - they come from the app repository
+- [ ] `source/_reference/changelog.md` and `source/_data/help.yaml` are NOT edited - they come from the app repository

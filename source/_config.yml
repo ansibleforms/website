@@ -79,11 +79,57 @@ kramdown:
 # Configure Rouge highlighter
 highlighter: rouge
 
-# Collections
+# Collections : the menu is split into groups, each a collection with a heading in the sidebar
+# (just_the_docs.collections below), led by a Font Awesome icon (_includes/components/site_nav.html).
+# nav_fold makes each group collapsible : they start closed, except the group of the current page.
+# The permalink keeps every page on the url it had before the groups existed :
+# _configure/seed/index.md is still /seed/, faq.md still /faq.html.
 collections:
-  docs:
-    permalink: "/:collection/:path/"
+  get_started:
+    permalink: "/:path:output_ext"
     output: true
+  configure:
+    permalink: "/:path:output_ext"
+    output: true
+  build_forms:
+    permalink: "/:path:output_ext"
+    output: true
+  use:
+    permalink: "/:path:output_ext"
+    output: true
+  integrate:
+    permalink: "/:path:output_ext"
+    output: true
+  reference:
+    permalink: "/:path:output_ext"
+    output: true
+
+just_the_docs:
+  collections:
+    get_started:
+      name: Get started
+      icon: rocket
+      nav_fold: true
+    configure:
+      name: Configure
+      icon: sliders
+      nav_fold: true
+    build_forms:
+      name: Build forms
+      icon: wand-magic-sparkles
+      nav_fold: true
+    use:
+      name: Use it
+      icon: display
+      nav_fold: true
+    integrate:
+      name: Integrate
+      icon: plug
+      nav_fold: true
+    reference:
+      name: Reference
+      icon: book
+      nav_fold: true
 
 # Sass : just-the-docs still uses @import, global built-in functions and darken(), which
 # Dart Sass deprecates. Silence them as the theme itself does in its own _config.yml
@@ -100,3 +146,4 @@ exclude:
 plugins:
   - jekyll-seo-tag
   - jekyll-include-cache
+  - jekyll-redirect-from # the old one-screen GUI pages point to their group page

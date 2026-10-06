@@ -261,6 +261,78 @@ body::before {
   }
 }
 
+// the group headings of the menu (just_the_docs.collections in _config.yml) : quiet labels in
+// line with the VERSION label, no rule under them
+.site-nav .nav-category {
+  border-bottom: 0;
+  margin-top: 1rem;
+  padding: 0.35rem 2rem 0.25rem;
+  font-weight: 650;
+  color: $af-muted;
+  font-size: calc(0.7rem + 1px) !important;
+  letter-spacing: 0.06em;
+}
+
+// the icons of the menu : Home (the first entry, its title also names the page, so the icon
+// comes from here) and the group headings (in their names in _config.yml)
+.site-nav .nav-category i,
+.site-nav > .nav-list:first-child > .nav-list-item:first-child > .nav-list-link::before {
+  display: inline-block;
+  width: 1.1rem;
+  margin-right: 0.5rem;
+  text-align: center;
+}
+
+.site-nav .nav-category i {
+  font-size: 0.75rem;
+}
+
+.site-nav > .nav-list:first-child > .nav-list-item:first-child > .nav-list-link::before {
+  content: "\f015";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+// a collapsible group (nav_fold) nests its sections one list deeper : undo the sub-page look
+// (guide line, indent, lighter text) for them, so they read as top-level entries
+.site-nav .nav-list.nav-category-list {
+  > .nav-list-item > .nav-list {
+    margin-left: 0;
+    border-left: 0;
+
+    > .nav-list-item > .nav-list-link {
+      color: $body-heading-color;
+      font-weight: 500;
+      margin-left: 0.5rem;
+      padding-left: calc(1.25rem + 4px);
+
+      &:hover,
+      &.active {
+        color: $link-color;
+      }
+
+      &.active {
+        font-weight: 650;
+      }
+    }
+
+    > .nav-list-item > .nav-list-expander {
+      color: $af-muted;
+    }
+  }
+}
+
+// a group heading toggles its group (assets/js/nav-groups.js)
+.site-nav .nav-category-list .nav-category {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: $link-color;
+  }
+}
+
 .site-footer {
   color: $af-muted;
 }
@@ -283,7 +355,7 @@ body::before {
     margin: 0;
     padding-top: 0.12rem;
     line-height: 1;
-    font-size: 0.7rem;
+    font-size: calc(0.7rem + 1px);
     font-weight: 650;
     letter-spacing: 0.06em;
     text-transform: uppercase;

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Introduction
+title: Home
 nav_order: 1
 description: "AnsibleForms - Build dynamic, data-driven forms for Ansible automation"
 permalink: /
@@ -15,7 +15,7 @@ permalink: /
       and send them to Ansible or AWX/AAP/Ascender.
     </p>
     <div class="af-hero-actions">
-      <a href="installation/" class="btn btn-primary">Get started</a>
+      <a href="installation/" class="btn btn-primary">Install AnsibleForms</a>
       <a href="forms/" class="btn btn-outline">Build your first form</a>
     </div>
   </div>
