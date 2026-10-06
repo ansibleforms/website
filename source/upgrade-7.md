@@ -77,7 +77,7 @@ v2 answers with HTTP status codes (`400`, `403`, `404`, `422`) and a plain JSON 
 ## Image tags
 
 `latest` moves to 7 with 7.0.0. To stay on 6, use the tag `6` (or `6.5`) instead of `latest`.
-All tags are listed under [Image tags](installation#image-tags).
+All tags are listed under [Image tags](installation/#image-tags).
 
 ## Rolling back
 
