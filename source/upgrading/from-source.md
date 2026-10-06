@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Custom build
+title: From source
 parent: Upgrading
 nav_order: 4
 ---
 
-# Custom build
+# From source
 {: .no_toc }
 
 Upgrade an installation built from source and run with PM2

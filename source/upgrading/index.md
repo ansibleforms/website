@@ -19,7 +19,7 @@ How you upgrade depends on how you installed AnsibleForms. Each way has a page o
 * **[Docker Compose](docker-compose.html)** : pull the new image and restart the docker-compose project
 * **[Docker](docker.html)** : pull the new image and recreate the container with the same settings
 * **[Kubernetes](kubernetes.html)** : refresh the chart repository and run `helm upgrade` with your values
-* **[Custom build](custom-build.html)** : pull the new code, rebuild it and restart the application
+* **[From source](from-source.html)** : pull the new code, rebuild it and restart the application
 
 {: .note }
 > **Backup first** Take a backup before you upgrade (**Settings → Backups**). The database schema is upgraded at the first

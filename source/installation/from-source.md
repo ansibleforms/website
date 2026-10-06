@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Custom build
+title: From source
 parent: Installation
 nav_order: 4
 ---
 
-# Custom build
+# From source
 {: .no_toc }
 
 Build AnsibleForms from source and run it with Node.js
