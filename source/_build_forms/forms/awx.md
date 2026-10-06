@@ -30,6 +30,8 @@ Forms that launch an AWX, AAP or Ascender job template
 {% endfor %}
 {% endif %}
 
+---
+
 ## Properties
 
 Properties specific to `type: awx`, in addition to the [common form properties](common.html).
@@ -38,6 +40,8 @@ Properties specific to `type: awx`, in addition to the [common form properties](
 {% assign awx_groups = awx_props | map: "group" | uniq | sort_natural %}
 {% for group in awx_groups %}
 {% assign group_props = awx_props | where: "group", group %}
+
+---
 
 ## {{ group | capitalize }}
 

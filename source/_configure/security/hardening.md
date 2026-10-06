@@ -1,14 +1,16 @@
 ---
 layout: default
-title: Security hardening
-parent: Running in production
-nav_order: 3
+title: Hardening
+parent: Security
+nav_order: 1
+redirect_from:
+  - /production/hardening.html
 ---
 
-# Security hardening
+# Hardening
 {: .no_toc }
 
-Secrets, tokens, expressions, optional features and role options
+The admin account, the database, expressions, job data, optional features and role options
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -21,43 +23,11 @@ Secrets, tokens, expressions, optional features and role options
 The local admin account is created at first start from [`ADMIN_USERNAME`](../customization/server.html#env_ADMIN_USERNAME)
 and [`ADMIN_PASSWORD`](../customization/server.html#env_ADMIN_PASSWORD), whose default is `AnsibleForms!123`.
 
-* Sign in once and change the password on the **Users** page. Changing `ADMIN_PASSWORD` afterwards has no effect,
-  because the variable is only read when the account does not exist yet.
+* Change the password on the **Users** page; `ADMIN_PASSWORD` is only read when the account is first created.
 * [`REINIT_ADMIN`](../customization/server.html#env_REINIT_ADMIN)`=1` resets the password to `ADMIN_PASSWORD` at every
   start. Use it only to recover a lost password, then unset it and restart.
+* Set the two master secrets first: see [Secrets and encryption](secrets.html).
 * Once LDAP or OAuth2 sign-in works, keep the local admin for emergencies only, with a long password stored in your vault.
-
----
-
-## The two master secrets
-
-Two secrets protect everything else. Set both before the instance holds real data, store them outside the instance,
-and never change them casually:
-
-| Secret | What it protects | If it is not set | If it is lost or changed |
-|--------|------------------|------------------|--------------------------|
-| [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | Every password and token stored in the database: credentials, the LDAP bind password, AAP tokens, OAuth2 client secrets, the mail password, the chat API key | A default key is used, which is public in the source code | Every stored secret becomes impossible to decrypt and must be entered again |
-| [`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET) | The signature of access and refresh tokens, including long-lived [API tokens](../profile/api-token.html) | A random secret is generated at each start, so every restart signs everyone out | Every session and every API token becomes invalid |
-
-Both are logged as a `[SECURITY]` warning at startup while they are missing. The settings pages refuse to edit them,
-the API never returns them, and backups leave them out on purpose, so a lost `ENCRYPTION_SECRET` cannot be recovered
-from anywhere: keep a copy in your secret manager. The encryption secret is used as a 32 character key; a shorter or
-longer value is padded or cut.
-
-Changing `ACCESS_TOKEN_SECRET` is also the only way to invalidate long-lived API tokens before they expire.
-
----
-
-## Tokens
-
-A sign-in returns a short-lived access token and a longer refresh token, which the browser uses to get a new pair:
-
-* [`ACCESS_TOKEN_EXPIRATION`](../customization/security.html#env_ACCESS_TOKEN_EXPIRATION) : `30m` by default. Shorter
-  limits the use of an intercepted token.
-* [`ACCESS_TOKEN_REFRESH_EXPIRATION`](../customization/security.html#env_ACCESS_TOKEN_REFRESH_EXPIRATION) : `24h` by
-  default. This is how long an idle browser stays signed in.
-* The `extendedTokenExpiration` role option lets a user request a token valid for a number of days. Grant it only to
-  roles that need API access from scripts.
 
 ---
 
@@ -78,11 +48,8 @@ AnsibleForms holds every credential and job in its MySQL database, so keep that 
 
 Server expressions run on the server for any signed-in user, so the sanitizer and the outbound filters matter:
 
-* [`EXPRESSION_SANITIZER`](../customization/security.html#env_EXPRESSION_SANITIZER) : keep the default `strict`, or use
-  `paranoid`. Never leave `legacy` in place: it lets every signed-in user run code on the server, and the Status page
-  shows it as a warning.
-* [`REST_DENIED_HOSTS`](../customization/security.html#env_REST_DENIED_HOSTS) : block the destinations REST expressions
-  must never reach, for example `169.254.169.254,127.0.0.0/8` (cloud metadata and the host itself).
+* [`EXPRESSION_SANITIZER`](../customization/security.html#env_EXPRESSION_SANITIZER) : `strict` or `paranoid`, never `legacy`, which lets users run server code.
+* [`REST_DENIED_HOSTS`](../customization/security.html#env_REST_DENIED_HOSTS) : hosts REST expressions may not reach, e.g. `169.254.169.254,127.0.0.0/8`.
 * [`REST_ALLOWED_HOSTS`](../customization/security.html#env_REST_ALLOWED_HOSTS) : when set, REST expressions can reach
   only these hosts and ranges. The denied list wins over it.
 
@@ -99,8 +66,7 @@ Job extravars and output are stored in the database and shown to everyone who ca
   the names your forms use, for example `password|secret|token|apikey|passphrase`.
 * [`EXTRAVARS_USER_FIELDS`](../customization/security.html#env_EXTRAVARS_USER_FIELDS) : trims the `ansibleforms_user`
   object sent with every job, which otherwise holds the user's whole group membership.
-* [`REGEX_FILTER_JOB_OUTPUT`](../customization/security.html#env_REGEX_FILTER_JOB_OUTPUT) only hides noisy tasks behind
-  the **Apply filter** button. It is a readability aid, not a way to hide secrets: use `no_log` in the playbook for that.
+* [`REGEX_FILTER_JOB_OUTPUT`](../customization/security.html#env_REGEX_FILTER_JOB_OUTPUT) only hides noisy tasks; hide secrets with `no_log`.
 
 ---
 
@@ -108,9 +74,7 @@ Job extravars and output are stored in the database and shown to everyone who ca
 
 Administrators can change much of the configuration from the browser. Narrow that where the configuration lives elsewhere:
 
-* [`ALLOW_ENV_EDIT`](../customization/features.html#env_ALLOW_ENV_EDIT)`=0` : the settings pages show the environment
-  but cannot write it. Use it whenever the environment comes from docker-compose, Kubernetes or a GitOps tool, see
-  [Editing and audit](../seed/environment-and-audit.html).
+* [`ALLOW_ENV_EDIT`](../customization/configuration.html#env_ALLOW_ENV_EDIT)`=0` : read-only settings, for a [managed environment](../seed/environment-and-audit.html).
 * [`SHOW_DESIGNER`](../customization/features.html#env_SHOW_DESIGNER)`=0` : removes the built-in designer when forms
   are maintained in git.
 

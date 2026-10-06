@@ -1,13 +1,15 @@
 ---
 layout: default
-title: GUI
+title: Interface tour
 nav_order: 1
 has_children: true
 has_toc: false
 description: Screenshots and tour of the graphical user interface
+permalink: /gui/
 ---
 
-# Graphical User Interface
+# Interface tour
+{: .no_toc }
 
 A visual tour of the AnsibleForms web interface, from the dashboard to advanced administration features.
 {: .fs-6 .fw-300 }

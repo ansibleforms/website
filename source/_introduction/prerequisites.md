@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Prerequisites
-nav_order: 4
+nav_order: 5
 ---
 
 # Prerequisites
@@ -54,7 +54,7 @@ The Helm chart's default resources are a reasonable starting point for a small t
 Each local job is an `ansible-playbook` process inside the AnsibleForms container, so plan CPU and memory for the
 number of playbooks you expect to run at once. Jobs that run on AWX, AAP or Ascender cost AnsibleForms little.
 
-Job output is kept in the database for ever by default. Set [`JOB_RETENTION_DAYS`](customization/paths.html#env_JOB_RETENTION_DAYS)
+Job output is kept in the database for ever by default. Set [`JOB_RETENTION_DAYS`](customization/retention.html#env_JOB_RETENTION_DAYS)
 on a busy instance to keep the database from growing without limit.
 
 ---

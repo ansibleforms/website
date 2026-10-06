@@ -4,6 +4,7 @@ title: Expressions
 nav_order: 3
 has_children: true
 has_toc: false
+permalink: /expressions/
 ---
 
 # Expressions
@@ -18,6 +19,8 @@ For form authors: fill fields dynamically with JavaScript, computed in the brows
 
 The `expression` attribute of a form field lets you create dynamic forms with JavaScript expressions.
 
+---
+
 ## Introduction
 
 The `expression` attribute is available on multiple field types:
@@ -28,6 +31,8 @@ JavaScript expressions are evaluated either on the **server side** (default) or 
 
 - **On the server side** (`runLocal: false`, the default) - predefined functions that fetch data from APIs, files and databases.
 - **On the client side** (`runLocal: true`) - Code leverages the full JavaScript engine in the browser sandbox for calculations, transformations, and manipulations.
+
+---
 
 ## Security Concerns
 

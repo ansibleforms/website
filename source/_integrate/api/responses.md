@@ -18,6 +18,8 @@ The shape of a response, and the status codes
 
 Responses are plain JSON, and the HTTP status code tells whether a call succeeded.
 
+---
+
 ## Responses
 
 A successful call returns the object itself, or a list with its size:
@@ -31,6 +33,8 @@ An error returns a message, and details when there are any:
 ```json
 { "error": "The form data is not valid", "details": [ ... ] }
 ```
+
+---
 
 ## Status codes
 

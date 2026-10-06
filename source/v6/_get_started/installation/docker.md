@@ -18,12 +18,16 @@ Run the AnsibleForms image with Docker or Podman, next to a MySQL server of your
 
 You can run AnsibleForms as a standalone container with Docker or Podman, connected to a MySQL database.
 
+---
+
 ## Prerequisites
 
 Before you start, you need:
 
 * **Docker or Podman** : one of them installed and running
 * **MySQL** : installed and running
+
+---
 
 ## Install MySQL
 
@@ -76,6 +80,8 @@ AnsibleForms connects to the database over the network, as `DB_USER` with `DB_PA
 when the secure installation script asks, or create a dedicated account. On Ubuntu and Debian the server listens on
 localhost only: set `bind-address` in its configuration so that the container can reach it.
 
+---
+
 ## Get the image
 
 Run the published image from the GitHub Container Registry; the tag `6` is the newest AnsibleForms 6 release (see [Image tags](./#image-tags)):
@@ -124,6 +130,8 @@ podman ps
 
 </div>
 </div>
+
+---
 
 ## Test the application
 

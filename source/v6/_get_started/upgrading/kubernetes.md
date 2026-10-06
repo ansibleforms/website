@@ -19,6 +19,8 @@ Upgrade an installation made with the Helm chart
 Each chart version deploys one AnsibleForms release. An upgrade installs a newer chart version with your existing values;
 the data on the persistent volumes is preserved. An upgrade that changes nothing leaves the pods untouched.
 
+---
+
 ## Before you upgrade
 
 Prepare the upgrade so that you can go back if something goes wrong:
@@ -29,6 +31,8 @@ Prepare the upgrade so that you can go back if something goes wrong:
 * **Read the chart's [changelog](https://github.com/ansibleforms/helm-charts/blob/release/6.x/charts/ansibleforms/CHANGELOG.md)** for changes to the values.
 * **With generated credentials** (`secrets.generate`), back up the `<release>-secrets` Secret: `ENCRYPTION_SECRET` cannot be recovered.
 
+---
+
 ## 1. Find the new chart version
 
 Refresh the chart repository and list the available chart versions. The 6.x charts run AnsibleForms 6; the 7.x charts run AnsibleForms 7:
@@ -37,6 +41,8 @@ Refresh the chart repository and list the available chart versions. The 6.x char
 helm repo update
 helm search repo ansibleforms/ansibleforms --versions
 ```
+
+---
 
 ## 2. Upgrade the release
 
@@ -52,6 +58,8 @@ helm upgrade --install ansibleforms ansibleforms/ansibleforms \
 
 With the OCI registry, use `oci://ghcr.io/ansibleforms/charts/ansibleforms` as the chart.
 
+---
+
 ## 3. Check the upgrade
 
 Wait for the new pods, then run the chart's test, which checks both the web server and the database connection:
@@ -63,6 +71,8 @@ helm test ansibleforms --namespace ansibleforms --logs
 
 In AnsibleForms, **Help → About** shows the version that is running, and **Settings → Status** shows the health of the
 database, the schema and the other systems AnsibleForms depends on.
+
+---
 
 ## Roll back
 

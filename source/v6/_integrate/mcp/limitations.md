@@ -33,6 +33,8 @@ returns `status: error`.
 Server-side expressions (without `runLocal`) go through the same
 [`EXPRESSION_SANITIZER`](../customization) rules as they do for the browser.
 
+---
+
 ## Limitations
 
 Some forms and fields cannot be used through the MCP server yet:

@@ -48,6 +48,8 @@ whose working tree is missing.
 > write the same error to the log indefinitely. Fix the file, or call the endpoint to retry
 > immediately.
 
+---
+
 ## A broken seed refuses to start
 
 An unreadable file, invalid YAML, an unknown field, a duplicate name or an unresolved
@@ -66,6 +68,8 @@ the offending key:
 Config seed failed, refusing to start : Seed file validation failed :
 /awx/items/0 must NOT have additional properties 'tokenn'
 ```
+
+---
 
 ## An empty database provisions itself
 

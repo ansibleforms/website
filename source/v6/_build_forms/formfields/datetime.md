@@ -104,7 +104,11 @@ The properties available to a `datetime` field, grouped by purpose:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example `datetime` fields, in YAML:
 
 {%- assign type_choice = formfield_object.items | where: "name", "type" | first %}
 {%- if type_choice.choices %}

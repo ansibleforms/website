@@ -20,6 +20,8 @@ Pause a job until someone approves it
 
 {{ approval_object.description | markdownify }}
 
+---
+
 ## Attributes
 
 The attributes of an approval point:
@@ -58,7 +60,11 @@ The attributes of an approval point:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example approval points, in YAML:
 
 {% for example in approval_object.examples %}
 ### {{ forloop.index }}) {{ example.name }}

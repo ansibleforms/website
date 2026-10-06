@@ -4,6 +4,7 @@ title: MCP server
 nav_order: 1
 has_children: true
 has_toc: false
+permalink: /mcp/
 ---
 
 # MCP server
@@ -21,6 +22,8 @@ AnsibleForms can serve a
 [Model Context Protocol](https://modelcontextprotocol.io) server, so that an MCP client, such as
 a chat backend or an IDE assistant, can list the forms a user may use, determine their fields,
 launch jobs and follow their progress.
+
+---
 
 ## What it is, and what it is not
 

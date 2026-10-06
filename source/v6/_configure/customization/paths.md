@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Paths, backups and retention
+title: Paths
 parent: Environment Variables
 nav_order: 2
 ---
 
-# Paths, backups and retention
+# Paths
 {: .no_toc }
 
-Where files live, backups, and how long jobs and audit records are kept
+Where the configuration, forms, playbooks, uploads and backups live
 {: .fs-6 .fw-300 }
 
 ---

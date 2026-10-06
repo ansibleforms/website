@@ -28,6 +28,8 @@ The following hooks are available:
 - `onFinish` - triggered when the job finishes, regardless of its status
 - `onAbort` - triggered when the job is aborted
 
+---
+
 ## Attributes
 
 The attributes of a job status action:
@@ -66,7 +68,11 @@ The attributes of a job status action:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example job status actions, in YAML:
 
 {% for example in jobstatus_object.examples %}
 ### {{ forloop.index }}) {{ example.name }}

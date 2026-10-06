@@ -4,6 +4,7 @@ title: Launch validation
 nav_order: 4
 has_children: true
 has_toc: false
+permalink: /launch-validation/
 ---
 
 # Launch validation
@@ -20,6 +21,8 @@ Check every launch of a form on the server
 Check every launch of a form on the server, both its validation rules and the extravars the
 job runs with, regardless of who or what launches it: the browser, a script calling the REST
 API, or an AI agent through the MCP server.
+
+---
 
 ## Why it exists
 
@@ -38,6 +41,8 @@ The server also has no way to distinguish a request from the browser from one se
 script: both use the same endpoint, the same token and the same body, and users can modify
 any request their own browser sends. A check can only be trusted on the server, and launch
 validation is that check.
+
+---
 
 ## The three ways in
 

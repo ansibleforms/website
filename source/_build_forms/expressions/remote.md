@@ -25,6 +25,8 @@ Server-side expressions are meant to retrieve information from data sources such
 {: .important }
 All server-side functions are prefixed with `fn.` (for example, `fn.fnRestBasic`).
 
+---
+
 ## Manipulate Date and Time
 
 Work with dates and times through [Day.js](https://day.js.org):
@@ -34,6 +36,8 @@ fn.fnTime().diff(fn.fnTime('2019-10-01'),'day') // number of days between now an
 
 // This is the core implementation of https://day.js.org
 ```
+
+---
 
 ## Get CIDR Info from IP
 
@@ -60,6 +64,8 @@ fn.fnCidr('172.16.0.1','255.255.0.0')
 // }
 ```
 
+---
+
 ## Get SSH Output
 
 Run a command on a remote host over SSH and use its output:
@@ -77,6 +83,8 @@ fn.fnSsh('root','172.16.0.1','ls -la')
 // In the settings you can find the public-key and add your target-host to known_hosts
 ```
 
+---
+
 ## List Files in a Directory
 
 List the files of a directory on the AnsibleForms server, optionally recursively and filtered:
@@ -91,6 +99,8 @@ fn.fnLs('/tmp',{ recursive: true, regex: '.*\\.log$', metadata: true })
 //   - regex : a regular expression to filter files
 //   - metadata : whether to include file metadata (size,mtime,... directories will be shown too)
 ```
+
+---
 
 ## Parse HTML Page
 
@@ -109,6 +119,8 @@ fn.fnParseHtmlWithRegex('https://ansibleguy.com','<h2.*?>(.*?)</h2>','g')
 // { fullMatch, groups (the numbered group matches), namedGroups }
 ```
 
+---
+
 ## Get DNS Info
 
 Resolve a DNS record of a domain:
@@ -120,6 +132,8 @@ fn.fnDnsResolve('ansibleguy.com','A')
 // - fqdn : a fully qualified domain name
 // - type : the type of dns record (A,AAAA,MX,NS,CNAME,TXT,SRV,PTR)
 ```
+
+---
 
 ## Read JSON File
 
@@ -133,6 +147,8 @@ fn.fnReadJsonFile('/tmp/file.json','.[].name')
 // - jq-expression : an optional jq-expression (https://jqplay.org)
 ```
 
+---
+
 ## Read YAML File
 
 Read a YAML file on the server, optionally filtered with jq:
@@ -144,6 +160,8 @@ fn.fnReadYamlFile('/tmp/file.yaml','.[].name')
 // - path : path to yaml file
 // - jq-expression : an optional jq-expression (https://jqplay.org)
 ```
+
+---
 
 ## Get a Name with Incremental Numbering
 

@@ -30,6 +30,8 @@ fn.fnSort(['a','b','z','q','c'],{'':{direction:'asc'}})
 // - sort-object : a sorting object to order the results
 ```
 
+---
+
 ## The Sorting Object
 
 All data-fetching functions can sort their results with this sorting object.

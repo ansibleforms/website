@@ -23,11 +23,15 @@ under the same rules as the MCP server's `relaunch_job`, including the password 
 [launch validation](../launch-validation), and shows a **Relaunch** summary; the button
 launches it once. "Run job 1234 again with server web02" changes only that field.
 
+---
+
 ## Audit
 
 Every launch from the chat is recorded as **chat.launch** with the user, the job, the form,
 the provider, and the payload hash of the summary that was approved. Changes to the chat settings are
 recorded like any other settings change.
+
+---
 
 ## Limitations
 

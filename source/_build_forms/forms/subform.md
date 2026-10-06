@@ -36,6 +36,8 @@ A subform is a reusable form fragment. It does not appear in the tile view and c
 {% endfor %}
 {% endif %}
 
+---
+
 ## Properties
 
 Subforms have **no type-specific properties**. They use only the [common form properties](common.html): `name`, `description`, `help`, `type`, and `fields`.

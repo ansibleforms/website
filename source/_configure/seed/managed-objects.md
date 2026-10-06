@@ -32,6 +32,8 @@ it is left unchanged.
 
 `settings` covers only the mail fields and the URL; all other settings stay editable.
 
+---
+
 ## The file holds no secrets
 
 Each `${VARIABLE}` is replaced with that environment variable (on Kubernetes, from a `Secret`), so the file can live in Git.
@@ -39,6 +41,8 @@ Each `${VARIABLE}` is replaced with that environment variable (on Kubernetes, fr
 A variable that is not set is a **fatal error**, so a placeholder can never end up stored as a password.
 
 Credentials can also use a [secret store](../secret-stores) (`secret_store`, `secret_ref`); `vault_path` goes away in 8.
+
+---
 
 ## Managed objects
 

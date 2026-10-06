@@ -4,6 +4,7 @@ title: Tablefields (deprecated)
 nav_order: 2.5
 has_children: true
 has_toc: false
+permalink: /tablefields/
 ---
 
 # Tablefields (deprecated)
@@ -20,6 +21,8 @@ The columns of a deprecated table field
 Tablefields are the field types used within a [`table`](../formfields/table.html) formfield. Each column of a table is defined by a tablefield, which sets the data entry control for that column.
 
 Tablefields resemble regular formfields, but with some restrictions, because they operate within the context of a row.
+
+---
 
 ## Common Properties
 

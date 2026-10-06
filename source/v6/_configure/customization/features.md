@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Features and configuration
+title: Features
 parent: Environment Variables
-nav_order: 3
+nav_order: 4
 ---
 
-# Features and configuration
+# Features
 {: .no_toc }
 
-The config seed, the designer, MCP, chat, launch validation, git and ytt
+The designer, MCP, chat, launch validation, the AWX API and query logging
 {: .fs-6 .fw-300 }
 
 ---

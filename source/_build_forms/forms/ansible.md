@@ -30,6 +30,8 @@ Forms that run a local Ansible playbook
 {% endfor %}
 {% endif %}
 
+---
+
 ## Properties
 
 Properties specific to `type: ansible`, in addition to the [common form properties](common.html).
@@ -38,6 +40,8 @@ Properties specific to `type: ansible`, in addition to the [common form properti
 {% assign ansible_groups = ansible_props | map: "group" | uniq | sort_natural %}
 {% for group in ansible_groups %}
 {% assign group_props = ansible_props | where: "group", group %}
+
+---
 
 ## {{ group | capitalize }}
 

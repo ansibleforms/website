@@ -7,20 +7,28 @@
          DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_POOL_SIZE, ALLOW_SCHEMA_CREATION,
          ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, UPLOAD_MAX_GB, PROCESS_MAX_BUFFER]
 - slug: paths
-  title: Paths, backups and retention
-  lead: where files live, backups, and how long jobs and audit records are kept
+  title: Paths
+  lead: where the configuration, forms, playbooks, uploads and backups live
   vars: [CONFIG_PATH, FORMS_FOLDER_PATH, FORMS_STAGING_PATH, FORMS_BACKUP_PATH, LOCK_PATH, HOME_PATH, REPO_PATH,
-         VARS_FILES_PATH, ANSIBLE_PATH, FORMS_PATH, UPLOAD_PATH, BACKUP_PATH, MYSQLDUMP_COMMAND, MYSQL_COMMAND,
-         BACKUP_COMMAND_TIMEOUT_SECONDS, OLD_BACKUP_DAYS, NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
+         VARS_FILES_PATH, ANSIBLE_PATH, FORMS_PATH, UPLOAD_PATH, BACKUP_PATH]
+- slug: retention
+  title: Backups and retention
+  lead: the backup commands, and how long backups, jobs and audit records are kept
+  vars: [MYSQLDUMP_COMMAND, MYSQL_COMMAND, BACKUP_COMMAND_TIMEOUT_SECONDS, OLD_BACKUP_DAYS, NIGHTLY_BACKUP_RETENTION,
+         AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
 - slug: features
-  title: Features and configuration
-  lead: the config seed, the designer, MCP, chat, launch validation, git and ytt
-  vars: [CONFIG_SEED_PATH, CONFIG_SEED_RELOAD_SECONDS, ALLOW_ENV_EDIT, ENABLE_CONFIG_IN_DATABASE, ENABLE_FORMS_YAML_IN_DATABASE, SHOW_DESIGNER,
-         ENABLE_MCP, ENABLE_CHAT, LAUNCH_VALIDATION, AWX_API_PREFIX, ENABLE_DB_QUERY_LOGGING,
-         GIT_CLONE_COMMAND, GIT_PULL_COMMAND, GIT_PUSH_COMMAND, USE_YTT, YTT_ALLOW_SYMLINK_DESTINATIONS,
-         YTT_DANGEROUS_ALLOW_ALL_SYMLINK_DESTINATIONS, YTT_VARS_PREFIX, "YTT_LIB_DATA_{dynamic}"]
+  title: Features
+  lead: the designer, MCP, chat, launch validation, the AWX API and query logging
+  vars: [SHOW_DESIGNER, ENABLE_MCP, ENABLE_CHAT, LAUNCH_VALIDATION, AWX_API_PREFIX, ENABLE_DB_QUERY_LOGGING]
+- slug: configuration
+  title: Configuration
+  lead: the config seed, where the configuration is kept, git and ytt
+  vars: [CONFIG_SEED_PATH, CONFIG_SEED_RELOAD_SECONDS, ALLOW_ENV_EDIT, ENABLE_CONFIG_IN_DATABASE,
+         ENABLE_FORMS_YAML_IN_DATABASE, GIT_CLONE_COMMAND, GIT_PULL_COMMAND, GIT_PUSH_COMMAND, USE_YTT,
+         YTT_ALLOW_SYMLINK_DESTINATIONS, YTT_DANGEROUS_ALLOW_ALL_SYMLINK_DESTINATIONS, YTT_VARS_PREFIX,
+         "YTT_LIB_DATA_{dynamic}"]
 - slug: security
-  title: Security
+  title: Security variables
   lead: tokens, encryption, outbound REST hosts, masking and HashiCorp Vault
   vars: [ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_REFRESH_EXPIRATION, ACCESS_TOKEN_ISSUER,
          ENCRYPTION_SECRET, AZURE_GRAPH_URI, REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, EXPRESSION_SANITIZER,

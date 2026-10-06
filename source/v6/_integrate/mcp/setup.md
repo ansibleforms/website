@@ -26,6 +26,8 @@ POST <your url>/api/v2/mcp
 
 It uses stateless Streamable HTTP with plain JSON responses, so `GET` and `DELETE` return 405.
 
+---
+
 ## Authentication
 
 Every request needs an AnsibleForms access token:

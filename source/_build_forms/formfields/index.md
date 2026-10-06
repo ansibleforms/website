@@ -4,6 +4,7 @@ title: Formfields
 nav_order: 2
 has_children: true
 has_toc: false
+permalink: /formfields/
 ---
 
 # Formfields
@@ -19,6 +20,8 @@ For form authors: the field types a form can hold, and the properties each one s
 Formfields define the input controls of a form. Each field type has its own properties and behavior for collecting a particular kind of data.
 
 Pick the field type that matches the data to collect, from plain text to structured lists.
+
+---
 
 ## Common Properties
 

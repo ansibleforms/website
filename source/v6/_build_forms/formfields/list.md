@@ -15,6 +15,8 @@ A table of rows, each edited in a subform
 
 A list field displays a table of rows, each created and edited in a dedicated **subform** pane (a drilldown pattern). It supersedes the deprecated [`table`](table.html) field.
 
+---
+
 ## Key features
 
 The list field offers the following capabilities:
@@ -25,6 +27,8 @@ The list field offers the following capabilities:
 - When `allowDelete: false`, pre-existing rows are protected; only rows added in the current session (carrying the `insertMarker`) can be deleted.
 - The `columns` property controls which subform fields appear as columns in the summary table.
 - The output is always an array of objects. `model`, `output`, `outputObject` and `valueColumn` declared on subform fields are honored when the extravars are generated.
+
+---
 
 ## Subform declaration
 
@@ -46,6 +50,8 @@ A subform is a form of its own with `type: subform`, in a file of the forms fold
       type: text
       label: Country
 ```
+
+---
 
 ## Properties
 
@@ -157,6 +163,8 @@ The properties available to a `list` field, grouped by purpose:
 </table>
 
 {%- endif %}
+
+---
 
 ## Examples
 

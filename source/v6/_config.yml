@@ -128,7 +128,7 @@ just_the_docs:
       icon: wand-magic-sparkles
       nav_fold: true
     use:
-      name: Use it
+      name: User guide
       icon: display
       nav_fold: true
     integrate:

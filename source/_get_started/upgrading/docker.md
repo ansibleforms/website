@@ -20,6 +20,8 @@ A standalone container is upgraded by replacing it: pull the new image, remove t
 with the same `run` command. Your files are stored in the mounted `/app/dist/persistent` folder and your data in MySQL,
 so both are preserved.
 
+---
+
 ## Before you upgrade
 
 Prepare the upgrade so that you can go back if something goes wrong:
@@ -27,6 +29,8 @@ Prepare the upgrade so that you can go back if something goes wrong:
 * **Take a backup** under **Settings → Backups**. The new release upgrades the database schema at its first start.
 * **Read the [changelog](../changelog)** for the releases between your version and the new one.
 * **Moving to a new major version?** Follow [Upgrading to v7](../upgrade-7.html) first.
+
+---
 
 ## 1. Pull the new image
 
@@ -52,6 +56,8 @@ podman pull ghcr.io/ansibleforms/ansibleforms:7
 
 </div>
 </div>
+
+---
 
 ## 2. Replace the container
 
@@ -82,6 +88,8 @@ podman run -p 8000:8000 -d -t --mount type=bind,source=/srv/apps/ansibleforms/se
 </div>
 </div>
 
+---
+
 ## 3. Check the upgrade
 
 Follow the container log while it starts. The first start of a new release upgrades the database schema:
@@ -109,6 +117,8 @@ podman logs -f ansibleforms
 
 In AnsibleForms, **Help → About** shows the version that is running, and **Settings → Status** shows the health of the
 database, the schema and the other systems AnsibleForms depends on.
+
+---
 
 ## Roll back
 

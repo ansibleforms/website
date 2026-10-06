@@ -18,8 +18,7 @@ The built-in admin, and the users and groups stored in the AnsibleForms database
 
 ## The built-in admin
 
-At every start, AnsibleForms makes sure a local group `admins` and a local admin user exist, and creates what is missing.
-Three environment variables control the admin user:
+Each start creates the local `admins` group and admin user if missing; three variables control the admin:
 
 | Variable | Default | Meaning |
 |---|---|---|
@@ -27,8 +26,10 @@ Three environment variables control the admin user:
 | [`ADMIN_PASSWORD`](../customization/server.html#env_ADMIN_PASSWORD) | `AnsibleForms!123` | Password given to the admin when it is created (or reset). |
 | [`REINIT_ADMIN`](../customization/server.html#env_REINIT_ADMIN) | `0` | `1` resets the admin's password to `ADMIN_PASSWORD` and puts it back in `admins`. |
 
-`ADMIN_PASSWORD` is only used when the user is created or reset: changing it later does nothing on its own. Change the
-default password right after the first login, on the profile page or with **Change Password** on the **Users** page.
+`ADMIN_PASSWORD` is only used when the user is created or reset: changing it later does nothing on its own.
+
+{: .warning }
+> Change the default password right after the first login, on the profile page or with **Change Password** on the **Users** page.
 
 Changing `ADMIN_USERNAME` after the first start creates a second admin user with that name; the old one is kept.
 
@@ -49,8 +50,7 @@ Local users and groups are managed under **Access > Users** and **Access > Group
 | Email | Optional. |
 | Group | The user's local group. A local user belongs to exactly one group. |
 
-Local users can also change their own password on their profile page. Users of the other login methods cannot: their
-password is managed by the directory or the identity provider.
+Local users change their own password on their profile; other users do so in their directory or identity provider.
 
 {: .warning }
 > Deleting a group also deletes every user in it. The `admins` group is recreated at the next start, but its users are not.
@@ -59,8 +59,7 @@ password is managed by the directory or the identity provider.
 
 ## Mapping to roles
 
-A local user gets the group `local/<group name>`, and can be named in a role as `local/<username>`.
-The default config.yaml gives the `admin` role to the `admins` group:
+Roles name local groups as `local/<group>` and users as `local/<user>`; by default `admins` gets `admin`:
 
 ```yaml
 roles:

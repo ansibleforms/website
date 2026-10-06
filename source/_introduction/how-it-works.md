@@ -116,31 +116,31 @@ The components in the diagram each have a role of their own:
 
 AnsibleForms runs as a single instance: see the [FAQ](faq.html#deployment-topology-single-instance-only) for the reasons.
 
+### Built with
+
+The server and the web interface are built on these components:
+
+| Part | Technology |
+|---|---|
+| **Server** | Node.js and Express |
+| **Database** | MySQL or MariaDB |
+| **Web interface** | Vue 3, with Bootstrap 5 and Font Awesome |
+
 ---
 
 ## What happens when you launch a form
 
 A launch goes through the same steps whether it comes from the browser or from the [REST API](api/jobs.html):
 
-1. **The form is loaded.** The server sends the browser only the forms that the user's [roles](config/roles.html) allow.
-   Local expressions run in the browser; server expressions and database queries are evaluated by the server.
-2. **The extravars are built.** When the user presses **Submit**, the browser turns the field values into extravars
-   (the `model` and `outputObject` properties shape them) and posts them, with the raw field values, to `POST /api/v2/job`.
-3. **The server checks the launch.** It loads the form again for the user's roles, drops reserved `__…__` keys that the
-   form does not declare as fields and, when [launch validation](launch-validation/) is `log` or `enforce`, checks the values.
-4. **A job record is created.** The server adds `ansibleforms_user` and the form's own settings to the extravars, stores
-   the job in the database with status `running`, and returns its id; the extravars also receive it as `__jobid__`.
-5. **Credentials are resolved.** The credentials the form asks for are read, from the database or from a
-   [secret store](secret-stores/). A `launch` event mail goes out first when the form's `notifications` list that event.
-6. **An approval point pauses the job.** A form with an [`approval`](forms/approval.html) mails the approvers and
-   sets the job to `approve`; the job continues once someone with an approval role approves it.
-7. **The job runs.** An `ansible` form writes the extravars to a temporary `extravars_<jobid>.json` file and runs
-   `ansible-playbook` in the playbooks folder. An `awx` form launches the template through the AWX/AAP/Ascender API
-   and follows it. A `multistep` form runs its steps one after the other.
-8. **The output is stored.** Every line of output is written to the database as it arrives. The browser polls the job
-   every two seconds and shows the output live; the job also appears under **Jobs**.
-9. **The job ends.** It gets a final status, such as `success`, `failed` or `aborted`, the temporary extravars files are removed
-   (unless `keepExtravars` is set), and a status mail goes out when the form's [`notifications`](forms/notifications.html) ask for one.
+1. **Load** : the server sends only the forms the user's [roles](config/roles.html) allow, and evaluates server expressions
+2. **Submit** : the browser turns the field values into extravars and posts them to `POST /api/v2/job`
+3. **Check** : the server reloads the form for the user's roles and, with [launch validation](launch-validation/) on, checks the values
+4. **Record** : the job is stored with status `running`, and its id is added to the extravars as `__jobid__`
+5. **Credentials** : the form's credentials are read from the database or a [secret store](secret-stores/)
+6. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
+7. **Run** : `ansible-playbook` runs locally, or the AWX/AAP/Ascender template is launched; multistep forms run each step
+8. **Follow** : the output is saved as it arrives, and the browser polls the job every two seconds to show it live
+9. **End** : the job gets its final status, and a mail goes out when the form's [`notifications`](forms/notifications.html) ask for it
 
 ---
 
@@ -162,8 +162,7 @@ The database, `AnsibleForms`, is created at the first start (unless `ALLOW_SCHEM
 ### In the persistent folder
 {: .no_toc }
 
-In the container image the persistent folder is `/app/dist/persistent`; in a source installation it is `server/persistent`.
-Each path below can be moved with its own [environment variable](customization/paths.html):
+It is `/app/dist/persistent` in the image and `server/persistent` from source; each path has its own [variable](customization/paths.html):
 
 | Default path | Variable | Contents |
 |---|---|---|
@@ -178,5 +177,4 @@ Each path below can be moved with its own [environment variable](customization/p
 | `certificates/` | [`HTTPS_CERT`](customization/server.html#env_HTTPS_CERT), [`HTTPS_KEY`](customization/server.html#env_HTTPS_KEY) | The certificate and key, when `HTTPS` is `1` |
 | `.env` | | The environment variables saved from the settings pages (unless `ALLOW_ENV_EDIT` is `0`) |
 
-The SSH key that AnsibleForms generates for git and SSH connections is kept in the home directory
-([`HOME_PATH`](customization/paths.html#env_HOME_PATH)), which is not inside the persistent folder by default.
+The generated SSH key lives in [`HOME_PATH`](customization/paths.html#env_HOME_PATH), outside the persistent folder by default.

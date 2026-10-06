@@ -23,6 +23,8 @@ where you make it, so another browser or computer starts from the defaults.
 | Forms view | Tiles or List | the button on the Forms page |
 | Time zone | UTC, this browser's zone, or any zone by name | only here |
 
+---
+
 ## Time zone
 
 Dates and times across AnsibleForms are shown in the time zone you select. This includes job start

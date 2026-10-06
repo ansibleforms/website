@@ -19,6 +19,8 @@ Split a form's input across pages with Back and Next
 {% assign wizard_prop = form_object.items | where: "name", "wizard" | first %}
 {% assign wizard_object = form_object.help | where: "name", "Wizard step" | first %}
 
+---
+
 ## What is a wizard?
 
 A **wizard** turns a single form into a sequence of pages. Each page is rendered from a [`subform`](subform.html) and the user navigates with **Back** and **Next** buttons. Validation is enforced per page: the user cannot move forward until the current step is valid, unless the step is marked `optional`.
@@ -31,6 +33,8 @@ A form with a `wizard` does not need its own `fields`, but it cannot set `launch
 
 {: .note }
 > For how a `wizard` differs from a `multistep` form, and how the two combine, see the FAQ entry [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form).
+
+---
 
 ## Form-level property
 
@@ -68,6 +72,8 @@ A wizard is enabled with a single form-level property:
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
 
 ## Wizard step properties
 
@@ -189,6 +195,8 @@ A wizard is enabled with a single form-level property:
 A wizard can be layered on top of a [`multistep`](multistep.html) form. When each wizard step's `defaultModel` matches the [`key`](multistep.html#step_key) of the corresponding multistep step, each playbook or template receives only the values from its own wizard page.
 
 The FAQ contains a worked example and the layout of the merged extravars: [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form) (section *Combined (wizard on top of multistep)*).
+
+---
 
 ## See also
 

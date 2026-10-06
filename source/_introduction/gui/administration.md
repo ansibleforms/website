@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Administration
-parent: GUI
+parent: Interface tour
 nav_order: 3
 redirect_from:
   - /gui/settings.html

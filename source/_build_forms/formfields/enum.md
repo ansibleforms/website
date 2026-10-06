@@ -104,7 +104,11 @@ The properties available to a `enum` field, grouped by purpose:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example `enum` fields, in YAML:
 
 {%- assign type_choice = formfield_object.items | where: "name", "type" | first %}
 {%- if type_choice.choices %}

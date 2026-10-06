@@ -4,6 +4,7 @@ title: Chat assistant
 nav_order: 3
 has_children: true
 has_toc: false
+permalink: /chat/
 ---
 
 # Chat assistant
@@ -22,6 +23,8 @@ For administrators who switch it on, and the users who chat with it: fill in and
 A chat button on every page opens an
 assistant that finds the right form, asks for missing information, offers the form's own
 choices as buttons, and shows a summary with a **Launch** button. A job starts only when the user clicks it.
+
+---
 
 ## How it works
 

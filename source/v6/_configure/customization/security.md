@@ -1,11 +1,11 @@
 ---
 layout: default
-title: Security
+title: Security variables
 parent: Environment Variables
-nav_order: 4
+nav_order: 6
 ---
 
-# Security
+# Security variables
 {: .no_toc }
 
 Tokens, encryption, outbound REST hosts, masking and HashiCorp Vault

@@ -16,9 +16,9 @@ What to change while still on 6.5, before you move to version 7
 
 ---
 
-AnsibleForms 7 removes everything that 6.x marked as deprecated. Most of it can be fixed
-while you are still on 6.5, where the old and the new way both work. Do that first, then
-upgrade.
+Version 7 drops everything 6.x deprecated; fix it first on 6.5, where old and new both work, then upgrade.
+
+---
 
 ## Before you upgrade (on 6.5)
 
@@ -43,6 +43,8 @@ Version 7 rejects `table` fields: use a `list` field with a `subform`, and turn 
 on `__parent__` (see the [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
 
 ### Renamed properties
+
+Each removed property has a direct replacement:
 
 | Removed | Use instead |
 |---|---|
@@ -75,10 +77,14 @@ scripts typically use are:
 v2 responds with HTTP status codes (`400`, `403`, `404`, `422`) and a plain JSON body, not v1's
 `{ status, message, data }` envelope.
 
+---
+
 ## Image tags
 
 `latest` moves to 7 with 7.0.0. To stay on 6, use the tag `6` (or `6.5`) instead of `latest`.
 All tags are listed under [Image tags](installation/#image-tags).
+
+---
 
 ## Rolling back
 

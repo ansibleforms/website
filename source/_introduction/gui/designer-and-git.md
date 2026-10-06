@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Designer and git
-parent: GUI
+parent: Interface tour
 nav_order: 2
 redirect_from:
   - /gui/builtin-designer.html

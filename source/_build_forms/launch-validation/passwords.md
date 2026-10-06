@@ -19,6 +19,8 @@ How password fields are validated, stored and kept out of APIs
 A password field is validated like any other field. Its value, however, is kept on the server and never handed back to
 a client.
 
+---
+
 ## Where a password is kept
 
 The server stores the password with the job, in its extravars:
@@ -28,6 +30,8 @@ The server stores the password with the job, in its extravars:
 
 The stored password is only used on the server.
 
+---
+
 ## What the APIs return
 
 No API ever returns a password:
@@ -36,6 +40,8 @@ No API ever returns a password:
   list rows and YAML subforms.
 * `MASK_EXTRAVARS_REGEX` (default `password|secret|token`) also masks every extravar whose name matches, for
   secrets that are not password fields.
+
+---
 
 ## What a relaunch receives
 

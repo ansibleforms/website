@@ -4,6 +4,7 @@ title: REST API
 nav_order: 1
 has_children: true
 has_toc: false
+permalink: /api/
 ---
 
 # REST API
@@ -17,6 +18,8 @@ Launch forms and manage AnsibleForms from scripts
 For developers and automation engineers: launch forms and manage AnsibleForms from scripts.
 
 Everything the web interface does goes through the REST API, so scripts and other tools can do the same.
+
+---
 
 ## Overview
 

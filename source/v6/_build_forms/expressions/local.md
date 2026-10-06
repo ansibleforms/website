@@ -23,6 +23,8 @@ They execute in the browser sandbox and can leverage the full JavaScript engine.
 > **Tip**: Use the type `local` as an alias for `type: expression, runLocal: true, hide: true, noOutput: true`  
 > **Tip**: Use the type `local_out` as an alias for `type: expression, runLocal: true, hide: true`  
 
+---
+
 ## Naming Convention
 
 Use string manipulations to apply naming conventions.
@@ -30,6 +32,8 @@ Use string manipulations to apply naming conventions.
 ```javascript
 '$(field1) $(field2)'.replace('-','_').toUpperCase()
 ```
+
+---
 
 ## Calculation
 
@@ -39,6 +43,8 @@ Use math to make calculations.
 round($(field1)*$(field2)*Math.PI)   // Math.PI is native javascript
 ```
 
+---
+
 ## Conversions
 
 Convert bytes to gigabytes.
@@ -46,6 +52,8 @@ Convert bytes to gigabytes.
 ```javascript
 ($(size_bytes)/1024/1024/1024).toFixed(2)  // toFixed is native javascript method
 ```
+
+---
 
 ## Convert Array of Objects to HTML Table
 
@@ -62,6 +70,8 @@ fnToTable($(my_array_field),{
 // output : an html-table representation of the array of objects taken from another field called "my_array_field"
 // tip : add tableClass: 'table table-striped table-bordered' for bootstrap styling
 ```
+
+---
 
 ## Get a Name with Incremental Numbering
 
@@ -86,6 +96,8 @@ fnGetNumberedName($(fieldlist),'server###','server001',true)
 // - default : if no value is found, return this default
 // - fillgaps : a boolean to indicate it can fill gaps in the numbers, 1,2,3,6 => 4
 ```
+
+---
 
 ## Object-Array Manipulation
 
@@ -139,6 +151,8 @@ fnArray.from($(mylist))         // take data from another field 'mylist'
   ]
 */
 ```
+
+---
 
 ## Object-Array Manipulation with Vanilla JavaScript
 

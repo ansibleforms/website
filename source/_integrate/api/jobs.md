@@ -18,6 +18,8 @@ Launch a form, follow the job, abort, relaunch or approve it
 
 A job is one run of a form. Launch it with the form's name and values, then follow it by its ID.
 
+---
+
 ## Launch a form
 
 Send the form name and its values to `POST /api/v2/job`:
@@ -48,6 +50,8 @@ The response holds the new job's ID:
 { "id": 42 }
 ```
 
+---
+
 ## Follow the job
 
 Read the job by its ID:
@@ -58,6 +62,8 @@ curl https://af.example.com/api/v2/job/42 -H "Authorization: Bearer <token>"
 
 Its `status` is `running` until it ends as `success`, `failed` or `aborted`. A job that waits for an approval is
 `approve`, and one that was refused is `rejected`.
+
+---
 
 ## Other actions
 

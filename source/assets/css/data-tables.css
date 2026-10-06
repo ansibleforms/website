@@ -100,3 +100,14 @@
 .af-with-types {
   color: #d73a49;
 }
+
+/* Secret badge : the variable holds a password, token or key */
+.af-badge-secret {
+  display: inline-block;
+  margin-left: 0.25rem;
+  background: #b31d28;
+}
+
+[data-theme="dark"] .af-badge-secret {
+  background: #da3633;
+}

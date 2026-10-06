@@ -32,9 +32,54 @@ Only the client is built; its output goes into the server's `views` folder, as i
 Building and running from source requires solid Linux skills and some knowledge of Node.js. You install every component yourself:
 
 * **Node.js 24 or newer**, with npm
-* **Git**, to get the code
+* **Git**, to get the code and to sync repositories
+* **OpenSSH client**, for git over SSH, and **sshpass**, for playbooks that connect with an SSH password
+* **MariaDB client** (`mariadb`, `mariadb-dump`), for backups and restores, also with a MySQL server
 * **MySQL 8+ or MariaDB**, reachable from the server
 * **Ansible**, if you run playbooks locally (`ansible-playbook` on the path); not required if you only launch AWX/AAP/Ascender templates
+
+Install them for your distribution:
+
+<div class="af-tabs" data-tab-group="linux">
+<div class="af-tab-list" role="tablist">
+<button type="button" role="tab" class="af-tab" data-tab="ubuntu" aria-selected="true">Ubuntu</button>
+<button type="button" role="tab" class="af-tab" data-tab="debian" aria-selected="false">Debian</button>
+<button type="button" role="tab" class="af-tab" data-tab="rhel" aria-selected="false">RHEL / Rocky / Alma</button>
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="ubuntu" markdown="1">
+
+Node.js 24 comes from the NodeSource repository, the other tools from Ubuntu itself:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+sudo apt-get install -y nodejs git openssh-client sshpass mariadb-client python3 python3-pip ansible
+```
+
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="debian" markdown="1" hidden>
+
+Node.js 24 comes from the NodeSource repository, the other tools from Debian itself:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+sudo apt-get install -y nodejs git openssh-client sshpass mariadb-client python3 python3-pip ansible
+```
+
+</div>
+<div class="af-tab-panel" role="tabpanel" data-tab="rhel" markdown="1" hidden>
+
+Node.js comes from NodeSource and `sshpass` from EPEL (on RHEL itself, enable EPEL as Red Hat documents):
+
+```bash
+curl -fsSL https://rpm.nodesource.com/setup_24.x | sudo bash -
+sudo dnf install -y epel-release
+sudo dnf install -y nodejs git openssh-clients sshpass mariadb python3 python3-pip ansible-core
+```
+
+</div>
+</div>
+
+Check `node --version` (24+) and `ansible-playbook --version`; for the database, see [Install MySQL](docker.html#install-mysql).
 
 ---
 

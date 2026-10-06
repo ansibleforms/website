@@ -18,6 +18,8 @@ For the whole instance, or for one form
 
 Launch validation has two settings. **The stricter of the two applies.**
 
+---
+
 ## For the whole instance: `LAUNCH_VALIDATION`
 
 The environment variable [`LAUNCH_VALIDATION`](../customization) applies to every form:
@@ -29,6 +31,8 @@ The environment variable [`LAUNCH_VALIDATION`](../customization) applies to ever
   builds.
 
 Changes take effect without a restart.
+
+---
 
 ## For one form: `launchValidation`
 

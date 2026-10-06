@@ -20,6 +20,8 @@ An installation built from source is upgraded by checking out the new release, r
 application. Your settings, forms, playbooks, certificates and logs are stored in `server/persistent`, which Git and the
 build do not modify.
 
+---
+
 ## Before you upgrade
 
 Prepare the upgrade so that you can go back if something goes wrong:
@@ -28,6 +30,8 @@ Prepare the upgrade so that you can go back if something goes wrong:
 * **Read the [changelog](../changelog)** for the releases between your version and the new one.
 * **Moving to a new major version?** Follow [Upgrading to v7](../upgrade-7.html) first.
 * **Check the Node.js version** the new release requires, in the changelog.
+
+---
 
 ## 1. Get the new release
 
@@ -39,6 +43,8 @@ cd /srv/apps/ansibleforms
 git fetch --tags
 git checkout 7.2.0
 ```
+
+---
 
 ## 2. Rebuild
 
@@ -67,6 +73,8 @@ cp -r ../client/dist/. views/
 
 Compare `server/.env.example` with your `persistent/.env` to pick up any settings that the release adds.
 
+---
+
 ## 3. Restart
 
 Restart the application to load the new code. The database schema is upgraded at the first start:
@@ -76,6 +84,8 @@ pm2 restart ansibleforms
 ```
 
 If you run the application without PM2, stop `npm run start` and start it again.
+
+---
 
 ## 4. Check the upgrade
 
@@ -87,6 +97,8 @@ pm2 logs ansibleforms
 
 In AnsibleForms, **Help → About** shows the version that is running, and **Settings → Status** shows the health of the
 database, the schema and the other systems AnsibleForms depends on.
+
+---
 
 ## Roll back
 

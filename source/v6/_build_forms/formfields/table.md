@@ -20,6 +20,8 @@ A table of rows, each made of tablefield columns
 
 A table field collects multiple records of structured data, where the columns of each row are defined by [tablefields](../tablefields/index.html).
 
+---
+
 ## Properties
 
 The properties available to a `table` field, grouped by purpose:
@@ -111,7 +113,11 @@ The properties available to a `table` field, grouped by purpose:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example `table` fields, in YAML:
 
 {%- assign type_choice = formfield_object.items | where: "name", "type" | first %}
 {%- if type_choice.choices %}

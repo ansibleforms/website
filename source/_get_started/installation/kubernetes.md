@@ -18,6 +18,8 @@ Install AnsibleForms and its MySQL database with the Helm chart
 
 The Helm chart deploys AnsibleForms with MySQL (see the [values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)).
 
+---
+
 ## Prerequisites
 
 Before you start, you need:
@@ -26,6 +28,8 @@ Before you start, you need:
 * **Helm 3** : to install and upgrade the chart
 * **Storage** : a StorageClass for dynamic provisioning, or pre-created PersistentVolumes
 * **Ingress controller** : only if you want to expose AnsibleForms through an ingress
+
+---
 
 ## 1. Get the chart values
 
@@ -56,6 +60,8 @@ helm show values oci://ghcr.io/ansibleforms/charts/ansibleforms > my_values.yaml
 </div>
 </div>
 
+---
+
 ## 2. Configure the storage
 
 Both AnsibleForms and MySQL store their data on a persistent volume. Set the StorageClass and size of each:
@@ -75,6 +81,8 @@ storages:
 An empty `className` uses the cluster's default StorageClass. The access mode defaults to `ReadWriteMany`, which many storage
 classes do not offer; `ReadWriteOnce` is fine with a single replica. For pre-created PersistentVolumes, see the chart's
 [README](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms).
+
+---
 
 ## 3. Set the credentials
 
@@ -131,6 +139,8 @@ The Secret must hold `DB_USER`, `DB_PASSWORD`, `ENCRYPTION_SECRET`, `ADMIN_USERN
 </div>
 </div>
 
+---
+
 ## 4. Install the chart
 
 Install the chart into its own namespace with your values:
@@ -144,6 +154,8 @@ helm upgrade --install ansibleforms ansibleforms/ansibleforms \
 With the OCI registry, use `oci://ghcr.io/ansibleforms/charts/ansibleforms` as the chart. In anything that runs unattended,
 pin the chart version with `--version`, so that a new release is never installed on its own.
 
+---
+
 ## 5. Check the install
 
 The chart includes a test that checks both the web server and the database connection:
@@ -153,6 +165,8 @@ helm test ansibleforms --namespace ansibleforms --logs
 ```
 
 The test ends with `OK` when AnsibleForms answers and its database accepts connections.
+
+---
 
 ## 6. Open AnsibleForms
 
@@ -205,6 +219,8 @@ server needs.
 </div>
 </div>
 
+---
+
 ## 7. Sign in
 
 Sign in as the admin user, `admin` by default. To read the password from the Secret:
@@ -215,6 +231,8 @@ kubectl -n ansibleforms get secret ansibleforms-secrets \
 ```
 
 With `secrets.existingSecret`, read it from your own Secret instead.
+
+---
 
 ## Next steps
 

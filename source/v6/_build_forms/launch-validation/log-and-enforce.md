@@ -39,6 +39,8 @@ Every launch is checked, but nothing changes for the user. A warning is written 
 Run `log` on a real instance for a while first. It shows which forms would be refused and
 which compute values differently on the server, before anyone is affected.
 
+---
+
 ## What `enforce` does
 
 Under `enforce`, an invalid launch is refused, and a valid one runs the extravars the server

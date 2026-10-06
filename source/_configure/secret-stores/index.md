@@ -4,6 +4,7 @@ title: Secret stores
 nav_order: 4
 has_children: true
 has_toc: false
+permalink: /secret-stores/
 ---
 
 # Secret stores
@@ -40,6 +41,8 @@ nothing in your forms.
 | HashiCorp Vault dynamic credentials (`<mount>/creds/<role>`) | experimental |
 | CyberArk Central Credential Provider (CCP) | experimental |
 
+---
+
 ## Adding a store
 
 Every store has the following fields:
@@ -62,6 +65,8 @@ Each secret manager has a page of its own:
 |---|---|
 | [HashiCorp Vault](hashicorp-vault.html) | KV v1 and v2 with token authentication, and dynamic database credentials |
 | [CyberArk](cyberark.html) | The Central Credential Provider (CCP) of CyberArk's Application Access Manager |
+
+---
 
 ## Using a store
 
@@ -120,6 +125,8 @@ A secret with a different structure can be reshaped with a `jq` expression, pass
 fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }')
 ```
 
+---
+
 ## In the config seed
 
 Stores can also be declared in the config seed, like the other admin objects:
@@ -144,6 +151,8 @@ credentials:
 ```
 
 For details, see [Config seed](../seed).
+
+---
 
 ## Upgrading from the VAULT_* variables
 

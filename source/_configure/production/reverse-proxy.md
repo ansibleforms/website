@@ -18,14 +18,13 @@ Publish AnsibleForms behind Nginx, Traefik or Apache, at the root or under a sub
 
 ## When to use one
 
-AnsibleForms is a single Node.js process that serves the interface, the REST API and the Swagger interface on one port.
-A reverse proxy in front of it is the usual way to:
+AnsibleForms serves the interface, REST API and Swagger on one port; a reverse proxy in front of it lets you:
 
 * serve it on port 443 with a certificate managed by your existing tooling (ACME, a corporate CA)
 * share one host name with other applications, by publishing AnsibleForms under a subpath
 * keep the application port and the database off the public network
 
-A proxy is optional: the application can serve HTTPS itself, see [HTTPS and certificates](https.html).
+A proxy is optional: the application can serve HTTPS itself, see [HTTPS](../security/https.html).
 
 ---
 
@@ -42,8 +41,7 @@ Only a few settings affect how AnsibleForms behaves behind a proxy:
 | [`UPLOAD_MAX_GB`](../customization/server.html#env_UPLOAD_MAX_GB) | Largest file a form upload field accepts, 10 GB by default. The proxy must allow it too, or uploads fail there. |
 | **Public Root Url** | Under **Settings**: the address users reach, subpath included. It builds the links in notification emails. |
 
-With an OAuth2 provider (Entra ID or OIDC), the redirect URI registered at the provider must be the public address as
-well, including the subpath when `BASE_URL` is set.
+For Entra ID or OIDC, register the public address as redirect URI, with the `BASE_URL` subpath if set.
 
 ---
 
@@ -56,8 +54,9 @@ With `BASE_URL=/ansibleforms`:
 * the `<base href>` of the interface is rewritten at startup, so assets and API calls resolve under the subpath
 * a request for `/` or for `/ansibleforms` (no trailing slash) is redirected to `/ansibleforms/`
 
-Do **not** strip the prefix in the proxy (no `StripPrefix` middleware in Traefik, no URI on `proxy_pass` in Nginx):
-the application expects to receive it. The **Status** page shows the base URL in force.
+Keep the prefix: no `StripPrefix` in Traefik, no URI on `proxy_pass` in Nginx, as the application expects it.
+
+The **Status** page shows the base URL in force.
 
 ---
 
@@ -69,7 +68,7 @@ A job launch returns as soon as the job is created, so a long playbook does not 
 The requests that can take long are:
 
 * **backup and restore** from the **Backups** page, which wait for the dump or restore command to finish, up to
-  [`BACKUP_COMMAND_TIMEOUT_SECONDS`](../customization/paths.html#env_BACKUP_COMMAND_TIMEOUT_SECONDS) (3600 by default)
+  [`BACKUP_COMMAND_TIMEOUT_SECONDS`](../customization/retention.html#env_BACKUP_COMMAND_TIMEOUT_SECONDS) (3600 by default)
 * **large uploads** through a file field, which stream the whole file in one request
 * **chat messages**, when the [chat assistant](../chat/) is enabled, which wait for the model provider to answer
 
@@ -180,4 +179,4 @@ Without a subpath, proxy `/` to `http://10.0.0.20:8000/` and leave `BASE_URL` un
 </div>
 
 To keep the hop between proxy and application encrypted, run the application with `HTTPS=1`, point the proxy at
-`https://`, and give the application a certificate the proxy trusts, see [HTTPS and certificates](https.html).
+`https://`, and give the application a certificate the proxy trusts, see [HTTPS](../security/https.html).

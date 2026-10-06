@@ -39,6 +39,8 @@ a durable one drifts away from the manifest that is meant to be authoritative.
 > restore dialog lists the file and offers its own *Restore environment* button
 > (`POST /api/v2/backup/:folder/restore-env`), which keeps the previous file as `.env.bak`.
 
+---
+
 ## What is recorded
 
 Each apply that changes something writes one `seed.apply` entry to the audit log, naming

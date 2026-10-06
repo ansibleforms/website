@@ -10,6 +10,9 @@ nav_order: 1
 Common questions and answers about AnsibleForms
 {: .fs-6 .fw-300 }
 
+1. TOC
+{:toc}
+
 ---
 
 ## Getting Started
@@ -160,6 +163,8 @@ This works for both single-form files (a YAML dict) and multi-form files (a YAML
 
 VS Code highlights unknown properties, missing required fields and incorrect types as you type.
 
+---
+
 ## Job Management
 
 ### Job Relaunch with Pre-filled Data
@@ -274,6 +279,8 @@ expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
 expression: $(__user__.roles)
 ```
+
+---
 
 ## Form Fields
 
@@ -497,6 +504,8 @@ To make the default dynamic, based on an expression, use one of two properties:
   evalDefault: true
 ```
 
+---
+
 ## Wizard & Multistep
 
 ### What is the difference between a wizard and a multistep form?
@@ -674,6 +683,8 @@ The `name` of a wizard step (defaults to its `subform` name) is the namespace un
 ```
 
 This is the same `__parent__` mechanism that `list` and `yaml` subforms use; see [How do I access parent form data inside a subform?](#how-do-i-access-parent-form-data-inside-a-subform).
+
+---
 
 ## Security & Credentials
 
@@ -879,6 +890,8 @@ For secrets used only inside one playbook (for example, secrets with complex sha
 The two approaches are complementary: resolution in AnsibleForms is transparent and centralised, while the lookup
 plugin works per playbook and gives fine-grained control per task.
 
+---
+
 ## Integration
 
 ### Query AWX/Tower/AAP
@@ -948,6 +961,8 @@ fields:
       - name
     valueColumn: name           
 ```
+
+---
 
 ## Customization
 
@@ -1033,6 +1048,8 @@ constants:
   data_values: #@ data.values
   demo: #@ demo.data_values()
 ```
+
+---
 
 ## Access Control
 
@@ -1131,6 +1148,8 @@ The user identity supports patterns such as the following:
 > asserts on `ansibleforms_user.groups` requires `groups` to be one of them. The frontend
 > `__user__` field comes from the login token and is never trimmed by either setting.
 
+---
+
 ## Job Scheduling
 
 ### How do I schedule a form to run automatically?
@@ -1160,6 +1179,8 @@ To schedule a form:
 
 Scheduled jobs can be viewed, edited and cancelled from the job history page.
 
+---
+
 ## Save & Load Form Data
 
 ### How do I save and reload form data without running a job?
@@ -1185,6 +1206,8 @@ To store and reload form data:
 
 {: .note }
 > Password fields are never stored. Stored data is tied to the form name, so it cannot be loaded into a different form.
+
+---
 
 ## Nested Forms & Structured Fields
 

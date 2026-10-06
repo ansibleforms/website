@@ -32,6 +32,8 @@ and queries only ever run as the form defines them.
 
 The [Chat assistant](../chat) uses these tools too, with a **Launch** button in place of `launch_job`.
 
+---
+
 ## Filling in a form
 
 Call `resolve_field` with the form name and the values you have so far, and again after every answer. It works through
@@ -47,6 +49,8 @@ For the whole form, `missing` and `invalid` list what still needs fixing; `launc
 Validation is the browser's own code, shared with [launch validation](../launch-validation). Hidden fields are not
 validated, and an empty optional field is valid.
 
+---
+
 ## Passing values
 
 Pass `field` to resolve only that field and what it depends on. For a list row or a wizard step, pass `subform` (and
@@ -54,6 +58,8 @@ optionally `parent`, the parent form's values).
 
 Send values as the browser holds them. A choice field also accepts a partial record or its `valueColumn` value
 (`"vol1"`), and an array when it is `multiple`. Computed fields ignore sent values unless they are `editable`.
+
+---
 
 ## Approving the exact payload
 
@@ -70,6 +76,8 @@ Show `modeledExtravars` to the operator, and pass the `payloadHash` they approve
 when the result differs, for example because a query now answers differently or the form
 was edited. `ansibleforms_user`, `__jobid__` and `__verbose__` are added at launch and are
 not part of the hash.
+
+---
 
 ## Relaunching with changes
 
@@ -98,6 +106,8 @@ relaunched with changes.
 
 The REST API offers the same through `POST /api/v2/job/{id}/relaunch` with the body
 `{ "values": { ... } }`; without a body, it replays the job as it ran.
+
+---
 
 ## Errors
 

@@ -104,7 +104,11 @@ The properties available to a `yaml` field, grouped by purpose:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example `yaml` fields, in YAML:
 
 {%- assign type_choice = formfield_object.items | where: "name", "type" | first %}
 {%- if type_choice.choices %}
@@ -124,6 +128,8 @@ The properties available to a `yaml` field, grouped by purpose:
 {%- endif %}
 
 {%- endif %}
+
+---
 
 ## Accessing parent form data via `__parent__`
 

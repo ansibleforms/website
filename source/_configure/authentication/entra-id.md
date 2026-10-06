@@ -87,8 +87,7 @@ roles:
       - azuread/jdoe@example.com
 ```
 
-Use a **Group Filter** such as `^AF-` when users are in many groups: only the groups that are kept travel with the user
-into every token and job. See [Roles](../config/roles.html) for the role options.
+A **Group Filter** such as `^AF-` keeps tokens and jobs small for users in many groups; see [Roles](../config/roles.html).
 
 ---
 

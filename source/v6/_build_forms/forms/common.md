@@ -24,6 +24,8 @@ All other properties are type-specific and documented on the page of the respect
 
 {{ form_object.description | markdownify }}
 
+---
+
 ## Properties
 
 The properties shared by all form types:

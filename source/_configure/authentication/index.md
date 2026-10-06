@@ -4,6 +4,7 @@ title: Authentication
 nav_order: 3
 has_children: true
 has_toc: false
+permalink: /authentication/
 ---
 
 # Authentication
@@ -24,7 +25,7 @@ AnsibleForms supports four login methods, and several can be active at the same 
 | Method | When to use | Page |
 |---|---|---|
 | Local accounts | The built-in admin, service accounts, small teams, or a fallback when the directory is down. | [Local accounts](local.html) |
-| LDAP | Users and groups live in Active Directory, OpenLDAP or another LDAP directory. | [LDAP and Active Directory](ldap.html) |
+| LDAP | Users and groups live in Active Directory, OpenLDAP or another LDAP directory. | [LDAP](ldap.html) |
 | Entra ID | Users sign in with their Microsoft 365 / Entra ID account (single sign-on). | [Entra ID](entra-id.html) |
 | OIDC | Single sign-on through another OpenID Connect provider, such as Keycloak. | [OIDC](oidc.html) |
 

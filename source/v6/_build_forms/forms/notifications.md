@@ -20,6 +20,8 @@ Send an email when a job finishes
 
 {{ notifications_object.description | markdownify }}
 
+---
+
 ## Attributes
 
 The attributes of the `notifications` object:
@@ -79,7 +81,11 @@ The attributes of the `notifications` object:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example notifications, in YAML:
 
 {% for example in notifications_object.examples %}
 ### {{ forloop.index }}) {{ example.name }}

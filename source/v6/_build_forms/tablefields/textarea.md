@@ -16,6 +16,8 @@ Multi-line text in a table row
 {: .warning }
 > **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](../formfields/list.html) field type instead.
 
+---
+
 ## Properties
 
 The properties available to a `textarea` tablefield, grouped by purpose:
@@ -108,7 +110,11 @@ The properties available to a `textarea` tablefield, grouped by purpose:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example `textarea` tablefields, in YAML:
 
 {%- assign type_choice = tablefield_object.items | where: "name", "type" | first %}
 {%- if type_choice.choices %}

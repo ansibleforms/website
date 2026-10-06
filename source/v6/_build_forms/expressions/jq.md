@@ -31,6 +31,8 @@ fn.fnJq($(settings),'.mapping | keys',{name:{ignoreCase:true,direction:'desc'}})
 // - sort-object : a sorting object to order the results
 ```
 
+---
+
 ## Built-in JQ Functions
 
 All data-fetching functions accept a JSON query (jq), a language to manipulate data objects and arrays.  

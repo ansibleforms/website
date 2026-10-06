@@ -1,11 +1,11 @@
 ---
 layout: default
-title: LDAP and Active Directory
+title: LDAP
 parent: Authentication
 nav_order: 2
 ---
 
-# LDAP and Active Directory
+# LDAP
 {: .no_toc }
 
 Let directory users sign in with their own password, and give them roles through their directory groups
@@ -30,8 +30,7 @@ the password:
 A username in UPN form (`jdoe@example.com`) that finds no user is retried once with the part before the `@`, so users
 can sign in with either form even when the Username Attribute holds the short name. A wrong password is never retried.
 
-There is no separate Active Directory switch: the same settings serve Active Directory, OpenLDAP and other directories.
-Only one LDAP directory can be configured.
+One set of settings serves Active Directory, OpenLDAP and others, and only one directory can be configured.
 
 ---
 
@@ -86,8 +85,7 @@ The groups come from one of two places, and the **Groups Attribute** decides whi
 Each group is a DN, and AnsibleForms keeps its first CN: `CN=AF-Admins,OU=Groups,DC=example,DC=com` becomes `AF-Admins`.
 The **Group Filter** is then applied to that name, and the remaining groups get the `ldap/` prefix: `ldap/AF-Admins`.
 
-The filter is useful in large directories: a user in a hundred groups otherwise carries all of them into every role
-lookup, token and job. An invalid regular expression keeps every group, and is logged.
+In large directories the filter keeps tokens and jobs small; an invalid regular expression keeps all groups and is logged.
 
 ---
 
@@ -147,8 +145,7 @@ This example connects to a domain controller over LDAPS and keeps only the group
 | Groups Attribute | `memberOf` |
 | Group Filter | `^AF-` |
 
-A member of `CN=AF-Operators,OU=Groups,DC=example,DC=com` then matches a role with the group `ldap/AF-Operators`.
-Users can sign in as `jdoe` or as `jdoe@example.com`.
+Members of `CN=AF-Operators,…` match roles with `ldap/AF-Operators`, and sign in as `jdoe` or `jdoe@example.com`.
 
 ---
 
@@ -183,14 +180,11 @@ With the `memberof` overlay, leave the group search fields empty and set **Group
 Most LDAP problems come down to one of these:
 
 - **A local user with the same name.** Local users are checked first, so the directory is never asked for that name.
-- **No groups, or the wrong ones.** Check the test result: the Groups Attribute must exist on the entry, and with a group
-  search it must be `groups`. In Active Directory, `memberOf` lists direct memberships only, not nested groups.
-- **Group names that do not match.** The role must use the group's CN, with the same case, behind `ldap/`; a Group
-  Filter can remove the group before the mapping.
+- **No groups, or the wrong ones.** The Groups Attribute must exist (`groups` with a group search); `memberOf` skips nesting.
+- **Group names that do not match.** Use `ldap/<CN>` in the same case, and check the Group Filter keeps the group.
 - **Group DNs that do not start with a CN.** Only the first `CN=` value is used as the group name, so every group DN
   must start with `CN=` (or `cn=`).
-- **Certificates.** With TLS on and Ignore Certs off, both certificate fields are required, and the server name must
-  match its certificate. Turn Ignore Certs on only to rule out a certificate problem.
+- **Certificates.** TLS needs both certificate fields and a matching server name; Ignore Certs is for testing only.
 - **Settings that cannot be saved.** When the LDAP settings come from the [config seed](../seed/managed-objects.html),
   the LDAP page is read-only: change the seed file instead.
 

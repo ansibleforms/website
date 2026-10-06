@@ -46,6 +46,8 @@ Failing rows appear in `rowErrors` with their `index` (a `yaml` field has none) 
 
 A launch may hold at most **500 rows** across all nesting levels, since each row runs its subform's queries.
 
+---
+
 ## Row markers
 
 The markers a list sets on its rows (`insertMarker`, `updateMarker` and `deleteMarker`; new

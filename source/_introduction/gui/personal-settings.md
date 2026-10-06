@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Personal settings
-parent: GUI
+parent: Interface tour
 nav_order: 4
 redirect_from:
   - /gui/user-profile.html

@@ -39,6 +39,8 @@ small local models.
 
 For local servers and proxies that need no key, a base URL alone is enough; no authorization header is sent.
 
+---
+
 ## For a proxy
 
 A proxy or gateway in front of the model may need these settings:
@@ -51,6 +53,8 @@ A proxy or gateway in front of the model may need these settings:
 - **Ignore certificate errors** - insecure; trust the proxy's CA with `NODE_EXTRA_CA_CERTS` instead.
 - **Extra headers** - a JSON object, e.g. `{"X-Org": "ops"}`. One-line text values, at most 20;
   the key and content headers cannot be replaced.
+
+---
 
 ## In a container, behind a proxy
 

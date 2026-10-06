@@ -23,9 +23,7 @@ This tutorial starts from a fresh installation, see [Installation](installation/
 
 Open AnsibleForms in a browser and log in as the administrator.
 
-The default account is `admin` with the password `AnsibleForms!123`, unless you set
-[`ADMIN_USERNAME`](customization/server.html#env_ADMIN_USERNAME) and
-[`ADMIN_PASSWORD`](customization/server.html#env_ADMIN_PASSWORD). The **Forms** page opens, with the forms grouped by category:
+The default account is `admin` / `AnsibleForms!123` (or your [`ADMIN_*`](customization/server.html#env_ADMIN_USERNAME) values); the **Forms** page opens:
 
 ![The Forms page, with sample forms](assets/screenshots/dashboard.jpg)
 
@@ -168,16 +166,13 @@ The form uses four field types:
 | `vm_size` | [`enum`](formfields/enum.html) | A dropdown filled by a local [expression](expressions/local.html); `__auto__` selects the first item |
 | `dry_run` | [`checkbox`](formfields/checkbox.html) | A checkbox, sent as `true` or `false` |
 
-The `vm_size` expression returns objects with two columns, `size` and `cpus`, and the dropdown shows both. The
-extravar receives the first column, `size`; set `valueColumn` to send another one.
+`vm_size` shows both columns, `size` and `cpus`, and sends `size`, the first; `valueColumn` picks another.
 
 `roles: [public]` lets every logged-in user run the form, and `categories: [Default]` puts it in the category that the default
 `config.yaml` defines.
 
 {: .note }
-> You can also copy `hello-world.yaml` straight into the forms folder
-> ([`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH)), next to the playbooks folder.
-> To have your editor check the file as you type, see [VS Code validation](faq.html#vs-code-validation-for-form-files).
+> You can also copy `hello-world.yaml` into [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH), and [validate it in VS Code](faq.html#vs-code-validation-for-form-files).
 
 ---
 
@@ -200,8 +195,7 @@ The job starts at once, and its output appears below the form while it runs, end
 
 The debug task prints your values, for example `Hello Alice: a small machine in development (dry run: True)`.
 
-The playbook has no inventory, so Ansible warns that only the implicit localhost is available; for this playbook that is
-expected. A real form sets `inventory`, see [Ansible forms](forms/ansible.html).
+The implicit localhost warning is expected without an inventory; a real form sets [`inventory`](forms/ansible.html).
 
 ---
 

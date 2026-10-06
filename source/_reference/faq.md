@@ -10,6 +10,9 @@ nav_order: 1
 Common questions and answers about AnsibleForms
 {: .fs-6 .fw-300 }
 
+1. TOC
+{:toc}
+
 ---
 
 ## Getting Started
@@ -27,110 +30,13 @@ AnsibleForms is designed to run as a **single instance**. Running multiple repli
 
 ### Multi-Repository Form Management
 
-Use multiple Git repositories for forms.
-
-Forms from every Git repository with "Use for forms" enabled are merged automatically.
-
-**How it works:**
-- Configure multiple repositories in Settings → Repositories
-- Enable the "Use for forms" switch on each repository you want to load forms from
-- Each repository can contain a `forms/` directory with form YAML files
-- The forms of all repositories are merged automatically
-- Duplicate form names trigger a warning (the first one wins)
-
-**Configuration File Discovery:**
-- AnsibleForms uses the **first** config.yaml found across all form repositories
-- If multiple config files are found, a warning is logged
-- You can keep a single central config repository for shared categories, roles and constants
-- Alternatively, use the local `persistent/config.yaml` file (checked when no repository config is found)
-
-**Best Practices:**
-- Keep config.yaml in only **one** repository, or use the local persistent/config.yaml
-- Organize forms by team or project in separate repositories
-- Use unique form names across all repositories to avoid conflicts
-- Repository order matters: forms are loaded in database order
-
-**Example Setup:**
-
-The following layout separates the central configuration from the forms of two teams:
-
-```yaml
-Repository 1 (Central Config):
-  - config.yaml (categories, roles, constants)
-
-Repository 2 (Network Team):
-  - forms/
-    - switch_config.yaml
-    - router_setup.yaml
-
-Repository 3 (Server Team):
-  - forms/
-    - server_deploy.yaml
-    - backup_restore.yaml
-```
-
-All forms are merged automatically and appear together in the UI.
+Forms from every Git repository with **use for forms** enabled are merged automatically; on duplicate form names the first one
+wins and a warning is logged. Keep `config.yaml` in only one repository. See [Git repositories](repositories/).
 
 ### About Repositories
 
-Git repositories provide collaboration and versioning, and AnsibleForms can manage them since version 5.0.0.  
-Every repository is a subfolder of the repositories path (the `REPO_PATH` environment variable).  
-Manage repositories under **Settings > Repositories**. You can add SSH-based repositories (with a public key and known hosts) or HTTPS-based repositories, either public or private with a username, password or token.
-
-**Since version 6.1.0**, you can add multiple repositories and use switches to control what each one is used for.
-
-#### Repository Switches (6.1.0+)
-
-Each repository has four switches; turn on the ones that match what it holds:
-
-- **use for config** - Repository contains config.yaml (categories, roles, constants)
-- **use for forms** - Repository contains forms (supports multiple repositories, forms are merged)
-- **use for playbooks** - Repository contains Ansible playbooks and roles
-- **use for vars files** - Repository contains vars files for forms
-
-#### Repository Structure
-
-Each repository can contain subfolders or files directly in the root:
-
-- **config.yaml** - Placed in repository root (when using "use for config")
-- **forms/** subfolder or root - Forms YAML files (when using "use for forms")
-- **playbooks/** subfolder or root - Ansible playbooks (when using "use for playbooks")
-- **vars/** subfolder or root - Vars files (when using "use for vars files")
-
-If a subfolder does not exist, AnsibleForms falls back to the repository root.
-
-#### Single Repository vs Multiple Repositories
-
-A setup can use a single repository for everything, or separate repositories per purpose.
-
-**Single repository approach** (all in one):
-- Enable all switches on one repository
-- Structure: `config.yaml` in root, `forms/`, `playbooks/`, and `vars/` subfolders
-
-**Multiple repository approach** (separated):
-- Use separate repositories for config, forms, playbooks, and vars files
-- Each repository can have files directly in root (no subfolders needed)
-- Forms can come from multiple repositories (they are merged)
-
-**Important notes:**
-- Only **one** repository should have "use for config" enabled (a warning is logged if several do)
-- Only **one** repository should have "use for playbooks" enabled (playbooks cannot be merged)
-- Only **one** repository should have "use for vars files" enabled
-- **Multiple** repositories can have "use for forms" enabled (their forms are merged)
-
-#### Configuration Priority
-
-The configuration is loaded from the first of these sources that matches:
-1. Database (if imported)
-2. Repository with "use for config" enabled
-3. Repository with "use for forms" enabled (backwards compatibility)
-4. Local CONFIG_PATH file
-
-#### Additional Features
-
-You can choose whether a repository is cloned when AnsibleForms starts, and you can add a cron schedule for recurring pulls.  
-The Swagger interface also provides clone and pull REST API endpoints for webhooks.  
-For a long-lived access token for webhooks, create one under [Profile > API token](profile/api-token.html), for roles with the `extendedTokenExpiration` option. The login API's `expiryDays` parameter does the same.
+AnsibleForms clones and pulls Git repositories under the repositories path (`REPO_PATH`), managed under **Settings > Repositories**.
+Switches on each repository set what it holds: config, forms, playbooks or vars files. See [Git repositories](repositories/).
 
 ### VS Code Validation for Form Files
 
@@ -158,50 +64,14 @@ This works for both single-form files (a YAML dict) and multi-form files (a YAML
 
 VS Code highlights unknown properties, missing required fields and incorrect types as you type.
 
+---
+
 ## Job Management
 
 ### Job Relaunch with Pre-filled Data
 
-Relaunch jobs with form data (v6.0.3).
-
-AnsibleForms can relaunch jobs with pre-filled form data. When you click the relaunch button on the jobs page, the form opens with all field values from the previous job submission.
-
-**Security Features:**
-
-Relaunch data is stored with the following safeguards:
-
-- Password fields are automatically excluded from storage and retrieval
-- Raw form data is stored separately from processed extravars (before model transformations)
-
-**Permission Control:**
-
-Forms can prevent relaunch using `allowRelaunch: false`:
-
-```yaml
-- name: Production Deployment
-  allowRelaunch: false  # Prevents relaunching this form
-```
-
-Users must have the `allowJobRelaunch` role option enabled (admins have this by default):
-
-```yaml
-roles:
-  - name: operators
-    groups:
-      - local/operators
-    options:
-      allowJobRelaunch: true  # Allow this role to relaunch jobs
-```
-
-**Most Restrictive Logic:** Relaunch is only available when **both** conditions are met:
-1. The form does **not** have `allowRelaunch: false`
-2. The user's role has `allowJobRelaunch: true` (or the user is an admin)
-
-**How it works:**
-- Raw form data is saved in the database on job submission (excluding passwords)
-- Clicking relaunch opens the form with the `?prefillJobId=<id>` parameter
-- The form loads with all previous values, respecting field dependencies and asynchronous queries
-- Users can modify values before resubmitting
+The relaunch button opens the form pre-filled with the values of the earlier job; password fields are never stored.
+It requires the role option `allowJobRelaunch`, and a form can turn it off with `allowRelaunch: false`. See [Relaunch a job](jobs/actions.html#relaunch-a-job).
 
 ### Job Log File
 
@@ -272,6 +142,8 @@ expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
 expression: $(__user__.roles)
 ```
+
+---
 
 ## Form Fields
 
@@ -495,6 +367,8 @@ To make the default dynamic, based on an expression, use one of two properties:
   evalDefault: true
 ```
 
+---
+
 ## Wizard & Multistep
 
 ### What is the difference between a wizard and a multistep form?
@@ -513,6 +387,7 @@ A **wizard** and a **multistep** form sound similar, but they operate on differe
 **Key takeaway:** `steps` is about *what runs and in which order*; `wizard` is about *how the user fills in the form*.
 
 #### Multistep only
+{: .no_toc }
 
 A `type: multistep` form runs one playbook or template per step. The user fills in a single page of fields and presses Submit, and the executor runs each step sequentially:
 
@@ -534,6 +409,7 @@ A `type: multistep` form runs one playbook or template per step. The user fills 
 ```
 
 #### Wizard only
+{: .no_toc }
 
 A `wizard:` block on an `ansible` (or `awx`) form spreads input collection over multiple pages. Only **one** job runs at the end: the merged extravars from all pages are sent to a single playbook or template.
 
@@ -567,6 +443,7 @@ A `wizard:` block on an `ansible` (or `awx`) form spreads input collection over 
 A read-only review page is appended automatically as the last wizard page; you do not declare it in YAML.
 
 #### Combined (wizard on top of multistep)
+{: .no_toc }
 
 A wizard can be layered on top of a multistep form. The user fills in the wizard pages and presses Submit, and **then** the multistep execution starts. By matching a wizard step's `defaultModel` with a multistep step's [`key`](forms/multistep.html#step_key), you can route **one wizard page to one multistep step**:
 
@@ -602,6 +479,7 @@ See the [Wizard page](forms/wizard.html) for the full property reference.
 Use `when:` to **hide** a step entirely, or `optional: true` to let the user **skip** a visible step. The two are independent and should generally not be combined.
 
 #### `when:` — conditional visibility
+{: .no_toc }
 
 The step is hidden when the expression evaluates to a falsy value. The user never sees it, and its values are not collected. The expression can read earlier steps through `__parent__.<stepname>.<field>`:
 
@@ -620,6 +498,7 @@ wizard:
 Only the page matching the chosen `kind` is shown. Steps after a hidden one are renumbered automatically.
 
 #### `optional: true` — allow skipping a visible step
+{: .no_toc }
 
 The step is **always shown** in the stepper, but the user can press **Next** without filling it in, and **Submit** is allowed even if the page was never visited or completed:
 
@@ -672,6 +551,8 @@ The `name` of a wizard step (defaults to its `subform` name) is the namespace un
 ```
 
 This is the same `__parent__` mechanism that `list` and `yaml` subforms use; see [How do I access parent form data inside a subform?](#how-do-i-access-parent-form-data-inside-a-subform).
+
+---
 
 ## Security & Credentials
 
@@ -800,6 +681,8 @@ of earlier versions are imported once as the store `vault` at the first 7.x star
 For secrets used only inside one playbook, you can also use the `community.hashi_vault`
 lookup plugin, which reads from Vault directly and bypasses AnsibleForms.
 
+---
+
 ## Integration
 
 ### Query AWX/Tower/AAP
@@ -869,6 +752,8 @@ fields:
       - name
     valueColumn: name           
 ```
+
+---
 
 ## Customization
 
@@ -953,45 +838,14 @@ constants:
   demo: #@ demo.data_values()
 ```
 
+---
+
 ## Access Control
 
 ### How do I restrict what users can do (role options)?
 
-Control per-role UI permissions with role options.
-
-Beyond restricting which forms a role can see, AnsibleForms provides **role options** that give finer control over what users of a role can do in the UI. Options are additive, and admins always have full access.
-
-See the full option reference in [config.yaml → Role options](config/roles#Role_options).
-
-The following examples show common options:
-
-```yaml
-roles:
-  - name: operators
-    groups:
-      - local/operators
-    options:
-      showJobs: true          # can view job history and output
-      showLogs: true          # can view the server log
-      allowJobRelaunch: true  # can relaunch previous jobs
-      allowVerboseMode: true  # can enable verbose output on a run
-  - name: designers
-    groups:
-      - local/designers
-    options:
-      showDesigner: true      # can open the YAML designer
-      showSettings: false     # cannot access settings
-  - name: schedulers
-    groups:
-      - local/schedulers
-    options:
-      allowScheduledJobs: true  # can schedule forms - admin-level, see the schedules question
-      allowPlannedJobs: true    # can plan a form to run once at a set time
-      allowStoredJobs: true     # can save and load form data
-```
-
-{: .note }
-> Most role options have a default (many default to `true`). An option that is explicitly set on a role is always used. When it is not set, admins are allowed and non-admins fall back to the option's default value.
+Beyond restricting which forms a role can see, the `options` of a role switch UI features on or off for its members.
+See [Role options](config/roles.html#role-options) for every option, its default and how options combine across roles.
 
 ### How do I implement custom RBAC logic in my playbooks or forms?
 
@@ -1052,37 +906,14 @@ The user identity supports patterns such as the following:
 > asserts on `ansibleforms_user.groups` requires `groups` to be one of them. The frontend
 > `__user__` field comes from the login token and is never trimmed by either setting.
 
+---
+
 ## Job Scheduling
 
 ### How do I schedule a form to run automatically?
 
-Run forms on a schedule or at a future time (v6.1.5).
-
-The job scheduling feature supports two modes:
-
-- **Cron schedule**: the form runs repeatedly according to a cron expression (for example, every night at 2 AM)
-- **One-off / run later**: the form runs once at a specific future date and time
-
-**Requirements:**
-
-Each mode requires a role option:
-
-- Cron schedules require the role option `allowScheduledJobs: true` (default for admins only)
-- One-off runs require the role option `allowPlannedJobs: true` (default true)
-
-**How it works:**
-
-To schedule a form:
-
-1. Open a form and fill in the values
-2. Instead of clicking **Submit**, open the dropdown next to it and select **Schedule (Recurring)** or **Run Later (One-time)**
-3. Choose a cron expression or a specific date and time
-4. A schedule is created and the job runs automatically at the configured time; a one-time schedule is deleted after it has run
-
-Schedules can be viewed, edited and deleted on the **Schedules** page (linked from the jobs page).
-
-{: .warning }
-> Treat `allowScheduledJobs` as an admin-level option. Schedules are not owned by the user who created them: every user with the option sees and can change all schedules. A schedule also runs with admin rights, for any form, whatever the creator's own access. Grant it only to roles you would trust as admins.
+Open the dropdown next to **Submit** and choose **Schedule (Recurring)** or **Run Later (One-time)**; they require the role
+options `allowScheduledJobs` (admin-level) and `allowPlannedJobs`. See [Schedules](jobs/schedules.html).
 
 ### Which cron expressions can I use?
 
@@ -1113,31 +944,16 @@ such as `@daily`, the `?` wildcard or the `W` (nearest weekday) modifier, so kee
 > Madrid time all year, following daylight saving time. The cron editor previews the next runs in that same zone. Repository
 > pull schedules use the same zone.
 
+---
+
 ## Save & Load Form Data
 
 ### How do I save and reload form data without running a job?
 
-Store form submissions for later use (v6.1.5).
+Select **Store** in the dropdown next to **Submit** to save the field values, then **Load from Store** to restore them later.
+Password fields are never stored. It requires the role option `allowStoredJobs`. See [Stored jobs](jobs/stored-jobs.html).
 
-The **Store** and **Load from Store** actions save a snapshot of form field values in the database and reload it later, without triggering a job run. This is useful for complex configurations that you reuse across multiple submissions.
-
-**Requirements:**
-
-Storing form data requires one role option:
-
-- The user's role must have `allowStoredJobs: true` (the default)
-
-**How it works:**
-
-To store and reload form data:
-
-1. Fill in the form
-2. Select **Store** in the dropdown next to **Submit**; the current field values are saved under a name you choose
-3. Later, open the same form and click **Load from Store** to restore the saved values
-4. Review or adjust the values and submit as usual
-
-{: .note }
-> Password fields are never stored. Stored data is tied to the form name, so it cannot be loaded into a different form.
+---
 
 ## Nested Forms & Structured Fields
 
@@ -1236,6 +1052,7 @@ When a subform opens, whether from a **`list`** field (each row editor) or a **`
 This lets subform fields use expressions that reference parent data without any extra configuration.
 
 #### What is in `__parent__`?
+{: .no_toc }
 
 `__parent__` is a plain object whose keys are the field names of the parent form:
 
@@ -1255,6 +1072,7 @@ __parent__:
 > `__parent__` is **not sent to Ansible**; like `__user__`, it is stripped from the extravars. It is purely a frontend helper for expressions inside subforms.
 
 #### Accessing parent values in subform expressions
+{: .no_toc }
 
 Reference parent values with the standard `$(...)` expression syntax:
 
@@ -1311,6 +1129,7 @@ Reference parent values with the standard `$(...)` expression syntax:
 ```
 
 #### Nested subforms
+{: .no_toc }
 
 `__parent__` always refers to the **immediate parent** form. If you nest a `list` inside a subform that is itself opened from a parent form, the inner subform's `__parent__` holds the middle subform's data. To reach further levels, chain references such as `$(__parent__.__parent__.someField)` if the middle subform also propagates its own `__parent__`.
 
@@ -1360,6 +1179,7 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 ```
 
 #### Migrating `from` in `tableFields` to `__parent__` expressions
+{: .no_toc }
 
 The `from` property of `tableFields` enum columns populated dropdown choices from another field in the parent form. In a `subform`, it is replaced by an `expression` that reads the same value through `__parent__`.
 

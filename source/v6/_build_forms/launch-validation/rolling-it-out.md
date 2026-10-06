@@ -29,6 +29,8 @@ Move an instance to `enforce` in steps, watching the log before refusing anythin
    made-up extravars now get a `422` with the reason.
 4. When every form behaves as expected, consider `LAUNCH_VALIDATION=enforce` for the whole instance.
 
+---
+
 ## Limitations
 
 Launch validation does not cover everything yet:

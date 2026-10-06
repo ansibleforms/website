@@ -19,6 +19,8 @@ How file fields are validated
 A file field never trusts what the launch request says about a file. Launch validation checks the file itself, on the
 server's disk.
 
+---
+
 ## How an upload reaches a job
 
 A file is uploaded before the form is launched, in two steps:
@@ -31,12 +33,16 @@ Launch validation then checks the description against the disk:
 * The file must exist inside `UPLOAD_PATH`.
 * Its path and size are read from the disk, never from the request.
 
+---
+
 ## What is accepted
 
 A file field only gets a value from a verified upload. Anything else is dropped:
 
 * A path the caller writes into `rawFormData` or `extravars` is ignored.
 * A required file field without a real upload is reported as `missing`.
+
+---
 
 ## File rules
 

@@ -4,6 +4,7 @@ title: Forms
 nav_order: 1
 has_children: true
 has_toc: false
+permalink: /forms/
 ---
 
 # Forms
@@ -20,9 +21,13 @@ Forms are defined in YAML files in the forms folder. Each YAML file contains eit
 
 **VIDEO**: [Create your first form](https://www.youtube.com/watch?v=lIhYZ9Et5Ic)
 
+---
+
 ## Understanding Form Structure
 
 Every form in AnsibleForms is configured with a set of properties. **[Common properties](common.html)** lists the properties that apply to all form types; the type-specific pages describe the additional ones.
+
+---
 
 ## How forms are loaded
 
@@ -37,6 +42,8 @@ AnsibleForms loads forms from the following locations:
 
 {: .warning }
 > **Note:** When "use for forms" is enabled on multiple repositories, all their forms are merged. Form names must be unique across repositories to avoid conflicts.
+
+---
 
 ## Form properties
 

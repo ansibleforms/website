@@ -18,6 +18,8 @@ Install AnsibleForms and MySQL together with docker-compose or podman-compose
 
 The [docker-compose project](https://github.com/ansibleforms/docker) contains both containers, their settings and sample forms, so the only other requirement is Docker or Podman with its compose tool.
 
+---
+
 ## Prerequisites
 
 Before you start, you need:
@@ -29,6 +31,8 @@ Before you start, you need:
 
 **VIDEO**: [How to install AnsibleForms](https://www.youtube.com/watch?v=IHGIggmtTuA)
 
+---
+
 ## Choose a location to install
 
 Create a folder for the project; the examples use `/srv/apps`:
@@ -37,6 +41,8 @@ Create a folder for the project; the examples use `/srv/apps`:
 sudo mkdir /srv/apps
 cd /srv/apps
 ```
+
+---
 
 ## Clone the docker-compose project
 
@@ -78,6 +84,8 @@ sudo git clone https://github.com/ansibleforms/docker.git ansibleforms-docker
 cd ansibleforms-docker
 ```
 
+---
+
 ## Set proper permissions
 
 Give the application write access to the `data` folder:
@@ -86,6 +94,8 @@ Give the application write access to the `data` folder:
 # write access will be needed on the datafolder
 sudo chmod -R u+rwX,g+rwX ./data
 ```
+
+---
 
 ## Install a container engine
 
@@ -201,10 +211,14 @@ sudo dnf install -y podman-compose
 </div>
 </div>
 
+---
+
 ## Customize
 
 Review the variables in the `.env` and `docker-compose.yml` files and adjust them as needed.
 [Learn more about the environment variables](../customization)
+
+---
 
 ## Start docker-compose project
 
@@ -233,6 +247,8 @@ sudo podman-compose up -d
 </div>
 </div>
 
+---
+
 ## Test the application
 
 Once the containers are up, open AnsibleForms in a browser:
@@ -247,6 +263,8 @@ Once the containers are up, open AnsibleForms in a browser:
   * Add an AWX connection
   * Add credentials for external connections, such as other MySQL servers or REST APIs, or to pass to Ansible playbooks
   * Connect Git repositories and choose whether your forms and/or playbooks sync with a repository
+
+---
 
 ## File structure
 

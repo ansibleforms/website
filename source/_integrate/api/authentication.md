@@ -19,6 +19,8 @@ Log in, refresh the token, or use a long-lived token
 Every call needs an access token in the `Authorization` header. A token is obtained by logging in, and kept fresh with
 the refresh token.
 
+---
+
 ## Log in
 
 Log in with basic authentication, with the user's name and password:
@@ -33,6 +35,8 @@ The response holds two tokens:
 { "accessToken": "eyJ...", "refreshToken": "eyJ..." }
 ```
 
+---
+
 ## Call the API
 
 Send the access token as a bearer token with every call:
@@ -40,6 +44,8 @@ Send the access token as a bearer token with every call:
 ```bash
 curl https://af.example.com/api/v2/job/42 -H "Authorization: Bearer <accessToken>"
 ```
+
+---
 
 ## Refresh the token
 
@@ -50,6 +56,8 @@ without the password:
 curl -X POST https://af.example.com/api/v2/token \
   -H "Content-Type: application/json" -d '{ "refreshToken": "<refreshToken>" }'
 ```
+
+---
 
 ## Long-lived tokens
 

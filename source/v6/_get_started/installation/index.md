@@ -4,6 +4,7 @@ title: Installation
 nav_order: 1
 has_children: true
 has_toc: false
+permalink: /installation/
 ---
 
 # Installation
@@ -25,6 +26,8 @@ AnsibleForms supports several installation methods, each described on its own pa
 > **Recommendation** The Docker image is the recommended installation method. It includes all dependencies and can be set up quickly. These pages are for AnsibleForms 6, which uses the `v6` branch of the docker-compose project.
 
 To move an existing installation to a newer release, see [Upgrading](../upgrading/).
+
+---
 
 ## Image tags
 

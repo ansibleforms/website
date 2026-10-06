@@ -104,7 +104,11 @@ The properties available to a `checkbox` field, grouped by purpose:
   </tbody>
 </table>
 
+---
+
 ## Examples
+
+Example `checkbox` fields, in YAML:
 
 {%- assign type_choice = formfield_object.items | where: "name", "type" | first %}
 {%- if type_choice.choices %}

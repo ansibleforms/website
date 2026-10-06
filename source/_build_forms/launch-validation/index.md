@@ -4,6 +4,7 @@ title: Launch validation
 nav_order: 4
 has_children: true
 has_toc: false
+permalink: /launch-validation/
 ---
 
 # Launch validation
@@ -22,6 +23,8 @@ For administrators and form authors: have the server check every launch, its rul
 The check applies regardless of who or what launches the form: the browser, a script calling the REST API,
 or an AI agent through the MCP server.
 
+---
+
 ## Why it exists
 
 A form's rules (`required`, `regex`, `minValue`, `sameAs`, ...) have always been checked
@@ -39,6 +42,8 @@ The server also has no way to distinguish a request from the browser from one se
 script: both use the same endpoint, the same token and the same body, and users can modify
 any request their own browser sends. A check can only be trusted on the server, and launch
 validation is that check.
+
+---
 
 ## The three ways in
 

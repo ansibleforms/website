@@ -1,11 +1,13 @@
 ---
 layout: default
-title: HTTPS and certificates
-parent: Running in production
+title: HTTPS
+parent: Security
 nav_order: 2
+redirect_from:
+  - /production/https.html
 ---
 
-# HTTPS and certificates
+# HTTPS
 {: .no_toc }
 
 Serve HTTPS from the application itself, and replace the sample certificate
@@ -20,11 +22,9 @@ Serve HTTPS from the application itself, and replace the sample certificate
 
 TLS can end in one of three places, and only the first one involves the settings on this page:
 
-* **in AnsibleForms**, with `HTTPS=1` : the application serves HTTPS on [`PORT`](../customization/server.html#env_PORT)
-  with the key and certificate described below. This is what the docker-compose project does, on port 443.
-* **in a reverse proxy**, with `HTTPS=0` behind it : see [Reverse proxy](reverse-proxy.html).
-* **in a Kubernetes ingress** : see the Ingress tab of [Kubernetes installation](../installation/kubernetes.html#6-open-ansibleforms)
-  and the chart's README, which covers the backend setting that HTTPS on the server needs.
+* **in AnsibleForms**, with `HTTPS=1` : HTTPS on [`PORT`](../customization/server.html#env_PORT) with the files below, as docker-compose does on 443.
+* **in a reverse proxy**, with `HTTPS=0` behind it : see [Reverse proxy](../production/reverse-proxy.html).
+* **in a Kubernetes ingress** : see the Ingress tab of [Kubernetes](../installation/kubernetes.html#6-open-ansibleforms) and the chart's README.
 
 You can combine the first with the other two to encrypt the hop between the proxy and the application as well.
 
@@ -91,6 +91,6 @@ Changing `HTTPS_KEY` or `HTTPS_CERT` on the settings pages reloads the key and c
 New connections get the new certificate, open ones keep the old. If the new files cannot be read or do not form a valid
 pair, the current certificate stays in place and a warning is logged.
 
-That only works when the settings pages may write the environment ([`ALLOW_ENV_EDIT`](../customization/features.html#env_ALLOW_ENV_EDIT)
+That only works when the settings pages may write the environment ([`ALLOW_ENV_EDIT`](../customization/configuration.html#env_ALLOW_ENV_EDIT)
 is `1`) and the variable is not set in the real environment. When a renewal replaces the files under the same
 paths, restart the application.

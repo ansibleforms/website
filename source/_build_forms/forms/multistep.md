@@ -32,6 +32,8 @@ Run several playbooks or templates in sequence from one form
 {% endfor %}
 {% endif %}
 
+---
+
 ## Form-level property
 
 A multistep form defines its steps in a single form-level property:
@@ -61,6 +63,8 @@ A multistep form defines its steps in a single form-level property:
 
 Besides `steps`, a multistep form accepts these form-level properties, documented on the [Ansible forms](ansible.html) page:
 {% for p in multistep_props %}{% if p.name != "steps" %}[`{{ p.name }}`](ansible.html#ansible_{{ p.name }}){% if p.required == true %} (required){% endif %}{% unless forloop.last %}, {% endunless %}{% endif %}{% endfor %}.
+
+---
 
 ## Step properties
 

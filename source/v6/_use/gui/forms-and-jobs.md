@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Forms and jobs
-parent: GUI
+parent: Interface tour
 nav_order: 1
 redirect_from:
   - /gui/login.html

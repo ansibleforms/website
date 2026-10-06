@@ -35,6 +35,8 @@ is masked before the model or the page sees it.
 
 To keep form data in-house, use your own tenant (Azure OpenAI) or a local model (Ollama), not a public API.
 
+---
+
 ## Limits
 
 The following limits are set on the settings page:

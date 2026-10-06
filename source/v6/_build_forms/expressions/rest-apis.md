@@ -43,6 +43,8 @@ fn.fnRestBasic(
 // - hasBigInt : a boolean indicating if it should convert Int64 to string
 ```
 
+---
+
 ## REST API with Token Authentication
 
 Call a REST API with a bearer token written in the expression:
@@ -71,6 +73,8 @@ fn.fnRestJwt(
 // - tokenPrefix : a prefix, defaults to 'Bearer' (v5.0.0)
 ```
 
+---
+
 ## REST API with Secured Token Authentication
 
 Call a REST API with a bearer token taken from a stored credential, so it never appears in the form:
@@ -98,6 +102,8 @@ fn.fnRestJwtSecure(
 // - hasBigInt : a boolean indicating if it should convert Int64 to string 
 // - tokenPrefix : a prefix, defaults to 'Bearer' (v5.0.0)
 ```
+
+---
 
 ## REST API with Custom Headers
 

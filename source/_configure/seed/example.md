@@ -116,5 +116,6 @@ chat:                        # the chat assistant's model provider (6.5)
 * `custom` : any other OpenAI-compatible endpoint
 
 Like `ldap`, the `chat` section is a single row, so every field is required except the optional
-ones; an optional field that is omitted is left unchanged. The chat assistant also needs
-`ENABLE_CHAT=1`; see the [Chat assistant](../chat) page.
+ones; an optional field that is omitted is left unchanged.
+
+The chat assistant also needs `ENABLE_CHAT=1`; see the [Chat assistant](../chat) page.

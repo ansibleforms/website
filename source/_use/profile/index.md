@@ -1,10 +1,11 @@
 ---
 layout: default
 title: Your profile
-nav_order: 2
+nav_order: 3
 description: Your account, preferences, password, permissions and API tokens
 has_children: true
 has_toc: false
+permalink: /profile/
 ---
 
 # Your profile
@@ -21,6 +22,8 @@ Your account, preferences, password, permissions and API tokens
 For every user: your own account, preferences, password, permissions and API tokens.
 
 Open your profile from the avatar at the top right: **Profile**.
+
+---
 
 ## Opening a view
 

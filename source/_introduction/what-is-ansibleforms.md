@@ -65,5 +65,6 @@ The rest of this section explains the moving parts before you install:
 | Page | What it covers |
 |---|---|
 | [How it works](how-it-works.html) | The architecture, the steps of a launch, and where data is kept |
+| [Interface tour](gui/) | Screenshots of every screen, from signing in to the administration pages |
 | [Concepts](concepts.html) | The terms used across this documentation |
 | [Prerequisites](prerequisites.html) | What you need before you install |

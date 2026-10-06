@@ -31,6 +31,8 @@ fn.fnJq($(settings),'.mapping | keys')
 // - wrap the result in fn.fnSort to order it
 ```
 
+---
+
 ## Built-in JQ Functions
 
 All data-fetching functions accept a JSON query (jq), a language to manipulate data objects and arrays.  

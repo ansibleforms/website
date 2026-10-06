@@ -146,7 +146,7 @@ Config seed failed, refusing to start : <reason>
 
 **Why this happens**
 
-The file in [`CONFIG_SEED_PATH`](customization/features.html#env_CONFIG_SEED_PATH) could not be applied: it is not valid
+The file in [`CONFIG_SEED_PATH`](customization/configuration.html#env_CONFIG_SEED_PATH) could not be applied: it is not valid
 YAML or breaks the seed schema, for example; `<reason>` says what went wrong. AnsibleForms refuses to start rather than
 run with half of its declared objects. The reason is also written to standard error, so `docker logs` and `kubectl logs` show it.
 
@@ -416,7 +416,7 @@ still counts as a successful test, because the connection and the bind worked.
 
 Correct **Bind User Dn** and **Bind User Password**, the server and the port (usually 389, or 636 for LDAPS). For TLS
 problems, paste the CA bundle that signed the LDAP server's certificate; **Ignore Certs** skips the check, but is not
-for production. See [LDAP and Active Directory](authentication/ldap.html).
+for production. See [LDAP](authentication/ldap.html).
 
 ---
 
@@ -643,9 +643,9 @@ The command timed out
 
 **Why this happens**
 
-The dump command, [`MYSQLDUMP_COMMAND`](customization/paths.html#env_MYSQLDUMP_COMMAND), is not installed, failed to
+The dump command, [`MYSQLDUMP_COMMAND`](customization/retention.html#env_MYSQLDUMP_COMMAND), is not installed, failed to
 connect, or produced an empty file. A large database can also take longer than
-[`BACKUP_COMMAND_TIMEOUT_SECONDS`](customization/paths.html#env_BACKUP_COMMAND_TIMEOUT_SECONDS), one hour by default.
+[`BACKUP_COMMAND_TIMEOUT_SECONDS`](customization/retention.html#env_BACKUP_COMMAND_TIMEOUT_SECONDS), one hour by default.
 A failed backup leaves no folder behind; the log says `Backup failed, removing the incomplete folder '<folder>' : <reason>`.
 
 **How to fix it**
