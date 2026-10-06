@@ -1,30 +1,34 @@
 ---
 layout: default
 title: Tablefields (deprecated)
-nav_order: 7
+nav_order: 2.92
 has_children: true
 has_toc: false
 ---
 
-# Tablefields
+# Tablefields (deprecated)
 {: .no_toc }
 
-> **Deprecated.** Tablefields are used with the `table` formfield type, which is deprecated. Use the [`list`](/formfields/list.html) field type instead — it provides the same functionality with a drilldown subform UX and full output modelling support.
+The columns of a deprecated table field
+{: .fs-6 .fw-300 }
+
+---
+
 {: .warning }
+> **Deprecated.** Tablefields are used with the `table` formfield type, which is deprecated. Use the [`list`](../formfields/list.html) field type instead: it provides the same functionality with a drilldown subform and full output modelling support.
 
-Tablefields are field types used within table formfields. They define the columns and data entry controls for tabular data collection.
+Tablefields are the field types used within a [`table`](../formfields/table.html) formfield. Each column of a table is defined by a tablefield, which sets the data entry control for that column.
 
-When you use a `table` formfield, each column is defined by a tablefield. Table fields are similar to regular formfields but with some restrictions since they operate within a row context.
+Tablefields resemble regular formfields, but with some restrictions, because they operate within the context of a row.
 
 ## Common Properties
 
 All tablefields share two fundamental properties:
-- **name** (string, required): The unique identifier for the column
-- **type** (string, required): The field type - determines which page below describes the available properties
 
-Each tablefield type has additional properties specific to its functionality. Click on a tablefield type below to see its complete property reference.
+- **name** (string, required): the unique identifier of the column
+- **type** (string, required): the field type, which determines the page below that describes the available properties
 
-Browse the tablefield types using the navigation sidebar, or refer to the table below:
+Each tablefield type adds properties specific to its function. Select a tablefield type in the navigation sidebar or in the table below to open its complete property reference:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -43,8 +47,8 @@ Browse the tablefield types using the navigation sidebar, or refer to the table 
   <tbody>
 {%- for type in tablefile.choices %}
     <tr>
-      <td><strong><a href="/tablefields/{{ type.name }}.html">{{ type.name }}</a></strong></td>
-      <td>{{ type.description }}</td>
+      <td><strong><a href="{{ type.name }}.html">{{ type.name }}</a></strong></td>
+      <td>{{ type.description | markdownify }}</td>
     </tr>
 {%- endfor %}
   </tbody>

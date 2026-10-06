@@ -750,3 +750,47 @@ p.warning {
   display: none;
 }
 
+
+// ---------------------------------------------------------------------------------------
+// 6.x home page : the deprecation card under the hero, linking to the 7.x upgrade guide
+// ---------------------------------------------------------------------------------------
+
+.main-content a.af-card.af-deprecated {
+  margin: 0 0 2rem;
+  border-color: rgba($af-orange, 0.55);
+  border-left: 4px solid $af-orange;
+  background-color: rgba($af-orange, if($af-is-dark, 0.1, 0.06));
+
+  // the icon and the title share the first row, the text and the link span the full width
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.85rem;
+
+  .af-card-icon {
+    margin-bottom: 0;
+    color: $af-orange;
+    background-color: rgba($af-orange, 0.15);
+  }
+
+  strong ~ span {
+    grid-column: 1 / -1;
+  }
+
+  // one full-width card : no two-line minimum, no ellipsis on the title
+  strong {
+    white-space: normal;
+  }
+
+  strong + span {
+    min-height: 0;
+  }
+
+  .af-card-more {
+    color: $af-orange;
+  }
+
+  &:hover {
+    border-color: $af-orange;
+  }
+}

@@ -6,10 +6,16 @@ nav_order: 11
 ---
 
 # Expression Formfield
+{: .no_toc }
 
-A JavaScript expression field for dynamic values and calculations, supporting both local (browser) and remote (server) execution for advanced use cases.
+A value computed by JavaScript, in the browser or on the server
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `expression` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A JavaScript expression field for dynamic values and calculations, supporting bo
     {%- for example in expression_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

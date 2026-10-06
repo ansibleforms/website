@@ -6,10 +6,16 @@ nav_order: 3
 ---
 
 # Datetime Formfield
+{: .no_toc }
 
-A date and time picker field for collecting temporal values with various precision levels (date, datetime, time, month, year).
+A date, time, week, month or year picker
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `datetime` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A date and time picker field for collecting temporal values with various precisi
     {%- for example in datetime_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

@@ -6,13 +6,19 @@ nav_order: 4
 ---
 
 # Password Tablefield
+{: .no_toc }
 
-> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](/formfields/list.html) field type instead.
+A masked column, for passwords, secrets and tokens
+{: .fs-6 .fw-300 }
+
+---
+
 {: .warning }
-
-A masked text input column for securely collecting passwords, secrets, or tokens within a table row.
+> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](../formfields/list.html) field type instead.
 
 ## Properties
+
+The properties available to a `password` tablefield, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -111,6 +117,8 @@ A masked text input column for securely collecting passwords, secrets, or tokens
     {%- for example in password_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The column definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

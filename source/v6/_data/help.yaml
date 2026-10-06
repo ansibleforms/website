@@ -2540,8 +2540,8 @@
             Each step is a new form destination.  And steps are executed sequentially.  
             Use specific properties like `continue`, `always` and `ifExtraVar` to control the flow of a multistep form.  
             
-            When a step has `type: ansible`, all [ansible-specific form properties](/forms/ansible.html) apply to that step (e.g. `playbook`, `playbookSubPath`, `ansibleCredentials`, `vaultCredentials`, `inventory`, `check`, `diff`, `tags`, `varsFiles`, `approval`, `notifications`, ...).  
-            When a step has `type: awx`, all [awx-specific form properties](/forms/awx.html) apply to that step (e.g. `template`, `awx`, `awxCredentials`, `executionEnvironment`, `instanceGroups`, `scmBranch`, `inventory`, `check`, `diff`, `tags`, `approval`, `notifications`, ...).
+            When a step has `type: ansible`, all [ansible-specific form properties](/v6/forms/ansible.html) apply to that step (e.g. `playbook`, `playbookSubPath`, `ansibleCredentials`, `vaultCredentials`, `inventory`, `check`, `diff`, `tags`, `varsFiles`, `approval`, `notifications`, ...).  
+            When a step has `type: awx`, all [awx-specific form properties](/v6/forms/awx.html) apply to that step (e.g. `template`, `awx`, `awxCredentials`, `executionEnvironment`, `instanceGroups`, `scmBranch`, `inventory`, `check`, `diff`, `tags`, `approval`, `notifications`, ...).
           items:
           - name: name
             type: string
@@ -2698,11 +2698,11 @@
           link: forms/form/wizard
           icon: fas,wand-magic-sparkles
           description: |
-            Each wizard step references a [`subform`](/forms/subform.html) and is rendered as its own page with **Back** and **Next** navigation. The user must validate one step before moving to the next; data from earlier steps is available in later steps via [`__parent__`](/faq.html#how-do-i-access-parent-form-data-inside-a-subform).  
+            Each wizard step references a [`subform`](/v6/forms/subform.html) and is rendered as its own page with **Back** and **Next** navigation. The user must validate one step before moving to the next; data from earlier steps is available in later steps via [`__parent__`](/v6/faq.html#how-do-i-access-parent-form-data-inside-a-subform).  
             <br>
             **Review step is automatic.** A read-only summary page that lists every step's input is appended as the last page of the wizard. You do **not** declare it in YAML — its title is taken from the active locale ("Summary" / "Samenvatting" / "Zusammenfassung" / ...).  
             <br>
-            **Wizard vs Multistep.** [`steps`](/forms/multistep.html) splits the **execution** into multiple sequential jobs (each step is its own playbook/template). `wizard` splits the **input** of a single form into multiple pages — only one job runs at the end. The two can be combined: a `type: multistep` form can also have a `wizard:` block to gather its extravars across pages.
+            **Wizard vs Multistep.** [`steps`](/v6/forms/multistep.html) splits the **execution** into multiple sequential jobs (each step is its own playbook/template). `wizard` splits the **input** of a single form into multiple pages — only one job runs at the end. The two can be combined: a `type: multistep` form can also have a `wizard:` block to gather its extravars across pages.
           items:
           - name: subform
             type: string
@@ -2711,7 +2711,7 @@
             allowed: a valid subform name
             short: Subform reference
             description: |
-              The name of a [`type: subform`](/forms/subform.html) form to render on this wizard page. The subform's fields become this step's inputs.
+              The name of a [`type: subform`](/v6/forms/subform.html) form to render on this wizard page. The subform's fields become this step's inputs.
             examples:
             - name: Reference a subform
               code: |
@@ -4665,7 +4665,7 @@
             description: |
               **Deprecated.** The `table` field and its `tableFields` are superseded by the [list](../formfields/list) field combined with a `subform`.  
               Every table field has its own separated table fields.  The explanation of a tablefield requires a separate help.  
-              You can read about [tablefields here](/tablefields/). 
+              You can read about [tablefields here](/v6/tablefields/). 
           help:
           - name: Tablefield
             itemName: attribute

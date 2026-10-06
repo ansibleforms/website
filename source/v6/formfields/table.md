@@ -6,15 +6,23 @@ nav_order: 12
 ---
 
 # Table Formfield (deprecated)
+{: .no_toc }
+
+A table of rows, each made of tablefield columns
+{: .fs-6 .fw-300 }
+
+---
 
 {: .warning }
 > **Deprecated.** The `table` field is replaced by the new [list](list.html) field combined with a `subform`.
 > The `list` field supports nested rows, reusable subforms shared across forms, and full-screen editing of each row.
 > Existing `table` fields keep working but will trigger a deprecation warning in the form.
 
-A tabular data entry field for collecting multiple records with structured data, where each row contains nested tablefields.
+A table field collects multiple records of structured data, where the columns of each row are defined by [tablefields](../tablefields/index.html).
 
 ## Properties
+
+The properties available to a `table` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -112,6 +120,8 @@ A tabular data entry field for collecting multiple records with structured data,
     {%- for example in table_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

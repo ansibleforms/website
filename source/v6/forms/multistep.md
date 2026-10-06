@@ -8,7 +8,10 @@ nav_order: 5
 # Multistep forms
 {: .no_toc }
 
-Create sequential workflows with multistep forms.
+Run several playbooks or templates in sequence from one form
+{: .fs-6 .fw-300 }
+
+---
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -31,9 +34,33 @@ Create sequential workflows with multistep forms.
 
 ## Form-level property
 
-| Attribute | Comments |
-|-----------|----------|
-| **{{ steps_prop.name }}**<br><span class="af-type">{{ steps_prop.type }}</span> | **{{ steps_prop.short }}**<br>{{ steps_prop.description | markdownify }} |
+A multistep form defines its steps in a single form-level property:
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Comments</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>{{ steps_prop.name }}</strong><br>
+        <span class="af-type">{{ steps_prop.type }}</span><span class="af-required"> / required</span>
+      </td>
+      <td>
+        <p><strong>{{ steps_prop.short }}</strong></p>
+        {{ steps_prop.description | markdownify }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% assign multistep_props = form_object.items | where_exp: "p", "p.with_types contains 'multistep'" %}
+
+Besides `steps`, a multistep form accepts these form-level properties, documented on the [Ansible forms](ansible.html) page:
+{% for p in multistep_props %}{% if p.name != "steps" %}[`{{ p.name }}`](ansible.html#ansible_{{ p.name }}){% if p.required == true %} (required){% endif %}{% unless forloop.last %}, {% endunless %}{% endif %}{% endfor %}.
 
 ## Step properties
 
@@ -52,7 +79,7 @@ Create sequential workflows with multistep forms.
     {% assign group_properties = step_object.items  | where: "group",group %}
     {% if group %}
     <tr>
-      <th id="{{ step_object.name }}_{{ group }}_group" colspan="2" class="af-group-header">
+      <th id="step_{{ group }}_group" colspan="2" class="af-group-header">
         {{ group }}
       </th>
     </tr>
@@ -60,7 +87,7 @@ Create sequential workflows with multistep forms.
     {% for var in group_properties %}
     <tr>
       <td>
-        <span id="{{step_object.name}}_{{ var.name }}"><strong>{{ var.name }}</strong></span><br>
+        <span id="step_{{ var.name }}"><strong>{{ var.name }}</strong></span><br>
         <span class="af-type">{{ var.type}}</span>
         {% if var.required==true %}<span class="af-required"> / required</span>{% endif %}
         {% if var.unique==true %}<span class="af-unique"> / unique</span>{% endif %}
@@ -135,7 +162,7 @@ Create sequential workflows with multistep forms.
     {% endfor %}
     {% if step_object.examples %}          
     <tr>
-      <th id="{{ step_object.name }}_examples" colspan="2">
+      <th id="step_examples" colspan="2">
         Examples
       </th>
     </tr>
@@ -143,7 +170,7 @@ Create sequential workflows with multistep forms.
       <td colspan="2">
         {% for e in step_object.examples %}
         <div>
-          <p id="{{ step_object.name }}_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
+          <p id="step_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
 {% highlight yaml %}
 {{ e.code }}
 {% endhighlight %}
@@ -159,35 +186,46 @@ Create sequential workflows with multistep forms.
 
 ## Example
 
-Multi-step forms allow you to break complex workflows into multiple sequential pages, improving user experience and organization. Each step can have its own set of fields and validation.
+A multistep form runs several jobs in sequence, each step launching its own playbook or AWX template. All steps share the fields of the form: by default, every step receives the full extravars, and a step's `key` restricts it to that part of them.
 
-### Two-Step Provisioning Form
+### Create and configure a server
+
+Each step receives its own part of the extravars: an AWX step creates the server, an Ansible step configures its network, and a final step always sends a report:
 
 ```yaml
 name: Server Provisioning
-category: Setup
+type: multistep
+roles:
+  - public
+categories:
+  - Setup
 steps:
-  - name: Basic Configuration
-    fields:
-      - server_name
-      - environment
-      - size
-  - name: Network Settings
-    fields:
-      - ip_address
-      - subnet
-      - gateway
+  - name: Create server
+    type: awx
+    template: Create VM
+    key: server              # receives only the `server` part of the extravars
+  - name: Configure network
+    type: ansible
+    playbook: configure_network.yml
+    key: network             # receives only the `network` part of the extravars
+  - name: Send report
+    type: ansible
+    playbook: email.yml
+    always: true             # runs even when an earlier step failed
 fields:
   - name: server_name
     type: text
+    model: server.name
   - name: environment
-    type: select
-  - name: size
-    type: select
+    type: enum
+    values:
+      - dev
+      - prod
+    model: server.environment
   - name: ip_address
     type: text
-  - name: subnet
-    type: text
+    model: network.ip
   - name: gateway
     type: text
+    model: network.gateway
 ```

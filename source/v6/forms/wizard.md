@@ -8,7 +8,10 @@ nav_order: 6
 # Wizard
 {: .no_toc }
 
-Split a form's input across multiple pages with Back / Next navigation.
+Split a form's input across pages with Back and Next
+{: .fs-6 .fw-300 }
+
+---
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -18,16 +21,20 @@ Split a form's input across multiple pages with Back / Next navigation.
 
 ## What is a wizard?
 
-A **wizard** turns a single form into a sequence of pages. Each page is rendered from a [`subform`](subform.html) and the user navigates with **Back** and **Next** buttons. Validation is gated per page — you cannot move forward until the current step is valid (unless the step is marked `optional`).
+A **wizard** turns a single form into a sequence of pages. Each page is rendered from a [`subform`](subform.html) and the user navigates with **Back** and **Next** buttons. Validation is enforced per page: the user cannot move forward until the current step is valid, unless the step is marked `optional`.
 
-A read-only **review page** is appended automatically at the end of every wizard. It lists each step and its collected values so the user can confirm before submitting. You do **not** declare it in YAML — its title is taken from the active locale.
+A read-only **review page** is appended automatically to the end of every wizard. It lists each step with its collected values so that the user can confirm them before submitting. The review page is **not** declared in YAML; its title is taken from the active locale.
 
-When the user submits, the **collected values from all steps are merged into a single extravars payload** and sent to the underlying playbook / template / multistep — exactly as if the user had filled in one big form.
+On submission, the **collected values from all steps are merged into a single extravars payload** and sent to the underlying playbook, template or multistep form, exactly as if the user had filled in a single large form.
+
+A form with a `wizard` does not need its own `fields`, but it cannot set `launchValidation` or `enableForChat`, and a `subform` cannot have a `wizard` itself.
 
 {: .note }
-> Wondering how `wizard` differs from a `multistep` form, or how the two combine? See the FAQ entry [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form).
+> For how a `wizard` differs from a `multistep` form, and how the two combine, see the FAQ entry [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form).
 
 ## Form-level property
+
+A wizard is enabled with a single form-level property:
 
 <table>
   <thead>
@@ -79,7 +86,7 @@ When the user submits, the **collected values from all steps are merged into a s
     {% assign group_properties = wizard_object.items  | where: "group",group %}
     {% if group %}
     <tr>
-      <th id="{{ wizard_object.name }}_{{ group }}_group" colspan="2" class="af-group-header">
+      <th id="wizard_{{ group }}_group" colspan="2" class="af-group-header">
         {{ group }}
       </th>
     </tr>
@@ -155,7 +162,7 @@ When the user submits, the **collected values from all steps are merged into a s
     {% endfor %}
     {% if wizard_object.examples %}
     <tr>
-      <th id="{{ wizard_object.name }}_examples" colspan="2">
+      <th id="wizard_examples" colspan="2">
         Examples
       </th>
     </tr>
@@ -163,7 +170,7 @@ When the user submits, the **collected values from all steps are merged into a s
       <td colspan="2">
         {% for e in wizard_object.examples %}
         <div>
-          <p id="{{ wizard_object.name }}_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
+          <p id="wizard_examples_{{ forloop.index }}"><strong>{{ forloop.index }}) {{ e.name }}</strong></p>
 {% highlight yaml %}
 {{ e.code }}
 {% endhighlight %}
@@ -179,12 +186,14 @@ When the user submits, the **collected values from all steps are merged into a s
 
 ## Combining a wizard with multistep
 
-A wizard can be layered on top of a [`multistep`](multistep.html) form. Pair each wizard step's `defaultModel` with the matching multistep step's [`key`](multistep.html#step_key) and each playbook/template will receive only the values from its own wizard page.
+A wizard can be layered on top of a [`multistep`](multistep.html) form. When each wizard step's `defaultModel` matches the [`key`](multistep.html#step_key) of the corresponding multistep step, each playbook or template receives only the values from its own wizard page.
 
-See the FAQ for a worked example and the merged-extravars layout: [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form) (section *Combined — wizard on top of multistep*).
+The FAQ contains a worked example and the layout of the merged extravars: [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form) (section *Combined (wizard on top of multistep)*).
 
 ## See also
 
+Related pages and FAQ entries:
+
 - [Subform](subform.html) — wizard pages are rendered from subforms
-- [Multistep forms](multistep.html) — the execution-layer counterpart of wizard
+- [Multistep forms](multistep.html) — the execution-layer counterpart of the wizard
 - [`__parent__` in subforms](../faq.html#how-do-i-access-parent-form-data-inside-a-subform) — how to reference earlier wizard steps from a later step
