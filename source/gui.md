@@ -62,7 +62,7 @@ Complete output from an executed Ansible playbook.
 
 ## Job Logs
 
-Detailed job execution logs with timestamps and status information.
+Every job with its status and times, filtered by status from the left menu.
 
 ![Job Logs](assets/screenshots/job-log.jpg)
 
@@ -78,7 +78,7 @@ Forms can be split into multiple steps for complex workflows.
 
 ## Builtin Designer
 
-Visual form designer for creating and editing forms without coding.
+Edit forms, categories, constants and roles as YAML, with a file explorer for the form files.
 
 ![Builtin Designer](assets/screenshots/designer.jpg)
 
@@ -124,22 +124,6 @@ Configure LDAP/Active Directory authentication and authorization.
 
 ---
 
-## LDAP Test
-
-Test LDAP connection and query results.
-
-![LDAP Test](assets/screenshots/ldap-test.jpg)
-
----
-
-## LDAP Test Output
-
-Detailed output from LDAP connection tests.
-
-![LDAP Test Output](assets/screenshots/ldap-test-output.jpg)
-
----
-
 ## Git Repositories
 
 Integrate with Git repositories to version control your forms and playbooks.
@@ -156,11 +140,11 @@ Edit and configure Git repository integration settings.
 
 ---
 
-## Log Viewer
+## Server Log
 
-Built-in log viewer for troubleshooting and monitoring.
+The server's own log, under Settings, for troubleshooting and monitoring.
 
-![Log Viewer](assets/screenshots/logs.jpg)
+![Server Log](assets/screenshots/logs.jpg)
 
 ---
 
@@ -174,9 +158,9 @@ Securely store and manage credentials used by playbooks.
 
 ## User Profile
 
-View and edit your user profile and preferences.
+Your account, preferences, password, permissions and API tokens. See [Your profile](profile).
 
-![User Profile](assets/screenshots/about-me.jpg)
+![User Profile](assets/screenshots/profile.jpg)
 
 ---
 
