@@ -1,7 +1,9 @@
 ---
 layout: default
 title: Secret stores
-nav_order: 5.5
+nav_order: 2.7
+has_children: true
+has_toc: false
 ---
 
 # Secret stores
@@ -50,75 +52,10 @@ nothing in your forms.
 secret. The **Status** page checks every store, and for a Vault warns when its token
 expires within 7 days.
 
-### HashiCorp Vault
+Each secret manager has a page of its own:
 
-| Field | Meaning |
-|---|---|
-| Token | A token with read access to the paths your credentials use. Nothing renews it. |
-| Namespace | Vault Enterprise namespace, sent as `X-Vault-Namespace`. |
-| KV version | `2` (default) or `1`. |
-| Default mount | Used for a reference without a slash, e.g. `myapp` becomes `secret/data/myapp`. |
-
-The secret reference is the path, e.g. `secret/myapp/prod`. For KV v2 the `/data/` segment
-is inserted when you leave it out.
-
-#### Dynamic database credentials
-
-{: .warning }
-> **Experimental.** Tested against a simulated Vault, not yet against a live database secrets
-> engine. Please report what you find.
-
-A reference of the form `<mount>/creds/<role>`, e.g. `database/creds/readonly`, reads from a
-dynamic secrets engine such as Vault's database engine. Vault then creates a new database
-account for each read, valid for the lease.
-
-- AnsibleForms reuses the account for 80% of its lease rather than for the store's cache
-  time, so it does not create an account on every query. A store with cache `0` still reads
-  every time.
-- Vault returns only `username` and `password`. Put host, port, database type and database
-  name in the credential row, and point the row at the store with `database/creds/<role>`.
-- Nothing revokes the lease early; the account expires when Vault ends the lease.
-
-### CyberArk Central Credential Provider
-
-{: .warning }
-> **Experimental.** Built to the documented CCP API and tested against a simulated CCP, not
-> yet against a live CyberArk. Please report what you find.
-
-The CCP is the REST interface of CyberArk's Application Access Manager.
-
-| Field | Meaning |
-|---|---|
-| URL | Base URL of the CCP, e.g. `https://ccp.example.com`. `/AIMWebService/api/Accounts` is added. |
-| AppID | The application defined for AnsibleForms in CyberArk. |
-| Client certificate / key | PEM, when the AppID is restricted to a client certificate. Leave empty when it is restricted to allowed machines (the AnsibleForms server's address) or an OS user. |
-
-The secret reference names the account as `;`-separated pairs:
-
-```
-Safe=Linux;Object=root-srv01
-Safe=DB;UserName=forms;Address=db01.example.com
-Query=Safe=Linux;Folder=Root;Object=root-srv01
-```
-
-- Allowed keys: `Safe`, `Folder`, `Object`, `UserName`, `Address`, `Database`, `PolicyID`,
-  `Reason`, `Query`, `QueryFormat`, `ConnectionTimeout`, `FailRequestOnPasswordChange`.
-- `Query=` passes the rest as CCP's own query, with `QueryFormat=Exact` unless you set it.
-- An `AppID` in the reference is ignored: the store's AppID is always used.
-- The account's password (`Content`) becomes the password; `UserName`, `Address`, `Port` and
-  `Database` fill user, host, port and database name.
-
-Extra options (JSON):
-
-| Key | Meaning |
-|---|---|
-| `reason` | Sent as `Reason` when the reference has none, for CyberArk's audit. |
-| `check_ref` | A reference **Test connection** reads for real. Without it the test only proves the CCP answers and accepts the AppID. |
-| `timeout_ms` | Request timeout, default 10000. |
-
-```json
-{ "reason": "AnsibleForms", "check_ref": "Safe=Test;Object=ansibleforms-probe" }
-```
+* **[HashiCorp Vault](hashicorp-vault.html)** : KV v1 and v2 with token authentication, and dynamic database credentials
+* **[CyberArk](cyberark.html)** : the Central Credential Provider (CCP) of CyberArk's Application Access Manager
 
 ## Using a store
 
@@ -201,7 +138,7 @@ credentials:
       is_database: true
 ```
 
-See [Config seed](seed).
+See [Config seed](../seed).
 
 ## Upgrading from the VAULT_* variables
 
