@@ -8,7 +8,7 @@ nav_order: 3
 # From source
 {: .no_toc }
 
-Upgrade an installation built from source and run with PM2
+Upgrade an installation built from source
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -18,37 +18,43 @@ Upgrade an installation built from source and run with PM2
 
 ## Get the new code
 
-Pull the new release into the folder you cloned at install time, then update the Node.js dependencies of both applications:
+Pull the new release into the folder you cloned at install time. Check the [changelog](../changelog) first: a new release
+can raise the Node.js version it needs.
 
 ```bash
 cd /srv/apps/ansibleforms
-sudo git pull
+git pull
+```
 
-cd server
-sudo npm install
+---
 
-cd ..
+## Rebuild
+
+Rebuild the client and copy it into the server again, and update the server's dependencies, exactly as at install time:
+
+```bash
 cd client
-sudo npm install
+npm ci
+npm run build
+
+cd ../server
+npm ci --omit=dev
+rm -rf views
+mkdir views
+cp -r ../client/dist/. views/
 ```
 
-## Rebuild and restart
+Your settings, forms, playbooks, certificates and logs live in `server/persistent`, which git and the build leave alone.
+Compare `server/.env.example` with your `persistent/.env` to pick up any setting the release adds.
 
-Compile the client code and bundle it in the server code, then compile the server code, exactly as at install time:
+---
+
+## Restart
+
+Restart the application to load the new code; the database schema is upgraded at the first start:
 
 ```bash
-sudo npm run bundle
-
-cd ..
-cd server
-sudo npm run build
+pm2 restart ansibleforms
 ```
 
-Your `.env.production` file lives in `./dist`, which the build rewrites: check it is still there (copy it back if needed), then restart:
-
-```bash
-cd dist
-sudo pm2 restart ecosystem.config.js --env production
-```
-
-Compare your `.env` files with the new `.env.example` to pick up any setting the release adds.
+If you run it without PM2, stop `npm run start` and start it again.
