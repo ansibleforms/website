@@ -27,7 +27,7 @@ Before you start, you need:
 
 ## Install MySQL
 
-Install MySQL 8+, or MariaDB, on a server that the container can reach. Pick your Linux distribution:
+Install MySQL 8+, or MariaDB, on a Linux server that the container can reach:
 
 <div class="af-tabs" data-tab-group="linux">
 <div class="af-tab-list" role="tablist">
