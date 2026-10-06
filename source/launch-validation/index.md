@@ -62,7 +62,7 @@ Each topic has a page of its own:
 
 * **[Switching it on](switching-it-on.html)** : for the whole instance, or for one form
 * **[Log and enforce](log-and-enforce.html)** : what each mode does with a launch that breaks the rules
-* **[List rows and subforms](list-rows-and-subforms.html)** : how rows of list fields are validated
+* **[List rows](list-rows-and-subforms.html)** : how rows of list fields are validated
 * **[File uploads](file-uploads.html)** : how file fields are validated
 * **[Passwords](passwords.html)** : how password fields are validated and kept out of APIs
 * **[Relaunching](relaunching.html)** : how a relaunched job is validated

@@ -1,11 +1,11 @@
 ---
 layout: default
-title: List rows and subforms
+title: List rows
 parent: Launch validation
 nav_order: 3
 ---
 
-# List rows and subforms
+# List rows
 {: .no_toc }
 
 How rows of list fields are validated
@@ -41,11 +41,10 @@ breaks a rule of its subform. The row then no longer counts as one of the source
 it is validated, and the launch is refused with the row named, for example
 `acls[2].user_or_group (regex)`.
 
-Failing rows are reported per list field in `rowErrors`, with the row's `index` (none for a
-`yaml` field, which is a single row), and in the log as `disks[1].size (maxValue)`.
+Failing rows appear in `rowErrors` with their `index` (a `yaml` field has none) and in the log as
+`disks[1].size (maxValue)`.
 
-At most **500 rows** are resolved per launch, across all nesting levels, because each row
-runs its subform's expressions and queries. A launch with more rows is refused.
+A launch may hold at most **500 rows** across all nesting levels, since each row runs its subform's queries.
 
 ## Row markers
 
