@@ -8,7 +8,10 @@ nav_order: 3
 # AWX Forms
 {: .no_toc }
 
-AWX forms execute an AWX / Ansible Tower job template when submitted.
+Forms that launch an AWX or Ansible Tower job template
+{: .fs-6 .fw-300 }
+
+---
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}

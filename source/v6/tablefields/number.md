@@ -6,13 +6,19 @@ nav_order: 3
 ---
 
 # Number Tablefield
+{: .no_toc }
 
-> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](/formfields/list.html) field type instead.
+An integer or decimal column, such as a port or a quantity
+{: .fs-6 .fw-300 }
+
+---
+
 {: .warning }
-
-A numeric input column with validation for collecting integer or decimal values like IDs, ports, or quantities within a table row.
+> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](../formfields/list.html) field type instead.
 
 ## Properties
+
+The properties available to a `number` tablefield, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -111,6 +117,8 @@ A numeric input column with validation for collecting integer or decimal values 
     {%- for example in number_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The column definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

@@ -6,13 +6,19 @@ nav_order: 7
 ---
 
 # Enum Tablefield
+{: .no_toc }
 
-> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](/formfields/list.html) field type instead.
+A dropdown column with search, in a table row
+{: .fs-6 .fw-300 }
+
+---
+
 {: .warning }
-
-A dropdown selection column with filtering capabilities, ideal for status values, categories, or any predefined set of options within a table row.
+> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](../formfields/list.html) field type instead.
 
 ## Properties
+
+The properties available to a `enum` tablefield, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -111,6 +117,8 @@ A dropdown selection column with filtering capabilities, ideal for status values
     {%- for example in enum_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The column definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

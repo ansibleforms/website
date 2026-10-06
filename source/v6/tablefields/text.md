@@ -6,13 +6,19 @@ nav_order: 1
 ---
 
 # Text Tablefield
+{: .no_toc }
 
-> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](/formfields/list.html) field type instead.
+A single line of text in a table row, such as a name
+{: .fs-6 .fw-300 }
+
+---
+
 {: .warning }
-
-A single-line text input column for collecting short string values like names, identifiers, or other text-based data within a table row.
+> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](../formfields/list.html) field type instead.
 
 ## Properties
+
+The properties available to a `text` tablefield, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -111,6 +117,8 @@ A single-line text input column for collecting short string values like names, i
     {%- for example in text_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The column definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

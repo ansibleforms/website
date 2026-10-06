@@ -6,13 +6,19 @@ nav_order: 6
 ---
 
 # Datetime Tablefield
+{: .no_toc }
 
-> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](/formfields/list.html) field type instead.
+A date, time, month or year column in a table row
+{: .fs-6 .fw-300 }
+
+---
+
 {: .warning }
-
-A date and time picker column for collecting temporal values with various precision levels (date, datetime, time, month, year) within a table row.
+> **Deprecated.** This tablefield is used with the deprecated `table` field type. Use the [`list`](../formfields/list.html) field type instead.
 
 ## Properties
+
+The properties available to a `datetime` tablefield, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -111,6 +117,8 @@ A date and time picker column for collecting temporal values with various precis
     {%- for example in datetime_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The column definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}

@@ -6,10 +6,16 @@ nav_order: 1
 ---
 
 # Text Formfield
+{: .no_toc }
 
-A single-line text input field for collecting short text values like names, hostnames, or identifiers with validation support.
+A single line of text, such as a name or a hostname
+{: .fs-6 .fw-300 }
+
+---
 
 ## Properties
+
+The properties available to a `text` field, grouped by purpose:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -107,6 +113,8 @@ A single-line text input field for collecting short text values like names, host
     {%- for example in text_type.examples %}
 
 ### {{ example.name }}
+
+{% if example.description %}{{ example.description | markdownify }}{% elsif example.short %}{{ example.short }}{% else %}The field definition, in YAML:{% endif %}
 
 ```yaml
 {{ example.code }}
