@@ -957,7 +957,7 @@ roles:
       showSettings: false     # cannot access settings
   - name: schedulers
     options:
-      allowScheduledJobs: true  # can schedule forms (recurring or one-time)
+      allowScheduledJobs: true  # can schedule forms - admin-level, see the schedules question
       allowPlannedJobs: true    # can plan a form to run once at a set time
       allowStoredJobs: true     # can save and load form data
 ```
@@ -1048,6 +1048,9 @@ AnsibleForms supports two scheduling modes via the job scheduling feature:
 4. A schedule is created and the job runs automatically at the configured time; a one-time schedule is deleted after it ran
 
 Schedules can be viewed, edited, and deleted on the **Schedules** page (linked from the jobs page).
+
+{: .warning }
+> Treat `allowScheduledJobs` as an admin-level option. Schedules are not owned by the user who created them: every user with the option sees and can change all schedules. A schedule also runs with admin rights, for any form, whatever the creator's own access. Grant it only to roles you would trust as admins.
 
 ## Save & Load Form Data
 
