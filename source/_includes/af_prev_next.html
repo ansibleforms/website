@@ -1,0 +1,53 @@
+{%- comment -%}
+  Include as: {%- include af_prev_next.html -%}
+  Depends on: page, and the cached menu order of af_page_order.html.
+  Results in: the Previous / Next cards at the bottom of a page, linking to the pages before
+    and after it in the menu ; nothing on Home and on pages outside the menu (404).
+{%- endcomment -%}
+
+{%- unless page.url == "/" or page.nav_exclude == true or page.title == nil -%}
+
+  {%- comment -%} Step 1 : the menu order, built once per build {%- endcomment -%}
+  {%- capture af_order -%}{%- include_cached af_page_order.html -%}{%- endcapture -%}
+  {%- assign af_entries = af_order | split: "@@" -%}
+  {%- assign af_key = page.url | append: "##" -%}
+
+  {%- comment -%} Step 2 : find this page, keeping the entry before it and taking the one after {%- endcomment -%}
+  {%- assign af_prev = nil -%}
+  {%- assign af_next = nil -%}
+  {%- assign af_found = false -%}
+  {%- for af_e in af_entries -%}
+    {%- if af_found -%}
+      {%- assign af_next = af_e -%}
+      {%- break -%}
+    {%- endif -%}
+    {%- assign af_head = af_e | slice: 0, af_key.size -%}
+    {%- if af_head == af_key -%}
+      {%- assign af_found = true -%}
+    {%- else -%}
+      {%- assign af_prev = af_e -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- comment -%} Step 3 : the two cards ; Next stays in the right column when there is no Previous {%- endcomment -%}
+  {%- if af_found -%}
+    {%- if af_prev == "" -%}{%- assign af_prev = nil -%}{%- endif -%}
+    <nav class="af-prev-next" aria-label="Previous and next page">
+      {%- if af_prev -%}
+        {%- assign af_parts = af_prev | split: "##" -%}
+        <a class="af-prev-next-link af-prev" href="{{ af_parts[0] | relative_url }}" rel="prev">
+          <span class="af-prev-next-label">&larr; Previous</span>
+          <strong>{{ af_parts[1] | escape }}</strong>
+        </a>
+      {%- endif -%}
+      {%- if af_next -%}
+        {%- assign af_parts = af_next | split: "##" -%}
+        <a class="af-prev-next-link af-next" href="{{ af_parts[0] | relative_url }}" rel="next">
+          <span class="af-prev-next-label">Next &rarr;</span>
+          <strong>{{ af_parts[1] | escape }}</strong>
+        </a>
+      {%- endif -%}
+    </nav>
+  {%- endif -%}
+
+{%- endunless -%}

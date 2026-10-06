@@ -250,7 +250,7 @@ body::before {
         color: $nav-child-link-color;
         font-weight: 450;
         margin-left: 0.35rem;
-        padding-left: 0.4rem;
+        padding-left: 1.2rem;
 
         &:hover,
         &.active {
@@ -258,6 +258,78 @@ body::before {
         }
       }
     }
+  }
+}
+
+// the group headings of the menu (just_the_docs.collections in _config.yml) : quiet labels in
+// line with the VERSION label, no rule under them
+.site-nav .nav-category {
+  border-bottom: 0;
+  margin-top: 1rem;
+  padding: 0.35rem 2rem 0.25rem;
+  font-weight: 650;
+  color: $af-muted;
+  font-size: calc(0.7rem + 1px) !important;
+  letter-spacing: 0.06em;
+}
+
+// the icons of the menu : Home (the first entry, its title also names the page, so the icon
+// comes from here) and the group headings (in their names in _config.yml)
+.site-nav .nav-category i,
+.site-nav > .nav-list:first-child > .nav-list-item:first-child > .nav-list-link::before {
+  display: inline-block;
+  width: 1.1rem;
+  margin-right: 0.5rem;
+  text-align: center;
+}
+
+.site-nav .nav-category i {
+  font-size: 0.75rem;
+}
+
+.site-nav > .nav-list:first-child > .nav-list-item:first-child > .nav-list-link::before {
+  content: "\f015";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.85rem;
+}
+
+// a collapsible group (nav_fold) nests its sections one list deeper : undo the sub-page look
+// (guide line, indent, lighter text) for them, so they read as top-level entries
+.site-nav .nav-list.nav-category-list {
+  > .nav-list-item > .nav-list {
+    margin-left: 0;
+    border-left: 0;
+
+    > .nav-list-item > .nav-list-link {
+      color: $body-heading-color;
+      font-weight: 500;
+      margin-left: 0.5rem;
+      padding-left: calc(1.25rem + 4px);
+
+      &:hover,
+      &.active {
+        color: $link-color;
+      }
+
+      &.active {
+        font-weight: 650;
+      }
+    }
+
+    > .nav-list-item > .nav-list-expander {
+      color: $af-muted;
+    }
+  }
+}
+
+// a group heading toggles its group (assets/js/nav-groups.js)
+.site-nav .nav-category-list .nav-category {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: $link-color;
   }
 }
 
@@ -272,7 +344,10 @@ body::before {
   align-items: center;
   gap: 0.6rem;
   align-self: stretch;
+  // the space under the selector belongs to it, not to the menu below : it stays when the
+  // menu scrolls, so the entries never slide up against the selector
   margin: 1rem 2rem 0;
+  padding-bottom: 0.75rem;
 
   @include mq(md) {
     display: flex;
@@ -283,7 +358,7 @@ body::before {
     margin: 0;
     padding-top: 0.12rem;
     line-height: 1;
-    font-size: 0.7rem;
+    font-size: calc(0.7rem + 1px);
     font-weight: 650;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -327,9 +402,36 @@ body::before {
   display: flex;
 }
 
+// on a phone the side bar is the top bar with the logo and the menu button : keep it on screen
+// like the logo on a computer. With the menu open it scrolls on its own, never past the screen.
+@media (max-width: 49.99rem) {
+  .side-bar {
+    position: sticky;
+    top: 0;
+    z-index: 101;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
+  }
+}
+
+// on a phone the row sits under the centred logo : centre it too, at its natural width
+@media (max-width: 49.99rem) {
+  .version-select {
+    // the phone side bar lays its children out in a wrapping row : take the whole width,
+    // or there is nothing to centre in
+    flex: 0 0 calc(100% - 4rem);
+    justify-content: center;
+
+    select {
+      flex: 0 0 auto;
+    }
+  }
+}
+
 @include mq(md) {
   .side-bar .site-nav {
-    padding-top: 0.75rem;
+    padding-top: 0;
   }
 }
 
@@ -565,7 +667,7 @@ p.warning {
   }
 }
 
-// the home page grids hold 4 or 16 cards : 1, 2 or 4 columns keep every row full
+// the quick links grid holds 4 cards : 1, 2 or 4 columns keep every row full
 .af-cards {
   display: grid;
   grid-template-columns: 1fr;
@@ -588,15 +690,107 @@ p.warning {
   max-width: 12.5rem;
 }
 
-// the capability grids : the first row shows, the button under the grid opens the rest
-.af-collapsible:not(.af-open) .af-card:nth-child(n+5) {
-  display: none;
+// the capabilities : two panels side by side, each a list of icon + name + description.
+// Deliberately not cards: the deprecation card under the hero is the only card, the
+// only things on the home page that look clickable besides the hero buttons.
+.af-features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin: 1.25rem 0 2rem;
+
+  @media (min-width: 60rem) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.af-expand-wrap {
+.af-feature-panel {
+  // the header bar runs edge to edge : the panel clips it to its rounded corners
+  overflow: hidden;
+  padding: 0 1.25rem 0.5rem;
+  border: 1px solid $border-color;
+  border-radius: 14px;
+  background-color: $sidebar-color;
+}
+
+// the panel header : a light bar in the brand red (soft tint, red text), so the panels stand
+// apart without competing with the red "Install AnsibleForms" button above them
+.af-feature-title {
   display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0 -1.25rem 0.35rem;
+  // line-height 1 : the icon and the text boxes are centred exactly, whatever the zoom
+  // a little more on top than below : sits the title on the bar's optical middle
+  padding: 1.3rem 1.25rem 1.2rem;
+  line-height: 1;
+  border-bottom: 1px solid rgba($link-color, 0.28);
+  background-color: rgba($link-color, if($af-is-dark, 0.19, 0.12));
+  color: $link-color;
+  font-weight: 650;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+
+  // the icon's glyph sits a little above the letters' cap height : lower it to their middle
+  i {
+    position: relative;
+    top: 0.04em;
+    color: $link-color;
+    line-height: 1;
+  }
+}
+
+.main-content ul.af-feature-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  > li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid $border-color;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    // no theme bullet in front of the icon
+    &::before {
+      content: none;
+    }
+  }
+}
+
+.af-feature-icon {
+  display: inline-flex;
+  flex: 0 0 2rem;
+  align-items: center;
   justify-content: center;
-  margin: -0.75rem 0 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  color: $link-color;
+  background-color: $af-accent-soft;
+  font-size: 0.85rem;
+}
+
+.af-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+
+  strong {
+    color: $body-heading-color;
+    font-size: 0.95rem;
+  }
+
+  span {
+    color: $af-muted;
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
 }
 
 .main-content a.af-card,
@@ -698,6 +892,62 @@ p.warning {
   a.btn {
     width: 100%;
     margin-top: auto;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// Previous / Next cards at the bottom of a page (_includes/af_prev_next.html)
+// ---------------------------------------------------------------------------------------
+
+.af-prev-next {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin: 3rem 0 1rem;
+
+  @media (min-width: 40rem) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.main-content a.af-prev-next-link,
+a.af-prev-next-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid $border-color;
+  border-radius: 14px;
+  background-color: $body-background-color;
+  box-shadow: $af-shadow;
+  color: $body-text-color;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+  .af-prev-next-label {
+    color: $af-muted;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  strong {
+    color: $link-color;
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &.af-next {
+    grid-column: -2;
+    text-align: right;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba($link-color, 0.35);
+    box-shadow: $af-shadow-lg;
   }
 }
 

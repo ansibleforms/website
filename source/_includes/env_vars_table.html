@@ -32,6 +32,7 @@
         <span class="af-type">{{ var.type}}</span>
         {% if var.required==true %}<span class="af-required"> / required</span>{% endif %}
         {% if var.unique==true %}<span class="af-unique"> / unique</span>{% endif %}
+        {% if site.data.env_secrets contains var.name %}<span class="af-badge af-badge-secret" title="Holds a secret : keep it out of version control">Secret</span>{% endif %}
         <br>
         {% if var.version %}<span class="af-version">added in version {{var.version}}</span>{% endif %}
       </td>

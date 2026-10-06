@@ -1,0 +1,12 @@
+---
+layout: default
+title: Changelog
+nav_order: 2
+gh_edit_link: false
+---
+
+# Changelog
+
+{: .note }
+> This page is generated automatically from `CHANGELOG.md` at build time.  
+> When running locally, see [CHANGELOG.md](https://github.com/ansibleguy76/ansibleforms/blob/main/CHANGELOG.md) on GitHub.

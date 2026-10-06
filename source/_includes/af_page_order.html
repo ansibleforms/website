@@ -1,0 +1,48 @@
+{%- comment -%}
+  Include as: {%- include_cached af_page_order.html -%}
+  Depends on: site.
+  Results in: every page of the menu in menu order, as "url##title" entries joined by "@@" :
+    Home (the top-level pages), then each collection of just_the_docs.collections in its
+    _config.yml order, each page of a collection followed by its children (and theirs),
+    siblings sorted by nav_order as the menu sorts them (components/nav/sorted.html).
+  Read by af_prev_next.html. Cached : it is built once per build, not once per page.
+{%- endcomment -%}
+
+{%- comment -%} Step 1 : the top-level pages (Home), as components/site_nav.html lists them {%- endcomment -%}
+{%- assign af_top = site.html_pages
+      | where_exp: "item", "item.title != nil"
+      | where_exp: "item", "item.parent == nil"
+      | where_exp: "item", "item.nav_exclude != true" -%}
+{%- include components/nav/sorted.html pages=af_top -%}
+{%- for af_p in nav_sorted -%}@@{{ af_p.url }}##{{ af_p.title }}{%- endfor -%}
+
+{%- comment -%} Step 2 : each collection, its pages in menu order, children after their parent {%- endcomment -%}
+{%- for af_entry in site.just_the_docs.collections -%}
+  {%- assign af_coll = af_entry[0] -%}
+  {%- if af_entry[1].nav_exclude != true -%}
+    {%- assign af_docs = site[af_coll]
+          | where_exp: "item", "item.title != nil"
+          | where_exp: "item", "item.nav_exclude != true" -%}
+    {%- assign af_roots = af_docs | where_exp: "item", "item.parent == nil" -%}
+    {%- include components/nav/sorted.html pages=af_roots -%}
+    {%- assign af_roots = nav_sorted -%}
+    {%- for af_root in af_roots -%}
+      @@{{ af_root.url }}##{{ af_root.title }}
+      {%- if af_root.has_children -%}
+        {%- assign af_kids = af_docs | where: "parent", af_root.title
+              | where_exp: "item", "item.grand_parent == nil" -%}
+        {%- include components/nav/sorted.html pages=af_kids -%}
+        {%- assign af_kids = nav_sorted -%}
+        {%- for af_kid in af_kids -%}
+          @@{{ af_kid.url }}##{{ af_kid.title }}
+          {%- if af_kid.has_children -%}
+            {%- assign af_grandkids = af_docs | where: "parent", af_kid.title
+                  | where: "grand_parent", af_root.title -%}
+            {%- include components/nav/sorted.html pages=af_grandkids -%}
+            {%- for af_grandkid in nav_sorted -%}@@{{ af_grandkid.url }}##{{ af_grandkid.title }}{%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
