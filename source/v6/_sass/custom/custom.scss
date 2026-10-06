@@ -344,7 +344,10 @@ body::before {
   align-items: center;
   gap: 0.6rem;
   align-self: stretch;
+  // the space under the selector belongs to it, not to the menu below : it stays when the
+  // menu scrolls, so the entries never slide up against the selector
   margin: 1rem 2rem 0;
+  padding-bottom: 0.75rem;
 
   @include mq(md) {
     display: flex;
@@ -401,7 +404,7 @@ body::before {
 
 @include mq(md) {
   .side-bar .site-nav {
-    padding-top: 0.75rem;
+    padding-top: 0;
   }
 }
 
