@@ -16,10 +16,10 @@ How to move AnsibleForms to a newer release
 
 How you upgrade depends on how you installed AnsibleForms. Each way has a page of its own:
 
-* **[Docker Compose](docker-compose.html)** : pull the new image and restart the docker-compose project
 * **[Docker](docker.html)** : pull the new image and recreate the container with the same settings
-* **[Kubernetes](kubernetes.html)** : refresh the chart repository and run `helm upgrade` with your values
+* **[Docker Compose](docker-compose.html)** : pull the new image and restart the docker-compose project
 * **[From source](from-source.html)** : pull the new code, rebuild it and restart the application
+* **[Kubernetes](kubernetes.html)** : refresh the chart repository and run `helm upgrade` with your values
 
 {: .note }
 > **Backup first** Take a backup before you upgrade (**Settings → Backups**). The database schema is upgraded at the first

@@ -2,7 +2,7 @@
 layout: default
 title: Docker Compose
 parent: Upgrading
-nav_order: 1
+nav_order: 2
 ---
 
 # Docker Compose
