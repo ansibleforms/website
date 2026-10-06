@@ -1,7 +1,8 @@
 ---
 layout: default
 title: Upgrading to 7
-nav_order: 2.5
+parent: Upgrading
+nav_order: 5
 ---
 
 # Upgrading to 7
