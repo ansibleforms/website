@@ -1,0 +1,23 @@
+- name: Service Health Check
+  type: ansible
+  playbook: change.yaml
+  description: Check the services of an application
+  categories:
+  - Operations
+  roles:
+  - public
+  icon: heart-pulse
+  overlayIcon: check
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

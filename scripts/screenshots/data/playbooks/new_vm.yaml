@@ -1,0 +1,30 @@
+---
+# New Virtual Machine : the job output screenshot
+- name: Provision a virtual machine
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Validate the request
+      ansible.builtin.debug:
+        msg: "Request for {{ hostname }} ({{ cpu }} vCPU, {{ memory_gb }} GB) in {{ datacenter }}"
+
+    - name: Clone the golden image
+      ansible.builtin.debug:
+        msg: "Cloned the {{ os }} golden image to {{ hostname }}"
+      changed_when: true
+
+    - name: Add the data disks
+      ansible.builtin.debug:
+        msg: "Added {{ item.size_gb }} GB on {{ item.mount }} ({{ item.tier }})"
+      loop: "{{ disks | default([]) }}"
+      changed_when: true
+
+    - name: Register in the CMDB
+      ansible.builtin.debug:
+        msg: "{{ hostname }} registered, owner {{ owner }}"
+      changed_when: true
+
+    - name: Add to the monitoring
+      ansible.builtin.debug:
+        msg: "{{ hostname }} added to the {{ env }} monitoring"
+      changed_when: true

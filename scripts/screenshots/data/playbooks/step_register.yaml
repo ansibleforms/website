@@ -1,0 +1,10 @@
+---
+# Web Server Deployment, step 3
+- name: Register in the load balancer
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Add the member to pool {{ pool }}
+      ansible.builtin.debug:
+        msg: "{{ hostname }}:443 added to pool {{ pool }}"
+      changed_when: true

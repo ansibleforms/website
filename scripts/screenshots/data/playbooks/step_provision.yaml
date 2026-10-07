@@ -1,0 +1,14 @@
+---
+# Web Server Deployment, step 1 (slow enough for the aborted run to be stopped in it)
+- name: Provision the virtual machine
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Clone the web server template
+      ansible.builtin.pause:
+        seconds: 4
+
+    - name: Report the new machine
+      ansible.builtin.debug:
+        msg: "{{ hostname }} provisioned"
+      changed_when: true

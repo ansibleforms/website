@@ -1,0 +1,13 @@
+---
+# Patch Windows Servers : fails on purpose, for a failed job in the history
+- name: Patch the Windows servers
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check the maintenance window
+      ansible.builtin.debug:
+        msg: "Maintenance window open for {{ target }}"
+
+    - name: Install the updates
+      ansible.builtin.fail:
+        msg: "WinRM connection to {{ target }} timed out after 60 seconds"

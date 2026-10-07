@@ -1,0 +1,23 @@
+- name: Rollback Update
+  type: ansible
+  playbook: change.yaml
+  description: Roll a server back to its pre-update snapshot
+  categories:
+  - Updates
+  roles:
+  - public
+  icon: rotate-left
+  overlayIcon: clock-rotate-left
+  overlayIconColor: warning
+  tileClass: bg-warning-subtle text-bg-warning
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

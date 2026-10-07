@@ -1,0 +1,15 @@
+---
+# Web Server Deployment, step 2
+- name: Install the web server
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Install nginx
+      ansible.builtin.debug:
+        msg: "nginx 1.26 installed on {{ hostname }}"
+      changed_when: true
+
+    - name: Deploy the site configuration
+      ansible.builtin.debug:
+        msg: "Site configuration deployed on {{ hostname }}"
+      changed_when: true

@@ -1,0 +1,23 @@
+- name: Cleanup Job History
+  type: ansible
+  playbook: change.yaml
+  description: This will cleanup all ansible job logs.
+  categories:
+  - Operations
+  roles:
+  - public
+  icon: circle-play
+  overlayIcon: trash-can
+  overlayIconColor: danger
+  tileClass: bg-danger-subtle text-bg-danger
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

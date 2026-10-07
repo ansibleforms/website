@@ -1,0 +1,23 @@
+- name: Power Off Virtual Machine
+  type: ansible
+  playbook: change.yaml
+  description: Shut a virtual machine down cleanly
+  categories:
+  - Instances
+  roles:
+  - public
+  icon: server
+  overlayIcon: power-off
+  overlayIconColor: danger
+  tileClass: bg-danger-subtle text-bg-danger
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

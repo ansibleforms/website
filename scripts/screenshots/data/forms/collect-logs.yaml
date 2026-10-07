@@ -1,0 +1,23 @@
+- name: Collect Logs
+  type: ansible
+  playbook: change.yaml
+  description: Collect the logs of a server for support
+  categories:
+  - Operations
+  roles:
+  - public
+  icon: file-lines
+  overlayIcon: download
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

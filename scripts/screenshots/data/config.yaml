@@ -1,0 +1,32 @@
+categories:
+- name: Default
+  icon: bars
+- name: Database
+  icon: database
+- name: Web Servers
+  icon: globe
+- name: Setup
+  icon: plus
+- name: Updates
+  icon: up-right-from-square
+- name: Settings
+  icon: sliders
+- name: Instances
+  icon: server
+- name: Backups
+  icon: floppy-disk
+- name: Operations
+  icon: gears
+- name: Recovery
+  icon: person-walking-arrow-right
+- name: Demo
+  icon: heart
+- name: Automation
+  icon: robot
+roles:
+- name: admin
+  groups:
+  - local/admins
+- name: public
+  groups: []
+constants: {}

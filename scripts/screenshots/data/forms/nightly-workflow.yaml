@@ -1,0 +1,19 @@
+- name: Nightly Workflow
+  type: multistep
+  description: Rotate the logs, verify the backups and report the health
+  categories:
+  - Automation
+  roles:
+  - public
+  icon: robot
+  overlayIcon: play
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  steps:
+  - name: Rotate the logs
+    type: ansible
+    playbook: change.yaml
+  - name: Verify the backups
+    type: ansible
+    playbook: change.yaml
+  fields: []

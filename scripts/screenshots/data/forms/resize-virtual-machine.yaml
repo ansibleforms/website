@@ -1,0 +1,23 @@
+- name: Resize Virtual Machine
+  type: ansible
+  playbook: change.yaml
+  description: Change the vCPUs and memory of a virtual machine
+  categories:
+  - Instances
+  roles:
+  - public
+  icon: server
+  overlayIcon: up-right-and-down-left-from-center
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

@@ -1,0 +1,18 @@
+---
+# The playbook of most example forms : checks, applies and reports a change
+- name: Run the form
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check the prerequisites
+      ansible.builtin.debug:
+        msg: All prerequisites are met
+
+    - name: Apply the change
+      ansible.builtin.debug:
+        msg: Change applied
+      changed_when: true
+
+    - name: Report the result
+      ansible.builtin.debug:
+        msg: Change applied successfully

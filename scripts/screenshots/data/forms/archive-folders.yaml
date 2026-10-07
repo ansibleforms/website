@@ -1,0 +1,23 @@
+- name: Archive Folders
+  type: ansible
+  playbook: change.yaml
+  description: Archive a folder by moving all its contents older than x days to an archive sub folder.
+  categories:
+  - Backups
+  roles:
+  - public
+  icon: folder-tree
+  overlayIcon: box-archive
+  overlayIconColor: warning
+  tileClass: bg-warning-subtle text-bg-warning
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

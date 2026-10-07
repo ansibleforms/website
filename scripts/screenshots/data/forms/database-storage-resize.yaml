@@ -1,0 +1,23 @@
+- name: Database Storage resize
+  type: ansible
+  playbook: change.yaml
+  description: Resize a disk (upsize only)
+  categories:
+  - Database
+  roles:
+  - public
+  icon: database
+  overlayIcon: up-right-and-down-left-from-center
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

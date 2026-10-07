@@ -1,0 +1,32 @@
+# A throwaway AnsibleForms instance for the screenshots, with its own database.
+# run.sh starts it from a copy of ./data and removes it, volumes included, afterwards.
+name: af-screenshots
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: Screenshots!123
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+  app:
+    image: ghcr.io/ansibleforms/ansibleforms:${AF_VERSION:-latest}
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: Screenshots!123
+      PORT: 443
+      HTTPS: 1
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: AnsibleForms!123
+    ports:
+      - "${AF_PORT:-8444}:443"
+    volumes:
+      - ${AF_DATA:?the copy of ./data that run.sh makes}:/app/dist/persistent
