@@ -1,0 +1,23 @@
+- name: Backup Replication Setup
+  type: ansible
+  playbook: change.yaml
+  description: Configure backup replication to remote site
+  categories:
+  - Setup
+  roles:
+  - public
+  icon: building
+  overlayIcon: plus
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

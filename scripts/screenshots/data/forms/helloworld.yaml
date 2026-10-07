@@ -1,0 +1,13 @@
+- name: Hello World
+  type: ansible
+  playbook: change.yaml
+  description: Runs the hello world playbook
+  categories:
+  - Demo
+  roles:
+  - public
+  icon: heart
+  overlayIcon: play
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields: []

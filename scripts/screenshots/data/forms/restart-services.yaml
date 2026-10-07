@@ -1,0 +1,23 @@
+- name: Restart Services
+  type: ansible
+  playbook: change.yaml
+  description: Restart the services of an application
+  categories:
+  - Operations
+  roles:
+  - public
+  icon: gears
+  overlayIcon: rotate
+  overlayIconColor: warning
+  tileClass: bg-warning-subtle text-bg-warning
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

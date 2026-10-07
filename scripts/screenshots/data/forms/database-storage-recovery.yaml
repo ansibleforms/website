@@ -1,0 +1,23 @@
+- name: Database Storage recovery
+  type: ansible
+  playbook: change.yaml
+  description: Online and rename disk back to original state
+  categories:
+  - Recovery
+  roles:
+  - public
+  icon: database
+  overlayIcon: trash-can-arrow-up
+  overlayIconColor: warning
+  tileClass: bg-warning-subtle text-bg-warning
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

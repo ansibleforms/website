@@ -1,0 +1,23 @@
+- name: Ansible-Galaxy Install
+  type: ansible
+  playbook: change.yaml
+  description: Install an ansible-galaxy role or collection in the persistent folder.
+  categories:
+  - Setup
+  roles:
+  - public
+  icon: compact-disc
+  overlayIcon: a
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

@@ -1,0 +1,23 @@
+- name: Clone Virtual Machine
+  type: ansible
+  playbook: change.yaml
+  description: Clone a virtual machine into another environment
+  categories:
+  - Instances
+  roles:
+  - public
+  icon: clone
+  overlayIcon: plus
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

@@ -1,0 +1,12 @@
+{
+  "name": "ansibleforms-website-screenshots",
+  "private": true,
+  "description": "Retakes the GUI screenshots of the website from a throwaway AnsibleForms instance",
+  "type": "module",
+  "scripts": {
+    "screenshots": "./run.sh"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.1"
+  }
+}

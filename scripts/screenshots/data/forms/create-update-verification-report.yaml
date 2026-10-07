@@ -1,0 +1,23 @@
+- name: Create Update Verification Report
+  type: ansible
+  playbook: change.yaml
+  description: Generate pre/post update verification report
+  categories:
+  - Updates
+  roles:
+  - public
+  icon: list-check
+  overlayIcon: clipboard-check
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

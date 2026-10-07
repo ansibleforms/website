@@ -1,0 +1,23 @@
+- name: Run Backup Now
+  type: ansible
+  playbook: change.yaml
+  description: Start an extra backup of a server
+  categories:
+  - Backups
+  roles:
+  - public
+  icon: floppy-disk
+  overlayIcon: play
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

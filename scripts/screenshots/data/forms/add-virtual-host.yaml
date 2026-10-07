@@ -1,0 +1,23 @@
+- name: Add Virtual Host
+  type: ansible
+  playbook: change.yaml
+  description: Add a virtual host to a web server
+  categories:
+  - Web Servers
+  roles:
+  - public
+  icon: sitemap
+  overlayIcon: plus
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

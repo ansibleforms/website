@@ -1,0 +1,23 @@
+- name: Renew Certificate
+  type: ansible
+  playbook: change.yaml
+  description: Renew the TLS certificate of a web site
+  categories:
+  - Web Servers
+  roles:
+  - public
+  icon: certificate
+  overlayIcon: rotate
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

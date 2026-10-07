@@ -1,0 +1,23 @@
+- name: Export Configuration
+  type: ansible
+  playbook: change.yaml
+  description: Export the configuration of a network device
+  categories:
+  - Backups
+  roles:
+  - public
+  icon: file-export
+  overlayIcon: download
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change

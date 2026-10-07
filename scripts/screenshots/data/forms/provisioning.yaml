@@ -1,0 +1,186 @@
+- name: New Virtual Machine
+  type: ansible
+  playbook: new_vm.yaml
+  description: Provision a new virtual machine
+  categories:
+  - Instances
+  roles:
+  - public
+  icon: server
+  overlayIcon: plus
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  showHelp: true
+  help: >
+    Provisions a virtual machine from the golden image of the chosen operating system, registers it in
+    the CMDB and adds it to the monitoring. The hostname must follow the naming convention `<role>-<env>-<number>`.
+  fields:
+  - type: text
+    name: hostname
+    label: Hostname
+    icon: server
+    default: web-prd-014
+    placeholder: role-env-number
+    required: true
+    regex:
+      expression: ^[a-z]+-(prd|acc|tst)-[0-9]{3}$
+      description: Must look like web-prd-014
+  - type: enum
+    name: env
+    label: Environment
+    icon: layer-group
+    values:
+    - production
+    - acceptance
+    - test
+    default: production
+    required: true
+  - type: enum
+    name: datacenter
+    label: Datacenter
+    icon: building
+    values:
+    - Brussels DC1
+    - Brussels DC2
+    - Antwerp DC3
+    default: Brussels DC1
+    required: true
+  - type: radio
+    name: os
+    label: Operating system
+    values:
+    - Rocky Linux 9
+    - Ubuntu 24.04
+    - Windows Server 2022
+    default: Rocky Linux 9
+    required: true
+  - type: number
+    name: cpu
+    label: vCPUs
+    icon: microchip
+    default: 4
+    minValue: 1
+    maxValue: 32
+    required: true
+  - type: number
+    name: memory_gb
+    label: Memory (GB)
+    icon: memory
+    default: 16
+    minValue: 2
+    maxValue: 256
+    required: true
+  - type: list
+    name: disks
+    label: Data disks
+    subform: Data disk
+    columns:
+    - mount
+    - size_gb
+    - tier
+    titleAdd: Add disk
+    titleEdit: Edit disk
+    allowInsert: true
+    allowDelete: true
+    default:
+    - mount: /var/www
+      size_gb: 100
+      tier: SSD
+    - mount: /var/log
+      size_gb: 50
+      tier: Standard
+  - type: text
+    name: owner
+    label: Owner
+    icon: envelope
+    default: web-team@example.com
+    required: true
+  - type: datetime
+    name: ready_by
+    label: Ready by
+    dateType: datetime
+    default: '2026-10-12T09:00:00'
+  - type: checkbox
+    name: backup
+    label: Include in the nightly backup
+    default: true
+- name: Patch Windows Servers
+  type: ansible
+  playbook: patch_windows.yaml
+  description: Install the approved Windows updates
+  categories:
+  - Updates
+  roles:
+  - public
+  icon: fab,windows
+  overlayIcon: download
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Servers
+    icon: server
+    default: app-prd-0*
+    required: true
+  - type: checkbox
+    name: reboot
+    label: Reboot when needed
+    default: true
+- name: Web Server Deployment
+  type: multistep
+  description: Provision, install and register a web server in three steps
+  categories:
+  - Web Servers
+  roles:
+  - public
+  icon: globe
+  overlayIcon: plus
+  overlayIconColor: success
+  tileClass: bg-success-subtle text-bg-success
+  steps:
+  - name: Provision the virtual machine
+    type: ansible
+    playbook: step_provision.yaml
+  - name: Install the web server
+    type: ansible
+    playbook: step_install.yaml
+  - name: Register in the load balancer
+    type: ansible
+    playbook: step_register.yaml
+  fields:
+  - type: text
+    name: hostname
+    label: Hostname
+    icon: server
+    default: web-prd-015
+    required: true
+  - type: enum
+    name: pool
+    label: Load balancer pool
+    icon: network-wired
+    values:
+    - web-prd
+    - web-acc
+    default: web-prd
+    required: true
+- name: Data disk
+  type: subform
+  description: One data disk of the new virtual machine
+  fields:
+  - type: text
+    name: mount
+    label: Mount point
+    required: true
+  - type: number
+    name: size_gb
+    label: Size (GB)
+    default: 50
+    required: true
+  - type: enum
+    name: tier
+    label: Tier
+    values:
+    - SSD
+    - Standard
+    default: Standard

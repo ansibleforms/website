@@ -1,0 +1,23 @@
+- name: Scale Application
+  type: ansible
+  playbook: change.yaml
+  description: Add or remove application instances
+  categories:
+  - Operations
+  roles:
+  - public
+  icon: layer-group
+  overlayIcon: up-right-and-down-left-from-center
+  overlayIconColor: info
+  tileClass: bg-info-subtle text-bg-info
+  fields:
+  - type: text
+    name: target
+    label: Target
+    icon: bullseye
+    default: srv-prd-001
+    required: true
+  - type: textarea
+    name: reason
+    label: Reason
+    default: Planned change
