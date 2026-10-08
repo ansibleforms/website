@@ -340,14 +340,24 @@ body::before {
   }
 }
 
-// a group heading toggles its group (assets/js/nav-groups.js)
+// a group heading toggles its group (assets/js/nav-groups.js). Its arrow is the theme's
+// expander button, pinned to the top of the row and taller than the heading, which left the
+// arrow below the heading's middle (most on a phone, where the button is taller). A fixed
+// line height gives the heading a known height, and the arrow is centred on its middle
 .site-nav .nav-category-list .nav-category {
   cursor: pointer;
   user-select: none;
+  line-height: 1.25rem;
 
   &:hover {
     color: $link-color;
   }
+}
+
+.site-nav .nav-list.nav-category-list > .nav-list-item > .nav-list-expander {
+  // half the heading : its padding (0.35rem + 0.25rem) plus its line height, over two
+  top: calc((0.6rem + 1.25rem) / 2);
+  transform: translateY(-50%);
 }
 
 .site-footer {
