@@ -22,7 +22,11 @@
     link.className = 'site-button';
     link.setAttribute('aria-label', 'Toggle dark mode');
     link.setAttribute('title', 'Toggle dark mode');
-    link.textContent = 'Theme';
+    // the label sits in a span like the other header links, so phones can show the icon alone
+    const label = document.createElement('span');
+    label.className = 'aux-nav-label';
+    label.textContent = 'Theme';
+    link.appendChild(label);
     
     listItem.appendChild(link);
     auxList.insertBefore(listItem, auxList.firstChild);
