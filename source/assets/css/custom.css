@@ -129,11 +129,12 @@ pre.highlight .language-treeview {
 }
 
 /* Phones : the four labelled links are wider than the screen, so below the md breakpoint
-   (50rem, where the header links move into the menu) they show their icons alone, spread
-   over the row. The label stays in the page for screen readers */
+   (50rem, where the header links move into the menu) they show their icons alone, centred
+   on the row. The label stays in the page for screen readers */
 @media (max-width: 49.99rem) {
   .aux-nav .aux-nav-list {
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 1rem;
     width: 100%;
   }
 
