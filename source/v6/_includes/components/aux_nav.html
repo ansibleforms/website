@@ -1,7 +1,9 @@
 {%- comment -%}
-  AnsibleForms : a copy of the just-the-docs 0.12.0 components/aux_nav.html with one change :
+  AnsibleForms : a copy of the just-the-docs 0.12.0 components/aux_nav.html with two changes :
   - aux_links_new_tab only opens links to other sites in a new tab ; a link into this site
-    (one that starts with site.url, such as the Helm charts page) opens in the same tab.
+    (one that starts with site.url, such as the Helm charts page) opens in the same tab ;
+  - the label sits in a span (aux-nav-label), which phones hide to show the icons alone
+    (assets/css/custom.css).
   When the theme is upgraded, compare with its components/aux_nav.html.
 {%- endcomment -%}
 <nav aria-label="Auxiliary" class="aux-nav">
@@ -15,7 +17,7 @@
           target="_blank" rel="noopener noreferrer"
           {% endif %}
         >
-          {{ link.first }}
+          <span class="aux-nav-label">{{ link.first }}</span>
         </a>
       </li>
     {% endfor %}

@@ -127,3 +127,38 @@ pre.highlight .language-treeview {
   -webkit-mask: url("../images/helm.svg") center / contain no-repeat;
   mask: url("../images/helm.svg") center / contain no-repeat;
 }
+
+/* Phones : the four labelled links are wider than the screen, so below the md breakpoint
+   (50rem, where the header links move into the menu) they show their icons alone, centred
+   on the row. The label stays in the page for screen readers */
+@media (max-width: 49.99rem) {
+  .aux-nav .aux-nav-list {
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .aux-nav .aux-nav-list-item .site-button {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .aux-nav .aux-nav-list-item .site-button::before,
+  .aux-nav .aux-nav-list-item a[href$="/helm-charts/"]::before {
+    margin: 0;
+  }
+
+  .aux-nav .aux-nav-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
