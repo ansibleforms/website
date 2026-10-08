@@ -112,15 +112,17 @@ pre.highlight .language-treeview {
   margin-right: 0.5rem;
 }
 
-/* Helm charts icon : Font Awesome has no Helm logo, so the wheel is an svg mask
-   (assets/images/helm.svg) filled with the text colour, sized like the icons above */
+/* Helm charts icon : Font Awesome has no Helm logo, so the official Helm icon (the wheel with
+   HELM inside, assets/images/helm.svg from the CNCF artwork) is an svg mask filled with the
+   text colour. It is drawn larger than the icons above so the letters stay readable, and the
+   negative margins keep the header the same height */
 .aux-nav .aux-nav-list-item a[href$="/helm-charts/"]::before {
   content: "";
   display: inline-block;
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.125em;
-  margin-right: 0.5rem;
+  width: 1.4em;
+  height: 1.4em;
+  vertical-align: -0.35em;
+  margin: -0.2em 0.5rem -0.2em 0;
   background-color: currentColor;
   -webkit-mask: url("../images/helm.svg") center / contain no-repeat;
   mask: url("../images/helm.svg") center / contain no-repeat;
