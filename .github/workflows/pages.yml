@@ -101,7 +101,8 @@ jobs:
 
       - uses: azure/setup-helm@v5
 
-      # The Helm repository at /helm-charts/. Every chart release of ansibleforms/helm-charts
+      # The Helm repository at /helm-charts/, next to the landing page Jekyll built there
+      # (source/helm-charts/index.md). Every chart release of ansibleforms/helm-charts
       # is downloaded and indexed, so the index is rebuilt from scratch on every run and never
       # kept as state. A failed download fails the build: deploying an index that silently
       # lost versions would break every helm repo that points here.
@@ -129,21 +130,6 @@ jobs:
           # Artifact Hub reads its repository metadata from the root of the chart repository
           gh api repos/ansibleforms/helm-charts/contents/artifacthub-repo.yml \
             -H 'Accept: application/vnd.github.raw' > "$out/artifacthub-repo.yml"
-
-          cat > "$out/index.html" <<EOF
-          <!doctype html>
-          <meta charset="utf-8">
-          <title>AnsibleForms Helm charts</title>
-          <h1>AnsibleForms Helm charts</h1>
-          <p>Add this repository with:</p>
-          <pre>helm repo add ansibleforms ${SITE_URL}/helm-charts/
-          helm repo update
-          helm search repo ansibleforms</pre>
-          <p>Or pull the chart straight from the OCI registry:</p>
-          <pre>helm pull oci://ghcr.io/ansibleforms/charts/ansibleforms</pre>
-          <p><a href="index.yaml">index.yaml</a> - the chart source is
-          <a href="https://github.com/ansibleforms/helm-charts">ansibleforms/helm-charts</a>.</p>
-          EOF
 
       - name: Upload artifact
         if: github.event_name != 'pull_request'
