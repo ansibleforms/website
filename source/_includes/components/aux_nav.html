@@ -1,0 +1,23 @@
+{%- comment -%}
+  AnsibleForms : a copy of the just-the-docs 0.12.0 components/aux_nav.html with one change :
+  - aux_links_new_tab only opens links to other sites in a new tab ; a link into this site
+    (one that starts with site.url, such as the Helm charts page) opens in the same tab.
+  When the theme is upgraded, compare with its components/aux_nav.html.
+{%- endcomment -%}
+<nav aria-label="Auxiliary" class="aux-nav">
+  <ul class="aux-nav-list">
+    {% for link in site.aux_links %}
+      {%- assign href = link.last | first -%}
+      {%- assign href_site = href | slice: 0, site.url.size -%}
+      <li class="aux-nav-list-item">
+        <a href="{{ href }}" class="site-button"
+          {% if site.aux_links_new_tab and href_site != site.url %}
+          target="_blank" rel="noopener noreferrer"
+          {% endif %}
+        >
+          {{ link.first }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

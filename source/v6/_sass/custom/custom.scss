@@ -154,26 +154,12 @@ body::before {
   }
 }
 
-// the Helm link leads with the Helm wheel (assets/images/helm.svg, from the CNCF artwork).
-// The svg is a mask filled with the text colour, so it follows the theme and the hover colour
-.aux-nav .site-button[href$="/helm-charts/"]::before {
-  content: "";
-  display: inline-block;
-  width: 1.1em;
-  height: 1.1em;
-  margin-right: 0.4em;
-  vertical-align: -0.2em;
-  background-color: currentColor;
-  -webkit-mask: url("../images/helm.svg") center / contain no-repeat;
-  mask: url("../images/helm.svg") center / contain no-repeat;
-}
-
 // ---------------------------------------------------------------------------------------
 // Search
 // ---------------------------------------------------------------------------------------
 
 @include mq(md) {
-  // centred over the content : here in the room left of the header links (Theme, GitHub, Image, Helm),
+  // centred over the content : here in the room left of the header links (Theme, GitHub, Image, Charts),
   // so it can never run into them
   .search {
     display: flex;
