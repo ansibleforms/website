@@ -111,3 +111,17 @@ pre.highlight .language-treeview {
   font-family: "Font Awesome 6 Brands";
   margin-right: 0.5rem;
 }
+
+/* Helm charts icon : Font Awesome has no Helm logo, so the wheel is an svg mask
+   (assets/images/helm.svg) filled with the text colour, sized like the icons above */
+.aux-nav .aux-nav-list-item a[href$="/helm-charts/"]::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  margin-right: 0.5rem;
+  background-color: currentColor;
+  -webkit-mask: url("../images/helm.svg") center / contain no-repeat;
+  mask: url("../images/helm.svg") center / contain no-repeat;
+}

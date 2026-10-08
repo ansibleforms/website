@@ -56,10 +56,10 @@ aux_links:
     - "https://github.com/ansibleforms/ansibleforms"
   "Image":
     - "https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms"
-  "Helm":
+  "Charts":
     - "https://ansibleforms.com/helm-charts/"
 
-# Open the aux links (GitHub, Image, Helm) in a new tab
+# Open the aux links (GitHub, Image, Charts) in a new tab
 aux_links_new_tab: true
 
 # Footer
