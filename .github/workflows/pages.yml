@@ -114,7 +114,11 @@ jobs:
           set -euo pipefail
           out=_site/helm-charts
           mkdir -p "$out"
-          tags="$(gh release list -R ansibleforms/helm-charts --limit 200 --exclude-drafts --exclude-pre-releases --json tagName --jq '.[].tagName')"
+          # One snapshot of the releases serves both the downloads and the check below: asking
+          # again for the newest release failed the build when a chart release was published
+          # in between, although nothing was missing from the index
+          releases="$(gh release list -R ansibleforms/helm-charts --limit 200 --exclude-drafts --exclude-pre-releases --json tagName,isLatest)"
+          tags="$(jq -r '.[].tagName' <<< "$releases")"
           [ -n "$tags" ] || { echo "::error::ansibleforms/helm-charts has no releases to publish."; exit 1; }
           for tag in $tags; do
             gh release download "$tag" -R ansibleforms/helm-charts --dir "$out" --pattern '*.tgz' --clobber
@@ -122,7 +126,7 @@ jobs:
           helm repo index "$out" --url "${SITE_URL}/helm-charts/"
 
           # The newest release has to be in the index, or something went missing on the way
-          latest="$(gh release view -R ansibleforms/helm-charts --json tagName --jq .tagName)"
+          latest="$(jq -r '(map(select(.isLatest)) + .)[0].tagName' <<< "$releases")"
           grep -q "version: ${latest#v}\$" "$out/index.yaml" || {
             echo "::error::The index does not contain $latest, the newest chart release."; exit 1; }
           echo "Indexed $(ls "$out"/*.tgz | wc -l) chart packages, newest $latest"
