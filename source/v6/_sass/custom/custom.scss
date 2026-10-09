@@ -360,6 +360,22 @@ body::before {
   transform: translateY(-50%);
 }
 
+// on a phone the button is 3rem high, taller than the heading : the last group's arrow stuck
+// out under the menu, which then scrolled a few pixels on its own. There the button takes
+// the heading's height, with the padding trimmed so the chevron (1.5rem) keeps its size, and
+// the chevron is a block, or the line box around it pushes the button 3px past the menu
+@media (max-width: 49.99rem) {
+  .site-nav .nav-list.nav-category-list > .nav-list-item > .nav-list-expander {
+    height: calc(0.6rem + 1.25rem);
+    padding-top: calc((0.6rem + 1.25rem - 1.5rem) / 2);
+    padding-bottom: calc((0.6rem + 1.25rem - 1.5rem) / 2);
+
+    svg {
+      display: block;
+    }
+  }
+}
+
 .site-footer {
   color: $af-muted;
 }
@@ -439,6 +455,14 @@ body::before {
     max-height: 100vh;
     max-height: 100dvh;
     overflow-y: auto;
+  }
+
+  // the logo row stays at the top while a long open menu scrolls under it
+  .side-bar .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: inherit;
   }
 }
 
