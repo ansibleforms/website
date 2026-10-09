@@ -466,6 +466,38 @@ body::before {
   }
 }
 
+// with the menu open on a phone, the menu is the whole screen : the logo row at the top, the
+// search box and the header links (in the main column) at the bottom, and only the menu
+// scrolls between them. The page behind is hidden until the menu closes ; nav-groups.js
+// puts it back where it was
+@media (max-width: 49.99rem) {
+  body:has(.side-bar .site-nav.nav-open) {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+
+    .side-bar {
+      position: relative;
+      flex: 0 1 auto;
+      min-height: 0;
+      max-height: none;
+    }
+
+    // the main column centres itself at its max width : stretch it, or the search box
+    // shrinks to its placeholder
+    .main {
+      flex: 0 0 auto;
+      width: 100%;
+    }
+
+    .main-content-wrap {
+      display: none;
+    }
+  }
+}
+
 // on a phone the row sits under the centred logo : centre it too, at its natural width
 @media (max-width: 49.99rem) {
   .version-select {
