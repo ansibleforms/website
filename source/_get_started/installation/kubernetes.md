@@ -16,7 +16,7 @@ Install AnsibleForms and its MySQL database with the Helm chart
 
 ---
 
-The Helm chart deploys AnsibleForms with MySQL (see the [values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)).
+The Helm chart deploys AnsibleForms with MySQL and the RTE that runs the playbooks (see the [values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)).
 
 ---
 
@@ -141,7 +141,31 @@ The Secret must hold `DB_USER`, `DB_PASSWORD`, `ENCRYPTION_SECRET`, `ADMIN_USERN
 
 ---
 
-## 4. Install the chart
+## 4. Choose the RTE image
+
+AnsibleForms 7 runs no playbook itself: the RTE (runtime environment) does. The chart runs it as a second container in the
+server pod, on the same volume, and registers it as the default runner `rte`, so playbook forms work without any setup.
+
+The default image, `ghcr.io/ansibleforms/ansibleforms-rte`, holds ansible, its Python libraries and a set of collections.
+When your playbooks need more, build your own from the app's `Dockerfile.rte` and point the chart at it:
+
+```yaml
+containers:
+  rte:
+    image: registry.example.com/my-rte:7.0.0
+applications:
+  rte:
+    env:
+      ANSIBLE_PATH: /app/dist/persistent/playbooks
+```
+
+The token between the app and the RTE, and the key that signs the sessions, are generated on the first install into
+the `<release>-keys` Secret and kept on every upgrade. With a config seed of your own, see the chart's
+[README](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms) for the runner to add to it.
+
+---
+
+## 5. Install the chart
 
 Install the chart into its own namespace with your values:
 
@@ -156,7 +180,7 @@ pin the chart version with `--version`, so that a new release is never installed
 
 ---
 
-## 5. Check the install
+## 6. Check the install
 
 The chart includes a test that checks both the web server and the database connection:
 
@@ -168,7 +192,7 @@ The test ends with `OK` when AnsibleForms answers and its database accepts conne
 
 ---
 
-## 6. Open AnsibleForms
+## 7. Open AnsibleForms
 
 How you reach AnsibleForms depends on how the server is exposed:
 
@@ -221,7 +245,7 @@ server needs.
 
 ---
 
-## 7. Sign in
+## 8. Sign in
 
 Sign in as the admin user, `admin` by default. To read the password from the Secret:
 
@@ -241,5 +265,6 @@ The chart's [README](https://github.com/ansibleforms/helm-charts/tree/main/chart
 * **Your own database** : set `mysql.enabled: false` and point AnsibleForms at an existing MySQL server
 * **Forms from ConfigMaps** : provide `config.yaml` and the form files through ConfigMaps
 * **HTTPS behind an ingress**, resources, node placement and private registries
+* **The RTE** : its token, an RTE image of your own, or no RTE at all
 
 To move to a newer release, see [Upgrading on Kubernetes](../upgrading/kubernetes.html).
