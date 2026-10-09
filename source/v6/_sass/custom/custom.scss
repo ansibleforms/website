@@ -485,11 +485,13 @@ body::before {
       max-height: none;
     }
 
-    // the main column centres itself at its max width : stretch it, or the search box
-    // shrinks to its placeholder
+    // the main column centres itself with auto margins : stretch it, or the search box
+    // shrinks to its placeholder, and drop the margins, or under a menu shorter than the
+    // screen they also centre it in the room left, a gap between the menu and the search box
     .main {
       flex: 0 0 auto;
       width: 100%;
+      margin: 0;
     }
 
     .main-content-wrap {
