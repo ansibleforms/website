@@ -52,7 +52,7 @@ Run the same `helm upgrade` command as at installation, with your values file an
 helm upgrade --install ansibleforms ansibleforms/ansibleforms \
   --namespace ansibleforms \
   --values my_values.yaml \
-  --version 7.0.5
+  --version 7.0.0
 ```
 
 With the OCI registry, use `oci://ghcr.io/ansibleforms/charts/ansibleforms` as the chart.
