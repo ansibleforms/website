@@ -53,7 +53,7 @@ newest 6.x chart):
 helm upgrade --install ansibleforms ansibleforms/ansibleforms \
   --namespace ansibleforms \
   --values my_values.yaml \
-  --version 6.3.9
+  --version 6.5.5
 ```
 
 With the OCI registry, use `oci://ghcr.io/ansibleforms/charts/ansibleforms` as the chart.
