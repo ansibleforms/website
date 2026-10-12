@@ -59,10 +59,11 @@ spec:
             - name: persistent
               mountPath: /app/dist/persistent
           livenessProbe:
-            httpGet: { path: /api/v2/version, port: 8000 }
+            # answers as long as the process runs, without asking the database
+            httpGet: { path: /api/v2/live, port: 8000 }
           readinessProbe:
-            # queries the database, so it also covers "the schema is there"
-            httpGet: { path: /api/v2/schema, port: 8000 }
+            # 503 until the database answers and the schema is complete, and while stopping
+            httpGet: { path: /api/v2/ready, port: 8000 }
       volumes:
         - name: seed
           configMap:
@@ -82,3 +83,6 @@ spec:
 `ENCRYPTION_SECRET` must be set before any credential is entered. Once credentials come
 from the seed, the database is effectively a cache, so rotating it means re-applying the
 seed rather than re-entering everything by hand.
+
+The two probes need no login. Under a [`BASE_URL`](../customization/server.html#env_BASE_URL) their paths start with it, and
+[Monitoring](../production/monitoring.html) describes what each one checks.
