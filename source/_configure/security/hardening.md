@@ -89,9 +89,9 @@ These features are off by default. Switch them on only when you use them; each n
 * [`ENABLE_CHAT`](../customization/features.html#env_ENABLE_CHAT) : the [chat assistant](../chat/). Form definitions
   and the values being filled in are sent to the configured model provider.
 
-[`LAUNCH_VALIDATION`](../customization/features.html#env_LAUNCH_VALIDATION) works the other way round: it is `off` by
-default and worth switching on. With `enforce`, the server refuses a launch whose values break the form's rules,
-including launches through the REST API. Start with `log`, see [Launch validation](../launch-validation/).
+[`LAUNCH_VALIDATION`](../customization/features.html#env_LAUNCH_VALIDATION) works the other way round: it is `enforce`
+by default, so the server refuses a launch whose values break the form's rules, including launches through the REST API.
+Keep it there: `log` only logs what would be refused and `off` checks nothing, see [Launch validation](../launch-validation/).
 
 ---
 
