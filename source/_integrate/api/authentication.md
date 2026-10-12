@@ -78,3 +78,41 @@ curl -X POST "https://af.example.com/api/v2/auth/login?expiryDays=90" -u automat
 
 `expiryDays` is read from the URL only, never from the body. For a user whose roles lack `extendedTokenExpiration`, it is
 ignored, and the login returns a token with the usual lifetime.
+
+A long-lived token lives [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) days at most, 90 by
+default: a longer `expiryDays` is cut to it. Refreshing it returns an ordinary token, so log in again when it expires.
+
+---
+
+## When a token ends early
+
+A token, long-lived or not, stops working before it expires when one of these happens:
+
+* **A logout of its session**: `POST /api/v2/auth/logout` with the token ends that login's tokens, and only those. A
+  logout in the browser does not end a script's token.
+* **A password change**: the user changes their password, or an admin sets it. Every token issued before is refused.
+* **The user is removed or blocked**: deleting a local user, or blocking a user, ends all their tokens. An admin can also
+  end the sessions of an LDAP or SSO user.
+
+A refused token answers `401`. Log in again, with the new password if it changed.
+
+---
+
+## Scripts that log in on every run
+
+The login and token endpoints are protected against floods and password guessing, so a script that logs in each time it runs
+should know these limits:
+
+| Limit | Default | What happens |
+|---|---|---|
+| [`AUTH_RATE_LIMIT`](../customization/security.html#env_AUTH_RATE_LIMIT) | 120 requests a minute from one address | Login, logout, refresh and the SSO endpoints answer `429` |
+| [`LOGIN_MAX_FAILURES`](../customization/security.html#env_LOGIN_MAX_FAILURES) | 5 failed logins in a row | The account is locked for [`LOGIN_LOCKOUT_MINUTES`](../customization/security.html#env_LOGIN_LOCKOUT_MINUTES) (15), every login answers `429` |
+| [`LOGIN_MAX_FAILURES_PER_IP`](../customization/security.html#env_LOGIN_MAX_FAILURES_PER_IP) | 30 failed logins from one address | Every login from that address answers `429` until the window ends |
+
+A `429` carries a `Retry-After` header with the seconds to wait: stop and wait, do not retry at once. A locked account
+refuses even the right password until the lockout ends, so a script with a wrong password locks out its user for everyone.
+A successful login clears the account's count, and so does an admin setting the password.
+
+To stay clear of these limits, log in once and reuse the token, or use a long-lived token, instead of logging in for
+every call. Behind a reverse proxy, set [`TRUST_PROXY`](../customization/server.html#env_TRUST_PROXY) so the server sees
+the client's address, or every client counts as one.
