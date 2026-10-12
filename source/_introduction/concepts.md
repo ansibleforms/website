@@ -18,7 +18,7 @@ The terms used across this documentation:
 
 | Term | Meaning |
 |---|---|
-| **[Form](forms/)** | A YAML definition that collects input and runs a playbook, a template or a series of steps |
+| **[Form](forms/)** | A YAML definition that collects input and runs a playbook, a template or a workflow |
 | **[Form field](formfields/)** | One input of a form, such as `text`, `enum` or `checkbox`; its value becomes an extravar |
 | **[Category](config/categories.html)** | A group in the tree of forms shown on the Forms page, defined in `config.yaml` |
 | **[Role](config/roles.html)** | A set of users and groups; a form lists the roles that may see and run it, `default` for everyone |
@@ -30,8 +30,9 @@ The terms used across this documentation:
 | **[Runner](runners.html)** | Where a job runs, added under **Connections > Runners**: `rte` for playbooks, `awx` (AWX, or the flavour `aap` or `ascender`), `semaphore`, `rundeck` or `jenkins` for templates and jobs. A form picks one with `runner:`, or runs on the default `rte` (playbooks) or `awx` (templates) runner |
 | **[RTE](production/scaling.html#the-rte)** | A runtime environment: the AnsibleForms server started with `AF_ROLE=rte` in its own container, next to python and ansible, that runs the playbooks of a runner of type `rte` |
 | **[Approval point](forms/approval.html)** | A pause in a job until a user with an approval role approves or rejects it |
-| **[Multistep form](forms/multistep.html)** | A form that runs several playbooks or templates in sequence, from one set of fields |
 | **[Workflow](workflows/)** | A graph of playbooks, approvals and other workflows linked on success, on failure or always, in AWX's syntax |
+| **[Multistep form](forms/multistep.html)** | Deprecated since 7: a form that runs several playbooks or templates in sequence; a workflow replaces it |
+| **[Notification channel](notification-channels.html)** | A mail server, a Slack or Teams webhook, a Telegram chat or a webhook that notifications and approval requests go to |
 | **[Designer](designer/)** | The browser editor for forms, playbooks, inventories and workflows, which one person uses at a time |
 | **[Subform](forms/subform.html)** | A reusable set of fields that describes the rows of a `list` field or the object of a `yaml` field |
 | **[config.yaml](config/)** | The file with the categories, the roles and the constants; the forms live in their own files |
