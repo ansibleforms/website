@@ -112,6 +112,31 @@ in the `runners:` section of the [config seed](seed/). See [Runners](runners.htm
 > that RTE (RTE contract 2). An RTE of an older contract is refused: run the RTE image of the same release as the app,
 > and upgrade both together.
 
+
+### What the RTE image contains
+
+The RTE comes in three layers, each built on the one before. Pick the one that fits your playbooks:
+
+| Image | Contents |
+|---|---|
+| `ansibleforms-rte-full` | The default. Ansible 14 with ansible-core 2.21, and the collections and python libraries the 6.5 image had. |
+| `ansibleforms-rte-core` | Python 3.14, ansible-core and a few common libraries, without collections. Add your own in an image built on it. |
+| `ansibleforms-rte-base` | The server only, without python or ansible, to build an RTE with your own versions. |
+
+Moving from 6.5 (ansible 12 with ansible-core 2.19) also changes these for your playbooks:
+
+- **ansible-core 2.21:** read the [porting guides](https://docs.ansible.com/ansible/latest/porting_guides/porting_guides.html)
+  for 2.20 and 2.21.
+- **Python 3.14:** the RTE layers run on python 3.14.
+- **No more `boto`:** the old `boto` 2 library is gone. The `amazon.aws` collection uses `boto3`, which is included.
+
+Two environment variables now belong to the RTE and are no longer read by the app, so set them in the RTE container:
+
+| Variable | Change |
+|---|---|
+| `ANSIBLE_PATH` | The playbook folder, on the RTE. |
+| `PROCESS_MAX_BUFFER` | Now 50 MB by default. Past it, the job output is no longer stored (the job says so), but the playbook goes on instead of being stopped. |
+
 ---
 
 ## Image tags
