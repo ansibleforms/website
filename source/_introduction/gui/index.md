@@ -28,5 +28,5 @@ Each group of screens has a page of its own:
 |---|---|
 | [Forms and jobs](forms-and-jobs.html) | Signing in, the dashboard, filling in a form and following its jobs |
 | [Designer and git](designer-and-git.html) | Editing forms and keeping them in git |
-| [Administration](administration.html) | Settings, authentication, credentials, backups and logs |
+| [Administration](administration.html) | The Settings menu: the system, its appearance, access, connections and logs |
 | [Personal settings](personal-settings.html) | Your profile and the dark theme |
