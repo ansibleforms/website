@@ -21,7 +21,11 @@ Jobs cut off by a restart, and how long finished jobs are kept
 A running job is tracked by the AnsibleForms process that started it. When that tracking stops, the job is marked
 `abandoned`:
 
-* **At startup**, jobs still `running` or aborting are marked abandoned; the log shows `Abandoned <n> jobs`.
+* **At startup**, the jobs that this process followed before it restarted, and the jobs from before 7 that no process
+  follows, are marked abandoned if they are still `running` or aborting; the log shows `Abandoned <n> jobs`. A job that
+  runs on an RTE is not touched: it carries on without the process that started it.
+* **Every minute**, the jobs followed by another AnsibleForms process (or RTE) that stopped answering for 2 minutes are
+  marked abandoned; the log shows `Abandoned <n> jobs followed by a node that stopped answering`.
 * **Every hour**, jobs that started more than a day ago and are still `running` are marked abandoned.
 
 An abandoned playbook may have run partly. Check the managed hosts before you relaunch it; see
