@@ -202,6 +202,6 @@ The FAQ contains a worked example and the layout of the merged extravars: [What 
 
 Related pages and FAQ entries:
 
-- [Subform](subform.html) — wizard pages are rendered from subforms
-- [Multistep forms](multistep.html) — the execution-layer counterpart of the wizard
-- [`__parent__` in subforms](../faq.html#how-do-i-access-parent-form-data-inside-a-subform) — how to reference earlier wizard steps from a later step
+- [Subform](subform.html): wizard pages are rendered from subforms
+- [Multistep forms](multistep.html): the execution-layer counterpart of the wizard
+- [`__parent__` in subforms](../faq.html#how-do-i-access-parent-form-data-inside-a-subform): how to reference earlier wizard steps from a later step

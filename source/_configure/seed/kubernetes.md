@@ -76,7 +76,7 @@ spec:
 > **AnsibleForms is single-instance.** Scheduled tasks run in-process, the designer lock is
 > a file, and playbooks run as child processes of the pod. Two overlapping pods mean two
 > nightly backups, a lock file on a volume the second pod may not be able to mount, and
-> running jobs killed at cutover. Use `replicas: 1` with the `Recreate` strategy — a
+> running jobs killed at cutover. Use `replicas: 1` with the `Recreate` strategy; a
 > rolling update is not safe here.
 
 `ENCRYPTION_SECRET` must be set before any credential is entered. Once credentials come

@@ -478,7 +478,7 @@ See the [Wizard page](forms/wizard.html) for the full property reference.
 
 Use `when:` to **hide** a step entirely, or `optional: true` to let the user **skip** a visible step. The two are independent and should generally not be combined.
 
-#### `when:` — conditional visibility
+#### `when:`: conditional visibility
 {: .no_toc }
 
 The step is hidden when the expression evaluates to a falsy value. The user never sees it, and its values are not collected. The expression can read earlier steps through `__parent__.<stepname>.<field>`:
@@ -497,7 +497,7 @@ wizard:
 
 Only the page matching the chosen `kind` is shown. Steps after a hidden one are renumbered automatically.
 
-#### `optional: true` — allow skipping a visible step
+#### `optional: true`: allow skipping a visible step
 {: .no_toc }
 
 The step is **always shown** in the stepper, but the user can press **Next** without filling it in, and **Submit** is allowed even if the page was never visited or completed:
@@ -965,7 +965,7 @@ To collect complex structured data, such as a list of servers, a set of network 
 
 A **subform** is a reusable form fragment (defined with `type: subform`) that is never shown as a standalone tile. It exists solely to be referenced by fields in other forms. See the [Subform docs](forms/subform.html) for the full reference.
 
-**Collecting a list of structured rows — `list` field:**
+**Collecting a list of structured rows: `list` field:**
 
 A `list` field opens the referenced subform once per row:
 
@@ -995,14 +995,14 @@ A `list` field opens the referenced subform once per row:
 
 The `servers` extravar sent to Ansible is an array of objects: `[{hostname: "web1", ip: "10.0.0.1"}, ...]`
 
-**Editing a single structured object — `yaml` field:**
+**Editing a single structured object: `yaml` field:**
 
 The `yaml` field has three modes:
 
 | Mode | How | Behaviour |
 |---|---|---|
 | **Editor** | default | Shows a full YAML syntax-highlighted editor the user can type in directly |
-| **Readonly** | `readonly: true` | Renders the YAML value as formatted read-only text — no editing |
+| **Readonly** | `readonly: true` | Renders the YAML value as formatted read-only text, no editing |
 | **Subform** | `subform: MySubform` | Hides the raw editor; opens the subform as a drilldown editor on click |
 
 ```yaml
@@ -1022,7 +1022,7 @@ fields:
     subform: NetworkConfig   # opens NetworkConfig subform as a drilldown editor
 ```
 
-**Upload and download — `list` and `yaml` fields:**
+**Upload and download: `list` and `yaml` fields:**
 
 Both field types support client-side file transfer through two optional properties:
 
@@ -1031,8 +1031,8 @@ fields:
   - name: servers
     type: list
     subform: Server
-    showLoadButton: true      # shows an Upload button — imports content from a local file
-    showDownloadButton: true  # shows a Download button — exports current content to a file
+    showLoadButton: true      # shows an Upload button: imports content from a local file
+    showDownloadButton: true  # shows a Download button: exports current content to a file
 
   - name: config
     type: yaml
@@ -1183,7 +1183,7 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 
 The `from` property of `tableFields` enum columns populated dropdown choices from another field in the parent form. In a `subform`, it is replaced by an `expression` that reads the same value through `__parent__`.
 
-**Before — `tableFields` with `from`:**
+**Before: `tableFields` with `from`:**
 
 ```yaml
 - name: Manage members
@@ -1208,7 +1208,7 @@ The `from` property of `tableFields` enum columns populated dropdown choices fro
           type: text
 ```
 
-**After — subform with `__parent__` expression:**
+**After: subform with `__parent__` expression:**
 
 ```yaml
 - name: Member

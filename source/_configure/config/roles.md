@@ -70,11 +70,12 @@ The `options` of a role switch features on or off for its members; the table lis
 | `allowStoredJobs` | Store the data of a form and load it again later | On |
 | `allowPlannedJobs` | Plan a job to run once at a set time (**Run Later (One-time)**) | On |
 | `showAllJobLogs` | See the jobs of every user, not only their own | Admins only |
-| `showArtifacts` | See the artifacts an AWX job returns | On |
+| `showArtifacts` | See a job's artifacts: what an AWX job returns, or what a playbook gathered with `set_stats` | On |
 | `showExtravars` | See the extravars of a form and of a job | On |
 | `allowLogin` | Sign in to AnsibleForms | On |
 | `allowBackupOps` | Back up and restore the database | Admins only |
 | `allowChat` | Use the [chat assistant](../chat/), when it is enabled | On |
+| `allowMcp` | Use the [MCP server](../mcp/) from an AI agent, when it is enabled | The role's `allowChat` |
 | `extendedTokenExpiration` | Request a longer-lived token, such as an [API token](../profile/api-token.html) for scripts | Off |
 
 **Admins only** means on for users who hold the `admin` role, and off for everyone else. When a user matches several roles,

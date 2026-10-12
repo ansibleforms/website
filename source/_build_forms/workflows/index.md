@@ -48,10 +48,39 @@ A node with a condition (`if_extra_var`) that is not met is skipped. What follow
 
 ## Passing data between nodes
 
-A node's `set_stats` data is given to the nodes after it as extra vars, AWX's way. A playbook that calls
-`ansible.builtin.set_stats` with `data:` makes those values available to every node that runs after it in the
-workflow, on top of the values from the form.
+What a node's playbook gathers with `set_stats` reaches the nodes after it as extra vars, the way AWX passes a job's
+artifacts on. A node gets the data from every parent whose link into it fired, merged in the order the parents are
+written, and passes on what it got plus its own job's data, its own winning a key both set.
 
+```yaml
+# build.yaml, the first node : its version and build id go to the nodes after it
+- name: Build
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Pass the build on
+      ansible.builtin.set_stats:
+        data:
+          version: "2.4.1"
+          build_id: 42
+```
+
+A node after it then reads `{{ version }}` and `{{ build_id }}` like any other extra var. The order of precedence is
+AWX's, lowest first:
+
+| Source | Wins over |
+|---|---|
+| the node's `extra_data` | nothing |
+| the data passed on with `set_stats` | the node's `extra_data` |
+| the workflow's `extra_vars` | the data passed on |
+| the form's values | everything |
+
+- Only the playbook-wide data is passed on: `set_stats` with `per_host: false`, its default.
+- An approval node, a skipped node and a project node pass on what came to them.
+- A node's output ends with the keys it passed on, by name only, as their values may be secret.
+- The node's job keeps its data as its artifacts (**Show artifacts** on its page), and the workflow job keeps all its
+  nodes' data, so a nested workflow passes it on to the nodes after it too.
+- A node that runs on an AWX runner passes on its AWX job's artifacts the same way.
 ---
 
 ## In this section

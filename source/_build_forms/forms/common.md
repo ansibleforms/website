@@ -13,7 +13,7 @@ Properties shared by every form type
 
 ---
 
-These properties apply to **all form types** — `ansible`, `awx`, `multistep`, and `subform`.
+These properties apply to **all form types**: `ansible`, `awx`, `multistep`, and `subform`.
 
 All other properties are type-specific and documented on the page of the respective form type.
 

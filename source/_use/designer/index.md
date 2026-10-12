@@ -58,8 +58,8 @@ What the Visual and Preview tabs show, section by section:
 | Section | Visual | Preview |
 |---|---|---|
 | **Forms** | The form's settings and its fields, with lists of the designer's playbooks, inventories and workflows | The form as it is now, unsaved edits included; its submit runs nothing |
-| **Categories** | The categories as a table | The Forms page's menu, built from them |
-| **Constants** | The constants as a table | Each constant with its reference, `$(NAME)`, to copy, and the forms that use it |
+| **Categories** | The categories as a table, edited | The Forms page's menu, built from them |
+| **Constants** | The constants as an outline, edited (a key moves with the arrow keys) | Each constant with its reference, `$(NAME)`, to copy, and the forms that use it |
 | **Vars files** | The variables, edited | Each variable with its reference in a playbook, `{{ name }}`, to copy, and the forms that load the file |
 | **Playbooks** | The plays: each play's name, hosts, **Become**, **Gather facts** and roles, and its tasks, each with its module and arguments | The playbook's outline: its plays, with their hosts, roles and tasks, and the playbooks it imports |
 | **Inventories** | The groups, their child groups, their hosts, and the variables each sets | The inventory as a tree, with its `group_vars` and `host_vars` |
