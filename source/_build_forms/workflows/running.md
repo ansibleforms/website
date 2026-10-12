@@ -39,8 +39,9 @@ designer's workflows.
 
 ## The job
 
-A workflow job runs on the AnsibleForms server, and each playbook node runs as a job of its own on the RTE, a child of the
-workflow job as a multistep form's steps are.
+A workflow job runs on the AnsibleForms server, and each playbook node runs as a job of its own, a child of the workflow
+job as a multistep form's steps are: a designer playbook on the RTE, or, for a node with a `runner:`, that runner's
+template or job on AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins (see [Where a node runs](designer.html#where-a-node-runs)).
 
 The job's page draws the workflow, live: each node coloured by its status, the links that fired, and the nodes that will
 not run. The facts at the top name the workflow in place of a playbook.
