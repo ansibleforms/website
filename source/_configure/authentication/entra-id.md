@@ -52,7 +52,7 @@ to be configured on the registration.
 
 ## Add the provider
 
-Add the provider under **Access > OAuth2**, with **Provider** set to **Entra ID**:
+Add the provider under **Access > SSO**, on the **Providers** tab, with **Provider** set to **Entra ID**:
 
 | Field | Meaning |
 |---|---|
