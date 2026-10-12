@@ -66,7 +66,8 @@ Above the table:
 The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customization/#env_JOBS_LIST_SIZE) setting says
 (**Settings > Jobs**, `1000` by default); its pages and filters cover those jobs.
 
-Each column can be sorted and has its own filter field. A multistep job has an arrow in its `id` column that expands its steps.
+Each column can be sorted and has its own filter field. A multistep job has an arrow just before its `form` that expands
+its steps; a click on the rest of a row opens the job.
 
 The bell in the header counts the jobs waiting for your approval and opens the list on **Needs approval**.
 
