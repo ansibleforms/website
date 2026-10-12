@@ -219,6 +219,12 @@ A local password set through the application needs at least
 [`PASSWORD_MIN_LENGTH`](customization/#env_PASSWORD_MIN_LENGTH) characters (8 by default), and cannot be the username or the
 default password. `PASSWORD_MIN_LENGTH=0` turns the length check off. Existing passwords keep working.
 
+### Run the containers with a restart policy
+
+An uncaught exception now ends the process, logged at level `crit`, instead of leaving it running in an unknown state. Run
+the containers with a restart policy, such as `--restart unless-stopped` with Docker (the docker-compose project sets it).
+Kubernetes restarts the pods by itself.
+
 ---
 
 ## Image tags
