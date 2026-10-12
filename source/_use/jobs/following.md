@@ -22,8 +22,9 @@ Clicking a job opens its page: the job's form as the title, its actions in the h
 
 ![The output of a job](../assets/screenshots/job-output.jpg)
 
-While a job is running (or an abort is pending), the page polls it every 5 seconds and the output grows as the job
-writes it. Only jobs that started less than 6 hours ago are polled; use **Refresh** to reload any other job.
+The page updates live: the server sends an event each time a job is launched, changes status, writes output or is
+deleted, and the page reads the job again, so the output grows as the job writes it. The jobs list updates the same way.
+**Refresh** reloads the job by hand.
 
 While you are at the end of the output, the page follows it down as new lines come in. Scroll up to read an earlier line
 and it stays where you are: **Jump to latest** then shows over the bottom of the output, and turns to **New lines** once
@@ -35,11 +36,15 @@ The output toolbar has:
 | Button | What it does |
 |---|---|
 | **Show Extravars** | Shows the extravars the job ran with, as JSON or YAML (**View as YAML**), with a copy icon |
-| **Show Artifacts** | Shows the artifacts an AWX / AAP job returned (`awx` jobs only) |
+| **Show Artifacts** | Shows the job's artifacts, as JSON or YAML (see below) |
 | **Refresh** | Reloads the output |
 | **Apply filter** | Hides the tasks whose name matches the output filter; **Remove filter** shows them again |
 | **Copy Output** | Copies the output as plain text, with the filter applied or not |
 | **Download Output** | Downloads the output as `ansibleforms-job-<id>.txt` |
+
+**Show Artifacts** is offered for a template job that ran on AWX, AAP or Ascender, and for a playbook on the RTE or a
+workflow whose playbooks gathered artifacts with `set_stats`. Semaphore, Rundeck and Jenkins jobs have no artifacts, so it
+is never offered for them.
 
 **Show Extravars** requires the `showExtravars` role option and **Show Artifacts** the `showArtifacts` role option (see
 [role options](../config/roles.html#role-options)). Values of password fields and keys matching
