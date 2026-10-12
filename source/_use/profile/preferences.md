@@ -18,7 +18,7 @@ where you make it, so another browser or computer starts from the defaults.
 
 | Setting | Choices | Also set from |
 |---|---|---|
-| Language | English, Nederlands, Français, Italiano, Deutsch, Español | the flag in the header |
+| Language | Català, Deutsch, English, Español, Français, Italiano, Nederlands, Polski, Português, 日本語 (Japanese), 简体中文 (Simplified Chinese) | the flag in the header |
 | Theme | Light, Dark, or Color (a header in a color you pick) | the sun icon in the header |
 | Forms view | Tiles or List | the button on the Forms page |
 | Time zone | UTC, this browser's zone, or any zone by name | only here |
