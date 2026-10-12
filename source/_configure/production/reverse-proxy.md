@@ -40,7 +40,7 @@ Only a few settings affect how AnsibleForms behaves behind a proxy:
 | [`TRUST_PROXY`](../customization/server.html#env_TRUST_PROXY) | Which proxies may report the client address in `X-Forwarded-For`, usually `1`. See [Client addresses](#client-addresses). |
 | [`API_BODY_LIMIT_MB`](../customization/server.html#env_API_BODY_LIMIT_MB) | Largest JSON request the application accepts, 50 MB by default. The proxy must allow at least this. |
 | [`UPLOAD_MAX_GB`](../customization/server.html#env_UPLOAD_MAX_GB) | Largest file a form upload field accepts, 10 GB by default. The proxy must allow it too, or uploads fail there. |
-| **Public Root Url** | Under **Settings**: the address users reach, subpath included. It builds the links in notification emails. |
+| **Public root URL** | Under **System > General**, on the **Server** tab: the address users reach, subpath included. It builds the links in notification mails, channel messages and approval requests. |
 
 For Entra ID or OIDC, register the public address as redirect URI, with the `BASE_URL` subpath if set.
 
@@ -63,8 +63,12 @@ The **Status** page shows the base URL in force.
 
 ## Timeouts, uploads and live output
 
-Job output and job status reach the browser by polling: there are no WebSockets or server-sent events to configure.
-A job launch returns as soon as the job is created, so a long playbook does not hold a request open.
+The jobs page and the job counters hear of changes through one long-lived stream of server-sent events,
+[`/api/v2/events`](../api/events.html), held open per browser. The stream sends headers that turn proxy buffering off
+(`X-Accel-Buffering: no`) and a keep-alive line every 15 seconds, so the usual 60 second read timeout keeps it open;
+when a proxy closes it anyway, the browser reconnects on its own. The output under a form, right after a launch, is
+read every two seconds instead. A job launch returns as soon as the job is created, so a long playbook does not hold
+a request open.
 
 The requests that can take long are:
 
