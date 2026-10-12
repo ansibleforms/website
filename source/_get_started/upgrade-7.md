@@ -199,7 +199,7 @@ first start. Scripts that log in with the default password must use another one.
 A logout now ends the tokens of that session, and a password change ends every session of that user, so sign in again after
 changing a password.
 
-An API token requested with `?expiryDays=` lives at most [`API_TOKEN_MAX_DAYS`](customization/#env_API_TOKEN_MAX_DAYS) days
+An API token requested with `?expiryDays=` lives at most [`API_TOKEN_MAX_DAYS`](customization/security.html#env_API_TOKEN_MAX_DAYS) days
 (90 by default). Scripts that use long-lived API tokens must request a new one before it expires.
 
 ### Entra ID needs your tenant
@@ -217,7 +217,7 @@ See [Entra ID](authentication/entra-id.html) for the setup.
 ### Passwords have a minimum length
 
 A local password set through the application needs at least
-[`PASSWORD_MIN_LENGTH`](customization/#env_PASSWORD_MIN_LENGTH) characters (8 by default), and cannot be the username or the
+[`PASSWORD_MIN_LENGTH`](customization/security.html#env_PASSWORD_MIN_LENGTH) characters (8 by default), and cannot be the username or the
 default password. `PASSWORD_MIN_LENGTH=0` turns the length check off. Existing passwords keep working.
 
 ### Run the containers with a restart policy
