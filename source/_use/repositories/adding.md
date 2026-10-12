@@ -35,13 +35,15 @@ pull brings in. The menu of each row holds these actions:
 
 | Action | What it does |
 |---|---|
-| **Edit Repository** | Change the fields below; the password has its own action |
-| **Delete Repository** | Remove the record and its working tree under `REPO_PATH` |
-| **Change Password** | Set a new password or token |
-| **Trigger** | Clone the repository, or pull it when the working tree already exists |
+| **Edit repository** | Change the fields below |
+| **Pull** | Clone the repository, or pull it when the working tree already exists |
+| **Push** | Commit and push the working tree; only on repositories used for forms, config, playbooks, workflows or inventories, and enabled only while there are changes not pushed yet |
+| **Reset** | Delete the working tree and clone it again, which discards local changes |
+| **Change credentials** | Open the repository's **Credentials** tab, to pick the credential git uses |
 | **Show output** | Show git's output of the last clone, pull or push, with the password masked |
-| **Reset Repository** | Delete the working tree and clone it again, which discards local changes |
-| **Push to repo** | Commit and push the working tree; only on repositories used for forms or config |
+| **Delete repository** | Remove the record and its working tree under `REPO_PATH` |
+
+**Pull all**, above the list, pulls every repository at once.
 
 Only one git operation runs on a repository at a time. A second one is refused with
 `Repository '<name>' not found or already running, try again later`.

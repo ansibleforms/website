@@ -25,7 +25,7 @@ How AnsibleForms authenticates depends on the form of the **Uri**.
 For a private HTTPS remote, fill in **Username** and put a personal access token (or a password) in **Password**.
 
 AnsibleForms inserts both into the URL when it runs git, as `https://<user>:<token>@git.example.com/team/forms.git`, so
-the token needs read access to pull, and write access for **Push to repo**. The token is masked in the output and the
+the token needs read access to pull, and write access to push. The token is masked in the output and the
 logs. A public remote needs neither field.
 
 ### SSH with the generated key
