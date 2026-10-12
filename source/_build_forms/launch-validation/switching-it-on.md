@@ -59,5 +59,5 @@ form settings.
 on `enforce`, a form's `launchValidation: off` has no effect: a form cannot override
 an operator's decision.
 
-Wizard forms cannot use it yet (see [Limitations](rolling-it-out.html#limitations)): a wizard form with
-`launchValidation` does not load, and the form configuration reports the error.
+Wizard forms use it too: a wizard launch is checked step by step, each step against its own
+subform (see [Wizard forms](rolling-it-out.html#wizard-forms)).

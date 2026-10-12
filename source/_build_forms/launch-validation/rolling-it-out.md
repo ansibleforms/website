@@ -35,13 +35,25 @@ Move an instance to `enforce` in steps, watching the log before refusing anythin
 
 Launch validation does not cover everything yet:
 
-- **Wizard forms** are not checked yet: a wizard sends its merged step output, not the raw
-  field values, so the server has nothing to validate. Under `enforce`, a wizard launch is
-  refused; a wizard form cannot set `launchValidation`. The MCP server cannot launch wizard
-  forms either.
+- **Wizard forms** cannot be relaunched with changes, and a wizard job launched before 7.0
+  cannot be relaunched under `enforce` (it did not store its step values). The MCP server
+  cannot launch wizard forms.
 - **Placeholder resolution** in the browser still uses its own copy of the server's code; in
   rare edge cases (`__undefined__`, quotes inside expressions) the two could resolve a
   placeholder differently. `log` reveals such differences.
 - **`runLocal`** expressions run in the browser's JavaScript engine in the browser and in a
   sandbox on the server; the same code produces the same result, except where it depends on
   the browser's timezone or locale.
+
+---
+
+## Wizard forms
+
+A [wizard](../forms/wizard.html) is checked step by step: the browser sends the values of
+each step, and the server checks every step the user would submit against its own subform.
+
+- A step is left out when it is `optional` and the user skipped it, or when its `when` is false.
+- A step reads the earlier steps through `$(__parent__.<step>.<field>)`, with their checked values.
+- Errors name the step and the field, as `<step>.<field>`.
+- Under `enforce`, the extravars are built on the server, each step under its `defaultModel`.
+- File fields are not supported in a wizard.
