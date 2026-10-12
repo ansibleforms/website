@@ -155,7 +155,7 @@ Three keys of a node are AnsibleForms' own, and AWX ignores them, so a workflow 
 | Key | What it does |
 |---|---|
 | `runner` | On a `job_template` node, runs that runner's template or job instead of a designer playbook: AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins. An RTE runner runs the node's playbook there. One workflow can mix them. |
-| `if_extra_var` | The node runs only when this extra var is `true`, as a multistep step's `ifExtraVar`. Not met, the node is skipped, and what follows it runs as after a success. |
+| `if_extra_var` | The node runs only when this extra var is `true`, as a multistep step's `ifExtraVar`. Not met, the node is skipped, and what follows it runs as after a success. Not on an approval node, which always runs. |
 | `extra_vars_key` | The node gets only this key of the extra vars, with the user copied in, as a multistep step's `key` |
 
 On a template runner, `unified_job_template.name` is the template or job to run, and the node's inventory, credentials,
