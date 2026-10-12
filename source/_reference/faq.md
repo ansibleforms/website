@@ -17,16 +17,22 @@ Common questions and answers about AnsibleForms
 
 ## Getting Started
 
-### Deployment topology: single instance only
+### Deployment topology: one container or several nodes
 
-AnsibleForms is designed to run as a **single instance**. Running multiple replicas behind a load balancer is currently **not supported**.
+By default, one AnsibleForms container runs the web application and the background work in one process, next to an RTE container that
+runs the playbooks. Run it with a restart policy (for example `restart: unless-stopped` in Docker), and back up both the database and
+the persistent volume.
 
-**Why:**
-- Schema migrations run at startup and assume they are the only writer.
-- The scheduler (cron loop) runs in-process, so two instances would fire each scheduled job twice.
-- The job runner tracks state in memory and in the database, so concurrent runners can corrupt job state.
+To run several replicas behind a load balancer, split the process with `AF_ROLE`:
 
-**Recommendation:** run a single active instance that restarts on failure (for example, `restart: unless-stopped` in Docker, or a Kubernetes Deployment with `replicas: 1`), and back up both the database and the persistent volume. True high availability would require a separate worker service that owns migrations, scheduling and job execution; such a service does not exist yet.
+- `app` nodes serve the web interface and the API: run as many as you like, each with the same `ACCESS_TOKEN_SECRET`
+- a `worker` runs the background work: the schema and its upgrades, the config seed, the schedules, the nightly backup, the repository
+  syncs and the cleanups. One worker works at a time, holding a database lock; a second one waits and takes over when the first stops
+- `rte` containers run the playbooks: run more of them to run more playbooks at once
+
+The nodes share the database, the persistent volume and `ENCRYPTION_SECRET`. The chat assistant needs sticky sessions, and each node
+keeps its own log. See [Scaling](production/scaling.html) and the
+[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) setup.
 
 ### Multi-Repository Form Management
 
