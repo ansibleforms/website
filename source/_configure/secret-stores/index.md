@@ -157,7 +157,7 @@ For details, see [Config seed](../seed).
 
 ## Upgrading from the VAULT_* variables
 
-Before 7.1 the only store was a HashiCorp Vault configured with `VAULT_*` environment
+Before 7 the only store was a HashiCorp Vault configured with `VAULT_*` environment
 variables, and a credential pointed at it with **Vault path**.
 
 - **The variables are imported once** as a store named `vault`; remove them afterwards.
