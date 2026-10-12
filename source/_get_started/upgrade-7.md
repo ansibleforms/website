@@ -39,7 +39,8 @@ Forms live only in the forms folder (`FORMS_FOLDER_PATH`) or a forms repository;
 
 ### The `table` field
 
-Version 7 rejects `table` fields: use a `list` field with a `subform`, and turn each column's `from` into an expression
+Version 7 rejects `table` fields, and their properties (`tableFields`, `insertColumns`, `readonlyColumns`,
+`tableTitleAdd`, `tableTitleEdit`) go with them: use a `list` field with a `subform`, and turn each column's `from` into an expression
 on `__parent__` (see the [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
 
 ### Renamed properties
@@ -224,6 +225,14 @@ default password. `PASSWORD_MIN_LENGTH=0` turns the length check off. Existing p
 An uncaught exception now ends the process, logged at level `crit`, instead of leaving it running in an unknown state. Run
 the containers with a restart policy, such as `--restart unless-stopped` with Docker (the docker-compose project sets it).
 Kubernetes restarts the pods by itself.
+
+### AWX connections and the home link
+
+Two more things are gone in 7, without anything to do on 6.5:
+
+- **AWX and AAP connections:** the `awx` table, `/api/v2/awx` and the A.A.P. page are gone. The upgrade moves every AWX or
+  AAP connection to **Connections → Runners**, as a runner of type `awx`, and forms with `awx:` keep working.
+- **`NAV_HOME_LABEL` and `NAV_HOME_ICON`:** no longer read. The first link of the header is always Forms.
 
 ---
 
