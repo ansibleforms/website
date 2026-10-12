@@ -15,7 +15,8 @@ Enable the assistant and offer forms in it
 
 The assistant requires all four of the following:
 
-1. **`ENABLE_CHAT=1`** - the environment variable; a restart is required. See [customization](../customization).
+1. **`ENABLE_CHAT=1`** - the environment variable. Changed on the settings page, it applies at once, without a restart; while
+   it is off, the chat endpoints answer `404`. See [`ENABLE_CHAT`](../customization/features.html#env_ENABLE_CHAT).
 2. **A model provider** - Settings -> Connections -> **Chat assistant** (or the [config seed](../seed) on Kubernetes).
 3. **Forms that take part** - `enableForChat: true` on each form; the assistant ignores all others.
 4. **Users who may use it** - the role option `allowChat` (default: true). Set
