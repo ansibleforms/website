@@ -35,13 +35,13 @@ Prepare the upgrade so that you can go back if something goes wrong:
 
 ## 1. Get the new release
 
-Fetch the release tags and check out the release you want. Release tags carry the version number, such as `7.2.0`; the
-`main` branch can hold changes that are not released yet:
+Fetch the release tags and check out the release you want. Release tags carry the version number, and `git tag` lists
+them; the `main` branch can hold changes that are not released yet:
 
 ```bash
 cd /srv/apps/ansibleforms
 git fetch --tags
-git checkout 7.2.0
+git checkout <version>
 ```
 
 ---
@@ -102,6 +102,6 @@ database, the schema and the other systems AnsibleForms depends on.
 
 ## Roll back
 
-To go back to the previous release, check out its tag, for example `git checkout 7.1.6`, then rebuild and restart as in
-steps 2 and 3. If that release does not start on the upgraded database, restore the backup you took under
+To go back to the release you ran before, the version **Help → About** showed before the upgrade, check out its tag with
+`git checkout <version>`, then rebuild and restart as in steps 2 and 3. If that release does not start on the upgraded database, restore the backup you took under
 **Settings → Backups**.
