@@ -146,8 +146,9 @@ The Secret must hold `DB_USER`, `DB_PASSWORD`, `ENCRYPTION_SECRET`, `ADMIN_USERN
 AnsibleForms 7 runs no playbook itself: the RTE (runtime environment) does. The chart runs it as a second container in the
 server pod, on the same volume, and registers it as the default runner `rte`, so playbook forms work without any setup.
 
-The default image, `ghcr.io/ansibleforms/ansibleforms-rte`, holds ansible, its Python libraries and a set of collections.
-When your playbooks need more, build your own from the app's `Dockerfile.rte` and point the chart at it:
+The default image, `ghcr.io/ansibleforms/ansibleforms-rte-full`, holds ansible with its collections and the Python libraries the 6.5 image had.
+For more, or less, build your own on one of the three RTE layers (`ansibleforms-rte-base`, `-rte-core` or `-rte-full`, see
+[The RTE images](../production/scaling.html#the-rte-images)) and point the chart at it:
 
 ```yaml
 containers:
