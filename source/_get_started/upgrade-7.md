@@ -8,7 +8,7 @@ nav_order: 0.5
 # Upgrading to v7
 {: .no_toc }
 
-What to change while still on 6.5, before you move to version 7
+What to change while still on 6.5, and what changes when you move to version 7
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -76,6 +76,41 @@ scripts typically use are:
 
 v2 responds with HTTP status codes (`400`, `403`, `404`, `422`) and a plain JSON body, not v1's
 `{ status, message, data }` envelope.
+
+---
+
+## What changes in 7
+
+Version 7 changes how playbooks run and tightens several defaults. Check each item below when you move from 6.5.
+
+### Playbooks run on an RTE
+
+Version 7 no longer runs `ansible-playbook` in the AnsibleForms container. Playbooks run on a runtime environment (RTE),
+a container of its own, and the app image no longer contains ansible or python. Start an RTE next to the app, from the
+`ghcr.io/ansibleforms/ansibleforms-rte-full:7` image, with these settings:
+
+| Setting | Value |
+|---|---|
+| `AF_ROLE` | `rte`. The RTE images set it already. |
+| `RTE_TOKEN` | A token of at least 16 characters. The app sends it with every call, and the RTE refuses to start without one. |
+| `RTE_URL` | The address the app reaches the RTE on, for example `http://rte:8000`. |
+| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` | The same database as the app. |
+| `ENCRYPTION_SECRET` | The same value as the app. Only needed when the RTE registers itself. |
+
+Then move the ansible mounts from the app container to the RTE:
+
+- `ansible.cfg` at `/etc/ansible/ansible.cfg`, your roles at `/etc/ansible/roles` and your collections at
+  `/etc/ansible/collections`.
+- Mount the same persistent folder as the app on the RTE too, so that it finds the playbooks and the repositories.
+
+An RTE adds itself under **Connections → Runners** when it starts, and the first one becomes the default runner, so
+playbook forms run on it at once. With `RTE_REGISTER=0` it does not: add it under **Connections → Runners** yourself, or
+in the `runners:` section of the [config seed](seed/). See [Runners](runners.html) and [Scaling](production/scaling.html).
+
+{: .warning }
+> **Same release for the app and the RTE** The app resolves a job's credentials and hands them to the RTE sealed for
+> that RTE (RTE contract 2). An RTE of an older contract is refused: run the RTE image of the same release as the app,
+> and upgrade both together.
 
 ---
 
