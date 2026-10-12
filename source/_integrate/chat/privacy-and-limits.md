@@ -45,7 +45,9 @@ The following limits are set on the settings page:
 - **Tool rounds per message** (6) - how many times the model may call a tool before it answers.
 - **Timeout** (60 s) - per call to the provider.
 
-The following limits are fixed: one message at a time per conversation, 60 messages per user
-per hour, and 5 conversations per user. A conversation is discarded after 2 hours without a
-message. Conversations and summaries are kept in memory, so after a restart the user must
-start a new conversation.
+The following limits are fixed: one message at a time per conversation, at most 4000 characters per message, 60 messages per
+user per hour, and 5 conversations per user. A conversation is discarded after 2 hours without a message.
+
+A summary card with a **Launch** button can be used once, and expires after 15 minutes: Launch then answers that the
+summary expired, and the user asks the assistant for a fresh one. Conversations and summaries are kept in memory, so after
+a restart the user must start a new conversation.
