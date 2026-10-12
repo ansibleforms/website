@@ -21,7 +21,8 @@ Build AnsibleForms from source and run it with Node.js
 The repository holds two Node.js applications, and a build combines them into one:
 
 * **client** : the web interface, written in Vue 3 and built into static files with Vite
-* **server** : the API, written in Express. It runs the playbooks and AWX templates, connects to the database and serves the built client
+* **server** : the API, written in Express. It hands the jobs to runners, connects to the database and serves the built client.
+  Started with `AF_ROLE=rte`, the same server is the RTE (runtime environment) that runs the playbooks
 
 Only the client is built; its output goes into the server's `views` folder, as in the [Docker image](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile).
 
@@ -31,12 +32,13 @@ Only the client is built; its output goes into the server's `views` folder, as i
 
 Building and running from source requires solid Linux skills and some knowledge of Node.js. You install every component yourself:
 
-* **Node.js 24 or newer**, with npm
+* **Node.js 26** (the version in `.nvmrc`; 24 at least), with npm
 * **Git**, to get the code and to sync repositories
 * **OpenSSH client**, for git over SSH, and **sshpass**, for playbooks that connect with an SSH password
 * **MariaDB client** (`mariadb`, `mariadb-dump`), for backups and restores, also with a MySQL server
 * **MySQL 8+ or MariaDB**, reachable from the server
-* **Ansible**, if you run playbooks locally (`ansible-playbook` on the path); not required if you only launch AWX/AAP/Ascender templates
+* **Ansible**, for the RTE process that runs the playbooks (`ansible-playbook` on its path). The app process itself needs no
+  Ansible and no Python, and with only template forms (AWX, AAP, Ascender and the other runners) you need no RTE at all
 
 Install them for your distribution:
 
@@ -48,20 +50,20 @@ Install them for your distribution:
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="ubuntu" markdown="1">
 
-Node.js 24 comes from the NodeSource repository, the other tools from Ubuntu itself:
+Node.js 26 comes from the NodeSource repository, the other tools from Ubuntu itself:
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_26.x | sudo -E bash -
 sudo apt-get install -y nodejs git openssh-client sshpass mariadb-client python3 python3-pip ansible
 ```
 
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="debian" markdown="1" hidden>
 
-Node.js 24 comes from the NodeSource repository, the other tools from Debian itself:
+Node.js 26 comes from the NodeSource repository, the other tools from Debian itself:
 
 ```bash
-curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_26.x | sudo -E bash -
 sudo apt-get install -y nodejs git openssh-client sshpass mariadb-client python3 python3-pip ansible
 ```
 
@@ -71,7 +73,7 @@ sudo apt-get install -y nodejs git openssh-client sshpass mariadb-client python3
 Node.js comes from NodeSource and `sshpass` from EPEL (on RHEL itself, enable EPEL as Red Hat documents):
 
 ```bash
-curl -fsSL https://rpm.nodesource.com/setup_24.x | sudo bash -
+curl -fsSL https://rpm.nodesource.com/setup_26.x | sudo bash -
 sudo dnf install -y epel-release
 sudo dnf install -y nodejs git openssh-clients sshpass mariadb python3 python3-pip ansible-core
 ```
@@ -79,7 +81,7 @@ sudo dnf install -y nodejs git openssh-clients sshpass mariadb python3 python3-p
 </div>
 </div>
 
-Check `node --version` (24+) and `ansible-playbook --version`; for the database, see [Install MySQL](docker.html#install-mysql).
+Check `node --version` (26) and `ansible-playbook --version`; for the database and its user, see [Install MySQL](docker.html#install-mysql).
 
 ---
 
@@ -139,7 +141,7 @@ cp .env.example persistent/.env
 
 All variables are described under [Environment Variables](../customization). Everything else is stored in `server/persistent` by default:
 `config.yaml`, the `forms` folder and self-signed certificates are created there at the first start, alongside the logs.
-Put your playbooks in `server/persistent/playbooks`, or point `ANSIBLE_PATH` elsewhere.
+Put your playbooks in `server/persistent/playbooks`, or point `ANSIBLE_PATH` elsewhere in the environment of the RTE, which reads it.
 
 ---
 
@@ -173,27 +175,38 @@ pm2 save
 pm2 startup   # prints the command that starts PM2 at boot
 ```
 
-Check that PM2 lists the application:
+Playbooks run on an RTE: start the same server a second time with `AF_ROLE=rte`, on a port of its own. It reads the same
+`persistent/.env` (the database settings and `ENCRYPTION_SECRET`), and adds itself under **Connections > Runners** as the default runner:
+
+```bash
+cd /srv/apps/ansibleforms/server
+AF_ROLE=rte PORT=8010 HTTPS=0 RTE_TOKEN='<at least 16 characters>' RTE_URL=http://127.0.0.1:8010 \
+  NODE_ENV=production pm2 start index.js --name ansibleforms-rte
+pm2 save
+```
+
+The RTE settings are described on the [Scaling](../production/scaling.html#run-an-rte) page. Check that PM2 lists both processes:
 
 ```bash
 pm2 status
 ```
 
-The application is `online`:
+Both are `online`:
 
 ```text
-+----+--------------+------+---------+------+--------+----------+--------+-----+---------+------+----------+
-| id | name         | mode | version | pid  | uptime | restarts | status | cpu | mem     | user | watching |
-+----+--------------+------+---------+------+--------+----------+--------+-----+---------+------+----------+
-| 0  | ansibleforms | fork | 7.2.0   | 3104 | 8s     | 0        | online | 0%  | 120.1mb | root | disabled |
-+----+--------------+------+---------+------+--------+----------+--------+-----+---------+------+----------+
++----+------------------+------+---------+------+--------+----------+--------+-----+---------+------+----------+
+| id | name             | mode | version | pid  | uptime | restarts | status | cpu | mem     | user | watching |
++----+------------------+------+---------+------+--------+----------+--------+-----+---------+------+----------+
+| 0  | ansibleforms     | fork | 7.0.0   | 3104 | 8s     | 0        | online | 0%  | 120.1mb | root | disabled |
+| 1  | ansibleforms-rte | fork | 7.0.0   | 3187 | 5s     | 0        | online | 0%  | 80.4mb  | root | disabled |
++----+------------------+------+---------+------+--------+----------+--------+-----+---------+------+----------+
 ```
 
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="development" markdown="1" hidden>
 
-To work on the code itself, start both parts from the repository root with live reload: the server on port 3001 and the client on
-`https://localhost:8443`. In this mode, the server reads `server/.env.development` instead:
+To work on the code itself, start everything from the repository root with live reload: the server on port 3001, an RTE on port 8010
+and the client on `https://localhost:8443`. In this mode, the server and the RTE read `server/.env.development` instead:
 
 ```bash
 cd /srv/apps/ansibleforms
@@ -203,7 +216,8 @@ npm install
 npm run dev
 ```
 
-The [contributing guide](https://github.com/ansibleforms/ansibleforms/blob/main/CONTRIBUTING.md) describes the tests and checks to run.
+The RTE (`npm run dev:rte`) needs `ansible-playbook` on the path, and adds itself as a runner; `npm run dev:local` starts the client and the
+server without it. The [contributing guide](https://github.com/ansibleforms/ansibleforms/blob/main/CONTRIBUTING.md) describes the tests and checks to run.
 
 </div>
 </div>
