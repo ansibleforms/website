@@ -61,6 +61,7 @@ The `options` of a role switch features on or off for its members; the table lis
 |---|---|---|
 | `showSettings` | See the settings pages | Admins only |
 | `showDesigner` | See and use the designer | Admins only |
+| `allowPlaybookDesign` | Change the playbooks in the designer: save, create, remove and push them. Without it, the designer shows the playbooks read-only | On |
 | `showLogs` | See the server log | Admins only |
 | `showJobs` | See the jobs page | On |
 | `showDebugButtons` | See the debug buttons on a form | On |
