@@ -61,7 +61,7 @@ The following pages describe the form properties in detail:
 | [Semaphore forms](semaphore.html) | Properties specific to `type: semaphore`, which runs a Semaphore template |
 | [Rundeck forms](rundeck.html) | Properties specific to `type: rundeck`, which runs a Rundeck job |
 | [Jenkins forms](jenkins.html) | Properties specific to `type: jenkins`, which builds a Jenkins job |
-| [Multistep forms](multistep.html) | Properties specific to `type: multistep` |
+| [Multistep forms](multistep.html) | Properties specific to `type: multistep`, deprecated in favour of `workflow` |
 | [Workflow forms](workflow.html) | Properties specific to `type: workflow`, which runs a [workflow](../workflows/) |
 | [Wizard](wizard.html) | Split a form's input across multiple pages (works on top of any executable form type) |
 | [Subform](subform.html) | Subforms use only the common properties |
