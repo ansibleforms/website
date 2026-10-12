@@ -13,6 +13,10 @@ Run several playbooks or templates in sequence from one form
 
 ---
 
+{: .warning }
+> `multistep` is deprecated since 7 and removed in 8: use a [workflow](workflow.html) instead. A workflow does all a
+> multistep does, with conditions, its own values per node, approval nodes and branches that run side by side.
+
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
 {% assign form_object = formsyaml.help | where: "name", "Form" | first %}
