@@ -2,24 +2,26 @@
 # that is in no group is listed under "Other variables" on the Environment Variables page.
 - slug: server
   title: Server and database
-  lead: the web server, the MySQL connection and the admin account
-  vars: [NODE_ENV, PORT, BASE_URL, HTTPS, HTTPS_KEY, HTTPS_CERT, DEFAULT_LANGUAGE, NAV_HOME_LABEL, NAV_HOME_ICON,
+  lead: the web server, trusted proxies, the MySQL connection, the admin account, and what each process runs (app or RTE)
+  vars: [NODE_ENV, PORT, BASE_URL, TRUST_PROXY, HTTPS, HTTPS_KEY, HTTPS_CERT, DEFAULT_LANGUAGE, NAV_HOME_LABEL, NAV_HOME_ICON,
          DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_POOL_SIZE, ALLOW_SCHEMA_CREATION,
-         ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, UPLOAD_MAX_GB, PROCESS_MAX_BUFFER]
+         ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, UPLOAD_MAX_GB, PROCESS_MAX_BUFFER,
+         AF_ROLE, RTE_URL, RTE_TOKEN, RTE_REGISTER, RTE_MAX_JOBS, RTE_DRAIN_SECONDS, RTE_QUEUE_MINUTES]
 - slug: paths
   title: Paths
   lead: where the configuration, forms, playbooks, workflows, uploads and backups live
   vars: [CONFIG_PATH, FORMS_FOLDER_PATH, FORMS_STAGING_PATH, FORMS_BACKUP_PATH, LOCK_PATH, HOME_PATH, REPO_PATH,
-         VARS_FILES_PATH, ANSIBLE_PATH, WORKFLOWS_PATH, UPLOAD_PATH, BACKUP_PATH]
+         VARS_FILES_PATH, INVENTORY_PATH, ANSIBLE_PATH, WORKFLOWS_PATH, UPLOAD_PATH, BACKUP_PATH]
 - slug: retention
   title: Backups and retention
-  lead: the backup commands, and how long backups, jobs and audit records are kept
-  vars: [MYSQLDUMP_COMMAND, MYSQL_COMMAND, BACKUP_COMMAND_TIMEOUT_SECONDS, OLD_BACKUP_DAYS, NIGHTLY_BACKUP_RETENTION,
-         AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
+  lead: the backup commands, the backup before an upgrade, and how long backups, jobs and audit records are kept
+  vars: [MYSQLDUMP_COMMAND, MYSQL_COMMAND, BACKUP_COMMAND_TIMEOUT_SECONDS, UPGRADE_BACKUP, OLD_BACKUP_DAYS,
+         NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
 - slug: features
   title: Features
-  lead: the designer, MCP, chat, launch validation, the AWX API and query logging
-  vars: [SHOW_DESIGNER, ENABLE_MCP, ENABLE_CHAT, LAUNCH_VALIDATION, AWX_API_PREFIX, ENABLE_DB_QUERY_LOGGING]
+  lead: the designer, MCP, chat, launch validation, the jobs list, metrics, the AWX API and query logging
+  vars: [SHOW_DESIGNER, ENABLE_MCP, MCP_READ_ONLY, MCP_CHAT_FORMS_ONLY, ENABLE_CHAT, LAUNCH_VALIDATION, JOBS_LIST_SIZE,
+         METRICS_TOKEN, AWX_API_PREFIX, AWX_LOST_MINUTES, ENABLE_DB_QUERY_LOGGING]
 - slug: configuration
   title: Configuration
   lead: the config seed, where the configuration is kept, git and ytt
@@ -28,14 +30,15 @@
          YTT_DANGEROUS_ALLOW_ALL_SYMLINK_DESTINATIONS, YTT_VARS_PREFIX, "YTT_LIB_DATA_{dynamic}"]
 - slug: security
   title: Security variables
-  lead: tokens, encryption, outbound REST hosts, masking and the old VAULT_* settings
-  vars: [ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_REFRESH_EXPIRATION, ACCESS_TOKEN_ISSUER,
-         ENCRYPTION_SECRET, AZURE_GRAPH_URI, REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, EXPRESSION_SANITIZER,
+  lead: sign-in limits, passwords, single sign-on, tokens, encryption, the browser policy, outbound REST hosts, masking and the old VAULT_* settings
+  vars: [LOGIN_MAX_FAILURES, LOGIN_MAX_FAILURES_PER_IP, LOGIN_LOCKOUT_MINUTES, AUTH_RATE_LIMIT, PASSWORD_MIN_LENGTH,
+         ENABLE_SSO, SSO_AUTO_LOGIN, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_REFRESH_EXPIRATION,
+         ACCESS_TOKEN_ISSUER, API_TOKEN_MAX_DAYS, ENCRYPTION_SECRET, CONTENT_SECURITY_POLICY, AZURE_GRAPH_URI, REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, EXPRESSION_SANITIZER,
          REGEX_FILTER_JOB_OUTPUT, MASK_EXTRAVARS_REGEX, EXTRAVARS_USER_FIELDS,
          VAULT_ADDR, VAULT_TOKEN, VAULT_NAMESPACE, VAULT_KV_VERSION, VAULT_DEFAULT_MOUNT, VAULT_CACHE_TTL_MS, VAULT_SKIP_VERIFY]
 - slug: logging
   title: Logging
-  lead: log levels, files, syslog and console colours
-  vars: [LOG_LEVEL, LOG_PATH, LOG_CONSOLE_LEVEL, LOG_TZ, LOG_SYSLOG_HOST, LOG_SYSLOG_LEVEL, LOG_SYSLOG_PORT,
+  lead: log levels, the log format, files and how long they are kept, syslog and console colours
+  vars: [LOG_LEVEL, LOG_FORMAT, LOG_PATH, LOG_RETENTION_DAYS, LOG_CONSOLE_LEVEL, LOG_TZ, LOG_SYSLOG_HOST, LOG_SYSLOG_LEVEL, LOG_SYSLOG_PORT,
          LOG_SYSLOG_PROTOCOL, LOG_SYSLOG_PATH, LOG_SYSLOG_SOURCE, LOG_SYSLOG_TYPE, LOG_SYSLOG_APPNAME,
          LOG_COLOR_ERROR, LOG_COLOR_WARN, LOG_COLOR_NOTICE, LOG_COLOR_INFO, LOG_COLOR_DEBUG]
