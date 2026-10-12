@@ -12,7 +12,7 @@ permalink: /
     <p class="af-hero-lead">
       Ansible is a powerful automation tool, but it remains a command-line application, and AWX/AAP/Ascender lacks
       forms that collect data from several sources. AnsibleForms lets you build dynamic, data-driven forms, generate extravars
-      and send them to Ansible or AWX/AAP/Ascender.
+      and send them to Ansible, AWX/AAP/Ascender, Semaphore, Rundeck or Jenkins.
     </p>
     <div class="af-hero-actions">
       <a href="installation/" class="btn btn-primary">Install AnsibleForms</a>
@@ -34,7 +34,7 @@ What AnsibleForms brings to your Ansible setup, and what a single form can do:
     <ul class="af-feature-list">
       <li>
         <span class="af-feature-icon"><i class="fa-solid fa-play" aria-hidden="true"></i></span>
-        <span class="af-feature-text"><strong>Automation platforms</strong><span>Run playbooks locally or on AWX, AAP or Ascender</span></span>
+        <span class="af-feature-text"><strong>Automation platforms</strong><span>Run playbooks on RTEs, or templates on AWX, Semaphore, Rundeck or Jenkins</span></span>
       </li>
       <li>
         <span class="af-feature-icon"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></span>
@@ -86,8 +86,8 @@ What AnsibleForms brings to your Ansible setup, and what a single form can do:
         <span class="af-feature-text"><strong>Validation</strong><span>Min, max, regex and more, optionally checked on the server</span></span>
       </li>
       <li>
-        <span class="af-feature-icon"><i class="fa-solid fa-list-ol" aria-hidden="true"></i></span>
-        <span class="af-feature-text"><strong>Multistep and wizard forms</strong><span>Run playbooks in steps, or split input across pages</span></span>
+        <span class="af-feature-icon"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></span>
+        <span class="af-feature-text"><strong>Workflows and wizard forms</strong><span>Chain playbooks and approvals, or split input across pages</span></span>
       </li>
       <li>
         <span class="af-feature-icon"><i class="fa-solid fa-cubes" aria-hidden="true"></i></span>
@@ -98,8 +98,8 @@ What AnsibleForms brings to your Ansible setup, and what a single form can do:
         <span class="af-feature-text"><strong>Approval points</strong><span>Pause a job until someone approves it</span></span>
       </li>
       <li>
-        <span class="af-feature-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
-        <span class="af-feature-text"><strong>Notifications</strong><span>Send an email when a job finishes</span></span>
+        <span class="af-feature-icon"><i class="fa-solid fa-bell" aria-hidden="true"></i></span>
+        <span class="af-feature-text"><strong>Notifications</strong><span>Mail, Slack, Teams, Telegram or a webhook on job events</span></span>
       </li>
     </ul>
   </div>
