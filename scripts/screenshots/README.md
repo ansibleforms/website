@@ -6,16 +6,23 @@ with a fixed set of example data, so they can be retaken after a release in one 
 | File | What it is |
 |---|---|
 | `run.sh` | Starts the instance, fills it, takes the screenshots, removes the instance |
-| `docker-compose.yml` | The instance: AnsibleForms and its own MySQL, on port 8444 |
+| `docker-compose.yml` | The instance: AnsibleForms, its own MySQL and an RTE that runs the playbooks, on port 8444 |
 | `data/` | Its persistent folder: `config.yaml` (11 categories), 44 forms, the example playbooks |
-| `seed.mjs` | Fills it through the API: jobs, credentials, LDAP, a repository, schedules, backups |
+| `seed.mjs` | Changes the default admin password, then fills it through the API: jobs, credentials, LDAP, a repository, schedules, backups |
 | `capture.mjs` | Takes the 21 screenshots at 1900×940 with Playwright |
 
-Run it from this folder, with Docker and Node.js installed:
+Run it from this folder, with Docker and Node.js installed. The version is an image tag of both
+`ghcr.io/ansibleforms/ansibleforms` and `ghcr.io/ansibleforms/ansibleforms-rte-full`:
 
 ```bash
-./run.sh 7.4.0                      # all screenshots, from the 7.4.0 image
-./run.sh 7.4.0 dashboard designer   # only these
+./run.sh 7.0.0                      # all screenshots, from the 7.0.0 images
+./run.sh 7.0.0 dashboard designer   # only these
+./run.sh latest-rc                  # from the latest release candidate
 ```
+
+AnsibleForms 7 runs every playbook on an RTE (runtime environment), so the instance has one: it
+registers itself as the default runner, and the seeded jobs run there. The admin starts with the
+public default password, which AnsibleForms 7 refuses everything but changing: `seed.mjs` changes
+it first, and `capture.mjs` signs in with the new one.
 
 All the example data is fictional (`example.com` hosts, example passwords).

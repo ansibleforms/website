@@ -11,7 +11,8 @@ import path from 'path';
 const BASE = process.argv[2] || 'https://127.0.0.1:8444';
 const ONLY = process.argv.slice(3);
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../source/assets/screenshots');
-const ADMIN = { user: 'admin', password: 'AnsibleForms!123' };
+// the password seed.mjs gives the admin
+const ADMIN = { user: 'admin', password: 'Screenshots!Admin!123' };
 const VIEWPORT = { width: 1900, height: 940 };
 const QUALITY = 85;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // the instance's self-signed certificate
@@ -51,6 +52,8 @@ const lastJob = (form, status, type) =>
 // browser
 // ------------------------------------------------------------------------------------
 const browser = await chromium.launch();
+// the page errors and the failed screenshots : any of them and the run ends with exit code 1
+let problems = 0;
 
 /**
  * Opens a signed-in page (or a signed-out one) in a theme.
@@ -76,7 +79,10 @@ async function open({ theme = 'light', signedIn = true } = {}) {
     [token, refreshtoken, theme, signedIn],
   );
   const page = await context.newPage();
-  page.on('pageerror', (e) => console.log('  page error :', e.message));
+  page.on('pageerror', (e) => {
+    console.log('  page error :', e.message);
+    problems++;
+  });
   return { page, context };
 }
 
@@ -104,6 +110,26 @@ async function visit(page, p, wait = 2500) {
   await page.waitForTimeout(wait);
 }
 
+/**
+ * The address of a form, as the app writes it (client/src/lib/formsPath.js) : /form/ and its
+ * name in lower case, every run of other characters a dash.
+ *
+ * Args:
+ *   name (string): the form's name ('New Virtual Machine').
+ *
+ * Returns:
+ *   string: its path ('/form/new-virtual-machine').
+ */
+function formPath(name) {
+  const slug = name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `/form/${slug}`;
+}
+
 // ------------------------------------------------------------------------------------
 // the screenshots : name -> what to do before saving it
 // ------------------------------------------------------------------------------------
@@ -128,13 +154,13 @@ const SHOTS = {
   },
   async form() {
     const { page, context } = await open();
-    await visit(page, '/form?form=' + encodeURIComponent('New Virtual Machine'));
+    await visit(page, formPath('New Virtual Machine'));
     await save(page, 'form');
     await context.close();
   },
   async 'form-json'() {
     const { page, context } = await open();
-    await visit(page, '/form?form=' + encodeURIComponent('New Virtual Machine'));
+    await visit(page, formPath('New Virtual Machine'));
     await page.getByRole('button', { name: 'Show Extravars' }).click();
     await page.waitForTimeout(800);
     await save(page, 'form-json');
@@ -181,13 +207,13 @@ const SHOTS = {
   },
   async git() {
     const { page, context } = await open();
-    await visit(page, '/admin/repositories');
+    await visit(page, '/settings/repositories');
     await save(page, 'git');
     await context.close();
   },
   async 'git-edit'() {
     const { page, context } = await open();
-    await visit(page, '/admin/repositories');
+    await visit(page, '/settings/repositories');
     await page.getByText('ansibleforms-docker', { exact: true }).first().click();
     await page.waitForTimeout(1500);
     await save(page, 'git-edit');
@@ -195,21 +221,24 @@ const SHOTS = {
   },
   async credentials() {
     const { page, context } = await open();
-    await visit(page, '/admin/credentials');
+    await visit(page, '/settings/credentials');
+    // a row opens the credential's page : its Connection tab shows the most of it
     await page.getByText('cmdb-database', { exact: true }).first().click();
     await page.waitForTimeout(1500);
+    await page.getByRole('link', { name: 'Connection' }).click();
+    await page.waitForTimeout(1000);
     await save(page, 'credentials');
     await context.close();
   },
   async backups() {
     const { page, context } = await open();
-    await visit(page, '/admin/backups');
+    await visit(page, '/settings/backups');
     await save(page, 'backups');
     await context.close();
   },
   async restore() {
     const { page, context } = await open();
-    await visit(page, '/admin/backups');
+    await visit(page, '/settings/backups');
     // the row's menu (⋮), then Restore
     const row = page.locator('tr', { hasText: 'Manual backup after the role changes' });
     await row.locator('.bs-dt-row-menu').click();
@@ -220,13 +249,14 @@ const SHOTS = {
   },
   async ldap() {
     const { page, context } = await open();
-    await visit(page, '/admin/ldap');
+    // the Server tab : the seeded connection (the General tab only holds the switch)
+    await visit(page, '/settings/ldap/server');
     await save(page, 'ldap');
     await context.close();
   },
   async logs() {
     const { page, context } = await open();
-    await visit(page, '/logs', 3500);
+    await visit(page, '/settings/server-log', 3500);
     await save(page, 'logs');
     await context.close();
   },
@@ -238,7 +268,7 @@ const SHOTS = {
   },
   async settings() {
     const { page, context } = await open();
-    await visit(page, '/admin/settings');
+    await visit(page, '/settings/general');
     await save(page, 'settings');
     await context.close();
   },
@@ -252,7 +282,7 @@ const SHOTS = {
   // last : running the form adds a job to the history the job screenshots show
   async run() {
     const { page, context } = await open();
-    await visit(page, '/form?form=' + encodeURIComponent('Database Storage Setup'));
+    await visit(page, formPath('Database Storage Setup'));
     await page.getByRole('button', { name: 'Submit', exact: true }).click();
     await page.waitForTimeout(6000);
     await save(page, 'run');
@@ -266,6 +296,11 @@ for (const [name, take] of Object.entries(SHOTS)) {
     await take();
   } catch (e) {
     console.log(`  FAILED ${name} :`, e.message.split('\n')[0]);
+    problems++;
   }
 }
 await browser.close();
+if (problems) {
+  console.log(`${problems} problem(s), see above`);
+  process.exitCode = 1;
+}

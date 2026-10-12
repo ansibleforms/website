@@ -3,10 +3,17 @@
 // LDAP settings, a git repository, schedules and backups. The forms, the categories and the
 // playbooks come from ./data, which run.sh mounts as the instance's persistent folder.
 //
+// AnsibleForms 7 refuses every call of an admin signed in with the public default password
+// (403 password_change_required) until it is changed : the first thing this does is change it
+// to ADMIN.password, through the profile, as the change password page does. capture.mjs signs
+// in with that same password.
+//
 // Usage : node seed.mjs https://127.0.0.1:8444
 
 const BASE = process.argv[2] || 'https://127.0.0.1:8444';
-const ADMIN = { user: 'admin', password: 'AnsibleForms!123' };
+// the default password the instance starts with (docker-compose.yml), and the one it gets
+const DEFAULT_PASSWORD = 'AnsibleForms!123';
+const ADMIN = { user: 'admin', password: 'Screenshots!Admin!123' };
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // the instance's self-signed certificate
 
 // ------------------------------------------------------------------------------------
@@ -40,13 +47,38 @@ async function api(method, path, body) {
 }
 
 /**
- * Signs in as the admin and keeps the token for the next calls.
+ * Signs in and keeps the token for the next calls.
+ *
+ * Args:
+ *   password (string): the admin's password.
+ *
+ * Returns:
+ *   Promise<boolean>: true when signed in, false when the password is refused.
  */
-async function login() {
-  const auth = Buffer.from(`${ADMIN.user}:${ADMIN.password}`).toString('base64');
+async function login(password) {
+  const auth = Buffer.from(`${ADMIN.user}:${password}`).toString('base64');
   const res = await fetch(`${BASE}/api/v2/auth/login`, { method: 'POST', headers: { Authorization: `Basic ${auth}` } });
-  if (!res.ok) throw new Error(`login : ${res.status}`);
+  if (!res.ok) return false;
   token = (await res.json()).token;
+  return !!token;
+}
+
+/**
+ * Signs in as the admin with ADMIN.password. On a fresh instance the admin still has the
+ * default password : sign in with that, change it (the only call the app then allows) and
+ * sign in again a moment later, since a new password ends every session.
+ *
+ * Raises:
+ *   Error: when neither password signs in, or the change is refused.
+ */
+async function signIn() {
+  if (await login(ADMIN.password)) return;
+  if (!(await login(DEFAULT_PASSWORD))) throw new Error('login : neither password is accepted');
+  await api('PUT', '/profile', { currentPassword: DEFAULT_PASSWORD, password: ADMIN.password });
+  console.log('changed the default admin password');
+  // the change revokes every token issued up to its second, so the next one must be newer
+  await sleep(1500);
+  if (!(await login(ADMIN.password))) throw new Error('login : the new password is refused');
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -70,6 +102,19 @@ async function waitFor(id) {
 }
 
 /**
+ * Launches a form, as its page does : AnsibleForms 7 checks every launch against the form's
+ * rules (LAUNCH_VALIDATION enforce), which needs the field values as rawFormData.
+ *
+ * Args:
+ *   formName (string): the form.
+ *   values (object): the field values.
+ *
+ * Returns:
+ *   Promise<object>: the new job ({ id }).
+ */
+const launch = (formName, values = {}) => api('POST', '/job', { formName, extravars: values, rawFormData: values });
+
+/**
  * Runs a form and waits for its job.
  *
  * Args:
@@ -80,7 +125,7 @@ async function waitFor(id) {
  *   Promise<number>: the job id.
  */
 async function run(formName, extravars = {}) {
-  const job = await api('POST', '/job', { formName, extravars });
+  const job = await launch(formName, extravars);
   const status = await waitFor(job.id);
   console.log(`  job ${job.id} ${formName} : ${status}`);
   return job.id;
@@ -106,7 +151,7 @@ const NEW_VM = {
 };
 const CHANGE = { target: 'srv-prd-001', reason: 'Planned change' };
 
-await login();
+await signIn();
 console.log('signed in to', BASE);
 
 console.log('jobs');
@@ -124,7 +169,7 @@ await run('Archive Folders', CHANGE);
 await run('New Virtual Machine', NEW_VM);
 // a deployment stopped in its first (slow) step : an aborted multistep job
 {
-  const job = await api('POST', '/job', { formName: 'Web Server Deployment', extravars: { hostname: 'web-prd-016', pool: 'web-prd' } });
+  const job = await launch('Web Server Deployment', { hostname: 'web-prd-016', pool: 'web-prd' });
   await sleep(2500);
   await api('POST', `/job/${job.id}/abort/`);
   console.log(`  job ${job.id} Web Server Deployment : ${await waitFor(job.id)}`);
@@ -135,12 +180,13 @@ await run('Cleanup Job History', CHANGE);
 await run('Web Server Deployment', { hostname: 'web-prd-017', pool: 'web-prd' });
 
 console.log('credentials');
+// AnsibleForms 7 types every credential (credential_type) ; one without a type is a database one
 const credentials = [
-  { name: 'cmdb-database', user: 'svc_forms', password: 'Example!123', host: 'cmdb.example.com', port: 3306, is_database: true, db_type: 'mysql', db_name: 'cmdb', description: 'Read-only account for the CMDB queries' },
-  { name: 'vcenter', user: 'svc-ansibleforms@vsphere.local', password: 'Example!123', host: 'vcenter.example.com', port: 443, description: 'vCenter service account for the provisioning forms' },
-  { name: 'netapp-cluster', user: 'ansible', password: 'Example!123', host: 'cluster1.example.com', port: 443, description: 'ONTAP cluster admin for the storage forms' },
-  { name: 'reporting-db', user: 'report', password: 'Example!123', host: 'reporting.example.com', port: 5432, is_database: true, db_type: 'postgres', db_name: 'reports', description: 'Reporting database (PostgreSQL)' },
-  { name: 'windows-winrm', user: 'EXAMPLE\\svc-patching', password: 'Example!123', host: 'wsus.example.com', port: 5986, description: 'WinRM account for the Windows patching' },
+  { name: 'cmdb-database', credential_type: 'database', user: 'svc_forms', password: 'Example!123', host: 'cmdb.example.com', port: 3306, db_type: 'mysql', db_name: 'cmdb', description: 'Read-only account for the CMDB queries' },
+  { name: 'vcenter', credential_type: 'api', user: 'svc-ansibleforms@vsphere.local', password: 'Example!123', description: 'vCenter service account for the provisioning forms' },
+  { name: 'netapp-cluster', credential_type: 'api', user: 'ansible', password: 'Example!123', description: 'ONTAP cluster admin for the storage forms' },
+  { name: 'reporting-db', credential_type: 'database', user: 'report', password: 'Example!123', host: 'reporting.example.com', port: 5432, db_type: 'postgres', db_name: 'reports', description: 'Reporting database (PostgreSQL)' },
+  { name: 'windows-winrm', credential_type: 'ssh', user: 'EXAMPLE\\svc-patching', password: 'Example!123', host: 'wsus.example.com', port: 5986, description: 'WinRM account for the Windows patching' },
 ];
 for (const c of credentials) await api('POST', '/credential', c);
 
@@ -150,7 +196,7 @@ await api('PUT', '/ldap', {
   port: 636,
   enable_tls: true,
   ignore_certs: false,
-  enable: false,
+  enable: true, // switched on, so its pages show the fields as they are used
   bind_user_dn: 'CN=svc-ansibleforms,OU=Service Accounts,DC=example,DC=com',
   bind_user_pw: 'Example!123',
   search_base: 'OU=Users,DC=example,DC=com',
