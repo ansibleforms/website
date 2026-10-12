@@ -29,10 +29,10 @@ Log in with basic authentication, with the user's name and password:
 curl -X POST https://af.example.com/api/v2/auth/login -u admin:<password>
 ```
 
-The response holds two tokens:
+The response holds two tokens, the access token and the refresh token:
 
 ```json
-{ "accessToken": "eyJ...", "refreshToken": "eyJ..." }
+{ "token": "eyJ...", "refreshtoken": "eyJ..." }
 ```
 
 ---
@@ -42,7 +42,7 @@ The response holds two tokens:
 Send the access token as a bearer token with every call:
 
 ```bash
-curl https://af.example.com/api/v2/job/42 -H "Authorization: Bearer <accessToken>"
+curl https://af.example.com/api/v2/job/42 -H "Authorization: Bearer <token>"
 ```
 
 ---
@@ -54,7 +54,13 @@ without the password:
 
 ```bash
 curl -X POST https://af.example.com/api/v2/token \
-  -H "Content-Type: application/json" -d '{ "refreshToken": "<refreshToken>" }'
+  -H "Content-Type: application/json" -d '{ "refreshtoken": "<refreshtoken>" }'
+```
+
+The response holds a new pair, in the same shape as the login. A refresh token works once: keep the new one for the next refresh.
+
+```json
+{ "token": "eyJ...", "refreshtoken": "eyJ..." }
 ```
 
 ---
