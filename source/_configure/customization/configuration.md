@@ -38,6 +38,21 @@ An invalid seed stops the server from starting. See [Config seed](../seed/) for 
 
 ---
 
+## Where config.yaml is read from
+
+The categories, roles and constants come from `config.yaml` on disk or from its copy in the database, decided in this order:
+
+1. [`ENABLE_CONFIG_IN_DATABASE`](#env_ENABLE_CONFIG_IN_DATABASE), when it is set, in the environment or on the
+   **Configuration** tab of the settings page: `1` reads the database, `0` reads the file.
+2. Otherwise, the configuration source stored in the database (`file` or `database`), which instances set up
+   before 6.3.0 chose on the settings page.
+3. Otherwise, the file at [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+
+An explicitly set `ENABLE_CONFIG_IN_DATABASE` always wins, even `0` over a stored `database`. It is read each time the
+configuration loads, so a change applies without a restart. The **Status** page shows the source in use on its **Information** tab.
+
+---
+
 ## Variables
 
 Every variable of this group, with its type, default and description:
