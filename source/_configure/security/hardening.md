@@ -10,7 +10,7 @@ redirect_from:
 # Hardening
 {: .no_toc }
 
-The admin account, the database, expressions, job data, optional features and role options
+The admin account, sign-in limits, the database, expressions, job data, optional features and role options
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -28,6 +28,32 @@ and [`ADMIN_PASSWORD`](../customization/server.html#env_ADMIN_PASSWORD), whose d
   start. Use it only to recover a lost password, then unset it and restart.
 * Set the two master secrets first: see [Secrets and encryption](secrets.html).
 * Once LDAP or OAuth2 sign-in works, keep the local admin for emergencies only, with a long password stored in your vault.
+
+---
+
+## Sign-in limits and passwords
+
+Password guessing is slowed down by three limits. The failures are counted in the database, so every app node sees the
+same attempts, and every limit applies without a restart:
+
+| Variable | Default | What it does |
+|----------|---------|--------------|
+| [`LOGIN_MAX_FAILURES`](../customization/security.html#env_LOGIN_MAX_FAILURES) | `5` | After this many failed logins, a local or LDAP account is locked for `LOGIN_LOCKOUT_MINUTES`. |
+| [`LOGIN_MAX_FAILURES_PER_IP`](../customization/security.html#env_LOGIN_MAX_FAILURES_PER_IP) | `30` | An address with this many failed logins within `LOGIN_LOCKOUT_MINUTES` is held back until that window ends: one address trying many accounts. |
+| [`LOGIN_LOCKOUT_MINUTES`](../customization/security.html#env_LOGIN_LOCKOUT_MINUTES) | `15` | How long an account stays locked, and the window in which failures are counted. |
+| [`AUTH_RATE_LIMIT`](../customization/security.html#env_AUTH_RATE_LIMIT) | `120` | Requests a minute from one address, per app node, on the login, sign-out, token refresh and single sign-on callbacks. |
+
+A locked account or a held-back address gets `429` with a `Retry-After` header, before any password is checked and
+whether the account exists or not; above `AUTH_RATE_LIMIT` the answer is `429` as well. A successful login clears the
+account's count, and so does an admin setting the user's password. `0` turns a limit off; `LOGIN_LOCKOUT_MINUTES=0`
+turns off both the lockout and the per-address limit.
+
+All of them count per client address: behind a reverse proxy, set `TRUST_PROXY` so the address is the client's and
+not the proxy's, see [Client addresses](../production/reverse-proxy.html#client-addresses).
+
+A local password set through the application, for a new user, by an admin or by users changing their own, must have
+at least [`PASSWORD_MIN_LENGTH`](../customization/security.html#env_PASSWORD_MIN_LENGTH) characters (`8` by default,
+`0` checks no length). It may not be the username or the public default password. `ADMIN_PASSWORD` is not checked.
 
 ---
 

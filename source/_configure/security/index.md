@@ -25,7 +25,7 @@ Each topic has a page of its own:
 
 | Page | What it covers |
 |---|---|
-| [Hardening](hardening.html) | The admin account, the database, expressions, job data, optional features and role options |
+| [Hardening](hardening.html) | The admin account, sign-in limits, the database, expressions, job data, optional features and role options |
 | [HTTPS](https.html) | Where TLS ends, serving HTTPS from the application, and replacing the sample certificate |
 | [Secrets and encryption](secrets.html) | `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, and token lifetimes |
 
