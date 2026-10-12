@@ -66,5 +66,5 @@ The following pages describe the form properties in detail:
 | [Wizard](wizard.html) | Split a form's input across multiple pages (works on top of any executable form type) |
 | [Subform](subform.html) | Subforms use only the common properties |
 | [Approval Points](approval.html) | Pause a job until it is approved (`approval`) |
-| [Notifications](notifications.html) | Send emails on job status or events (`notifications`) |
+| [Notifications](notifications.html) | Send emails and channel messages on job status or events (`notifications`) |
 | [Job Status Actions](job-status-action.html) | Act on the form when a job changes status (`onSubmit`, `onSuccess`, ...) |

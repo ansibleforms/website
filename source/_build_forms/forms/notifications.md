@@ -5,13 +5,34 @@ parent: Forms
 nav_order: 9
 ---
 
-# Email Notifications
+# Notifications
 {: .no_toc }
 
-Send an email when a job finishes
+Send an email or a channel message when a job finishes or something happens to it
 {: .fs-6 .fw-300 }
 
 ---
+
+The `notifications` of a form say who hears about its jobs, and when:
+
+- **Who**: `recipients`, email addresses, and `channels`, the names of
+  [notification channels](../notification-channels.html) (mail, Slack, Microsoft Teams, Telegram, a webhook). At least one
+  of the two is required.
+- **When**: `onStatus`, when a job ends (`success`, `failed`, `aborted`, `warning`, or `any`), and `onEvent`, when
+  something happens to a job (`launch`, `relaunch`, `delete`, `approve`, `reject`, or `any`).
+
+```yaml
+notifications:
+  recipients:
+    - ops@example.com
+  channels:
+    - ops-teams
+  onStatus:
+    - failed
+  onEvent:
+    - approve
+    - reject
+```
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
