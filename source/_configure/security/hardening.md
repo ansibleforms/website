@@ -10,7 +10,7 @@ redirect_from:
 # Hardening
 {: .no_toc }
 
-The admin account, sign-in limits, the database, expressions, job data, optional features and role options
+The admin account, sign-in limits, the database, expressions, job data, the browser policy, optional features and role options
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -109,6 +109,22 @@ Job extravars and output are stored in the database and shown to everyone who ca
 * [`EXTRAVARS_USER_FIELDS`](../customization/security.html#env_EXTRAVARS_USER_FIELDS) : trims the `ansibleforms_user`
   object sent with every job, which otherwise holds the user's whole group membership.
 * [`REGEX_FILTER_JOB_OUTPUT`](../customization/security.html#env_REGEX_FILTER_JOB_OUTPUT) only hides noisy tasks; hide secrets with `no_log`.
+
+---
+
+## The Content-Security-Policy
+
+The interface is served with a Content-Security-Policy header, which limits what a page may load and run in the browser:
+
+* Scripts come from the application itself only, so a script injected into a page does not run.
+* No other site may show the interface in a frame.
+* It allows what the application needs: local form expressions evaluated in the browser (`'unsafe-eval'`), inline
+  styles, images from any URL (form and category images), and the workers of the code editor.
+
+[`CONTENT_SECURITY_POLICY`](../customization/security.html#env_CONTENT_SECURITY_POLICY) is `1` by default and should
+stay so. With `0` the policy is sent as `Content-Security-Policy-Report-Only`: the browser console lists what it would
+block, and nothing is blocked. Use `0` only for a setup that cannot work with the policy yet, such as a reverse proxy
+that injects a script of its own. A change on the settings page applies without a restart.
 
 ---
 
