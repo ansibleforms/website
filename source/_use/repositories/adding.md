@@ -63,7 +63,7 @@ Click **New Repository** and fill in the fields; AnsibleForms starts the clone i
 | **Uri** | yes | The remote, `https://...` or SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Cron Schedule** | no | When to pull, as a cron expression; empty means no scheduled pull |
 | **Description** | yes | A free text description |
-| **Use for config ?** ... **Use for vars files ?** | no | What the repository holds, see [above](./#what-a-repository-is-for) |
+| **Use for config ?** ... **Use for inventories ?** | no | What the repository holds, see [above](./#what-a-repository-is-for) |
 | **Clone on app start ?** | no | Clone the repository, or pull it, every time AnsibleForms starts |
 
 Renaming a repository moves its working tree to the new folder and moves its pull schedule with it. The password is stored
