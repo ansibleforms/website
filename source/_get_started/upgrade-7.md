@@ -234,6 +234,23 @@ Two more things are gone in 7, without anything to do on 6.5:
   AAP connection to **Connections → Runners**, as a runner of type `awx`, and forms with `awx:` keep working.
 - **`NAV_HOME_LABEL` and `NAV_HOME_ICON`:** no longer read. The first link of the header is always Forms.
 
+### Deprecated in 7, removed in 8
+
+These still work in 7, but each logs a warning when it is used. Move to the replacement before version 8:
+
+| Deprecated | Use instead |
+|---|---|
+| `VAULT_*` environment variables | A secret store named `vault` (**Connections → Secret stores**). The first 7 start imports the variables once as that store, then ignores them. |
+| `LOG_SYSLOG_*` environment variables | A syslog server (**Connections → Syslog**). When `LOG_SYSLOG_HOST` is set, the first 7 start imports them once as the server `syslog`, which gets the server log as before, then ignores them. To send the audit entries too, set it to receive both. |
+| `vault_path` on a credential (API, config seed) | `secret_store` and `secret_ref`. See [Secret stores](secret-stores/). |
+| The role `public` in `config.yaml` | The role `default`. The file is renamed when the configuration loads; rename a ytt template by hand. `public` in a form's `roles:` keeps matching. |
+| `POST /api/v2/config/vault/check`, `GET /api/v2/config/vault/mounts` | `POST /api/v2/secretstore/{id}/check`, `GET /api/v2/secretstore/{id}/mounts` |
+| `hasApproval` on a form or a step | `approval`. `hasApproval` has no effect. |
+| `awx: <name>` on a form | `runner: <name>`. An AWX connection is a runner of type `awx`. |
+| `type: multistep` on a form, with its `steps` | `type: workflow`, with nodes that name a `runner`. See [Workflow forms](forms/workflow.html). |
+| The `awx:` section of the config seed | `runners:` items with `type: awx` |
+| `LOCK_PATH` | Nothing: no longer read, the designer lock is kept in the database. |
+
 ---
 
 ## Image tags
