@@ -41,8 +41,11 @@ AnsibleForms loads forms from the following locations:
    - Forms from all enabled repositories are merged automatically.
    - Each repository is first checked for a `forms/` subfolder.
    - If no `forms/` subfolder exists, the repository root is used.
+   - Forms created in the designer and not pushed yet are kept in a staging folder
+     ([`FORMS_STAGING_PATH`](../customization/paths.html#env_FORMS_STAGING_PATH)) and loaded with them.
 
-2. **FROM LOCAL FOLDER** : the local `forms/` folder (FORMS_FOLDER_PATH environment variable), when no repositories are configured
+2. **FROM LOCAL FOLDER** : the local `forms/` folder
+   ([`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH)), when no repository has "use for forms" enabled
 
 {: .warning }
 > **Note:** When "use for forms" is enabled on multiple repositories, all their forms are merged. Form names must be unique across repositories to avoid conflicts.
