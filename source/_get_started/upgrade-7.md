@@ -137,6 +137,18 @@ Two environment variables now belong to the RTE and are no longer read by the ap
 | `ANSIBLE_PATH` | The playbook folder, on the RTE. |
 | `PROCESS_MAX_BUFFER` | Now 50 MB by default. Past it, the job output is no longer stored (the job says so), but the playbook goes on instead of being stopped. |
 
+
+### The containers run as uid 1000
+
+The app and RTE images run as the user `node` (uid 1000) instead of root, and their home folder is `/home/node`:
+
+- **Give uid 1000 the volumes, once.** For the persistent and ssh volumes, run
+  `docker run --rm -v <volume>:/v alpine chown -R 1000:1000 /v`; for a host folder, `sudo chown -R 1000:1000 <folder>`.
+  On Kubernetes, set `fsGroup: 1000`.
+- **Mount the ssh folder at `/home/node/.ssh`**, not `/root/.ssh`. If you set
+  [`HOME_PATH`](customization/paths.html#env_HOME_PATH) to `/root`, remove it or set it to `/home/node`.
+- **Your own RTE image** built on an RTE layer switches to `USER root` for its installs and back to `USER node` at the end.
+
 ---
 
 ## Image tags
