@@ -60,8 +60,18 @@ Read the job by its ID:
 curl https://af.example.com/api/v2/job/42 -H "Authorization: Bearer <token>"
 ```
 
-Its `status` is `running` until it ends as `success`, `failed` or `aborted`. A job that waits for an approval is
-`approve`, and one that was refused is `rejected`.
+Its `status` is `running` while it runs, and `approve` while it waits for an approval. A job ends with one of these:
+
+| Status | Meaning |
+|---|---|
+| `success` | The job finished without errors |
+| `failed` | The job failed |
+| `warning` | A multistep job finished, but a step that has `continue` set failed on the way |
+| `aborted` | The job was aborted |
+| `rejected` | The approval was refused, so what waited for it did not run |
+| `abandoned` | The process that followed the job stopped (a restart, a container replaced) and the job was given up |
+
+A job running on a runner when it was abandoned may still end with its real outcome, if that runner finishes it after all.
 
 ---
 
