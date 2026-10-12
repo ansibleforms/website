@@ -58,6 +58,7 @@ The following pages describe the form properties in detail:
 | [Common properties](common.html) | Properties that apply to all form types (`name`, `description`, `help`, `type`, `fields`) |
 | [Ansible forms](ansible.html) | Properties specific to `type: ansible` |
 | [AWX forms](awx.html) | Properties specific to `type: awx` |
+| [Semaphore forms](semaphore.html) | Properties specific to `type: semaphore`, which runs a Semaphore template |
 | [Multistep forms](multistep.html) | Properties specific to `type: multistep` |
 | [Workflow forms](workflow.html) | Properties specific to `type: workflow`, which runs a [workflow](../workflows/) |
 | [Wizard](wizard.html) | Split a form's input across multiple pages (works on top of any executable form type) |
