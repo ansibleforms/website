@@ -61,7 +61,8 @@ Jobs** (role option `allowStoredJobs`). The other statuses (`warning`, `rejected
 Above the table:
 
 * **Refresh** reloads the list.
-* **Columns** shows or hides the columns `id`, `form`, `job type`, `status`, `start time`, `end time` and `user`.
+* **Columns** shows or hides the columns `id`, `form`, `job type`, `status`, `start time`, `end time`, `duration` and `user`;
+  a running job's duration counts up.
 
 The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customization/#env_JOBS_LIST_SIZE) setting says
 (**Settings > Jobs**, `1000` by default); its pages and filters cover those jobs.
