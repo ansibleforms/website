@@ -27,16 +27,22 @@ For administrators who provision from git: declare the admin objects in a file, 
 Set `CONFIG_SEED_PATH` to a YAML file, and AnsibleForms applies it at startup. The file
 declares objects that previously existed only in the database:
 
-| Section        | What it declares                     |
-|----------------|--------------------------------------|
-| `awx`          | AWX / AAP connections                |
-| `secret_stores` | Secret stores (HashiCorp Vault, ...) |
-| `credentials`  | Credentials                          |
-| `oauth2`       | OAuth2 providers                     |
-| `repositories` | Git repositories                     |
-| `ldap`         | The LDAP configuration               |
-| `settings`     | The mail settings and the public URL |
-| `chat`         | The chat assistant's model provider  |
+| Section                 | What it declares                                                    |
+|-------------------------|---------------------------------------------------------------------|
+| `runners`               | Where jobs run: RTEs, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
+| `secret_stores`         | Secret stores (HashiCorp Vault, ...)                                |
+| `credentials`           | Credentials                                                         |
+| `oauth2`                | OAuth2 providers                                                    |
+| `repositories`          | Git repositories                                                    |
+| `syslog_servers`        | The syslog servers that get the server log and the audit entries    |
+| `notification_channels` | Mail servers, Slack, Teams, Telegram and webhooks for notifications |
+| `ldap`                  | The LDAP configuration                                              |
+| `settings`              | The mail settings and the public URL                                |
+| `chat`                  | The chat assistant's model provider                                 |
+| `awx`                   | Deprecated since 7, removed in 8: use `runners` with `type: awx`    |
+
+A seed written before 7 keeps working: each item of its `awx` section is applied as a runner of type `awx`, and the log
+warns at every apply. Move those items under `runners` with `type: awx` before upgrading to 8.
 
 The seed is **not** the same as `config.yaml`, which holds the categories, roles and constants
 and has its own `CONFIG_PATH`. The two are kept separate on purpose: the
