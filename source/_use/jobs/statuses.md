@@ -18,7 +18,7 @@ Every status a job can have, and the kinds of job
 
 ## Job statuses
 
-AnsibleForms sets the following statuses on a job. The list shows the status as it is stored, and colors the row by it:
+AnsibleForms sets the following statuses on a job. The list shows each status as a colored pill:
 
 | Status | Meaning | What you can do |
 |---|---|---|
@@ -31,18 +31,26 @@ AnsibleForms sets the following statuses on a job. The list shows the status as 
 | `rejected` | An approver rejected the job; it never ran | View the output, relaunch, delete |
 | `abandoned` | AnsibleForms stopped tracking the job (see [Abandoned jobs](cleanup.html#abandoned-jobs)) | Check the managed hosts, relaunch, delete |
 
-`running` rows are blue, `success` green and `failed` red; the other statuses are shown in amber.
+`running` is blue, `success` green and `failed` red. `approve` is orange and reads **Needs approval**, so a job waiting for
+a person stands apart from the stopped ones; `warning`, `aborted`, `rejected` and `abandoned` are amber.
 
 ---
 
 ## Job types
 
-The job type is the `type` of the form that started the job:
+The job type follows the `type` of the form that started the job, as the list and the job's page show it:
 
-| Job type | What runs |
+| Type shown | What runs |
 |---|---|
-| `ansible` | An Ansible playbook, run by AnsibleForms itself |
-| `awx` | A job template or workflow template on AWX / AAP |
-| `multistep` | A sequence of steps, each recorded as a job of its own type (`ansible` or `awx`) under the main job |
+| `ansible` | An Ansible playbook, run on an RTE |
+| `awx`, `aap`, `ascender` | A job template or workflow template on AWX, AAP or Ascender |
+| `semaphore` | A template on Semaphore UI |
+| `rundeck`, `jenkins` | A job on Rundeck or Jenkins |
+| `workflow` | A [workflow](../workflows/), whose playbook nodes run as jobs of their own under it |
+| `multistep` | Deprecated, use `workflow`: a sequence of steps, each recorded as a job of its own under the main job |
 
-See [Ansible forms](../forms/ansible.html), [AWX forms](../forms/awx.html) and [Multistep forms](../forms/multistep.html) for the form side.
+A template job is stored as an `awx` job (in the REST API too) and shown with the kind of runner it ran on, whatever the
+form called it: a form of type `awx` that runs on an AAP runner shows `aap`.
+
+See [Ansible forms](../forms/ansible.html), [AWX forms](../forms/awx.html), [Workflow forms](../forms/workflow.html) and
+[Multistep forms](../forms/multistep.html) for the form side.
