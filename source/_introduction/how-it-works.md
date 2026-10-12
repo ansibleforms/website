@@ -17,14 +17,14 @@ The parts of an installation, what happens at a launch, and where data is kept
 
 ## Architecture
 
-AnsibleForms is one Node.js server that serves the web application and a REST API, backed by a MySQL database.
-It reads forms from YAML files, and runs each job either as a local `ansible-playbook` process or as a template
-on AWX, AAP or Ascender:
+AnsibleForms is a Node.js server that serves the web application and a REST API, backed by a MySQL database. It reads forms
+from YAML files and hands each job to a [runner](runners.html): a playbook to an RTE (runtime environment) container that runs
+`ansible-playbook`, a template to AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins:
 
 <div class="af-diagram" markdown="0">
 <svg viewBox="0 0 760 470" role="img" aria-labelledby="afd-title afd-desc" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:100%;height:auto;color:var(--body-text-color);font-family:inherit">
 <title id="afd-title">AnsibleForms architecture</title>
-<desc id="afd-desc">The browser and an optional MCP client talk to the AnsibleForms server. The server stores its data in MySQL and in the persistent folder, runs ansible-playbook locally, and connects to AWX, AAP or Ascender, data sources, secret stores, git repositories, login providers, a mail server and an optional model provider.</desc>
+<desc id="afd-desc">The browser and an optional MCP client talk to the AnsibleForms server. The server stores its data in MySQL and in the persistent folder, hands playbooks to an RTE container that runs ansible-playbook, and connects to AWX, AAP or Ascender, data sources, secret stores, git repositories, login providers, a mail server and an optional model provider.</desc>
 <style>
 .afd-box{fill:var(--af-accent-soft);stroke:currentColor;stroke-opacity:.45;stroke-width:1.2}
 .afd-main{fill:none;stroke:var(--link-color);stroke-width:1.8}
@@ -48,7 +48,7 @@ on AWX, AAP or Ascender:
 <line class="afd-line afd-opt" x1="190" y1="235" x2="258" y2="235" marker-end="url(#afd-arrow)"/>
 <rect class="afd-main" x="260" y="30" width="240" height="350" rx="12"/>
 <text class="afd-h" x="380" y="56" text-anchor="middle">AnsibleForms server</text>
-<text class="afd-s" x="380" y="74" text-anchor="middle">Node.js / Express, one instance</text>
+<text class="afd-s" x="380" y="74" text-anchor="middle">Node.js / Express</text>
 <rect class="afd-inner" x="280" y="88" width="200" height="42" rx="8"/>
 <text class="afd-t" x="380" y="114" text-anchor="middle">Web app and REST API</text>
 <rect class="afd-inner" x="280" y="142" width="200" height="42" rx="8"/>
@@ -56,8 +56,8 @@ on AWX, AAP or Ascender:
 <rect class="afd-inner" x="280" y="196" width="200" height="42" rx="8"/>
 <text class="afd-t" x="380" y="222" text-anchor="middle">Job runner, scheduler</text>
 <rect class="afd-inner" x="280" y="250" width="200" height="50" rx="8"/>
-<text class="afd-t" x="380" y="271" text-anchor="middle">ansible-playbook</text>
-<text class="afd-s" x="380" y="288" text-anchor="middle">runs locally, in the container</text>
+<text class="afd-t" x="380" y="271" text-anchor="middle">Runners</text>
+<text class="afd-s" x="380" y="288" text-anchor="middle">hand each job to an RTE or AWX</text>
 <rect class="afd-inner afd-opt" x="280" y="312" width="200" height="42" rx="8"/>
 <text class="afd-t" x="380" y="338" text-anchor="middle">MCP server (optional)</text>
 <rect class="afd-box" x="200" y="410" width="170" height="50" rx="10"/>
@@ -96,6 +96,10 @@ on AWX, AAP or Ascender:
 <line class="afd-line" x1="500" y1="251" x2="568" y2="251" marker-end="url(#afd-arrow)"/>
 <line class="afd-line" x1="500" y1="301" x2="568" y2="301" marker-end="url(#afd-arrow)"/>
 <line class="afd-line afd-opt" x1="500" y1="351" x2="568" y2="351" marker-end="url(#afd-arrow)"/>
+<rect class="afd-box" x="570" y="410" width="170" height="50" rx="10"/>
+<text class="afd-t" x="655" y="431" text-anchor="middle">RTE</text>
+<text class="afd-s" x="655" y="448" text-anchor="middle">runs ansible-playbook</text>
+<polyline class="afd-line" points="500,377 655,377 655,408" marker-end="url(#afd-arrow)"/>
 </svg>
 </div>
 
@@ -104,17 +108,18 @@ The components in the diagram each have a role of their own:
 | Component | Role |
 |---|---|
 | **Browser** | The Vue web application: the forms, the [Designer](gui/designer-and-git.html), the job history and the settings |
-| **AnsibleForms server** | Evaluates the forms, launches and tracks the jobs, runs the schedules and serves the [REST API](api/) |
-| **ansible-playbook** | Runs playbooks from the playbooks folder; the container image includes Ansible |
+| **AnsibleForms server** | Evaluates the forms, hands the jobs to runners and tracks them, runs the schedules and serves the [REST API](api/) |
+| **RTE** | A runtime environment container, the same server started with `AF_ROLE=rte`: runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the Python libraries and collections of its image |
 | **MySQL / MariaDB** | Holds the jobs and their output, the users, the credentials and the connections |
 | **Persistent folder** | Holds `config.yaml`, the form files, the playbooks, the logs and the backups |
-| **AWX / AAP / Ascender** | Runs the job templates and workflow templates of [AWX forms](forms/awx.html) |
+| **AWX / AAP / Ascender** | Runs the job templates and workflow templates of [AWX forms](forms/awx.html); Semaphore, Rundeck and Jenkins can be runners too |
 | **Data sources** | Fill the fields: [database queries](formfields/enum.html), [REST APIs](expressions/rest-apis.html), files and [other functions](expressions/remote.html) |
 | **Secret stores** | Supply the user and password of a credential at use time, see [Secret stores](secret-stores/) |
 | **Git repositories** | Keep the forms, the playbooks and `config.yaml` under version control |
 | **MCP client, chat** | Optional, both off by default: the [MCP server](mcp/) and the [chat assistant](chat/) |
 
-AnsibleForms runs as a single instance: see the [FAQ](faq.html#deployment-topology-single-instance-only) for the reasons.
+By default one container runs the server, web app and background work together, next to one RTE. For several app nodes behind a
+load balancer, a worker that runs the background work, and more RTEs, see [Scaling](production/scaling.html).
 
 ### Built with
 
@@ -136,10 +141,11 @@ A launch goes through the same steps whether it comes from the browser or from t
 2. **Submit** : the browser turns the field values into extravars and posts them to `POST /api/v2/job`
 3. **Check** : the server reloads the form for the user's roles and, with [launch validation](launch-validation/) on, checks the values
 4. **Record** : the job is stored with status `running`, and its id is added to the extravars as `__jobid__`
-5. **Credentials** : the form's credentials are read from the database or a [secret store](secret-stores/)
+5. **Credentials** : the form's credentials are read from the database or a [secret store](secret-stores/), by the app, never by the RTE
 6. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
-7. **Run** : `ansible-playbook` runs locally, or the AWX/AAP/Ascender template is launched; multistep forms run each step
-8. **Follow** : the output is saved as it arrives, and the browser polls the job every two seconds to show it live
+7. **Run** : the job goes to its runner: an RTE claims it, with its credentials sealed for it, and runs `ansible-playbook`, or the template
+   is launched on AWX, AAP, Ascender or another runner; multistep forms run each step
+8. **Follow** : the output is saved in the database as it arrives, and the browser polls the job every two seconds to show it live
 9. **End** : the job gets its final status, and a mail goes out when the form's [`notifications`](forms/notifications.html) ask for it
 
 ---
@@ -156,7 +162,7 @@ The database, `AnsibleForms`, is created at the first start (unless `ALLOW_SCHEM
 * the jobs, their extravars and their output, the schedules and the stored jobs
 * the local users, the groups and the API tokens
 * the credentials, encrypted with `ENCRYPTION_SECRET`, and the secret store connections
-* the AWX, LDAP, OAuth2, repository, mail and chat assistant settings
+* the runners, and the LDAP, OAuth2, repository, mail and chat assistant settings
 * the audit log
 
 ### In the persistent folder
