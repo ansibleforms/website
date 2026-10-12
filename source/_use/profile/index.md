@@ -50,7 +50,7 @@ Each topic is described on its own page:
 | Page | What it covers |
 |---|---|
 | [Account](account.html) | Who you are signed in as |
-| [Preferences](preferences.html) | Language, theme and time zone |
+| [Preferences](preferences.html) | Language, theme, time zone and date format |
 | [Password](password.html) | Change the password of a local account |
 | [Permissions](permissions.html) | What your roles allow you to do |
 | [API token](api-token.html) | Create a token for scripts and AI agents |
