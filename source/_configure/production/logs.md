@@ -34,19 +34,25 @@ the settings pages without a restart, and the **Server log** page shows the log 
 
 ## Syslog
 
-Set [`LOG_SYSLOG_HOST`](../customization/logging.html#env_LOG_SYSLOG_HOST) to also send the log to a syslog server or SIEM.
-The other settings default to UDP port 514 and the BSD format:
+Syslog servers are managed under **Settings > Connections > Syslog**, so a syslog server or SIEM gets the log as it is written.
+You can add several servers, and each one has its own settings:
 
-```bash
-LOG_SYSLOG_HOST=syslog.example.com
-LOG_SYSLOG_PORT=514
-LOG_SYSLOG_PROTOCOL=tcp4
-LOG_SYSLOG_TYPE=5424
-LOG_SYSLOG_LEVEL=notice
-```
+| Setting | What it does |
+|---------|--------------|
+| Enabled | Only enabled servers get anything, so a server can be paused without deleting it |
+| Protocol | `udp4` (default), `udp6`, `tcp4`, `tcp6`, `tls4`, `tls6`, `unix` or `unix-connect` |
+| Host and port | The server to send to, port `514` by default; a `unix` protocol takes a socket path instead |
+| Receives | The server log, the audit entries, or both (the default for a new server) |
+| Level | The lowest level of the server log it gets, `info` by default; audit entries are always sent |
+| Type | `BSD` (RFC 3164, the default) or `RFC 5424` |
 
-[`LOG_SYSLOG_LEVEL`](../customization/logging.html#env_LOG_SYSLOG_LEVEL) defaults to `debug`, unlike the other two
-levels, so set it explicitly. All options are on the [Logging](../customization/logging.html) page.
+A change applies on every node without a restart, and the server's page has a button that sends it a test message.
+A server that cannot be reached never stops the application: the error is written to the console.
+
+The `LOG_SYSLOG_*` variables of earlier versions are deprecated since 7. The first start that finds
+[`LOG_SYSLOG_HOST`](../customization/logging.html#env_LOG_SYSLOG_HOST) set imports them once as the server `syslog`,
+receiving the server log as before, and ignores them from then on. Remove them from the environment after that first
+start, and manage the server on the settings page.
 
 ---
 

@@ -16,26 +16,28 @@ Log levels, files, syslog and console colours
 
 ---
 
-Change these to send the log to a central server, adjust how much is logged, or show timestamps in your own timezone.
+Change these to adjust how much is logged, where the log files go, or show timestamps in your own timezone.
 
 ---
 
 ## Example
 
-Send notices and above to a central syslog server over TCP, with log and job timestamps in Amsterdam time.
+Log more in the files than on the console, and show log and job timestamps in Amsterdam time.
 In the compose project's `.env`:
 
 ```bash
-LOG_SYSLOG_HOST=syslog.example.com
-LOG_SYSLOG_PORT=514
-LOG_SYSLOG_PROTOCOL=tcp4
-LOG_SYSLOG_TYPE=RFC5424
-LOG_SYSLOG_LEVEL=notice
-LOG_SYSLOG_SOURCE=forms01.example.com
+LOG_LEVEL=info
+LOG_CONSOLE_LEVEL=notice
 LOG_TZ=Europe/Amsterdam
 ```
 
-Without `LOG_SYSLOG_HOST`, nothing is sent to syslog. The log files under `LOG_PATH` are written as before.
+---
+
+## Syslog
+
+Syslog servers are no longer configured here: add them under **Settings > Connections > Syslog**, see [Logs](../production/logs.html#syslog).
+The `LOG_SYSLOG_*` variables below are deprecated since 7. The first start that finds `LOG_SYSLOG_HOST` set imports them
+once as the syslog server `syslog`, which receives the server log, and ignores them from then on.
 
 ---
 
