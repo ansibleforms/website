@@ -22,15 +22,22 @@ Launch validation has two settings. **The stricter of the two applies.**
 
 ## For the whole instance: `LAUNCH_VALIDATION`
 
-The environment variable [`LAUNCH_VALIDATION`](../customization) applies to every form:
+The environment variable [`LAUNCH_VALIDATION`](../customization/features.html#env_LAUNCH_VALIDATION) applies to every form:
 
-- `off` (default) - no server-side check. Upgrading does not change existing behaviour.
+- `off` - no server-side check: the job runs the extravars the browser or the caller sent.
 - `log` - every launch is checked; what would be refused is written to the log as a
   warning, and the launch still runs as before.
-- `enforce` - an invalid launch is refused, and a valid one runs the extravars the server
-  builds.
+- `enforce` (default) - an invalid launch is refused, and a valid one runs the extravars the
+  server builds.
 
-Changes take effect without a restart.
+An empty or unknown value also means `enforce`. Changes take effect without a restart.
+
+{: .warning }
+> **Upgrading changes behaviour.** An instance that does not set `LAUNCH_VALIDATION` enforces
+> every launch after the upgrade. Scripts that call `POST /api/v2/job` without `rawFormData`,
+> or with values that break a form's rules, are refused with a `422`. Set
+> `LAUNCH_VALIDATION=log` before upgrading to see what would be refused, or `off` to keep the
+> old behaviour (see [Rolling it out](rolling-it-out.html)).
 
 ---
 
@@ -51,8 +58,8 @@ A form can set its own level:
       required: true
 ```
 
-Use this setting when you know a form will be launched over REST: that form is enforced,
-while the rest of the instance can stay on `off`. It can also be set in the designer, in the
+Use this setting on an instance that runs on `off` or `log`, for a form you know will be
+launched over REST: that form is enforced, while the rest of the instance is not. It can also be set in the designer, in the
 form settings.
 
 **A form can be made stricter than the instance, never looser.** With `LAUNCH_VALIDATION`
