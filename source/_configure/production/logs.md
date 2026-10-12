@@ -19,7 +19,7 @@ Log files, syslog, the audit trail, and how long jobs and audit entries are kept
 ## Log files
 
 AnsibleForms writes two daily-rotated logs to [`LOG_PATH`](../customization/logging.html#env_LOG_PATH)
-(`%PERSISTENT_FOLDER%/logs`), compresses older days and keeps them for [`LOG_RETENTION_DAYS`](../customization/#env_LOG_RETENTION_DAYS)
+(`%PERSISTENT_FOLDER%/logs`), compresses older days and keeps them for [`LOG_RETENTION_DAYS`](../customization/logging.html#env_LOG_RETENTION_DAYS)
 (30 by default, `0` keeps every file; a change on the settings page applies at once):
 
 * `ansibleforms.<date>.log` : everything at [`LOG_LEVEL`](../customization/logging.html#env_LOG_LEVEL) and above
@@ -35,7 +35,7 @@ the settings pages without a restart, and the **Server log** page shows the log 
 
 ## JSON lines
 
-For a log collector such as Loki, ELK or Splunk, set [`LOG_FORMAT`](../customization/#env_LOG_FORMAT) to `json`. Every
+For a log collector such as Loki, ELK or Splunk, set [`LOG_FORMAT`](../customization/logging.html#env_LOG_FORMAT) to `json`. Every
 line, on the console and in the files, is then one JSON object instead of `<time> <level>: <message>`:
 
 ```json
@@ -95,7 +95,7 @@ the action, its target and its outcome: `success`, `failure` or `denied`. The pa
 the outcome, and users with the `showSettings` role option can open it.
 
 The IP address is the one AnsibleForms sees, which is the proxy's when it runs behind one. Set
-[`TRUST_PROXY`](../customization/#env_TRUST_PROXY) to the number or the addresses of your proxies, and AnsibleForms
+[`TRUST_PROXY`](../customization/server.html#env_TRUST_PROXY) to the number or the addresses of your proxies, and AnsibleForms
 records the client address the proxy reports in `X-Forwarded-For` instead; see [Reverse proxy](reverse-proxy.html).
 
 To keep the audit trail outside the instance, for a SIEM, add a syslog server that receives the audit entries (see

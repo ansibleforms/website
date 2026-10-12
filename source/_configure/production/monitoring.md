@@ -43,7 +43,7 @@ container healthcheck. See [Scaling](scaling.html) for the roles.
 
 ## Prometheus metrics
 
-Set [`METRICS_TOKEN`](../customization/#env_METRICS_TOKEN) to a long random string to serve Prometheus metrics.
+Set [`METRICS_TOKEN`](../customization/features.html#env_METRICS_TOKEN) to a long random string to serve Prometheus metrics.
 A process that serves the web application answers at `/api/v2/metrics`, an RTE at `/metrics`:
 
 ```yaml

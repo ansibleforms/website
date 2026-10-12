@@ -548,7 +548,7 @@ Abandoned <n> jobs
 A job belongs to the container that runs or follows it: a playbook to its RTE, any other job (an AWX job, the steps of a multistep
 form) to the app node that started it. When that container restarts, it ends its own unfinished jobs. When it disappears, a replaced
 pod for example, the worker ends its jobs once it has not answered for two minutes. A stopping RTE waits
-[`RTE_DRAIN_SECONDS`](customization/#env_RTE_DRAIN_SECONDS) for its playbooks first. Each hour, jobs that have been running for more
+[`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) for its playbooks first. Each hour, jobs that have been running for more
 than a day are marked abandoned too.
 
 **How to fix it**
