@@ -40,6 +40,8 @@ second one with the same name fails with "A saved form with this name already ex
 
 The **Stored Jobs** page lists stored jobs with their form, user, creation and expiry dates, and needs `allowStoredJobs`.
 
-- **View Stored Job Details** shows the stored values as YAML.
-- **Delete Stored Job** removes it. You can delete your own stored jobs; users with `showSettings` can delete any.
+- **Edit stored job** opens the stored job's own page: its **Details** (name, form, expiry) and its **Values**, the stored
+  field values as YAML, which can be changed and saved there.
+- **Open in form** opens its form with the stored values filled in; nothing runs until you submit.
+- **Delete stored job** removes it. You can delete your own stored jobs; users with `showSettings` can delete any.
 - Stored jobs with an **Expires At** date in the past are deleted automatically every day at 04:00 (in `LOG_TZ`).
