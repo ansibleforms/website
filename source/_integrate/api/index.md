@@ -25,10 +25,14 @@ Everything the web interface does goes through the REST API, so scripts and othe
 
 The API is served under `/api/v2` on the AnsibleForms server:
 
-* **Interactive documentation** : every endpoint is described, and can be tried, at `/api/v2/docs` (Swagger).
+* **Full reference** : these pages cover what scripts use most. Every endpoint is described, and can be tried, on the
+  server's built-in Swagger page, `https://<your server>/api/v2/docs`.
 * **Permissions** : a call runs as the user whose token it carries, with that user's roles, as in the browser.
 * **Launch validation** : jobs launched through the API can be checked like browser launches
   (see [Launch validation](../launch-validation/)).
+* **Rate limits** : only the login, logout, token refresh and single sign-on endpoints are limited (see
+  [Authentication](authentication.html)). Other calls have no rate limit (the [chat assistant](../chat/) has limits of
+  its own), so a script should pace itself, for example when it follows a job.
 
 ---
 
