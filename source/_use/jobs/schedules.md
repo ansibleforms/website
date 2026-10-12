@@ -28,7 +28,7 @@ A form can do more than run right away: the dropdown next to its **Submit** butt
 | Action | What it does | Role option |
 |---|---|---|
 | **Schedule (Recurring)** | Creates a schedule that runs the form on a cron expression | `allowScheduledJobs` |
-| **Run Later (One-time)** | Creates a schedule that runs the form once, at a date and time you pick | `allowPlannedJobs` (and `allowScheduledJobs`, see below) |
+| **Run Later (One-time)** | Creates a schedule that runs the form once, at a date and time you pick | `allowPlannedJobs` |
 | **Store** | Saves the field values, to load them into the form again later | `allowStoredJobs` |
 
 An action whose role option is off is not shown. The form is validated before any of them, as it is for **Submit**. Both
@@ -37,14 +37,14 @@ pages are in the **Planned** section of the sidebar on the [Jobs](./) page. The 
 [Role options](../config/roles.html#role-options).
 
 {: .warning }
-> Treat `allowScheduledJobs` as an admin-level option. Schedules are not owned by the user who created them: every user with
-> the option sees and can change all schedules. A schedule also runs with admin rights, for any form, whatever the creator's
-> own access. Grant it only to roles you would trust as admins.
+> Treat `allowScheduledJobs` as an admin-level option. Its schedules are not owned by the user who created them: every user
+> with the option sees and can change all schedules. Such a schedule also runs with admin rights, for any form, whatever the
+> creator's own access. Grant it only to roles you would trust as admins.
 
 {: .note }
-> **Run Later (One-time)** is shown to users with `allowPlannedJobs`, but it saves a schedule, and the server only accepts
-> that from users who also have `allowScheduledJobs`. Without it, the action fails with "You do not have permission to manage
-> scheduled jobs".
+> **Run Later (One-time)** needs only `allowPlannedJobs`. For a user without `allowScheduledJobs`, it plans a run **as that
+> user**: the server checks that the user may run the form, and the job runs as them, owned by them, when its time comes
+> (see [Planned runs](#planned-runs)).
 
 ---
 
@@ -116,8 +116,9 @@ When a schedule is due, it is queued, and the server starts queued schedules one
 - **Status** is `success` when the job was started and `failed` when it could not be. A `success` only says the job was
   launched: open the job to see how it ended.
 
-A scheduled job runs as the built-in user `Schedule Service` (type `schedule`) with the `admin` role. It can run any form,
-whatever the access of the person who created the schedule, and `ansibleforms_user` in its extravars describes that user.
+A schedule created with `allowScheduledJobs` runs as the built-in user `Schedule Service` (type `schedule`) with the
+`admin` role. It can run any form, whatever the access of the person who created the schedule, and `ansibleforms_user` in
+its extravars describes that user. A [planned run](#planned-runs) runs as the user who planned it instead.
 
 The job also gets a `schedule` object (with its `id`, `name` and `form`), so a playbook knows a schedule started it:
 
@@ -127,6 +128,21 @@ schedule:
   name: Nightly cleanup
   form: Cleanup servers
 ```
+
+---
+
+## Planned runs
+
+**Run Later (One-time)** by a user without `allowScheduledJobs` creates a planned run: a one-time schedule tied to that user.
+
+- **When it is planned**, the server checks that the user may run the form (its `roles`), and verbose mode needs
+  `allowVerboseMode`. A planned run is always one-time; a cron expression is refused.
+- **Under launch validation `enforce`**, the field values are checked when it is planned, so a run that would be refused is
+  refused while the user is still looking.
+- **When it runs**, the job runs as that user, owned by them, through the same checks as a launch from the browser: the
+  form's roles as they are then, the reserved extravars stripped, and launch validation. `ansibleforms_user` describes them.
+
+The planner does not see the **Schedules** page, which needs `allowScheduledJobs`; the job appears in their own job history.
 
 ---
 
@@ -143,7 +159,8 @@ A schedule refers to its form by name and runs it as it is defined at the moment
 
 ## Scheduled jobs in the job history
 
-Every run of a schedule creates an ordinary job, listed on the [Jobs](./) page with `Schedule Service` as its user.
+Every run of a schedule creates an ordinary job, listed on the [Jobs](./) page with `Schedule Service` as its user, or,
+for a planned run, with the user who planned it.
 
-Because the job does not belong to the person who created the schedule, it is visible only to admins and to users with
-`showAllJobLogs`. The **Last Output** of the schedule names the job it started, so you can find it in the list.
+A `Schedule Service` job does not belong to the person who created the schedule, so it is visible only to admins and to
+users with `showAllJobLogs`; a planned run's job is visible to its user too. The **Last Output** of the schedule names the job it started, so you can find it in the list.
