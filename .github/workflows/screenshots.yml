@@ -1,0 +1,57 @@
+name: Screenshots
+
+# Retakes the GUI screenshots of the site (scripts/screenshots/run.sh) on a GitHub runner
+# rather than on a laptop : the throwaway instance (MySQL, the app and an RTE) and a headless
+# Chromium are heavy, and Docker in WSL has crashed under them. Run it by hand with the
+# release to take them from ; the screenshots come back as an artifact, to be looked at and
+# committed in a pull request like any other change.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The AnsibleForms image tag to take them from (e.g. 7.0.0)'
+        required: true
+        default: latest
+      shots:
+        description: 'Only these screenshots, space separated (empty : all of them)'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    name: Take the screenshots
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      # Chromium's system libraries ; run.sh installs the browser itself
+      - name: Install the browser's dependencies
+        working-directory: scripts/screenshots
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install-deps chromium
+
+      - name: Take the screenshots
+        working-directory: scripts/screenshots
+        env:
+          VERSION: ${{ inputs.version }}
+          SHOTS: ${{ inputs.shots }}
+        # SHOTS is split on purpose : one argument per screenshot name
+        run: ./run.sh "$VERSION" $SHOTS
+
+      - name: Upload them
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: screenshots-${{ inputs.version }}
+          path: source/assets/screenshots/
+          if-no-files-found: error
