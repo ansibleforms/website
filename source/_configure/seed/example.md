@@ -13,17 +13,24 @@ A complete seed file, section by section
 
 ---
 
-The following seed file declares every section except `oauth2`; secrets come from environment variables such as `${SEED_AWX_TOKEN}`:
+The following seed file declares every section except `oauth2` and the deprecated `awx`; secrets come from environment
+variables such as `${SEED_AWX_TOKEN}`:
 
 ```yaml
 version: 1
 
-awx:
+runners:
   items:
+    - name: rte01
+      type: rte                  # rte, awx, semaphore, rundeck or jenkins
+      uri: http://rte01.example.com:8000
+      token: ${SEED_RTE_TOKEN}   # the RTE_TOKEN of that RTE
+      is_default: true           # playbook forms that name no runner run here
     - name: tower
+      type: awx
       uri: https://tower.example.com
       token: ${SEED_AWX_TOKEN}
-      is_default: true
+      is_default: true           # one default per type
 
 secret_stores:
   items:
@@ -41,6 +48,10 @@ credentials:
       port: 3306
       db_type: mysql
       is_database: true
+    - name: smtp-login
+      credential_type: smtp
+      user: svc_forms
+      password: ${SEED_SMTP_PW}
 
 repositories:
   prune: true
@@ -51,6 +62,34 @@ repositories:
       use_for_forms: true
       use_for_config: true
       rebase_on_start: true
+
+syslog_servers:
+  items:
+    - name: siem
+      host: siem.example.com
+      port: 6514
+      protocol: tls4             # udp4 (default), udp6, tcp4, tcp6, tls4, tls6, unix, unix-connect
+      type: "5424"               # BSD (default) or 5424
+      receives: audit            # log, audit or both (default)
+      enabled: true
+    - name: syslog
+      host: syslog.example.com
+      level: notice              # the lowest level of the server log it gets (info by default)
+      receives: log
+
+notification_channels:
+  items:
+    - name: mail
+      type: mail                 # mail, slack, teams, telegram or webhook
+      server: smtp.example.com
+      port: 587
+      secure: false
+      from_address: ansibleforms@example.com
+      credential: smtp-login     # an smtp credential ; leave it out for a relay
+      is_active: true            # the mail channel the application sends its mail with
+    - name: ops-slack
+      type: slack
+      webhook_url: ${SEED_SLACK_WEBHOOK}
 
 # ldap and settings are single-row sections, so EVERY field must be declared - see
 # "Single-row sections are all or nothing" below. Empty is a perfectly good value.
