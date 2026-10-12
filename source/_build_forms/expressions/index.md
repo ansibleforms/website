@@ -38,8 +38,21 @@ JavaScript expressions are evaluated either on the **server side** (default) or 
 
 Because expressions are evaluated with the JavaScript `eval` function, code injection is a potential concern:
 
-- **Server-side expressions** are limited to predefined functions - arbitrary code cannot be injected
-- **Client-side expressions** are evaluated in the browser sandbox and can be considered safe
+- **Server-side expressions** pass a sanitizer first: every call must be a `fn.` or `fnc.` function, and multiple lines,
+  `;`, template literals, `process.env` and the ways out of `eval` (`import`, `require`, `constructor`, ...) are refused.
+- **Client-side expressions** are evaluated in the browser sandbox and can be considered safe.
+
+How strict the sanitizer is depends on
+[`EXPRESSION_SANITIZER`](../customization/security.html#env_EXPRESSION_SANITIZER):
+
+| Value | Server-side expressions |
+|---|---|
+| `strict` (default) | `fn.` and `fnc.` calls, and methods on their result, such as `fn.fnTime().format('YYYY')` |
+| `paranoid` | only direct `fn.` and `fnc.` calls, no methods on their result |
+| `off` | every server-side expression is refused; only `runLocal` expressions work |
+| `legacy` | the rules of 6.2.1, which let any authenticated user run code on the server; only for an upgrade, and only in the real environment (not from the settings page) |
+
+An empty or unknown value means `strict`. A change applies to the next expression, without a restart.
 
 ---
 
