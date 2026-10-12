@@ -86,11 +86,12 @@ Track progress via a job-specific log file (v6.1.2).
 AnsibleForms can display a **job-specific log file** alongside the Ansible output. This lets you track the progress of long-running custom modules that would otherwise produce no visible feedback during execution.
 
 {: .note }
-> This feature only works for direct Ansible jobs. AWX / Ansible Tower jobs are not supported.
+> This feature only works for playbooks that run on an RTE. Templates and jobs on AWX, AAP, Ascender, Semaphore, Rundeck or
+> Jenkins have no log file.
 
 **How it works:**
-- During a job run, AnsibleForms watches for a log file at a well-known path inside the playbook folder
-- When the job is retrieved (or polled), the contents of the log file are read and returned alongside the normal output
+- During a job run, the RTE watches for a log file at a well-known path inside the playbook folder
+- Every two seconds, when the file changed, the RTE copies its contents into the job, and once more when the playbook ends
 - The log file is displayed in a separate **Logfile** panel below the main Ansible output, with full ANSI colour support
 
 **Log file path convention:**
@@ -112,13 +113,14 @@ Pass this variable to any role or custom module that should write progress to th
 **Responsibilities of the playbook / module developer:**
 - **Create** the log file (and its `.joblogs/` directory) at the start of the operation
 - **Write** meaningful progress messages as the operation proceeds
-- **Delete** the file when it is no longer needed (for example, at the start of a new run to avoid stale data)
+
+The RTE deletes the file once the playbook ends and the last contents are stored on the job.
 
 **ANSI colour coding is supported.**  
 Standard ANSI escape codes (for example, `\033[92m` for green and `\033[91m` for red) in your log messages are rendered as colours in the UI, so success, warning and error states can be distinguished at a glance.
 
 **Typical use case:**  
-A custom Python Ansible module that performs a long sequence of API calls or data operations (for example, a SnapMirror DR workflow) can append one line per step to the log file. An operator watching the job in AnsibleForms then sees live progress in the Logfile panel each time a polling cycle refreshes the output.
+A custom Python Ansible module that performs a long sequence of API calls or data operations (for example, a SnapMirror DR workflow) can append one line per step to the log file. An operator watching the job in AnsibleForms then sees live progress in the Logfile panel as the job page follows the job.
 
 ### Jobid
 
@@ -375,40 +377,39 @@ To make the default dynamic, based on an expression, use one of two properties:
 
 ---
 
-## Wizard & Multistep
+## Wizard & Workflows
 
-### What is the difference between a wizard and a multistep form?
+### What is the difference between a wizard and a workflow?
 
-A **wizard** and a **multistep** form sound similar, but they operate on different layers and can be combined.
+A **wizard** and a **workflow** both come in steps, but they operate on different layers and can be combined.
 
-| | [`steps`](forms/multistep.html) (Multistep) | [`wizard`](forms/wizard.html) |
+| | [`workflow`](forms/workflow.html) (Workflow) | [`wizard`](forms/wizard.html) |
 |---|---|---|
 | **Layer** | Execution | Form / UI |
-| **What it splits** | The job into multiple sequential runs | The input of one form into multiple pages |
-| **Result** | N jobs run, one after the other (each with its own playbook/template) | 1 job runs at the end |
-| **Form `type`** | Must be `multistep` | Works with `ansible`, `awx` and `multistep` |
-| **Defined by** | A list of execution targets (`steps:`) | A list of [subform](forms/subform.html) references (`wizard:`) |
+| **What it splits** | The job into nodes that run one after the other, or side by side | The input of one form into multiple pages |
+| **Result** | 1 workflow job, with a job per node (each with its own playbook or template) | 1 job runs at the end |
+| **Form `type`** | Must be `workflow` | Works with every form type except `subform` |
+| **Defined by** | A [workflow file](workflows/file.html) of the designer (`workflow:`) | A list of [subform](forms/subform.html) references (`wizard:`) |
 | **Use it when** | "Do A, then B, then C as separate jobs" | "My form has too many fields for one page" |
 
-**Key takeaway:** `steps` is about *what runs and in which order*; `wizard` is about *how the user fills in the form*.
+**Key takeaway:** a workflow is about *what runs and in which order*; `wizard` is about *how the user fills in the form*.
 
-#### Multistep only
+{: .note }
+> The `multistep` form type, with its `steps`, did the execution part before 7. It is deprecated since 7 and removed in
+> 8: a workflow does all a multistep does, see [Multistep forms](forms/multistep.html).
+
+#### Workflow only
 {: .no_toc }
 
-A `type: multistep` form runs one playbook or template per step. The user fills in a single page of fields and presses Submit, and the executor runs each step sequentially:
+A `type: workflow` form runs one of the designer's workflows. The user fills in a single page of fields and presses Submit,
+and the workflow runs its nodes, each with the form's values as extra vars:
 
 ```yaml
 - name: Provision host
-  type: multistep
+  type: workflow
+  workflow: provision-host
   roles:
     - default
-  steps:
-    - name: Create host
-      type: ansible
-      playbook: create_host.yml
-    - name: Verify host
-      type: ansible
-      playbook: verify_host.yml
   fields:
     - name: hostname
       type: text
@@ -417,7 +418,7 @@ A `type: multistep` form runs one playbook or template per step. The user fills 
 #### Wizard only
 {: .no_toc }
 
-A `wizard:` block on an `ansible` (or `awx`) form spreads input collection over multiple pages. Only **one** job runs at the end: the merged extravars from all pages are sent to a single playbook or template.
+A `wizard:` block on a form spreads input collection over multiple pages. Only **one** job runs at the end: the merged extravars from all pages are sent to a single playbook, template or workflow.
 
 ```yaml
 - name: Provision host
@@ -448,14 +449,17 @@ A `wizard:` block on an `ansible` (or `awx`) form spreads input collection over 
 
 A read-only review page is appended automatically as the last wizard page; you do not declare it in YAML.
 
-#### Combined (wizard on top of multistep)
+#### Combined (wizard on top of a workflow)
 {: .no_toc }
 
-A wizard can be layered on top of a multistep form. The user fills in the wizard pages and presses Submit, and **then** the multistep execution starts. By matching a wizard step's `defaultModel` with a multistep step's [`key`](forms/multistep.html#step_key), you can route **one wizard page to one multistep step**:
+A wizard can be layered on top of a workflow form. The user fills in the wizard pages and presses Submit, and **then** the
+workflow starts. By matching a wizard step's `defaultModel` with a node's
+[`extra_vars_key`](workflows/file.html#ansibleforms-own-keys), you can route **one wizard page to one node**:
 
 ```yaml
 - name: Provision and verify host
-  type: multistep
+  type: workflow
+  workflow: provision-host
   roles:
     - default
   wizard:
@@ -465,18 +469,31 @@ A wizard can be layered on top of a multistep form. The user fills in the wizard
     - subform: network
       title: Network
       defaultModel: network           # wraps network fields under `network`
-  steps:
-    - name: Create host
-      type: ansible
-      playbook: create_host.yml
-      key: basics                     # only sees the basics page payload
-    - name: Configure network
-      type: ansible
-      playbook: configure_network.yml
-      key: network                    # only sees the network page payload
 ```
 
-`key` is a single-level lookup, so use a flat name in `defaultModel` (for example, `defaultModel: basics`, not `defaultModel: input.basics`) when you want them to match.
+And the workflow `provision-host`, in a workflow file of the designer:
+
+```yaml
+workflow_job_templates:
+  - name: provision-host
+    related:
+      workflow_nodes:
+        - identifier: create
+          unified_job_template:
+            name: create_host.yml
+            type: job_template
+          extra_vars_key: basics      # only sees the basics page payload
+          related:
+            success_nodes:
+              - identifier: network
+        - identifier: network
+          unified_job_template:
+            name: configure_network.yml
+            type: job_template
+          extra_vars_key: network     # only sees the network page payload
+```
+
+`extra_vars_key` is a single-level lookup, so use a flat name in `defaultModel` (for example, `defaultModel: basics`, not `defaultModel: input.basics`) when you want them to match.
 
 See the [Wizard page](forms/wizard.html) for the full property reference.
 
@@ -700,7 +717,7 @@ To populate dropdown boxes with data from AWX or Tower, use `fn.fnRestBasic` or 
 ```yaml
 name: Query awx
 type: awx
-awx: myAwxConfigName
+runner: myAwxConfigName # a runner of type awx
 template: my_template # will be overwritten by the field __template__
 description: ""
 awxCredentials:
