@@ -100,7 +100,7 @@ A form can also start a job without a person pressing **Submit**:
 
 ## Abort a job
 
-The ban icon in the list, or **Abort job** on the job's page, stops a job with status `running`. After you confirm,
+**Abort job**, in the row's menu (⋮) in the list or on the job's page, stops a job with status `running`. After you confirm,
 AnsibleForms marks the job for abort:
 
 * **`ansible`**: the RTE stops the playbook process (with all its workers), and the job ends as `aborted` with
@@ -119,7 +119,7 @@ You can abort your own jobs; an admin can abort any job. `showAllJobLogs` lets a
 
 ## Relaunch a job
 
-The redo icon in the list, or **Relaunch job** on the job's page, starts a new job from a finished one. It is offered on any
+**Relaunch job**, in the row's menu (⋮) in the list or on the job's page, starts a new job from a finished one. It is offered on any
 job that is neither `running` nor waiting for approval, to users whose role sets the `allowJobRelaunch` role option.
 
 The dialog offers:
@@ -182,8 +182,10 @@ A job waiting for approval cannot be relaunched or deleted from the Jobs page; a
 
 ## Delete a job
 
-The trash icon in the list, or **Delete job** on the job's page, deletes a job with its output after you confirm. Deleting
-a multistep job deletes its steps too.
+**Delete job**, in the row's menu (⋮) in the list or on the job's page, deletes a job with its output after you confirm.
+Deleting a multistep job deletes its steps too. To delete several jobs at once, tick them in the list's first column and
+click **Delete (n)** above it.
 
-You can delete your own jobs. Admins and users with the `showAllJobLogs` role option can delete any job. The button is
-hidden while the job is running (except for admins) and while it waits for approval.
+You can delete your own jobs. Admins and users with the `showAllJobLogs` role option can delete any job. On the job's
+page the button is hidden while the job is running (except for admins) and while it waits for approval; in the list, the
+menu entry and the checkbox are greyed out for a job you cannot delete.
