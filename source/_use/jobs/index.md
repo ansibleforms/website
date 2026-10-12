@@ -61,8 +61,10 @@ Jobs** (role option `allowStoredJobs`). The other statuses (`warning`, `rejected
 Above the table:
 
 * **Refresh** reloads the list.
-* The number next to it sets how many of the latest jobs are loaded: `100`, `200`, `500` or `1000`.
 * **Columns** shows or hides the columns `id`, `form`, `job type`, `status`, `start time`, `end time` and `user`.
+
+The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customization/#env_JOBS_LIST_SIZE) setting says
+(**Settings > Jobs**, `1000` by default); its pages and filters cover those jobs.
 
 Each column can be sorted and has its own filter field. A multistep job has an arrow in its `id` column that expands its steps.
 
