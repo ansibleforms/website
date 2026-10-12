@@ -58,14 +58,24 @@ start, and manage the server on the settings page.
 
 ## Audit trail
 
-The **Audit log** page (under the administration menu) records who changed what, which the log files do not answer well.
+The **Audit log** page (under **Settings > Logs**) records who changed what, which the log files do not answer well.
 It records:
 
 * every change made through the API (`POST`, `PUT`, `PATCH`, `DELETE`), including attempts refused with 401 or 403
 * sign-ins, with the username that was tried
 * events of the application itself, such as nightly backups, removed backups, pruned jobs and config seed applies
 
-The IP address recorded is the one AnsibleForms sees, which is the proxy's when it runs behind one.
+Each entry has its time, the actor (a user, or the application itself for its own tasks), the client IP address,
+the action, its target and its outcome: `success`, `failure` or `denied`. The page filters on the actor, the action and
+the outcome, and users with the `showSettings` role option can open it.
+
+The IP address is the one AnsibleForms sees, which is the proxy's when it runs behind one. Set
+[`TRUST_PROXY`](../customization/#env_TRUST_PROXY) to the number or the addresses of your proxies, and AnsibleForms
+records the client address the proxy reports in `X-Forwarded-For` instead; see [Reverse proxy](reverse-proxy.html).
+
+To keep the audit trail outside the instance, for a SIEM, add a syslog server that receives the audit entries (see
+[Syslog](#syslog)). Each entry is sent as it happens, as one line `audit {...}` with the entry as JSON, whatever the
+server's level. The syslog copy is not removed by the retention below, nor replaced by a restore of the database.
 
 ---
 
