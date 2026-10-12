@@ -63,7 +63,7 @@ The Helm chart's default resources are a reasonable starting point for a small t
 | MySQL | 0.5 CPU, 512 MiB memory | 2 CPU, 2 GiB memory | 10 GiB |
 
 The app container runs no playbook. Each playbook is an `ansible-playbook` process, with its forks, on an RTE: size every RTE's CPU and
-memory for the playbooks it runs at once, at most [`RTE_MAX_JOBS`](customization/#env_RTE_MAX_JOBS) (`10` by default), and run more
+memory for the playbooks it runs at once, at most [`RTE_MAX_JOBS`](customization/server.html#env_RTE_MAX_JOBS) (`10` by default), and run more
 RTEs to run more. Jobs that run on AWX, AAP, Ascender or the other template runners cost AnsibleForms little.
 
 Job output is kept in the database for ever by default. Set [`JOB_RETENTION_DAYS`](customization/retention.html#env_JOB_RETENTION_DAYS)
@@ -91,7 +91,7 @@ Open the connections from AnsibleForms to the systems you use:
 | Destination | Used for |
 |---|---|
 | MySQL / MariaDB | The AnsibleForms database (`DB_HOST`, `DB_PORT`, default `3306`) |
-| The RTE | Handing playbook jobs to it, at its [`RTE_URL`](customization/#env_RTE_URL); the RTE itself connects to MySQL |
+| The RTE | Handing playbook jobs to it, at its [`RTE_URL`](customization/server.html#env_RTE_URL); the RTE itself connects to MySQL |
 | AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | Launching and following templates and jobs on [runners](runners.html), over their HTTP(S) API |
 | The managed hosts | Playbooks connect to them from the RTE, for example over SSH or WinRM |
 | LDAP, Entra ID, OIDC | Logging in with directory or single sign-on accounts |

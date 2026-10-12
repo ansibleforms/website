@@ -18,7 +18,7 @@ The RTE that runs the playbooks, and AnsibleForms split over several app nodes, 
 
 ## Roles
 
-Every AnsibleForms container runs the same server code, and [`AF_ROLE`](../customization/#env_AF_ROLE) decides what it does:
+Every AnsibleForms container runs the same server code, and [`AF_ROLE`](../customization/server.html#env_AF_ROLE) decides what it does:
 
 | `AF_ROLE` | Image | Runs | How many |
 |---|---|---|---|
@@ -88,13 +88,13 @@ An RTE needs the app's database settings, a token, and the address the app reach
 | Variable | Meaning |
 |---|---|
 | `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` | The app's own values: the RTE reads its jobs from the database and writes their output there |
-| [`RTE_TOKEN`](../customization/#env_RTE_TOKEN) | The bearer token every call to the RTE must carry, at least 16 characters; the RTE refuses to start without it |
-| [`RTE_URL`](../customization/#env_RTE_URL) | The address the app calls the RTE on, such as `http://rte:8000`. The runner is named after its host (`rte`), so forms can use `runner: rte` |
-| [`RTE_REGISTER`](../customization/#env_RTE_REGISTER) | `1` (default): the RTE adds itself under **Connections > Runners** at its start, and the first one becomes the default runner. `0`: add it there yourself, or in the [config seed](../seed/) |
+| [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN) | The bearer token every call to the RTE must carry, at least 16 characters; the RTE refuses to start without it |
+| [`RTE_URL`](../customization/server.html#env_RTE_URL) | The address the app calls the RTE on, such as `http://rte:8000`. The runner is named after its host (`rte`), so forms can use `runner: rte` |
+| [`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER) | `1` (default): the RTE adds itself under **Connections > Runners** at its start, and the first one becomes the default runner. `0`: add it there yourself, or in the [config seed](../seed/) |
 | [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | The app's own value, needed only to register itself (the runner's token is stored encrypted); leave it out with `RTE_REGISTER=0` |
-| [`RTE_MAX_JOBS`](../customization/#env_RTE_MAX_JOBS) | How many playbooks it runs at once, `10` by default (`0` sets no limit). A job for a full RTE waits until a playbook ends |
-| [`RTE_DRAIN_SECONDS`](../customization/#env_RTE_DRAIN_SECONDS) | On a stop, how long it waits for its running playbooks, `25` by default; the ones still running then end as abandoned |
-| [`RTE_QUEUE_MINUTES`](../customization/#env_RTE_QUEUE_MINUTES) | Read by the app nodes and the worker, not the RTE: how long a job waits for a full or stopping RTE, `60` by default |
+| [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | How many playbooks it runs at once, `10` by default (`0` sets no limit). A job for a full RTE waits until a playbook ends |
+| [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | On a stop, how long it waits for its running playbooks, `25` by default; the ones still running then end as abandoned |
+| [`RTE_QUEUE_MINUTES`](../customization/server.html#env_RTE_QUEUE_MINUTES) | Read by the app nodes and the worker, not the RTE: how long a job waits for a full or stopping RTE, `60` by default |
 | [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH), `PROCESS_MAX_BUFFER` | The playbooks folder and the output limit: read by the RTE, so set them in its environment |
 
 Without `RTE_URL` the RTE registers its IP address and port under the name `rte-<hostname>-<port>`, which change when the container is

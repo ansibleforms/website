@@ -123,8 +123,8 @@ Run the published images from the GitHub Container Registry (see [Image tags](./
 [`ghcr.io/ansibleforms/ansibleforms`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms) for the app and
 [`ghcr.io/ansibleforms/ansibleforms-rte-full`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms-rte-full) for the RTE.
 
-The RTE needs a token of at least 16 characters ([`RTE_TOKEN`](../customization/#env_RTE_TOKEN)) and the address the app reaches it on
-([`RTE_URL`](../customization/#env_RTE_URL)). It adds itself under **Connections > Runners** as the runner `rte`, the default one, so
+The RTE needs a token of at least 16 characters ([`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN)) and the address the app reaches it on
+([`RTE_URL`](../customization/server.html#env_RTE_URL)). It adds itself under **Connections > Runners** as the runner `rte`, the default one, so
 playbook forms run on it without further setup. Start it once the app answers, because the app creates the schema at its first start
 (a sample `config.yaml` is in the [docker-compose project](https://github.com/ansibleforms/docker/blob/main/data/config.yaml)):
 
