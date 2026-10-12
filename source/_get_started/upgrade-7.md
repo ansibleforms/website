@@ -193,6 +193,14 @@ call answers `403` with the code `password_change_required`, and the browser sho
 Sign in once and choose a new password, or set [`ADMIN_PASSWORD`](customization/server.html#env_ADMIN_PASSWORD) before the
 first start. Scripts that log in with the default password must use another one.
 
+### Tokens end at logout and password change
+
+A logout now ends the tokens of that session, and a password change ends every session of that user, so sign in again after
+changing a password.
+
+An API token requested with `?expiryDays=` lives at most [`API_TOKEN_MAX_DAYS`](customization/#env_API_TOKEN_MAX_DAYS) days
+(90 by default). Scripts that use long-lived API tokens must request a new one before it expires.
+
 ---
 
 ## Image tags
