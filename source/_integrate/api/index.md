@@ -41,3 +41,4 @@ Each topic has a page of its own:
 | [Authentication](authentication.html) | Log in, refresh the token, or use a long-lived token |
 | [Jobs](jobs.html) | Launch a form, follow the job, abort, relaunch or approve it |
 | [Responses and errors](responses.html) | The shape of a response, and the status codes |
+| [Live events](events.html) | Hear when jobs and settings change, instead of polling |
