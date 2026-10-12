@@ -3,14 +3,14 @@
 - slug: server
   title: Server and database
   lead: the web server, trusted proxies, the MySQL connection, the admin account, and what each process runs (app or RTE)
-  vars: [NODE_ENV, PORT, BASE_URL, TRUST_PROXY, HTTPS, HTTPS_KEY, HTTPS_CERT, DEFAULT_LANGUAGE, NAV_HOME_LABEL, NAV_HOME_ICON,
+  vars: [NODE_ENV, PORT, BASE_URL, TRUST_PROXY, HTTPS, HTTPS_KEY, HTTPS_CERT, DEFAULT_LANGUAGE,
          DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_POOL_SIZE, ALLOW_SCHEMA_CREATION,
          ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, UPLOAD_MAX_GB, PROCESS_MAX_BUFFER,
          AF_ROLE, RTE_URL, RTE_TOKEN, RTE_REGISTER, RTE_MAX_JOBS, RTE_DRAIN_SECONDS, RTE_QUEUE_MINUTES]
 - slug: paths
   title: Paths
   lead: where the configuration, forms, playbooks, workflows, uploads and backups live
-  vars: [CONFIG_PATH, FORMS_FOLDER_PATH, FORMS_STAGING_PATH, FORMS_BACKUP_PATH, LOCK_PATH, HOME_PATH, REPO_PATH,
+  vars: [CONFIG_PATH, FORMS_FOLDER_PATH, FORMS_STAGING_PATH, FORMS_BACKUP_PATH, HOME_PATH, REPO_PATH,
          VARS_FILES_PATH, INVENTORY_PATH, ANSIBLE_PATH, WORKFLOWS_PATH, UPLOAD_PATH, BACKUP_PATH]
 - slug: retention
   title: Backups and retention
