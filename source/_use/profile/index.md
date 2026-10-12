@@ -32,13 +32,14 @@ so you can link to it directly:
 
 | View | Address |
 |---|---|
-| Account | `/profile?view=account` |
-| API token | `/profile?view=token` |
-| Password | `/profile?view=password` |
-| Permissions | `/profile?view=permissions` |
-| Preferences | `/profile?view=preferences` |
+| Account | `/profile/account` |
+| API token | `/profile/token` |
+| Password | `/profile/password` |
+| Permissions | `/profile/permissions` |
+| Preferences | `/profile/preferences` |
 
-Views your roles do not allow are hidden; their address opens the first view instead.
+`/profile` alone opens the first view of the menu. Views your roles do not allow are hidden; their address opens the first
+view instead.
 
 ---
 
