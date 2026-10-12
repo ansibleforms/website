@@ -48,14 +48,33 @@ Local users and groups are managed under **Access > Users** and **Access > Group
 | Field | Meaning |
 |---|---|
 | Username | The login name. Must be unique. |
+| Description | Optional. |
 | Password | Stored as a hash. Change it later with the **Change Password** action. |
 | Email | Optional. |
-| Group | The user's local group. A local user belongs to exactly one group. |
+| Group | The user's first local group. Add more on the **Groups** tab of the user's page. |
 
 Local users change their own password on their profile; other users do so in their directory or identity provider.
 
-{: .warning }
-> Deleting a group also deletes every user in it. The `admins` group is recreated at the next start, but its users are not.
+A user can belong to several groups, and gets the roles of all of them. The **Groups** tab of a user's page adds and
+removes groups, and so does the **Users** tab of a group's page. A user keeps at least one group: the last one cannot
+be removed.
+
+A group that still has users cannot be deleted: remove its users first. The `admins` group can never be deleted or
+renamed, and the user `admin` can never be deleted.
+
+---
+
+## Allowing sign-in
+
+The **Details** tab of a user's page has an **Allow sign-in** switch, also offered as **Block sign-in** and **Allow
+sign-in** in the row menu of the users list. It exists for local users and for LDAP and SSO users alike:
+
+- **On**: the user signs in as usual.
+- **Off**: the user's sessions end at once and every sign-in is refused, until an admin turns it on again. The page
+  asks for confirmation first.
+
+The switch cannot be turned off for the user `admin`, the way back in, nor by an admin for their own account. The page of
+an LDAP or SSO user also has **End sessions**, which signs the user out everywhere without blocking them.
 
 ---
 
