@@ -34,7 +34,8 @@ fn.fnSort(['a','b','z','q','c'],{'':{direction:'asc'}})
 
 ## The Sorting Object
 
-All data-fetching functions can sort their results with this sorting object.
+The REST functions (`fn.fnRestBasic`, `fn.fnRestAdvanced`, `fn.fnRestJwt`, `fn.fnRestJwtSecure`) take this sorting object
+as an argument. For any other result, such as `fn.fnJq` or a file read, wrap it in `fn.fnSort`.
 
 ```javascript
 // The sorting object can have multiple forms, for example :
