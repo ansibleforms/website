@@ -43,7 +43,7 @@ The login page has a username and password form, plus one button per enabled sin
 - **The Entra ID and OpenID buttons** appear below **Sign in** when such a provider is enabled. They send the browser to
   the provider and back; no password reaches AnsibleForms.
 
-Only one Entra ID provider and one OIDC provider can be enabled at a time: enabling one disables the others of that type.
+Only one Entra ID provider and one OIDC provider are active at a time: **Use for sign-in** on one makes the others of its type inactive.
 A failed username and password login always shows the same generic message; the reason is in the server log and the audit log.
 
 ---
