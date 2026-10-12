@@ -33,8 +33,8 @@ The username is the `upn` claim of the token, e.g. `jdoe@example.com`. Groups ar
 
 AnsibleForms needs an app registration in the Entra admin center, under **App registrations > New registration**:
 
-1. Give it a name, choose the supported account types (usually this organizational directory only), and add a redirect
-   URI of type **Web**: `https://af.example.com/api/v2/auth/azureadoauth2/callback`.
+1. Give it a name, choose **Accounts in this organizational directory only** as supported account types, and add a
+   redirect URI of type **Web**: `https://af.example.com/api/v2/auth/azureadoauth2/callback`.
 2. Under **Certificates & secrets**, create a client secret and copy its value; it is shown only once.
 3. Under **API permissions**, add the Microsoft Graph **delegated** permissions `User.Read` and `GroupMember.Read.All`,
    and grant admin consent for them.
@@ -59,11 +59,16 @@ Add the provider under **Access > OAuth2**, with **Provider** set to **Entra ID*
 | Enable | Shows the Entra ID button on the login page. Enabling it disables any other Entra ID provider. |
 | Name | A unique name for the provider. |
 | Description | Optional. |
-| Tenant ID | The Directory (tenant) ID. Leave empty to use the `common` endpoint (multi-tenant registrations). |
+| Tenant ID | Required. The Directory (tenant) ID, a GUID, or one of the tenant's domains. Only users of that tenant can sign in. |
 | Client ID | The Application (client) ID. |
 | Redirect URL | Filled in as `<Public Root Url>/api/v2/auth/azureadoauth2/callback`; must match the registration. |
 | Client Secret | The client secret value, stored encrypted. |
 | Group Filter | Regular expression; only the groups whose display name matches are kept. Empty keeps every group. |
+
+An empty tenant ID, or the multi-tenant endpoints `common`, `organizations` and `consumers`, is refused when the
+provider is saved, because it would let users of any Microsoft tenant sign in. At sign-in, the server also checks that
+the token comes from the configured tenant. A provider saved earlier without a tenant ID signs nobody in: the server
+logs `Could not enable Entra ID : set the tenant id to your tenant` until the tenant ID is filled in.
 
 The Redirect URL is pre-filled from the **Public Root Url** of the general settings; check it before saving.
 Saving the provider applies it immediately, without a restart.
