@@ -66,7 +66,7 @@ With **Full group path** on, the claim holds paths such as `/af-admins`, and the
 
 ## Add the provider
 
-Add the provider under **Access > OAuth2**, with **Provider** set to **Open ID**:
+Add the provider under **Access > SSO**, on the **Providers** tab, with **Provider** set to **Open ID**:
 
 | Field | Meaning |
 |---|---|

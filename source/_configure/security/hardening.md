@@ -30,7 +30,7 @@ and [`ADMIN_PASSWORD`](../customization/server.html#env_ADMIN_PASSWORD), whose d
 * [`REINIT_ADMIN`](../customization/server.html#env_REINIT_ADMIN)`=1` resets the password to `ADMIN_PASSWORD` at every
   start. Use it only to recover a lost password, then unset it and restart.
 * Set the two master secrets first: see [Secrets and encryption](secrets.html).
-* Once LDAP or OAuth2 sign-in works, keep the local admin for emergencies only, with a long password stored in your vault.
+* Once LDAP or SSO sign-in works, keep the local admin for emergencies only, with a long password stored in your vault.
 
 ---
 

@@ -30,7 +30,7 @@ AnsibleForms supports four login methods, and several can be active at the same 
 | OIDC | Single sign-on through another OpenID Connect provider, such as Keycloak. | [OIDC](oidc.html) |
 
 Local accounts and LDAP are configured under **Access > Users**, **Groups** and **LDAP**; Entra ID and OIDC under
-**Access > OAuth2**.
+**Access > SSO**.
 
 ---
 
