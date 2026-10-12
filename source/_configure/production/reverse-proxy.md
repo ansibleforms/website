@@ -37,6 +37,7 @@ Only a few settings affect how AnsibleForms behaves behind a proxy:
 | [`PORT`](../customization/server.html#env_PORT) | The port the proxy forwards to, `8000` by default. The docker-compose project sets it to `443`. |
 | [`HTTPS`](../customization/server.html#env_HTTPS) | `0` when the proxy terminates TLS and reaches the application over a private network, `1` to encrypt that hop as well. |
 | [`BASE_URL`](../customization/server.html#env_BASE_URL) | The subpath, for example `/ansibleforms`. Leave it at `/` when the application has a host name of its own. |
+| [`TRUST_PROXY`](../customization/server.html#env_TRUST_PROXY) | Which proxies may report the client address in `X-Forwarded-For`, usually `1`. See [Client addresses](#client-addresses). |
 | [`API_BODY_LIMIT_MB`](../customization/server.html#env_API_BODY_LIMIT_MB) | Largest JSON request the application accepts, 50 MB by default. The proxy must allow at least this. |
 | [`UPLOAD_MAX_GB`](../customization/server.html#env_UPLOAD_MAX_GB) | Largest file a form upload field accepts, 10 GB by default. The proxy must allow it too, or uploads fail there. |
 | **Public Root Url** | Under **Settings**: the address users reach, subpath included. It builds the links in notification emails. |
@@ -79,15 +80,35 @@ the AnsibleForms routes, as in the examples below.
 
 ## Client addresses
 
-AnsibleForms does not read `X-Forwarded-For`. Behind a proxy, the IP address in the audit trail and in the log is
-the address of the proxy, so correlate with the proxy's access log when you need the client address.
+Behind a proxy every connection comes from the proxy. Without [`TRUST_PROXY`](../customization/server.html#env_TRUST_PROXY),
+the audit trail records the proxy's address for every action, and the per-address
+[sign-in limits](../security/hardening.html#sign-in-limits-and-passwords) count all clients as one address.
+`TRUST_PROXY` says which proxies the application may believe when they report the client in `X-Forwarded-For`:
+
+| Value | Client address |
+|-------|----------------|
+| `0` (default) | The address of the connection. `X-Forwarded-For` is ignored; empty, `false`, `off` and `no` mean the same. |
+| A number, e.g. `1` | Trusts that many proxies in front of the application: `1` for a single reverse proxy, `2` for a load balancer in front of an ingress. |
+| A list, e.g. `10.0.0.5,172.16.0.0/12` | Trusts the proxies at these addresses and CIDR ranges. The presets `loopback`, `linklocal` and `uniquelocal` are accepted too. |
+| `true` | Trusts every hop: the left-most address of `X-Forwarded-For` is used. |
+
+The application walks `X-Forwarded-For` from the right, skips the trusted proxies, and takes the first address that is
+not one of them. Use the exact number of proxies, or their addresses:
+
+* `X-Forwarded-For` is a plain request header that any client can send. A number that is too high, or `true`, lets a
+  client choose the address the audit trail records. `true` is only safe when the application can be reached through
+  the proxy alone, and the server logs a `[SECURITY]` warning at start when it is set.
+* The proxy must add the address it received the connection from, as the examples below do
+  (`$proxy_add_x_forwarded_for` in Nginx; Traefik and Apache `mod_proxy` add it by default).
+* An invalid value is refused on the settings page; set in the environment, it is logged as an error at start and
+  no proxy is trusted. A change saved on the settings page applies without a restart.
 
 ---
 
 ## Examples
 
 Each example publishes AnsibleForms at `https://forms.example.com/ansibleforms/`, with TLS terminated by the proxy and
-the application running with `HTTPS=0`, `PORT=8000` and `BASE_URL=/ansibleforms`:
+the application running with `HTTPS=0`, `PORT=8000`, `BASE_URL=/ansibleforms` and `TRUST_PROXY=1`:
 
 <div class="af-tabs" data-tab-group="proxy">
 <div class="af-tab-list" role="tablist">
@@ -136,6 +157,7 @@ publishes no port of its own, Traefik reaches it on the network:
       - HTTPS=0
       - PORT=8000
       - BASE_URL=/ansibleforms
+      - TRUST_PROXY=1                 # Traefik is the one proxy in front
     labels:
       - traefik.enable=true
       - traefik.http.routers.ansibleforms.rule=Host(`forms.example.com`) && PathPrefix(`/ansibleforms`)
