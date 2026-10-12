@@ -29,7 +29,7 @@ A read-only **review page** is appended automatically to the end of every wizard
 
 On submission, the **collected values from all steps are merged into a single extravars payload** and sent to the underlying playbook, template or multistep form, exactly as if the user had filled in a single large form.
 
-A form with a `wizard` does not need its own `fields`, but it cannot set `launchValidation` or `enableForChat`, and a `subform` cannot have a `wizard` itself.
+A form with a `wizard` does not need its own `fields`, but it cannot set `enableForChat`, and a `subform` cannot have a `wizard` itself. [Launch validation](../launch-validation/rolling-it-out.html#wizard-forms) checks a wizard launch step by step.
 
 {: .note }
 > For how a `wizard` differs from a `multistep` form, and how the two combine, see the FAQ entry [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form).
