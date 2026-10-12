@@ -28,6 +28,19 @@ It uses stateless Streamable HTTP with plain JSON responses, so `GET` and `DELET
 
 ---
 
+## Limiting what agents can do
+
+Two more switches narrow the MCP server for every client. Like `ENABLE_MCP`, they apply without a restart:
+
+| Variable | With `1` |
+|---|---|
+| [`MCP_READ_ONLY`](../customization/features.html#env_MCP_READ_ONLY) | The server offers no `launch_job` and no `relaunch_job` tool, and refuses them. Agents can list, read and fill in forms and follow jobs, but launch nothing: a safe way to try an agent. |
+| [`MCP_CHAT_FORMS_ONLY`](../customization/features.html#env_MCP_CHAT_FORMS_ONLY) | Agents only see the forms that set `enableForChat: true`, the same list as the [chat assistant](../chat/). Any other form, and any job of one, answers as not found. |
+
+Both are off by default: agents see every form the user's roles allow, and may launch them.
+
+---
+
 ## Authentication
 
 Every request needs an AnsibleForms access token:
