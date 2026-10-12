@@ -55,7 +55,7 @@ Every group gets the type as prefix:
 
 | Login method | Username | Groups |
 |---|---|---|
-| Local | the local username | `local/<group>`, the user's one local group |
+| Local | the local username | `local/<group>`, one for each local group of the user |
 | LDAP | the value of the Username Attribute | `ldap/<cn>`, the CN of each group the directory returns |
 | Entra ID | the `upn` claim | `azuread/<display name>`, read from Microsoft Graph |
 | OIDC | the `preferred_username` claim | `oidc/<name>`, from the `groups` claim of the ID token |
