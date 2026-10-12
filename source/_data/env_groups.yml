@@ -30,11 +30,13 @@
          YTT_DANGEROUS_ALLOW_ALL_SYMLINK_DESTINATIONS, YTT_VARS_PREFIX, "YTT_LIB_DATA_{dynamic}"]
 - slug: security
   title: Security variables
-  lead: sign-in limits, passwords, single sign-on, tokens, encryption, the browser policy, outbound REST hosts, masking and the old VAULT_* settings
+  lead: sign-in limits, passwords, single sign-on, tokens, encryption, the browser policy, outbound REST hosts, masking, and the VAULT_* variables, read once to import a secret store
   vars: [LOGIN_MAX_FAILURES, LOGIN_MAX_FAILURES_PER_IP, LOGIN_LOCKOUT_MINUTES, AUTH_RATE_LIMIT, PASSWORD_MIN_LENGTH,
          ENABLE_SSO, SSO_AUTO_LOGIN, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_REFRESH_EXPIRATION,
          ACCESS_TOKEN_ISSUER, API_TOKEN_MAX_DAYS, ENCRYPTION_SECRET, CONTENT_SECURITY_POLICY, AZURE_GRAPH_URI, REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, EXPRESSION_SANITIZER,
          REGEX_FILTER_JOB_OUTPUT, MASK_EXTRAVARS_REGEX, EXTRAVARS_USER_FIELDS,
+         # VAULT_* : only read by the first 7.x start, which imports them once as the secret store `vault`
+         # (server/src/secrets/importVaultEnv.js) ; the store is then managed under Connections > Secret stores
          VAULT_ADDR, VAULT_TOKEN, VAULT_NAMESPACE, VAULT_KV_VERSION, VAULT_DEFAULT_MOUNT, VAULT_CACHE_TTL_MS, VAULT_SKIP_VERIFY]
 - slug: logging
   title: Logging
