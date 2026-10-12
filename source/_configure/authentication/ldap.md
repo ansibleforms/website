@@ -38,6 +38,8 @@ One set of settings serves Active Directory, OpenLDAP and others, and only one d
 
 The settings are under **Access > LDAP**; they are greyed out until **Enable LDAP** is on.
 
+![Access > LDAP, the Server tab](../assets/screenshots/ldap.jpg)
+
 | Setting | Default | Meaning |
 |---|---|---|
 | Enable LDAP | off | Turns LDAP login on. |
