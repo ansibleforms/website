@@ -32,7 +32,7 @@ logs. A public remote needs neither field.
 
 For an SSH remote, AnsibleForms authenticates with its own key pair, which it generates at the first start.
 
-1. Open **Settings > Connections > SSH** and copy the **Public Key**.
+1. Open **Settings > Connections > SSH**, on its **Key** tab, and copy the **Public Key**.
 2. Add it on the git server, as a deploy key of the repository (with write access if you push), or to a user with access.
 3. Add the repository with an SSH **Uri**, for example `git@git.example.com:team/forms.git`, and leave **Password** empty.
 
@@ -40,7 +40,8 @@ The key pair lives in `.ssh/id_rsa` under [`HOME_PATH`](../customization/paths.h
 persistent storage, or the key changes when the container is recreated.
 
 On a clone with a `user@host:path` Uri, AnsibleForms first runs `ssh-keyscan` on the host and adds its key to the
-known hosts. For other remotes, add the host under **Settings > Connections > Known Hosts** before the first clone.
+known hosts. For other remotes, add the host on the **Known hosts** tab of **Settings > Connections > SSH** before the
+first clone.
 
 ### Custom git commands
 
