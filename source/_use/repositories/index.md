@@ -12,7 +12,7 @@ permalink: /repositories/
 # Git repositories
 {: .no_toc }
 
-Keep forms, configuration, playbooks and vars files in git
+Keep forms, vars files, configuration and playbooks in git
 {: .fs-6 .fw-300 }
 
 ---
@@ -28,9 +28,8 @@ A repository is a git remote that AnsibleForms clones and keeps up to date, and 
 | Switch | What AnsibleForms reads from it | Folder in the repository |
 |---|---|---|
 | **Use for config ?** | `config.yaml` with the categories, roles and constants | the root |
-| **Use for forms ?** | The form files, which the designer also saves back into it | `forms`, or the root |
+| **Use for forms ?** | The form files, which the designer also saves back into it, and their vars files | `forms`, or the root; vars files in `vars` |
 | **Use for playbooks ?** | The Ansible playbooks that jobs run | `playbooks`, or the root |
-| **Use for vars files ?** | The vars files that forms load | `vars`, or the root |
 | **Use for workflows ?** | The [workflow](../workflows/) files, which the designer also saves back into it | any folder |
 | **Use for inventories ?** | One inventory, named after the repository, which a form names with `inventory:` | the root: `inventory.yaml`, `group_vars`, `host_vars` |
 
@@ -42,7 +41,7 @@ Every repository is cloned into a subfolder named after it, under [`REPO_PATH`](
 
 ### One repository for everything
 
-A single repository can hold all four kinds of content, with every switch enabled and one subfolder per kind.
+A single repository can hold forms, vars files, configuration and playbooks, with the switches enabled and one subfolder per kind.
 
 ```
 forms-repo/
@@ -61,9 +60,9 @@ Separate repositories let teams own their part, with one switch each and the fil
 | `af-config` | **Use for config ?** | `config.yaml` |
 | `af-forms-network`, `af-forms-storage` | **Use for forms ?** | The form files of each team, merged into one list |
 | `af-playbooks` | **Use for playbooks ?** | The playbooks and roles |
-| `af-vars` | **Use for vars files ?** | The vars files |
 
-Only forms can come from several repositories; config, playbooks and vars files each come from one.
+Only forms can come from several repositories; config and playbooks each come from one. The vars files come from the `vars`
+folder of the first forms repository that has one.
 
 ---
 
@@ -76,7 +75,7 @@ Repository content replaces the matching local folder; this table summarizes whe
 | Configuration | 1. the database, when the configuration is kept there ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. `config.yaml` of the **Use for config** repository <br> 3. `config.yaml` of a **Use for forms** repository, when no repository is used for config <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
 | Forms | Every **Use for forms** repository plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) only when there is none |
 | Playbooks | The **Use for playbooks** repository, otherwise [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Vars files | The **Use for vars files** repository, otherwise [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Vars files | The `vars` folder of the first **Use for forms** repository that has one, otherwise [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
 | Workflows | Every **Use for workflows** repository plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), together |
 
 Forms from several repositories are merged into one list. When two of them hold a form with the same name, the first one
