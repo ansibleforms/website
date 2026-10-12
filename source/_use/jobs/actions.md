@@ -168,9 +168,10 @@ No saved form data found for job <id>. This job may have been created before the
 A job with an [approval point](../forms/approval.html) stops in status `approve` and waits. It is visible to every user on
 the Jobs page, so the approvers can find it.
 
-The approve and reject icons, or **Approve job** and **Reject job** on the job's page, are shown to admins and to
-users who have one of the approval's roles. The dialog shows the approval's title and message, with the job's values
-filled in:
+**Review approval** is offered to admins and to users who have one of the approval's roles: a click on the job's row,
+**Review approval** in the row menu, or the **Review approval** button on the job's page. The dialog shows the approval's
+message, with the job's values filled in (or a generic line without one), and the form, the job id, who launched it and
+when, with a link to the job; **Reject** and **Approve** answer it:
 
 * **Approve**: the job continues and its status returns to `running`.
 * **Reject**: the job ends as `rejected`, and its output records `rejected by <username>`.
