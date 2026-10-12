@@ -72,9 +72,10 @@ The python environment and the collections folder belong to `node`, so these ins
 packages switches to `USER root` for them and back to `USER node` at the end. To bring your own python and ansible, build on
 `ansibleforms-rte-base` (`Dockerfile.own-ansible` in the same folder).
 
-Keep the image on the app's release: `:7` follows the app's `:7`, and an exact `7.x.y` pins both. An RTE of an older release keeps
-working as long as it speaks the same contract as the app. When it no longer does, the release notes say that RTEs must be updated,
-and **Test connection** on the runner and the **Status** page show it in red.
+Keep the image on the app's release: `:7` follows the app's `:7`, and an exact `7.x.y` pins both. What the app and an RTE must
+share is their contract, a number both report: 7.0.0 brought contract 2, so an RTE of an older 7 release keeps working with a newer
+app as long as both still speak contract 2. When a release changes the contract, its release notes say that RTEs must be updated,
+the RTE refuses the app's jobs, and **Test connection** on the runner and the **Status** page show it in red.
 
 Collections and roles can also be mounted instead of baked in, at `/etc/ansible/collections` and `/etc/ansible/roles`. Then no
 rebuild is needed per change, but what runs depends on that volume; python libraries always go into the image. Baking everything
