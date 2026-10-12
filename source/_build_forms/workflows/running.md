@@ -48,6 +48,12 @@ not run. The facts at the top name the workflow in place of a playbook.
 - **Click a node** that finished to open its output in a dialog.
 - **The output** holds every node's output under a `WORKFLOW NODE [identifier] (status)` banner, in the order the nodes
   finished.
+- **Show extravars** and **Show artifacts**, on each node's header in the output and in the dialog opened from the graph,
+  show that node's own extravars and artifacts (`{}` when it has none), as JSON or YAML, with a Copy button.
+
+A node's extravars hold what the nodes before it passed on, and its artifacts what its playbook gathered with
+`set_stats`. The two buttons follow the [role options](../config/roles.html#role-options) `showExtravars` and
+`showArtifacts`. The same data comes from `GET /api/v2/job/{id}/node/{nodeId}`, for anyone who may see the job.
 
 The job fails when a node failed and nothing handled it, by AWX's rule; otherwise it succeeds.
 
