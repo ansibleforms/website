@@ -41,6 +41,20 @@ For local servers and proxies that need no key, a base URL alone is enough; no a
 
 ---
 
+## The API key
+
+The key comes from a credential, so it is stored and rotated like every other secret:
+
+* Create a credential of type **api** under **Settings > Connections > Credentials** (see [Credentials](../credentials.html)),
+  with the key as its password. It can also read the key from a [secret store](../secret-stores/).
+* Choose it in the **Credential** field of the chat settings. The key is read for every message, so a
+  changed password applies to the next message.
+
+A key saved on the settings page before credentials existed keeps working while no credential is chosen. The
+[config seed](../seed/) sets the key itself, as `api_key`.
+
+---
+
 ## For a proxy
 
 A proxy or gateway in front of the model may need these settings:
