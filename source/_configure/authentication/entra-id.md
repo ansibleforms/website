@@ -56,7 +56,6 @@ Add the provider under **Access > SSO**, on the **Providers** tab, with **Provid
 
 | Field | Meaning |
 |---|---|
-| Enable | Shows the Entra ID button on the login page. Enabling it disables any other Entra ID provider. |
 | Name | A unique name for the provider. |
 | Description | Optional. |
 | Tenant ID | Required. The Directory (tenant) ID, a GUID, or one of the tenant's domains. Only users of that tenant can sign in. |
@@ -69,6 +68,10 @@ An empty tenant ID, or the multi-tenant endpoints `common`, `organizations` and 
 provider is saved, because it would let users of any Microsoft tenant sign in. At sign-in, the server also checks that
 the token comes from the configured tenant. A provider saved earlier without a tenant ID signs nobody in: the server
 logs `Could not enable Entra ID : set the tenant id to your tenant` until the tenant ID is filled in.
+
+One Entra ID provider is active at a time, the one the Entra ID button signs in with. A new provider is active when no
+other Entra ID provider is; to switch, choose **Use for sign-in** in the row menu of another one, which makes the
+others of its type inactive. The **Active** column of the **Providers** tab shows which one is in use.
 
 The Redirect URL is pre-filled from the **Public Root Url** of the general settings; check it before saving.
 Saving the provider applies it immediately, without a restart.

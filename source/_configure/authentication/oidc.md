@@ -70,13 +70,16 @@ Add the provider under **Access > SSO**, on the **Providers** tab, with **Provid
 
 | Field | Meaning |
 |---|---|
-| Enable | Shows the OpenID button on the login page. Enabling it disables any other OIDC provider. |
 | Name | A unique name for the provider. |
 | Description | Optional. |
 | Client ID | The client ID at the provider, e.g. `ansibleforms`. |
 | Issuer | The issuer URL, e.g. `https://keycloak.example.com/realms/example`. |
 | Redirect URL | Filled in as `<Public Root Url>/api/v2/auth/oidc/callback`; must match the provider's redirect URI. |
 | Client Secret | The client secret, stored encrypted. |
+
+One OIDC provider is active at a time, the one the OpenID button signs in with. A new provider is active when no
+other OIDC provider is; to switch, choose **Use for sign-in** in the row menu of another one, which makes the
+others of its type inactive. The **Active** column of the **Providers** tab shows which one is in use.
 
 The Redirect URL is pre-filled from the **Public Root Url** of the general settings; check it before saving.
 Saving the provider applies it immediately. When the issuer cannot be reached, the server logs
