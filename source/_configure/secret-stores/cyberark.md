@@ -30,8 +30,7 @@ In addition to the [fields every store has](./#adding-a-store), a CyberArk store
 | Field | Meaning |
 |---|---|
 | URL | Base URL of the CCP, e.g. `https://ccp.example.com`. `/AIMWebService/api/Accounts` is added. |
-| AppID | The application defined for AnsibleForms in CyberArk. |
-| Client certificate / key | PEM, only when the AppID requires a client certificate. |
+| Credential | A **CyberArk** credential of [Connections > Credentials](../credentials.html): its AppID (the application defined for AnsibleForms in CyberArk), and a client certificate and key in PEM, only when the AppID requires one. |
 
 ---
 

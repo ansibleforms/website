@@ -22,7 +22,7 @@ In addition to the [fields every store has](./#adding-a-store), a HashiCorp Vaul
 
 | Field | Meaning |
 |---|---|
-| Token | A token with read access to the paths your credentials use. AnsibleForms does not renew it. |
+| Credential | A credential whose password is the Vault token, with read access to the paths your credentials use. **Add credential** makes it an API credential. AnsibleForms does not renew the token. |
 | Namespace | Vault Enterprise namespace, sent as `X-Vault-Namespace`. |
 | KV version | `2` (default) or `1`. |
 | Default mount | Used for a reference without a slash, e.g. `myapp` becomes `secret/data/myapp`. |
