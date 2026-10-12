@@ -70,8 +70,11 @@ The response holds a new pair, in the same shape as the login. A refresh token w
 A script that runs unattended can use a token that lasts longer. It needs the `extendedTokenExpiration` role option:
 
 * Create one under [Profile > API token](../profile/api-token.html).
-* Or log in with `expiryDays`, for a token valid that many days:
+* Or log in with the `expiryDays` query parameter, for a token valid that many days:
 
 ```bash
-curl -X POST https://af.example.com/api/v2/auth/login -u automation:<password> -d expiryDays=90
+curl -X POST "https://af.example.com/api/v2/auth/login?expiryDays=90" -u automation:<password>
 ```
+
+`expiryDays` is read from the URL only, never from the body. For a user whose roles lack `extendedTokenExpiration`, it is
+ignored, and the login returns a token with the usual lifetime.
