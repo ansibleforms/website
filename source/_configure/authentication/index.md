@@ -48,6 +48,21 @@ A failed username and password login always shows the same generic message; the 
 
 ---
 
+## Switching single sign-on
+
+Two settings, on the **General** tab of **Access > SSO** or in the environment, apply to single sign-on as a whole:
+
+| Variable | Default | Effect |
+|---|---|---|
+| [`ENABLE_SSO`](../customization/security.html#env_ENABLE_SSO) | `1` | `0` removes the Entra ID and OpenID buttons from the login page and refuses their sign-in. The providers stay configured. |
+| [`SSO_AUTO_LOGIN`](../customization/security.html#env_SSO_AUTO_LOGIN) | `0` | `1` skips the login page when exactly one provider type is enabled: users go straight to that provider. |
+
+With `SSO_AUTO_LOGIN=1` and both an Entra ID and an OIDC provider enabled, the login page shows both buttons to choose
+from. The username and password form stays reachable at `/login?local`, for the local admin or when the provider fails,
+and it is shown after signing out and when a single sign-on login comes back with an error. Both apply without a restart.
+
+---
+
 ## From user to roles
 
 Each login produces a user with a **type** (`local`, `ldap`, `azuread` or `oidc`), a username and a list of groups.
