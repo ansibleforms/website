@@ -185,6 +185,14 @@ A user with settings access no longer has full control over who is an admin and 
 
 Give the admin role to whoever manages runners, admins and roles.
 
+### The default password must be changed
+
+A user who signs in with the public default password `AnsibleForms!123` must change it first. Until then, every other API
+call answers `403` with the code `password_change_required`, and the browser shows the change-password page.
+
+Sign in once and choose a new password, or set [`ADMIN_PASSWORD`](customization/server.html#env_ADMIN_PASSWORD) before the
+first start. Scripts that log in with the default password must use another one.
+
 ---
 
 ## Image tags
