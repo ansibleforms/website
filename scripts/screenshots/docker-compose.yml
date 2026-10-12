@@ -1,6 +1,15 @@
-# A throwaway AnsibleForms instance for the screenshots, with its own database.
+# A throwaway AnsibleForms instance for the screenshots, with its own database and its own RTE
+# (runtime environment : AnsibleForms 7 runs every playbook there, none in the app itself).
 # run.sh starts it from a copy of ./data and removes it, volumes included, afterwards.
 name: af-screenshots
+x-database: &database
+  DB_HOST: db
+  DB_PORT: 3306
+  DB_USER: root
+  DB_PASSWORD: Screenshots!123
+  # the app stores the RTE's token encrypted with it : both must share the same one
+  ENCRYPTION_SECRET: Screenshots!Encryption!Secret!1
+  RTE_TOKEN: Screenshots!RTE!Token!123
 services:
   db:
     image: mysql:8.4
@@ -18,15 +27,43 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: Screenshots!123
+      <<: *database
       PORT: 443
       HTTPS: 1
+      # the public default password : seed.mjs changes it through the api, as the app asks
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: AnsibleForms!123
+    # healthy once the app answers, which it only does after creating the schema
+    healthcheck:
+      test: ["CMD", "node", "./healthcheck.js"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
     ports:
       - "${AF_PORT:-8444}:443"
+    volumes:
+      - ${AF_DATA:?the copy of ./data that run.sh makes}:/app/dist/persistent
+  # runs the playbooks of the seeded jobs ; it registers itself as the default runner at
+  # RTE_URL, so no runner has to be added. It only starts once the app created the schema.
+  rte:
+    image: ghcr.io/ansibleforms/ansibleforms-rte-full:${AF_VERSION:-latest}
+    depends_on:
+      db:
+        condition: service_healthy
+      app:
+        condition: service_healthy
+    environment:
+      <<: *database
+      AF_ROLE: rte
+      PORT: 8000
+      HTTPS: 0
+      RTE_URL: http://rte:8000
+    healthcheck:
+      test: ["CMD", "node", "./healthcheck.js"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+      start_period: 30s
     volumes:
       - ${AF_DATA:?the copy of ./data that run.sh makes}:/app/dist/persistent
