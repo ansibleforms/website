@@ -201,6 +201,18 @@ changing a password.
 An API token requested with `?expiryDays=` lives at most [`API_TOKEN_MAX_DAYS`](customization/#env_API_TOKEN_MAX_DAYS) days
 (90 by default). Scripts that use long-lived API tokens must request a new one before it expires.
 
+### Entra ID needs your tenant
+
+Entra ID (Azure AD) sign-in now uses OpenID Connect against your own tenant only, and a user of another tenant cannot sign
+in. A provider without a tenant id, or with `common`, `organizations` or `consumers`, is refused.
+
+- **Set the tenant id** on the SSO provider: the Directory (tenant) ID, a GUID, or the tenant's domain.
+- **Grant the Graph permissions:** the login asks for `openid profile email User.Read GroupMember.Read.All`. Give the app
+  registration the delegated Microsoft Graph permissions `User.Read` and `GroupMember.Read.All`, with admin consent.
+- **Prefer group ids in roles:** name a group as `azuread/<object id>` rather than by its display name.
+
+See [Entra ID](authentication/entra-id.html) for the setup.
+
 ---
 
 ## Image tags
