@@ -21,7 +21,7 @@ kind: Deployment
 metadata:
   name: ansibleforms
 spec:
-  # AnsibleForms is single-instance. See the warning below.
+  # AF_ROLE unset : the web app and the worker in one pod. See the note below.
   replicas: 1
   strategy:
     type: Recreate
@@ -31,7 +31,6 @@ spec:
     metadata:
       labels: { app: ansibleforms }
     spec:
-      # long enough for the longest playbook run to finish at shutdown
       terminationGracePeriodSeconds: 120
       containers:
         - name: ansibleforms
@@ -73,12 +72,13 @@ spec:
             claimName: ansibleforms-persistent
 ```
 
-{: .warning }
-> **AnsibleForms is single-instance.** Scheduled tasks run in-process, the designer lock is
-> a file, and playbooks run as child processes of the pod. Two overlapping pods mean two
-> nightly backups, a lock file on a volume the second pod may not be able to mount, and
-> running jobs killed at cutover. Use `replicas: 1` with the `Recreate` strategy; a
-> rolling update is not safe here.
+{: .note }
+> **One pod, with `AF_ROLE` unset.** This pod runs the web app and the worker in one process. The schedules, the nightly
+> backup and the other background work run only in the process that holds the worker lock in the database, the designer
+> lock is a database table, and the playbooks run on an RTE, not in this pod. Keep `replicas: 1` with the `Recreate`
+> strategy all the same: on an upgrade the new pod waits for the worker to patch the schema, and the old pod holds the
+> worker lock until it stops. To run several web nodes, split them into `AF_ROLE=app` nodes and a worker, as
+> [Scaling](../production/scaling.html) describes.
 
 `ENCRYPTION_SECRET` must be set before any credential is entered. Once credentials come
 from the seed, the database is effectively a cache, so rotating it means re-applying the
