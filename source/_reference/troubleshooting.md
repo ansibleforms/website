@@ -23,7 +23,6 @@ log, which you can read under [Server Log](gui/administration.html#server-log) o
 * [Schema creation is disabled](#schema-creation-is-disabled)
 * [Config seed failed, refusing to start](#config-seed-failed-refusing-to-start)
 * [ENCRYPTION_SECRET is not set](#encryption_secret-is-not-set)
-* [Schedule is running, skipping, this is not normal](#schedule-is-running-skipping-this-is-not-normal)
 
 **Configuration and forms**
 
@@ -176,26 +175,6 @@ longer be decrypted, so LDAP logins, credentials and AWX connections that worked
 
 Set `ENCRYPTION_SECRET` before you store any password, and keep it with your other secrets: backups never contain it.
 If you changed it by mistake, set the old value back. Otherwise re-enter every stored password after the change.
-
----
-
-## Schedule is running, skipping, this is not normal
-
-The log repeats this error, and scheduled jobs stop running:
-
-```
-Schedule is running, skipping, this is not normal, this means 2 instances are running against the same database
-```
-
-**Why this happens**
-
-A schedule is still marked as running while this instance has nothing running. AnsibleForms is a single-instance
-application, and this usually means a second instance uses the same database. At startup an instance releases schedules
-that a crash left at running, with `Released <n> schedule(s) left at 'running' by a previous run`.
-
-**How to fix it**
-
-Run a single instance. See [Deployment topology](faq.html#deployment-topology-single-instance-only) in the FAQ.
 
 ---
 
