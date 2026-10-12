@@ -17,7 +17,9 @@ Define the forms your users fill in
 
 For form authors: how forms are written in YAML, where they are loaded from, and the properties of each form type.
 
-Forms are the core of AnsibleForms. Each form is a web interface that collects user input and runs an Ansible playbook or an AWX/AAP/Ascender template with that data.
+Forms are the core of AnsibleForms. Each form is a web interface that collects user input and, with that data, runs an
+Ansible playbook, an AWX, AAP or Ascender template, a Semaphore template, a Rundeck or Jenkins job, or a
+[workflow](../workflows/).
 
 Forms are defined in YAML files in the forms folder. Each YAML file contains either a single form or a list of forms, and subfolders can be used to organize them.
 
