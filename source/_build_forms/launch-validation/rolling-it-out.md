@@ -18,16 +18,17 @@ Move an instance to enforce, and the known limitations
 
 ## Rolling it out
 
-Move an instance to `enforce` in steps, watching the log before refusing anything:
+`enforce` is the default. On an instance with scripts or other systems that launch forms over
+REST, reach it in steps, watching the log before refusing anything:
 
-1. Set `launchValidation: log` on the forms launched over REST, or `LAUNCH_VALIDATION=log` for the whole instance.
+1. Set `LAUNCH_VALIDATION=log` for the whole instance (before upgrading, on an upgrade).
 2. Run in this mode for a while and review the log: `would refuse` warnings indicate launches
    that break the rules; `extravars differ` warnings indicate forms that compute something
    differently on the server (a timestamp, outside data). Decide for each form whether that
    matters.
 3. Switch those forms to `launchValidation: enforce`. Callers that sent invalid values or
    made-up extravars now get a `422` with the reason.
-4. When every form behaves as expected, consider `LAUNCH_VALIDATION=enforce` for the whole instance.
+4. When every form behaves as expected, remove `LAUNCH_VALIDATION` (or set it to `enforce`) for the whole instance.
 
 ---
 
