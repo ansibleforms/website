@@ -109,9 +109,10 @@ playbook forms run on it at once. With `RTE_REGISTER=0` it does not: add it unde
 in the `runners:` section of the [config seed](seed/). See [Runners](runners.html) and [Scaling](production/scaling.html).
 
 {: .warning }
-> **Same release for the app and the RTE** The app resolves a job's credentials and hands them to the RTE sealed for
-> that RTE (RTE contract 2). An RTE of an older contract is refused: run the RTE image of the same release as the app,
-> and upgrade both together.
+> **The same contract for the app and the RTE** The app resolves a job's credentials and hands them to the RTE sealed for
+> that RTE (RTE contract 2, new in 7.0.0). An RTE of another contract refuses the app's jobs: run the RTE image of the same
+> release as the app, and upgrade both together. Later 7 releases keep working with an older 7 RTE as long as the contract
+> stays the same (see [Scaling](../production/scaling.html#build-your-own-rte)).
 
 
 ### What the RTE image contains
