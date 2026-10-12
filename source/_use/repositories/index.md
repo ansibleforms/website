@@ -31,9 +31,12 @@ A repository is a git remote that AnsibleForms clones and keeps up to date, and 
 | **Use for forms ?** | The form files, which the designer also saves back into it | `forms`, or the root |
 | **Use for playbooks ?** | The Ansible playbooks that jobs run | `playbooks`, or the root |
 | **Use for vars files ?** | The vars files that forms load | `vars`, or the root |
+| **Use for workflows ?** | The [workflow](../workflows/) files, which the designer also saves back into it | any folder |
+| **Use for inventories ?** | One inventory, named after the repository, which a form names with `inventory:` | the root: `inventory.yaml`, `group_vars`, `host_vars` |
 
 Without the subfolder, the repository root is used. One repository can hold everything; if you split them, only **Use for
-forms** may be on several (their forms are merged): the other switches take the first repository and log a warning.
+forms**, **Use for workflows** and **Use for inventories** may be on several: the other switches take the first repository
+and log a warning.
 
 Every repository is cloned into a subfolder named after it, under [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
@@ -74,6 +77,7 @@ Repository content replaces the matching local folder; this table summarizes whe
 | Forms | Every **Use for forms** repository plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) only when there is none |
 | Playbooks | The **Use for playbooks** repository, otherwise [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
 | Vars files | The **Use for vars files** repository, otherwise [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflows | Every **Use for workflows** repository plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), together |
 
 Forms from several repositories are merged into one list. When two of them hold a form with the same name, the first one
 loaded is kept and the warning `skipping duplicate form <name>` is logged, so keep form names unique across repositories.
@@ -82,7 +86,7 @@ loaded is kept and the warning `skipping duplicate form <name>` is logged, so ke
 
 ## Troubleshooting
 
-Most problems show in the **Status** column and in **Show output**, which holds git's own error message.
+Most problems show in the **Pull** column and in **Show output**, which holds git's own error message.
 
 - [A repository clone or pull failed](../troubleshooting.html#a-repository-clone-or-pull-failed): authentication, known
   hosts and local changes.

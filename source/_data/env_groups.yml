@@ -8,9 +8,9 @@
          ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, UPLOAD_MAX_GB, PROCESS_MAX_BUFFER]
 - slug: paths
   title: Paths
-  lead: where the configuration, forms, playbooks, uploads and backups live
+  lead: where the configuration, forms, playbooks, workflows, uploads and backups live
   vars: [CONFIG_PATH, FORMS_FOLDER_PATH, FORMS_STAGING_PATH, FORMS_BACKUP_PATH, LOCK_PATH, HOME_PATH, REPO_PATH,
-         VARS_FILES_PATH, ANSIBLE_PATH, UPLOAD_PATH, BACKUP_PATH]
+         VARS_FILES_PATH, ANSIBLE_PATH, WORKFLOWS_PATH, UPLOAD_PATH, BACKUP_PATH]
 - slug: retention
   title: Backups and retention
   lead: the backup commands, and how long backups, jobs and audit records are kept

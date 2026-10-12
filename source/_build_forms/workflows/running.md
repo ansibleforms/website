@@ -1,0 +1,73 @@
+---
+layout: default
+title: Running a workflow
+parent: Workflows
+nav_order: 3
+---
+
+# Running a workflow
+{: .no_toc }
+
+Launch a workflow from a form, and follow it on the jobs page
+{: .fs-6 .fw-300 }
+
+1. TOC
+{:toc}
+
+---
+
+## The form
+
+A form of [type `workflow`](../forms/workflow.html) launches a workflow, named with `workflow:`:
+
+```yaml
+- name: Deploy the app
+  type: workflow
+  workflow: deploy-app
+  roles:
+    - admin
+  fields:
+    - name: app_name
+      type: text
+      default: orders-api
+```
+
+The form's fields reach every node as extra vars. In the designer's Visual tab of a form, **Workflow** is a list of the
+designer's workflows.
+
+---
+
+## The job
+
+A workflow job runs on the AnsibleForms server, and each playbook node runs as a job of its own on the RTE, a child of the
+workflow job as a multistep form's steps are.
+
+The job's page draws the workflow, live: each node coloured by its status, the links that fired, and the nodes that will
+not run. The facts at the top name the workflow in place of a playbook.
+
+- **Click a node** that finished to open its output in a dialog.
+- **The output** holds every node's output under a `WORKFLOW NODE [identifier] (status)` banner, in the order the nodes
+  finished.
+
+The job fails when a node failed and nothing handled it, by AWX's rule; otherwise it succeeds.
+
+---
+
+## Approvals
+
+An approval node holds the workflow job until someone answers it.
+
+When the workflow reaches an approval node, the job's status turns to **Needs approval**: it shows in the bell and on the
+job's page, as a form's [approval point](../forms/approval.html), and the users the form's `approval` names can approve or
+reject it. The form's approval notifications are sent as well.
+
+- **Approved**, the node succeeds and the workflow goes on along its *on success* links.
+- **Rejected**, the node fails and the workflow goes on along its *on failure* links.
+- **Timed out**, after the node's timeout with no answer, the node fails as well.
+
+---
+
+## Abort
+
+**Abort** on a running workflow job stops it: the running node jobs are aborted, nothing more starts, and an approval it
+waits on is canceled. A workflow job waiting on an approval can be aborted too.

@@ -2,7 +2,7 @@
 layout: default
 title: Wizard
 parent: Forms
-nav_order: 6
+nav_order: 7
 ---
 
 # Wizard

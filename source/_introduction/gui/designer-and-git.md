@@ -22,7 +22,8 @@ Editing forms and keeping them in git
 
 ## Builtin Designer
 
-Edit forms, categories, constants and roles as YAML, with a file explorer for the form files.
+Edit forms, categories, constants, vars files, playbooks, inventories and workflows, each as YAML, with fields (Visual)
+and as a preview. The [Designer](../designer/) pages describe each section.
 
 ![Builtin Designer](../assets/screenshots/designer.jpg)
 

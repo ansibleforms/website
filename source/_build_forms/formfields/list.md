@@ -191,7 +191,7 @@ One `Address` subform reused by two list fields of the same form:
 - name: Create customer
   type: ansible
   playbook: customer.yaml
-  roles: [public]
+  roles: [default]
   fields:
     - name: name
       type: text
@@ -338,7 +338,7 @@ A subform can hold a list field of its own, for a list inside each row:
 - name: My Form
   type: ansible
   playbook: people.yaml
-  roles: [public]
+  roles: [default]
   fields:
     - name: people
       type: list
@@ -377,7 +377,7 @@ Reference it with the standard `$(...)` expression syntax in the field definitio
 - name: Deploy cluster
   type: ansible
   playbook: deploy.yml
-  roles: [public]
+  roles: [default]
   fields:
     - name: environment
       type: enum

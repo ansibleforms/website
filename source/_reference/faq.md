@@ -55,7 +55,7 @@ This works for both single-form files (a YAML dict) and multi-form files (a YAML
 - name: My Form
   type: ansible
   playbook: site.yml
-  roles: [public]
+  roles: [default]
   fields:
     - name: env
       type: enum
@@ -395,7 +395,7 @@ A `type: multistep` form runs one playbook or template per step. The user fills 
 - name: Provision host
   type: multistep
   roles:
-    - public
+    - default
   steps:
     - name: Create host
       type: ansible
@@ -417,7 +417,7 @@ A `wizard:` block on an `ansible` (or `awx`) form spreads input collection over 
 - name: Provision host
   type: ansible
   roles:
-    - public
+    - default
   playbook: provision.yml
   wizard:
     - subform: basics
@@ -451,7 +451,7 @@ A wizard can be layered on top of a multistep form. The user fills in the wizard
 - name: Provision and verify host
   type: multistep
   roles:
-    - public
+    - default
   wizard:
     - subform: basics
       title: Basics
@@ -527,7 +527,7 @@ The `name` of a wizard step (defaults to its `subform` name) is the namespace un
   type: ansible
   playbook: provision.yml
   roles:
-    - public
+    - default
   wizard:
     - subform: basics          # step name defaults to "basics"
       title: Basics
@@ -592,7 +592,7 @@ name: myplaybook
 type: ansible
 playbook: myplaybook.yaml
 roles:
-  - public
+  - default
 credentials:
   vc_cred: vcenter
   ad_cred: ad
@@ -701,7 +701,7 @@ awxCredentials:
   - vmware
 executionEnvironment: my_execution_environment
 roles:
-  - public
+  - default
 categories: []
 inventory: my_inventory # will be overwritten by the field __inventory__
 tileClass: bg-info-subtle
@@ -985,7 +985,7 @@ A `list` field opens the referenced subform once per row:
 - name: Deploy to servers
   type: ansible
   roles:
-    - public
+    - default
   playbook: deploy.yml
   fields:
     - name: servers
@@ -1111,7 +1111,7 @@ Reference parent values with the standard `$(...)` expression syntax:
 - name: Deploy cluster
   type: ansible
   roles:
-    - public
+    - default
   playbook: deploy_cluster.yml
   fields:
     - name: environment
@@ -1145,7 +1145,7 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 - name: Manage users
   type: ansible
   roles:
-    - public
+    - default
   playbook: users.yml
   fields:
     - name: users
@@ -1170,7 +1170,7 @@ The `table` field and the `tableFields` property were deprecated in 6.2.0 and re
 - name: Manage users
   type: ansible
   roles:
-    - public
+    - default
   playbook: users.yml
   fields:
     - name: users
@@ -1189,7 +1189,7 @@ The `from` property of `tableFields` enum columns populated dropdown choices fro
 - name: Manage members
   type: ansible
   roles:
-    - public
+    - default
   playbook: members.yml
   fields:
     - name: available_departments
@@ -1226,7 +1226,7 @@ The `from` property of `tableFields` enum columns populated dropdown choices fro
 - name: Manage members
   type: ansible
   roles:
-    - public
+    - default
   playbook: members.yml
   fields:
     - name: available_departments

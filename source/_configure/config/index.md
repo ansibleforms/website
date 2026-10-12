@@ -27,7 +27,7 @@ The config.yaml file contains the configuration for categories, roles, and const
 
 **VIDEO**: [Create your first form](https://www.youtube.com/watch?v=lIhYZ9Et5Ic)
 
-The following minimal config.yaml serves as a starting point. It contains only the required `Default` category and the required `admin` and `public` roles.
+The following minimal config.yaml serves as a starting point. It contains only the required `Default` category and the required `admin` and `default` roles.
 
 ```yaml
 categories: # a list of categories to group forms
@@ -37,7 +37,7 @@ roles: # a list of roles
   - name: admin
     groups:
       - local/admins
-  - name: public
+  - name: default
     groups: []
     options:
       allowJobRelaunch: true

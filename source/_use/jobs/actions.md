@@ -29,7 +29,7 @@ The job also appears on the **Jobs** page, where you can follow it later.
 ### Who can launch a form
 
 A form is listed, and can be launched, for users who have one of the [roles](../config/roles.html) in its `roles` list.
-The `public` role, which every user has, makes a form available to everyone who can sign in.
+The `default` role, which every user has, makes a form available to everyone who can sign in.
 
 ### Before you submit
 

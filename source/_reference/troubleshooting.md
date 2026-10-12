@@ -260,7 +260,7 @@ A form file exists, but a user does not see the form on the dashboard.
 **Why this happens**
 
 A user sees a form only when one of the form's `roles` is one of the user's roles; admins see every form. Every user has
-the `public` role, so a form with `roles: [public]` is visible to all. A user's roles come from the groups and users
+the `default` role, so a form with `roles: [default]` is visible to all. A user's roles come from the groups and users
 listed under `roles` in `config.yaml`. A form without `categories` appears under **Default**, so it is missing from the
 other categories, though still listed under **All Forms**. Finally, a form that fails validation is skipped. The
 dashboard then shows a **This config has Warnings or Errors** button, which opens messages such as:

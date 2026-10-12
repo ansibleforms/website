@@ -61,7 +61,7 @@ Every group gets the type as prefix:
 | OIDC | the `preferred_username` claim | `oidc/<name>`, from the `groups` claim of the ID token |
 
 The [roles](../config/roles.html) in config.yaml then match these values: a role applies when one of its `groups` is one
-of the user's groups, or when its `users` holds `<type>/<username>`. Every user also gets the `public` role.
+of the user's groups, or when its `users` holds `<type>/<username>`. Every user also gets the `default` role.
 
 ```yaml
 roles:
@@ -78,5 +78,5 @@ roles:
 ```
 
 A user's **profile** page lists the login type, the groups and the roles, which is the quickest way to check a mapping.
-The `allowLogin` role option can refuse the login of users that match no role: set it to `false` on `public` and to
+The `allowLogin` role option can refuse the login of users that match no role: set it to `false` on `default` and to
 `true` on the roles that may sign in.

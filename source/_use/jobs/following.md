@@ -25,6 +25,11 @@ Clicking a job opens its page: the job's form as the title, its actions in the h
 While a job is running (or an abort is pending), the page polls it every 5 seconds and the output grows as the job
 writes it. Only jobs that started less than 6 hours ago are polled; use **Refresh** to reload any other job.
 
+While you are at the end of the output, the page follows it down as new lines come in. Scroll up to read an earlier line
+and it stays where you are: **Jump to latest** then shows over the bottom of the output, and turns to **New lines** once
+more came in. Click it, or scroll back down to the end, to follow the new lines again. The output on the form's page, after
+**Submit**, and the [server log](../production/logs.html) follow their new lines the same way.
+
 The output toolbar has:
 
 | Button | What it does |
@@ -44,3 +49,4 @@ The filter is set by [`REGEX_FILTER_JOB_OUTPUT`](../customization/security.html#
 default. Put `[low]` in the name of a noisy task, and **Apply filter** hides that task and its lines.
 
 Multistep jobs show the current step's output beside the main job; AWX/AAP workflows also show their nodes' status.
+[Workflow](../workflows/running.html#the-job) jobs draw their graph, live, and a click on a node opens its output.

@@ -200,7 +200,7 @@ Each step receives its own part of the extravars: an AWX step creates the server
 name: Server Provisioning
 type: multistep
 roles:
-  - public
+  - default
 categories:
   - Setup
 steps:
