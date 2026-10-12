@@ -532,18 +532,30 @@ See [AWX forms](forms/awx.html).
 
 ## A job shows the status abandoned
 
-A job that was running is now marked `abandoned`, and the log shows `Abandoned <n> jobs`.
+A job that was running is now marked `abandoned`, and the log of a node or an RTE shows one of:
+
+```
+Abandoned <n> jobs this node followed before it restarted
+Abandoned <n> jobs this worker followed before it restarted
+Abandoned <n> jobs followed by a node that stopped answering
+RTE : abandoned <n> job(s) left running by a previous start
+RTE : stopping with <n> job(s) still running : they end as abandoned
+Abandoned <n> jobs
+```
 
 **Why this happens**
 
-A running job's process lives inside AnsibleForms. When AnsibleForms restarts, every job that was still running is
-marked `abandoned`, because nothing is tracking it any more. Each hour, jobs that have been running for more than a day
-are marked abandoned too.
+A job belongs to the container that runs or follows it: a playbook to its RTE, any other job (an AWX job, the steps of a multistep
+form) to the app node that started it. When that container restarts, it ends its own unfinished jobs. When it disappears, a replaced
+pod for example, the worker ends its jobs once it has not answered for two minutes. A stopping RTE waits
+[`RTE_DRAIN_SECONDS`](customization/#env_RTE_DRAIN_SECONDS) for its playbooks first. Each hour, jobs that have been running for more
+than a day are marked abandoned too.
 
 **How to fix it**
 
-Relaunch the job. Restart AnsibleForms while no job is running. Check whether the playbook really finished on the
-managed hosts before you relaunch, because it may have run partly.
+Relaunch the job. Restart or upgrade RTEs and app nodes while no job is running, and give a stopping RTE enough time
+(see [Scaling](production/scaling.html#run-an-rte)). Check whether the playbook really finished on the managed hosts before you
+relaunch, because it may have run partly.
 
 ---
 
