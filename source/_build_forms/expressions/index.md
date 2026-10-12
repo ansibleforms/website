@@ -49,6 +49,7 @@ Each topic has a page of its own:
 
 | Page | What it covers |
 |---|---|
+| [Placeholders](placeholders.html) | Reference another field, a constant or the user with `$(...)` |
 | [Local expressions](local.html) | JavaScript that runs in the browser sandbox |
 | [Remote expressions](remote.html) | Server-side functions for dates, networks, files, SSH and numbered names |
 | [REST APIs](rest-apis.html) | Call REST APIs with basic, token or custom authentication |
