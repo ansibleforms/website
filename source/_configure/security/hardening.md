@@ -106,6 +106,6 @@ Some role options in [config.yaml](../config/roles.html) give more than their na
 | `showSettings` | Opens the administration pages. |
 | `showLogs` | Shows the server log, which can contain host names, user names and error details. |
 | `showAllJobLogs` | Shows the jobs of every user, not only the user's own. |
-| `extendedTokenExpiration` | Lets the user create long-lived API tokens, which cannot be revoked one by one. |
+| `extendedTokenExpiration` | Lets the user create API tokens that live up to [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) (90 by default). Signing out with a token ends it, and a password change ends all of the user's tokens, see [Tokens](secrets.html#tokens). |
 
 When the `admin` role sets no options it has all of them; options on the `default` role apply to every user.
