@@ -51,11 +51,12 @@ Every store has the following fields:
 |---|---|
 | Name | How credentials refer to the store. |
 | Type | The secret manager. |
-| URL | Base URL, e.g. `https://vault.example.com:8200`. |
+| Uri | Base URL, e.g. `https://vault.example.com:8200`. |
 | Credential | How the store logs in: a credential of [Connections > Credentials](../credentials.html), on the **Credentials** step. It cannot read from a secret store itself. |
 | Cache (seconds) | How long a secret that was read is reused. `0` reads it on every use. Default 60. |
-| Ignore certificates / CA bundle | TLS verification. Leave the bundle empty to trust the system CAs. |
-| Extra options | Options specific to the type, as a JSON object. |
+| Skip certificate verification | Do not check the store's TLS certificate at all. Off by default. |
+| Use a custom CA certificate / CA bundle | Check the certificate against a private CA, its certificates in PEM in the **CA bundle**. Off: the system CAs are trusted. |
+| Extra options (JSON) | Options specific to the type, as a JSON object. |
 
 **Test connection** checks access without reading a secret. The **Status** page checks every store, and warns 7 days
 before a Vault token expires.
