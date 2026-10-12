@@ -23,7 +23,10 @@ The admin account, the database, expressions, job data, optional features and ro
 The local admin account is created at first start from [`ADMIN_USERNAME`](../customization/server.html#env_ADMIN_USERNAME)
 and [`ADMIN_PASSWORD`](../customization/server.html#env_ADMIN_PASSWORD), whose default is `AnsibleForms!123`.
 
-* Change the password on the **Users** page; `ADMIN_PASSWORD` is only read when the account is first created.
+* A sign-in with the public default password `AnsibleForms!123` must change it first: until then the server answers
+  every request but the password change with `403` (code `password_change_required`), and the browser shows a
+  change-password page that cannot be closed. The new password cannot be the default again.
+* `ADMIN_PASSWORD` is only read when the account is first created: set your own value before the first start.
 * [`REINIT_ADMIN`](../customization/server.html#env_REINIT_ADMIN)`=1` resets the password to `ADMIN_PASSWORD` at every
   start. Use it only to recover a lost password, then unset it and restart.
 * Set the two master secrets first: see [Secrets and encryption](secrets.html).

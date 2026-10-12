@@ -28,8 +28,10 @@ Each start creates the local `admins` group and admin user if missing; three var
 
 `ADMIN_PASSWORD` is only used when the user is created or reset: changing it later does nothing on its own.
 
-{: .warning }
-> Change the default password right after the first login, on the profile page or with **Change Password** on the **Users** page.
+A local user who signs in with the public default password `AnsibleForms!123` can only change it. The browser opens a
+change-password page that cannot be closed, and the server answers every other request with `403` (code
+`password_change_required`) until the password is changed. The new password must differ from the default; after the
+change, the user signs in again with it. Set `ADMIN_PASSWORD` to your own value before the first start to skip this step.
 
 Changing `ADMIN_USERNAME` after the first start creates a second admin user with that name; the old one is kept.
 
