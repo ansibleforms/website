@@ -29,8 +29,11 @@ ENABLE_MCP=1
 LAUNCH_VALIDATION=enforce
 ```
 
-`ENABLE_MCP` needs a restart. Run `LAUNCH_VALIDATION=log` for a while first: it logs what `enforce` would refuse without refusing
-it. See [MCP](../mcp/) and [Log and enforce](../launch-validation/log-and-enforce.html).
+`ENABLE_MCP` and `ENABLE_CHAT` apply without a restart: they are read on every request, so you can switch them on the
+settings page. While one is off, its endpoint (`/api/v2/mcp` or `/api/v2/chat`) answers `404`.
+
+Run `LAUNCH_VALIDATION=log` for a while first: it logs what `enforce` would refuse without refusing it. See [MCP](../mcp/)
+and [Log and enforce](../launch-validation/log-and-enforce.html).
 
 ---
 
