@@ -19,11 +19,12 @@ Server-side functions for dates, networks, files, SSH and numbered names
 The following examples run with the field property `runLocal: false` (default).  
 They are evaluated on the server side.
 
-Because evaluating code on the server is a security risk, the expression is sanitized and limited to the predefined functions that come with AnsibleForms.  
+Because evaluating code on the server is a security risk, the expression is sanitized and limited to the functions that
+come with AnsibleForms and the [functions you add yourself](#your-own-functions).  
 Server-side expressions are meant to retrieve information from data sources such as files, REST APIs and SSH commands.
 
 {: .important }
-All server-side functions are prefixed with `fn.` (for example, `fn.fnRestBasic`).
+The built-in server-side functions are prefixed with `fn.` (for example, `fn.fnRestBasic`), your own with `fnc.`.
 
 ---
 
@@ -186,3 +187,46 @@ fn.fnGetNumberedName($(fieldlist),'server###','server001',true)
 // - default : if no value is found, return this default
 // - fillgaps : a boolean to indicate it can fill gaps in the numbers, 1,2,3,6 => 4
 ```
+
+---
+
+## Your own functions
+
+Add JavaScript functions of your own to `custom.js`, and call them in a server expression with the prefix `fnc.`.
+
+The file exports an object of functions. The one the image ships with holds two examples:
+
+```javascript
+import logger from "../lib/logger.js";
+
+const fnSum = function(a,b) {
+  logger.debug("[fnSum] sum is happening")
+  return a+b
+};
+
+export default {
+  fnSum
+};
+```
+
+```yaml
+- name: total
+  type: expression
+  expression: fnc.fnSum($(disk_count), 10)
+```
+
+In the same way, `jq.custom.definitions` holds jq definitions of your own. They are put in front of every jq query the
+server runs, so the [jq queries](jq.html) of every function can use them.
+
+In a container, map both files over the ones in the image, and restart; they are read when the server starts:
+
+```yaml
+volumes:
+  - ./data/functions/custom.js:/app/dist/src/functions/custom.js
+  - ./data/functions/jq.custom.definitions:/app/dist/src/functions/jq.custom.definitions
+```
+
+{: .warning }
+> A custom function runs inside the server process, with its rights, each time an expression calls it. The
+> [sanitizer](index.html#security-concerns) checks that the expression only calls `fn.` and `fnc.` functions; what a
+> function does with its arguments is up to you.
