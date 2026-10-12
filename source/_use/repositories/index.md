@@ -91,7 +91,7 @@ Most problems show in the **Pull** column and in **Show output**, which holds gi
   hosts and local changes.
 - [The forms repository is not cloned yet](../troubleshooting.html#the-forms-repository-is-not-cloned-yet): the designer
   cannot save before the first clone.
-- A repository stuck in `running` after a restart is reset to `failed` at the next start; run **Trigger** again.
+- A repository stuck in `running` after a restart is reset to `failed` at the next start; run **Pull** again.
 
 ---
 

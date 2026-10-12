@@ -31,7 +31,7 @@ With several forms repositories, **Save (repository)** and **Load (repository)**
 
 A push stages all changes, commits them as `AnsibleForms` with the message `Forms sync by <user>`, then fetches, rebases on
 the remote and pushes, retrying up to five times. A rebase conflict is aborted and the conflicted files are listed;
-fix them in the remote, or use **Reset Repository**. **Push to repo** on the Repositories page does the same.
+fix them in the remote, or use **Reset** on the Repositories page. **Push** on the Repositories page does the same.
 
 When a single forms repository is cloned empty, AnsibleForms copies the local `config.yaml` and forms into its working
-tree, so a **Push to repo** publishes them. More on the designer is in [Designer and git](../gui/designer-and-git.html).
+tree, so a push (**Save (repository)**, or **Push** on the Repositories page) publishes them. More on the designer is in [Designer and git](../gui/designer-and-git.html).

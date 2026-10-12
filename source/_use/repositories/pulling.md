@@ -24,7 +24,7 @@ A repository is pulled on its schedule, at start, from the page, or through the 
 |---|---|
 | Schedule | The **Cron Schedule** of the repository, for example `0 * * * *` for every hour |
 | Start | **Clone on app start ?** clones the repository, or pulls it when it is already cloned |
-| Settings page | **Trigger** in the row menu |
+| Settings page | **Pull** in the row menu, or **Pull all** above the list |
 | Designer | **Load (repository)**, which pulls the forms repositories and reloads the designer |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings`) or `POST /api/v2/forms-repos/pull/<name>` (`showDesigner`) |
 
@@ -51,4 +51,4 @@ holds the designer lock. A manual pull of a working tree with conflicting change
 Repository '<name>' has local changes that block the pull. Use 'Save (repository)' to push them first, or discard them.
 ```
 
-Push the changes, or discard them with **Reset Repository**, which deletes the working tree and clones it again.
+Push the changes, or discard them with **Reset** in the row menu, which deletes the working tree and clones it again.
