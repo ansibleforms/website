@@ -53,5 +53,9 @@ is never offered for them.
 The filter is set by [`REGEX_FILTER_JOB_OUTPUT`](../customization/security.html#env_REGEX_FILTER_JOB_OUTPUT), `\[low\]` by
 default. Put `[low]` in the name of a noisy task, and **Apply filter** hides that task and its lines.
 
-Multistep jobs show the current step's output beside the main job; AWX/AAP workflows also show their nodes' status.
-[Workflow](../workflows/running.html#the-job) jobs draw their graph, live, and a click on a node opens its output.
+A multistep job's page shows every step under the main job, one under the other, each under a title bar such as
+**Step 1 · Prepare the server (jobid 98)** with its status. Click a title (or press Enter or Space on it) to fold that output
+away, and again to unfold it. AWX/AAP workflows also show their nodes' status.
+
+[Workflow](../workflows/running.html#the-job) jobs keep every node's output in their own, under a `WORKFLOW NODE` banner per
+node; they draw their graph, live, and a click on a node opens its output.
