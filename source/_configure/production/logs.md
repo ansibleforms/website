@@ -33,6 +33,30 @@ the settings pages without a restart, and the **Server log** page shows the log 
 
 ---
 
+## JSON lines
+
+For a log collector such as Loki, ELK or Splunk, set [`LOG_FORMAT`](../customization/#env_LOG_FORMAT) to `json`. Every
+line, on the console and in the files, is then one JSON object instead of `<time> <level>: <message>`:
+
+```json
+{"time":"2026-10-12T08:15:02.113Z","level":"notice","message":"App running on port 8000!","role":"all","host":"forms01"}
+```
+
+| Field | Content |
+|-------|---------|
+| `time` | The time, in ISO 8601 UTC |
+| `level` | The log level |
+| `message` | The message |
+| `requestId` | The request the line belongs to, when it was written while serving one |
+| `role` | The role of the process, [`AF_ROLE`](scaling.html), or `all` when it is not set |
+| `host` | The host name of the machine or container the process runs in |
+
+Every request gets an id: the `X-Request-Id` header a reverse proxy sent, or a new one. It is returned in the response's
+`X-Request-Id` header and carried by every line written while the request is served (as `[req <id>]` in text lines),
+so a request can be followed through the log and matched with the proxy's. A change on the settings page applies at once.
+
+---
+
 ## Syslog
 
 Syslog servers are managed under **Settings > Connections > Syslog**, so a syslog server or SIEM gets the log as it is written.
