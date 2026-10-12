@@ -22,11 +22,12 @@ How AnsibleForms authenticates depends on the form of the **Uri**.
 
 ### HTTPS with a token
 
-For a private HTTPS remote, fill in **Username** and put a personal access token (or a password) in **Password**.
+For a private HTTPS remote, pick a **Credential** whose user is the git user and whose password is a personal access token
+(or the password).
 
 AnsibleForms inserts both into the URL when it runs git, as `https://<user>:<token>@git.example.com/team/forms.git`, so
 the token needs read access to pull, and write access to push. The token is masked in the output and the
-logs. A public remote needs neither field.
+logs. A public remote needs no credential.
 
 ### SSH with the generated key
 
@@ -34,7 +35,7 @@ For an SSH remote, AnsibleForms authenticates with its own key pair, which it ge
 
 1. Open **Settings > Connections > SSH**, on its **Key** tab, and copy the **Public Key**.
 2. Add it on the git server, as a deploy key of the repository (with write access if you push), or to a user with access.
-3. Add the repository with an SSH **Uri**, for example `git@git.example.com:team/forms.git`, and leave **Password** empty.
+3. Add the repository with an SSH **Uri**, for example `git@git.example.com:team/forms.git`, and pick no credential.
 
 The key pair lives in `.ssh/id_rsa` under [`HOME_PATH`](../customization/paths.html#env_HOME_PATH), so keep that folder on
 persistent storage, or the key changes when the container is recreated.

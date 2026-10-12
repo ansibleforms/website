@@ -22,8 +22,8 @@ A repository is pulled on its schedule, at start, from the page, or through the 
 
 | Trigger | How |
 |---|---|
-| Schedule | The **Cron Schedule** of the repository, for example `0 * * * *` for every hour |
-| Start | **Clone on app start ?** clones the repository, or pulls it when it is already cloned |
+| Schedule | **Enable scheduled pull** and a **Pull schedule**, for example `0 * * * *` for every hour |
+| Start | **Pull on app start** clones the repository, or pulls it when it is already cloned |
 | Settings page | **Pull** in the row menu, or **Pull all** above the list |
 | Designer | **Load (repository)**, which pulls the forms repositories and reloads the designer |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings`) or `POST /api/v2/forms-repos/pull/<name>` (`showDesigner`) |
