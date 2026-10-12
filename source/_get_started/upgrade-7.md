@@ -173,6 +173,18 @@ The rest of the RTE's environment, such as `PATH`, proxies, `ANSIBLE_*` settings
 A playbook that read one of these with `lookup('env', ...)` must get the value another way: pass it as an extravar or a
 credential, or set it on the RTE under another name.
 
+### Only the admin role manages runners and admins
+
+A user with settings access no longer has full control over who is an admin and where credentials go:
+
+- **Runners:** only the admin role adds, changes or deletes a runner, because a runner receives the credentials of the jobs
+  it runs. Users with settings access can still see and test runners.
+- **Admin accounts and groups:** only the admin role grants admin. Without it, a user cannot put an account in a group the
+  admin role names, nor change, reset or delete an admin account or such a group.
+- **Roles:** a designer without the admin role cannot change the roles. A save or a restore whose roles differ is refused.
+
+Give the admin role to whoever manages runners, admins and roles.
+
 ---
 
 ## Image tags
