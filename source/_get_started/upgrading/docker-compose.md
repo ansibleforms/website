@@ -16,8 +16,10 @@ Upgrade an installation made with the docker-compose project
 
 ---
 
-The docker-compose project runs the image tag `7`, which always points to the newest 7.x release. An upgrade pulls that
-image again and recreates the container. Everything that must persist is stored in the `data` folder and is preserved.
+The docker-compose project runs three containers: MySQL (`mysqldb`), AnsibleForms (`app`) and the RTE that runs the
+playbooks (`rte`). AnsibleForms and the RTE use the image tag `7`, which always points to the newest 7.x release. An
+upgrade pulls the images again and recreates the containers whose image changed. Everything that must persist is stored
+in the `data` folder and is preserved.
 
 ---
 
@@ -28,12 +30,17 @@ Prepare the upgrade so that you can go back if something goes wrong:
 * **Take a backup** under **Settings → Backups**. The new release upgrades the database schema at its first start.
 * **Read the [changelog](../changelog)** for the releases between your version and the new one.
 * **Moving to a new major version?** Follow [Upgrading to v7](../upgrade-7.html) first.
+* **Coming from 6.5?** The 6.x project, on its `v6` branch, has no `rte` container. Update your copy of the project to
+  its `main` branch, keeping your `.env` settings and your `data` folder, so that `docker-compose.yml` has the `rte`
+  service. The 7 images run as uid 1000 instead of root: give that user the `data` folder once, leaving the MySQL
+  files to MySQL, with `sudo find data -path data/mysql -prune -o -exec chown 1000:1000 {} +`.
+  The `data/ssh` folder is now mounted at `/home/node/.ssh` instead of `/root/.ssh`.
 
 ---
 
-## 1. Pull the new image
+## 1. Pull the new images
 
-Download the newest image of the tag in `docker-compose.yml`:
+Download the newest images of the tags in `docker-compose.yml`:
 
 <div class="af-tabs" data-tab-group="engine">
 <div class="af-tab-list" role="tablist">
@@ -90,7 +97,8 @@ sudo podman-compose up -d
 
 ## 3. Check the upgrade
 
-Follow the application log while it starts. The first start of a new release upgrades the database schema:
+Follow the AnsibleForms log while it starts. The first start of a new release upgrades the database schema, and the RTE
+starts once AnsibleForms is healthy:
 
 <div class="af-tabs" data-tab-group="engine">
 <div class="af-tab-list" role="tablist">
