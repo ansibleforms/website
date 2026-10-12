@@ -81,7 +81,8 @@ A launch does not always become a running job straight away:
 * **Approval** : a form with an [approval point](../forms/approval.html) creates the job, which then waits in status
   `approve`; see [Approve or reject a job](#approve-or-reject-a-job).
 
-When the job ends, the form's [notifications](../forms/notifications.html) send their mails, and its job status actions run.
+When the job ends, the form's [notifications](../forms/notifications.html) send their mails and channel messages, and its job
+status actions run.
 
 ### Other ways to start a job
 
