@@ -52,7 +52,7 @@ Every store has the following fields:
 | Name | How credentials refer to the store. |
 | Type | The secret manager. |
 | URL | Base URL, e.g. `https://vault.example.com:8200`. |
-| Credential | How the store logs in: a credential of [Connections > Credentials](../credentials.html), on the **Credentials** step. |
+| Credential | How the store logs in: a credential of [Connections > Credentials](../credentials.html), on the **Credentials** step. It cannot read from a secret store itself. |
 | Cache (seconds) | How long a secret that was read is reused. `0` reads it on every use. Default 60. |
 | Ignore certificates / CA bundle | TLS verification. Leave the bundle empty to trust the system CAs. |
 | Extra options | Options specific to the type, as a JSON object. |
