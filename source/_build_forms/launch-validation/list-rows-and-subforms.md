@@ -50,8 +50,8 @@ A launch may hold at most **500 rows** across all nesting levels, since each row
 
 ## Row markers
 
-The markers a list sets on its rows (`insertMarker`, `updateMarker` and `deleteMarker`; new
-rows get `__inserted__` when rows can be deleted or updated but no `insertMarker` is set)
+The markers a list sets on its rows (`insertMarker`, `updateMarker` and `deleteMarker`; with no
+`insertMarker`, new rows get `__inserted__` when the list sets `allowDelete: false`, a `deleteMarker` or an `updateMarker`)
 reach the playbook on every row that carries one. A removed row is sent with its delete
 marker, so the playbook can remove it. Before 6.4.1 a list row only carried a marker when its
 subform declared it as a (hidden) field.
