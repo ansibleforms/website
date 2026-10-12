@@ -39,7 +39,7 @@ The request takes these properties:
 | Property | Meaning |
 |---|---|
 | `formName` | The name of the form to launch. Required. |
-| `extravars` | The extra variables for the job. |
+| `extravars` | The extra variables for the job. `payload` is accepted as another name for it. |
 | `rawFormData` | The values of the form's fields, as the browser holds them. [Launch validation](../launch-validation/) checks these, and builds the extravars from them. |
 | `credentials` | Credentials to pass to the job, by name. |
 | `files` | The uploads of the form's file fields (see [File uploads](../launch-validation/file-uploads.html)). |
@@ -49,6 +49,30 @@ The response holds the new job's ID:
 ```json
 { "id": 42 }
 ```
+
+To run the job in verbose mode, add `"__verbose__": true` to the extravars. It needs the `allowVerboseMode` role option,
+or the launch answers `403`.
+
+---
+
+## Upload a file
+
+A form with a file field needs the file uploaded first. Send it as the multipart part `file` to `POST /api/v2/job/upload`:
+
+```bash
+curl -X POST https://af.example.com/api/v2/job/upload \
+  -H "Authorization: Bearer <token>" -F "file=@firmware.bin"
+```
+
+The answer describes the stored upload:
+
+```json
+{ "fieldname": "file", "originalname": "firmware.bin", "encoding": "7bit", "mimetype": "application/octet-stream",
+  "destination": "<UPLOAD_PATH>", "filename": "3f9c...", "path": "<UPLOAD_PATH>/3f9c...", "size": 1048576 }
+```
+
+Pass it unchanged in the launch's `files`, under the name of the file field: `"files": { "firmware": { ... } }`. The server
+checks it against its own disk (see [File uploads](../launch-validation/file-uploads.html)).
 
 ---
 
@@ -127,3 +151,12 @@ These endpoints act on an existing job:
 | `POST /api/v2/job/{id}/reject` | Reject a job that waits for approval |
 | `GET /api/v2/job/{id}/download` | Download the job's output |
 | `DELETE /api/v2/job/{id}` | Delete a job |
+
+Abort, approve, reject and delete answer with a message, and a relaunch also with the ID of the new job:
+
+```json
+{ "message": "Job has been relaunched with job id 43", "id": 43 }
+```
+
+Add `?verbose=true` to a relaunch to run the new job in verbose mode, with the `allowVerboseMode` role option. A job that
+is in the wrong state for the action, for example an abort of a job that already ended, answers `409`.
