@@ -54,3 +54,4 @@ Each topic has a page of its own; securing the instance is covered under [Securi
 | [Reverse proxy](reverse-proxy.html) | Publish AnsibleForms behind Nginx, Traefik or Apache, at the root or under a subpath |
 | [Backups](backups.html) | Nightly backups, what they contain, restores, and what else to keep |
 | [Logs](logs.html) | Log files, syslog, the audit trail, and retention of jobs and audit entries |
+| [Scaling](scaling.html) | The RTE images and their settings, and several app nodes with a worker |
