@@ -55,3 +55,4 @@ Each topic has a page of its own; securing the instance is covered under [Securi
 | [Backups](backups.html) | Nightly backups, what they contain, restores, and what else to keep |
 | [Logs](logs.html) | Log files, syslog, the audit trail, and retention of jobs and audit entries |
 | [Scaling](scaling.html) | The RTE images and their settings, and several app nodes with a worker |
+| [Monitoring](monitoring.html) | Health probes, Prometheus metrics and the Status page |
