@@ -72,8 +72,8 @@ Each secret manager has a page of its own:
 
 ### In a credential
 
-Under **Connections > Credentials**, pick the **Secret store** and fill in the **Secret
-reference**. Leave user and password empty.
+Under **Connections > Credentials**, on the credential's **Store** step, choose **Secret store**, then pick the
+**Secret store** and fill in the **Reference**. The user and password are then read from the store, not typed in.
 
 ### Inline, without a credential row
 
