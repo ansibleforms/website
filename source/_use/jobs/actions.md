@@ -103,10 +103,13 @@ A form can also start a job without a person pressing **Submit**:
 The ban icon in the list, or **Abort job** on the job's page, stops a job with status `running`. After you confirm,
 AnsibleForms marks the job for abort:
 
-* **`ansible`**: the playbook process (with all its workers) is stopped, and the job ends as `aborted` with
-  `... was aborted by the operator`. In a cluster, the instance that runs the playbook stops it within a few seconds.
-* **`awx`**: AnsibleForms asks AWX / AAP to cancel the job or workflow job, and the job ends as `aborted`. When AWX / AAP
-  refuses, the output shows `Abort request denied, reverting abort request` and the job keeps running.
+* **`ansible`**: the RTE stops the playbook process (with all its workers), and the job ends as `aborted` with
+  `... was aborted by the operator`. A job still waiting for a free RTE is aborted before it starts.
+* **A template job** (AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins): AnsibleForms asks the runner to cancel or stop
+  the job, and the job ends as `aborted`. When the runner refuses, the output shows `Abort request denied`, followed by
+  `reverting abort request`, and the job keeps running. A Jenkins build still in the queue is taken out of it.
+* **`workflow`**: the running node jobs are aborted and nothing more starts (see
+  [Running a workflow](../workflows/running.html#abort)).
 * **`multistep`**: the steps that have not started yet are skipped (`skipping: [Abort is requested]`), and the main job
   ends as `aborted`. A step that is already running is a job of its own: open it and abort it to stop it as well.
 
