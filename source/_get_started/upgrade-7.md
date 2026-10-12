@@ -213,6 +213,12 @@ in. A provider without a tenant id, or with `common`, `organizations` or `consum
 
 See [Entra ID](authentication/entra-id.html) for the setup.
 
+### Passwords have a minimum length
+
+A local password set through the application needs at least
+[`PASSWORD_MIN_LENGTH`](customization/#env_PASSWORD_MIN_LENGTH) characters (8 by default), and cannot be the username or the
+default password. `PASSWORD_MIN_LENGTH=0` turns the length check off. Existing passwords keep working.
+
 ---
 
 ## Image tags
