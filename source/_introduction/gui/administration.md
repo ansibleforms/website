@@ -16,7 +16,7 @@ redirect_from:
 # Administration
 {: .no_toc }
 
-Settings, authentication, credentials, backups and logs
+The Settings menu: the system, its appearance, access, connections and logs
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -24,56 +24,103 @@ Settings, authentication, credentials, backups and logs
 
 ---
 
-## Settings
+## The Settings menu
 
-Application settings and general configuration options.
-
-![Settings](../assets/screenshots/settings.jpg)
-
----
-
-## LDAP Configuration
-
-Configure LDAP/Active Directory authentication and authorization.
-
-![LDAP Configuration](../assets/screenshots/ldap.jpg)
+**Settings** in the header opens the administration pages, grouped in the left menu under **System**, **Appearance**,
+**Access**, **Connections** and **Logs**. Each entry shows only to a user with the role option its page needs:
+`allowBackupOps` for **Backups**, `showLogs` for **Server log**, and `showSettings` for every other page.
+See [Roles](../config/roles.html) for the role options.
 
 ---
 
-## Credential Manager
+## System
 
-Securely store and manage credentials used by playbooks.
+The instance itself: its settings, its health and its backups.
 
-![Credential Manager](../assets/screenshots/credentials.jpg)
+| Page | What it is for |
+|---|---|
+| **General** | The environment variables, in tabs from Configuration to Logging. See [Environment Variables](../customization/). |
+| **Status** | The health of the instance and the systems it depends on, in the tabs Checks and Information. See [Monitoring](../production/monitoring.html). |
+| **Backups** | Take, restore and delete backups of the database, config.yaml and the forms. See [Backups](../production/backups.html). |
 
----
+### Backups
 
-## Backups
+The list of backups, nightly and manual: **Add backup** takes one now, and a row's menu has **Show backup**, **Restore** and **Delete**.
 
-Automated backup and restore functionality for forms and configurations.
+### Restore
 
-![Backups](../assets/screenshots/backups.jpg)
-
----
-
-## Restore
-
-Restore forms and configurations from previous backups.
-
-![Restore](../assets/screenshots/restore.jpg)
+**Restore** shows what the backup holds, then restores it; **Create a new backup before restoring (recommended)** is ticked by default.
 
 ---
 
-## Server Log
+## Appearance
 
-The server's own log, under Settings, for troubleshooting and monitoring.
+How the instance looks for everyone, and the messages it shows.
 
-![Server Log](../assets/screenshots/logs.jpg)
+| Page | What it is for |
+|---|---|
+| **Defaults** | The theme, language, forms view, time zone and date format of users who chose none. See [Defaults](../appearance.html#defaults). |
+| **Name** | The name in the browser tab and on the sign-in page. See [Name](../appearance.html#name). |
+| **Logo** | Your own logo in the header. See [Logo](../appearance.html#logo). |
+| **Icon** | Your own icon in the browser tab. See [Icon](../appearance.html#icon). |
+| **Links** | The Designer link, and your own links and menus in the header. See [Links](../appearance.html#links). |
+| **Environment** | A label beside the logo, such as PRODUCTION. See [Environment](../appearance.html#environment). |
+| **Announcements** | Messages under the header, each from its start to its end. See [Announcements](../announcements.html). |
 
 ---
 
-## Swagger Interface
+## Access
 
-Interactive API documentation and testing via Swagger UI.
+Who may sign in, and what they may do once in.
+
+| Page | What it is for |
+|---|---|
+| **Disclaimer** | Terms every user accepts once, and who accepted which version. See [Disclaimer](../disclaimer.html). |
+| **Users** | The local users, and the LDAP and single sign-on ones. See [Users and groups](../users-and-groups.html). |
+| **Groups** | The local groups, and the LDAP and single sign-on ones. See [Users and groups](../users-and-groups.html#a-local-group). |
+| **Roles** | The roles of config.yaml: who has them and what they allow. See [Roles](../config/roles.html). |
+| **LDAP** | Sign-in with an LDAP directory or Active Directory. See [LDAP](../authentication/ldap.html). |
+| **SSO** | Single sign-on with Entra ID or OpenID Connect providers. See [Authentication](../authentication/). |
+
+---
+
+## Connections
+
+The systems AnsibleForms reaches, and what it logs in to them with.
+
+| Page | What it is for |
+|---|---|
+| **Repositories** | The git repositories the forms and playbooks come from. See [Git repositories](../repositories/). |
+| **Credentials** | The accounts and secrets that forms, playbooks and connections use. See [Credentials](../credentials.html). |
+| **Secret stores** | HashiCorp Vault and CyberArk, where credentials can be read from. See [Secret stores](../secret-stores/). |
+| **Runners** | Where jobs run: RTE containers for playbooks, and AWX and the like for templates. See [Runners](../runners.html). |
+| **SSH** | The key pair the app connects to git with, and the known hosts. See [SSH](../repositories/authentication.html#ssh-with-the-generated-key). |
+| **Notifications** | SMTP servers, Slack, Microsoft Teams, Telegram and webhooks. See [Notification channels](../notification-channels.html). |
+| **Chat assistant** | The AI provider of the chat assistant. See [Chat assistant](../chat/). |
+| **MCP** | The MCP server for AI agents. See [MCP](../mcp/). |
+| **Syslog** | Syslog servers that receive the server log, the audit log, or both. See [Syslog](../production/logs.html#syslog). |
+
+---
+
+## Logs
+
+What happened on the instance.
+
+| Page | What it is for |
+|---|---|
+| **Audit log** | Who changed what, and whether it was allowed, filtered by user, action and outcome. See [Audit trail](../production/logs.html#audit-trail). |
+| **Server log** | The server's own log, for troubleshooting. See [Logs](../production/logs.html). |
+
+### Server log
+
+The last lines of the log, the newest at the bottom, followed as they are written. The search box filters them (a regular
+expression), **Clear** empties the view, not the log, and **Download** saves the whole log.
+
+---
+
+## API docs
+
+**API docs** in the help menu (the question mark in the header) links to the Swagger UI of the REST API at `/api/v2/docs`.
+See [API](../api/).
 
 ![Swagger Interface](../assets/screenshots/swagger.jpg)
