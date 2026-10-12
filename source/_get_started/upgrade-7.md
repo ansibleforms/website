@@ -163,6 +163,16 @@ credentials the server builds from the checked values.
 
 See [Launch validation](launch-validation/) for the details.
 
+
+### Playbooks no longer see the app's settings
+
+A playbook no longer inherits the environment variables AnsibleForms reads itself: `ENCRYPTION_SECRET`, the `DB_*` settings,
+`ACCESS_TOKEN_SECRET`, `RTE_TOKEN`, the `VAULT_*` settings, every other documented variable and every `MYSQL_*` variable.
+The rest of the RTE's environment, such as `PATH`, proxies, `ANSIBLE_*` settings and cloud credentials, is passed as before.
+
+A playbook that read one of these with `lookup('env', ...)` must get the value another way: pass it as an extravar or a
+credential, or set it on the RTE under another name.
+
 ---
 
 ## Image tags
