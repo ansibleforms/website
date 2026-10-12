@@ -61,7 +61,7 @@ behaviour no longer matches the manifest that is supposed to describe it, with n
 reporting the mismatch. The reason is written to standard error as well as to the log file, so
 `kubectl logs` and `docker logs` show it.
 
-Validation is strict — unknown fields are rejected rather than ignored, and the error names
+Validation is strict: unknown fields are rejected rather than ignored, and the error names
 the offending key:
 
 ```

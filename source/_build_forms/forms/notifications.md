@@ -2,7 +2,7 @@
 layout: default
 title: Notifications
 parent: Forms
-nav_order: 8
+nav_order: 9
 ---
 
 # Email Notifications

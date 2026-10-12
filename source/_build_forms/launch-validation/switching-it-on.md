@@ -42,7 +42,7 @@ A form can set its own level:
 - name: Create VM
   type: ansible
   roles:
-    - public
+    - default
   playbook: vm.yml
   launchValidation: enforce   # off | log | enforce
   fields:

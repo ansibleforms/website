@@ -22,8 +22,16 @@ Repositories are managed under **Settings > Connections > Repositories**, which 
 
 ![Repositories](../assets/screenshots/git.jpg)
 
-The list shows the **Name**, **Branch**, **Head** (the short commit hash checked out), **Status** and **Description**.
-The status is `running` while git works, then `success` or `failed`. The menu of each row holds these actions:
+The list shows the **Name**, **Branch**, **Head** (the short commit hash checked out), **Pull**, **Push** and
+**Description**. A repository's **Details** tab shows the same Pull and Push badges above its head:
+
+| Column | What it says |
+|---|---|
+| **Pull** | The last clone, pull or reset: **Running** while git works, then **Success** or **Failed**; a dash before the first one |
+| **Push** | **Pending changes** when changes saved here, by the designer, are not pushed to the remote yet; **Success** when nothing waits |
+
+**Success** in the Push column means only that nothing waits to be pushed: the remote may still hold newer commits that a
+pull brings in. The menu of each row holds these actions:
 
 | Action | What it does |
 |---|---|

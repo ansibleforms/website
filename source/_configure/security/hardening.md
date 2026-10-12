@@ -108,4 +108,4 @@ Some role options in [config.yaml](../config/roles.html) give more than their na
 | `showAllJobLogs` | Shows the jobs of every user, not only the user's own. |
 | `extendedTokenExpiration` | Lets the user create long-lived API tokens, which cannot be revoked one by one. |
 
-When the `admin` role sets no options it has all of them; options on the `public` role apply to every user.
+When the `admin` role sets no options it has all of them; options on the `default` role apply to every user.

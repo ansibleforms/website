@@ -57,6 +57,7 @@ The following pages describe the form properties in detail:
 | [Ansible forms](ansible.html) | Properties specific to `type: ansible` |
 | [AWX forms](awx.html) | Properties specific to `type: awx` |
 | [Multistep forms](multistep.html) | Properties specific to `type: multistep` |
+| [Workflow forms](workflow.html) | Properties specific to `type: workflow`, which runs a [workflow](../workflows/) |
 | [Wizard](wizard.html) | Split a form's input across multiple pages (works on top of any executable form type) |
 | [Subform](subform.html) | Subforms use only the common properties |
 | [Approval Points](approval.html) | Pause a job until it is approved (`approval`) |

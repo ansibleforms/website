@@ -121,7 +121,7 @@ playbook: hello.yaml
 description: Greets you with the values you picked
 icon: play
 roles:
-  - public
+  - default
 categories:
   - Default
 fields:
@@ -168,7 +168,7 @@ The form uses four field types:
 
 `vm_size` shows both columns, `size` and `cpus`, and sends `size`, the first; `valueColumn` picks another.
 
-`roles: [public]` lets every logged-in user run the form, and `categories: [Default]` puts it in the category that the default
+`roles: [default]` lets every logged-in user run the form, and `categories: [Default]` puts it in the category that the default
 `config.yaml` defines.
 
 {: .note }

@@ -167,7 +167,7 @@ Reference it with the standard `$(...)` expression syntax in the field definitio
 - name: Configure server
   type: ansible
   playbook: configure.yml
-  roles: [public]
+  roles: [default]
   fields:
     - name: environment
       type: enum
