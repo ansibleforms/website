@@ -167,10 +167,10 @@ Every start logs this warning:
 
 **Why this happens**
 
-Stored passwords (credentials, the LDAP bind password, AWX tokens, the mail password, OAuth2 client secrets) are
+Stored passwords (credentials, the LDAP bind password, runner tokens, the mail password, OAuth2 client secrets) are
 encrypted with [`ENCRYPTION_SECRET`](customization/security.html#env_ENCRYPTION_SECRET). Without it, a key that is public
 in the source code is used. The same applies the other way round: when the secret changes, the stored passwords can no
-longer be decrypted, so LDAP logins, credentials and AWX connections that worked before start failing.
+longer be decrypted, so LDAP logins, credentials and runners that worked before start failing.
 
 **How to fix it**
 
@@ -538,14 +538,14 @@ failed to launch awx template <name>
 **Why this happens**
 
 The next line gives the reason. `Request failed with status code 401` means the token or user name and password of the
-AWX connection is refused. `could not find job template <name>` means neither a job template nor a workflow job template
+AWX runner is refused. `could not find job template <name>` means neither a job template nor a workflow job template
 has that exact name, or the connection's user cannot see it. A certificate error, such as
 `unable to verify the first certificate`, means the AWX certificate is not trusted.
 
 **How to fix it**
 
-Use **Test Connection** on the AWX connection, which answers `AAP connection is OK` when it works. Renew the token or
-password, check the template's name and permissions, and for certificate errors paste the CA into **Ca Bundle**. Enter
+Use **Test connection** on the runner (**Connections > Runners**), which answers `Runner connection is OK` when it works. Renew the
+token or password, check the template's name and permissions, and for certificate errors paste the CA into **CA bundle**. Enter
 the URI without `/api/v2`: AnsibleForms adds [`AWX_API_PREFIX`](customization/features.html#env_AWX_API_PREFIX) itself.
 See [AWX forms](forms/awx.html).
 
