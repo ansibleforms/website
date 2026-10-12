@@ -64,7 +64,7 @@ Above the table:
 * **Columns** shows or hides the columns `id`, `form`, `job type`, `status`, `start time`, `end time`, `duration` and `user`;
   a running job's duration counts up.
 
-The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customization/#env_JOBS_LIST_SIZE) setting says
+The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customization/features.html#env_JOBS_LIST_SIZE) setting says
 (**Settings > Jobs**, `1000` by default); its pages and filters cover those jobs.
 
 Each column can be sorted and has its own filter field. A multistep job has an arrow just before its `form` that expands

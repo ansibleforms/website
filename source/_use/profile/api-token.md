@@ -27,7 +27,7 @@ roles:
 To create a token:
 
 1. Select how long the token stays valid: 30, 90, 180 or 365 days, up to the maximum your administrator allows
-   ([`API_TOKEN_MAX_DAYS`](../customization/#env_API_TOKEN_MAX_DAYS), 90 days by default). Only the lifetimes up to that
+   ([`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS), 90 days by default). Only the lifetimes up to that
    maximum are offered, plus the maximum itself. Choose the shortest period your script needs.
 2. Enter your password to confirm your identity. The password is not stored in the token.
 3. Click **Create token** under the card, then copy the token with **Copy**.
