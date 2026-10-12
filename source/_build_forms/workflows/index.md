@@ -42,7 +42,8 @@ The nodes run by AWX's rules, and branches that do not depend on each other run 
 - **The workflow fails when a node failed and nothing handles it**: that node has no *on failure* and no *always* link.
   A failure that a link handles does not fail the workflow.
 
-A node with a condition (`if_extra_var`) that is not met is skipped. What follows it runs as after a success.
+A node with a condition (`if_extra_var`) that is not met is skipped. What follows it runs as after a success. An approval
+node takes no condition: it always waits for an answer.
 
 ---
 
