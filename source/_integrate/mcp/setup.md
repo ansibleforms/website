@@ -18,7 +18,8 @@ Switch the server on and authenticate the client
 
 ## Enabling it
 
-Set [`ENABLE_MCP`](../customization) to `1` and restart. The endpoint is:
+Set [`ENABLE_MCP`](../customization/features.html#env_ENABLE_MCP) to `1`. Changed on the settings page, the switch applies at
+once, without a restart. While it is off, the endpoint answers `404`. The endpoint is:
 
 ```
 POST <your url>/api/v2/mcp
