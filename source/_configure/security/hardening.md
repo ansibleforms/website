@@ -51,8 +51,8 @@ whether the account exists or not; above `AUTH_RATE_LIMIT` the answer is `429` a
 account's count, and so does an admin setting the user's password. `0` turns a limit off; `LOGIN_LOCKOUT_MINUTES=0`
 turns off both the lockout and the per-address limit.
 
-All of them count per client address: behind a reverse proxy, set `TRUST_PROXY` so the address is the client's and
-not the proxy's, see [Client addresses](../production/reverse-proxy.html#client-addresses).
+`LOGIN_MAX_FAILURES_PER_IP` and `AUTH_RATE_LIMIT` count per client address: behind a reverse proxy, set `TRUST_PROXY`
+so the address is the client's and not the proxy's, see [Client addresses](../production/reverse-proxy.html#client-addresses).
 
 A local password set through the application, for a new user, by an admin or by users changing their own, must have
 at least [`PASSWORD_MIN_LENGTH`](../customization/security.html#env_PASSWORD_MIN_LENGTH) characters (`8` by default,
