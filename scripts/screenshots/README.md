@@ -25,4 +25,7 @@ registers itself as the default runner, and the seeded jobs run there. The admin
 public default password, which AnsibleForms 7 refuses everything but changing: `seed.mjs` changes
 it first, and `capture.mjs` signs in with the new one.
 
+The same run is also a workflow, **Screenshots** (`.github/workflows/screenshots.yml`): run it from the Actions tab
+with a version, and the screenshots come back as an artifact, without Docker or a browser on your machine.
+
 All the example data is fictional (`example.com` hosts, example passwords).
