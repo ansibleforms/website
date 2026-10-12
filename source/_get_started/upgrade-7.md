@@ -149,6 +149,20 @@ The app and RTE images run as the user `node` (uid 1000) instead of root, and th
   [`HOME_PATH`](customization/paths.html#env_HOME_PATH) to `/root`, remove it or set it to `/home/node`.
 - **Your own RTE image** built on an RTE layer switches to `USER root` for its installs and back to `USER node` at the end.
 
+
+### Launch validation is on
+
+[`LAUNCH_VALIDATION`](customization/features.html#env_LAUNCH_VALIDATION) now defaults to `enforce` (6.5: `off`). Every
+launch, from the browser or from `POST /api/v2/job`, is checked against the form's rules, and the job runs the extravars and
+credentials the server builds from the checked values.
+
+- **REST callers must send `rawFormData`**, the raw field values as the browser sends them. A launch with only
+  `extravars` is refused, because its values cannot be checked.
+- **To see what would be refused first**, set `LAUNCH_VALIDATION=log` and read the warnings in the log. `off` restores the
+  behaviour of 6.5.
+
+See [Launch validation](launch-validation/) for the details.
+
 ---
 
 ## Image tags
