@@ -39,6 +39,21 @@ The commands may be wrappers such as `docker exec <container> mysqldump`, if the
 
 ---
 
+## Database rights
+
+The dump runs as [`DB_USER`](../customization/server.html#env_DB_USER), and needs no more than the rights the application itself needs:
+
+```sql
+CREATE USER 'ansibleforms'@'%' IDENTIFIED BY '<password>';
+GRANT ALL PRIVILEGES ON `AnsibleForms`.* TO 'ansibleforms'@'%';
+```
+
+The dump is taken with `--no-tablespaces`, so the server-wide `PROCESS` right is not needed, and it skips the tables
+that describe the running processes (`nodes`, `cache_epochs`, `designer_lock`). The restore replays it as the same user.
+The **Status** page shows a warning on its **Database user** check when the user has rights on every database, as `root` has.
+
+---
+
 ## What a backup contains
 
 Each backup is a folder under `BACKUP_PATH`, named after its UTC timestamp (`YYYYMMDDHHmmss`), holding:
