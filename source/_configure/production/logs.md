@@ -19,7 +19,8 @@ Log files, syslog, the audit trail, and how long jobs and audit entries are kept
 ## Log files
 
 AnsibleForms writes two daily-rotated logs to [`LOG_PATH`](../customization/logging.html#env_LOG_PATH)
-(`%PERSISTENT_FOLDER%/logs`), compresses older days and keeps 30 days:
+(`%PERSISTENT_FOLDER%/logs`), compresses older days and keeps them for [`LOG_RETENTION_DAYS`](../customization/#env_LOG_RETENTION_DAYS)
+(30 by default, `0` keeps every file; a change on the settings page applies at once):
 
 * `ansibleforms.<date>.log` : everything at [`LOG_LEVEL`](../customization/logging.html#env_LOG_LEVEL) and above
 * `ansibleforms.errors.<date>.log` : errors only
@@ -81,13 +82,17 @@ server's level. The syslog copy is not removed by the retention below, nor repla
 
 ## Retention
 
-Two daily tasks keep the database from growing without limit:
+Two daily tasks with a setting keep the database from growing without limit:
 
 | Variable | Default | Runs at | Removes |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Audit entries older than this |
 | [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (keep all) | 2:30 | Finished jobs older than this, with their output |
 
-`0` keeps everything for both. Job output is usually the fastest growing table: the **Status** page reports its size
+`0` keeps everything for both. Two more daily tasks have no setting: at 3:00 the stored refresh tokens older than 30 days and
+the expired token revocations are removed, and at 4:00 the [stored jobs](../jobs/stored-jobs.html) whose expiry has passed.
+The times are in the timezone of [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), and the worker runs them.
+
+Job output is usually the fastest growing table: the **Status** page reports its size
 and warns when it passes 1 GB with no retention set. Running jobs and jobs awaiting approval are never removed.
 Decide on a job retention that matches your audit requirements, and keep the audit trail at least as long.
