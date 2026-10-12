@@ -20,7 +20,7 @@ The MCP server offers the following tools:
 
 | Tool | What it does |
 |---|---|
-| `list_forms` | The forms the user may use: name, description, categories. |
+| `list_forms` | The forms the user may use: name, description, categories, and `enableForChat` (whether the chat assistant offers it). |
 | `get_form` | One form's full definition. Each field also carries `dynamic` (evaluated from an expression or query) and `dependsOn` (the fields it reads). |
 | `resolve_field` | Evaluates the form for the values filled in so far. See below. |
 | `launch_job` | Launches the form with the given values, exactly as a browser submission would. Returns the job id. |
@@ -68,14 +68,17 @@ When the form is complete, `resolve_field` also returns what `launch_job` will s
 - `modeledExtravars`: the extravars after `model`, `valueColumn` and `output` are applied,
   with password fields masked;
 - `credentials`: the AnsibleForms credentials the job will use (names, not secrets);
-- `payloadHash`: a SHA-256 hash of the form name, the real extravars and the credentials;
-- `formFingerprint`: a SHA-256 hash of the form definition it was resolved against.
+- `payloadHash`: a SHA-256 hash of the form name, the real extravars and the credentials.
 
 Show `modeledExtravars` to the operator, and pass the `payloadHash` they approved to
 `launch_job` as `expectedPayloadHash`. The launch resolves the form again and is refused
-when the result differs, for example because a query now answers differently or the form
-was edited. `ansibleforms_user`, `__jobid__` and `__verbose__` are added at launch and are
-not part of the hash.
+when the payload differs, for example because a query now answers differently.
+`ansibleforms_user`, `__jobid__` and `__verbose__` are added at launch and are not part of the hash.
+
+`launch_job` checks the payload only. An edit of the form that leaves the payload the same does not refuse the launch.
+Every answer of `resolve_field` also carries a `formFingerprint`, a SHA-256 hash of the form definition: to refuse a
+launch after any edit of the form, compare it yourself before you call `launch_job`, as the chat assistant's
+**Launch** button does.
 
 ---
 
