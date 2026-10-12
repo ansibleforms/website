@@ -50,7 +50,7 @@ The left menu filters the list by status, with the number of jobs in each:
 |---|---|
 | **All jobs** | Every job in the list |
 | **Running** | Jobs with status `running` |
-| **Waiting for approval** | Jobs with status `approve`; the count turns red when one is waiting |
+| **Needs approval** | Jobs with status `approve`; the count turns orange when one is waiting |
 | **Success** | Jobs with status `success` |
 | **Failed** | Jobs with status `failed` |
 | **Aborted** | Jobs with status `aborted` |
@@ -66,7 +66,7 @@ Above the table:
 
 Each column can be sorted and has its own filter field. A multistep job has an arrow in its `id` column that expands its steps.
 
-The bell in the header counts the jobs waiting for your approval and opens the list on **Waiting for approval**.
+The bell in the header counts the jobs waiting for your approval and opens the list on **Needs approval**.
 
 ---
 
