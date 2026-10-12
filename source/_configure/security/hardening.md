@@ -40,7 +40,20 @@ AnsibleForms holds every credential and job in its MySQL database, so keep that 
 
 * The docker-compose project publishes MySQL on the host (`MYSQLDB_LOCAL_PORT`, `3306`) and ships with the root
   password `AnsibleForms!123`. Remove that port mapping, or bind it to `127.0.0.1`, and change the password.
-* Connect with a dedicated account rather than `root` where your setup allows it: `DB_USER` and `DB_PASSWORD`.
+* Connect with a dedicated account rather than `root`, set in [`DB_USER`](../customization/server.html#env_DB_USER) and
+  [`DB_PASSWORD`](../customization/server.html#env_DB_PASSWORD). It needs rights on the `AnsibleForms` schema only:
+
+  ```sql
+  CREATE USER 'ansibleforms'@'%' IDENTIFIED BY '<password>';
+  GRANT ALL PRIVILEGES ON `AnsibleForms`.* TO 'ansibleforms'@'%';
+  ```
+
+  That covers creating the schema (the `CREATE DATABASE` included), patching it at upgrades, and the
+  [backups](../production/backups.html) and restores, which run as the same user: the dump is taken with
+  `--no-tablespaces`, so no server-wide right such as `PROCESS` is needed. Replace `%` with the address of the
+  application where you can. A user with rights on every database, as `root` has, turns a hole in the application into
+  a hole in the whole database server: the **Status** page warns about it in its **Database user** check, and the log
+  at every start.
 * Set [`ALLOW_SCHEMA_CREATION`](../customization/server.html#env_ALLOW_SCHEMA_CREATION) to `0` once the schema exists.
   Creating the schema drops every table first; with `0` neither the startup bootstrap nor the `/api/v2/schema`
   endpoint can run it.
