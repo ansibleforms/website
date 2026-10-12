@@ -60,6 +60,13 @@ Read the job by its ID:
 curl https://af.example.com/api/v2/job/42 -H "Authorization: Bearer <token>"
 ```
 
+The job holds its `status`, its `extravars` (also as `payload`, the same object), its `subjobs` and its `output`. The
+output is HTML with the colors of the job page; add `?text=true` for plain text, which suits a script or a log:
+
+```bash
+curl "https://af.example.com/api/v2/job/42?text=true" -H "Authorization: Bearer <token>"
+```
+
 Its `status` is `running` while it runs, and `approve` while it waits for an approval. A job ends with one of these:
 
 | Status | Meaning |
@@ -72,6 +79,39 @@ Its `status` is `running` while it runs, and `approve` while it waits for an app
 | `abandoned` | The process that followed the job stopped (a restart, a container replaced) and the job was given up |
 
 A job running on a runner when it was abandoned may still end with its real outcome, if that runner finishes it after all.
+
+---
+
+## Find jobs
+
+`GET /api/v2/job` lists the newest jobs first, as `{ "count": ..., "records": [ ... ] }`. These query parameters narrow it:
+
+| Parameter | Meaning |
+|---|---|
+| `records` | How many jobs, at most. The default is [`JOBS_LIST_SIZE`](../customization/features.html#env_JOBS_LIST_SIZE) (1000), and 5000 the most unless `JOBS_LIST_SIZE` is higher. |
+| `user`, `user_type` | Only the jobs of this user. `user_type` is `local` when left out (`ldap`, `azuread`, `oidc` for the others). |
+| `runner` | Only the jobs that ran on this runner |
+
+```bash
+curl "https://af.example.com/api/v2/job?records=20&user=automation" -H "Authorization: Bearer <token>"
+```
+
+A user sees their own jobs and the jobs that wait for an approval. An admin, or a role with the `showAllJobLogs` option,
+sees every job. A record holds the job's summary (`id`, `form`, `status`, `start`, `end`, `user`, `runner`, ...); read
+the job itself for its extravars and output.
+
+`GET /api/v2/job/approvals` answers with a number: how many jobs wait for an approval the user may give.
+
+---
+
+## More about a job
+
+These endpoints read more of one job:
+
+| Call | What it returns |
+|---|---|
+| `GET /api/v2/job/{id}/rawformdata` | The field values the job was launched with, as the form held them. The same permissions as a relaunch apply: your own job (or every job for an admin), a form that allows relaunch, and the `allowJobRelaunch` role option. |
+| `GET /api/v2/job/{id}/node/{nodeId}` | One node of a workflow job: `{ "node", "job", "extravars", "artifacts" }`, where `job` is the ID of the node's own job, or `null` when the node did not run. |
 
 ---
 
