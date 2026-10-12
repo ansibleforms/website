@@ -40,6 +40,9 @@ Obtain one in the usual way (`POST /api/v2/auth/login`, or the OIDC / Entra ID f
 refresh it with `POST /api/v2/token`. There is deliberately **no login tool**: a password passed as a
 tool argument would end up in the language model's context and its chat history.
 
+The user's roles must also allow the MCP server, through the `allowMcp` [role option](../config/roles.html). When no role
+of the user sets it, it follows `allowChat`, which is on by default. A user it is denied to gets `403` on every request.
+
 - **A chat backend** logs the user in itself, keeps the refresh token and passes the access
   token on every MCP call.
 - **An IDE client** needs a token that lasts long enough to be configured once. With a role
