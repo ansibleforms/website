@@ -27,12 +27,12 @@ A **wizard** turns a single form into a sequence of pages. Each page is rendered
 
 A read-only **review page** is appended automatically to the end of every wizard. It lists each step with its collected values so that the user can confirm them before submitting. The review page is **not** declared in YAML; its title is taken from the active locale.
 
-On submission, the **collected values from all steps are merged into a single extravars payload** and sent to the underlying playbook, template or multistep form, exactly as if the user had filled in a single large form.
+On submission, the **collected values from all steps are merged into a single extravars payload** and sent to the underlying playbook, template or workflow, exactly as if the user had filled in a single large form.
 
 A form with a `wizard` does not need its own `fields`, but it cannot set `enableForChat`, and a `subform` cannot have a `wizard` itself. [Launch validation](../launch-validation/rolling-it-out.html#wizard-forms) checks a wizard launch step by step.
 
 {: .note }
-> For how a `wizard` differs from a `multistep` form, and how the two combine, see the FAQ entry [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form).
+> For how a `wizard` differs from a workflow, and how the two combine, see the FAQ entry [What is the difference between a wizard and a workflow?](../faq.html#what-is-the-difference-between-a-wizard-and-a-workflow).
 
 ---
 
@@ -190,11 +190,13 @@ A wizard is enabled with a single form-level property:
 
 ---
 
-## Combining a wizard with multistep
+## Combining a wizard with a workflow
 
-A wizard can be layered on top of a [`multistep`](multistep.html) form. When each wizard step's `defaultModel` matches the [`key`](multistep.html#step_key) of the corresponding multistep step, each playbook or template receives only the values from its own wizard page.
+A wizard can be layered on top of a [workflow](workflow.html) form. When each wizard step's `defaultModel` matches the [`extra_vars_key`](../workflows/file.html#ansibleforms-own-keys) of the corresponding workflow node, each playbook or template receives only the values from its own wizard page.
 
-The FAQ contains a worked example and the layout of the merged extravars: [What is the difference between a wizard and a multistep form?](../faq.html#what-is-the-difference-between-a-wizard-and-a-multistep-form) (section *Combined (wizard on top of multistep)*).
+The FAQ contains a worked example and the layout of the merged extravars: [What is the difference between a wizard and a workflow?](../faq.html#what-is-the-difference-between-a-wizard-and-a-workflow) (section *Combined (wizard on top of a workflow)*).
+
+A wizard on a deprecated [`multistep`](multistep.html) form works the same way, with the step's [`key`](multistep.html#step_key) in place of `extra_vars_key`.
 
 ---
 
@@ -203,5 +205,5 @@ The FAQ contains a worked example and the layout of the merged extravars: [What 
 Related pages and FAQ entries:
 
 - [Subform](subform.html): wizard pages are rendered from subforms
-- [Multistep forms](multistep.html): the execution-layer counterpart of the wizard
+- [Workflow forms](workflow.html): the execution-layer counterpart of the wizard
 - [`__parent__` in subforms](../faq.html#how-do-i-access-parent-form-data-inside-a-subform): how to reference earlier wizard steps from a later step
