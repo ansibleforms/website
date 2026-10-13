@@ -40,6 +40,7 @@ Only a few settings affect how AnsibleForms behaves behind a proxy:
 | [`TRUST_PROXY`](../customization/server.html#env_TRUST_PROXY) | Which proxies may report the client address in `X-Forwarded-For`, usually `1`. See [Client addresses](#client-addresses). |
 | [`API_BODY_LIMIT_MB`](../customization/server.html#env_API_BODY_LIMIT_MB) | Largest JSON request the application accepts, 50 MB by default. The proxy must allow at least this. |
 | [`UPLOAD_MAX_GB`](../customization/server.html#env_UPLOAD_MAX_GB) | Largest file a form upload field accepts, 10 GB by default. The proxy must allow it too, or uploads fail there. |
+| [`MAX_HTTP_HEADER_SIZE`](../customization/server.html#env_MAX_HTTP_HEADER_SIZE) | Largest set of request headers the application accepts, 16 KB by default, from 7.0.4. See [Request header size](#request-header-size). |
 | **Public root URL** | Under **System > General**, on the **Server** tab: the address users reach, subpath included. It builds the links in notification mails, channel messages and approval requests. |
 
 For Entra ID or OIDC, register the public address as redirect URI, with the `BASE_URL` subpath if set.
@@ -79,6 +80,34 @@ The requests that can take long are:
 
 Proxies often time out after 60 seconds and cap request bodies (Nginx accepts 1 MB by default). Raise both for
 the AnsibleForms routes, as in the examples below.
+
+---
+
+## Request header size
+
+Every request carries the sign-in token in its `Authorization` header, next to cookies and the headers the proxy adds.
+Both the proxy and the application cap the size of the request headers, and refuse a request above the cap before
+AnsibleForms sees it, so nothing reaches the server log. The defaults:
+
+| Component | Limit | Default | Refused with |
+|-----------|-------|---------|--------------|
+| AnsibleForms (Node.js) | [`MAX_HTTP_HEADER_SIZE`](../customization/server.html#env_MAX_HTTP_HEADER_SIZE), all headers together | 16384 bytes | 431 |
+| Nginx | `large_client_header_buffers`, per header field | `4 8k`: 8 KB per field | 400 |
+| Nginx ingress controller | `large-client-header-buffers` in the controller's ConfigMap, per header field | `4 8k` | 400 |
+| Traefik | `http.maxHeaderBytes` of the entry point, all headers together | 1 MB | 431 |
+| Apache | `LimitRequestFieldSize`, per header field | 8190 bytes | 400 |
+
+Up to 7.0.3 the sign-in token carried every group of a single sign-on user, and could outgrow these limits, see
+[Empty forms and jobs after a single sign-on](../troubleshooting.html#empty-forms-and-jobs-after-a-single-sign-on-http-431).
+From 7.0.4 the token stays small, and the defaults are enough. When something else makes the headers large, such as
+cookies of other applications on the same domain or a single sign-on gateway in front, raise the limits together:
+
+* AnsibleForms: `MAX_HTTP_HEADER_SIZE=65536`, or before 7.0.4 `NODE_OPTIONS=--max-http-header-size=65536`; both are
+  read at start, so restart the application after a change
+* Nginx: `large_client_header_buffers 4 32k;` in the `http` or `server` block
+* Nginx ingress controller: `large-client-header-buffers: "4 32k"` in the ConfigMap of the controller; it has no
+  annotation for it, so it applies to every ingress of that controller
+* Apache: `LimitRequestFieldSize 32768` in the server config or the virtual host
 
 ---
 
