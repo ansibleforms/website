@@ -18,22 +18,26 @@ The parts of an installation, what happens at a launch, and where data is kept
 ## Architecture
 
 AnsibleForms is a Node.js server that serves the web application and a REST API, backed by a MySQL database. It reads forms
-from YAML files and hands each job to a [runner](runners.html): a playbook to an RTE (runtime environment) container that runs
-`ansible-playbook`, a template to AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins:
+from YAML files and runs nothing itself: it hands each job to a [runner](runners.html). A playbook goes to one of your RTE
+(runtime environment) containers, which runs `ansible-playbook`, and a template or job goes to AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins:
 
 <div class="af-diagram" markdown="0">
-<svg viewBox="0 0 760 470" role="img" aria-labelledby="afd-title afd-desc" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:100%;height:auto;color:var(--body-text-color);font-family:inherit">
+<svg viewBox="0 0 760 500" role="img" aria-labelledby="afd-title afd-desc" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:100%;height:auto;color:var(--body-text-color);font-family:inherit">
 <title id="afd-title">AnsibleForms architecture</title>
-<desc id="afd-desc">The browser and an optional MCP client talk to the AnsibleForms server. The server stores its data in MySQL and in the persistent folder, hands playbooks to an RTE container that runs ansible-playbook, and connects to AWX, AAP or Ascender, data sources, secret stores, git repositories, login providers, a mail server and an optional model provider.</desc>
+<desc id="afd-desc">The browser and an optional MCP client talk to the AnsibleForms server. The server stores its data in MySQL and in the persistent folder, and connects to data sources, secret stores, git repositories, login providers, notification channels, syslog servers and an optional model provider. Its runners hand each playbook to one of one or more RTE containers, which run ansible-playbook and write the output to MySQL, and each template or job to AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins.</desc>
 <style>
 .afd-box{fill:var(--af-accent-soft);stroke:currentColor;stroke-opacity:.45;stroke-width:1.2}
 .afd-main{fill:none;stroke:var(--link-color);stroke-width:1.8}
+.afd-solid{fill:var(--body-background-color)}
+.afd-back{stroke-opacity:.45}
 .afd-inner{fill:var(--body-background-color);stroke:currentColor;stroke-opacity:.35;stroke-width:1}
+.afd-run{fill:var(--af-accent-soft);stroke:var(--link-color);stroke-width:1.4}
 .afd-opt{stroke-dasharray:5 4}
 .afd-t{fill:currentColor;font-size:13px;font-weight:600}
 .afd-s{fill:var(--af-muted);font-size:11px}
 .afd-h{fill:var(--link-color);font-size:14px;font-weight:700}
 .afd-line{stroke:currentColor;stroke-opacity:.6;stroke-width:1.3;fill:none}
+.afd-go{stroke:var(--link-color);stroke-opacity:.85;stroke-width:1.5;fill:none}
 </style>
 <defs>
 <marker id="afd-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity=".7"/></marker>
@@ -46,7 +50,7 @@ from YAML files and hands each job to a [runner](runners.html): a playbook to an
 <text class="afd-s" x="105" y="248" text-anchor="middle">optional</text>
 <line class="afd-line" x1="190" y1="105" x2="258" y2="105" marker-start="url(#afd-arrow)" marker-end="url(#afd-arrow)"/>
 <line class="afd-line afd-opt" x1="190" y1="235" x2="258" y2="235" marker-end="url(#afd-arrow)"/>
-<rect class="afd-main" x="260" y="30" width="240" height="350" rx="12"/>
+<rect class="afd-main" x="260" y="30" width="240" height="345" rx="12"/>
 <text class="afd-h" x="380" y="56" text-anchor="middle">AnsibleForms server</text>
 <text class="afd-s" x="380" y="74" text-anchor="middle">Node.js / Express</text>
 <rect class="afd-inner" x="280" y="88" width="200" height="42" rx="8"/>
@@ -54,38 +58,30 @@ from YAML files and hands each job to a [runner](runners.html): a playbook to an
 <rect class="afd-inner" x="280" y="142" width="200" height="42" rx="8"/>
 <text class="afd-t" x="380" y="168" text-anchor="middle">Form engine, expressions</text>
 <rect class="afd-inner" x="280" y="196" width="200" height="42" rx="8"/>
-<text class="afd-t" x="380" y="222" text-anchor="middle">Job runner, scheduler</text>
-<rect class="afd-inner" x="280" y="250" width="200" height="50" rx="8"/>
-<text class="afd-t" x="380" y="271" text-anchor="middle">Runners</text>
-<text class="afd-s" x="380" y="288" text-anchor="middle">hand each job to an RTE or AWX</text>
-<rect class="afd-inner afd-opt" x="280" y="312" width="200" height="42" rx="8"/>
-<text class="afd-t" x="380" y="338" text-anchor="middle">MCP server (optional)</text>
-<rect class="afd-box" x="200" y="410" width="170" height="50" rx="10"/>
-<text class="afd-t" x="285" y="431" text-anchor="middle">Persistent folder</text>
-<text class="afd-s" x="285" y="448" text-anchor="middle">config.yaml, forms, playbooks</text>
-<rect class="afd-box" x="390" y="410" width="170" height="50" rx="10"/>
-<text class="afd-t" x="475" y="431" text-anchor="middle">MySQL / MariaDB</text>
-<text class="afd-s" x="475" y="448" text-anchor="middle">jobs, users, credentials</text>
-<line class="afd-line" x1="300" y1="380" x2="300" y2="408" marker-start="url(#afd-arrow)" marker-end="url(#afd-arrow)"/>
-<line class="afd-line" x1="460" y1="380" x2="460" y2="408" marker-start="url(#afd-arrow)" marker-end="url(#afd-arrow)"/>
+<text class="afd-t" x="380" y="222" text-anchor="middle">Workflows, schedules</text>
+<rect class="afd-inner afd-opt" x="280" y="250" width="200" height="42" rx="8"/>
+<text class="afd-t" x="380" y="276" text-anchor="middle">MCP server (optional)</text>
+<rect class="afd-run" x="280" y="304" width="200" height="50" rx="8"/>
+<text class="afd-t" x="380" y="325" text-anchor="middle">Runners</text>
+<text class="afd-s" x="380" y="342" text-anchor="middle">hand each job to its runner</text>
 <rect class="afd-box" x="570" y="30" width="170" height="42" rx="10"/>
-<text class="afd-t" x="655" y="47" text-anchor="middle">AWX / AAP / Ascender</text>
-<text class="afd-s" x="655" y="63" text-anchor="middle">templates, over their API</text>
+<text class="afd-t" x="655" y="47" text-anchor="middle">Data sources</text>
+<text class="afd-s" x="655" y="63" text-anchor="middle">databases, REST APIs, files</text>
 <rect class="afd-box" x="570" y="80" width="170" height="42" rx="10"/>
-<text class="afd-t" x="655" y="97" text-anchor="middle">Data sources</text>
-<text class="afd-s" x="655" y="113" text-anchor="middle">databases, REST APIs, files</text>
+<text class="afd-t" x="655" y="97" text-anchor="middle">Secret stores</text>
+<text class="afd-s" x="655" y="113" text-anchor="middle">HashiCorp Vault, CyberArk</text>
 <rect class="afd-box" x="570" y="130" width="170" height="42" rx="10"/>
-<text class="afd-t" x="655" y="147" text-anchor="middle">Secret stores</text>
-<text class="afd-s" x="655" y="163" text-anchor="middle">HashiCorp Vault, CyberArk</text>
+<text class="afd-t" x="655" y="147" text-anchor="middle">Git repositories</text>
+<text class="afd-s" x="655" y="163" text-anchor="middle">forms, playbooks, config</text>
 <rect class="afd-box" x="570" y="180" width="170" height="42" rx="10"/>
-<text class="afd-t" x="655" y="197" text-anchor="middle">Git repositories</text>
-<text class="afd-s" x="655" y="213" text-anchor="middle">forms, playbooks, config</text>
+<text class="afd-t" x="655" y="197" text-anchor="middle">Login providers</text>
+<text class="afd-s" x="655" y="213" text-anchor="middle">LDAP, Entra ID, OIDC</text>
 <rect class="afd-box" x="570" y="230" width="170" height="42" rx="10"/>
-<text class="afd-t" x="655" y="247" text-anchor="middle">Login providers</text>
-<text class="afd-s" x="655" y="263" text-anchor="middle">LDAP, Entra ID, OIDC</text>
+<text class="afd-t" x="655" y="247" text-anchor="middle">Notification channels</text>
+<text class="afd-s" x="655" y="263" text-anchor="middle">mail, Slack, Teams, webhooks</text>
 <rect class="afd-box" x="570" y="280" width="170" height="42" rx="10"/>
-<text class="afd-t" x="655" y="297" text-anchor="middle">Mail server</text>
-<text class="afd-s" x="655" y="313" text-anchor="middle">notifications, approvals</text>
+<text class="afd-t" x="655" y="297" text-anchor="middle">Syslog servers</text>
+<text class="afd-s" x="655" y="313" text-anchor="middle">the log, the audit trail</text>
 <rect class="afd-box afd-opt" x="570" y="330" width="170" height="42" rx="10"/>
 <text class="afd-t" x="655" y="347" text-anchor="middle">Model provider</text>
 <text class="afd-s" x="655" y="363" text-anchor="middle">optional, chat assistant</text>
@@ -96,10 +92,27 @@ from YAML files and hands each job to a [runner](runners.html): a playbook to an
 <line class="afd-line" x1="500" y1="251" x2="568" y2="251" marker-end="url(#afd-arrow)"/>
 <line class="afd-line" x1="500" y1="301" x2="568" y2="301" marker-end="url(#afd-arrow)"/>
 <line class="afd-line afd-opt" x1="500" y1="351" x2="568" y2="351" marker-end="url(#afd-arrow)"/>
-<rect class="afd-box" x="570" y="410" width="170" height="50" rx="10"/>
-<text class="afd-t" x="655" y="431" text-anchor="middle">RTE</text>
-<text class="afd-s" x="655" y="448" text-anchor="middle">runs ansible-playbook</text>
-<polyline class="afd-line" points="500,377 655,377 655,408" marker-end="url(#afd-arrow)"/>
+<rect class="afd-box" x="20" y="420" width="170" height="60" rx="10"/>
+<text class="afd-t" x="105" y="445" text-anchor="middle">Persistent folder</text>
+<text class="afd-s" x="105" y="463" text-anchor="middle">config, forms, playbooks</text>
+<rect class="afd-box" x="210" y="420" width="150" height="60" rx="10"/>
+<text class="afd-t" x="285" y="445" text-anchor="middle">MySQL / MariaDB</text>
+<text class="afd-s" x="285" y="463" text-anchor="middle">jobs, users, credentials</text>
+<polyline class="afd-line" points="260,355 105,355 105,418" marker-start="url(#afd-arrow)" marker-end="url(#afd-arrow)"/>
+<line class="afd-line" x1="285" y1="377" x2="285" y2="418" marker-start="url(#afd-arrow)" marker-end="url(#afd-arrow)"/>
+<rect class="afd-main afd-solid afd-back" x="412" y="408" width="150" height="60" rx="10"/>
+<rect class="afd-main afd-solid afd-back" x="406" y="414" width="150" height="60" rx="10"/>
+<rect class="afd-main afd-solid" x="400" y="420" width="150" height="60" rx="10"/>
+<text class="afd-t" x="475" y="445" text-anchor="middle">RTE containers</text>
+<text class="afd-s" x="475" y="463" text-anchor="middle">run ansible-playbook</text>
+<rect class="afd-box" x="570" y="420" width="182" height="60" rx="10"/>
+<text class="afd-t" x="661" y="445" text-anchor="middle">AWX / AAP / Ascender</text>
+<text class="afd-s" x="661" y="463" text-anchor="middle">Semaphore, Rundeck, Jenkins</text>
+<line class="afd-go" x1="420" y1="354" x2="420" y2="405" marker-end="url(#afd-arrow)"/>
+<polyline class="afd-go" points="470,354 470,394 661,394 661,418" marker-end="url(#afd-arrow)"/>
+<line class="afd-line" x1="398" y1="450" x2="362" y2="450" marker-end="url(#afd-arrow)"/>
+<text class="afd-s" x="413" y="392" text-anchor="end">playbooks</text>
+<text class="afd-s" x="566" y="388" text-anchor="middle">templates, jobs</text>
 </svg>
 </div>
 
@@ -108,15 +121,19 @@ The components in the diagram each have a role of their own:
 | Component | Role |
 |---|---|
 | **Browser** | The Vue web application: the forms, the [Designer](gui/designer-and-git.html), the job history and the settings |
-| **AnsibleForms server** | Evaluates the forms, hands the jobs to runners and tracks them, runs the schedules and serves the [REST API](api/) |
-| **RTE** | A runtime environment container, the same server started with `AF_ROLE=rte`: runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the Python libraries and collections of its image |
-| **MySQL / MariaDB** | Holds the jobs and their output, the users, the credentials and the connections |
+| **AnsibleForms server** | Evaluates the forms, records the jobs, runs the workflows and the schedules, hands each job to its runner and follows it, and serves the [REST API](api/) |
+| **Runners** | Where jobs run, added under **Connections > Runners**: a form names one with `runner: <name>`, or uses the default runner of its type (see [Runners](runners.html)) |
+| **RTE containers** | One or more runtime environment containers, the same server started with `AF_ROLE=rte`: each runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the python libraries and collections of its image, and writes the output and the final status to the database itself (see [How the RTE runs](production/scaling.html#how-the-rte-runs)) |
+| **AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins** | Runners for templates and jobs: [AWX forms](forms/awx.html) launch a job or workflow template, [Semaphore](forms/semaphore.html), [Rundeck](forms/rundeck.html) and [Jenkins](forms/jenkins.html) forms launch one of their jobs, and the server follows its output |
+| **MySQL / MariaDB** | Holds the jobs and their output, the users, the credentials and the connections; the app and every RTE share it |
 | **Persistent folder** | Holds `config.yaml`, the form files, the playbooks, the logs and the backups |
-| **AWX / AAP / Ascender** | Runs the job templates and workflow templates of [AWX forms](forms/awx.html); Semaphore, Rundeck and Jenkins can be runners too |
 | **Data sources** | Fill the fields: [database queries](formfields/enum.html), [REST APIs](expressions/rest-apis.html), files and [other functions](expressions/remote.html) |
 | **Secret stores** | Supply the user and password of a credential at use time, see [Secret stores](secret-stores/) |
 | **Git repositories** | Keep the forms, the playbooks and `config.yaml` under version control |
-| **MCP client, chat** | Optional, both off by default: the [MCP server](mcp/) and the [chat assistant](chat/) |
+| **Login providers** | Sign the users in: [LDAP, Entra ID and OIDC](authentication/), next to the local users |
+| **Notification channels** | Carry the [notifications](forms/notifications.html) and the approval requests: [mail, Slack, Microsoft Teams, Telegram or a webhook](notification-channels.html) |
+| **Syslog servers** | Receive the log and the audit trail as they are written, see [Syslog](production/logs.html#syslog) |
+| **MCP client, chat** | Optional, both off by default: the [MCP server](mcp/) and the [chat assistant](chat/), which needs a model provider |
 
 By default one container runs the server, web app and background work together, next to one RTE. For several app nodes behind a
 load balancer, a worker that runs the background work, and more RTEs, see [Scaling](production/scaling.html).
@@ -141,12 +158,17 @@ A launch goes through the same steps whether it comes from the browser or from t
 2. **Submit** : the browser turns the field values into extravars and posts them to `POST /api/v2/job`
 3. **Check** : the server reloads the form for the user's roles and, with [launch validation](launch-validation/) on, checks the values
 4. **Record** : the job is stored with status `running`, and its id is added to the extravars as `__jobid__`
-5. **Credentials** : the form's credentials are read from the database or a [secret store](secret-stores/), by the app, never by the RTE
-6. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
-7. **Run** : the job goes to its runner: an RTE claims it, with its credentials sealed for it, and runs `ansible-playbook`, or the template
-   is launched on AWX, AAP, Ascender or another runner; multistep forms run each step
-8. **Follow** : the output is saved in the database as it arrives, and the browser polls the job every two seconds to show it live
-9. **End** : the job gets its final status, and a mail goes out when the form's [`notifications`](forms/notifications.html) ask for it
+5. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
+6. **Credentials** : for a playbook, the app (never the RTE) reads the form's credentials from the database or a [secret store](secret-stores/)
+7. **Run** : the job goes to its runner, the one the form names with `runner:` or the default of its type. An RTE claims a playbook,
+   with its credentials sealed for it, and runs `ansible-playbook` (see [How the RTE runs](production/scaling.html#how-the-rte-runs)),
+   and AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins runs a template or a job. A [workflow](workflows/) runs its nodes, each as a
+   job of its own on its own runner
+8. **Follow** : the output is saved in the database as it arrives, by the RTE itself for a playbook, or by the server as it reads it
+   from the other runners. The form page re-reads the job every two seconds, and the Jobs page follows it live as the server
+   announces each change
+9. **End** : the job gets its final status, and its [`notifications`](forms/notifications.html) go out by mail and to its
+   [notification channels](notification-channels.html) when the form asks for them
 
 ---
 
@@ -162,7 +184,7 @@ The database, `AnsibleForms`, is created at the first start (unless `ALLOW_SCHEM
 * the jobs, their extravars and their output, the schedules and the stored jobs
 * the local users, the groups and the API tokens
 * the credentials, encrypted with `ENCRYPTION_SECRET`, and the secret store connections
-* the runners, and the LDAP, OAuth2, repository, mail and chat assistant settings
+* the runners, the notification channels (mail included), the syslog servers, and the LDAP, OAuth2, repository and chat assistant settings
 * the audit log
 
 ### In the persistent folder
