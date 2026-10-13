@@ -134,7 +134,7 @@ A `job_template` node takes the settings of an AWX node, on the node itself:
 | Key | What it does |
 |---|---|
 | `inventory` | The inventory the playbook runs against, by its name, as a form's `inventory:` |
-| `related.credentials` | The credentials: a vault one opens the vaults, the first SSH one signs in, the others reach the playbook under their own name |
+| `related.credentials` | The credentials: each reaches the playbook under its own name, and the first *SSH / user and password* one is also the login ansible connects with. A vault one only opens the vaults |
 | `limit` | Runs on these hosts only (`--limit`) |
 | `job_tags` | Runs the tasks with these tags only (`--tags`) |
 | `skip_tags` | Skips the tasks with these tags (`--skip-tags`) |
