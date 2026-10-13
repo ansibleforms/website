@@ -18,12 +18,14 @@ Launch a workflow from a form, and follow it on the jobs page
 
 ## The form
 
-A form of [type `workflow`](../forms/workflow.html) launches a workflow, named with `workflow:`:
+A form of [type `workflow`](../forms/workflow.html) launches a workflow, named with `workflow:` as a playbook is: by
+its **file** in the workflows folder, with its subfolders (`team/deploy-app.yml`), or by the workflow's **name** inside
+the file (`deploy-app`):
 
 ```yaml
 - name: Deploy the app
   type: workflow
-  workflow: deploy-app
+  workflow: team/deploy-app.yml
   roles:
     - admin
   fields:
@@ -33,7 +35,11 @@ A form of [type `workflow`](../forms/workflow.html) launches a workflow, named w
 ```
 
 The form's fields reach every node as extra vars. In the designer's Visual tab of a form, **Workflow** is a list of the
-designer's workflows.
+designer's workflow files.
+
+A file name alone is found in a subfolder too, when only one file has it. Two workflows of one name stop a form that names
+it by its name, and the designer warns when you save the second: rename one, or name its file. A workflow that cannot be
+found ends the job failed, with the reason in its output.
 
 ---
 
