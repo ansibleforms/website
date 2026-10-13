@@ -32,12 +32,12 @@ declares objects that previously existed only in the database:
 | `runners`               | Where jobs run: RTEs, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
 | `secret_stores`         | Secret stores (HashiCorp Vault, ...)                                |
 | `credentials`           | Credentials                                                         |
-| `oauth2`                | OAuth2 providers                                                    |
+| `oauth2`                | SSO providers: Entra ID and OIDC                                    |
 | `repositories`          | Git repositories                                                    |
 | `syslog_servers`        | The syslog servers that get the server log and the audit entries    |
 | `notification_channels` | Mail servers, Slack, Teams, Telegram and webhooks for notifications |
 | `ldap`                  | The LDAP configuration                                              |
-| `settings`              | The mail settings and the public URL                                |
+| `settings`              | The public URL, and the mail settings used when no mail channel is active |
 | `chat`                  | The chat assistant's model provider                                 |
 | `awx`                   | Deprecated since 7, removed in 8: use `runners` with `type: awx`    |
 
@@ -49,7 +49,7 @@ and has its own `CONFIG_PATH`. The two are kept separate on purpose: the
 repository that *holds* `config.yaml` is one of the objects the seed declares, so the seed
 cannot live inside it.
 
-Users and groups are left out: they come from LDAP or OAuth2, and the first admin from `ADMIN_USERNAME` / `ADMIN_PASSWORD`.
+Users and groups are left out: they come from LDAP or SSO, and the first admin from `ADMIN_USERNAME` / `ADMIN_PASSWORD`.
 
 ---
 
