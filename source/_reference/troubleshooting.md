@@ -496,13 +496,19 @@ Playbook was aborted by the main process.  Likely some buffer or memory error oc
 
 **Why this happens**
 
-The playbook was stopped without anyone aborting it. The usual cause is output that passed
-[`PROCESS_MAX_BUFFER`](customization/server.html#env_PROCESS_MAX_BUFFER) (1 MB by default); the log then says
-`Output passed PROCESS_MAX_BUFFER (<bytes> bytes), stopping the playbook`.
+The `ansible-playbook` process on the RTE got a stop signal that no abort asked for: something outside AnsibleForms
+stopped it, such as a `kill` on the RTE host or in its container.
+
+Output size no longer causes it. Since 7, past [`PROCESS_MAX_BUFFER`](customization/server.html#env_PROCESS_MAX_BUFFER)
+bytes on a stream (50 MB by default) the RTE stops storing the output and the playbook goes on to its end; the job
+then shows `[WARNING]: the stdout of this job passed PROCESS_MAX_BUFFER (<bytes> bytes) : the rest is not stored, the
+playbook goes on`.
 
 **How to fix it**
 
-Raise `PROCESS_MAX_BUFFER`, or reduce the output of the playbook, for example by running it without verbose mode.
+Find what stopped the process on the RTE, and relaunch the job. For output that is cut short, raise
+`PROCESS_MAX_BUFFER` in the RTE's environment (the RTE reads it, not the app), or reduce the output of the playbook,
+for example by running it without verbose mode.
 
 ---
 
