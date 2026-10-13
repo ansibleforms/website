@@ -214,7 +214,7 @@ relaunch or delete it:
 
 Build on this form with the reference pages:
 
-* **[Forms](forms/)** : every form property, AWX templates, multistep forms, approval points and notifications
+* **[Forms](forms/)** : every form property, templates on runners, workflow forms, approval points and notifications
 * **[Formfields](formfields/)** : all field types, with validation, dependencies and layout
 * **[Expressions](expressions/)** : fill fields from REST APIs, databases and files
 * **[Roles](config/roles.html)** and **[categories](config/categories.html)** in `config.yaml` : decide who sees which form
