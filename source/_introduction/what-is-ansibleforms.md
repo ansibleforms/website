@@ -17,7 +17,8 @@ Self-service forms in front of Ansible and AWX, and when you need them
 
 ## What it does
 
-AnsibleForms puts a web form in front of a playbook or an AWX, AAP or Ascender template, so people can run automation without the command line.
+AnsibleForms puts a web form in front of a playbook, a workflow, or a template or job on AWX, AAP, Ascender, Semaphore, Rundeck
+or Jenkins, so people can run automation without the command line.
 
 A form collects the input, checks it, shapes it into extravars and launches the job. The data in a form can come from databases,
 REST APIs, files and other fields, and every launch is recorded in the job history with its output.
@@ -50,7 +51,7 @@ A **survey** is enough when:
 
 * the choices come from somewhere else: a database, a REST API, a file, or another field (cascaded dropdowns)
 * the input needs validation, structure (lists, nested objects) or computed values before it reaches the playbook
-* the jobs need approval points, scheduling, or several playbooks and templates run as steps from one form
+* the jobs need approval points, scheduling, or a workflow that chains playbooks, templates and approvals from one form
 * the users should not see AWX at all, or you also run playbooks without AWX
 
 AnsibleForms launches AWX, AAP and Ascender templates, so the two work together: the forms collect and shape the input, and
