@@ -95,7 +95,12 @@ roles:
       - azuread/jdoe@example.com
 ```
 
-A **Group Filter** such as `^AF-` keeps tokens and jobs small for users in many groups; see [Roles](../config/roles.html).
+A **Group Filter** such as `^AF-` keeps only the groups your roles use; see [Roles](../config/roles.html). From 7.0.4
+the sign-in token no longer carries the groups, so its size no longer grows with them. The filter still matters for
+users in many groups: fewer groups are matched against the roles at every sign-in, and the user's
+[directory record](../users-and-groups.html#directory-users-and-groups) lists only the groups that count. Before 7.0.4,
+a user in a hundred groups or more needs it to see any forms, see
+[Empty forms and jobs after a single sign-on](../troubleshooting.html#empty-forms-and-jobs-after-a-single-sign-on-http-431).
 
 ---
 
