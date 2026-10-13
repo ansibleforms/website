@@ -93,7 +93,6 @@ AnsibleForms sees it, so nothing reaches the server log. The defaults:
 |-----------|-------|---------|--------------|
 | AnsibleForms (Node.js) | [`MAX_HTTP_HEADER_SIZE`](../customization/server.html#env_MAX_HTTP_HEADER_SIZE), all headers together | 16384 bytes | 431 |
 | Nginx | `large_client_header_buffers`, per header field | `4 8k`: 8 KB per field | 400 |
-| Nginx ingress controller | `large-client-header-buffers` in the controller's ConfigMap, per header field | `4 8k` | 400 |
 | Traefik | `http.maxHeaderBytes` of the entry point, all headers together | 1 MB | 431 |
 | Apache | `LimitRequestFieldSize`, per header field | 8190 bytes | 400 |
 
@@ -105,8 +104,6 @@ cookies of other applications on the same domain or a single sign-on gateway in 
 * AnsibleForms: `MAX_HTTP_HEADER_SIZE=65536`, or before 7.0.4 `NODE_OPTIONS=--max-http-header-size=65536`; both are
   read at start, so restart the application after a change
 * Nginx: `large_client_header_buffers 4 32k;` in the `http` or `server` block
-* Nginx ingress controller: `large-client-header-buffers: "4 32k"` in the ConfigMap of the controller; it has no
-  annotation for it, so it applies to every ingress of that controller
 * Apache: `LimitRequestFieldSize 32768` in the server config or the virtual host
 
 ---
