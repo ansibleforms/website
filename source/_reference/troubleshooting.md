@@ -483,7 +483,7 @@ Before 7.0.4, the sign-in token carried every group of the user, and Entra ID gr
 and by name. The browser sends that token in the `Authorization` header of every request, so a user in about a hundred
 groups or more ends up with a header of well over 16 KB. Node.js refuses request headers larger than 16 KB with a 431,
 before the request reaches AnsibleForms, which is why nothing is logged. A reverse proxy in front may refuse the
-request even earlier: Nginx and the Nginx ingress controller allow 8 KB per header field by default
+request even earlier: Nginx allows 8 KB per header field by default
 (`large_client_header_buffers 4 8k`), and answer 400 instead.
 
 **How to fix it**
