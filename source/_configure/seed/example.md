@@ -47,7 +47,11 @@ credentials:
       host: db.example.com
       port: 3306
       db_type: mysql
-      is_database: true
+      credential_type: database
+    - name: ontap-rest
+      credential_type: userpass   # a user and password: a REST API, SSH... (ssh before 7.0.3)
+      user: svc_forms
+      password: ${SEED_ONTAP_PW}
     - name: smtp-login
       credential_type: smtp
       user: svc_forms
