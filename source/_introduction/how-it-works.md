@@ -184,7 +184,7 @@ The database, `AnsibleForms`, is created at the first start (unless `ALLOW_SCHEM
 * the jobs, their extravars and their output, the schedules and the stored jobs
 * the local users, the groups and the API tokens
 * the credentials, encrypted with `ENCRYPTION_SECRET`, and the secret store connections
-* the runners, the notification channels (mail included), the syslog servers, and the LDAP, OAuth2, repository and chat assistant settings
+* the runners, the notification channels (mail included), the syslog servers, and the LDAP, SSO, repository and chat assistant settings
 * the audit log
 
 ### In the persistent folder
