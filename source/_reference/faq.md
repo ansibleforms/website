@@ -104,9 +104,11 @@ The log file must be written to this path:
 
 **AnsibleForms passes `__jobid__` automatically**, so you can assemble the path in your playbook without any extra configuration:
 
+{% raw %}
 ```yaml
 job_log_path: "{{ vars['playbook_dir'] }}/.joblogs/job_log_{{ __jobid__ }}.log"
 ```
+{% endraw %}
 
 Pass this variable to any role or custom module that should write progress to the file.
 

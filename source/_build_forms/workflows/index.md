@@ -66,12 +66,15 @@ written, and passes on what it got plus its own job's data, its own winning a ke
           build_id: 42
 ```
 
-A node after it then reads `{{ version }}` and `{{ build_id }}` like any other extra var. The order of precedence is
+A node after it then reads {% raw %}`{{ version }}` and `{{ build_id }}`{% endraw %} like any other extra var.
+
+A node's extra vars come from four places. One of them, `extra_data`, is the node's own variables: AWX's name for them,
+set on the node in the [workflow file](file.html#run-settings). When two set the same key, the order of precedence is
 AWX's, lowest first:
 
 | Source | Wins over |
 |---|---|
-| the node's `extra_data` | nothing |
+| the node's own variables (`extra_data`) | nothing |
 | the data passed on with `set_stats` | the node's `extra_data` |
 | the workflow's `extra_vars` | the data passed on |
 | the form's values | everything |
