@@ -94,6 +94,7 @@ AnsibleForms sees it, so nothing reaches the server log. The defaults:
 | AnsibleForms (Node.js) | [`MAX_HTTP_HEADER_SIZE`](../customization/server.html#env_MAX_HTTP_HEADER_SIZE), all headers together | 16384 bytes | 431 |
 | Nginx | `large_client_header_buffers`, per header field | `4 8k`: 8 KB per field | 400 |
 | Traefik | `http.maxHeaderBytes` of the entry point, all headers together | 1 MB | 431 |
+| HAProxy | `tune.bufsize` in the `global` section, the whole request line and headers (less `tune.maxrewrite`, 1 KB) | 16384 bytes | 400 |
 | Apache | `LimitRequestFieldSize`, per header field | 8190 bytes | 400 |
 
 Up to 7.0.3 the sign-in token carried every group of a single sign-on user, and could outgrow these limits, see
@@ -104,6 +105,8 @@ cookies of other applications on the same domain or a single sign-on gateway in 
 * AnsibleForms: `MAX_HTTP_HEADER_SIZE=65536`, or before 7.0.4 `NODE_OPTIONS=--max-http-header-size=65536`; both are
   read at start, so restart the application after a change
 * Nginx: `large_client_header_buffers 4 32k;` in the `http` or `server` block
+* HAProxy: `tune.bufsize 65536` in the `global` section; it is a buffer per connection, so it also raises the memory
+  HAProxy uses
 * Apache: `LimitRequestFieldSize 32768` in the server config or the virtual host
 
 ---
