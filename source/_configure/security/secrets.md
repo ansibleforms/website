@@ -23,7 +23,7 @@ and never change them casually:
 
 | Secret | What it protects | If it is not set | If it is lost or changed |
 |--------|------------------|------------------|--------------------------|
-| [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | Every password and token stored in the database: credentials, the LDAP bind password, AAP tokens, SSO client secrets, the mail password, the chat API key | A default key is used, which is public in the source code | Every stored secret becomes impossible to decrypt and must be entered again |
+| [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | Every password and token stored in the database: credentials, the LDAP bind password, runner tokens, SSO client secrets, Slack and Teams webhook addresses, the chat API key | A default key is used, which is public in the source code | Every stored secret becomes impossible to decrypt and must be entered again |
 | [`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET) | The signature of access and refresh tokens, including long-lived [API tokens](../profile/api-token.html) | A random secret is generated at each start, so every restart signs everyone out | Every session and every API token becomes invalid |
 
 Both are logged as a `[SECURITY]` warning at startup while they are missing. The settings pages refuse to edit them,
