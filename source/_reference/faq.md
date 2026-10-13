@@ -92,7 +92,7 @@ AnsibleForms can display a **job-specific log file** alongside the Ansible outpu
 **How it works:**
 - During a job run, the RTE watches for a log file at a well-known path inside the playbook folder
 - Every two seconds, when the file changed, the RTE copies its contents into the job, and once more when the playbook ends
-- The log file is displayed in a separate **Logfile** panel below the main Ansible output, with full ANSI colour support
+- The log file is displayed in a **Log file** section of the job's output, numbered as the output's lines : a log line's timestamp and level (ERROR, WARNING, INFO, DEBUG) are read and coloured as the output's, and ANSI colours are supported
 
 **Log file path convention:**
 
@@ -120,7 +120,7 @@ The RTE deletes the file once the playbook ends and the last contents are stored
 Standard ANSI escape codes (for example, `\033[92m` for green and `\033[91m` for red) in your log messages are rendered as colours in the UI, so success, warning and error states can be distinguished at a glance.
 
 **Typical use case:**  
-A custom Python Ansible module that performs a long sequence of API calls or data operations (for example, a SnapMirror DR workflow) can append one line per step to the log file. An operator watching the job in AnsibleForms then sees live progress in the Logfile panel as the job page follows the job.
+A custom Python Ansible module that performs a long sequence of API calls or data operations (for example, a SnapMirror DR workflow) can append one line per step to the log file. An operator watching the job in AnsibleForms then sees live progress in the Log file section as the job page follows the job.
 
 ### Jobid
 
