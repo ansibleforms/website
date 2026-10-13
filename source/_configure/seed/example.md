@@ -49,7 +49,7 @@ credentials:
       db_type: mysql
       credential_type: database
     - name: ontap-rest
-      credential_type: userpass   # a user and password: a REST API, SSH... (ssh before 7.0.3)
+      credential_type: userpass   # a user and password for a REST API, the default
       user: svc_forms
       password: ${SEED_ONTAP_PW}
     - name: smtp-login
