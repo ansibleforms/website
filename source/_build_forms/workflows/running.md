@@ -34,7 +34,18 @@ the file (`deploy-app`):
       default: orders-api
 ```
 
-The form's fields reach every node as extra vars. In the designer's Visual tab of a form, **Workflow** is a list of the
+The form's fields reach every node as extra vars, and so do its [`credentials`](../forms/workflow.html#workflow_credentials), under the names
+the form gives them, as a multistep form's reach its steps:
+
+```yaml
+- name: Provision NAS storage
+  type: workflow
+  workflow: nas.yml
+  credentials:
+    ontap: ontap_automation   # every node's playbook gets `ontap`
+```
+
+A node's own credentials, set in the workflow file, reach its playbook under their own name and win a name both use. In the designer's Visual tab of a form, **Workflow** is a list of the
 designer's workflow files.
 
 A file name alone is found in a subfolder too, when only one file has it. Two workflows of one name stop a form that names
