@@ -33,6 +33,7 @@ The default account is `admin` / `AnsibleForms!123` (or your [`ADMIN_*`](customi
 
 An `ansible` form runs a playbook from the playbooks folder, so the playbook comes first. Save this as `hello.yaml`:
 
+{% raw %}
 ```yaml
 - name: Hello world
   hosts: localhost
@@ -42,6 +43,7 @@ An `ansible` form runs a playbook from the playbooks folder, so the playbook com
       ansible.builtin.debug:
         msg: "Hello {{ your_name }}: a {{ vm_size }} machine in {{ target_env }} (dry run: {{ dry_run }})"
 ```
+{% endraw %}
 
 The playbook reads four variables. The form you build next sends them as extravars, one per field.
 
