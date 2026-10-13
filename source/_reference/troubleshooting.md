@@ -166,8 +166,8 @@ Every start logs this warning:
 
 **Why this happens**
 
-Stored passwords (credentials, the LDAP bind password, runner tokens, the mail password, OAuth2 client secrets) are
-encrypted with [`ENCRYPTION_SECRET`](customization/security.html#env_ENCRYPTION_SECRET). Without it, a key that is public
+Stored passwords (credentials, the LDAP bind password, runner tokens, SSO client secrets, Slack and Teams webhook
+addresses) are encrypted with [`ENCRYPTION_SECRET`](customization/security.html#env_ENCRYPTION_SECRET). Without it, a key that is public
 in the source code is used. The same applies the other way round: when the secret changes, the stored passwords can no
 longer be decrypted, so LDAP logins, credentials and runners that worked before start failing.
 
@@ -417,7 +417,7 @@ on the login page as well, and logged.
 
 **How to fix it**
 
-Enable the provider under **OAuth2 Providers**, and register the callback URL in the identity provider exactly as
+Enable the provider under **Access > SSO**, and register the callback URL in the identity provider exactly as
 AnsibleForms uses it: `https://<your host>/api/v2/auth/azureadoauth2/callback` for Entra ID, or
 `https://<your host>/api/v2/auth/oidc/callback` for OIDC. Callback URLs from before 6.1.5 must be updated. Retry the
 login after an expired hand-off.
@@ -596,8 +596,9 @@ changes, with
 
 **How to fix it**
 
-For SSH, copy the public key from **SSH Key** in the settings and add it as a deploy key, or to a user with access to the
-repository. AnsibleForms adds the remote host to the known hosts on a clone; for other hosts, use **Known Host**. For
+For SSH, copy the public key from the **Key** tab of **Connections > SSH** and add it as a deploy key, or to a user with
+access to the repository. AnsibleForms adds the remote host to the known hosts on a clone; for other hosts, use the
+**Known hosts** tab of the same page. For
 HTTPS, renew the token. See [Git Repositories](gui/designer-and-git.html#git-repositories) and
 [About Repositories](faq.html#about-repositories).
 
