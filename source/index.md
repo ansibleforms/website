@@ -34,7 +34,7 @@ What AnsibleForms brings to your Ansible setup, and what a single form can do:
     <ul class="af-feature-list">
       <li>
         <span class="af-feature-icon"><i class="fa-solid fa-play" aria-hidden="true"></i></span>
-        <span class="af-feature-text"><strong>Automation platforms</strong><span>Playbooks on RTEs, templates on AWX and more</span></span>
+        <span class="af-feature-text"><strong>Automation platforms</strong><span>Playbooks on RTEs, templates on AWX, Ascender, Semaphore and more</span></span>
       </li>
       <li>
         <span class="af-feature-icon"><i class="fa-solid fa-user-shield" aria-hidden="true"></i></span>
