@@ -34,7 +34,7 @@ the file (`deploy-app`):
       default: orders-api
 ```
 
-The form's fields reach every node as extra vars, and so do its [`credentials`](../forms/common.html), under the names
+The form's fields reach every node as extra vars, and so do its [`credentials`](../forms/workflow.html#workflow_credentials), under the names
 the form gives them, as a multistep form's reach its steps:
 
 ```yaml
