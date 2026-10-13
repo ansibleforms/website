@@ -372,8 +372,8 @@ worker at the same database node.
 Every container names itself `<role>-<hostname>-<port>`, with nothing to set, and the **Status** page lists them all with their role
 and version, which one is the worker, and a warning when they run different versions.
 
-A job running on an RTE belongs to that RTE, and carries on when the app node that started it goes. Any other job (an AWX job, or the
-steps of a multistep form) belongs to the app node that started it. A container that restarts ends its own unfinished jobs, and the
+A job running on an RTE belongs to that RTE, and carries on when the app node that started it goes. Any other job (a template job
+on AWX or another runner, a workflow job, or the steps of a deprecated multistep form) belongs to the app node that started it. A container that restarts ends its own unfinished jobs, and the
 worker ends the jobs of a container that stopped answering for two minutes, such as a replaced pod.
 
 A `SIGHUP` sent to any node re-applies the [config seed](../seed/): an app node asks the worker to do it.
