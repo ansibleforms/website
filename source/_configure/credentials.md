@@ -34,7 +34,7 @@ The type says what a credential is for. It decides which fields the dialog asks 
 
 | Type | What it holds | Used by |
 |---|---|---|
-| SSH | A user and password for SSH to a server, with its host and port | Playbooks, through a form's `credentials`, `ansibleCredentials` or a credential field |
+| User and password | A user and password for any login: a REST API, SSH to a server and more, with a host and port when it needs them | Playbooks, through a form's `credentials`, `ansibleCredentials` or a credential field, and a workflow node's login |
 | Git | A user and password or token for git repositories | [Repositories](repositories/authentication.html) |
 | API | A user and password or token for a REST API | [REST expressions](expressions/credentials.html), a HashiCorp Vault store's token, a Telegram bot token, a webhook's bearer token, the chat assistant's API key |
 | Database | A database login, with its type, host, port and database name | Form queries (`dbConfig`) and `fnCredentials`; it can be tested |
@@ -42,6 +42,11 @@ The type says what a credential is for. It decides which fields the dialog asks 
 | SMTP | A user and password for a mail server | A mail [notification channel](notification-channels.html) |
 
 A database credential can be of type MySQL, MSSQL, PostgreSQL, Oracle or MongoDB.
+
+In the API and the [config seed](seed/), the types are `userpass`, `git`, `api`, `database`, `cyberark` and `smtp`.
+`ssh` is the name of `userpass` before 7.0.3: still taken, and stored as `userpass`. The upgrade to 7 gives every credential
+from 6 the type `userpass`, or `database` for a database one: a REST login may be changed to API, a form uses it the same way
+either way.
 
 ---
 
@@ -54,10 +59,10 @@ The page under **Connections > Credentials** lists every credential with its nam
 | Step | Fields |
 |---|---|
 | Credential | Name and description, both required. |
-| Type | SSH, Git, API, Database, CyberArk or SMTP. |
-| Login | The user, and the password for SSH, Git, API and Database. For CyberArk: the AppID, client certificate and client key. |
+| Type | User and password, Git, API, Database, CyberArk or SMTP. |
+| Login | The user, and the password for User and password, Git, API and Database. For CyberArk: the AppID, client certificate and client key. |
 | Store | Where the user and password are kept: **Database** (encrypted in the AnsibleForms database) or **Secret store**, with the store and the **Reference** in it. Not for CyberArk. |
-| Connection | SSH and Database only: host and port; for a database also the **Database type** and **Database**. |
+| Connection | User and password, and Database only: host and port; for a database also the **Database type** and **Database**. |
 
 A row opens the credential's own page. Its menu offers **Edit credential**, **Test connection** (database credentials
 only), **Change password** (not for CyberArk, nor for a credential read from a secret store) and **Delete credential**.
@@ -74,7 +79,7 @@ A credential's page shows the steps of its dialog as tabs, plus what uses it:
 | Type | What the credential is for. |
 | Login | The user, or a CyberArk credential's AppID, client certificate and key. The password is not shown. |
 | Store | Database or Secret store, and the store and reference (not for CyberArk). |
-| Connection | Host and port, and a database's type and name (SSH and Database only). |
+| Connection | Host and port, and a database's type and name (User and password, and Database only). |
 | Used by | The secret stores, notification channels and repositories that name this credential. A row opens it. |
 
 Top right are **Test connection** (database credentials), **Change password**, **Delete** and **Save**. The password is
