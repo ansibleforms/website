@@ -78,6 +78,14 @@ scripts typically use are:
 v2 responds with HTTP status codes (`400`, `403`, `404`, `422`) and a plain JSON body, not v1's
 `{ status, message, data }` envelope.
 
+**Single sign-on callbacks too.** A redirect URL with `/api/v1/` no longer answers: the sign-in returns to
+the login page without signing in. Change it to `/api/v2/` in two places, on the SSO provider in
+AnsibleForms and in the identity provider (the Entra ID app registration's redirect URIs, the OIDC
+client's valid redirect URIs):
+
+- Entra ID: `https://<your host>/api/v2/auth/azureadoauth2/callback`
+- OIDC: `https://<your host>/api/v2/auth/oidc/callback`
+
 ---
 
 ## What changes in 7
