@@ -32,13 +32,15 @@ A form's type decides which type of runner it needs:
 | `rundeck` | Rundeck | A Rundeck job |
 | `jenkins` | Jenkins | A Jenkins job |
 
-A `multistep`, `workflow` or `subform` form has no runner of its own: each step of a multistep runs on the runner its own
-type needs, so the steps of one job can run on different runners.
+A `workflow` or `subform` form has no runner of its own: each node of a [workflow](workflows/) picks its own. A node
+with a `runner:` runs on that runner (an RTE, or a template or job on AWX, Semaphore, Rundeck or Jenkins), any other on
+the default RTE, so the nodes of one job can run on different runners. The `multistep` form, deprecated since 7 and replaced by workflows, works the same way: each of
+its steps runs on the runner its own type needs.
 
 A form picks its runner in one of two ways:
 
-- **By name**: `runner: <name>` on the form or on a step (also in the designer's form settings). The runner must be
-  of the type the form needs, or the job fails. The older `awx: <name>` still works, logs a deprecation warning, and
+- **By name**: `runner: <name>` on the form, on a workflow node, or on a step of a deprecated multistep (also in the
+  designer's form settings). The runner must be of the type the form needs, or the job fails. The older `awx: <name>` still works, logs a deprecation warning, and
   goes away in 8.
 - **As the default**: a form that names no runner runs on the default runner of its type. Without one, the job fails
   with a message that says which type of runner to add.
