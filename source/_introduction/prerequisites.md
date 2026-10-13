@@ -98,7 +98,7 @@ Open the connections from AnsibleForms to the systems you use:
 | Git servers | Cloning and pulling repositories, over HTTPS or SSH |
 | REST APIs and databases | The data sources of expressions and queries in your forms |
 | HashiCorp Vault, CyberArk | Reading credentials from a [secret store](secret-stores/) |
-| Mail server | Notifications and approval mails |
+| Mail servers, Slack, Teams, Telegram, webhooks | Job notifications and approval requests, through the [notification channels](notification-channels.html) |
 | Model provider | The [chat assistant](chat/), only when it is switched on |
 
 To limit which hosts the REST functions of expressions may call, see
