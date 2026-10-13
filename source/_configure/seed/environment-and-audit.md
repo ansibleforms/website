@@ -27,13 +27,13 @@ Use it whenever the environment is declared elsewhere. Otherwise the settings pa
 a durable one drifts away from the manifest that is meant to be authoritative.
 
 {: .note }
-> Backups include `persistent/.env` as `managed.env`, so a rebuild gets the database, Vault
-> and path settings back. **`ENCRYPTION_SECRET` and `ACCESS_TOKEN_SECRET` are stripped out**:
+> Backups include `persistent/.env` as `managed.env`, so a rebuild gets the database and
+> path settings back. **`ENCRYPTION_SECRET` and `ACCESS_TOKEN_SECRET` are stripped out**:
 > the dump beside it holds every stored credential as AES ciphertext, and writing the key that
 > decrypts it into the same folder would make a copied backup enough to read them all. Set
 > those two on the target host instead; a comment in the file states this.
 >
-> What remains can still hold credentials (`VAULT_TOKEN`, a mail password), so the file is
+> What remains can still hold credentials (`DB_PASSWORD`, `METRICS_TOKEN`, an old `VAULT_TOKEN`), so the file is
 > written `0600`. Restoring it is a separate opt-in step rather than part of a normal restore,
 > because the database host and paths in it describe the machine the backup came from. The
 > restore dialog lists the file and offers its own *Restore environment* button
