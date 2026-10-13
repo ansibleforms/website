@@ -61,7 +61,10 @@ The `options` of a role switch features on or off for its members; the table lis
 |---|---|---|
 | `showSettings` | See the settings pages | Admins only |
 | `showDesigner` | See and use the designer | Admins only |
-| `allowPlaybookDesign` | Change the playbooks in the designer: save, create, remove and push them. Without it, the designer shows the playbooks read-only | On |
+| `allowPlaybookDesign` | Edit the playbooks in the designer: save, create, remove and push them. Without it, the designer shows the playbooks read-only | On |
+| `allowWorkflowDesign` | Edit the workflows in the designer: save, create, remove and push them. Without it, the designer shows the workflows read-only | On |
+| `allowInventoryDesign` | Edit the inventories in the designer: save, create, remove and push them. Without it, the designer shows the inventories read-only | On |
+| `allowVarsFileDesign` | Edit the vars files in the designer: save, create, remove and push them. Without it, the designer shows the vars files read-only | On |
 | `showLogs` | See the server log | Admins only |
 | `showJobs` | See the jobs page | On |
 | `showDebugButtons` | See the debug buttons on a form | On |

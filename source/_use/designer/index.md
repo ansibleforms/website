@@ -21,10 +21,11 @@ Edit forms, playbooks, inventories and workflows in the browser
 For form authors: the designer's sections, and what each of their tabs shows.
 
 The designer needs the `showDesigner` [role option](../config/roles.html#role-options). It edits one item at a time, a
-form, a playbook or a workflow file, with its sections in the left menu. Changing the playbooks also needs
-`allowPlaybookDesign` (on by default): without it, the **Playbooks** section is read-only and the server refuses to save,
-create, remove or push a playbook. Forms and workflows can still pick a playbook, and the other sections are not affected. Only one person edits at a time: see
-[The designer lock](lock.html).
+form, a playbook or a workflow file, with its sections in the left menu. Each kind of file also needs its own option, all
+on by default: `allowPlaybookDesign` for the **Playbooks**, `allowWorkflowDesign` for the **Workflows**,
+`allowInventoryDesign` for the **Inventories** and `allowVarsFileDesign` for the **Vars files**. Without one, its section is
+read-only and the server refuses to save, create, remove or push its files; forms and workflows can still pick them. Only one
+person edits at a time: see [The designer lock](lock.html).
 
 ---
 
