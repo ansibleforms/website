@@ -488,7 +488,7 @@ folder in `Running from directory`. See [Ansible forms](forms/ansible.html).
 
 ## Playbook was aborted by the main process
 
-An Ansible job with a lot of output ends as failed with:
+An Ansible job ends as failed with:
 
 ```
 Playbook was aborted by the main process.  Likely some buffer or memory error occured.  Also check the maxBuffer option.
@@ -496,14 +496,18 @@ Playbook was aborted by the main process.  Likely some buffer or memory error oc
 
 **Why this happens**
 
-The playbook was stopped without anyone aborting it. The usual cause is output that passed
-[`PROCESS_MAX_BUFFER`](customization/server.html#env_PROCESS_MAX_BUFFER) (1 MB by default); the log then says
-`Output passed PROCESS_MAX_BUFFER (<bytes> bytes), stopping the playbook`.
+The `ansible-playbook` process on the RTE was ended by a signal, and nobody aborted the job. Since 7.0.0 the size of the
+output no longer does this: past [`PROCESS_MAX_BUFFER`](customization/server.html#env_PROCESS_MAX_BUFFER) (50 MB per stream
+by default) the rest of the output is not stored, the job shows
+`[WARNING]: the stdout of this job passed PROCESS_MAX_BUFFER (<bytes> bytes) : the rest is not stored, the playbook goes on`,
+and the playbook runs to its end. The usual cause now is memory: the RTE container reached its memory limit and the
+kernel killed the playbook, for example with many forks or large facts.
 
 **How to fix it**
 
-Raise `PROCESS_MAX_BUFFER`, or reduce the output of the playbook, for example by running it without verbose mode.
-
+Check the RTE container's memory while the playbook runs (`docker stats`, `kubectl top pod`) and raise its limit, or lower
+the playbook's memory use (fewer `forks`, no needless facts gathering). When you only see the `PROCESS_MAX_BUFFER` warning and
+need the whole output, raise `PROCESS_MAX_BUFFER` in the RTE container's environment; it is read by the RTE, not by the app.
 ---
 
 ## Failed to launch awx template
