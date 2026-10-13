@@ -12,7 +12,7 @@ permalink: /
     <p class="af-hero-lead">
       Ansible is a powerful automation tool, but it remains a command-line application, and AWX/AAP/Ascender lacks
       forms that collect data from several sources. AnsibleForms lets you build dynamic, data-driven forms, generate extravars
-      and send them to Ansible, AWX/AAP/Ascender, Semaphore, Rundeck or Jenkins.
+      and send them to Ansible, AWX/AAP/Ascender, Semaphore, Rundeck or Jenkins and execute templates there.
     </p>
     <div class="af-hero-actions">
       <a href="installation/" class="btn btn-primary">Install AnsibleForms</a>
