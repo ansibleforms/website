@@ -111,8 +111,8 @@ Each check is green (healthy), amber (needs attention) or red (a problem), with 
 
 Facts about the instance that have no verdict, the first things a support conversation asks for: the AnsibleForms
 version, the base URL, the database version and host, the configuration source, the config seed, the retention
-settings, the authentication methods, the mail server, the log level and path, the uptime, the timezone, the Node.js
-version and the platform.
+settings, the authentication methods, the server of the active [mail channel](../notification-channels.html), the log
+level and path, the uptime, the timezone, the Node.js version and the platform.
 
 The page reads `/api/v2/health`, which needs a signed-in user with `showSettings`. For a monitoring system, use the
 probes and the metrics above instead.
