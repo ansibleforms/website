@@ -84,7 +84,8 @@ All jobs with their status and times, filtered by status from the left menu.
 
 ## Multi Step
 
-Forms can be split into multiple steps for complex workflows.
+A multistep job, with the output of each step under the main job. Multistep forms are deprecated since 7: a
+[workflow](../workflows/) chains playbooks, templates and approvals instead.
 
 ![Multi Step Form](../assets/screenshots/multistep.jpg)
 
