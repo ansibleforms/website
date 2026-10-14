@@ -479,7 +479,7 @@ The server log shows nothing for these calls, and the same user may work fine wi
 
 **Why this happens**
 
-Before 7.0.4, the sign-in token carried every group of the user, and Entra ID groups were in it twice, by object id
+Before 7.1.0, the sign-in token carried every group of the user, and Entra ID groups were in it twice, by object id
 and by name. The browser sends that token in the `Authorization` header of every request, so a user in about a hundred
 groups or more ends up with a header of well over 16 KB. Node.js refuses request headers larger than 16 KB with a 431,
 before the request reaches AnsibleForms, which is why nothing is logged. A reverse proxy in front may refuse the
@@ -488,7 +488,7 @@ request even earlier: Nginx allows 8 KB per header field by default
 
 **How to fix it**
 
-Upgrade to 7.0.4 or later: the sign-in token no longer carries the groups, so its size no longer depends on how many
+Upgrade to 7.1.0 or later: the sign-in token no longer carries the groups, so its size no longer depends on how many
 groups a user is in, and the interface says so when a request is refused with 431 instead of showing empty pages.
 Until you can upgrade, either:
 
@@ -498,7 +498,7 @@ Until you can upgrade, either:
 * or raise the limit of Node.js with the environment variable `NODE_OPTIONS=--max-http-header-size=65536`, and
   restart AnsibleForms
 
-From 7.0.4, [`MAX_HTTP_HEADER_SIZE`](customization/server.html#env_MAX_HTTP_HEADER_SIZE) sets the same limit, 16384
+From 7.1.0, [`MAX_HTTP_HEADER_SIZE`](customization/server.html#env_MAX_HTTP_HEADER_SIZE) sets the same limit, 16384
 bytes by default and read at start, for other large headers, such as big cookies set by a single sign-on gateway in
 front. Raise the header limits of the proxy as well, see [Request header size](production/reverse-proxy.html#request-header-size).
 
