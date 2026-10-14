@@ -41,6 +41,7 @@ log, which you can read under [Server Log](gui/administration.html#server-log) o
 * [Azure AD or OIDC authentication failed](#azure-ad-or-oidc-authentication-failed)
 * [Not authenticated, login is not enabled for this user](#not-authenticated-login-is-not-enabled-for-this-user)
 * [Logged out after a restart or after a day](#logged-out-after-a-restart-or-after-a-day)
+* [Empty forms and jobs after a single sign-on (HTTP 431)](#empty-forms-and-jobs-after-a-single-sign-on-http-431)
 
 **Jobs**
 
@@ -462,6 +463,44 @@ restart are then no longer accepted. Independently, a session ends when its refr
 
 Set `ACCESS_TOKEN_SECRET` to a fixed, secret value. Raise `ACCESS_TOKEN_REFRESH_EXPIRATION` if a day is too short. For
 long-lived API access, use an [API token](profile/api-token.html).
+
+---
+
+## Empty forms and jobs after a single sign-on (HTTP 431)
+
+A user signs in with Entra ID or OIDC without an error, but the forms and jobs pages stay empty. The browser's network
+tab shows the API calls answered with:
+
+```
+431 Request Header Fields Too Large
+```
+
+The server log shows nothing for these calls, and the same user may work fine with an LDAP or local account.
+
+**Why this happens**
+
+Before 7.1.0, the sign-in token carried every group of the user, and Entra ID groups were in it twice, by object id
+and by name. The browser sends that token in the `Authorization` header of every request, so a user in about a hundred
+groups or more ends up with a header of well over 16 KB. Node.js refuses request headers larger than 16 KB with a 431,
+before the request reaches AnsibleForms, which is why nothing is logged. A reverse proxy in front may refuse the
+request even earlier: Nginx allows 8 KB per header field by default
+(`large_client_header_buffers 4 8k`), and answer 400 instead.
+
+**How to fix it**
+
+Upgrade to 7.1.0 or later: the sign-in token no longer carries the groups, so its size no longer depends on how many
+groups a user is in, and the interface says so when a request is refused with 431 instead of showing empty pages.
+Until you can upgrade, either:
+
+* set a **Group Filter** on the provider under **Access > SSO**, a regular expression that keeps only the groups your
+  roles use, see [Entra ID](authentication/entra-id.html) or [OIDC](authentication/oidc.html); the user signs in again
+  to get a smaller token
+* or raise the limit of Node.js with the environment variable `NODE_OPTIONS=--max-http-header-size=65536`, and
+  restart AnsibleForms
+
+From 7.1.0, [`MAX_HTTP_HEADER_SIZE`](customization/server.html#env_MAX_HTTP_HEADER_SIZE) sets the same limit, 16384
+bytes by default and read at start, for other large headers, such as big cookies set by a single sign-on gateway in
+front. Raise the header limits of the proxy as well, see [Request header size](production/reverse-proxy.html#request-header-size).
 
 ---
 
