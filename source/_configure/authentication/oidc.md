@@ -24,7 +24,8 @@ With an OIDC provider enabled, the login page shows an OpenID button below **Sig
    with PKCE).
 2. The user signs in at the provider, which redirects back to the **Redirect URL**.
 3. The server exchanges the code for tokens and reads the claims of the ID token.
-4. The username is the `preferred_username` claim, and every value of the `groups` claim becomes a group `oidc/<value>`.
+4. The username is the `preferred_username` claim, and every value of the `groups` claim that passes the
+   **Group Filter** becomes a group `oidc/<value>`.
 
 AnsibleForms requests the scopes `openid profile email`; the scopes are not configurable. Signing out of AnsibleForms
 also sends the browser to the provider's end-session endpoint, when the provider publishes one.
@@ -76,6 +77,7 @@ Add the provider under **Access > SSO**, on the **Providers** tab, with **Provid
 | Issuer | The issuer URL, e.g. `https://keycloak.example.com/realms/example`. |
 | Redirect URL | Filled in as `<Public Root Url>/api/v2/auth/oidc/callback`; must match the provider's redirect URI. |
 | Client Secret | The client secret, stored encrypted. |
+| Group Filter | Regular expression; only the values of the `groups` claim that match are kept. Empty keeps every group. |
 
 One OIDC provider is active at a time, the one the OpenID button signs in with. A new provider is active when no
 other OIDC provider is; to switch, choose **Use for sign-in** in the row menu of another one, which makes the
@@ -114,4 +116,6 @@ OIDC users sign in at the provider, so a few things work differently from local 
 
 - They have no password in AnsibleForms, so they cannot change it there or create API tokens on their profile page.
 - Keep the `groups` claim short: send only the groups that matter to AnsibleForms, for example with a dedicated
-  client scope or group structure at the provider.
+  client scope or group structure at the provider, or filter them with the **Group Filter**. From 7.1.0 the sign-in
+  token of AnsibleForms no longer carries the groups; before, a user in a hundred groups or more could see no forms, see
+  [Empty forms and jobs after a single sign-on](../troubleshooting.html#empty-forms-and-jobs-after-a-single-sign-on-http-431).
