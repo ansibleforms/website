@@ -116,6 +116,6 @@ OIDC users sign in at the provider, so a few things work differently from local 
 
 - They have no password in AnsibleForms, so they cannot change it there or create API tokens on their profile page.
 - Keep the `groups` claim short: send only the groups that matter to AnsibleForms, for example with a dedicated
-  client scope or group structure at the provider, or filter them with the **Group Filter**. From 7.0.4 the sign-in
+  client scope or group structure at the provider, or filter them with the **Group Filter**. From 7.1.0 the sign-in
   token of AnsibleForms no longer carries the groups; before, a user in a hundred groups or more could see no forms, see
   [Empty forms and jobs after a single sign-on](../troubleshooting.html#empty-forms-and-jobs-after-a-single-sign-on-http-431).
