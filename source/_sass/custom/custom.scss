@@ -497,6 +497,17 @@ body::before {
     .main-content-wrap {
       display: none;
     }
+
+    // the search box and the header links belong to the menu : its colour down to the
+    // bottom of the screen, and some room between the last menu item and the search box
+    background-color: $sidebar-color;
+
+    .main-header {
+      background: $sidebar-color !important;
+      backdrop-filter: none;
+      border-bottom: 0 !important;
+      padding-top: 0.75rem;
+    }
   }
 }
 
