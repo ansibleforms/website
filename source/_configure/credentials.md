@@ -1,7 +1,10 @@
 ---
 layout: default
 title: Credentials
-nav_order: 3.5
+nav_order: 6
+has_children: true
+has_toc: false
+permalink: /credentials.html
 ---
 
 # Credentials
@@ -19,6 +22,17 @@ For administrators: add the users, passwords and tokens AnsibleForms connects wi
 
 ---
 
+## In this section
+
+| Page | What it covers |
+|---|---|
+| [Credential types](credentials/types.html) | What each type holds, and where it can be picked |
+| [The credentials page](credentials/list.html) | The list of credentials, and the dialog that adds one |
+| [A credential's page](credentials/credential-page.html) | A credential's tabs, and what uses it |
+
+
+---
+
 ## How it works
 
 A **credential** is a named login, added under **Connections > Credentials**. Forms and the other admin objects refer
@@ -26,64 +40,3 @@ to it by its name, so the password itself never appears in a form. Its user and 
 AnsibleForms database, encrypted with `ENCRYPTION_SECRET`, or read from a [secret store](secret-stores/) each time the
 credential is used.
 
----
-
-## Credential types
-
-The type says what a credential is for. It decides which fields the dialog asks for, and where it can be picked:
-
-| Type | What it holds | Used by |
-|---|---|---|
-| User and password | A user and password for any login: a REST API with basic auth, a service and more. The default | Playbooks, through a form's `credentials` or a credential field; [REST expressions](expressions/credentials.html) |
-| SSH | A user and password for SSH to a server, with its host and port | Playbooks, through a form's `credentials`, `ansibleCredentials` or a credential field, and a workflow node's login |
-| Git | A user and password or token for git repositories | [Repositories](repositories/authentication.html) |
-| API | A user and password or token for a REST API | [REST expressions](expressions/credentials.html), a HashiCorp Vault store's token, a Telegram bot token, a webhook's bearer token, the chat assistant's API key |
-| Database | A database login, with its type, host, port and database name | Form queries (`dbConfig`) and `fnCredentials`; it can be tested |
-| CyberArk | The AppID, client certificate and key a CyberArk store logs in with | A [CyberArk](secret-stores/cyberark.html) secret store |
-| SMTP | A user and password for a mail server | A mail [notification channel](notification-channels.html) |
-
-A database credential can be of type MySQL, MSSQL, PostgreSQL, Oracle or MongoDB.
-
-In the API and the [config seed](seed/), the types are `userpass`, `ssh`, `git`, `api`, `database`, `cyberark` and
-`smtp`. The upgrade from 6 gives every credential the type `userpass`, or `database` for a database one: a form uses it as
-in 6. Change it to SSH for a login a workflow node's playbook connects with, or to API for a REST API.
-
----
-
-## The credentials page
-
-The page under **Connections > Credentials** lists every credential with its name, type, user, host and port.
-
-**Add credential** opens a dialog in steps:
-
-| Step | Fields |
-|---|---|
-| Credential | Name and description, both required. |
-| Type | User and password, SSH, Git, API, Database, CyberArk or SMTP. |
-| Login | The user, and the password for User and password, SSH, Git, API and Database. For CyberArk: the AppID, client certificate and client key. |
-| Store | Where the user and password are kept: **Database** (encrypted in the AnsibleForms database) or **Secret store**, with the store and the **Reference** in it. Not for CyberArk. |
-| Connection | SSH and Database only: host and port; for a database also the **Database type** and **Database**. |
-
-A row opens the credential's own page. Its menu offers **Edit credential**, **Test connection** (database credentials
-only), **Change password** (not for CyberArk, nor for a credential read from a secret store) and **Delete credential**.
-
----
-
-## A credential's page
-
-A credential's page shows the steps of its dialog as tabs, plus what uses it:
-
-| Tab | What it holds |
-|---|---|
-| Details | Name and description. |
-| Type | What the credential is for. |
-| Login | The user, or a CyberArk credential's AppID, client certificate and key. The password is not shown. |
-| Store | Database or Secret store, and the store and reference (not for CyberArk). |
-| Connection | Host and port, and a database's type and name (SSH and Database only). |
-| Used by | The secret stores, notification channels and repositories that name this credential. A row opens it. |
-
-Top right are **Test connection** (database credentials), **Change password**, **Delete** and **Save**. The password is
-typed twice in the **Change password** dialog, and is never shown again once saved. For a CyberArk credential, leave the
-client key empty to keep the stored one.
-
-A credential declared in the [config seed](seed/) is read only on this page: change it in the seed file instead.

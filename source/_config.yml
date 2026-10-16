@@ -54,12 +54,12 @@ docs_versions:
 aux_links:
   "GitHub":
     - "https://github.com/ansibleforms/ansibleforms"
-  "Image":
-    - "https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms"
+  "Images":
+    - "https://github.com/orgs/ansibleforms/packages?repo_name=ansibleforms"
   "Charts":
     - "https://ansibleforms.com/helm-charts/"
 
-# Open the aux links to other sites (GitHub, Image) in a new tab ; Charts stays on this site
+# Open the aux links to other sites (GitHub, Images) in a new tab ; Charts stays on this site
 # (_includes/components/aux_nav.html)
 aux_links_new_tab: true
 

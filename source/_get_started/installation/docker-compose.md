@@ -227,7 +227,7 @@ so far creates it once, as the project's [README](https://github.com/ansibleform
 
 The RTE is not published on the host: the app calls it on `http://rte:8000` with `RTE_TOKEN`, and the config seed `data/seed.yaml`
 registers it as the default runner `rte`. When your playbooks need more collections or Python libraries, build an RTE of your own
-and point the `rte` service at it (see [Build your own RTE](../production/scaling.html#build-your-own-rte)).
+and point the `rte` service at it (see [Build your own RTE](../rte/images.html#build-your-own-rte)).
 
 ---
 

@@ -24,7 +24,7 @@ TLS can end in one of three places, and only the first one involves the settings
 
 * **in AnsibleForms**, with `HTTPS=1` : HTTPS on [`PORT`](../customization/server.html#env_PORT) with the files below, as docker-compose does on 443.
 * **in a reverse proxy**, with `HTTPS=0` behind it : see [Reverse proxy](../production/reverse-proxy.html).
-* **in a Kubernetes ingress** : see the Ingress tab of [Kubernetes](../installation/kubernetes.html#6-open-ansibleforms) and the chart's README.
+* **in a Kubernetes ingress** : see the Ingress tab of [Kubernetes](../installation/kubernetes.html#7-open-ansibleforms) and the chart's README.
 
 You can combine the first with the other two to encrypt the hop between the proxy and the application as well.
 

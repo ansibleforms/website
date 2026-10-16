@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Changelog
-nav_order: 3
+nav_order: 1
 gh_edit_link: false
 ---
 

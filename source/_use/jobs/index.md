@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Jobs
-nav_order: 1
+nav_order: 3
 has_children: true
 has_toc: false
 redirect_from:
