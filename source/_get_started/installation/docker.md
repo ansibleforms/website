@@ -194,7 +194,7 @@ podman ps
 
 The app listens on port `8000`, over HTTP unless you set `HTTPS=1`. The RTE is not published on the host: only the app calls it, inside
 the network. `--stop-timeout 30` gives the RTE time to let its running playbooks end on a stop (see
-[Scaling](../production/scaling.html#run-an-rte) for the RTE settings and for building an RTE of your own).
+[Scaling](../rte/run.html) for the RTE settings and for building an RTE of your own).
 
 ---
 

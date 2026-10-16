@@ -65,12 +65,12 @@ How the instance looks for everyone, and the messages it shows.
 
 | Page | What it is for |
 |---|---|
-| **Defaults** | The theme, language, forms view, time zone and date format of users who chose none. See [Defaults](../appearance.html#defaults). |
-| **Name** | The name in the browser tab and on the sign-in page. See [Name](../appearance.html#name). |
-| **Logo** | Your own logo in the header. See [Logo](../appearance.html#logo). |
-| **Icon** | Your own icon in the browser tab. See [Icon](../appearance.html#icon). |
-| **Links** | The Designer link, and your own links and menus in the header. See [Links](../appearance.html#links). |
-| **Environment** | A label beside the logo, such as PRODUCTION. See [Environment](../appearance.html#environment). |
+| **Defaults** | The theme, language, forms view, time zone and date format of users who chose none. See [Defaults](../appearance/defaults.html). |
+| **Name** | The name in the browser tab and on the sign-in page. See [Name](../appearance/name.html). |
+| **Logo** | Your own logo in the header. See [Logo](../appearance/logo.html). |
+| **Icon** | Your own icon in the browser tab. See [Icon](../appearance/icon.html). |
+| **Links** | The Designer link, and your own links and menus in the header. See [Links](../appearance/links.html). |
+| **Environment** | A label beside the logo, such as PRODUCTION. See [Environment](../appearance/environment.html). |
 | **Announcements** | Messages under the header, each from its start to its end. See [Announcements](../announcements.html). |
 
 ---
@@ -83,7 +83,7 @@ Who may sign in, and what they may do once in.
 |---|---|
 | **Disclaimer** | Terms every user accepts once, and who accepted which version. See [Disclaimer](../disclaimer.html). |
 | **Users** | The local users, and the LDAP and single sign-on ones. See [Users and groups](../users-and-groups.html). |
-| **Groups** | The local groups, and the LDAP and single sign-on ones. See [Users and groups](../users-and-groups.html#a-local-group). |
+| **Groups** | The local groups, and the LDAP and single sign-on ones. See [Users and groups](../users-and-groups/local-group.html). |
 | **Roles** | The roles of config.yaml: who has them and what they allow. See [Roles](../config/roles.html). |
 | **LDAP** | Sign-in with an LDAP directory or Active Directory. See [LDAP](../authentication/ldap.html). |
 | **SSO** | Single sign-on with Entra ID or OpenID Connect providers. See [Authentication](../authentication/). |

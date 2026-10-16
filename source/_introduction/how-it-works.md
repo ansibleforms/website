@@ -123,7 +123,7 @@ The components in the diagram each have a role of their own:
 | **Browser** | The Vue web application: the forms, the [Designer](gui/designer-and-git.html), the job history and the settings |
 | **AnsibleForms server** | Evaluates the forms, records the jobs, runs the workflows and the schedules, hands each job to its runner and follows it, and serves the [REST API](api/) |
 | **Runners** | Where jobs run, added under **Connections > Runners**: a form names one with `runner: <name>`, or uses the default runner of its type (see [Runners](runners.html)) |
-| **RTE containers** | One or more runtime environment containers, the same server started with `AF_ROLE=rte`: each runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the python libraries and collections of its image, and writes the output and the final status to the database itself (see [How the RTE runs](production/scaling.html#how-the-rte-runs)) |
+| **RTE containers** | One or more runtime environment containers, the same server started with `AF_ROLE=rte`: each runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the python libraries and collections of its image, and writes the output and the final status to the database itself (see [How the RTE runs](rte/#how-the-rte-runs)) |
 | **AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins** | Runners for templates and jobs: [AWX forms](forms/awx.html) launch a job or workflow template, [Semaphore](forms/semaphore.html), [Rundeck](forms/rundeck.html) and [Jenkins](forms/jenkins.html) forms launch one of their jobs, and the server follows its output |
 | **MySQL / MariaDB** | Holds the jobs and their output, the users, the credentials and the connections; the app and every RTE share it |
 | **Persistent folder** | Holds `config.yaml`, the form files, the playbooks, the logs and the backups |
@@ -161,7 +161,7 @@ A launch goes through the same steps whether it comes from the browser or from t
 5. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
 6. **Credentials** : for a playbook, the app (never the RTE) reads the form's credentials from the database or a [secret store](secret-stores/)
 7. **Run** : the job goes to its runner, the one the form names with `runner:` or the default of its type. An RTE claims a playbook,
-   with its credentials sealed for it, and runs `ansible-playbook` (see [How the RTE runs](production/scaling.html#how-the-rte-runs)),
+   with its credentials sealed for it, and runs `ansible-playbook` (see [How the RTE runs](rte/#how-the-rte-runs)),
    and AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins runs a template or a job. A [workflow](workflows/) runs its nodes, each as a
    job of its own on its own runner
 8. **Follow** : the output is saved in the database as it arrives, by the RTE itself for a playbook, or by the server as it reads it

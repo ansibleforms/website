@@ -35,6 +35,9 @@ AnsibleForms supports several installation methods, each described on its own pa
 
 To move an existing installation to a newer release, see [Upgrading](../upgrading/).
 
+Every method runs one RTE next to the app, the container that runs the playbooks. To add another one, on another host or in another
+datacenter, see [Runtime environments](../rte/) and its runbook [An RTE in another datacenter](../rte/another-datacenter.html).
+
 ---
 
 ## Image tags
@@ -43,7 +46,7 @@ The image is published as `ghcr.io/ansibleforms/ansibleforms` on the GitHub Cont
 project and does not rate-limit anonymous pulls. Every release from 7.0.0 on is published there only, and the 6.x releases
 are there too.
 
-Since 7, playbooks run on an RTE, published in three layers next to the app (see [The RTE images](../production/scaling.html#the-rte-images)):
+Since 7, playbooks run on an RTE, published in three layers next to the app (see [The RTE images](../rte/images.html)):
 
 | Image | What it is |
 |---|---|

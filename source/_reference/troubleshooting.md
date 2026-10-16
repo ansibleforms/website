@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Troubleshooting
-nav_order: 2
+nav_order: 4
 ---
 
 # Troubleshooting
@@ -598,7 +598,7 @@ than a day are marked abandoned too.
 **How to fix it**
 
 Relaunch the job. Restart or upgrade RTEs and app nodes while no job is running, and give a stopping RTE enough time
-(see [Scaling](production/scaling.html#run-an-rte)). Check whether the playbook really finished on the managed hosts before you
+(see [Scaling](rte/run.html)). Check whether the playbook really finished on the managed hosts before you
 relaunch, because it may have run partly.
 
 ---

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Running in production
-nav_order: 7
+nav_order: 12
 has_children: true
 has_toc: false
 permalink: /production/
@@ -54,5 +54,5 @@ Each topic has a page of its own; securing the instance is covered under [Securi
 | [Reverse proxy](reverse-proxy.html) | Publish AnsibleForms behind Nginx, Traefik or Apache, at the root or under a subpath |
 | [Backups](backups.html) | Nightly backups, what they contain, restores, and what else to keep |
 | [Logs](logs.html) | Log files, syslog, the audit trail, and retention of jobs and audit entries |
-| [Scaling](scaling.html) | The RTE images and their settings, and several app nodes with a worker |
+| [Scaling](scaling.html) | Several app nodes with a worker; the RTE has its own section, [Runtime environments](../rte/) |
 | [Monitoring](monitoring.html) | Health probes, Prometheus metrics and the Status page |

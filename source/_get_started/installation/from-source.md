@@ -185,7 +185,7 @@ AF_ROLE=rte PORT=8010 HTTPS=0 RTE_TOKEN='<at least 16 characters>' RTE_URL=http:
 pm2 save
 ```
 
-The RTE settings are described on the [Scaling](../production/scaling.html#run-an-rte) page. Check that PM2 lists both processes:
+The RTE settings are described on the [Scaling](../rte/run.html) page. Check that PM2 lists both processes:
 
 ```bash
 pm2 status

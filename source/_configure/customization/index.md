@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Environment Variables
-nav_order: 1
+nav_order: 8
 has_children: true
 has_toc: false
 permalink: /customization/

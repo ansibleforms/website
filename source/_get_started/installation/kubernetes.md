@@ -148,7 +148,7 @@ server pod, on the same volume, and registers it as the default runner `rte`, so
 
 The default image, `ghcr.io/ansibleforms/ansibleforms-rte-full`, holds ansible with its collections and the Python libraries the 6.5 image had.
 For more, or less, build your own on one of the three RTE layers (`ansibleforms-rte-base`, `-rte-core` or `-rte-full`, see
-[The RTE images](../production/scaling.html#the-rte-images)) and point the chart at it:
+[The RTE images](../rte/images.html)) and point the chart at it:
 
 ```yaml
 containers:

@@ -159,7 +159,7 @@ body::before {
 // ---------------------------------------------------------------------------------------
 
 @include mq(md) {
-  // centred over the content : here in the room left of the header links (Theme, GitHub, Image, Charts),
+  // centred over the content : here in the room left of the header links (Theme, GitHub, Images, Charts),
   // so it can never run into them
   .search {
     display: flex;

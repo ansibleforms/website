@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Your profile
-nav_order: 3
+nav_order: 4
 description: Your account, preferences, password, permissions and API tokens
 has_children: true
 has_toc: false

@@ -28,7 +28,7 @@ AnsibleForms runs as a container or, for those who build it themselves, as a Nod
 
 The app image, `ghcr.io/ansibleforms/ansibleforms`, holds Node.js and the tools the server calls (git, ssh, the mariadb client and
 ytt), but no Python and no Ansible. Playbooks run on an RTE (runtime environment), a second container from
-`ghcr.io/ansibleforms/ansibleforms-rte-full`, or from an image you build on `ansibleforms-rte-core` (see [Scaling](production/scaling.html#the-rte)).
+`ghcr.io/ansibleforms/ansibleforms-rte-full`, or from an image you build on `ansibleforms-rte-core` (see [Scaling](rte/)).
 Forms that only launch templates on AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins need no RTE.
 
 ---
@@ -120,5 +120,5 @@ By default one AnsibleForms container runs the web app and the background work t
 
 To serve more users, run several app nodes behind a load balancer (`AF_ROLE=app`) next to a worker (`AF_ROLE=worker`), which runs the
 schedules, the backups and the other background work; only one worker works at a time, and a second one waits to take over. They share
-the database, the persistent folder, `ACCESS_TOKEN_SECRET` and `ENCRYPTION_SECRET`. Run more RTEs to run more playbooks at once. See
-[Scaling](production/scaling.html).
+the database, the persistent folder, `ACCESS_TOKEN_SECRET` and `ENCRYPTION_SECRET`. See [Scaling](production/scaling.html). Run more
+RTEs to run more playbooks at once: see [Several RTEs](rte/several.html).
