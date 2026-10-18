@@ -38,6 +38,11 @@ apply as soon as they are saved; the others are saved but need a restart, and th
 the process environment cannot be changed there: the page shows it as *Set in the environment, so it cannot be changed here.*
 A few variables, such as `ENCRYPTION_SECRET` and `ACCESS_TOKEN_SECRET`, can never be changed from the page.
 
+The variables an RTE reads, such as `RTE_MODE`, `APP_URL` or `RTE_MAX_JOBS`, are marked *Read by an RTE from its own environment*:
+the app does not use them, so set them where the RTE runs. Four of them, `RTE_MAX_JOBS`, `RTE_CACHE_MB`, `RTE_FILES` and
+`RTE_DRAIN_SECONDS`, can be set per RTE on its runner page instead, where a value wins over the variable (see
+[An RTE's settings](../runners/runner-page.html#an-rtes-settings)).
+
 With [`ALLOW_ENV_EDIT`](configuration.html#env_ALLOW_ENV_EDIT)`=0` the pages only show the values and the save is refused. Use it
 when the environment is declared in a manifest, as described in [Editing and audit](../seed/environment-and-audit.html).
 

@@ -42,7 +42,13 @@ An RTE in a socket mode, `outbound` or `inbound`, also reads these, and no `DB_*
 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | `transfer` (default): the app sends the playbooks and inventories with the job. `local`: it runs from its own mounted folders |
 | [`RTE_SPOOL_PATH`](../customization/server.html#env_RTE_SPOOL_PATH) | Where each job's output, events and end wait until the app stored them, `<persistent>/rte-spool` by default: keep it on a volume |
 | [`RTE_CACHE_PATH`](../customization/server.html#env_RTE_CACHE_PATH) | With `transfer`: where the folders the app sent are kept, `<persistent>/rte-files` by default |
+| [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | With `transfer`: how much those folders may take, `1024` by default; the ones used longest ago go first, and `0` keeps none |
 | [`RTE_FILES_MAX_MB`](../customization/server.html#env_RTE_FILES_MAX_MB) | Read by the app, not the RTE: the largest folder it sends with `transfer`, `512` by default |
+
+On an RTE in a socket mode, `RTE_MAX_JOBS`, `RTE_DRAIN_SECONDS`, `RTE_FILES` and `RTE_CACHE_MB` can also be set on its runner page,
+under the RTE tab: a value there wins over the variable, which then only fills a field left empty (see
+[An RTE's settings](../runners/runner-page.html#an-rtes-settings)). A value out of range is brought to its limit, and the RTE says so
+when it starts.
 
 An RTE in database mode (deprecated) reads the database settings instead, and registers itself:
 

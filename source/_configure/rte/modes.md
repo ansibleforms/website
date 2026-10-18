@@ -108,18 +108,23 @@ After a reconnect, to the same app node or another, the RTE sends again what was
 already: nothing is lost, and nothing is stored twice. Keep the spool on a volume, so an RTE that restarts still sends what it had not
 delivered. A playbook that was running when the RTE restarted cannot go on: its job ends as abandoned.
 
-**Capacity.** The RTE runs up to [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks at once, and tells the app
-every 20 seconds how many run. A job for a full RTE waits, as described in [Several RTEs](several.html#several-jobs-on-one-rte).
+**Capacity.** The RTE runs up to [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks at once, or the value set
+on its [runner page](../runners/runner-page.html#an-rtes-settings), and tells the app every 20 seconds how many run. A job for a full
+RTE waits, as described in [Several RTEs](several.html#several-jobs-on-one-rte).
 
-**The job's files.** [`RTE_FILES`](../customization/server.html#env_RTE_FILES) says where the RTE gets the playbooks and the inventories:
+**The job's files.** [`RTE_FILES`](../customization/server.html#env_RTE_FILES), or the **Job files** setting of its runner page, says
+where the RTE gets the playbooks and the inventories:
 
 | `RTE_FILES` | Where the files come from |
 |---|---|
-| `transfer` (default) | The app sends the playbooks folder and the inventories with the job, each packed and named by a hash of its content. The RTE keeps them under [`RTE_CACHE_PATH`](../customization/server.html#env_RTE_CACHE_PATH), the 20 used last, and asks only for a hash it does not have: an unchanged folder is never sent twice. The RTE needs no shared disk and no access to the repositories |
+| `transfer` (default) | The app sends the playbooks folder and the inventories with the job, each packed and named by a hash of its content. The RTE keeps them packed under [`RTE_CACHE_PATH`](../customization/server.html#env_RTE_CACHE_PATH), those used last up to [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) (1024 MB by default), and asks only for a hash it does not have: an unchanged folder is never sent twice. The RTE needs no shared disk and no access to the repositories |
 | `local` | The RTE runs from its own folders, as a database-mode RTE: mount the playbooks ([`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH)) and the repositories ([`REPO_PATH`](../customization/paths.html#env_REPO_PATH)) on it |
 
-With `transfer`, a folder bigger than [`RTE_FILES_MAX_MB`](../customization/server.html#env_RTE_FILES_MAX_MB) (512 by default, read by
-the app) is not sent: the job fails and says to mount the folder on the RTE instead. The ssh folder is never sent: the RTE keeps its own
+With `transfer`, each job unpacks its files in a private folder of its own, removed when the job ends: no job sees what another one
+wrote, and no inventory or extravars file stays unpacked on the RTE's disk. RTEs may share one `RTE_CACHE_PATH`; each keeps its jobs in
+a folder of its own, and the folder of an RTE that stopped (killed mid-job, or recreated with another hostname) is removed by the others
+after 10 minutes. A folder bigger than [`RTE_FILES_MAX_MB`](../customization/server.html#env_RTE_FILES_MAX_MB) (512 by default, read by
+the app, applied without a restart) is not sent: the job fails and says to mount the folder on the RTE instead. The ssh folder is never sent: the RTE keeps its own
 private key and `known_hosts` in `/home/node/.ssh`.
 
 **Hosts and tasks.** Since 7.3.0, an RTE in any mode records a playbook's structured events next to its text output: each play, task and
