@@ -11,7 +11,14 @@ nav_order: 8
 Pause a job until someone approves it
 {: .fs-6 .fw-300 }
 
+1. TOC
+{:toc}
+
 ---
+
+## How it works
+
+An approval point pauses the job at its place in the form until an approver answers it:
 
 {% assign help = site.data.help %}
 {% assign formsyaml = help | where: "link", "forms" | first %}
@@ -19,6 +26,21 @@ Pause a job until someone approves it
 {% assign approval_object = form_object.help | where: "name", "Approval point" | first %}
 
 {{ approval_object.description | markdownify }}
+
+---
+
+## Approving your own job
+
+From 7.3.0 the user who launched a job cannot approve it, even with one of the approval's roles, so it takes a second person.
+Set `allowSelf: true` on the approval point when the launcher may approve their own job, for example in a test form:
+
+```yaml
+approval:
+  title: Approve the change
+  roles:
+    - approvers
+  allowSelf: true
+```
 
 ---
 

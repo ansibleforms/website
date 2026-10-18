@@ -178,6 +178,9 @@ when, with a link to the job; **Reject** and **Approve** answer it:
 
 A job waiting for approval cannot be relaunched or deleted from the Jobs page; approve or reject it first.
 
+From 7.3.0 the user who launched a job cannot approve it, so a second person always looks at it. A form whose approval
+point sets [`allowSelf: true`](../forms/approval.html#approving-your-own-job) lets its launcher approve their own job too.
+
 ---
 
 ## Delete a job
