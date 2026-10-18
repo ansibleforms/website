@@ -95,9 +95,12 @@ from `current/server`, with its settings file:
 | `<name>` | The app: the web interface, the API and the worker. A controller only | `app.env` |
 | `<name>-rte` | The RTE that runs the playbooks | `rte.env` |
 
-A controller's RTE is `inbound` on a port of its own on `127.0.0.1` (`8001`, or the next free one), runs the playbooks from the app's
-folders (`RTE_FILES=local`), and is declared by the config seed `data/seed.yaml` as the default runner. A Runner's RTE gets the mode,
-`APP_URL`, `RTE_NAME` and, with `--join`, the join token, and receives the playbooks with each job (see [Modes](../rte/modes.html)).
+A controller's RTE is `inbound` on a port of its own on `127.0.0.1` (`8001`, or the next free one, with
+[`LISTEN_HOST`](../customization/server.html#env_LISTEN_HOST)`=127.0.0.1`), runs the playbooks from the app's folders (`RTE_FILES=local`),
+and is declared by the config seed `data/seed.yaml` as the default runner.
+
+A Runner's RTE gets the mode, `APP_URL`, `RTE_NAME` and, with `--join`, the join token, and receives the playbooks with each job (see
+[Modes](../rte/modes.html)). An outbound one takes no call from the app, so it listens on `127.0.0.1` only (`LISTEN_HOST=127.0.0.1`).
 An inbound one serves HTTPS with a self-signed certificate of its own address in `data/certificates`, which AnsibleForms pins.
 Without a join token it asks to join, and an admin approves it under **Connections > Runners**.
 
@@ -111,7 +114,7 @@ sudo journalctl -u ansibleforms-rte -f
 ```
 
 The app may listen on a port under 1024, such as `443`, without root. The RTE keeps the right to use `sudo`, which playbooks with
-`become` need on this server.
+`become` need on this server, so a playbook can manage the server the RTE runs on.
 
 ---
 
@@ -125,10 +128,13 @@ this order:
 2. Adds the new starting files the release brings, keeping every file that exists
 3. Backs up the database (a controller) into `installer-backups/`, with a copy of `app.env` and `rte.env`
 4. Stops the services, points `current` at the new release, and starts them again
-5. Waits for the app to answer with the new version
+5. Waits for the app to answer with the new version (a Runner: for its RTE to listen again)
 
 When the new version does not answer, the installer offers to roll back: `current` points at the previous release again, the
 database is restored from the backup, and the services start. Only the running release and the one before it are kept.
+
+Native services in the installer's layout with no `installer.json` beside them, for example after it was deleted, are found by `install`
+and `upgrade`, which offer to take them over (see [An existing installation](installer.html#an-existing-installation)).
 
 ---
 

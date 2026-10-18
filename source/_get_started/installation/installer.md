@@ -22,15 +22,15 @@ For administrators: the quickest way to a working instance, or to a Runner for a
 
 ## What it installs
 
-The installer asks a few questions in a full-screen wizard, shows every answer for review, and only then changes the server. It installs
-one of two roles:
+The installer asks a few questions in a full-screen wizard, shows every answer for review, and only then changes the server.
+It installs one of two roles, on one of four engines:
 
 | Role | What it is |
 |---|---|
 | Controller | The complete application: the web interface, its database and its own Runner. Choose this for a first installation |
 | Runner | An RTE that runs the playbooks of an AnsibleForms installed elsewhere, such as in another network, a DMZ or another datacenter. It talks to AnsibleForms over a single WebSocket and holds no database credentials |
 
-And it runs them on one of four engines:
+The engines it installs them on:
 
 | Engine | How it runs |
 |---|---|
@@ -39,7 +39,8 @@ And it runs them on one of four engines:
 | Kubernetes | The [Helm chart](kubernetes.html), on the cluster that `kubectl` reaches, served behind an ingress. A controller only |
 | Directly on this server | No containers: Node.js, MariaDB and Ansible on the server, and AnsibleForms as systemd services. See [Native install](native.html) |
 
-After the install, the same program upgrades the installation, backs it up, shows its status and removes it.
+After the install, the same program upgrades the installation, backs it up, shows its status and removes it. It also takes over an
+AnsibleForms it did not install, such as one set up by hand from the Docker Compose project (see [An existing installation](#an-existing-installation)).
 
 ---
 
@@ -79,7 +80,7 @@ The wizard asks one question at a time, with the steps listed at the left. **Esc
 
 | Step | What it asks |
 |---|---|
-| Language | The installer's language, from this server's locale by default: Catalan, German, English, Spanish, French, Italian, Japanese, Dutch, Polish, Portuguese or Chinese |
+| Language | The installer's language, from this server's locale by default: Catalan, German, English, Spanish, French, Italian, Japanese, Dutch, Polish, Portuguese or Chinese. Asked first, before the installer says anything about an installation it found |
 | Release notes | What's new in the version it installs, with the breaking changes, removals and deprecations first |
 | Role | Controller or Runner |
 | Engine | Docker, Podman, Kubernetes, or directly on this server |
@@ -146,7 +147,7 @@ curl -fsSL https://ansibleforms.com/install | sh -s -- install --role runner
 
 The installer then connects to AnsibleForms. A self-signed certificate, or one from a private CA, asks **Trust this certificate?**:
 yes sets [`APP_TLS_VERIFY=0`](../customization/server.html#env_APP_TLS_VERIFY) on the Runner. It reads the version AnsibleForms runs,
-refuses one older than 7.3.0, and installs the Runner with that same version.
+refuses one older than 7.3.0, and installs the Runner with that same version, whatever version the installer itself would install.
 
 Choose outbound for a DMZ, NAT, or a zone that allows no incoming connections: only traffic from this server to AnsibleForms, on its
 port. Choose inbound for networks where the central side opens every connection.
@@ -173,8 +174,8 @@ Fingerprint: abcd-ef12
 Certificate fingerprint: 3f9c-07a1
 ```
 
-It is the first 8 hexadecimal digits of the SHA-256 of the certificate. Before you approve the Runner, check that the approval
-dialog shows the same certificate fingerprint. A Runner registered with `--join` prints it too.
+It is the first 8 hexadecimal digits of the SHA-256 of the certificate's DER bytes, as `xxxx-xxxx`. Before you approve the Runner,
+check that the approval dialog shows the same certificate fingerprint. A Runner registered with `--join` prints it too.
 
 For a Runner, Kubernetes is greyed out: *Kubernetes (a Runner there is installed with the Helm chart)*.
 
@@ -204,16 +205,16 @@ The installer takes a command, before or after its flags. Without one, it instal
 
 | Command | What it does |
 |---|---|
-| `install` | Install AnsibleForms, as a controller or a Runner (the default). On a server that has an installation already, it offers to upgrade it |
+| `install` | Install AnsibleForms, as a controller or a Runner (the default). On a server that has an installation already, its own or one it finds, it offers to upgrade it |
 | `upgrade` | Upgrade to a newer version, showing its release notes first (see [Upgrade](#upgrade)) |
-| `status` | Show the installation (its role, engine and version) and its containers, pods or services, and whether it answers |
+| `status` | Show the installation (its role, engine and version) and its containers, pods or services, and whether it answers. Then it lists any other AnsibleForms it finds on the server |
 | `backup` | Back up the database now, into `installer-backups` in the installation folder (on Kubernetes, `backups` next to the installer's state file). A Runner holds no data to back up |
 | `release-notes` | Show the release notes of a version, `--version` or this installer's, breaking changes first |
 | `uninstall` | Remove the installation, and with `--purge` its data |
 | `version` | Print the installer's version |
 
-The installer remembers the installation in `/etc/ansibleforms/installer.json` for root, or `~/.config/ansibleforms/installer.json`,
-so the commands after `install` need no flags:
+The installer remembers the installation in `/etc/ansibleforms/installer.json` for root, or `~/.config/ansibleforms/installer.json`
+for another user, so the commands after `install` need no flags and find the installation on their own:
 
 ```bash
 sudo ansibleforms-installer status
@@ -286,6 +287,37 @@ curl -fsSL https://ansibleforms.com/install | sudo sh -s -- install --yes \
 
 ---
 
+## An existing installation
+
+The installer remembers what it installed in `installer.json`. Without that file, `install`, `upgrade` and `status` first look for an
+AnsibleForms already on the server, whatever installed it:
+
+| Found | How it is found | Taken over when |
+|---|---|---|
+| Docker or Podman | Containers of the app or RTE image, grouped by compose project | The folder holds the compose file and `.env` of the [ansibleforms/docker](https://github.com/ansibleforms/docker) repository: the services `mysqldb`, `app` and `rte`, in the containers `<name>_db`, `<name>_app` and `<name>_rte` |
+| A 7.2 Runner | An RTE alone in its compose project, with the app's `DB_*` and no `RTE_MODE` (database mode) | Its compose file is readable. Its upgrade moves it to a socket mode (see [A 7.2 Runner](#a-72-runner)) |
+| Kubernetes | Helm releases of the `ansibleforms` chart, and Deployments and StatefulSets of its images | It is a release of the chart: its current values become its values file |
+| Native | systemd services that run AnsibleForms with Node.js | They follow the installer's layout: `releases/`, `current`, `app.env` and `rte.env` (see [Native install](native.html#the-folder)) |
+| No engine | The app or an RTE answering on a usual port: 443, 3000, 3001, 8000, 8001, 8010 or 8443 | Never: it runs from source or by hand. The installer only reports it |
+
+Only the app's and the RTE's images count: a MySQL container named after AnsibleForms is not an installation. The installer lists what
+it found, one line each, with the reason and what to do by hand for one it cannot take over: its compose file is not the repository's,
+its database is outside its compose project, it runs on Kubernetes without the Helm chart, or its version cannot be read.
+
+For an installation it can take over, `install` offers three choices:
+
+| Choice | What it does |
+|---|---|
+| Take over and upgrade | Shows what it will remember, then writes `installer.json` once you confirm, and continues with the [upgrade](#upgrade) |
+| Install a new AnsibleForms beside it anyway | A second installation, with its own folder, ports and database, after a confirmation of its own |
+| Stop | Nothing is changed |
+
+`upgrade` offers the same without the second choice, and stops when nothing can be taken over. Unattended, `install` stops with a message,
+and `upgrade --yes` takes an installation over only when it finds exactly one it can take over. A Kubernetes release's current values are
+saved next to `installer.json`, and the upgrades apply them again with the chart of the new version.
+
+---
+
 ## Upgrade
 
 `ansibleforms-installer upgrade` moves the installation to a newer version of the same major version. It lists the newer versions,
@@ -294,9 +326,57 @@ and removals first. When they hold breaking changes, it asks you to confirm that
 
 The installer backs up the database before anything changes. When the new version does not respond, it offers to roll back: the previous
 version comes back, and its database is restored from that backup. It does not downgrade, and it does not cross a major version: follow
-the [upgrade guide](../upgrade-7.html) for that.
+the [upgrade guide](../upgrade-7.html) for that, for example from 6.x to 7.x, with what to do on 6.5 before you upgrade.
 
-A Runner runs the same version as its AnsibleForms: upgrade AnsibleForms first, then its Runners.
+On Docker or Podman, a controller's upgrade also brings its files up to date with the new version of the docker repository:
+
+| File | What the upgrade does |
+|---|---|
+| `docker-compose.yml` | Replaced by the new version's, after a copy is saved in `installer-backups` |
+| `.env` | Every existing line is kept, and the keys the new version needs are added, with secrets made as a fresh install makes them. A copy is saved first |
+| `data/seed.yaml` | Replaced when it is a seed the docker repository shipped, unchanged. One changed by hand is kept, and the new one is saved beside it |
+| `data/` | The new files the version brings, such as a new playbook, are added. Every file that exists is kept |
+
+A missing database setting (`MYSQLDB_USER` or a password) cannot be made up for a database that exists, so the upgrade then stops before
+any change. A rollback puts the compose file, `.env` and seed back as they were.
+
+A Runner runs the same version as its AnsibleForms: upgrade AnsibleForms first, then its Runners. A Runner's upgrade rewrites its
+compose file for the new RTE image and keeps its `.env` and data as they are.
+
+---
+
+## A 7.2 Runner
+
+A Runner of 7.2 runs in database mode, deprecated since 7.3.0: its RTE holds the database settings of AnsibleForms. The installer finds
+it (see [An existing installation](#an-existing-installation)), and its upgrade moves it to a socket mode under the same runner:
+
+1. It reads the runner's name (`RTE_NAME`) and token (`RTE_TOKEN`) from the old RTE container. When the RTE did not register itself
+   (`RTE_REGISTER=0`), you type the name its runner has under **Connections > Runners**
+2. It asks the app's address and the mode, **outbound** by default or inbound, and for inbound the port and this server's address
+3. It shows the plan, then backs up the old compose file and `.env` to `installer-backups`
+4. It writes the installer's Runner layout without the `DB_*` settings. It keeps `RTE_MAX_JOBS`, `RTE_DRAIN_SECONDS`,
+   `PROCESS_MAX_BUFFER` and `METRICS_TOKEN`, which a socket-mode RTE still reads
+5. It starts the new RTE beside the old one. The new RTE signs in with the runner's own token, and AnsibleForms moves the runner to the
+   new mode itself, **without an approval**: its jobs and the forms that name it are unchanged
+6. Once the new RTE is connected, the old container is stopped and removed
+
+An inbound Runner serves HTTPS with a pinned certificate, as a new one does (see [A Runner](#a-runner)), and the installer prints its
+certificate fingerprint. When the old RTE holds the port the new one needs, it is stopped first, so the Runner is offline until the
+new one connects. An outbound Runner's new RTE takes a free port on `127.0.0.1` and runs beside the old one without a gap.
+
+When the installer cannot read a token from the old RTE, you choose how the new RTE signs in:
+
+| Choice | What follows |
+|---|---|
+| Type the runner's token | The password of the runner's RTE credential under **Connections > Credentials**. The runner keeps its name and jobs |
+| Join as a new runner with a join token | A [join token](../runners/registration.html#join-tokens) adds a new runner under another name. Retire the old runner by hand |
+
+When the new RTE does not connect, the installer offers to put the old files back and start the old container again; if AnsibleForms
+had already moved the runner, set its mode back to database under **Connections > Runners**. Once the new RTE is connected, there is
+no going back: the old files stay in `installer-backups`.
+
+When AnsibleForms knows no runner by that name, the new RTE asks to join instead and waits for an approval. Reject that request under
+**Connections > Runners**, then run the upgrade again with the name the runner has there.
 
 ---
 

@@ -17,7 +17,7 @@ Install AnsibleForms and its MySQL database with the Helm chart
 ---
 
 The Helm chart deploys AnsibleForms with MySQL and the RTE that runs the playbooks (see the [values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)).
-The [installer](installer.html) installs the chart too, from a few questions.
+The [installer](installer.html) installs the chart too, from a few questions, and upgrades a release it did not install.
 
 ---
 
