@@ -241,7 +241,8 @@ Once the containers are up, open AnsibleForms in a browser:
 
 * Open `http://your_ip:8000` (or HTTPS, if you set `HTTPS=1`)
 * Log in as `admin` / `AnsibleForms!123` (or with the password you set with `ADMIN_PASSWORD`), and choose a new password
-* Check under **Connections > Runners** that the RTE is listed as `rte`, the default runner, with its socket *connected*
+* Check under **Connections > Runners** that the RTE is listed as `rte`, the default runner, and that its page shows its
+  **Connection** as **Connected**
 * Next steps:
   * Create forms by adding YAML files to the `forms` folder or by using the built-in designer
   * Add your playbooks to the `playbooks` folder of the mounted persistent folder

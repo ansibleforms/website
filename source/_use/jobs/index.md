@@ -70,7 +70,10 @@ The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customizati
 Each column can be sorted and has its own filter field. A multistep job has an arrow just before its `form` that expands
 its steps; a click on the rest of a row opens the job.
 
-The bell in the header counts the jobs waiting for your approval and opens the list on **Needs approval**.
+The bell in the header counts the jobs waiting for your approval and opens the list on **Needs approval**. For the users who can see
+the runners, it also counts the [runners waiting for approval](../runners/registration.html#approving-an-rte), RTEs that asked to join,
+and opens **Connections > Runners** when only runners wait. With both waiting, it opens a menu, **Jobs waiting for approval** and
+**Runners waiting for approval**, each with its count.
 
 ---
 

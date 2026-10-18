@@ -30,6 +30,7 @@ runners:
       type: awx
       credential: tower
       is_default: true           # one default per type
+      enabled: true              # false: no job goes to it; left as it is when not declared
 
 secret_stores:
   items:
@@ -172,4 +173,6 @@ The chat assistant also needs `ENABLE_CHAT=1`; see the [Chat assistant](../chat)
 
 Since 7.3.0 a runner signs in with a credential of its type, which holds its server's address in `url`. A runner with its own `token`,
 or `username` and `password`, still works: the seed logs a warning and turns them into such a credential, named after the runner. An
-RTE runner without `rte_mode` is in database mode, deprecated (see [Modes](../rte/modes.html)).
+RTE runner without `rte_mode` is in database mode, deprecated (see [Modes](../rte/modes.html)). A runner with `enabled: false` gets no
+job, its type's default included (see [Default and Enabled](../runners/list.html#default-and-enabled)); without `enabled`, the seed
+leaves it as it is.

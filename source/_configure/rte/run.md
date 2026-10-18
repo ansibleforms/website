@@ -36,8 +36,8 @@ An RTE in a socket mode, `outbound` or `inbound`, also reads these, and no `DB_*
 | [`APP_URL`](../customization/server.html#env_APP_URL) | The app's address as people open it, such as `https://forms.example.com`. Outbound: the address it dials. Inbound: the address of its one registration call |
 | [`APP_TLS_VERIFY`](../customization/server.html#env_APP_TLS_VERIFY) | `1` (default): the app's certificate must be valid. `0` accepts any, inside one trusted network only |
 | [`RTE_NAME`](../customization/server.html#env_RTE_NAME) | Its runner's name, which forms name with `runner:`. Not set: its node id, `rte-<hostname>-<port>`, which changes with the container: set it in production |
-| [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN) | The first time only: a join token of **Connections > Runners > Join tokens**, which adds its runner (see [Join tokens](../runners/registration.html#join-tokens)) |
-| [`RTE_URL`](../customization/server.html#env_RTE_URL) | Inbound, when it registers itself: the address the app dials, such as `http://rte-dmz.example.com:8000` |
+| [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN) | Optional, the first time only: a join token, made through the API, which approves its runner at once instead of waiting for an admin (see [Join tokens](../runners/registration.html#join-tokens)) |
+| [`RTE_URL`](../customization/server.html#env_RTE_URL) | Inbound, when it asks to join: the address the app dials, such as `http://rte-dmz.example.com:8000` |
 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | `transfer` (default): the app sends the playbooks and inventories with the job. `local`: it runs from its own mounted folders |
 | [`RTE_SPOOL_PATH`](../customization/server.html#env_RTE_SPOOL_PATH) | Where each job's output, events and end wait until the app stored them, `<persistent>/rte-spool` by default: keep it on a volume |
 | [`RTE_CACHE_PATH`](../customization/server.html#env_RTE_CACHE_PATH) | With `transfer`: where the folders the app sent are kept, `<persistent>/rte-files` by default |
@@ -53,8 +53,8 @@ An RTE in database mode (deprecated) reads the database settings instead, and re
 | [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | The app's own value, needed only to register itself (the runner's token is stored encrypted); leave it out with `RTE_REGISTER=0` |
 
 In database mode, without `RTE_URL` the RTE registers its IP address and port under the name `rte-<hostname>-<port>`, which change when
-the container is recreated: set `RTE_URL` in production. A runner the RTE registered shows as *automatic* on the Runners page, and as
-*unresponsive* once the RTE stopped answering; the worker removes it 10 minutes later.
+the container is recreated: set `RTE_URL` in production. Once the RTE has not answered for two minutes its runner counts as
+unresponsive, and the worker removes it 10 minutes after its last answer.
 
 ---
 
@@ -71,22 +71,22 @@ folder for its spool and the files the app sends. Pick the mode:
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="outbound" markdown="1">
 
-First make a join token under **Connections > Runners > Join tokens** (see [Join tokens](../runners/registration.html#join-tokens)).
-Then start the RTE on any host that reaches the app, with its own token and the name its runner gets:
+Start the RTE on any host that reaches the app, with its own token and the name its runner gets:
 
 ```bash
 docker run -d --name rte-dmz --restart unless-stopped --stop-timeout 40 \
   -e RTE_MODE=outbound -e APP_URL=https://forms.example.com \
-  -e RTE_NAME=rte-dmz -e RTE_TOKEN=<at least 16 characters> \
-  -e RTE_JOIN_TOKEN=<the join token, afj_...> -e HTTPS=0 \
+  -e RTE_NAME=rte-dmz -e RTE_TOKEN=<at least 16 characters> -e HTTPS=0 \
   -v /srv/apps/rte/persistent:/app/dist/persistent \
   -v /srv/apps/rte/ssh:/home/node/.ssh \
   ghcr.io/ansibleforms/ansibleforms-rte-full:7
 ```
 
-It dials the app, and **Connections > Runners** lists the runner `rte-dmz`, mode outbound, with its socket *connected*. The join
-token is used once: it can expire or be revoked from then on, and the RTE keeps signing in with its own `RTE_TOKEN`. Nothing needs
-to reach this host: publish no port. Only `/live`, `/ready` and `/metrics` listen on its `PORT`, for the probes.
+It dials the app and asks to join: **Connections > Runners** lists the runner `rte-dmz`, **Waiting for approval**, and its log shows
+the fingerprint of its token. Check that its page shows the same fingerprint, then **Approve** it (see
+[Approving an RTE](../runners/registration.html#approving-an-rte)): it takes jobs from then on, signing in with its own `RTE_TOKEN`.
+For an unattended start, add `-e RTE_JOIN_TOKEN=<a join token, afj_...>`, which approves it at once. Nothing needs to reach this
+host: publish no port. Only `/live`, `/ready` and `/metrics` listen on its `PORT`, for the probes.
 
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="inbound" markdown="1" hidden>
@@ -124,8 +124,8 @@ runners:
 ```
 
 Or add the same two by hand: the credential under **Connections > Credentials**, type RTE, and the runner under
-**Connections > Runners**, type RTE, mode **Inbound**, with that credential. To let the RTE add its runner itself instead, start it
-with `APP_URL`, `RTE_URL` and, the first time, `RTE_JOIN_TOKEN` (see [Inbound](modes.html#inbound)).
+**Connections > Runners**, type RTE, mode **Inbound**, with that credential. To let the RTE ask to join instead, start it with
+`APP_URL` and `RTE_URL`, and approve it under **Connections > Runners** (see [Inbound](modes.html#inbound)).
 
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="database" markdown="1" hidden>
@@ -152,5 +152,5 @@ it kills a container, so give the RTE a longer stop timeout (`--stop-timeout`, o
 `RTE_DRAIN_SECONDS`. Kubernetes waits 30 seconds by default.
 
 The [installer](../installation/installer.html) sets up an outbound or inbound RTE on a server of its own, with Docker, Podman or
-[without containers](../installation/native.html), from the join token's line. To run an RTE in another datacenter by hand, follow
-[Another datacenter](another-datacenter.html).
+[without containers](../installation/native.html), and prints the fingerprint to approve it by. To run an RTE in another datacenter
+by hand, follow [Another datacenter](another-datacenter.html).

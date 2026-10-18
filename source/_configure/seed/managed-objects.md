@@ -49,7 +49,8 @@ Credentials can also use a [secret store](../secret-stores) (`secret_store`, `se
 An object that comes from the seed is flagged **managed**:
 
 - It is enforced on **every** start, so the file stays authoritative.
-- It is read-only: the API answers **403**, and the interface marks it *Config seed* and disables Edit and Delete.
+- It is read-only: the API answers **403**, the interface disables Edit and Delete, and its own page says it comes from the config
+  seed file and is read only.
 - Only the seed can set or clear the flag.
 
 Objects created by hand are **never touched**, unless the seed declares the same name. That record is then **adopted**:

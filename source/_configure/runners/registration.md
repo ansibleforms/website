@@ -8,7 +8,7 @@ nav_order: 3
 # Registration
 {: .no_toc }
 
-How an RTE adds itself, with a join token or on its own, and when it is removed
+How an RTE asks to join and is approved, join tokens for unattended installs, and database mode
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -16,90 +16,90 @@ How an RTE adds itself, with a join token or on its own, and when it is removed
 
 ---
 
-## The Registration column
+## Asking to join
 
-The **Registration** column says how a runner got onto the page:
+Since 7.3.0, an RTE in a socket mode (`outbound` or `inbound`) that the app does not know yet asks to join, and an admin approves it.
+It calls in with its own `RTE_TOKEN` and its `RTE_NAME`: an outbound RTE when it first dials the app, an inbound one in its one
+registration call. Without a join token, the app then:
 
-| Registration | Meaning |
+1. Stores the RTE's `RTE_TOKEN` in a new credential of type RTE named `<name>-rte` (with a number added when that name is taken), and
+   for an inbound RTE its address, `RTE_URL`
+2. Adds a runner named after `RTE_NAME`, type RTE, in the RTE's mode, signing in with that credential, marked **Waiting for approval**
+   and turned off. Its description says the host it asked from
+
+An outbound RTE stays connected while it waits, but gets no job. The app does not dial an inbound one until it is approved. Both log
+that they wait for an admin to approve them under **Connections > Runners**, with the fingerprint of their token.
+
+At most 20 RTEs wait for approval at once: more are refused until some are approved or rejected. A request nobody handles within
+24 hours is removed by the worker, with its credential.
+
+An RTE named after a runner the app knows already, but with another token, is refused and does not ask to join. Give it that runner's
+token, delete the runner so that it asks to join, or give it a [join token](#join-tokens).
+
+---
+
+## Approving an RTE
+
+A runner waiting for approval shows **Waiting for approval** next to its name in the list of **Connections > Runners**. The header bell
+counts the runners waiting for approval, for the users who can see the runners (see [the bell](../jobs/#the-jobs-page)).
+
+Its own page opens with a yellow box, **This RTE asked to join**, that shows what the RTE said of itself. Check that it is one you
+started before you approve it:
+
+| Field | What it shows |
 |---|---|
-| automatic | An RTE in database mode added itself when it started, and it is still answering. |
-| unresponsive | An RTE in database mode that added itself has not answered for two minutes. Once it has been silent for ten minutes, the runner is removed. |
-| manual | Added on this page, by the config seed, or by an RTE with a join token. It is never removed automatically. |
+| Fingerprint | The first 8 hexadecimal digits of the SHA-256 of its `RTE_TOKEN`, as `abcd-ef12`. The RTE logs it at its start, and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
+| Host | The host it runs on |
+| Called from | The address it called the app from |
+| Mode | Outbound or Inbound |
+| Uri | An inbound RTE's address, where the app dials it |
+| Version | Its release |
+| Asked on | When it asked to join |
 
-The **Mode** column shows an RTE's mode, and the **Socket** column whether an app node holds a socket to an RTE in a socket mode:
-*connected* or *not connected* (see [Modes](../rte/modes.html)).
+**Approve** and **Reject**, in the box or in the row's menu, decide:
+
+| Action | What happens |
+|---|---|
+| Approve | The runner is enabled and takes jobs from now on. It becomes the default of its type when there is none |
+| Reject | The runner is removed with its credential, and its socket is closed. The RTE may ask to join again; it then waits for approval again |
+
+Only an admin approves or rejects an RTE.
 
 ---
 
 ## Join tokens
 
-Since 7.3.0, an RTE in a socket mode (`outbound` or `inbound`) adds its runner itself with a join token. **Join tokens**, above the
-list of **Connections > Runners**, opens the tokens with these columns:
+A join token approves an RTE at once, for unattended installs: an RTE started with
+[`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN), or a Runner installed with the installer's `--join`, presents it once
+and its runner is added enabled, without waiting. Join tokens have no page in the interface: an admin makes them through the
+[REST API](../api/), under `/api/v2/runner`:
 
-| Column | Meaning |
+| Call | What it does |
 |---|---|
-| Name | What it is for, such as `dmz-runners` |
-| Token | Its first characters only: the token itself is never shown again |
-| Status | *usable*, *revoked*, or *expired or used up* |
-| Runners added | How many runners it added, out of how many it may add |
-| Expires | When it stops adding runners, or *never* |
-| Created by | Who made it |
+| `POST /api/v2/runner/jointoken` | Makes a join token. The body holds its `name`, and optionally `expiresInHours` (none: it never expires) and `maxUses` (none: any number of RTEs) |
+| `GET /api/v2/runner/jointoken` | Lists the join tokens, newest first, with their uses and whether they are still usable; never the tokens themselves |
+| `POST /api/v2/runner/jointoken/<id>/revoke` | Revokes it: it adds no runner any more, and stays in the list |
+| `DELETE /api/v2/runner/jointoken/<id>` | Deletes it |
 
-**New join token** asks for three things, then **Create join token** makes it:
+```bash
+curl -X POST https://forms.example.com/api/v2/runner/jointoken \
+  -H "Authorization: Bearer <token>" -H "Content-Type: application/json" \
+  -d '{ "name": "dmz-runners", "expiresInHours": 24, "maxUses": 5 }'
+```
 
-| Field | Meaning |
-|---|---|
-| Name | What it is for |
-| Valid for | 1 hour, 1 day (the default), 7 days, 30 days, or Never expires. After this it adds no runner any more; the runners it added stay |
-| Runners it may add | How many RTEs may join with it. Empty: any number |
-
-The token, which starts with `afj_`, is shown once, next to a copy button: only its SHA-256 is stored. Below it, the dialog shows the
-two ways to use it, with this app's address filled in:
-
-* **The installer** : one line that installs a Runner on a server (see [The installer](../installation/installer.html#a-runner)).
-  Its `afjoin2.` string carries the app's address and the token together:
-
-  ```bash
-  curl -fsSL https://ansibleforms.com/install | sh -s -- install --role runner --join afjoin2.<...>
-  ```
-
-* **An RTE container** : the settings to start it with, outbound:
-
-  ```bash
-  AF_ROLE=rte
-  RTE_MODE=outbound
-  APP_URL=https://forms.example.com
-  RTE_JOIN_TOKEN=afj_...
-  RTE_NAME=<runner-name>
-  RTE_TOKEN=<a secret of at least 16 characters>
-  ```
-
-Only an admin makes, revokes and deletes join tokens; other users with access to the page see the list.
-
----
-
-## Joining with a token
-
-The RTE presents the join token once, with its own `RTE_TOKEN` and its `RTE_NAME`: an outbound RTE when it first dials the app, an
-inbound one in its registration call. The app then:
-
-1. Stores the RTE's `RTE_TOKEN` in a new credential of type RTE named `<name>-rte` (with a number added when that name is taken), and
-   for an inbound RTE its address, `RTE_URL`
-2. Adds a runner named after `RTE_NAME`, type RTE, in the RTE's mode, signing in with that credential. Its description names the join
-   token it came with
-3. Counts one use of the join token
-
-From then on the RTE signs in with its own token, so the join token can expire or be revoked without affecting it. An RTE runner of
-that name that already exists, with another token (the RTE was installed again), keeps its row and gets the new token. A runner or a
-credential managed by the [config seed](../seed/) is refused: its token is set there.
-
-**Revoke** stops a join token from adding runners, and keeps it in the list; the delete button removes it. Neither touches the runners
-it added: remove one under **Connections > Runners**.
+The answer holds the token, which starts with `afj_`, this once: only its SHA-256 is stored. An RTE that presents it gets the same
+credential and runner as one that [asks to join](#asking-to-join), enabled, and its description names the join token. From then on the
+RTE signs in with its own token, so the join token can expire or be revoked without affecting it. An RTE runner of that name that
+already exists, with another token (the RTE was installed again), keeps its row and gets the new token. A runner or a credential
+managed by the [config seed](../seed/) is refused: its token is set there. Revoking or deleting a join token leaves the runners it added.
 
 ---
 
 ## Registration in database mode
 
-An RTE in database mode, deprecated since 7.3.0, registers itself by default, at its `RTE_URL` or else at its own address and port. To
-manage such runners yourself, start the RTE with `RTE_REGISTER=0` and add it here with type RTE, mode **Database (deprecated)**, and an
+An RTE in database mode, deprecated since 7.3.0, registers itself by default, at its `RTE_URL` or else at its own address and port. Such
+a runner counts as unresponsive once its RTE has not answered for two minutes, and the worker removes it after ten. A runner added by
+hand, by the config seed or by an RTE in a socket mode is never removed that way.
+
+To manage such runners yourself, start the RTE with `RTE_REGISTER=0` and add it here with type RTE, mode **Database (deprecated)**, and an
 RTE credential with its address and the same token.

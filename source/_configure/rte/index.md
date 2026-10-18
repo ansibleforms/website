@@ -143,7 +143,7 @@ running between them:
 | `docker run` or `podman run` | You, with a command like the one in [Run an RTE](run.html), on any host that reaches the database |
 | [Docker Compose](../installation/docker-compose.html) | The `rte` service of `docker-compose.yml`, next to `app` and `mysqldb`. Its config seed declares it as the default runner `rte`, inbound, at `http://rte:8000` |
 | [Helm chart](../installation/kubernetes.html) | Kubernetes, as a second container named `rte` in the app's pod (`containers.rte`). The app dials it on `127.0.0.1`, inbound, and the chart's seed declares it as the default runner |
-| [The installer](../installation/installer.html) | Docker Compose or the Helm chart as above, or a systemd service [without containers](../installation/native.html); a Runner of its own with a join token |
+| [The installer](../installation/installer.html) | Docker Compose or the Helm chart as above, or a systemd service [without containers](../installation/native.html); a Runner of its own, which asks to join and waits for an admin's approval |
 
 The container engine is yours: Docker or Podman on the host, or the container runtime of your Kubernetes cluster, installed and kept up
 to date by you. AnsibleForms never talks to it. Neither the app nor the RTE calls Docker or Podman, mounts their socket, or starts a

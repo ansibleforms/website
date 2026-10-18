@@ -43,8 +43,8 @@ its own, and let forms pick between them with `runner:`.
 
 Every RTE in database mode writes a heartbeat in the database every 10 seconds, and one that registers itself checks its runner row every
 30 seconds. For an RTE in a socket mode, the app node that holds its socket writes the heartbeat for it.
-The **Status** page lists every RTE with its version. On the **Runners** page a runner the RTE registered shows as *automatic*, and
-as *unresponsive* once its heartbeat is two minutes old; the worker removes it after 10 minutes without a heartbeat. When the default
+The **Status** page lists every RTE with its version. A runner the RTE registered counts as unresponsive once its heartbeat is two
+minutes old; the worker removes it after 10 minutes without a heartbeat. When the default
 runner is a registered row whose RTE stopped, the next RTE that checks takes the default. A runner from the config seed or added by
 hand is never removed.
 

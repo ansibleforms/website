@@ -42,8 +42,9 @@ The RTE opens the connection, so it works from a network that accepts no incomin
 
 * **The socket** : the RTE dials `APP_URL` with `/api/v2/rte/socket` added, over `wss://` (`ws://` for an `http://` address), with its
   `RTE_TOKEN` and its runner's name, [`RTE_NAME`](../customization/server.html#env_RTE_NAME). It redials when the socket drops
-* **The first time** : it presents a join token, [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN), and the app adds
-  its runner (see [Join tokens](../runners/registration.html#join-tokens)). From then on it signs in with its own token
+* **The first time** : it asks to join, and its runner waits for an admin's approval under **Connections > Runners**, connected
+  but without jobs (see [Asking to join](../runners/registration.html#asking-to-join)). A join token,
+  [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN), approves it at once. From then on it signs in with its own token
 * **The network** : only from the RTE's zone to the app, on the app's port, through a proxy when `HTTPS_PROXY` says so. A reverse
   proxy in front of the app must let the WebSocket through on that path
 * **The certificate** : the app's certificate is checked. Name a private CA with `NODE_EXTRA_CA_CERTS`, or, inside one trusted network
@@ -66,7 +67,7 @@ The app needs the RTE's runner before it can dial it: type RTE, mode **Inbound**
 
 | How | What to set |
 |---|---|
-| The RTE registers itself | `APP_URL`, [`RTE_URL`](../customization/server.html#env_RTE_URL) (the address the app dials) and, the first time, `RTE_JOIN_TOKEN`. The RTE makes one call, `POST /api/v2/rte/register`, and the app dials it from then on. An inbound RTE with `APP_URL` but no `RTE_URL` refuses to start |
+| The RTE asks to join | `APP_URL` and [`RTE_URL`](../customization/server.html#env_RTE_URL) (the address the app dials). The RTE makes one call, `POST /api/v2/rte/register`, and its runner waits for an admin's approval: the app dials it once it is approved (see [Asking to join](../runners/registration.html#asking-to-join)). With `RTE_JOIN_TOKEN` it is approved at once. An inbound RTE with `APP_URL` but no `RTE_URL` refuses to start |
 | You add the runner | No `APP_URL`: add the runner under **Connections > Runners**, or in the [config seed](../seed/), as in [Run an RTE](run.html#start-it) |
 
 The Docker Compose project, the Helm chart and the installer's controller run their own RTE this way: inbound, declared by the config seed.
@@ -83,7 +84,8 @@ To move such an RTE to a socket mode:
 
 1. Set `RTE_MODE=outbound` with `APP_URL`, or `RTE_MODE=inbound`, on the RTE
 2. Remove `DB_*` and `ENCRYPTION_SECRET` from its environment, and `RTE_REGISTER`, which only database mode reads
-3. Give it a join token (`RTE_JOIN_TOKEN`), or set its runner's **Mode** under **Connections > Runners**, or `rte_mode` in the config seed
+3. Set its runner's **Mode** under **Connections > Runners**, or `rte_mode` in the config seed, or give it a join token
+   (`RTE_JOIN_TOKEN`, see [Join tokens](../runners/registration.html#join-tokens))
 
 ---
 

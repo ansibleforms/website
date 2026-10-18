@@ -21,7 +21,8 @@ For administrators: when the managed hosts of a second datacenter should be reac
 {: .note }
 > **Since 7.3.0** This runbook sets up an RTE in database mode, deprecated since 7.3.0: it connects to the database of datacenter 1. An
 > outbound RTE needs no such link, only HTTPS from datacenter 2 to the app, and no database credentials: see [Modes](modes.html) and
-> [Run an RTE](run.html#start-it). The [installer](../installation/installer.html#a-runner) sets one up on the host from a join token.
+> [Run an RTE](run.html#start-it). The [installer](../installation/installer.html#a-runner) sets one up on the host, and an admin
+> approves it under **Connections > Runners**.
 
 ---
 
@@ -372,7 +373,7 @@ curl -s https://rte-dc2.example.com:8000/ready
 
 ## 11. Check it in AnsibleForms
 
-1. **Connections > Runners** lists a new runner of type RTE named `rte-dc2.example.com`, registered *automatic*
+1. **Connections > Runners** lists a new runner of type RTE named `rte-dc2.example.com`
 2. Open it and click **Test connection**: it shows the RTE's release and Ansible version
 3. Give it a description, such as *Datacenter 2*. With a certificate from a private CA, add that CA on the runner rather than ignoring
    certificates
@@ -464,7 +465,7 @@ docker image prune -f               # removes the image it no longer uses
 cd /opt/af-rte && docker compose down     # or: docker rm -f af_rte_dc2
 ```
 
-The runner turns *unresponsive* two minutes later and the worker removes it after ten, or delete it under **Connections > Runners** at once.
+The runner counts as unresponsive two minutes later and the worker removes it after ten, or delete it under **Connections > Runners** at once.
 Remove the `runner:` line from the forms that named it, or they fail with *the RTE at ... is unreachable*.
 
 ---

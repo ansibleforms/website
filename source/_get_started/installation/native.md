@@ -97,7 +97,8 @@ from `current/server`, with its settings file:
 
 A controller's RTE is `inbound` on a port of its own on `127.0.0.1` (`8001`, or the next free one), runs the playbooks from the app's
 folders (`RTE_FILES=local`), and is declared by the config seed `data/seed.yaml` as the default runner. A Runner's RTE gets the mode,
-`APP_URL`, `RTE_NAME` and the join token you gave it, and receives the playbooks with each job (see [Modes](../rte/modes.html)).
+`APP_URL`, `RTE_NAME` and, with `--join`, the join token, and receives the playbooks with each job (see [Modes](../rte/modes.html)).
+Without a join token it asks to join, and an admin approves it under **Connections > Runners**.
 
 They start at boot and restart after a failure. Manage them and read their logs with systemd's own tools:
 
