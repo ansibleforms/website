@@ -43,24 +43,25 @@ token, delete the runner so that it asks to join, or give it a [join token](#joi
 
 ## Approving an RTE
 
-A runner waiting for approval shows **Waiting for approval** next to its name in the list of **Connections > Runners**. The header bell
-counts the runners waiting for approval, for the users who can see the runners (see [the bell](../jobs/#the-jobs-page)).
+The runners waiting for approval leave the list of **Connections > Runners** for an orange notice above it, such as
+**2 Runners are waiting for approval**, with a line per runner: its name, host, IP address, mode, address and fingerprint.
+The header bell counts them, for the users who can see the runners (see [the bell](../jobs/#the-jobs-page)).
 
-Its own page opens with a yellow box, **This RTE asked to join**, that shows what the RTE said of itself. Check that it is one you
-started before you approve it:
+A click on the notice opens the **Review approval** dialog for each runner in turn; a click on a name opens that one alone.
+Its page shows the same facts in a yellow box, **This RTE asked to join**. Check that it is one you started before you approve it:
 
 | Field | What it shows |
 |---|---|
 | Fingerprint | The first 8 hexadecimal digits of the SHA-256 of its `RTE_TOKEN`, as `abcd-ef12`. The RTE logs it at its start, and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
+| Certificate fingerprint | In the dialog, for an inbound RTE over HTTPS: the first 8 hexadecimal digits of the SHA-256 of the certificate the app pins (its DER bytes), as `abcd-ef12`. The RTE logs it at its start and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
 | Host | The host it runs on |
-| Called from | The address it called the app from |
-| Certificate | An inbound RTE over HTTPS: the fingerprint of the certificate the app pins, the first 8 hexadecimal digits of its SHA-256. The [installer](../installation/installer.html#a-runner) prints it at the end as **Certificate fingerprint**. It must be the same |
+| IP address | The address it called the app from |
 | Mode | Outbound or Inbound |
 | Uri | An inbound RTE's address, where the app dials it |
 | Version | Its release |
 | Asked on | When it asked to join |
 
-**Approve** and **Reject**, in the box or in the row's menu, decide:
+**Approve** and **Reject**, in the dialog or in the box on its page, decide:
 
 | Action | What happens |
 |---|---|

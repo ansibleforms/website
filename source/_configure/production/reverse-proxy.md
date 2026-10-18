@@ -232,8 +232,8 @@ read timeout. Without a subpath, keep only the `Host(...)` part of the rule.
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="apache" markdown="1" hidden>
 
-Needs `mod_proxy`, `mod_proxy_http`, `mod_headers` and `mod_ssl`, and Apache 2.4.47 or later for `upgrade=websocket`,
-the Runners' WebSocket. Both sides of `ProxyPass` carry the prefix:
+Needs `mod_proxy`, `mod_proxy_http`, `mod_headers`, `mod_ssl`, and Apache 2.4.47 or later for the Runners' `upgrade=websocket`.
+Both sides of `ProxyPass` carry the prefix:
 
 ```apache
 <VirtualHost *:443>

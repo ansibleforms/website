@@ -8,7 +8,8 @@
          ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, MAX_HTTP_HEADER_SIZE, UPLOAD_MAX_GB,
          PROCESS_MAX_BUFFER,
          AF_ROLE, RTE_MODE, APP_URL, APP_TLS_VERIFY, RTE_JOIN_TOKEN, RTE_NAME, RTE_FILES, RTE_FILES_MAX_MB,
-         RTE_SPOOL_PATH, RTE_CACHE_PATH, RTE_URL, RTE_TOKEN, RTE_REGISTER, RTE_MAX_JOBS, RTE_DRAIN_SECONDS, RTE_QUEUE_MINUTES]
+         RTE_SPOOL_PATH, RTE_CACHE_PATH, RTE_URL, RTE_TOKEN, RTE_REGISTER, RTE_MAX_JOBS, RTE_DRAIN_SECONDS, RTE_QUEUE_MINUTES,
+         LISTEN_HOST]
 - slug: paths
   title: Paths
   lead: where the configuration, forms, playbooks, workflows, uploads and backups live
@@ -32,12 +33,14 @@
          YTT_DANGEROUS_ALLOW_ALL_SYMLINK_DESTINATIONS, YTT_VARS_PREFIX, "YTT_LIB_DATA_{dynamic}"]
 - slug: security
   title: Security variables
-  lead: sign-in limits, passwords, single sign-on, tokens, encryption, the browser policy, outbound REST hosts, masking, and the VAULT_* variables, read once to import a secret store
+  lead: sign-in limits, passwords, single sign-on, tokens, encryption, the browser policy, outbound REST and jq limits, masking, and the VAULT_* variables, read once to import a secret store
   # ENABLE_SSO and SSO_AUTO_LOGIN are removed in 7.3.0 : a switch per SSO provider instead, see
   # /authentication/#switching-single-sign-on
   vars: [LOGIN_MAX_FAILURES, LOGIN_MAX_FAILURES_PER_IP, LOGIN_LOCKOUT_MINUTES, AUTH_RATE_LIMIT, PASSWORD_MIN_LENGTH,
          ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_REFRESH_EXPIRATION,
-         ACCESS_TOKEN_ISSUER, API_TOKEN_MAX_DAYS, ENCRYPTION_SECRET, CONTENT_SECURITY_POLICY, AZURE_GRAPH_URI, REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, EXPRESSION_SANITIZER,
+         ACCESS_TOKEN_ISSUER, API_TOKEN_MAX_DAYS, ENCRYPTION_SECRET, ENCRYPTION_SECRET_PREVIOUS, CONTENT_SECURITY_POLICY,
+         ENTRA_AUTHORITY_URI, ENTRA_GRAPH_URI, AZURE_AUTHORITY_URI, AZURE_GRAPH_URI,
+         REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, REST_IGNORE_CERTS, REST_TIMEOUT_SECONDS, JQ_TIMEOUT_SECONDS, EXPRESSION_SANITIZER,
          REGEX_FILTER_JOB_OUTPUT, MASK_EXTRAVARS_REGEX, EXTRAVARS_USER_FIELDS,
          # VAULT_* : only read by the first 7.x start, which imports them once as the secret store `vault`
          # (server/src/secrets/importVaultEnv.js) ; the store is then managed under Connections > Secret stores

@@ -24,7 +24,7 @@ The page under **Connections > Runners** lists every runner with these columns:
 |---|---|
 | Default | Whether it is the default runner of its type. |
 | Enabled | Whether it takes jobs. A runner turned off gets no job, even as the default of its type. |
-| Name | How forms refer to it, with `runner: <name>`. An RTE that asked to join shows **Waiting for approval** next to it. |
+| Name | How forms refer to it, with `runner: <name>`. |
 | Type | RTE, AWX, Ansible Automation Platform, Ascender, Semaphore UI, Rundeck or Jenkins. |
 | Description | What it is for. |
 
@@ -32,18 +32,18 @@ The page under **Connections > Runners** lists every runner with these columns:
 [Modes](../rte/modes.html)), and **Connection**, whether an app node holds a socket to an RTE in a socket mode: **Connected** or
 **Not connected**.
 
+From 7.3.0 the runners waiting for approval are not in the list but in a notice above it, see [Approving an RTE](registration.html#approving-an-rte).
 **Add runner** opens a dialog in three steps: **Runner** (name and description), **Type** (for an RTE also its **Mode**) and
 **Credentials**. In the **Type** step each product has a hint: the RTE's gives its full name, *Runtime Environment*. A row opens the
 runner's own page, and its menu offers:
 
 | Action | What it does |
 |---|---|
-| Edit runner | Opens its page |
+| Edit | Opens its page |
 | Test connection | Checks that it answers and accepts its credential |
-| Approve, Reject | Only for an RTE waiting for approval: see [Approving an RTE](registration.html#approving-an-rte) |
 | Enable, Disable | Turns it on or off, whichever it is not |
 | Change credentials | Opens the Credentials tab of its page |
-| Delete runner | Removes it |
+| Delete | Removes it |
 
 ---
 

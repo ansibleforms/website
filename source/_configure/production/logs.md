@@ -64,7 +64,7 @@ You can add several servers, and each one has its own settings:
 
 | Setting | What it does |
 |---------|--------------|
-| Enabled | Only enabled servers get anything, so a server can be paused without deleting it |
+| Enabled | Only enabled servers get anything, so a server can be paused without deleting it; **Enable** and **Disable** in its row menu switch it too |
 | Protocol | `udp4` (default), `udp6`, `tcp4`, `tcp6`, `tls4`, `tls6`, `unix` or `unix-connect` |
 | Host and port | The server to send to, port `514` by default; a `unix` protocol takes a socket path instead |
 | Receives | The server log, the audit entries, or both (the default for a new server) |

@@ -34,7 +34,9 @@ The upgrade procedure depends on how you installed AnsibleForms. Each method is 
 
 {: .note }
 > **Backup first** Take a backup before you upgrade (**Settings → Backups**). The database schema is upgraded at the first
-> start of the new release, so the backup is your rollback point if something goes wrong.
+> start of the new release, so the backup is your rollback point if something goes wrong. From 7.3.0 the worker also takes
+> one itself before it upgrades from an older release, named after the release, unless
+> [`UPGRADE_BACKUP`](../customization/retention.html#env_UPGRADE_BACKUP) is `0`.
 
 The release you receive depends on the image tag you run: `latest` follows the newest major version, while a tag such as `7`
 stays on that major version. All tags are listed under [Image tags](../installation/#image-tags).

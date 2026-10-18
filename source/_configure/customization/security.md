@@ -31,8 +31,25 @@ REST_ALLOWED_HOSTS=api.example.com,10.20.0.0/16
 MASK_EXTRAVARS_REGEX=password|secret|token|apikey
 ```
 
-Set `ENCRYPTION_SECRET` before the first credential is stored: changing it later makes every stored credential impossible to
-decrypt. [Secrets and encryption](../security/secrets.html) explains how both secrets are used and why backups leave them out.
+Set `ENCRYPTION_SECRET` before the first credential is stored. From 7.3.0, setting or changing it re-encrypts every stored
+secret at the next start, with `ENCRYPTION_SECRET_PREVIOUS` naming the old key when it was your own, see
+[Changing the encryption secret](../security/secrets.html#changing-the-encryption-secret).
+
+---
+
+## REST calls and jq
+
+From 7.3.0 the REST helper functions (`fn.fnRestBasic`, `fn.fnRestAdvanced`, `fn.fnRestJwt`, `fn.fnRestJwtSecure`) check the
+certificate of the endpoint they call, like every other connection; up to 7.2.0 they never did. Three settings apply to them:
+
+| Variable | Default | Effect |
+|---|---|---|
+| [`REST_IGNORE_CERTS`](#env_REST_IGNORE_CERTS) | `0` | `1` skips the certificate check: only for endpoints with a self-signed certificate |
+| [`REST_TIMEOUT_SECONDS`](#env_REST_TIMEOUT_SECONDS) | `60` | How long a REST call waits for an answer before it fails with a timeout |
+| [`JQ_TIMEOUT_SECONDS`](#env_JQ_TIMEOUT_SECONDS) | `30` | How long a jq filter may run before it is stopped; jq output is also capped at 64 MB |
+
+All three take effect when saved, without a restart. For an endpoint whose certificate is signed by a private CA, keep the check on
+and give Node.js that CA instead: set `NODE_EXTRA_CA_CERTS` to a PEM file holding it in the app's environment, then restart the app.
 
 ---
 

@@ -16,14 +16,14 @@ Outbound, inbound or database: who opens the connection, and what goes over it
 
 ---
 
-For administrators: since 7.3.0 an RTE talks to the app over one WebSocket and holds no database credentials. Pick the mode that fits the network between them.
+For administrators: since 7.3.0 an RTE talks to the app over one WebSocket and holds no database credentials. Pick the mode
+that fits the network between them: who may open a connection to whom, and through which proxies and firewalls it passes.
 
 ---
 
 ## The three modes
 
-[`RTE_MODE`](../customization/server.html#env_RTE_MODE) on the RTE says how it reaches the app, and the RTE's runner under
-**Connections > Runners** has the same mode (its **Type** tab, **Mode**):
+[`RTE_MODE`](../customization/server.html#env_RTE_MODE) on the RTE says how it reaches the app; its runner has the same **Mode**:
 
 | Mode | Who opens the connection | What the RTE holds | For |
 |---|---|---|---|
@@ -70,12 +70,14 @@ The app needs the RTE's runner before it can dial it: type RTE, mode **Inbound**
 | The RTE asks to join | `APP_URL` and [`RTE_URL`](../customization/server.html#env_RTE_URL) (the address the app dials). The RTE makes one call, `POST /api/v2/rte/register`, and its runner waits for an admin's approval: the app dials it once it is approved (see [Asking to join](../runners/registration.html#asking-to-join)). With `RTE_JOIN_TOKEN` it is approved at once. An inbound RTE with `APP_URL` but no `RTE_URL` refuses to start |
 | You add the runner | No `APP_URL`: add the runner under **Connections > Runners**, or in the [config seed](../seed/), as in [Run an RTE](run.html#start-it) |
 
-The Docker Compose project, the Helm chart and the installer's controller run their own RTE this way: inbound, declared by the config seed.
+The Docker Compose project, the Helm chart and the installer's controller run their own RTE this way, inbound, declared by the seed.
 
 **Over HTTPS.** With [`HTTPS=1`](../customization/server.html#env_HTTPS) the RTE serves its socket over TLS, with the key and certificate
 of [`HTTPS_KEY`](../customization/server.html#env_HTTPS_KEY) and [`HTTPS_CERT`](../customization/server.html#env_HTTPS_CERT)
 (`key.pem` and `cert.pem` in its `certificates` folder by default). An RTE with an `https://` `RTE_URL` sends that certificate when it
 asks to join, and the app pins it: it dials the RTE only when it presents the same certificate, so a self-signed one works without a CA.
+The RTE logs the certificate's fingerprint at its start (the first 8 hexadecimal digits of the SHA-256 of its DER bytes, as `abcd-ef12`),
+and the approval dialog shows the one the app received: check that they match before you approve it.
 The [installer](../installation/installer.html#a-runner) sets up its inbound Runners this way, with a certificate of their own address.
 
 ---
@@ -137,5 +139,4 @@ What to open between the app, the RTE and the managed hosts, per mode:
 | Database (deprecated) | The RTE, and the app nodes and the worker | The database, and the RTE | `3306`, and the RTE's `PORT` |
 | Every mode | The RTE | The managed hosts | ssh (`22`), WinRM, their APIs |
 
-In a socket mode the RTE never connects to the database. Its API answers only the socket and the probes: `/live`, `/ready` and
-`/metrics` on its `PORT`.
+In a socket mode the RTE never connects to the database. Its API answers the socket and the probes only: `/live`, `/ready`, `/metrics`.

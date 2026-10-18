@@ -35,7 +35,8 @@ Users with the `allowBackupOps` role option can also take a backup at any time o
 backups are removed by the retention, and only backups with a usable dump count towards it, so a series of failed
 nights never pushes out the last good one.
 
-The commands may be wrappers such as `docker exec <container> mysqldump`, if their first word exists locally.
+The commands may be wrappers such as `docker exec <container> mysqldump`, if their first word exists locally. From 7.3.0 they run
+without a shell: quotes and `$NAME` from the command's environment work, but `;`, `|`, `&&`, `>` and `<` are refused.
 
 ---
 
@@ -77,8 +78,10 @@ when the newest one is more than two days old, or when it has no usable dump, an
 
 Restore from the [**Backups** page](../gui/administration.html#restore), with **Create a new backup before restoring** ticked. A restore:
 
-* replays `ansibleforms.sql`, which replaces the whole database
-* copies `config.yaml` and the `forms/` folder back in place
+* replays `ansibleforms.sql`, which replaces the whole database; from 7.3.0 a backup of an older release is then upgraded
+  again, as at the start of a new release, and a patch that fails is reported
+* copies `config.yaml` back, and replaces the `forms/` folder with the backup's: from 7.3.0 forms that are not in the backup are
+  removed instead of kept, the folder's links and mode stay, and a failed copy rolls the folder back
 * does **not** restore `managed.env`, because it describes the host the backup came from. The **Restore environment**
   button puts it back on request, keeps the current file as `.env.bak`, and needs a restart.
 

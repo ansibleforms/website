@@ -83,8 +83,8 @@ docker run -d --name rte-dmz --restart unless-stopped --stop-timeout 40 \
   ghcr.io/ansibleforms/ansibleforms-rte-full:7
 ```
 
-It dials the app and asks to join: **Connections > Runners** lists the runner `rte-dmz`, **Waiting for approval**, and its log shows
-the fingerprint of its token. Check that its page shows the same fingerprint, then **Approve** it (see
+It dials the app and asks to join: **Connections > Runners** shows the runner `rte-dmz` as waiting for approval, and its log shows
+the fingerprint of its token. Check that its review shows the same fingerprint, then **Approve** it (see
 [Approving an RTE](../runners/registration.html#approving-an-rte)): it takes jobs from then on, signing in with its own `RTE_TOKEN`.
 For an unattended start, add `-e RTE_JOIN_TOKEN=<a join token, afj_...>`, which approves it at once. Nothing needs to reach this
 host: publish no port. Only `/live`, `/ready` and `/metrics` listen on its `PORT`, for the probes.
@@ -92,8 +92,7 @@ host: publish no port. Only `/live`, `/ready` and `/metrics` listen on its `PORT
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="inbound" markdown="1" hidden>
 
-Start the RTE where the app reaches it. This one runs next to the app, on the same network, and runs the playbooks from the app's own
-folders (`RTE_FILES=local`):
+Start the RTE where the app reaches it. This one runs next to the app and runs the playbooks from its folders (`RTE_FILES=local`):
 
 ```bash
 docker run -d --name rte --network ansibleforms --restart unless-stopped --stop-timeout 40 \
@@ -104,8 +103,7 @@ docker run -d --name rte --network ansibleforms --restart unless-stopped --stop-
   ghcr.io/ansibleforms/ansibleforms-rte-full:7
 ```
 
-Then give the app its runner. In the [config seed](../seed/), an RTE credential with the address and the token, and a runner in
-inbound mode that signs in with it:
+Then give the app its runner: in the [config seed](../seed/), an RTE credential and an inbound runner that signs in with it:
 
 ```yaml
 credentials:

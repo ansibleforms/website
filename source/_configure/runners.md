@@ -18,7 +18,7 @@ Where jobs run: runtime environment containers for playbooks, and AWX, AAP, Asce
 
 ---
 
-For administrators: add the runners your jobs run on, choose the default of each type, approve the RTEs that ask to join, and test them.
+For administrators: add the runners your jobs run on, choose each type's default, approve the RTEs that ask to join, test them.
 
 ---
 
