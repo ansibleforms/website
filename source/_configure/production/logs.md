@@ -74,6 +74,9 @@ You can add several servers, and each one has its own settings:
 A change applies on every node without a restart, and the server's page has a button that sends it a test message.
 A server that cannot be reached never stops the application: the error is written to the console.
 
+From 7.3.0 the syslog servers need the full settings rights, the [`showSettings`](../config/roles.html#role-options) role option:
+access to the connections settings alone is not enough, as a syslog server receives the server log and the audit entries.
+
 The `LOG_SYSLOG_*` variables of earlier versions are deprecated since 7. The first start that finds
 [`LOG_SYSLOG_HOST`](../customization/logging.html#env_LOG_SYSLOG_HOST) set imports them once as the server `syslog`,
 receiving the server log as before, and ignores them from then on. Remove them from the environment after that first
