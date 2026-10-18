@@ -67,7 +67,7 @@ The response holds a new pair, in the same shape as the login. A refresh token w
 
 ## Long-lived tokens
 
-A script that runs unattended can use a token that lasts longer. It needs the `extendedTokenExpiration` role option:
+A script that runs unattended can use a token that lasts longer. From 7.3.0 it needs the `allowApiTokens` role option:
 
 * Create one under [Profile > API token](../profile/api-token.html).
 * Or log in with the `expiryDays` query parameter, for a token valid that many days:
@@ -76,11 +76,11 @@ A script that runs unattended can use a token that lasts longer. It needs the `e
 curl -X POST "https://af.example.com/api/v2/auth/login?expiryDays=90" -u automation:<password>
 ```
 
-`expiryDays` is read from the URL only, never from the body. For a user whose roles lack `extendedTokenExpiration`, it is
-ignored, and the login returns a token with the usual lifetime.
+`expiryDays` is read from the URL only, never from the body. For a user whose roles lack `allowApiTokens`, it is ignored,
+and the login returns a token with the usual lifetime. `expiryDays=never` needs `extendedTokenExpiration` too.
 
 A long-lived token lives [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) days at most, 90 by
-default: a longer `expiryDays` is cut to it. Refreshing it returns an ordinary token, so log in again when it expires.
+default: a longer `expiryDays` is cut to it, unless it is `never`. Refreshing it returns an ordinary token, so log in again when it expires.
 
 ---
 

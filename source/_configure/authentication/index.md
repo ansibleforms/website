@@ -43,7 +43,7 @@ The login page has a username and password form, plus one button per enabled sin
 - **The Entra ID and OpenID buttons** appear below **Sign in** when such a provider is enabled. They send the browser to
   the provider and back; no password reaches AnsibleForms.
 
-Only one Entra ID provider and one OIDC provider are active at a time: **Use for sign-in** on one makes the others of its type inactive.
+Only one Entra ID provider and one OIDC provider are enabled at a time: enabling one turns the others of its type off.
 A failed username and password login always shows the same generic message; the reason is in the server log and the audit log.
 
 ---
@@ -66,20 +66,20 @@ logs a warning at every start while they are still set, so remove them from the 
 | Variable before 7.3.0 | What the upgrade does |
 |---|---|
 | `ENABLE_SSO=0` | Turns every provider off: the providers stay configured, without a button on the login page |
-| `SSO_AUTO_LOGIN=1` | Turns **Skip the login page** on for the one enabled provider |
+| `SSO_AUTO_LOGIN=1` | Turns **Skip the login page** on for the enabled provider, when exactly one is enabled and `ENABLE_SSO` is not `0` |
 
 ---
 
 ## From user to roles
 
 Each login produces a user with a **type** (`local`, `ldap`, `azuread` or `oidc`), a username and a list of groups.
-Every group gets the type as prefix:
+Every group gets a prefix of its type, `entraid` for the Entra ID type `azuread`:
 
 | Login method | Username | Groups |
 |---|---|---|
 | Local | the local username | `local/<group>`, one for each local group of the user |
 | LDAP | the value of the Username Attribute | `ldap/<cn>`, the CN of each group the directory returns |
-| Entra ID | the `upn` claim | `azuread/<display name>`, read from Microsoft Graph |
+| Entra ID | the `upn` claim | `entraid/<display name>`, read from Microsoft Graph (`azuread/` up to 7.2.0, still matched) |
 | OIDC | the `preferred_username` claim | `oidc/<name>`, from the `groups` claim of the ID token |
 
 The [roles](../config/roles.html) in config.yaml then match these values: a role applies when one of its `groups` is one
@@ -91,7 +91,7 @@ roles:
     groups:
       - local/admins
       - ldap/AF-Admins
-      - azuread/AF-Admins
+      - entraid/AF-Admins
   - name: operator
     groups:
       - oidc/af-operators

@@ -11,9 +11,14 @@ nav_order: 5
 Create a token for scripts and AI agents
 {: .fs-6 .fw-300 }
 
+1. TOC
+{:toc}
+
 ---
 
-A long-lived token lets scripts call the API without your password. It needs the `extendedTokenExpiration` role option:
+## Who can make one
+
+A long-lived token lets scripts call the API without your password. From 7.3.0 it needs the `allowApiTokens` role option:
 
 ```yaml
 roles:
@@ -21,24 +26,26 @@ roles:
     groups:
       - local/automation
     options:
-      extendedTokenExpiration: true
+      allowApiTokens: true
+      extendedTokenExpiration: true   # also tokens that never expire
 ```
 
-To create a token:
+Up to 7.2.0 the option was `extendedTokenExpiration` alone. A role from before 7.3.0 that sets only that option is given
+`allowApiTokens`, so it keeps its tokens; with both, a token can also be made that never expires. See [Role options](../config/roles.html#role-options).
 
-1. Select how long the token stays valid: 30, 90, 180 or 365 days, up to the maximum your administrator allows
-   ([`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS), 90 days by default). Only the lifetimes up to that
-   maximum are offered, plus the maximum itself. Choose the shortest period your script needs.
-2. Enter your password to confirm your identity. The password is not stored in the token.
-3. Click **Create token** under the card, then copy the token with **Copy**.
+---
 
-The token is shown **only once**. It ends at its expiry, or sooner:
+## Create a token
 
-- **a logout with the token** (`POST /api/v2/auth/logout` with the token in the `Authorization` header) ends it, with the
-  session it was created in;
-- **a password change** ends every token and session of your account created before it.
+**New token**, on the title line of **Profile > API tokens**, opens a wizard in three steps:
 
-Treat it like your password and keep its lifetime short.
+1. **Details**: a name, so you recognise the token in the list, and how long it stays valid. The choices are 30, 90, 180
+   or 365 days up to [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) (90 by default), that
+   maximum itself, and **Never expires** with `extendedTokenExpiration`. Choose the shortest period your script needs.
+2. **Confirm**: a local or LDAP account enters its password, which is not stored in the token. A Microsoft Entra ID or
+   OIDC account has no password here: its token is made from its session, which must have signed in at most 10 minutes
+   before, so the provider may ask you to sign in again first.
+3. **Copy**: the token, shown **only once**. Copy it with **Copy** and keep it as safe as a password.
 
 Send the token in the `Authorization` header of each API call:
 
@@ -46,7 +53,21 @@ Send the token in the `Authorization` header of each API call:
 curl -H "Authorization: Bearer $TOKEN" https://af.example.com/api/v2/job
 ```
 
-API tokens require a password, so they are only available for local and LDAP accounts.
-A script can also request a token itself through the login API and its `expiryDays`
-parameter (`POST /api/v2/auth/login?expiryDays=90`), which is what this view does. A longer `expiryDays` is cut to
-`API_TOKEN_MAX_DAYS`.
+An API token cannot make another one. An SSO account's token carries the roles of its last sign-in: a group change at the
+identity provider reaches it only when you sign in again and make a new token.
+
+---
+
+## Your tokens
+
+The tokens you made are listed with their name and when each was created, expires and was last used; **Revoke** in a row's menu ends one.
+An admin sees and revokes them on your page under **Settings > Users** too. A token ends at its expiry, or sooner:
+
+- **a revoke**, from the list;
+- **a logout with the token** (`POST /api/v2/auth/logout` with the token in the `Authorization` header), which ends it with
+  the session it was created in;
+- **a password change**, which ends every token and session of your account created before it, and a block of your account.
+
+A token that never expires still ends in these cases. A script can also request a token itself through the login API and
+its `expiryDays` parameter (`POST /api/v2/auth/login?expiryDays=90`, or `expiryDays=never`); a longer `expiryDays` is cut
+to `API_TOKEN_MAX_DAYS`.

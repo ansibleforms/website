@@ -419,7 +419,7 @@ on the login page as well, and logged.
 **How to fix it**
 
 Enable the provider under **Access > SSO**, and register the callback URL in the identity provider exactly as
-AnsibleForms uses it: `https://<your host>/api/v2/auth/azureadoauth2/callback` for Entra ID, or
+AnsibleForms uses it: `https://<your host>/api/v2/auth/entraid/callback` for Entra ID (from 7.3.0; `azureadoauth2` still works), or
 `https://<your host>/api/v2/auth/oidc/callback` for OIDC. A callback URL with `/api/v1/`, from before 7 or before
 6.1.5, must be updated: the login page then reloads without signing in and without an error. Retry the login after
 an expired hand-off.

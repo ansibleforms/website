@@ -55,32 +55,54 @@ Each entry of the `roles` list:
 
 ## Role options
 
-The `options` of a role switch features on or off for its members; the table lists every option with its default.
+The `options` of a role switch features on or off for its members. From 7.3.0 the role's page shows them in four groups,
+each option with an (i) that says what it gives, the same text the **Permissions** view of the profile shows:
 
 | Option | Allows the user to | Default |
 |---|---|---|
-| `showSettings` | See the settings pages | Admins only |
-| `showDesigner` | See and use the designer | Admins only |
-| `allowPlaybookDesign` | Edit the playbooks in the designer: save, create, remove and push them. Without it, the designer shows the playbooks read-only | On |
-| `allowWorkflowDesign` | Edit the workflows in the designer: save, create, remove and push them. Without it, the designer shows the workflows read-only | On |
-| `allowInventoryDesign` | Edit the inventories in the designer: save, create, remove and push them. Without it, the designer shows the inventories read-only | On |
-| `allowVarsFileDesign` | Edit the vars files in the designer: save, create, remove and push them. Without it, the designer shows the vars files read-only | On |
+| **Settings** | | |
+| `showSettings` | See and change every settings page; the server log and backups have their own options | Admins only |
+| `showAppearanceSettings` | Change the appearance settings, without the other settings (from 7.3.0) | Off |
+| `showConnectionsSettings` | Manage the connections settings (credentials, runners and more), without the other settings (from 7.3.0) | Off |
 | `showLogs` | See the server log | Admins only |
-| `showJobs` | See the jobs page | On |
-| `showDebugButtons` | See the debug buttons on a form | On |
-| `allowJobRelaunch` | Relaunch a job with the form data of an earlier run | Admins only |
-| `allowVerboseMode` | Run jobs in verbose mode | On |
-| `allowScheduledJobs` | Create and manage recurring and one-time schedules, on the **Schedules** page (see the warning below) | Admins only |
-| `allowStoredJobs` | Store the data of a form and load it again later | On |
-| `allowPlannedJobs` | Plan a job to run once at a set time (**Run Later (One-time)**) | On |
-| `showAllJobLogs` | See the jobs of every user, not only their own | Admins only |
-| `showArtifacts` | See a job's artifacts: what an AWX job returns, or what a playbook gathered with `set_stats` | On |
-| `showExtravars` | See the extravars of a form and of a job | On |
-| `allowLogin` | Sign in to AnsibleForms | On |
+| `showAuditLog` | See the audit log, without the other settings (from 7.3.0) | Admins only |
 | `allowBackupOps` | Back up and restore the database | Admins only |
+| **Designer** | | |
+| `showDesigner` | See and use the designer | Admins only |
+| `allowFormDesign` | Edit the forms config in the designer: categories, constants and forms. Without it, read-only (from 7.3.0) | On |
+| `allowPlaybookDesign` | Edit the playbooks in the designer: save, create, remove and push them. Without it, read-only | On |
+| `allowWorkflowDesign` | Edit the workflows in the designer: save, create, remove and push them. Without it, read-only | On |
+| `allowInventoryDesign` | Edit the inventories in the designer: save, create, remove and push them. Without it, read-only | On |
+| `allowVarsFileDesign` | Edit the vars files in the designer: save, create, remove and push them. Without it, read-only | On |
+| **Jobs** | | |
+| `showJobs` | See the jobs page | On |
+| `showAllJobLogs` | See the jobs of every user, not only their own | Admins only |
+| `manageAllJobs` | Abort, delete and relaunch the jobs of every user; deleting and relaunching also need the two options below (from 7.3.0) | Admins only |
+| `showExtravars` | See the extravars of a form and of a job | On |
+| `showDebugButtons` | See the debug buttons on a form | On |
+| `showArtifacts` | See a job's artifacts: what an AWX job returns, or what a playbook gathered with `set_stats` | On |
+| `allowVerboseMode` | Run jobs in verbose mode | On |
+| `allowJobRelaunch` | Relaunch a job with the form data of an earlier run | Admins only |
+| `allowJobDeletion` | Delete jobs: their own, or every user's with `manageAllJobs`. Without it, the job history stays whole (from 7.3.0) | On |
+| `allowScheduledJobs` | Create and manage recurring and one-time schedules, on the **Schedules** page (see the warning below) | Admins only |
+| `allowPlannedJobs` | Plan a job to run once at a set time (**Run later**) | On |
+| `allowStoredJobs` | Store the data of a form and load it again later | On |
+| **Access and integrations** | | |
+| `allowLogin` | Sign in to AnsibleForms | On |
 | `allowChat` | Use the [chat assistant](../chat/), when it is enabled | On |
 | `allowMcp` | Use the [MCP server](../mcp/) from an AI agent, when it is enabled | The role's `allowChat` |
-| `extendedTokenExpiration` | Request a longer-lived token, such as an [API token](../profile/api-token.html) for scripts | Off |
+| `allowFileUploads` | Upload files through a form's file fields (from 7.3.0) | On |
+| `allowApiTokens` | Make [API tokens](../profile/api-token.html) for scripts, up to the longest lifetime the instance allows (from 7.3.0) | Off |
+| `extendedTokenExpiration` | Also make API tokens that never expire; it needs `allowApiTokens` | Off |
+
+Some options include others, and the role's page shows the included ones on and greyed out:
+
+- **`showSettings`** gives `showAppearanceSettings`, `showConnectionsSettings` and `showAuditLog` too.
+- **`manageAllJobs`** gives `showAllJobLogs` too, as acting on every user's jobs means seeing them.
+- **The design options** only matter with `showDesigner`, and `extendedTokenExpiration` only with `allowApiTokens`.
+
+Up to 7.2.0, `showAllJobLogs` also let a user abort and delete the jobs it showed; from 7.3.0 that takes `manageAllJobs`.
+A role from before 7.3.0 with `extendedTokenExpiration` and without `allowApiTokens` gets `allowApiTokens`, so it keeps its tokens.
 
 **Admins only** means on for users who hold the `admin` role, and off for everyone else. When a user matches several roles,
 the options are combined as follows:
