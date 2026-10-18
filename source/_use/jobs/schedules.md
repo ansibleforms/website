@@ -82,8 +82,10 @@ values the playbook needs yourself, as a dictionary (key: value pairs).
 The **Cron Schedule** field is a cron editor: it describes the expression in words, offers presets and previews the next
 runs. The server refuses an expression it cannot run, or one that can never occur.
 
-There is no switch to pause a schedule. To stop a recurring schedule without deleting it, clear its cron expression: it stays
-on the page, never runs on its own, and **Run Schedule** still runs it on demand.
+From 7.3.0 each schedule has an **Enabled** switch, to pause it without deleting it. A schedule turned off stays on the page
+with its settings, but does not run on its own: a recurring one skips its cron ticks, and a one-time one waits past its
+**Run At** until it is turned on again. **Run Schedule** still runs it on demand. A new schedule is on, and the schedules
+that existed before 7.3.0 are on after the upgrade.
 
 ---
 
