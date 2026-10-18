@@ -20,7 +20,8 @@ Terms every user accepts once before using the app, recorded with who accepted w
 
 For administrators: ask every user to accept terms of use, under **Settings > Access > Disclaimer**, with the `showSettings` role option.
 
-The page has three tabs: **General** sets the disclaimer, **Versions** and **Acceptances** show its history.
+From 7.3.0 the page lists every version of the disclaimer, and each version opens on a page of its own with its acceptances.
+Up to 7.2, the page had three tabs instead (**General**, **Versions** and **Acceptances**); the upgrade keeps every version.
 
 ---
 
@@ -28,19 +29,21 @@ The page has three tabs: **General** sets the disclaimer, **Versions** and **Acc
 
 | Page | What it covers |
 |---|---|
-| [General](disclaimer/general.html) | The switch, and the title, text and checkbox users accept |
-| [Versions](disclaimer/versions.html) | A new version when the text changes, and who is asked again |
-| [Acceptances](disclaimer/acceptances.html) | Who accepted which version, and asking users again |
+| [General](disclaimer/general.html) | The list of versions, adding one, and enabling the one users accept |
+| [Versions](disclaimer/versions.html) | A version's page, and changing its text as a correction or for everyone again |
+| [Acceptances](disclaimer/acceptances.html) | Who accepted which version, and asking chosen users again |
 
 
 ---
 
 ## What users see
 
-With the disclaimer switched on, every user who signs in gets it in a dialog before anything else, admins included:
+With a version enabled, every user who signs in gets it in a dialog before anything else, admins included:
 
 1. They read its title and its text.
-2. They tick the checkbox, then click **Accept**. **Decline and sign out** signs them out instead.
+2. They tick the checkbox, then click **Accept**. **Decline**, in red, signs them out instead.
+
+From 7.3.0 the page behind the dialog is blurred until they answer.
 
 A user accepts each version once: they are not asked again at their next sign-in, only when a new version comes.
 

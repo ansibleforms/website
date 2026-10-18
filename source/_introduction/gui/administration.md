@@ -29,7 +29,32 @@ The Settings menu: the system, its appearance, access, connections and logs
 **Settings** in the header opens the administration pages, grouped in the left menu under **System**, **Appearance**,
 **Access**, **Connections** and **Logs**. Each entry shows only to a user with the role option its page needs:
 `allowBackupOps` for **Backups**, `showLogs` for **Server log**, and `showSettings` for every other page.
-See [Roles](../config/roles.html) for the role options.
+From 7.3.0 three options open a part of them without the rest:
+
+| Role option | Opens |
+|---|---|
+| `showAppearanceSettings` | The **Appearance** pages |
+| `showConnectionsSettings` | The **Connections** pages, except **Syslog**; repositories, secret stores and guarded credentials stay an admin's to change |
+| `showAuditLog` | The **Audit log** |
+
+See [Roles](../config/roles.html#role-options) for the role options.
+
+---
+
+## Lists and record pages
+
+From 7.3.0 the settings lists and record pages share one layout, with their controls on a row of their own under the title:
+
+| Part | How it works |
+|---|---|
+| Search box | First in that row on every settings page and record page. A word narrows every tab at once: the matching fields, rows or lines show under their tab's name |
+| Page size | A table shows as many rows as fit the screen until a page size is picked: 10, 20, 50 or 100 |
+| Columns | Every named column sorts, and an empty cell shows `–` |
+| Checkboxes | Rows have them only where something can be done with the rows ticked, and the row menu (⋮) offers the same action |
+| Row menu | Short labels, such as **Edit** and **Delete**. A list with an **Enabled** column has it first, and offers **Enable** or **Disable** in each row menu, whichever applies |
+
+The lists with an **Enabled** column are the SSO providers, the LDAP directories, the runners, the schedules, the notification
+channels, the syslog servers, the announcements, the labels and the disclaimer's versions.
 
 ---
 
@@ -70,7 +95,7 @@ How the instance looks for everyone, and the messages it shows.
 | **Logo** | Your own logo in the header. See [Logo](../appearance/logo.html). |
 | **Icon** | Your own icon in the browser tab. See [Icon](../appearance/icon.html). |
 | **Links** | The Designer link, and your own links and menus in the header. See [Links](../appearance/links.html). |
-| **Environment** | A label beside the logo, such as PRODUCTION. See [Environment](../appearance/environment.html). |
+| **Labels** | Labels beside the logo, such as PRODUCTION and EU. See [Labels](../appearance/labels.html). |
 | **Announcements** | Messages under the header, each from its start to its end. See [Announcements](../announcements.html). |
 
 ---

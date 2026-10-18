@@ -36,6 +36,7 @@ declares objects that previously existed only in the database:
 | `repositories`          | Git repositories                                                    |
 | `syslog_servers`        | The syslog servers that get the server log and the audit entries    |
 | `notification_channels` | Mail servers, Slack, Teams, Telegram and webhooks for notifications |
+| `labels`                | The labels beside the header's logo, from 7.3.0                      |
 | `ldap`                  | The LDAP configuration                                              |
 | `settings`              | The public URL, and the mail settings used when no mail channel is active |
 | `chat`                  | The chat assistant's model provider                                 |

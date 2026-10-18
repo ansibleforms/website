@@ -85,10 +85,12 @@ The jobs a user sees depend on their roles:
 |---|---|
 | Admin (`admin` role) | Every job |
 | Role option `showAllJobLogs` | Every job |
-| Any other user | Their own jobs, and every job waiting for approval |
+| Role option `manageAllJobs` (from 7.3.0) | Every job, and may abort, delete and relaunch it |
+| Any other user | Their own jobs, and the jobs waiting for an approval that names one of their roles |
 
-Seeing a job does not grant every action on it: aborting is limited to the owner and admins, and relaunching to the
-owner, admins and `showAllJobLogs` users.
+Up to 7.2, every user could open any job waiting for approval, its extravars and output included; from 7.3.0 only its owner and its
+approvers can. Seeing a job does not grant every action on it: aborting, deleting and relaunching another user's job takes an admin or
+`manageAllJobs`, and `showAllJobLogs` only shows the jobs. Deleting also needs `allowJobDeletion` and relaunching `allowJobRelaunch`.
 
 ---
 

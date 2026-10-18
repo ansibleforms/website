@@ -17,7 +17,7 @@ A user's page, `/settings/users/<id>`, has these tabs:
 
 | Tab | What it shows |
 |---|---|
-| **Details** | The **Allow sign-in** switch, the username, the description and the email |
+| **Details** | The **Allow sign-in** switch, the username, the description, the email and, from 7.3.0, the **Last sign-in** |
 | **Groups** | The groups the user belongs to |
 | **Roles** | The roles the user has, and what gives each: **Directly**, **Through** a group, or **Everyone** |
 | **Forms** | The forms those roles open |
@@ -25,5 +25,9 @@ A user's page, `/settings/users/<id>`, has these tabs:
 | **Stored jobs** | The form values the user stored to run again |
 | **Schedules** | The jobs the user planned with Run later |
 | **Activity** | What the audit log recorded the user doing |
+
+From 7.3.0 a local user's sign-ins are recorded, as an LDAP or SSO user's already were: **Last sign-in** shows the latest, and
+the users list has a sortable **Last sign-in** column for every source, so an account nobody uses stands out. A refused sign-in is not
+recorded, and a local user who has not signed in since the upgrade shows `–`.
 
 **Change password** and **Delete** are at the top right. The user `admin` can never be deleted or renamed.

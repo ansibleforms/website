@@ -20,7 +20,7 @@ Messages under the header for everyone, such as a maintenance window, each from 
 
 For administrators: tell every user about a maintenance window or an incident, under **Settings > Appearance > Announcements**.
 
-The page needs the `showSettings` role option. Its two tabs, **General** and **List**, are described below.
+The page needs the `showSettings` role option. From 7.3.0 it is one list, and each announcement has its own page and Enabled switch.
 
 ---
 
@@ -28,8 +28,8 @@ The page needs the `showSettings` role option. Its two tabs, **General** and **L
 
 | Page | What it covers |
 |---|---|
-| [General](announcements/general.html) | The switch that shows or hides all announcements at once |
-| [List](announcements/list.html) | The announcements that have not ended, and their columns |
+| [General](announcements/general.html) | Each announcement's Enabled switch, which replaced the switch for all of them |
+| [List](announcements/list.html) | The announcements that have not ended, their columns, and an announcement's page |
 | [Adding one](announcements/adding-one.html) | The two-step wizard: the message, then when it shows |
 
 
@@ -39,7 +39,7 @@ The page needs the `showSettings` role option. Its two tabs, **General** and **L
 
 Announcements show as a line under the header of every page, for every signed-in user, each in the colour of its type.
 
-Several can show at once, the latest first. The sign-in page and a form embedded in another site show none.
+Several enabled ones can show at once, the latest first. The sign-in page and a form embedded in another site show none.
 
 Each one has a close button. A closed announcement stays closed in that browser tab until the tab is closed, or
 until its message or its end date changes. A saved announcement reaches every open browser at once; one that
