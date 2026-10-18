@@ -23,13 +23,12 @@ runners:
   items:
     - name: rte01
       type: rte                  # rte, awx, semaphore, rundeck or jenkins
-      uri: http://rte01.example.com:8000
-      token: ${SEED_RTE_TOKEN}   # the RTE_TOKEN of that RTE
+      rte_mode: inbound          # an RTE's RTE_MODE: outbound, inbound or database (deprecated, the default)
+      credential: rte01          # a credential of the credentials section, of the runner's type
       is_default: true           # playbook forms that name no runner run here
     - name: tower
       type: awx
-      uri: https://tower.example.com
-      token: ${SEED_AWX_TOKEN}
+      credential: tower
       is_default: true           # one default per type
 
 secret_stores:
@@ -41,6 +40,14 @@ secret_stores:
 
 credentials:
   items:
+    - name: rte01
+      credential_type: rte       # an RTE's token, and its address unless it is outbound
+      url: http://rte01.example.com:8000
+      password: ${SEED_RTE_TOKEN}   # the RTE_TOKEN of that RTE
+    - name: tower
+      credential_type: awx       # also aap, ascender, semaphore, rundeck, jenkins
+      url: https://tower.example.com
+      password: ${SEED_AWX_TOKEN}
     - name: production-db
       user: svc_forms
       password: ${SEED_DB_PW}
@@ -162,3 +169,7 @@ Like `ldap`, the `chat` section is a single row, so every field is required exce
 ones; an optional field that is omitted is left unchanged.
 
 The chat assistant also needs `ENABLE_CHAT=1`; see the [Chat assistant](../chat) page.
+
+Since 7.3.0 a runner signs in with a credential of its type, which holds its server's address in `url`. A runner with its own `token`,
+or `username` and `password`, still works: the seed logs a warning and turns them into such a credential, named after the runner. An
+RTE runner without `rte_mode` is in database mode, deprecated (see [Modes](../rte/modes.html)).

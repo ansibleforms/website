@@ -2,7 +2,7 @@
 layout: default
 title: Another datacenter
 parent: RTE
-nav_order: 4
+nav_order: 5
 ---
 
 # An RTE in another datacenter
@@ -17,6 +17,11 @@ From a bare host in a second datacenter to an RTE running its first playbook
 ---
 
 For administrators: when the managed hosts of a second datacenter should be reached from an RTE in that datacenter, not from the first one.
+
+{: .note }
+> **Since 7.3.0** This runbook sets up an RTE in database mode, deprecated since 7.3.0: it connects to the database of datacenter 1. An
+> outbound RTE needs no such link, only HTTPS from datacenter 2 to the app, and no database credentials: see [Modes](modes.html) and
+> [Run an RTE](run.html#start-it). The [installer](../installation/installer.html#a-runner) sets one up on the host from a join token.
 
 ---
 

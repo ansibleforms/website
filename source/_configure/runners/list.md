@@ -17,6 +17,8 @@ The page under **Connections > Runners** lists every runner with these columns:
 |---|---|
 | Default | Whether it is the default runner of its type. |
 | Name | How forms refer to it, with `runner: <name>`. |
+| Mode | An RTE's mode: Outbound, Inbound or Database (see [Modes](../rte/modes.html)). |
+| Socket | Whether an app node holds a socket to an RTE in a socket mode: *connected* or *not connected*. |
 | Registration | How it was added; see [Registration](registration.html). |
 | Type | Runtime environment (RTE), AWX, Ansible Automation Platform, Ascender, Semaphore UI, Rundeck or Jenkins. |
 | Uri | Its address. |
@@ -24,6 +26,9 @@ The page under **Connections > Runners** lists every runner with these columns:
 **Add runner** opens a dialog in four steps: **Runner** (name and description), **Type**, **Connection** and
 **Authentication**. A row opens the runner's own page, and its menu offers **Edit runner**, **Test connection**,
 **Change authentication** and **Delete runner**.
+
+**Join tokens**, next to **Add runner**, opens the join tokens an RTE adds its runner with, since 7.3.0; see
+[Join tokens](registration.html#join-tokens).
 
 **Edit defaults** opens a dialog with the default runner of each type:
 

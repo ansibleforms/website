@@ -28,8 +28,8 @@ For administrators: add the runners your forms run their jobs on, choose the def
 |---|---|
 | [The runners page](runners/list.html) | The list of runners, adding one, and the default of each type |
 | [Runner types](runners/types.html) | The products a runner can be, their address and login |
-| [Registration](runners/registration.html) | How an RTE adds itself, and when it is removed |
-| [A runner's page](runners/runner-page.html) | A runner's tabs, Test connection, and its token |
+| [Registration](runners/registration.html) | How an RTE adds itself, with a join token or on its own, and when it is removed |
+| [A runner's page](runners/runner-page.html) | A runner's tabs, an RTE's mode and socket, and Test connection |
 | [Who manages runners](runners/permissions.html) | Who may add, change and test runners |
 
 

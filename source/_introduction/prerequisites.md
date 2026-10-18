@@ -81,7 +81,7 @@ The app and each RTE listen on a port of their own, and open outbound connection
 The server listens on port `8000` ([`PORT`](customization/server.html#env_PORT)), over HTTP or, with
 [`HTTPS`](customization/server.html#env_HTTPS) set to `1`, over HTTPS. The Docker Compose project publishes it on port 443,
 and the Helm chart exposes it through a service or an ingress. An RTE listens on its own `PORT` too, but only the app calls it:
-keep it off the public network.
+keep it off the public network. An outbound RTE needs no inbound port at all: it dials the app on the app's port.
 
 ### Outbound
 {: .no_toc }
@@ -91,7 +91,7 @@ Open the connections from AnsibleForms to the systems you use:
 | Destination | Used for |
 |---|---|
 | MySQL / MariaDB | The AnsibleForms database (`DB_HOST`, `DB_PORT`, default `3306`) |
-| The RTE | Handing playbook jobs to it, at its [`RTE_URL`](customization/server.html#env_RTE_URL); the RTE itself connects to MySQL |
+| The RTE | Dialing an inbound RTE at its runner's address over one WebSocket, or calling one in database mode at its [`RTE_URL`](customization/server.html#env_RTE_URL), which then connects to MySQL itself; an outbound RTE dials the app instead (see [Modes](rte/modes.html)) |
 | AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | Launching and following templates and jobs on [runners](runners.html), over their HTTP(S) API |
 | The managed hosts | Playbooks connect to them from the RTE, for example over SSH or WinRM |
 | LDAP, Entra ID, OIDC | Logging in with directory or single sign-on accounts |

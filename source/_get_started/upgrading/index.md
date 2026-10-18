@@ -26,6 +26,7 @@ The upgrade procedure depends on how you installed AnsibleForms. Each method is 
 | Page | What it covers |
 |---|---|
 | [Upgrading to v7](../upgrade-7.html) | What to change while still on 6.5, before you move to 7 |
+| [With the installer](../installation/installer.html#upgrade) | `ansibleforms-installer upgrade`, for an installation the installer made: backup, release notes and rollback |
 | [Docker](docker.html) | Pull the new image and recreate the container with the same settings |
 | [Docker Compose](docker-compose.html) | Pull the new image and restart the docker-compose project |
 | [From source](from-source.html) | Pull the new code, rebuild it and restart the application |

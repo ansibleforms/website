@@ -2,7 +2,7 @@
 layout: default
 title: Docker
 parent: Installation
-nav_order: 1
+nav_order: 3
 ---
 
 # Docker
@@ -101,8 +101,9 @@ sudo mkdir -p /srv/apps/ansibleforms/persistent /srv/apps/ansibleforms/ssh
 sudo chown -R 1000:1000 /srv/apps/ansibleforms/persistent /srv/apps/ansibleforms/ssh
 ```
 
-Put the settings both containers share in an environment file. Only the database connection is required; set
-[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) before you store any credential, the same in both:
+Put the app's settings in an environment file: the database connection,
+[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) before you store any credential, the token the app and the
+RTE share ([`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN), at least 16 characters) and the config seed that declares the RTE:
 
 ```bash
 sudo tee /srv/apps/ansibleforms/ansibleforms.env > /dev/null <<'END'
@@ -111,8 +112,47 @@ DB_PORT=3306
 DB_USER=ansibleforms
 DB_PASSWORD=<password>
 ENCRYPTION_SECRET=<a long random string>
+RTE_TOKEN=<at least 16 characters>
+CONFIG_SEED_PATH=/app/dist/persistent/seed.yaml
 END
 sudo chmod 600 /srv/apps/ansibleforms/ansibleforms.env
+```
+
+The RTE gets a file of its own, without the database's settings: since 7.3.0 the app dials it and keeps one WebSocket open
+(`RTE_MODE=inbound`, see [Modes](../rte/modes.html)), and it runs the playbooks from the same folders (`RTE_FILES=local`):
+
+```bash
+sudo tee /srv/apps/ansibleforms/rte.env > /dev/null <<'END'
+RTE_MODE=inbound
+RTE_TOKEN=<the same token>
+RTE_FILES=local
+PORT=8000
+HTTPS=0
+END
+sudo chmod 600 /srv/apps/ansibleforms/rte.env
+```
+
+The [config seed](../seed/) declares an RTE credential with the RTE's address and its token, and the default runner `rte` that signs
+in with it:
+
+```bash
+sudo tee /srv/apps/ansibleforms/persistent/seed.yaml > /dev/null <<'END'
+version: 1
+credentials:
+  items:
+    - name: rte
+      credential_type: rte
+      url: http://rte:8000
+      password: ${RTE_TOKEN}
+runners:
+  items:
+    - name: rte
+      type: rte
+      rte_mode: inbound
+      credential: rte
+      is_default: true
+END
+sudo chown 1000:1000 /srv/apps/ansibleforms/persistent/seed.yaml
 ```
 
 ---
@@ -123,10 +163,9 @@ Run the published images from the GitHub Container Registry (see [Image tags](./
 [`ghcr.io/ansibleforms/ansibleforms`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms) for the app and
 [`ghcr.io/ansibleforms/ansibleforms-rte-full`](https://github.com/ansibleforms/ansibleforms/pkgs/container/ansibleforms-rte-full) for the RTE.
 
-The RTE needs a token of at least 16 characters ([`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN)) and the address the app reaches it on
-([`RTE_URL`](../customization/server.html#env_RTE_URL)). It adds itself under **Connections > Runners** as the runner `rte`, the default one, so
-playbook forms run on it without further setup. Start it once the app answers, because the app creates the schema at its first start
-(a sample `config.yaml` is in the [docker-compose project](https://github.com/ansibleforms/docker/blob/main/data/config.yaml)):
+The seed adds the RTE under **Connections > Runners** as the runner `rte`, the default one, so playbook forms run on it without further
+setup. The app creates the schema at its first start, and dials the RTE once both run (a sample `config.yaml` is in the
+[docker-compose project](https://github.com/ansibleforms/docker/blob/main/data/config.yaml)):
 
 <div class="af-tabs" data-tab-group="engine">
 <div class="af-tab-list" role="tablist">
@@ -145,8 +184,7 @@ docker run -d --name ansibleforms --network ansibleforms -p 8000:8000 --restart 
   ghcr.io/ansibleforms/ansibleforms:7
 
 docker run -d --name rte --network ansibleforms --restart unless-stopped --stop-timeout 30 \
-  --env-file /srv/apps/ansibleforms/ansibleforms.env \
-  -e RTE_TOKEN='<at least 16 characters>' -e RTE_URL=http://rte:8000 \
+  --env-file /srv/apps/ansibleforms/rte.env \
   -v /srv/apps/ansibleforms/persistent:/app/dist/persistent \
   -v /srv/apps/ansibleforms/ssh:/home/node/.ssh \
   ghcr.io/ansibleforms/ansibleforms-rte-full:7
@@ -176,8 +214,7 @@ podman run -d --name ansibleforms --network ansibleforms -p 8000:8000 --restart 
   ghcr.io/ansibleforms/ansibleforms:7
 
 podman run -d --name rte --network ansibleforms --restart unless-stopped --stop-timeout 30 \
-  --env-file /srv/apps/ansibleforms/ansibleforms.env \
-  -e RTE_TOKEN='<at least 16 characters>' -e RTE_URL=http://rte:8000 \
+  --env-file /srv/apps/ansibleforms/rte.env \
   -v /srv/apps/ansibleforms/persistent:/app/dist/persistent \
   -v /srv/apps/ansibleforms/ssh:/home/node/.ssh \
   ghcr.io/ansibleforms/ansibleforms-rte-full:7
@@ -192,9 +229,9 @@ podman ps
 </div>
 </div>
 
-The app listens on port `8000`, over HTTP unless you set `HTTPS=1`. The RTE is not published on the host: only the app calls it, inside
+The app listens on port `8000`, over HTTP unless you set `HTTPS=1`. The RTE is not published on the host: only the app dials it, inside
 the network. `--stop-timeout 30` gives the RTE time to let its running playbooks end on a stop (see
-[Scaling](../rte/run.html) for the RTE settings and for building an RTE of your own).
+[Run an RTE](../rte/run.html) for the RTE settings and for building an RTE of your own).
 
 ---
 
@@ -204,7 +241,7 @@ Once the containers are up, open AnsibleForms in a browser:
 
 * Open `http://your_ip:8000` (or HTTPS, if you set `HTTPS=1`)
 * Log in as `admin` / `AnsibleForms!123` (or with the password you set with `ADMIN_PASSWORD`), and choose a new password
-* Check under **Connections > Runners** that the RTE is listed as `rte`, the default runner
+* Check under **Connections > Runners** that the RTE is listed as `rte`, the default runner, with its socket *connected*
 * Next steps:
   * Create forms by adding YAML files to the `forms` folder or by using the built-in designer
   * Add your playbooks to the `playbooks` folder of the mounted persistent folder

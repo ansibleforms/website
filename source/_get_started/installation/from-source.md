@@ -2,7 +2,7 @@
 layout: default
 title: From source
 parent: Installation
-nav_order: 3
+nav_order: 5
 ---
 
 # From source
@@ -30,7 +30,8 @@ Only the client is built; its output goes into the server's `views` folder, as i
 
 ## Prerequisites
 
-Building and running from source requires solid Linux skills and some knowledge of Node.js. You install every component yourself:
+Building and running from source requires solid Linux skills and some knowledge of Node.js. You install every component yourself. To
+run AnsibleForms without containers and without building it, the [native install](native.html) of the installer does all of this for you:
 
 * **Node.js 26** (the version in `.nvmrc`; 24 at least), with npm
 * **Git**, to get the code and to sync repositories

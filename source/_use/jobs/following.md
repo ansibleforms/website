@@ -37,6 +37,7 @@ The output toolbar has:
 |---|---|
 | **Show Extravars** | Shows the extravars the job ran with, as JSON or YAML (**View as YAML**), with a copy icon |
 | **Show Artifacts** | Shows the job's artifacts, as JSON or YAML (see below) |
+| **Hosts and tasks** | Shows a playbook's hosts and tasks over its output (see [Hosts and tasks](#hosts-and-tasks)) |
 | **Refresh** | Reloads the output |
 | **Apply filter** | Hides the tasks whose name matches the output filter; **Remove filter** shows them again |
 | **Copy Output** | Copies the output as plain text, with the filter applied or not |
@@ -59,3 +60,18 @@ away, and again to unfold it. AWX/AAP workflows also show their nodes' status.
 
 [Workflow](../workflows/running.html#the-job) jobs keep every node's output in their own, under a `WORKFLOW NODE` banner per
 node; they draw their graph, live, and a click on a node opens its output.
+
+---
+
+## Hosts and tasks
+
+Since 7.3.0, a playbook job that ran on an RTE of 7.3.0 or later records its structured events next to its text output: each play, task
+and host result, and the recap. **Hosts and tasks**, in the output toolbar, shows them in a panel over the output, on the job's page and
+under a form after **Submit**. It is offered once the job has events, and the panel is read again every few seconds while the job runs:
+
+| View | What it shows |
+|---|---|
+| **Grid** | The recap per host (ok, changed, failed, unreachable, skipped, rescued, ignored), then a grid of hosts by tasks: each cell is coloured by the host's result for that task, with its message and time on hover, or *not run* |
+| **Timeline** | Each task as a bar, as long as its slowest host took, with its time in seconds and the total |
+
+The text output stays as it is. The events are written by the RTE's own `af_events` callback plugin, so the playbook needs no change.

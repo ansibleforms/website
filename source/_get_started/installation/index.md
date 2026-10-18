@@ -25,17 +25,24 @@ AnsibleForms supports several installation methods, each described on its own pa
 
 | Page | What it covers |
 |---|---|
+| [Installer](installer.html) | One command that installs a controller or a Runner on Docker, Podman, Kubernetes or natively, then upgrades and backs it up |
+| [Native](native.html) | The installer's install without containers: Node.js, MariaDB and Ansible on the server, AnsibleForms as systemd services |
 | [Docker](docker.html) | Install MySQL and run the pre-built Docker image with the required environment variables |
 | [Docker Compose](docker-compose.html) | Download the [docker-compose project](https://github.com/ansibleforms/docker) and use docker-compose to start both MySQL and AnsibleForms |
 | [From source](from-source.html) | Install all dependencies manually, then build and start the code |
 | [Kubernetes](kubernetes.html) | Install the Helm chart and use Kubernetes to start AnsibleForms and its MySQL database |
 
 {: .note }
-> **Recommendation** The Docker image is the recommended installation method. It includes all dependencies and can be set up quickly.
+> **Recommendation** The installer, since 7.3.0, is the quickest way to a working instance: it sets up the Docker Compose project on
+> Docker or Podman, or one of the other methods, from a few questions. The Docker images include all dependencies.
+
+```bash
+curl -fsSL https://ansibleforms.com/install | sh
+```
 
 To move an existing installation to a newer release, see [Upgrading](../upgrading/).
 
-Every method runs one RTE next to the app, the container that runs the playbooks. To add another one, on another host or in another
+Every method runs one RTE next to the app, the container (or service) that runs the playbooks. To add another one, on another host or in another
 datacenter, see [Runtime environments](../rte/) and its runbook [An RTE in another datacenter](../rte/another-datacenter.html).
 
 ---
