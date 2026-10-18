@@ -28,6 +28,7 @@ What an RTE needs depends on its mode (see [Modes](modes.html)). Every RTE reads
 | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | On a stop, how long it waits for its running playbooks, `25` by default; the ones still running then end as abandoned |
 | [`RTE_QUEUE_MINUTES`](../customization/server.html#env_RTE_QUEUE_MINUTES) | Read by the app nodes and the worker, not the RTE: how long a job waits for a full or stopping RTE, `60` by default |
 | [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH), `PROCESS_MAX_BUFFER` | The playbooks folder and the output limit: read by the RTE, so set them in its environment |
+| `LISTEN_HOST` | Since 7.3.0: the address its listeners bind, every interface by default; `127.0.0.1` when nothing dials it from outside (an outbound RTE) |
 
 An RTE in a socket mode, `outbound` or `inbound`, also reads these, and no `DB_*` and no `ENCRYPTION_SECRET`:
 

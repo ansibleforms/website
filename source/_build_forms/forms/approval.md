@@ -31,7 +31,7 @@ An approval point pauses the job at its place in the form until an approver answ
 
 ## Approving your own job
 
-From 7.3.0 the user who launched a job cannot approve it, even with one of the approval's roles, so it takes a second person.
+From 7.3.0 the user who launched a job cannot approve it, even with one of the approval's roles, so it takes a second person; an admin can always approve, their own jobs too.
 Set `allowSelf: true` on the approval point when the launcher may approve their own job, for example in a test form:
 
 ```yaml
