@@ -50,16 +50,23 @@ A failed username and password login always shows the same generic message; the 
 
 ## Switching single sign-on
 
-Two settings, on the **General** tab of **Access > SSO** or in the environment, apply to single sign-on as a whole:
+From 7.3.0 each provider under **Access > SSO** has two switches of its own, which apply without a restart:
 
-| Variable | Default | Effect |
-|---|---|---|
-| [`ENABLE_SSO`](../customization/security.html#env_ENABLE_SSO) | `1` | `0` removes the Entra ID and OpenID buttons from the login page and refuses their sign-in. The providers stay configured. |
-| [`SSO_AUTO_LOGIN`](../customization/security.html#env_SSO_AUTO_LOGIN) | `0` | `1` skips the login page when exactly one provider type is enabled: users go straight to that provider. |
+| Switch | Effect |
+|---|---|
+| **Enabled** | Shows the provider's button on the login page and accepts its sign-in. Turning it on turns off the other providers of its type. |
+| **Skip the login page** | Users go straight to this provider, without the login page. Turning it on for one provider turns it off for the others. |
 
-With `SSO_AUTO_LOGIN=1` and both an Entra ID and an OIDC provider enabled, the login page shows both buttons to choose
-from. The username and password form stays reachable at `/login?local`, for the local admin or when the provider fails,
-and it is shown after signing out and when a single sign-on login comes back with an error. Both apply without a restart.
+The username and password form stays reachable at `/login?local`, for the local admin or when the provider fails,
+and it is shown after signing out and when a single sign-on login comes back with an error.
+
+The `ENABLE_SSO` and `SSO_AUTO_LOGIN` variables are removed in 7.3.0. The first start of 7.3.0 reads them once, and
+logs a warning at every start while they are still set, so remove them from the environment after the upgrade:
+
+| Variable before 7.3.0 | What the upgrade does |
+|---|---|
+| `ENABLE_SSO=0` | Turns every provider off: the providers stay configured, without a button on the login page |
+| `SSO_AUTO_LOGIN=1` | Turns **Skip the login page** on for the one enabled provider |
 
 ---
 
