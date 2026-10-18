@@ -30,7 +30,7 @@ the password:
 A username in UPN form (`jdoe@example.com`) that finds no user is retried once with the part before the `@`, so users
 can sign in with either form even when the Username Attribute holds the short name. A wrong password is never retried.
 
-One set of settings serves Active Directory, OpenLDAP and others, and only one directory can be configured.
+One set of settings serves Active Directory, OpenLDAP and others; from 7.3.0 there can be [several directories](#several-directories).
 
 ---
 
@@ -108,6 +108,24 @@ roles:
 
 The username is the value of the **Username Attribute** as the directory returns it, not as the user typed it.
 See [Roles](../config/roles.html) for the role options.
+
+---
+
+## Several directories
+
+From 7.3.0 there can be several directories, each with its own servers, users and groups. Their names tell their members apart:
+
+| Directory | Username | Groups | In a role |
+|---|---|---|---|
+| `main` | `jdoe` | `ldap/AF-Admins` | `ldap/jdoe`, `ldap/AF-Admins` |
+| Any other, such as `corp` | `corp/jdoe` | `ldap/corp/AF-Admins` | `ldap/corp/jdoe`, `ldap/corp/AF-Admins` |
+
+A user names the directory at sign-in as `corp\jdoe` or `corp/jdoe`, or signs in with an address of a domain the directory
+owns. A bare username is tried in every enabled directory, in their order.
+
+The directory named `default` up to 7.2.0 is named `main` from 7.3.0: the upgrade renames it, and a new installation starts
+with `main`. Its members keep their short names, so the roles that name them need no change. The `main` directory cannot be
+renamed, and a directory name holds only letters, digits, `-` and `_`.
 
 ---
 
