@@ -46,7 +46,7 @@ The RTE opens the connection, so it works from a network that accepts no incomin
   but without jobs (see [Asking to join](../runners/registration.html#asking-to-join)). A join token,
   [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN), approves it at once. From then on it signs in with its own token
 * **The network** : only from the RTE's zone to the app, on the app's port, through a proxy when `HTTPS_PROXY` says so. A reverse
-  proxy in front of the app must let the WebSocket through on that path
+  proxy in front of the app must let the WebSocket through on that path (see [Runner WebSockets](../production/reverse-proxy.html#runner-websockets))
 * **The certificate** : the app's certificate is checked. Name a private CA with `NODE_EXTRA_CA_CERTS`, or, inside one trusted network
   only, turn the check off with [`APP_TLS_VERIFY=0`](../customization/server.html#env_APP_TLS_VERIFY)
 * **The runner** : it needs no address, so its RTE credential holds the token only
