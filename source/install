@@ -1,0 +1,91 @@
+#!/bin/sh
+# AnsibleForms installer: downloads the installer for this server and starts it.
+#
+#   curl -fsSL https://ansibleforms.com/install | sh
+#   curl -fsSL https://ansibleforms.com/install | sudo sh                 (as root)
+#   curl -fsSL https://ansibleforms.com/install | sh -s -- --lang es      (installer flags)
+#
+# It takes the latest release of https://github.com/ansibleforms/installer (a release of its
+# own with AF_INSTALLER_VERSION=7.3.0), checks the binary against the release's checksums,
+# keeps it as ansibleforms-installer (/usr/local/bin for root, ~/.local/bin otherwise) for
+# the upgrades and backups later on, and runs it with the flags given here.
+#
+# This file is served as it is by ansibleforms.com, from source/install of the website.
+
+set -eu
+
+REPO="ansibleforms/installer"
+NAME="ansibleforms-installer"
+
+say() { printf '%s\n' "$*" >&2; }
+fail() { say "AnsibleForms installer: $*"; exit 1; }
+
+# ─── this server ──────────────────────────────────────────────────────────────
+
+[ "$(uname -s)" = "Linux" ] || fail "it runs on Linux servers only (this is $(uname -s))."
+case "$(uname -m)" in
+  x86_64 | amd64) ARCH=amd64 ;;
+  aarch64 | arm64) ARCH=arm64 ;;
+  *) fail "there is no installer for $(uname -m): amd64 and arm64 only." ;;
+esac
+
+if command -v curl >/dev/null 2>&1; then
+  fetch() { curl -fsSL --retry 3 -o "$2" "$1"; }
+elif command -v wget >/dev/null 2>&1; then
+  fetch() { wget -q -O "$2" "$1"; }
+else
+  fail "it needs curl or wget to download the installer."
+fi
+
+if command -v sha256sum >/dev/null 2>&1; then
+  sha256() { sha256sum "$1" | cut -d' ' -f1; }
+elif command -v shasum >/dev/null 2>&1; then
+  sha256() { shasum -a 256 "$1" | cut -d' ' -f1; }
+else
+  fail "it needs sha256sum to check the installer."
+fi
+
+# ─── the download ─────────────────────────────────────────────────────────────
+
+if [ -n "${AF_INSTALLER_VERSION:-}" ]; then
+  BASE="https://github.com/$REPO/releases/download/v${AF_INSTALLER_VERSION#v}"
+else
+  BASE="https://github.com/$REPO/releases/latest/download"
+fi
+ASSET="${NAME}_linux_${ARCH}"
+
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT INT TERM
+
+say "Downloading the AnsibleForms installer for linux-$ARCH"
+fetch "$BASE/$ASSET" "$TMP/$ASSET" || fail "the download failed: $BASE/$ASSET"
+fetch "$BASE/checksums.txt" "$TMP/checksums.txt" || fail "the checksums could not be downloaded: $BASE/checksums.txt"
+
+want="$(awk -v f="$ASSET" '$2 == f || $2 == "*" f { print $1 }' "$TMP/checksums.txt")"
+[ -n "$want" ] || fail "checksums.txt names no $ASSET."
+got="$(sha256 "$TMP/$ASSET")"
+[ "$got" = "$want" ] || fail "the checksum of $ASSET is $got, not $want: the download is not used."
+chmod 755 "$TMP/$ASSET"
+
+# ─── kept for later ───────────────────────────────────────────────────────────
+
+if [ "$(id -u)" -eq 0 ]; then
+  DIR="/usr/local/bin"
+else
+  DIR="${HOME}/.local/bin"
+fi
+mkdir -p "$DIR"
+mv -f "$TMP/$ASSET" "$DIR/$NAME"
+say "Installed $DIR/$NAME"
+
+# ─── and started ──────────────────────────────────────────────────────────────
+
+# The script itself comes through a pipe, so the installer reads the keyboard from the
+# terminal ; without one (a CI job), it answers with its defaults and the flags given.
+if [ -t 0 ]; then
+  exec "$DIR/$NAME" "$@"
+elif [ -r /dev/tty ] && (: </dev/tty) 2>/dev/null; then
+  exec "$DIR/$NAME" "$@" </dev/tty
+else
+  exec "$DIR/$NAME" "$@"
+fi

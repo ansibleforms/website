@@ -101,6 +101,13 @@ jobs:
         env:
           JEKYLL_ENV: production
 
+      # curl -fsSL https://ansibleforms.com/install | sh : source/install, served as it is. It
+      # must reach the site unchanged (no front matter, so Jekyll copies it) and be valid sh.
+      - name: The install script is served as it is
+        run: |
+          cmp source/install _site/install
+          shellcheck -s sh _site/install
+
       - uses: azure/setup-helm@v5
 
       # The Helm repository at /helm-charts/, next to the landing page Jekyll built there
