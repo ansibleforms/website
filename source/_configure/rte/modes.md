@@ -72,6 +72,12 @@ The app needs the RTE's runner before it can dial it: type RTE, mode **Inbound**
 
 The Docker Compose project, the Helm chart and the installer's controller run their own RTE this way: inbound, declared by the config seed.
 
+**Over HTTPS.** With [`HTTPS=1`](../customization/server.html#env_HTTPS) the RTE serves its socket over TLS, with the key and certificate
+of [`HTTPS_KEY`](../customization/server.html#env_HTTPS_KEY) and [`HTTPS_CERT`](../customization/server.html#env_HTTPS_CERT)
+(`key.pem` and `cert.pem` in its `certificates` folder by default). An RTE with an `https://` `RTE_URL` sends that certificate when it
+asks to join, and the app pins it: it dials the RTE only when it presents the same certificate, so a self-signed one works without a CA.
+The [installer](../installation/installer.html#a-runner) sets up its inbound Runners this way, with a certificate of their own address.
+
 ---
 
 ## Database (deprecated)

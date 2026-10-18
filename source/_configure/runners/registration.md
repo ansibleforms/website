@@ -30,6 +30,9 @@ registration call. Without a join token, the app then:
 An outbound RTE stays connected while it waits, but gets no job. The app does not dial an inbound one until it is approved. Both log
 that they wait for an admin to approve them under **Connections > Runners**, with the fingerprint of their token.
 
+An inbound RTE with an `https://` `RTE_URL` also sends its certificate when it asks to join, and the app pins it: from then on the
+app dials that RTE only when it presents the same certificate, so a self-signed one works without a CA (see [Inbound](../rte/modes.html#inbound)).
+
 At most 20 RTEs wait for approval at once: more are refused until some are approved or rejected. A request nobody handles within
 24 hours is removed by the worker, with its credential.
 
@@ -51,6 +54,7 @@ started before you approve it:
 | Fingerprint | The first 8 hexadecimal digits of the SHA-256 of its `RTE_TOKEN`, as `abcd-ef12`. The RTE logs it at its start, and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
 | Host | The host it runs on |
 | Called from | The address it called the app from |
+| Certificate | An inbound RTE over HTTPS: the fingerprint of the certificate the app pins, the first 8 hexadecimal digits of its SHA-256. The [installer](../installation/installer.html#a-runner) prints it at the end as **Certificate fingerprint**. It must be the same |
 | Mode | Outbound or Inbound |
 | Uri | An inbound RTE's address, where the app dials it |
 | Version | Its release |

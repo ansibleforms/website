@@ -163,6 +163,19 @@ The fingerprint is the first 8 hexadecimal digits of the SHA-256 of the Runner's
 `.env` file (`rte.env` for a [native install](native.html)). See [Approving an RTE](../runners/registration.html#approving-an-rte). With `--join`, the Runner is approved at once:
 it registered itself, and shows as connected under **Connections > Runners**.
 
+An inbound Runner serves its socket over HTTPS. The installer creates a self-signed certificate for the address AnsibleForms
+reaches it on, valid for ten years, in the folder's `data/certificates`, and sets `RTE_URL` to `https://<address>:<port>`.
+The Runner sends the certificate when it asks to join, and AnsibleForms pins it: it dials that Runner only when it presents
+that same certificate, so no CA is needed. The installer prints the certificate's fingerprint below the token's:
+
+```
+Fingerprint: abcd-ef12
+Certificate fingerprint: 3f9c-07a1
+```
+
+It is the first 8 hexadecimal digits of the SHA-256 of the certificate. Before you approve the Runner, check that the approval
+dialog shows the same certificate fingerprint. A Runner registered with `--join` prints it too.
+
 For a Runner, Kubernetes is greyed out: *Kubernetes (a Runner there is installed with the Helm chart)*.
 
 ---
