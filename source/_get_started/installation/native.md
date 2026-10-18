@@ -45,7 +45,7 @@ The installer installs these from the distribution's packages, for both roles:
 |---|---|
 | `git` | The repositories |
 | The ssh client | The playbooks' connections |
-| The MariaDB client | The app's backups |
+| The MariaDB client | The app's backups: `app.env` sets [`MYSQLDUMP_COMMAND`](../customization/retention.html#env_MYSQLDUMP_COMMAND) and [`MYSQL_COMMAND`](../customization/retention.html#env_MYSQL_COMMAND) to the client found, `mariadb-dump` and `mariadb` or the older `mysqldump` and `mysql` |
 | `ca-certificates`, `curl`, `tar`, `gzip` | The downloads |
 | `libatomic` | Node.js links against it, and minimal servers lack it |
 | `sshpass` | Playbooks that sign in with an ssh password. On RHEL and its rebuilds it comes from EPEL, which the installer tries to enable with `epel-release`; when it cannot be installed, the installation goes on and says so |
