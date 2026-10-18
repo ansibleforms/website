@@ -26,6 +26,7 @@ The upgrade procedure depends on how you installed AnsibleForms. Each method is 
 | Page | What it covers |
 |---|---|
 | [Upgrading to v7](../upgrade-7.html) | What to change while still on 6.5, before you move to 7 |
+| [With the installer](../installation/installer.html#upgrade) | `ansibleforms-installer upgrade`, for an installation the installer made: backup, release notes and rollback |
 | [Docker](docker.html) | Pull the new image and recreate the container with the same settings |
 | [Docker Compose](docker-compose.html) | Pull the new image and restart the docker-compose project |
 | [From source](from-source.html) | Pull the new code, rebuild it and restart the application |
@@ -33,7 +34,9 @@ The upgrade procedure depends on how you installed AnsibleForms. Each method is 
 
 {: .note }
 > **Backup first** Take a backup before you upgrade (**Settings → Backups**). The database schema is upgraded at the first
-> start of the new release, so the backup is your rollback point if something goes wrong.
+> start of the new release, so the backup is your rollback point if something goes wrong. From 7.3.0 the worker also takes
+> one itself before it upgrades from an older release, named after the release, unless
+> [`UPGRADE_BACKUP`](../customization/retention.html#env_UPGRADE_BACKUP) is `0`.
 
 The release you receive depends on the image tag you run: `latest` follows the newest major version, while a tag such as `7`
 stays on that major version. All tags are listed under [Image tags](../installation/#image-tags).

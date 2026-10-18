@@ -2,7 +2,7 @@
 layout: default
 title: Several RTEs
 parent: RTE
-nav_order: 3
+nav_order: 4
 ---
 
 # Several RTEs
@@ -37,9 +37,14 @@ default. More RTE containers help in two ways:
   a Kubernetes Service, share one runner, and the address spreads the calls over them. A full replica answers `503`, and the next try
   may land on another one. The app follows a job through the database, so it does not matter which replica answers its status calls
 
-Every RTE writes a heartbeat in the database every 10 seconds, and one that registers itself checks its runner row every 30 seconds.
-The **Status** page lists every RTE with its version. On the **Runners** page a runner the RTE registered shows as *automatic*, and
-as *unresponsive* once its heartbeat is two minutes old; the worker removes it after 10 minutes without a heartbeat. When the default
+Replicas behind one address are for database mode only. In a socket mode (see [Modes](modes.html)) a runner holds one socket to one
+RTE, and a second RTE that signs in with the same `RTE_NAME` takes the socket over from the first. Give each RTE a name and a runner of
+its own, and let forms pick between them with `runner:`.
+
+Every RTE in database mode writes a heartbeat in the database every 10 seconds, and one that registers itself checks its runner row every
+30 seconds. For an RTE in a socket mode, the app node that holds its socket writes the heartbeat for it.
+The **Status** page lists every RTE with its version. A runner the RTE registered counts as unresponsive once its heartbeat is two
+minutes old; the worker removes it after 10 minutes without a heartbeat. When the default
 runner is a registered row whose RTE stopped, the next RTE that checks takes the default. A runner from the config seed or added by
 hand is never removed.
 

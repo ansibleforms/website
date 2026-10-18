@@ -42,7 +42,7 @@ The built-in admin, the login order and the role mapping of local accounts are o
 The **Users** and **Groups** lists show the local users and groups and, beside them, the LDAP and single sign-on ones.
 
 A user or group of LDAP, Entra ID or OIDC is listed once it has signed in (or has been seen in a sign-in), or once a role names it.
-The **Source** column says where each comes from: Local, LDAP, Entra ID or OIDC.
+The **Source** column says where each comes from: Local, LDAP, Entra ID or OIDC; from 7.3.0 **Last sign-in** says when each last signed in.
 
 A row opens the page of its user or group. **Add user** and **Add group** create a local one.
 

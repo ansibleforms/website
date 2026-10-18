@@ -2,7 +2,7 @@
 layout: default
 title: Docker Compose
 parent: Installation
-nav_order: 2
+nav_order: 4
 ---
 
 # Docker Compose
@@ -19,6 +19,9 @@ Install AnsibleForms, its RTE and MySQL together with docker-compose or podman-c
 The [docker-compose project](https://github.com/ansibleforms/docker) runs three containers: MySQL, the AnsibleForms app, and the RTE
 (runtime environment) that runs the playbooks. It holds their settings, sample forms and playbooks, so the only other requirement is
 Docker or Podman with its compose tool.
+
+The [installer](installer.html) downloads this project, fills in its settings and secrets, and starts it in one command. This page
+sets it up by hand.
 
 ---
 
@@ -221,19 +224,22 @@ sudo dnf install -y podman-compose
 Review the variables in the `.env` and `docker-compose.yml` files, and change every password: `MYSQLDB_ROOT_PASSWORD`,
 `MYSQLDB_PASSWORD`, `ADMIN_PASSWORD` and `RTE_TOKEN`. [Learn more about the environment variables](../customization)
 
-The app and the RTE connect to MySQL as `ansibleforms` (`MYSQLDB_USER`), with all rights on the `AnsibleForms` schema and none
+The app connects to MySQL as `ansibleforms` (`MYSQLDB_USER`), with all rights on the `AnsibleForms` schema and none
 elsewhere; root is only for MySQL itself. MySQL creates that user on its first start only: an installation that connected as root
 so far creates it once, as the project's [README](https://github.com/ansibleforms/docker#database) shows.
 
-The RTE is not published on the host: the app calls it on `http://rte:8000` with `RTE_TOKEN`, and the config seed `data/seed.yaml`
-registers it as the default runner `rte`. When your playbooks need more collections or Python libraries, build an RTE of your own
+The RTE is not published on the host. Since 7.3.0 the app dials it on `http://rte:8000` with `RTE_TOKEN` and keeps one WebSocket open
+(`RTE_MODE=inbound`, see [Modes](../rte/modes.html)): the RTE gets no database settings and not the `.env`, only its token and a few
+settings of its own in `docker-compose.yml`. The config seed `data/seed.yaml` declares an RTE credential with the token and that
+address, and the default runner `rte`, mode inbound, that signs in with it. The RTE runs the playbooks from the same `data` folder
+(`RTE_FILES=local`). When your playbooks need more collections or Python libraries, build an RTE of your own
 and point the `rte` service at it (see [Build your own RTE](../rte/images.html#build-your-own-rte)).
 
 ---
 
 ## Start docker-compose project
 
-Start the three containers in the background. The app waits until MySQL is healthy, and the RTE until the app is:
+Start the three containers in the background. The app waits until MySQL is healthy, then dials the RTE:
 
 <div class="af-tabs" data-tab-group="engine">
 <div class="af-tab-list" role="tablist">
@@ -266,7 +272,8 @@ Once the containers are up, open AnsibleForms in a browser:
 
 * Open `https://your_ip` (port 443, see `WEBAPP_LOCAL_PORT` in the .env file)
 * Log in as `admin` with the `ADMIN_PASSWORD` of the `.env` file; while it is still the default `AnsibleForms!123`, choose a new password
-* Check under **Connections > Runners** that the RTE is listed as `rte`, the default runner
+* Check under **Connections > Runners** that the RTE is listed as `rte`, the default runner, and that its page shows its
+  **Connection** as **Connected**
 * Next steps:
   * Create forms by adding YAML files to the data/forms/ folder or by using the built-in designer
   * Add your playbooks to the data/playbooks/ folder

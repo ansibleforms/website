@@ -23,7 +23,7 @@ and never change them casually:
 
 | Secret | What it protects | If it is not set | If it is lost or changed |
 |--------|------------------|------------------|--------------------------|
-| [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | Every password and token stored in the database: credentials, the LDAP bind password, runner tokens, SSO client secrets, Slack and Teams webhook addresses, the chat API key | A default key is used, which is public in the source code | Every stored secret becomes impossible to decrypt and must be entered again |
+| [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | Every password and token stored in the database: credentials, the LDAP bind password, runner tokens, SSO client secrets, Slack and Teams webhook addresses, the chat API key | A default key is used, which is public in the source code | Lost: every stored secret must be entered again. Changed: from 7.3.0 every stored secret is re-encrypted, see [below](#changing-the-encryption-secret) |
 | [`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET) | The signature of access and refresh tokens, including long-lived [API tokens](../profile/api-token.html) | A random secret is generated at each start, so every restart signs everyone out | Every session and every API token becomes invalid |
 
 Both are logged as a `[SECURITY]` warning at startup while they are missing. The settings pages refuse to edit them,
@@ -36,6 +36,22 @@ session, use the revocations described under [Tokens](#tokens).
 
 ---
 
+## Changing the encryption secret
+
+From 7.3.0, setting or changing `ENCRYPTION_SECRET` no longer loses the stored secrets. At the next start the worker re-encrypts
+every one of them with the new key, in one database transaction, before anything else writes a secret:
+
+| Situation | What to set |
+|---|---|
+| The instance ran without `ENCRYPTION_SECRET`, on the public default key | Only `ENCRYPTION_SECRET`: the secrets are re-encrypted from the default key |
+| The instance ran with a key of your own | `ENCRYPTION_SECRET` to the new key and [`ENCRYPTION_SECRET_PREVIOUS`](../customization/security.html#env_ENCRYPTION_SECRET_PREVIOUS) to the old one, for that one start |
+
+When the stored secrets were encrypted with a key that is neither, nothing is changed and the app refuses to start until
+`ENCRYPTION_SECRET_PREVIOUS` names that key. Remove `ENCRYPTION_SECRET_PREVIOUS` once the start has re-encrypted them, and set the
+new `ENCRYPTION_SECRET` on every app node, the worker and every RTE in database mode that registers itself.
+
+---
+
 ## Tokens
 
 A sign-in returns a short-lived access token and a longer refresh token, which the browser uses to get a new pair:
@@ -44,8 +60,8 @@ A sign-in returns a short-lived access token and a longer refresh token, which t
   limits the use of an intercepted token.
 * [`ACCESS_TOKEN_REFRESH_EXPIRATION`](../customization/security.html#env_ACCESS_TOKEN_REFRESH_EXPIRATION) : `24h` by
   default. This is how long an idle browser stays signed in.
-* The `extendedTokenExpiration` role option lets a user request an API token valid for a number of days. Grant it only
-  to roles that need API access from scripts.
+* The `allowApiTokens` role option lets a user request an API token valid for a number of days, and
+  `extendedTokenExpiration` adds one that never expires. Grant them only to roles that need API access from scripts.
 * [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) : `90` by default. The longest an API
   token lives: a longer request is cut to it.
 

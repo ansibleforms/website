@@ -31,6 +31,10 @@ fn.fnJq($(settings),'.mapping | keys')
 // - wrap the result in fn.fnSort to order it
 ```
 
+From 7.3.0 a jq filter runs at most [`JQ_TIMEOUT_SECONDS`](../customization/security.html#env_JQ_TIMEOUT_SECONDS) (30 by default)
+before it is stopped, and its output is capped at 64 MB. This applies to `fn.fnJq` and to the jq expression of the REST, file,
+credential and database query functions.
+
 ---
 
 ## Built-in JQ Functions

@@ -18,7 +18,8 @@ The Repositories page, every field of a repository, and declaring one in the con
 
 ## The Repositories page
 
-Repositories are managed under **Settings > Connections > Repositories**, which needs the `showSettings` role option.
+Repositories are managed under **Settings > Connections > Repositories**, which needs the `showSettings` or, from 7.3.0,
+the `showConnectionsSettings` [role option](../config/roles.html#role-options). Some changes are an admin's only, see [below](#who-may-change-a-repository).
 
 ![Repositories](../assets/screenshots/git.jpg)
 
@@ -60,7 +61,7 @@ schedule**), and AnsibleForms starts the clone in the background as soon as you 
 | Field | Required | Meaning |
 |---|---|---|
 | **Name** | yes | The folder name under `REPO_PATH`; letters, digits, dash, underscore and dot |
-| **Branch** | no | The branch to clone, for example `main`; empty clones the remote's default branch |
+| **Branch** | yes | The branch to clone, pull and push, for example `main`; required from 7.3.0. Only a repository of the config seed may leave it out, to clone the remote's default branch |
 | **Credential** | no | A credential of [Connections > Credentials](../credentials.html) with the user and the password or token git uses; **Add credential** creates one |
 | **Uri** | yes | The remote, `https://...` or SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Enable scheduled pull** | no | Pull the repository on a schedule |
@@ -71,6 +72,19 @@ schedule**), and AnsibleForms starts the clone in the background as soon as you 
 
 Renaming a repository moves its working tree to the new folder and moves its pull schedule with it. A repository from
 before 7 that still has its own user says so on its **Credentials** tab: pick a credential to replace it.
+
+---
+
+## Who may change a repository
+
+A repository's content becomes what AnsibleForms loads and runs, so from 7.3.0 a user without the `admin` role can no longer:
+
+- add or delete a repository;
+- change its **Uri** or its **Branch**;
+- switch any of its **Use for** flags on or off.
+
+They can still change its description, pull schedule and credential, and pull, push or reset it. A credential that a runner,
+a connection or a sign-in uses cannot be picked by them; the refusal names it, and says nothing of what it holds.
 
 ---
 

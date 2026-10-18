@@ -100,7 +100,7 @@ A form can also start a job without a person pressing **Submit**:
 
 ## Abort a job
 
-**Abort job**, in the row's menu (⋮) in the list or on the job's page, stops a job with status `running`. After you confirm,
+**Abort** in the row's menu (⋮) of the list, or **Abort job** on the job's page, stops a job with status `running`. After you confirm,
 AnsibleForms marks the job for abort:
 
 * **`ansible`**: the RTE stops the playbook process (with all its workers), and the job ends as `aborted` with
@@ -113,13 +113,14 @@ AnsibleForms marks the job for abort:
 * **`multistep`**: the steps that have not started yet are skipped (`skipping: [Abort is requested]`), and the main job
   ends as `aborted`. A step that is already running is a job of its own: open it and abort it to stop it as well.
 
-You can abort your own jobs; an admin can abort any job. `showAllJobLogs` lets a user see other users' jobs, not abort them.
+You can abort your own jobs; an admin, or from 7.3.0 a user whose role sets `manageAllJobs`, can abort any job. `showAllJobLogs` lets a
+user see other users' jobs, not abort them.
 
 ---
 
 ## Relaunch a job
 
-**Relaunch job**, in the row's menu (⋮) in the list or on the job's page, starts a new job from a finished one. It is offered on any
+**Relaunch** in the row's menu (⋮) of the list, or **Relaunch job** on the job's page, starts a new job from a finished one. It is offered on any
 job that is neither `running` nor waiting for approval, to users whose role sets the `allowJobRelaunch` role option.
 
 The dialog offers:
@@ -130,7 +131,7 @@ The dialog offers:
   can change them before you submit.
 
 A relaunch also requires the form to allow it (`allowRelaunch`, true by default) and the job to be **your own**, unless
-you are an admin or have `showAllJobLogs`. How a relaunch is checked against the form's rules, and why a form with a
+you are an admin or, from 7.3.0, have `manageAllJobs`; `showAllJobLogs`, which relaunched any job up to 7.2, no longer does. How a relaunch is checked against the form's rules, and why a form with a
 password field may refuse it, is described in [Relaunching](../launch-validation/relaunching.html).
 
 ### Relaunch with pre-filled data
@@ -145,7 +146,7 @@ The form loads the field values stored with job `61` and shows `Form pre-filled 
 Submitting it starts a new job, checked like any other launch. The pre-fill follows the same rules as a relaunch:
 
 * **Password fields are never stored**, so they are never pre-filled: enter them again. Constants are not stored either.
-* The `allowJobRelaunch` role option is required, and the job must be your own (or you are an admin or have `showAllJobLogs`).
+* The `allowJobRelaunch` role option is required, and the job must be your own (or you are an admin or have `manageAllJobs`).
 * A form with `allowRelaunch: false` cannot be relaunched or pre-filled:
 
 ```yaml
@@ -165,8 +166,8 @@ No saved form data found for job <id>. This job may have been created before the
 
 ## Approve or reject a job
 
-A job with an [approval point](../forms/approval.html) stops in status `approve` and waits. It is visible to every user on
-the Jobs page, so the approvers can find it.
+A job with an [approval point](../forms/approval.html) stops in status `approve` and waits. It is listed on the Jobs page of
+its approvers, the users with one of the approval's roles, so they can find it; from 7.3.0 other users no longer see it.
 
 **Review approval** is offered to admins and to users who have one of the approval's roles: a click on the job's row,
 **Review approval** in the row menu, or the **Review approval** button on the job's page. The dialog shows the approval's
@@ -178,14 +179,19 @@ when, with a link to the job; **Reject** and **Approve** answer it:
 
 A job waiting for approval cannot be relaunched or deleted from the Jobs page; approve or reject it first.
 
+From 7.3.0 the user who launched a job cannot approve it, so a second person always looks at it, though they can still reject it to
+withdraw it. An admin can always approve, their own jobs included. A form whose approval point sets
+[`allowSelf: true`](../forms/approval.html#approving-your-own-job) lets its launcher approve their own job too.
+
 ---
 
 ## Delete a job
 
-**Delete job**, in the row's menu (⋮) in the list or on the job's page, deletes a job with its output after you confirm.
+**Delete** in the row's menu (⋮) of the list, or **Delete job** on the job's page, deletes a job with its output after you confirm.
 Deleting a multistep job deletes its steps too. To delete several jobs at once, tick them in the list's first column and
 click **Delete (n)** above it.
 
-You can delete your own jobs. Admins and users with the `showAllJobLogs` role option can delete any job. On the job's
+You can delete your own jobs. Admins and, from 7.3.0, users with the `manageAllJobs` role option can delete any job; `showAllJobLogs`
+no longer can. A role that sets `allowJobDeletion: false` deletes no job at all, not even its own, so the job history stays whole. On the job's
 page the button is hidden while the job is running (except for admins) and while it waits for approval; in the list, the
 menu entry and the checkbox are greyed out for a job you cannot delete.

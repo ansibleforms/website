@@ -83,6 +83,21 @@ the AnsibleForms routes, as in the examples below.
 
 ---
 
+## Runner WebSockets
+
+From 7.3.0 an [outbound Runner](../rte/modes.html#outbound) dials the application and keeps one WebSocket open on
+`<BASE_URL>/api/v2/rte/socket`. The proxy must pass the upgrade on, or the Runner never connects and keeps dialing:
+
+| Proxy | What the WebSocket needs |
+|-------|--------------------------|
+| Nginx | `proxy_http_version 1.1` and the `Upgrade` and `Connection` headers, which Nginx does not forward by default |
+| Traefik | Nothing: WebSockets pass through as they are |
+| Apache | `upgrade=websocket` on the `ProxyPass` line (2.4.47 and later), or `mod_proxy_wstunnel` before that |
+
+Both ends send a ping every 20 seconds, so the usual 60 second read timeout keeps an idle socket open.
+
+---
+
 ## Request header size
 
 Every request carries the sign-in token in its `Authorization` header, next to cookies and the headers the proxy adds.
@@ -151,9 +166,15 @@ the application running with `HTTPS=0`, `PORT=8000`, `BASE_URL=/ansibleforms` an
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="nginx" markdown="1">
 
-`proxy_pass` names no URI, so Nginx forwards the path as it came in, prefix included:
+`proxy_pass` names no URI, so Nginx forwards the path as it came in, prefix included. The `map` block goes in the
+`http` context (a file under `conf.d/` is included there), and passes the WebSocket upgrade of the Runners on:
 
 ```nginx
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
+
 server {
     listen 443 ssl;
     server_name forms.example.com;
@@ -166,6 +187,10 @@ server {
         proxy_set_header   Host $host;
         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header   X-Forwarded-Proto $scheme;
+
+        proxy_http_version 1.1;                         # the Runners' WebSocket
+        proxy_set_header   Upgrade $http_upgrade;
+        proxy_set_header   Connection $connection_upgrade;
 
         client_max_body_size    10g;    # UPLOAD_MAX_GB
         proxy_request_buffering off;    # stream uploads instead of spooling them first
@@ -207,7 +232,8 @@ read timeout. Without a subpath, keep only the `Host(...)` part of the rule.
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="apache" markdown="1" hidden>
 
-Needs `mod_proxy`, `mod_proxy_http`, `mod_headers` and `mod_ssl`. Both sides of `ProxyPass` carry the prefix:
+Needs `mod_proxy`, `mod_proxy_http`, `mod_headers`, `mod_ssl`, and Apache 2.4.47 or later for the Runners' `upgrade=websocket`.
+Both sides of `ProxyPass` carry the prefix:
 
 ```apache
 <VirtualHost *:443>
@@ -220,7 +246,7 @@ Needs `mod_proxy`, `mod_proxy_http`, `mod_headers` and `mod_ssl`. Both sides of 
     ProxyPreserveHost On
     RequestHeader set X-Forwarded-Proto "https"
 
-    ProxyPass        /ansibleforms/ http://10.0.0.20:8000/ansibleforms/ timeout=3600
+    ProxyPass        /ansibleforms/ http://10.0.0.20:8000/ansibleforms/ timeout=3600 upgrade=websocket
     ProxyPassReverse /ansibleforms/ http://10.0.0.20:8000/ansibleforms/
 
     # no body cap here : UPLOAD_MAX_GB and API_BODY_LIMIT_MB apply in the application

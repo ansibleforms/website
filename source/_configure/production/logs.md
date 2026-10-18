@@ -64,7 +64,7 @@ You can add several servers, and each one has its own settings:
 
 | Setting | What it does |
 |---------|--------------|
-| Enabled | Only enabled servers get anything, so a server can be paused without deleting it |
+| Enabled | Only enabled servers get anything, so a server can be paused without deleting it; **Enable** and **Disable** in its row menu switch it too |
 | Protocol | `udp4` (default), `udp6`, `tcp4`, `tcp6`, `tls4`, `tls6`, `unix` or `unix-connect` |
 | Host and port | The server to send to, port `514` by default; a `unix` protocol takes a socket path instead |
 | Receives | The server log, the audit entries, or both (the default for a new server) |
@@ -73,6 +73,9 @@ You can add several servers, and each one has its own settings:
 
 A change applies on every node without a restart, and the server's page has a button that sends it a test message.
 A server that cannot be reached never stops the application: the error is written to the console.
+
+From 7.3.0 the syslog servers need the full settings rights, the [`showSettings`](../config/roles.html#role-options) role option:
+access to the connections settings alone is not enough, as a syslog server receives the server log and the audit entries.
 
 The `LOG_SYSLOG_*` variables of earlier versions are deprecated since 7. The first start that finds
 [`LOG_SYSLOG_HOST`](../customization/logging.html#env_LOG_SYSLOG_HOST) set imports them once as the server `syslog`,

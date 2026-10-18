@@ -66,14 +66,15 @@ at that moment, written as YAML; every run uses that copy, so edit it on the **S
 
 ## The Schedules page
 
-The **Schedules** page lists every schedule, with its **Status**, **State** and **Last Run**, and needs `allowScheduledJobs`.
+The **Schedules** page lists every schedule, with its **Enabled** column from 7.3.0, and needs `allowScheduledJobs`. Each row's menu offers:
 
 | Action | What it does |
 |---|---|
-| **Edit Schedule** | Changes the name, the type, the cron expression or run time, the form and the extra vars |
-| **Delete Schedule** | Removes the schedule; it stops running at once |
-| **Run Schedule** | Runs the schedule now, without waiting for its cron expression or run time |
-| **Last Output** | Shows what the last run reported, such as the number of the job it started |
+| **Edit** | Changes the name, the type, the cron expression or run time, the form and the extra vars |
+| **Run now** | Runs the schedule now, without waiting for its cron expression or run time |
+| **Enable** or **Disable** | Turns the schedule on or off, whichever applies, as its **Enabled** column shows (from 7.3.0) |
+| **Delete** | Removes the schedule; it stops running at once |
+| **Last output** | On the schedule's page, what the last run reported, such as the number of the job it started |
 
 A schedule can also be created here from scratch. Pick the **Form**, then either tick **One Time Run** and set
 **Run At**, or leave it clear and set a **Cron Schedule**. **Extra vars** is YAML with no form to fill it in, so add the
@@ -82,8 +83,10 @@ values the playbook needs yourself, as a dictionary (key: value pairs).
 The **Cron Schedule** field is a cron editor: it describes the expression in words, offers presets and previews the next
 runs. The server refuses an expression it cannot run, or one that can never occur.
 
-There is no switch to pause a schedule. To stop a recurring schedule without deleting it, clear its cron expression: it stays
-on the page, never runs on its own, and **Run Schedule** still runs it on demand.
+From 7.3.0 each schedule has an **Enabled** switch, to pause it without deleting it. A schedule turned off stays on the page
+with its settings, but does not run on its own: a recurring one skips its cron ticks, and a one-time one waits past its
+**Run At** until it is turned on again. **Run now** still runs it on demand. A new schedule is on, and the schedules
+that existed before 7.3.0 are on after the upgrade.
 
 ---
 
@@ -112,7 +115,7 @@ More examples, and the cron features the editor does not accept, are in the FAQ 
 When a schedule is due, it is queued, and the server starts queued schedules one at a time, checking the queue every 10 seconds.
 
 - **Recurring** schedules skip a tick while the previous run is still queued or running, so runs never overlap.
-- **One-time** schedules run within a minute of **Run At**, then are deleted, also when started with **Run Schedule**.
+- **One-time** schedules run within a minute of **Run At**, then are deleted, also when started with **Run now**.
 - **Status** is `success` when the job was started and `failed` when it could not be. A `success` only says the job was
   launched: open the job to see how it ended.
 

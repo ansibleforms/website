@@ -69,8 +69,7 @@ The page under **Connections > Notifications** lists every channel with these co
 **Add notification channel** opens a dialog: **Channel** (name and description), **Type**, then the steps of the type
 chosen. The type is set when the channel is made and stays. A row opens the channel's own page, with the same steps as
 tabs after **Details**, and **Send test**, **Delete** and **Save** top right. The row menu offers
-**Edit notification channel**, **Enable** or **Disable**, **Make default** (mail), **Send test** and
-**Delete notification channel**.
+**Edit**, **Enable** or **Disable** (whichever applies), **Make default** (mail), **Send test** and **Delete**.
 
 A channel declared in the [config seed](seed/) is read only on this page, and can still be tested.
 

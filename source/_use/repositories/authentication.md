@@ -25,9 +25,12 @@ How AnsibleForms authenticates depends on the form of the **Uri**.
 For a private HTTPS remote, pick a **Credential** whose user is the git user and whose password is a personal access token
 (or the password).
 
-AnsibleForms inserts both into the URL when it runs git, as `https://<user>:<token>@git.example.com/team/forms.git`, so
-the token needs read access to pull, and write access to push. The token is masked in the output and the
-logs. A public remote needs no credential.
+From 7.3.0 git signs in through `GIT_ASKPASS`: the user and token go to each git command that talks to the server, never into
+the URL, so they are not kept in the clone's `.git/config` and a changed token is used on the next pull or push. The token needs
+read access to pull, and write access to push. A public remote needs no credential.
+
+Up to 7.2.0 both were inserted into the URL, as `https://<user>:<token>@git.example.com/team/forms.git`. A clone made then keeps
+that URL until its next pull or push, which sets its remote back to the repository's own **Uri**.
 
 ### SSH with the generated key
 
@@ -53,3 +56,5 @@ The clone, pull and push commands can be replaced, for example to add git option
 | [`GIT_CLONE_COMMAND`](../customization/configuration.html#env_GIT_CLONE_COMMAND) | `git clone` | `-b <branch>`, `--verbose`, the Uri and the name |
 | [`GIT_PULL_COMMAND`](../customization/configuration.html#env_GIT_PULL_COMMAND) | `git pull` | `--verbose` |
 | [`GIT_PUSH_COMMAND`](../customization/configuration.html#env_GIT_PUSH_COMMAND) | `git push` | `-u origin HEAD` |
+
+From 7.3.0 these commands run without a shell: quotes work, but a shell operator such as `;`, `|`, `&&` or `>` is refused.

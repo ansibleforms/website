@@ -163,7 +163,10 @@ Some role options in [config.yaml](../config/roles.html) give more than their na
 | `allowBackupOps` | Includes **restore**, which replaces the whole database. |
 | `showSettings` | Opens the administration pages. |
 | `showLogs` | Shows the server log, which can contain host names, user names and error details. |
+| `showConnectionsSettings` | Opens the connections pages: credentials, runners, notification channels and more. Repositories, secret stores and the credentials of connections and sign-ins stay an admin's. |
 | `showAllJobLogs` | Shows the jobs of every user, not only the user's own. |
-| `extendedTokenExpiration` | Lets the user create API tokens that live up to [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) (90 by default). Signing out with a token ends it, and a password change ends all of the user's tokens, see [Tokens](secrets.html#tokens). |
+| `manageAllJobs` | Aborts, deletes and relaunches the jobs of every user. |
+| `allowApiTokens` | Lets the user create API tokens that live up to [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) (90 by default). Signing out with a token ends it, and a password change ends all of the user's tokens, see [Tokens](secrets.html#tokens). |
+| `extendedTokenExpiration` | With `allowApiTokens`, also lets the user create API tokens that never expire. |
 
 When the `admin` role sets no options it has all of them; options on the `default` role apply to every user.

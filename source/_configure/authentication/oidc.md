@@ -67,23 +67,31 @@ With **Full group path** on, the claim holds paths such as `/af-admins`, and the
 
 ## Add the provider
 
-Add the provider under **Access > SSO**, on the **Providers** tab, with **Provider** set to **Open ID**:
+Add the provider under **Access > SSO**: a wizard asks its fields in four steps, with **Open ID** on the **Type** step:
+
+| Step | Field | Meaning |
+|---|---|---|
+| Details | Name, Description | A unique name for the provider, and an optional description |
+| Type | Provider | **Open ID**; set when it is made, it stays |
+| Credentials | Credential | Required from 7.3.0. An **Open ID** credential of [Connections > Credentials](../credentials.html), see below |
+| Groups | Group filter | Regular expression; only the values of the `groups` claim that match are kept. Empty keeps every group |
+
+The credential holds the client, so only an admin can add or change it:
 
 | Field | Meaning |
 |---|---|
-| Name | A unique name for the provider. |
-| Description | Optional. |
-| Client ID | The client ID at the provider, e.g. `ansibleforms`. |
-| Issuer | The issuer URL, e.g. `https://keycloak.example.com/realms/example`. |
-| Redirect URL | Filled in as `<Public Root Url>/api/v2/auth/oidc/callback`; must match the provider's redirect URI. |
-| Client Secret | The client secret, stored encrypted. |
-| Group Filter | Regular expression; only the values of the `groups` claim that match are kept. Empty keeps every group. |
+| Issuer | Required. The issuer URL, e.g. `https://keycloak.example.com/realms/example` |
+| User | The client ID at the provider, e.g. `ansibleforms` |
+| Password | The client secret, stored encrypted or read from a [secret store](../secret-stores/) |
+| Redirect URI | As registered, e.g. `https://af.example.com/api/v2/auth/oidc/callback`. Empty: the app's URL and the callback path |
 
-One OIDC provider is active at a time, the one the OpenID button signs in with. A new provider is active when no
-other OIDC provider is; to switch, choose **Use for sign-in** in the row menu of another one, which makes the
-others of its type inactive. The **Active** column of the **Providers** tab shows which one is in use.
+Up to 7.2.0 the issuer, client ID, secret and redirect URL were fields of the provider. The upgrade to 7.3.0 moves them into a
+credential named `<provider>-sso`, see [Addresses in credentials](../credentials/types.html#addresses-in-credentials).
 
-The Redirect URL is pre-filled from the **Public Root Url** of the general settings; check it before saving.
+One OIDC provider is enabled at a time, the one the OpenID button signs in with. **Enable** in the row menu of another one,
+or its **Enabled** switch, turns the others of its type off; the **Enabled** column of the list shows which one is in use.
+A provider can also skip the login page, see [Switching single sign-on](./#switching-single-sign-on).
+
 Saving the provider applies it immediately. When the issuer cannot be reached, the server logs
 `Failed to initialize OIDC strategy` and OIDC logins fail until the provider is saved again or the server restarts.
 

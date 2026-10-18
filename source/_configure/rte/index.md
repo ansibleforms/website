@@ -23,7 +23,8 @@ For administrators: understand the RTE before you run one, size it, or move it t
 | Page | What it covers |
 |---|---|
 | [Images](images.html) | The three RTE images, and building your own with the collections your playbooks use |
-| [Run an RTE](run.html) | Its settings, and a `docker run` example |
+| [Modes](modes.html) | Outbound, inbound or database: who opens the connection, the spool, the job's files |
+| [Run an RTE](run.html) | The settings of each mode, and a `docker run` example of each |
 | [Several RTEs](several.html) | Capacity, replicas behind one address, and what happens when an RTE stops or dies |
 | [Another datacenter](another-datacenter.html) | A runbook: add an RTE in a second datacenter, from a bare host to its first job |
 
@@ -33,8 +34,10 @@ For administrators: understand the RTE before you run one, size it, or move it t
 
 AnsibleForms 7 runs no playbook in the app container. The job of an `ansible` form is handed to a [runner](../runners.html) of type
 `rte`, a runtime environment: the AnsibleForms server started with `AF_ROLE=rte`, next to python and ansible. It is a small API
-without a web interface. It claims the job in the database, runs `ansible-playbook`, and writes the output and the final
-status back to the database, where the browser reads them. The app resolves the job's credentials and hands them to the RTE sealed for that RTE and that job only. The RTE never reads the
+without a web interface. Since 7.3.0 it talks to the app over one WebSocket and holds no database credentials
+([`RTE_MODE`](../customization/server.html#env_RTE_MODE) `outbound` or `inbound`, see [Modes](modes.html)): the app sends it the job,
+the RTE runs `ansible-playbook`, and the app stores the output and the final status it sends back, where the browser reads them. In
+database mode, deprecated, the RTE claims the job in the database and writes the output there itself. The app resolves the job's credentials and hands them to the RTE sealed for that RTE and that job only. The RTE never reads the
 credentials table nor a secret store, and a playbook does not inherit AnsibleForms' own environment variables
 (`ENCRYPTION_SECRET`, `DB_*`, `RTE_TOKEN` and the others): pass such a value as an extravar or a credential.
 
@@ -128,18 +131,23 @@ shares with the app, and what happens inside it from the moment a form is launch
 </svg>
 </div>
 
+The diagram and the steps below show an RTE in database mode, deprecated since 7.3.0. In a socket mode the path is the same, with three
+differences: the app sends the job over the socket instead of the RTE claiming it in the database (steps 3 and 4), the RTE sends its
+output and status back over the socket and the app stores them (step 7), and the playbooks come with the job unless `RTE_FILES=local`.
+
 **Who starts it.** An RTE is a long-running container, started by whatever runs your other containers. It waits for jobs and keeps
 running between them:
 
 | How you run AnsibleForms | Who starts the RTE |
 |---|---|
 | `docker run` or `podman run` | You, with a command like the one in [Run an RTE](run.html), on any host that reaches the database |
-| [Docker Compose](../installation/docker-compose.html) | The `rte` service of `docker-compose.yml`, next to `app` and `mysqldb`. Its config seed declares it as the default runner `rte`, at `http://rte:8000` |
-| [Helm chart](../installation/kubernetes.html) | Kubernetes, as a second container named `rte` in the app's pod (`containers.rte`). The app reaches it on `127.0.0.1`, and the chart's seed declares it as the default runner |
+| [Docker Compose](../installation/docker-compose.html) | The `rte` service of `docker-compose.yml`, next to `app` and `mysqldb`. Its config seed declares it as the default runner `rte`, inbound, at `http://rte:8000` |
+| [Helm chart](../installation/kubernetes.html) | Kubernetes, as a second container named `rte` in the app's pod (`containers.rte`). The app dials it on `127.0.0.1`, inbound, and the chart's seed declares it as the default runner |
+| [The installer](../installation/installer.html) | Docker Compose or the Helm chart as above, or a systemd service [without containers](../installation/native.html); a Runner of its own, which asks to join and waits for an admin's approval |
 
 The container engine is yours: Docker or Podman on the host, or the container runtime of your Kubernetes cluster, installed and kept up
 to date by you. AnsibleForms never talks to it. Neither the app nor the RTE calls Docker or Podman, mounts their socket, or starts a
-container: the app only calls the RTE over HTTP, at the address of its runner.
+container: the app only talks to the RTE over its socket, or calls it over HTTP in database mode.
 
 **What is inside.** One container, with what it takes to run a playbook and nothing more:
 
@@ -149,15 +157,15 @@ container: the app only calls the RTE over HTTP, at the address of its runner.
 * **Python and ansible** : brought by the image layer you pick (see [The RTE images](images.html))
 * **The user** : the server and every playbook run as `node` (uid 1000), never as root
 
-**What it shares with the app.** The RTE reads the job from the database and the playbook from disk, so it needs the same database and
-the same files as the app:
+**What it shares with the app.** In database mode the RTE reads the job from the database and the playbook from disk, so it needs the
+same database and the same files as the app. In a socket mode it shares only the token, and the files when `RTE_FILES=local`:
 
 | Shared with the app | What the RTE does with it |
 |---|---|
-| The database (`DB_*`) | Reads the job, claims it, writes its output and final status, writes its heartbeat and its own runner row |
-| `RTE_TOKEN` | Checks it on every call. The app holds the same value on the runner row, and the job's secrets are sealed with it |
-| `ENCRYPTION_SECRET` | Stores its token encrypted when it registers itself; not needed with `RTE_REGISTER=0` |
-| The persistent volume, `/app/dist/persistent` | The playbooks folder ([`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH)), or the playbooks repository the worker cloned under [`REPO_PATH`](../customization/paths.html#env_REPO_PATH), the inventories ([`INVENTORY_PATH`](../customization/paths.html#env_INVENTORY_PATH) and the inventory repositories) and the uploads. The RTE writes the job's extravars files into the playbook folder, so mount it read-write |
+| The database (`DB_*`), database mode only | Reads the job, claims it, writes its output and final status, writes its heartbeat and its own runner row |
+| `RTE_TOKEN` | Checks it on every call. The app holds the same value in the runner's RTE credential, and the job's secrets are sealed with it |
+| `ENCRYPTION_SECRET`, database mode only | Stores its token encrypted when it registers itself; not needed with `RTE_REGISTER=0` |
+| The persistent volume, `/app/dist/persistent`, not needed with `RTE_FILES=transfer` | The playbooks folder ([`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH)), or the playbooks repository the worker cloned under [`REPO_PATH`](../customization/paths.html#env_REPO_PATH), the inventories ([`INVENTORY_PATH`](../customization/paths.html#env_INVENTORY_PATH) and the inventory repositories) and the uploads. The RTE writes the job's extravars files into the playbook folder, so mount it read-write |
 | The ssh folder, `/home/node/.ssh` | The private key and the `known_hosts` the playbook's ssh connections use, the ones managed on the app's settings pages |
 
 The RTE clones nothing: a repository is on its disk only because the volume it shares with the app holds it. Collections, roles and
@@ -225,5 +233,6 @@ playbooks running on one RTE share its CPU, memory, `/tmp`, home folder and pyth
 * **Not root** : the RTE and its playbooks run as `node` (uid 1000), so a playbook can do what that user can in the container, such
   as reading the mounted volume and the ssh key, and no more
 
-The RTE still holds the database password, and `ENCRYPTION_SECRET` when it registers itself: treat its container, its image and its
-environment with the same care as the app's.
+In a socket mode the RTE holds no database credentials and no `ENCRYPTION_SECRET`, only its own token. In database mode it still holds the
+database password, and `ENCRYPTION_SECRET` when it registers itself. Either way, treat its container, its image and its environment with
+the same care as the app's.

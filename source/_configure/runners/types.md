@@ -11,8 +11,8 @@ nav_order: 2
 The products a runner can be, their address and login
 {: .fs-6 .fw-300 }
 
-The **Type** step offers one choice per product. AAP and Ascender are stored as a runner of type `awx` with a flavour
-(`aap` or `ascender`), which is also what the config seed uses:
+The **Type** step offers one choice per product, each with a hint; the RTE's spells out its name, *Runtime Environment*. AAP and
+Ascender are stored as a runner of type `awx` with a flavour (`aap` or `ascender`), which is also what the config seed uses:
 
 | Type | Uri example | Project | Authentication |
 |---|---|---|---|

@@ -26,4 +26,6 @@ Top right are **Test connection** (database credentials), **Change password**, *
 typed twice in the **Change password** dialog, and is never shown again once saved. For a CyberArk credential, leave the
 client key empty to keep the stored one.
 
+From 7.3.0, **Delete** and a new name are refused while **Used by** lists anything, see [Credentials in use](../credentials.html#credentials-in-use).
+
 A credential declared in the [config seed](../seed/) is read only on this page: change it in the seed file instead.

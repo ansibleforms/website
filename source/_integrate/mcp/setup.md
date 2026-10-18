@@ -60,7 +60,7 @@ of the user sets it, it follows `allowChat`, which is on by default. A user it i
 - **A chat backend** logs the user in itself, keeps the refresh token and passes the access
   token on every MCP call.
 - **An IDE client** needs a token that lasts long enough to be configured once. With a role
-  that has the `extendedTokenExpiration` option, create one under
+  that has the `allowApiTokens` option, create one under
   [Profile > API token](../profile/api-token.html), or log in with `?expiryDays=<n>` on the
   login URL for a token valid that many days.
 

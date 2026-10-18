@@ -2,7 +2,7 @@
 layout: default
 title: Kubernetes
 parent: Installation
-nav_order: 4
+nav_order: 6
 ---
 
 # Kubernetes
@@ -17,6 +17,7 @@ Install AnsibleForms and its MySQL database with the Helm chart
 ---
 
 The Helm chart deploys AnsibleForms with MySQL and the RTE that runs the playbooks (see the [values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)).
+The [installer](installer.html) installs the chart too, from a few questions, and upgrades a release it did not install.
 
 ---
 
@@ -144,7 +145,10 @@ The Secret must hold `DB_USER`, `DB_PASSWORD`, `ENCRYPTION_SECRET`, `ADMIN_USERN
 ## 4. Choose the RTE image
 
 AnsibleForms 7 runs no playbook itself: the RTE (runtime environment) does. The chart runs it as a second container in the
-server pod, on the same volume, and registers it as the default runner `rte`, so playbook forms work without any setup.
+server pod, on the same volume, and registers it as the default runner `rte`, so playbook forms work without any setup. Since 7.3.0
+the app dials it on `127.0.0.1` and keeps one WebSocket open (`RTE_MODE=inbound`, see [Modes](../rte/modes.html)): the RTE gets no
+database settings and no encryption key. The chart's config seed declares an RTE credential with the token and that address, and
+the runner, mode inbound, that signs in with it.
 
 The default image, `ghcr.io/ansibleforms/ansibleforms-rte-full`, holds ansible with its collections and the Python libraries the 6.5 image had.
 For more, or less, build your own on one of the three RTE layers (`ansibleforms-rte-base`, `-rte-core` or `-rte-full`, see
@@ -161,8 +165,8 @@ applications:
 ```
 
 The token between the app and the RTE, and the key that signs the sessions, are generated on the first install into
-the `<release>-keys` Secret and kept on every upgrade. With a config seed of your own, see the chart's
-[README](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms) for the runner to add to it.
+the `<release>-keys` Secret and kept on every upgrade. With a config seed of your own, add that credential and runner to it: the notes Helm prints after the install show how
+(see the chart's [README](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms)).
 
 ---
 

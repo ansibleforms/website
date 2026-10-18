@@ -18,7 +18,7 @@ Where jobs run: runtime environment containers for playbooks, and AWX, AAP, Asce
 
 ---
 
-For administrators: add the runners your forms run their jobs on, choose the default of each type and test them.
+For administrators: add the runners your jobs run on, choose each type's default, approve the RTEs that ask to join, test them.
 
 ---
 
@@ -26,10 +26,10 @@ For administrators: add the runners your forms run their jobs on, choose the def
 
 | Page | What it covers |
 |---|---|
-| [The runners page](runners/list.html) | The list of runners, adding one, and the default of each type |
+| [The runners page](runners/list.html) | The list of runners, adding one, turning one on or off, and the default of each type |
 | [Runner types](runners/types.html) | The products a runner can be, their address and login |
-| [Registration](runners/registration.html) | How an RTE adds itself, and when it is removed |
-| [A runner's page](runners/runner-page.html) | A runner's tabs, Test connection, and its token |
+| [Registration](runners/registration.html) | How an RTE asks to join and is approved, join tokens for unattended installs, and database mode |
+| [A runner's page](runners/runner-page.html) | A runner's tabs, an RTE's mode and connection, and Test connection |
 | [Who manages runners](runners/permissions.html) | Who may add, change and test runners |
 
 
@@ -60,4 +60,7 @@ A form picks its runner in one of two ways:
   still works, logs a deprecation warning, and goes away in 8.
 - **As the default**: a form that names no runner runs on the default runner of its type. Without one, the job fails
   with a message that says which type of runner to add.
+
+A runner turned off under **Connections > Runners** gets no job, by name or as the default: the job fails and says to enable it
+or to name another runner (see [Default and Enabled](runners/list.html#default-and-enabled)).
 

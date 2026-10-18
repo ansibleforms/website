@@ -45,18 +45,18 @@ nothing in your forms.
 
 ## Adding a store
 
-Every store has the following fields:
+From 7.3.0 only an admin can add, change or delete a store, as its token or key is sent to its address. Every store has these fields:
 
 | Field | Meaning |
 |---|---|
 | Name | How credentials refer to the store. |
 | Type | The secret manager. |
-| Uri | Base URL, e.g. `https://vault.example.com:8200`. |
-| Credential | How the store logs in: a credential of [Connections > Credentials](../credentials.html), on the **Credentials** step. It cannot read from a secret store itself. |
+| Credential | How and where the store logs in: a credential of [Connections > Credentials](../credentials.html), on the **Credentials** step, of type **HashiCorp Vault** (its token and address) or **CyberArk**. It holds the base URL, e.g. `https://vault.example.com:8200`, and the TLS settings: skip certificate verification, or a CA bundle in PEM for a private CA. It cannot read from a secret store itself. |
 | Cache (seconds) | How long a secret that was read is reused. `0` reads it on every use. Default 60. |
-| Skip certificate verification | Do not check the store's TLS certificate at all. Off by default. |
-| Use a custom CA certificate / CA bundle | Check the certificate against a private CA, its certificates in PEM in the **CA bundle**. Off: the system CAs are trusted. |
 | Extra options (JSON) | Options specific to the type, as a JSON object. |
+
+Up to 7.2.0 the address, the token and the TLS settings were fields of the store. The upgrade to 7.3.0 moves them into its
+credential, named `<store>-token` (or `<store>-appid` for CyberArk), see [Addresses in credentials](../credentials/types.html#addresses-in-credentials).
 
 **Test connection** checks access without reading a secret. The **Status** page checks every store, and warns 7 days
 before a Vault token expires.

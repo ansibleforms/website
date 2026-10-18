@@ -138,3 +138,17 @@ fn.fnRestAdvanced(
 // - username(credential_name) : will add the username of the credential
 // - password(credential_name) : will add the password of the credential
 ```
+
+---
+
+## Certificates and timeouts
+
+From 7.3.0 every REST helper function checks the TLS certificate of the endpoint and stops waiting after a set time:
+
+| Setting | What it changes |
+|---|---|
+| [`REST_IGNORE_CERTS`](../customization/security.html#env_REST_IGNORE_CERTS) | `1` skips the certificate check. Up to 7.2.0 it was never checked; keep it at `0` and trust a private CA with `NODE_EXTRA_CA_CERTS` instead |
+| [`REST_TIMEOUT_SECONDS`](../customization/security.html#env_REST_TIMEOUT_SECONDS) | How long a call waits for an answer, 60 seconds by default; an endpoint that never answers then fails the field instead of holding it |
+
+From 7.3.0 a field whose endpoint has a self-signed certificate fails with a certificate error until one of the two is set.
+[REST calls and jq](../customization/security.html#rest-calls-and-jq) describes both, and how to trust a private CA for every REST call at once.

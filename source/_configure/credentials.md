@@ -30,7 +30,6 @@ For administrators: add the users, passwords and tokens AnsibleForms connects wi
 | [The credentials page](credentials/list.html) | The list of credentials, and the dialog that adds one |
 | [A credential's page](credentials/credential-page.html) | A credential's tabs, and what uses it |
 
-
 ---
 
 ## How it works
@@ -40,3 +39,31 @@ to it by its name, so the password itself never appears in a form. Its user and 
 AnsibleForms database, encrypted with `ENCRYPTION_SECRET`, or read from a [secret store](secret-stores/) each time the
 credential is used.
 
+---
+
+## Who may change a credential
+
+From 7.3.0 a credential that a connection or a sign-in depends on can only be added, changed or deleted by an admin:
+
+| Credentials | Why |
+|---|---|
+| Connection types: `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins`, `vault` and `cyberark` | A runner or a secret store takes its address and its secret from it |
+| Sign-in types: `oidc`, `entraid` and `ldap` | An SSO provider or an LDAP directory signs users in with it |
+| Any credential a runner names | The runner signs in with it, and a change of the runner itself needs an admin too |
+
+Other users with access to the credentials see these read only. A user who could point such a credential at another
+server would receive every secret sent through it, which is why the rule follows the one for runners. Two more rules
+keep those users away from secrets they could not otherwise read:
+
+- **Naming a guarded credential**: only an admin can name one of these credentials elsewhere, such as in a repository,
+  a notification channel or the chat assistant settings.
+- **Choosing a secret store**: only an admin can point a credential at a [secret store](secret-stores/), or change the
+  store or the reference it reads; another user may still send them back unchanged, or empty all of them.
+
+---
+
+## Credentials in use
+
+A credential that records still name cannot be deleted or renamed, as they would be left pointing at nothing.
+The refusal names how many records use it; the **Used by** tab of [its page](credentials/credential-page.html) lists them.
+Point them at another credential first, then delete or rename it.

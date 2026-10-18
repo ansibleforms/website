@@ -83,7 +83,7 @@ the login page without signing in. Change it to `/api/v2/` in two places, on the
 AnsibleForms and in the identity provider (the Entra ID app registration's redirect URIs, the OIDC
 client's valid redirect URIs):
 
-- Entra ID: `https://<your host>/api/v2/auth/azureadoauth2/callback`
+- Entra ID: `https://<your host>/api/v2/auth/azureadoauth2/callback`, or `/api/v2/auth/entraid/callback` from 7.3.0
 - OIDC: `https://<your host>/api/v2/auth/oidc/callback`
 
 ---
@@ -219,7 +219,7 @@ in. A provider without a tenant id, or with `common`, `organizations` or `consum
 - **Set the tenant id** on the SSO provider: the Directory (tenant) ID, a GUID, or the tenant's domain.
 - **Grant the Graph permissions:** the login asks for `openid profile email User.Read GroupMember.Read.All`. Give the app
   registration the delegated Microsoft Graph permissions `User.Read` and `GroupMember.Read.All`, with admin consent.
-- **Prefer group ids in roles:** name a group as `azuread/<object id>` rather than by its display name.
+- **Prefer group ids in roles:** name a group as `azuread/<object id>` (`entraid/<object id>` from 7.3.0) rather than by its display name.
 
 See [Entra ID](authentication/entra-id.html) for the setup.
 

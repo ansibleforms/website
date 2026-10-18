@@ -120,8 +120,8 @@ A job running on a runner when it was abandoned may still end with its real outc
 curl "https://af.example.com/api/v2/job?records=20&user=automation" -H "Authorization: Bearer <token>"
 ```
 
-A user sees their own jobs and the jobs that wait for an approval. An admin, or a role with the `showAllJobLogs` option,
-sees every job. A record holds the job's summary (`id`, `form`, `status`, `start`, `end`, `user`, `runner`, ...); read
+A user sees their own jobs and the jobs that wait for an approval one of their roles may give. An admin, or a role with the
+`showAllJobLogs` or `manageAllJobs` option, sees every job. A record holds the job's summary (`id`, `form`, `status`, `start`, `end`, `user`, `runner`, ...); read
 the job itself for its extravars and output.
 
 `GET /api/v2/job/approvals` answers with a number: how many jobs wait for an approval the user may give.
