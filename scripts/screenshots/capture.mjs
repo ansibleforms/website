@@ -249,10 +249,8 @@ const SHOTS = {
   },
   async ldap() {
     const { page, context } = await open();
-    // the directories, then the seeded one (main) : its Details tab holds the search settings
-    await visit(page, '/settings/ldap');
-    await page.getByText('main', { exact: true }).first().click();
-    await page.waitForTimeout(1500);
+    // the seeded directory, main (the first, id 1) : its Details tab holds the search settings
+    await visit(page, '/settings/ldap/1');
     await save(page, 'ldap');
     await context.close();
   },
