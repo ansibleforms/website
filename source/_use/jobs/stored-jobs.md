@@ -22,12 +22,12 @@ Keep the data of a form to load it again later
 
 Stored jobs keep the values of a form so you can load them again, instead of filling in the same fields every time.
 
-To store, fill in the form, open the dropdown next to **Submit** and choose **Store**. In **Save Form Data**, enter a
-**Name**, an optional **Description** and an optional **Expires At** date, then save. Password and constant fields are
+To store, fill in the form, open the dropdown next to **Submit** and choose **Store**. In **Save form data**, enter a
+**Name**, an optional **Description** and an **Expires at (optional)** date, then save. Password and constant fields are
 never stored. A subform has the same **Store** action next to its **Save** button, and keeps unfinished values without
 validating them.
 
-To load, select **Load from Store** at the top of the form. **Load Saved Form** lists your stored jobs for that form, with
+To load, select **Load from store** at the top of the form. **Load saved form** lists your stored jobs for that form, with
 their creation and expiry dates; select one to fill in the form with its values. Nothing runs until you submit.
 
 Stored jobs are kept in the AnsibleForms database (table `stored_jobs`), with the form name, your user as
@@ -38,10 +38,10 @@ second one with the same name fails with "A saved form with this name already ex
 
 ## Manage stored jobs
 
-The **Stored Jobs** page lists stored jobs with their form, user, creation and expiry dates, and needs `allowStoredJobs`.
+The **Stored jobs** page lists stored jobs with their form, user, creation and expiry dates, and needs `allowStoredJobs`.
 
-- **Edit stored job** opens the stored job's own page: its **Details** (name, form, expiry) and its **Values**, the stored
+- **Edit** opens the stored job's own page: its **Details** (name, form, expiry) and its **Values**, the stored
   field values as YAML, which can be changed and saved there.
 - **Open in form** opens its form with the stored values filled in; nothing runs until you submit.
-- **Delete stored job** removes it. You can delete your own stored jobs; users with `showSettings` can delete any.
-- Stored jobs with an **Expires At** date in the past are deleted automatically every day at 04:00 (in `LOG_TZ`).
+- **Delete** removes it. You can delete your own stored jobs; users with `showSettings` can delete any.
+- Stored jobs with an **Expires at** date in the past are deleted automatically every day at 04:00 (in `LOG_TZ`).

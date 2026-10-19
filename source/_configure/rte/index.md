@@ -191,9 +191,9 @@ you mount them there (the Docker Compose project does), or from an `ansible.cfg`
 3. **Hand-over** : the app node that holds the RTE's socket sends it the job: the extravars, the form's options, the sealed secrets and
    the hashes of the job's files. Any app node may launch the job; the one holding the socket sends it within two seconds. A full RTE,
    or one not connected, makes the job wait, up to [`RTE_QUEUE_MINUTES`](../customization/server.html#env_RTE_QUEUE_MINUTES)
-4. **Claim** : the RTE answers `claimed`, or `refused` when it is full, stopping or cannot open the secrets. With `RTE_FILES=transfer` it
-   takes the playbooks and the inventories from its cache by their hash, asks the app for a hash it does not have, and unpacks them in
-   a folder of the job's own
+4. **Claim** : the RTE answers `claimed`, or `refused` when it is full, stopping, cannot open the secrets, or the job comes with another
+   [contract](images.html#the-contract) than its own. With `RTE_FILES=transfer` it takes the playbooks and the inventories from its
+   cache by their hash, asks the app for a hash it does not have, and unpacks them in a folder of the job's own
 5. **Start** : in the playbook folder (plus the form's `playbookSubPath`, which must exist) it writes two files: `extravars_<id>.json`
    with the form's values and the credentials, and a hidden one with the ansible login. Then it starts `ansible-playbook` as its own child
    process, without a shell, in a process group of its own, with `-e @` those files, one `-i` per inventory, and the tags, limit, check,
@@ -211,7 +211,9 @@ you mount them there (the Docker Compose project does), or from an `ansible.cfg`
    follows it live as the app stores each item
 
 **A dropped socket.** The playbook goes on. The RTE redials (outbound), or an app node dials it again (inbound), and sends again what
-the app had not acknowledged: the app skips what it stored already, so no line is lost or stored twice. Keep the spool
+the app had not acknowledged: the app skips what it stored already, so no line is lost or stored twice. That holds while the socket
+is back within two minutes: the app writes the RTE's heartbeat only while its socket is open, and once that heartbeat is two minutes
+old the worker ends the RTE's running jobs as abandoned, even if their playbooks still run. Keep the spool
 ([`RTE_SPOOL_PATH`](../customization/server.html#env_RTE_SPOOL_PATH)) on a volume, so a restarted RTE still sends what it had kept. A
 playbook that was running when its RTE restarted cannot go on: the app ends its job as abandoned when the RTE comes back without it.
 

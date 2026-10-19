@@ -85,13 +85,15 @@ loaded is kept and the warning `skipping duplicate form <name>` is logged, so ke
 
 ## Troubleshooting
 
-Most problems show in the **Pull** column and in **Show output**, which holds git's own error message.
+Most problems show in the **Pull** column and in **Show last pull output** (or **Show last push output**), which hold git's own
+error message.
 
 - [A repository clone or pull failed](../troubleshooting.html#a-repository-clone-or-pull-failed): authentication, known
   hosts and local changes.
 - [The forms repository is not cloned yet](../troubleshooting.html#the-forms-repository-is-not-cloned-yet): the designer
   cannot save before the first clone.
-- A repository stuck in `running` after a restart is reset to `failed` at the next start; run **Pull** again.
+- A repository stuck in `running` is reset to `failed`: after a restart, at the next start; within a minute once the node
+  that runs its git operation stops answering for 2 minutes; and in any case after 2 hours. Run **Pull** again.
 
 ---
 

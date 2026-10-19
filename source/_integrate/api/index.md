@@ -30,7 +30,8 @@ The API is served under `/api/v2` on the AnsibleForms server:
 * **Permissions** : a call runs as the user whose token it carries, with that user's roles, as in the browser.
 * **Launch validation** : jobs launched through the API can be checked like browser launches
   (see [Launch validation](../launch-validation/)).
-* **Rate limits** : only the login, logout, token refresh and single sign-on endpoints are limited (see
+* **Rate limits** : only the login, logout, token refresh and single sign-on endpoints, the password change
+  (`PUT /api/v2/profile`) and the API token endpoints (`POST` and `DELETE /api/v2/profile/tokens`) are limited (see
   [Authentication](authentication.html)). Other calls have no rate limit (the [chat assistant](../chat/) has limits of
   its own), so a script should pace itself, for example when it follows a job.
 

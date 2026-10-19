@@ -55,7 +55,7 @@ From 7.3.0 each provider under **Access > SSO** has two switches of its own, whi
 | Switch | Effect |
 |---|---|
 | **Enabled** | Shows the provider's button on the login page and accepts its sign-in. Turning it on turns off the other providers of its type. |
-| **Skip the login page** | Users go straight to this provider, without the login page. Turning it on for one provider turns it off for the others. |
+| **Skip the login page** | Users go straight to this provider, without the login page, while the provider is enabled. Turning it on for one provider turns it off for the others; it is greyed out on a provider that is turned off. |
 
 The username and password form stays reachable at `/login?local`, for the local admin or when the provider fails,
 and it is shown after signing out and when a single sign-on login comes back with an error.
@@ -73,17 +73,20 @@ logs a warning at every start while they are still set, so remove them from the 
 ## From user to roles
 
 Each login produces a user with a **type** (`local`, `ldap`, `azuread` or `oidc`), a username and a list of groups.
-Every group gets a prefix of its type, `entraid` for the Entra ID type `azuread`:
+Every group gets the prefix of its type, so an Entra ID group is stored and shown as `azuread/...`:
 
 | Login method | Username | Groups |
 |---|---|---|
 | Local | the local username | `local/<group>`, one for each local group of the user |
-| LDAP | the value of the Username Attribute | `ldap/<cn>`, the CN of each group the directory returns |
-| Entra ID | the `upn` claim | `entraid/<display name>`, read from Microsoft Graph (`azuread/` up to 7.2.0, still matched) |
+| LDAP, `main` directory | the value of the Username Attribute | `ldap/<cn>`, the CN of each group the directory returns |
+| LDAP, another directory | `<directory>/<username>` | `ldap/<directory>/<cn>`, see [Several directories](ldap.html#several-directories) |
+| Entra ID | the `upn` claim, or `preferred_username` when the token has no `upn` | `azuread/<object id>` and `azuread/<display name>` of each group, read from Microsoft Graph |
 | OIDC | the `preferred_username` claim | `oidc/<name>`, from the `groups` claim of the ID token |
 
 The [roles](../config/roles.html) in config.yaml then match these values: a role applies when one of its `groups` is one
-of the user's groups, or when its `users` holds `<type>/<username>`. Every user also gets the `default` role.
+of the user's groups, or when its `users` holds `<type>/<username>`. Every user also gets the `default` role. From 7.3.0 a
+role names an Entra ID member `entraid/<group>` or `entraid/<upn>`, which matches the stored `azuread/` value; `azuread/`
+in a role still works and is removed in 8.0. The profile and the job extravars keep showing `azuread/`.
 
 ```yaml
 roles:

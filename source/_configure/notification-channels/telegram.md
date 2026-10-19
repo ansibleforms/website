@@ -11,7 +11,7 @@ nav_order: 3
 A bot posting in a Telegram chat
 {: .fs-6 .fw-300 }
 
-A Telegram channel is a bot posting in a chat, set in its **Bot** step:
+A Telegram channel is a bot posting in a chat. Its **Credentials** step holds the **Bot token**, its **Bot** step the rest:
 
 | Field | Meaning |
 |---|---|

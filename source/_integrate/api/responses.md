@@ -45,7 +45,7 @@ The status code tells what went wrong:
 | `200` | The call succeeded |
 | `400` | The request is malformed, for example a token refresh without a refresh token, or an upload without a file |
 | `401` | The token is missing, wrong or expired: log in or refresh it |
-| `403` | The user's roles do not allow the call, or the account must do something first (see below) |
+| `403` | The user's roles do not allow the call (approving your own job included, unless its approval sets `allowSelf: true` or you are an admin), or the account must do something first (see below) |
 | `404` | The object does not exist |
 | `409` | The request is incomplete (a launch without data), or the object is not in a state that allows the action |
 | `422` | [Launch validation](../launch-validation/) refused the form's values; `details` lists why |

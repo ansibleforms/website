@@ -25,6 +25,12 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 
 The exact name is tried first. When no credential has that name, the name is used as a regular expression, and then the fallback is tried.
 
+#### Limited by role
+
+When one of the user's roles lists `credentials` in `config.yaml`, `fn.fnCredentials` returns only a credential such a role
+allows: the role's patterns are matched against the name of the credential found (by name, regular expression or fallback),
+and any other is refused. Roles without the list do not limit it, and an admin is never limited.
+
 #### Credentials from a secret store
 
 A credential that names a [secret store](../secret-stores) gets its `user` and `password`

@@ -27,6 +27,8 @@ With a repository used for forms, the designer edits the files in its working tr
 | **Load (repository)** | Pulls the forms repositories and reloads the designer, after a confirmation if edits are unsaved |
 
 Forms stay in their repository; new ones wait, already usable, in [`FORMS_STAGING_PATH`](../customization/paths.html#env_FORMS_STAGING_PATH) until you push.
+A form saved in a subfolder keeps its relative path: `team/deploy.yaml` is pushed to `team/deploy.yaml` under the forms folder
+of the repository. A new form whose path already exists there is not overwritten; it stays in staging, so rename it.
 With several forms repositories, **Save (repository)** and **Load (repository)** ask which one, defaulting to the `config.yaml` one.
 
 A push stages all changes, commits them as `AnsibleForms` with the message `Forms sync by <user>`, then fetches, rebases on

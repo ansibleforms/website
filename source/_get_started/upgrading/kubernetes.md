@@ -30,6 +30,25 @@ Prepare the upgrade so that you can go back if something goes wrong:
 * **Moving to a new major version?** Follow [Upgrading to v7](../upgrade-7.html) first.
 * **Read the chart's [changelog](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/CHANGELOG.md)** for changes to the values.
 * **With generated credentials** (`secrets.generate`), back up the `<release>-secrets` Secret: `ENCRYPTION_SECRET` cannot be recovered.
+* **Coming from 7.2?** The RTE in the server pod changes mode: see [From 7.2 to 7.3](#from-72-to-73).
+
+---
+
+## From 7.2 to 7.3
+
+Chart 7.3.0 moves the RTE next to the app out of database mode, deprecated in 7.3.0 and removed in 8.0.0. The app dials it on
+`127.0.0.1` and keeps one WebSocket open (`RTE_MODE=inbound`, see [Modes](../rte/modes.html)):
+
+* The RTE container no longer gets `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `ENCRYPTION_SECRET` or `RTE_URL`, and takes the job's files from
+  the shared volume (`RTE_FILES=local`)
+* The chart's config seed declares an RTE credential with the token and the address, and the runner, `rte_mode: inbound`, that signs
+  in with it. With the chart's seed, nothing is to do
+* With `containers.rte.seedRunner: false`, or a config seed of your own (`CONFIG_SEED_PATH`), the RTE no longer adds itself as a runner.
+  Declare it yourself, in your seed or under **Connections → Runners**: an RTE credential with `http://127.0.0.1:<port>` and the token,
+  and a runner of type RTE with `rte_mode: inbound` that names it. The notes Helm prints after the upgrade show how
+
+The chart also installs a Runner on its own since 7.3.0, with `runner.enabled` (see
+[A Runner on Kubernetes](../installation/kubernetes.html#a-runner-on-kubernetes)).
 
 ---
 

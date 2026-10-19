@@ -20,7 +20,8 @@ Messages under the header for everyone, such as a maintenance window, each from 
 
 For administrators: tell every user about a maintenance window or an incident, under **Settings > Appearance > Announcements**.
 
-The page needs the `showSettings` role option. From 7.3.0 it is one list, and each announcement has its own page and Enabled switch.
+The page needs the `showSettings` or the `showAppearanceSettings` role option. From 7.3.0 it is one list, and each announcement
+has its own page and Enabled switch.
 
 ---
 

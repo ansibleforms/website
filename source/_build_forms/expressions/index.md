@@ -26,8 +26,12 @@ The `expression` attribute of a form field lets you create dynamic forms with Ja
 The `expression` attribute is available on multiple field types:
 - `enum` field - to populate dropdown options dynamically
 - `expression` field - to retrieve or generate any form of data
+- `html` field - to build its HTML content
+- `yaml` and `list` fields - to fill their data
 
 JavaScript expressions are evaluated either on the **server side** (default) or on the **client side**, as set by the field property `runLocal`.
+An `html` field, and the `local`, `local_out` and `credential` field types, always run their expression in the browser, whatever
+`runLocal` says.
 
 - **On the server side** (`runLocal: false`, the default) - predefined functions that fetch data from APIs, files and databases.
 - **On the client side** (`runLocal: true`) - Code leverages the full JavaScript engine in the browser sandbox for calculations, transformations, and manipulations.

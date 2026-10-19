@@ -160,11 +160,11 @@ A launch goes through the same steps whether it comes from the browser or from t
 4. **Record** : the job is stored with status `running`, and its id is added to the extravars as `__jobid__`
 5. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
 6. **Credentials** : for a playbook, the app (never the RTE) reads the form's credentials from the database or a [secret store](secret-stores/)
-7. **Run** : the job goes to its runner, the one the form names with `runner:` or the default of its type. An RTE claims a playbook,
-   with its credentials sealed for it, and runs `ansible-playbook` (see [How the RTE runs](rte/#how-the-rte-runs)),
+7. **Run** : the job goes to its runner, the one the form names with `runner:` or the default of its type. For a playbook, the app sends the job to its
+   RTE over the RTE's WebSocket, with its credentials sealed for it, and the RTE runs `ansible-playbook` (see [How the RTE runs](rte/#how-the-rte-runs)),
    and AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins runs a template or a job. A [workflow](workflows/) runs its nodes, each as a
    job of its own on its own runner
-8. **Follow** : the server saves the output in the database as it arrives, sent by the RTE for a playbook, or read from the
+8. **Follow** : the server saves the output in the database as it arrives, sent by the RTE over its socket for a playbook, or read from the
    other runners. The form page re-reads the job every two seconds, and the Jobs page follows it live as the server
    announces each change
 9. **End** : the job gets its final status, and its [`notifications`](forms/notifications.html) go out by mail and to its

@@ -97,6 +97,10 @@ Server expressions run on the server for any signed-in user, so the sanitizer an
 
 Both lists only cover the REST helper functions of AnsibleForms itself; playbooks run outside them and are not filtered.
 
+From 7.3.0 the REST helper functions check the certificate of the endpoint, as every other connection does.
+[`REST_IGNORE_CERTS`](../customization/security.html#env_REST_IGNORE_CERTS)`=1` turns the check off: use it only for
+endpoints with a self-signed certificate.
+
 ---
 
 ## Job data
@@ -140,7 +144,7 @@ Administrators can change much of the configuration from the browser. Narrow tha
 
 ## Optional features
 
-These features are off by default. Switch them on only when you use them; each needs a restart:
+These features are off by default. Switch them on only when you use them; a change on the settings page applies without a restart:
 
 * [`ENABLE_MCP`](../customization/features.html#env_ENABLE_MCP) : serves the [MCP server](../mcp/) on `/api/v2/mcp`,
   so MCP clients can launch forms with a user's token.
@@ -161,12 +165,20 @@ Some role options in [config.yaml](../config/roles.html) give more than their na
 |--------|----------------|
 | `allowScheduledJobs` | A user with it sees and can change every schedule, and a schedule runs with admin rights, for any form. Treat it as admin-level. |
 | `allowBackupOps` | Includes **restore**, which replaces the whole database. |
-| `showSettings` | Opens the administration pages. |
+| `showSettings` | Opens the administration pages. Without the admin role, it cannot change the accounts and groups the admin role names, see [Users and groups](../users-and-groups.html#accounts-that-grant-admin). |
 | `showLogs` | Shows the server log, which can contain host names, user names and error details. |
-| `showConnectionsSettings` | Opens the connections pages: credentials, runners, notification channels and more. Repositories, secret stores and the credentials of connections and sign-ins stay an admin's. |
+| `showConnectionsSettings` | Opens the connections pages: credentials, runners, notification channels and more. Adding, changing and deleting runners and secret stores stay an admin's, and so do the credentials of connections and sign-ins. Of a repository, adding or deleting it and changing its address, branch or `use_for_*` flags stay an admin's. |
 | `showAllJobLogs` | Shows the jobs of every user, not only the user's own. |
 | `manageAllJobs` | Aborts, deletes and relaunches the jobs of every user. |
-| `allowApiTokens` | Lets the user create API tokens that live up to [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) (90 by default). Signing out with a token ends it, and a password change ends all of the user's tokens, see [Tokens](secrets.html#tokens). |
+| `allowApiTokens` | Lets the user create API tokens that live up to [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) (90 by default). Signing out with a token or revoking it ends it, and a password change ends all of the user's tokens, see [Tokens](secrets.html#tokens). |
 | `extendedTokenExpiration` | With `allowApiTokens`, also lets the user create API tokens that never expire. |
+| `allowFileUploads` | Lets the user upload files through a form's file fields. On for every user unless a role turns it off. |
+| `allowChat`, `allowMcp` | Let the user use the chat assistant and the MCP server, when they are switched on. `allowChat` is on for every user unless a role turns it off, and `allowMcp` follows `allowChat` unless a role sets it. |
 
-When the `admin` role sets no options it has all of them; options on the `default` role apply to every user.
+A user without the `admin` role gets none of the admin-level options above unless a role gives them. When the `admin` role
+sets no options, its users get `showSettings`, `showDesigner`, `showLogs`, `showAuditLog`, `allowBackupOps`,
+`allowJobRelaunch`, `showAllJobLogs`, `manageAllJobs` and `allowScheduledJobs`. `allowApiTokens` and
+`extendedTokenExpiration` stay off even for the `admin` role: set them on the roles that need them.
+
+When several roles of a user set the same option, `false` wins. The options of the `default` role only fill in the options
+that none of the user's own roles set; they never overrule them.

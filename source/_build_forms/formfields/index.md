@@ -48,7 +48,7 @@ Each field type adds properties specific to its function. Select a field type in
   <tbody>
 {% for type in formfile.choices %}
     <tr>
-      <td><strong><a href="/formfields/{{ type.name }}.html">{{ type.name }}</a></strong></td>
+      <td><strong><a href="{{ type.name }}.html">{{ type.name }}</a></strong></td>
       <!-- markdownify, not the raw value : a description carries markdown (`code`
            spans) AND html-looking text. The `html` type documents that `<script>` is
            stripped, and unfiltered that opened a real script element which swallowed

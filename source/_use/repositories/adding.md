@@ -23,26 +23,27 @@ the `showConnectionsSettings` [role option](../config/roles.html#role-options). 
 
 ![Repositories](../assets/screenshots/git.jpg)
 
-The list shows the **Name**, **Branch**, **Head** (the short commit hash checked out), **Pull**, **Push** and
-**Description**. A repository's **Details** tab shows the same Pull and Push badges above its head:
+The list shows the **Name**, **Description**, **Branch**, **Head** (the short commit hash checked out), **Pull** and
+**Push**. A repository's **Details** tab shows the same Pull and Push badges above its head:
 
 | Column | What it says |
 |---|---|
-| **Pull** | The last clone, pull or reset: **Running** while git works, then **Success** or **Failed**; a dash before the first one |
-| **Push** | **Pending changes** when changes saved here, by the designer, are not pushed to the remote yet; **Success** when nothing waits |
+| **Pull** | The last clone, pull or reset: **Running** while git works, then **Succeeded** or **Failed**; a dash before the first one |
+| **Push** | **Failed** when the last push failed; **Pending changes** when changes saved here, by the designer, are not pushed to the remote yet; **Succeeded** when nothing waits; a dash before the first push |
 
-**Success** in the Push column means only that nothing waits to be pushed: the remote may still hold newer commits that a
+**Succeeded** in the Push column means only that nothing waits to be pushed: the remote may still hold newer commits that a
 pull brings in. The menu of each row holds these actions:
 
 | Action | What it does |
 |---|---|
-| **Edit repository** | Change the fields below |
+| **Edit** | Change the fields below |
 | **Pull** | Clone the repository, or pull it when the working tree already exists |
 | **Push** | Commit and push the working tree; only on repositories used for forms, config, playbooks, workflows or inventories, and enabled only while there are changes not pushed yet |
 | **Reset** | Delete the working tree and clone it again, which discards local changes |
 | **Change credentials** | Open the repository's **Credentials** tab, to pick the credential git uses |
-| **Show output** | Show git's output of the last clone, pull or push, with the password masked |
-| **Delete repository** | Remove the record and its working tree under `REPO_PATH` |
+| **Show last pull output** | Show git's output of the last clone, pull or reset, with the password masked |
+| **Show last push output** | Show git's output of the last push, with the password masked |
+| **Delete** | Remove the record and its working tree under `REPO_PATH`; an admin's only |
 
 **Pull all**, above the list, pulls every repository at once.
 

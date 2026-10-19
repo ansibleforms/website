@@ -17,10 +17,12 @@ What you need before you install AnsibleForms
 
 ## Runtime
 
-AnsibleForms runs as a container or, for those who build it themselves, as a Node.js application:
+AnsibleForms runs as a container, as systemd services on the server itself or, for those who build it themselves, as a Node.js application:
 
 | Installation | You need |
 |---|---|
+| [Installer](installation/installer.html) | Linux on amd64 or arm64, `curl` or `wget` and `sha256sum`, and the needs of the engine it installs on (below) |
+| [Native](installation/native.html) | Root, systemd and a supported Linux (Ubuntu, Debian, RHEL and its rebuilds, SUSE); the installer installs the rest |
 | [Docker](installation/docker.html) | Docker or Podman, and a MySQL server of your own |
 | [Docker Compose](installation/docker-compose.html) | Docker Compose or podman-compose; the project starts MySQL too |
 | [Kubernetes](installation/kubernetes.html) | A cluster, Helm 3 and a StorageClass (or pre-created PersistentVolumes) |
@@ -46,8 +48,9 @@ GRANT ALL PRIVILEGES ON `AnsibleForms`.* TO 'ansibleforms'@'%';
 ```
 
 That is all it needs: it creates and patches the schema, makes its backups and, with several workers, ends the session of a dead one.
-The **Status** page and the log warn when the user has rights on every database. The app nodes, the workers and the RTEs all
-connect with this user. To create the schema yourself, set [`ALLOW_SCHEMA_CREATION`](customization/server.html#env_ALLOW_SCHEMA_CREATION) to `0`.
+The **Status** page and the log warn when the user has rights on every database. The app nodes and the workers connect with this
+user. An RTE in a socket mode (outbound or inbound, see [Modes](rte/modes.html)) holds no database credentials: only one in database
+mode, deprecated since 7.3.0, connects too. To create the schema yourself, set [`ALLOW_SCHEMA_CREATION`](customization/server.html#env_ALLOW_SCHEMA_CREATION) to `0`.
 The Docker Compose project and the Helm chart (which uses `mysql:8.4`) start a database for you.
 
 ---

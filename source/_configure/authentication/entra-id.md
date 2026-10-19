@@ -21,11 +21,14 @@ Single sign-on with Microsoft Entra ID (Azure AD), with roles from the user's En
 With an Entra ID provider enabled, the login page shows an Entra ID button below **Sign in**. A login then goes as follows:
 
 1. The button sends the browser to `/api/v2/auth/entraid`, which redirects it to Microsoft.
-2. The user signs in at Microsoft, which redirects back to the **Redirect URL** with an access token for Microsoft Graph.
+2. The user signs in at Microsoft, which redirects back to the **Redirect URL** with an authorization code. The server
+   exchanges that code with Microsoft for the ID token and an access token for Microsoft Graph.
 3. The server reads the user's groups from Microsoft Graph (`/v1.0/me/transitiveMemberOf`), so nested groups count too.
-4. The groups are filtered with the **Group filter**, and mapped to roles as `entraid/<group>`.
+4. The groups are filtered with the **Group filter** on their display name, and each group that is kept is stored twice,
+   as `azuread/<object id>` and as `azuread/<display name>`.
 
-The username is the `upn` claim of the token, e.g. `jdoe@example.com`. Groups are identified by their **display name**.
+The username is the `upn` claim of the token, e.g. `jdoe@example.com`, or the `preferred_username` claim when the token
+has no `upn`; for a work account both hold the same value.
 
 ---
 
@@ -48,7 +51,7 @@ credential exactly.
 Up to 7.2.0 the path was `/api/v2/auth/azureadoauth2/callback`. It still works from 7.3.0, so an existing registration
 needs no change; a credential with an empty **Redirect URI** uses the new path, so add it to the registration then.
 
-AnsibleForms reads the group names from Graph and does not use a groups claim in the token, so no group claim needs
+AnsibleForms reads the groups from Graph and does not use a groups claim in the token, so no group claim needs
 to be configured on the registration.
 
 ---
@@ -61,7 +64,7 @@ Add the provider under **Access > SSO**: a wizard asks its fields in four steps,
 |---|---|---|
 | Details | Name, Description | A unique name for the provider, and an optional description |
 | Type | Provider | **Microsoft Entra ID**; set when it is made, it stays |
-| Credentials | Credential | Required from 7.3.0. A **Microsoft Entra ID** credential of [Connections > Credentials](../credentials.html), see below |
+| Credentials | Credential | A **Microsoft Entra ID** credential of [Connections > Credentials](../credentials.html), see below |
 | Groups | Group filter | Regular expression; only the groups whose display name matches are kept. Empty keeps every group |
 
 The credential holds the app registration, so only an admin can add or change it:
@@ -69,17 +72,20 @@ The credential holds the app registration, so only an admin can add or change it
 | Field | Meaning |
 |---|---|
 | Tenant ID | Required. The Directory (tenant) ID, a GUID, or one of the tenant's domains. Only users of that tenant can sign in |
-| User | The Application (client) ID |
-| Password | The client secret value, stored encrypted or read from a [secret store](../secret-stores/) |
+| Client ID | The Application (client) ID |
+| Client secret | The client secret value, stored encrypted or read from a [secret store](../secret-stores/) |
 | Redirect URI | As registered, e.g. `https://af.example.com/api/v2/auth/entraid/callback`. Empty: the app's URL and the callback path |
 
-An empty tenant ID, or the multi-tenant endpoints `common`, `organizations` and `consumers`, is refused when the
-credential is saved, because it would let users of any Microsoft tenant sign in. At sign-in, the server also checks that
-the token comes from the configured tenant. A provider saved earlier without a tenant ID signs nobody in: the server
-logs `Could not enable Entra ID : set the tenant id to your tenant` until the tenant ID is filled in.
+A credential with an empty tenant ID is refused when it is saved. The multi-tenant endpoints `common`, `organizations`
+and `consumers` are refused when the provider that names the credential is saved, because they would let users of any
+Microsoft tenant sign in. At sign-in, the server also checks that the token comes from the configured tenant. A provider
+saved earlier without a tenant ID signs nobody in: until the tenant ID is filled in, the server logs
+`Could not enable Microsoft Entra ID: set the tenant id to your tenant ('' would let any Microsoft tenant log in)`.
 
 Up to 7.2.0 the tenant, client ID, secret and redirect URL were fields of the provider. The upgrade to 7.3.0 moves them into a
 credential named `<provider>-sso`, see [Addresses in credentials](../credentials/types.html#addresses-in-credentials).
+Choose a credential for every new provider: the server still accepts a provider with its own client ID and secret from
+before 7.3.0, which signs in with them until a credential is chosen.
 
 One Entra ID provider is enabled at a time, the one the Entra ID button signs in with. **Enable** in the row menu of another one,
 or its **Enabled** switch, turns the others of its type off; the **Enabled** column of the list shows which one is in use. A provider
@@ -89,14 +95,15 @@ can also skip the login page, see [Switching single sign-on](./#switching-single
 
 ## Mapping to roles
 
-In config.yaml, an Entra ID group is `entraid/<display name>` and a user is `entraid/<upn>`:
+In config.yaml, an Entra ID group is `entraid/<object id>` or `entraid/<display name>`, and a user is `entraid/<upn>`.
+The object id is unique in the tenant, so it is the safer choice; a display name is easier to read:
 
 ```yaml
 roles:
   - name: admin
     groups:
       - local/admins
-      - entraid/AF-Admins
+      - entraid/0b6c8e1a-2f4d-4c7e-9a3b-5d1e7f2a4c6b
   - name: operator
     groups:
       - entraid/AF-Operators
@@ -104,8 +111,9 @@ roles:
       - entraid/jdoe@example.com
 ```
 
-Up to 7.2.0 the prefix was `azuread/`. It still matches the same members from 7.3.0 and is removed in 8.0; the role editor
-writes `entraid/`. A **Group filter** such as `^AF-` keeps only the groups your roles use; see [Roles](../config/roles.html). From 7.1.0
+Up to 7.2.0 the prefix was `azuread/`. In a role it still matches the same members from 7.3.0 and is removed in 8.0; the
+role editor writes `entraid/`. Only the roles accept `entraid/`: the user's groups are stored as `azuread/<object id>` and
+`azuread/<display name>`, and the profile page and the `ansibleforms_user` extravar show them so. A **Group filter** such as `^AF-` keeps only the groups your roles use; see [Roles](../config/roles.html). From 7.1.0
 the sign-in token no longer carries the groups, so its size no longer grows with them. The filter still matters for
 users in many groups: fewer groups are matched against the roles at every sign-in, and the user's
 [directory record](../users-and-groups/directory.html) lists only the groups that count. Before 7.1.0,
@@ -133,4 +141,5 @@ when they are not set, with a warning in the log, and are removed in 8.0. The se
 Entra ID users sign in with Microsoft, so a few things work differently from local and LDAP accounts:
 
 - They have no password in AnsibleForms, so they cannot change it there; an [API token](../profile/api-token.html) is made from their session.
-- Group names are display names, which are not unique in Entra ID: two groups with the same name map to the same role.
+- Display names are not unique in Entra ID: two groups with the same name map to the same role. Name the group by its
+  object id in the role, `entraid/<object id>`, to match only that group.

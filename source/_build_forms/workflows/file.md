@@ -158,5 +158,7 @@ Three keys of a node are AnsibleForms' own, and AWX ignores them, so a workflow 
 | `if_extra_var` | The node runs only when this extra var is `true`, as a multistep step's `ifExtraVar`. Not met, the node is skipped, and what follows it runs as after a success. Not on an approval node, which always runs. |
 | `extra_vars_key` | The node gets only this key of the extra vars, with the user copied in, as a multistep step's `key` |
 
-On a template runner, `unified_job_template.name` is the template or job to run, and the node's inventory, credentials,
-limit, tags and check mode are passed as a form of that runner's type would pass them.
+On a template runner, `unified_job_template.name` is the template or job to run, and the node's `limit`, `job_tags`, check
+mode and diff mode are passed as a form of that runner's type would pass them. A `verbosity` above `0` turns on the form's
+`verbose`, and `skip_tags` is not passed. Only an AWX runner (AWX, AAP or Ascender) gets the node's inventory, and the
+credentials as its AWX credentials; Semaphore, Rundeck and Jenkins get the credentials as a form's `credentials`.

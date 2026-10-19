@@ -48,7 +48,9 @@ every one of them with the new key, in one database transaction, before anything
 
 When the stored secrets were encrypted with a key that is neither, nothing is changed and the app refuses to start until
 `ENCRYPTION_SECRET_PREVIOUS` names that key. Remove `ENCRYPTION_SECRET_PREVIOUS` once the start has re-encrypted them, and set the
-new `ENCRYPTION_SECRET` on every app node, the worker and every RTE in database mode that registers itself.
+new `ENCRYPTION_SECRET` on every app node, the worker and every RTE in database mode that registers itself. That
+self-registration (`RTE_REGISTER`) is deprecated in 7.3.0: an RTE that joins with a join token (`RTE_JOIN_TOKEN`) in socket
+mode needs no `ENCRYPTION_SECRET`, see [RTE modes](../rte/modes.html).
 
 ---
 
@@ -62,6 +64,8 @@ A sign-in returns a short-lived access token and a longer refresh token, which t
   default. This is how long an idle browser stays signed in.
 * The `allowApiTokens` role option lets a user request an API token valid for a number of days, and
   `extendedTokenExpiration` adds one that never expires. Grant them only to roles that need API access from scripts.
+  On the [profile page](../profile/api-token.html) a token is made from a browser session that signed in at most 10 minutes
+  ago, and never from another API token. A token that never expires lives 50 years, and the events below still end it.
 * [`API_TOKEN_MAX_DAYS`](../customization/security.html#env_API_TOKEN_MAX_DAYS) : `90` by default. The longest an API
   token lives: a longer request is cut to it.
 
@@ -74,6 +78,7 @@ can end before it expires:
 | A password change, by the user or by an admin | Every token of the user issued before the change, API tokens included, on every device |
 | A user's **Allow sign-in** switch turned off (local, LDAP or SSO user), or a local user deleted | Every token of the user |
 | **End sessions** on the page of an LDAP or SSO user | Every token of the user; they can sign in again unless blocked |
+| **Revoke** on an API token, on the profile page or on the user's **API tokens** tab | That one API token, at once |
 
 A script ends its own API token by signing out with it: `POST /api/v2/auth/logout` with the token in the
 `Authorization` header.

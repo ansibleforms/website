@@ -35,4 +35,6 @@ approval:
   approval, the job's page is where it is approved or rejected.
 - A **mail** channel in the list sends the usual mail to `recipients` (an approval's `notifications` addresses) through
   that server instead of the default one.
-- A name that does not exist, or a channel that is turned off, is skipped and said in the log.
+- A name that does not exist, or a chat or webhook channel that is turned off, is skipped and said in the log.
+- A **mail** channel that is turned off is not skipped: the mail goes through the default mail channel instead, and the
+  log says so.

@@ -18,8 +18,9 @@ The Helm repository of AnsibleForms
 
 ---
 
-This repository holds the chart that runs AnsibleForms and its MySQL database on Kubernetes. Each chart version
-deploys one AnsibleForms release, and the same charts are pushed to the GitHub Container Registry as OCI artifacts.
+This repository holds the chart that runs AnsibleForms and its MySQL database on Kubernetes, or, with `runner.enabled`, only a
+Runner for an AnsibleForms installed elsewhere. Each chart version deploys one AnsibleForms release, and the same charts are pushed
+to the GitHub Container Registry as OCI artifacts.
 
 ---
 
@@ -60,7 +61,7 @@ The repository publishes one chart, with a version line for each AnsibleForms ma
 
 | Chart          | Description                         | Source |
 |----------------|-------------------------------------|--------|
-| `ansibleforms` | AnsibleForms and its MySQL database | [charts/ansibleforms](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms) |
+| `ansibleforms` | AnsibleForms and its MySQL database, or a Runner on its own | [charts/ansibleforms](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms) |
 
 ---
 
@@ -68,7 +69,7 @@ The repository publishes one chart, with a version line for each AnsibleForms ma
 
 Install the chart with the Kubernetes guide, then tune it with the chart's own reference:
 
-* **[Install on Kubernetes](../installation/kubernetes.html)** : values, storage, ingress and the first install
+* **[Install on Kubernetes](../installation/kubernetes.html)** : values, storage, ingress and the first install, and a Runner on its own
 * **[Upgrade on Kubernetes](../upgrading/kubernetes.html)** : move to a newer chart version with your values
 * **[VALUES.md](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)** : every value of the chart with its default
 * **[Changelog](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/CHANGELOG.md)** : what changed in each chart version

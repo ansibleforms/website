@@ -37,6 +37,7 @@ The launcher can still reject (withdraw) their own job. Set `allowSelf: true` wh
 ```yaml
 approval:
   title: Approve the change
+  message: Please approve this change
   roles:
     - approvers
   allowSelf: true

@@ -42,7 +42,19 @@ The built-in admin, the login order and the role mapping of local accounts are o
 The **Users** and **Groups** lists show the local users and groups and, beside them, the LDAP and single sign-on ones.
 
 A user or group of LDAP, Entra ID or OIDC is listed once it has signed in (or has been seen in a sign-in), or once a role names it.
-The **Source** column says where each comes from: Local, LDAP, Entra ID or OIDC; from 7.3.0 **Last sign-in** says when each last signed in.
+The **Source** column says where each comes from: Local, LDAP, Microsoft Entra ID or OIDC. From 7.3.0 the **Users** list also
+has a **Last sign-in** column, which says when each user last signed in.
 
 A row opens the page of its user or group. **Add user** and **Add group** create a local one.
+
+---
+
+## Accounts that grant admin
+
+The admin role in config.yaml names local groups and users, so only an admin may change the accounts and groups it names.
+
+A user with `showSettings` but without the admin role cannot change, block, re-group, set the password of or delete a
+local account the admin role names (by itself or through one of its groups). Nor can they create, rename or delete a group
+the admin role names, or put a user into one. The same holds for an LDAP or SSO user who maps to the admin role: blocking
+it, ending its sessions, forgetting it and revoking its API tokens are an admin's. The server answers such a request `403`.
 

@@ -15,8 +15,8 @@ A reusable form fragment for list fields, yaml fields and wizard pages
 
 A subform is a reusable form fragment. It does not appear in the tile view and cannot be submitted directly. Instead, it is referenced by:
 
-- A [`list`](/formfields/list.html) field: opens the subform as a drilldown editor for each row
-- A [`yaml`](/formfields/yaml.html) field with the `subform` property: opens the subform as a drilldown editor for a single object
+- A [`list`](../formfields/list.html) field: opens the subform as a drilldown editor for each row
+- A [`yaml`](../formfields/yaml.html) field with the `subform` property: opens the subform as a drilldown editor for a single object
 - A [`wizard`](wizard.html) step: renders the subform as one page of the wizard
 
 {% assign help = site.data.help %}

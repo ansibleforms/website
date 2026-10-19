@@ -11,7 +11,8 @@ nav_order: 4
 A JSON request to any HTTP endpoint
 {: .fs-6 .fw-300 }
 
-A webhook channel sends a JSON request to any HTTP endpoint. Its **Endpoint** step says where and how:
+A webhook channel sends a JSON request to any HTTP endpoint. Its **Endpoint** step says where and how, and its
+**Credentials** step holds the **Bearer token**:
 
 | Field | Meaning |
 |---|---|

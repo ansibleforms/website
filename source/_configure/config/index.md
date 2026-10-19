@@ -50,7 +50,8 @@ constants: {} # free objects to re-use over all forms
 
 AnsibleForms loads the config.yaml file in the following order (first match wins):
 
-1. **FROM DATABASE** : the configuration imported into the database, if any (highest priority)
+1. **FROM DATABASE** : the configuration imported into the database, only when `ENABLE_CONFIG_IN_DATABASE=1`, or when that
+   variable is unset and the configuration source stored in the database is `database` (an empty copy falls back to the file)
 2. **FROM REPOSITORY (use_for_config)** : the repository with the "use for config" switch enabled (new in 6.1.0)
 3. **FROM REPOSITORY (use_for_forms)** : the repository with the "use for forms" switch enabled (fallback for backward compatibility)
 4. **FROM LOCAL FILE** : the local `config.yaml` file (CONFIG_PATH environment variable)

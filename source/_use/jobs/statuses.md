@@ -31,8 +31,9 @@ AnsibleForms sets the following statuses on a job. The list shows each status as
 | `rejected` | An approver rejected the job; it never ran | View the output, relaunch, delete |
 | `abandoned` | AnsibleForms stopped tracking the job (see [Abandoned jobs](cleanup.html#abandoned-jobs)) | Check the managed hosts, relaunch, delete |
 
-`running` is blue, `success` green and `failed` red. `approve` is orange and reads **Needs approval**, so a job waiting for
-a person stands apart from the stopped ones; `warning`, `aborted`, `rejected` and `abandoned` are amber.
+`running` is blue, `success` green and reads **Succeeded**, and `failed` red. `approve` is orange and reads **Waiting for approval**,
+so a job waiting for a person stands apart from the stopped ones; `warning`, `aborted` and `rejected` are amber. `abandoned` is
+grey: nobody stopped it, what ran it is gone.
 
 ---
 

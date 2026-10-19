@@ -43,7 +43,9 @@ curl -fsSL https://ansibleforms.com/install | sh
 To move an existing installation to a newer release, see [Upgrading](../upgrading/).
 
 Every method runs one RTE next to the app, the container (or service) that runs the playbooks. To add another one, on another host or in another
-datacenter, see [Runtime environments](../rte/) and its runbook [An RTE in another datacenter](../rte/another-datacenter.html).
+datacenter, install a Runner with the [installer](installer.html#a-runner): it dials AnsibleForms over one WebSocket (outbound, see
+[Modes](../rte/modes.html)) and holds no database credentials. See also [Runtime environments](../rte/) and its runbook
+[An RTE in another datacenter](../rte/another-datacenter.html).
 
 ---
 

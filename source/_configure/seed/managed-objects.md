@@ -18,17 +18,21 @@ How the seed owns the objects it lists, and how it keeps secrets out
 
 ## Single-row sections are all or nothing
 
-`ldap` and `settings` are a **single row** each, so the seed must declare all their fields; the other sections are lists.
+`ldap`, `settings` and `chat` are a **single row** each, so the seed must declare all their fields; the other sections are lists.
 
 A seed that omits a field refuses to start and names it:
 
 ```
-Config seed failed, refusing to start : Seed file validation failed :
-/settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
 ```
 
-Declare an empty value explicitly with `""` or `false`. The only optional field is `ldap.groupfilter`: when omitted,
-it is left unchanged.
+Declare an empty value explicitly with `""` or `false`. A few fields are optional, and one that is omitted is left unchanged:
+
+| Section | Optional fields |
+|---|---|
+| `ldap` | `description`, `credential` (a credential to bind with) and `groupfilter` |
+| `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` and `extra_headers` |
+| `settings` | None |
 
 `settings` covers only the mail fields and the URL; all other settings stay editable.
 
@@ -77,3 +81,10 @@ credentials:
 ```
 
 `prune` never deletes a record created by hand.
+
+### Turning the seed off
+
+Unsetting `CONFIG_SEED_PATH` does **not** release anything: the seed is no longer applied, and the records it managed stay managed
+and read only. To edit them again, release them first: point `CONFIG_SEED_PATH` at a file without them (an empty file declares
+nothing and releases every record), let it apply at a start or a reload, then unset the variable. The released records stay as they
+are, and become editable.

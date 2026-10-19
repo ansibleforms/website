@@ -35,7 +35,8 @@ A process is ready when all of these hold:
 
 Under a [`BASE_URL`](../customization/server.html#env_BASE_URL) the paths start with it, for example
 `/ansibleforms/api/v2/ready`. A runtime environment (RTE) answers the same probes at `/live` and `/ready`, without the
-schema completeness check; it is not ready while it drains its jobs at shutdown, so no new job is sent to it.
+schema completeness check; it is not ready while it drains its jobs at shutdown, so no new job is sent to it. An outbound RTE
+is also not ready (`not connected to the app`) until its socket to the app is open.
 A process started with `AF_ROLE=worker` has no web interface: it answers only `/api/v2/version` and `/health` for its
 container healthcheck. See [Scaling](scaling.html) for the roles.
 
@@ -70,6 +71,7 @@ Without `METRICS_TOKEN` the endpoints answer `404`, as if they did not exist, an
 | `af_nodes{role,alive}` | The processes registered on the database, by role, alive or not |
 | `af_login_failures_total`, `af_login_lockouts_total` | Failed sign-ins and account lockouts |
 | `af_rte_running_jobs`, `af_rte_max_jobs` | On an RTE: the playbooks it runs now, and how many it may run at once |
+| `af_rte_socket_connected` | On an RTE in socket mode: `1` while its socket to the app is open, `0` when it is not |
 
 The job and node figures are read from the database at each scrape. When the database does not answer they are left
 out, and the scrape still succeeds with the other metrics.

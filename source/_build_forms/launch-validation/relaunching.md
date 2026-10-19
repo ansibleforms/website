@@ -46,6 +46,9 @@ The launch validation mode decides whether a relaunch is replayed or checked aga
 | **As it ran** | replays the job's stored extravars, passwords included | the full check, from the stored field values |
 | **With changes** | the full check, on the stored values with the changes laid over them | the full check, the same way |
 
+One exception under `enforce`: a job launched by an admin-level schedule has no field values of its own, so relaunching it as it ran
+replays the schedule's stored extravars, for an admin or a user with the `allowScheduledJobs` role option.
+
 A checked relaunch (see [Log and enforce](log-and-enforce.html)) starts a new job under the caller's name.
 
 ---
@@ -68,6 +71,7 @@ Both kinds of relaunch require:
 
 * the form to allow relaunch (`allowRelaunch`, true by default);
 * the `allowJobRelaunch` role option;
-* the user to be **the job's owner**, an admin, or a user who sees every job (`showAllJobLogs`).
+* the user to be **the job's owner**, an admin, or a user with the `manageAllJobs` role option.
 
-Approvers can see a job that waits for their approval, but cannot relaunch it.
+Seeing every job (`showAllJobLogs`) is not enough to relaunch another user's job. Approvers can see a job that waits for their
+approval, but cannot relaunch it either.

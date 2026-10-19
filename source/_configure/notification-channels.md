@@ -60,16 +60,23 @@ The page under **Connections > Notifications** lists every channel with these co
 
 | Column | Meaning |
 |---|---|
-| Enabled | Whether notifications are sent to it. A channel that is turned off is skipped. |
+| Enabled | Whether notifications are sent to it, see [Using channels in a form](notification-channels/in-a-form.html). |
 | Name | How forms refer to it in `channels:`. |
-| Type | Mail, Slack, Microsoft Teams, Telegram or Webhook. |
-| Address | Where it sends: the mail server, the incoming webhook, the chat or the url. |
-| Default | For mail: the server the app sends its mail with. |
+| Type | Mail, Slack, Microsoft Teams, Telegram or Webhook. The default mail channel shows a **Default** pill after its type. |
+| Description | What the channel is for. |
 
 **Add notification channel** opens a dialog: **Channel** (name and description), **Type**, then the steps of the type
 chosen. The type is set when the channel is made and stays. A row opens the channel's own page, with the same steps as
 tabs after **Details**, and **Send test**, **Delete** and **Save** top right. The row menu offers
 **Edit**, **Enable** or **Disable** (whichever applies), **Make default** (mail), **Send test** and **Delete**.
+
+The **Details** tab of a channel's page holds the **Enabled** switch, which is saved at once, and for mail the **Default**
+switch, which is saved with **Save**.
+
+A user who opens these pages with `showConnectionsSettings` but without the admin role cannot choose a credential that only
+an admin may name, see [Who may change a credential](credentials.html#who-may-change-a-credential). When such a user changes
+where a channel sends (a webhook's url or its certificate check, a Telegram Bot API address), the channel loses the
+credential it named, unless they choose one in the same change.
 
 A channel declared in the [config seed](seed/) is read only on this page, and can still be tested.
 

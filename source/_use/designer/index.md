@@ -24,8 +24,9 @@ The designer needs the `showDesigner` [role option](../config/roles.html#role-op
 form, a playbook or a workflow file, with its sections in the left menu. Each kind of file also needs its own option, all
 on by default: `allowPlaybookDesign` for the **Playbooks**, `allowWorkflowDesign` for the **Workflows**,
 `allowInventoryDesign` for the **Inventories** and `allowVarsFileDesign` for the **Vars files**. Without one, its section is
-read-only and the server refuses to save, create, remove or push its files; forms and workflows can still pick them. Only one
-person edits at a time: see [The designer lock](lock.html).
+read-only and the server refuses to save, create, remove or push its files; forms and workflows can still pick them. The
+**Forms**, **Categories** and **Constants** need `allowFormDesign` the same way: without it they are read-only, and the server
+refuses to save, pull or push them. Only one person edits at a time: see [The designer lock](lock.html).
 
 ---
 
@@ -44,7 +45,11 @@ Each section edits one kind of file, kept locally or in a [repository](../reposi
 | **Workflows** | The [workflow](../workflows/) files |
 
 The sections with files list them in a file explorer and open the first one; a section with no files yet says so. The
-Inventories and Workflows sections have a `+` button in the toolbar for a new inventory or workflow.
+**Forms** section and every file section have a **New file** button first in their toolbar: in the Inventories it makes a new
+inventory, in the Workflows a new, empty workflow. The explorer's magnifying glass opens a box that filters its files by name.
+
+The search box on the title line finds a text in the YAML that is open: it marks every place it appears. It works on the
+**YAML** tab, once the designer lock is yours.
 
 ---
 

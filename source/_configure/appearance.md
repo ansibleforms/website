@@ -19,6 +19,7 @@ The defaults, the name, the logo, the browser icon, the header links and the lab
 ---
 
 For administrators: make the instance look like yours, under **Settings > Appearance**, with the `showSettings` role option.
+The `showAppearanceSettings` role option alone also opens these pages, announcements included, without the rest of the settings.
 
 The pages of this group are **Defaults**, **Name**, **Logo**, **Icon**, **Links**, **Labels** and **Announcements**;
 announcements have a page of their own, [Announcements](announcements.html). A saved default, name, link or label

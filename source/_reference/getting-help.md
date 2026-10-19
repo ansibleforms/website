@@ -45,7 +45,7 @@ Each kind of request has its own place, all on GitHub:
 A report that can be reproduced gets fixed fastest. The bug report template asks for the following:
 
 * **Version** : shown under **About** in the help (**?**) menu of the top bar
-* **Deployment** : Docker, Docker Compose, Kubernetes or from source
+* **Deployment** : Docker, Docker Compose, Kubernetes, the installer (and its engine), a native install or from source
 * **Steps to reproduce** : what you did, what you expected, and what happened instead
 * **Evidence** : the relevant lines of the server log, and a screenshot when the problem is visible
 

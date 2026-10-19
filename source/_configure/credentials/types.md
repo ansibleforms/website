@@ -27,7 +27,7 @@ The type says what a credential is for. It decides which fields the dialog asks 
 | Git | A user and password or token for git repositories | [Repositories](../repositories/authentication.html) |
 | API | A user and password or token for a REST API | [REST expressions](../expressions/credentials.html), a Telegram bot token, a webhook's bearer token, the chat assistant's API key |
 | Database | A database login, with its type, host, port and database name | Form queries (`dbConfig`) and `fnCredentials`; it can be tested |
-| CyberArk | The AppID, client certificate and key a CyberArk store logs in with | A [CyberArk](../secret-stores/cyberark.html) secret store |
+| CyberArk | The address of the CyberArk Central Credential Provider (CCP) and its TLS, and the AppID, client certificate and key a CyberArk store logs in with | A [CyberArk](../secret-stores/cyberark.html) secret store |
 | SMTP | A mail server, its port and TLS, and its login (none for a relay) | A mail [notification channel](../notification-channels.html) |
 | LDAP | A directory's servers, port, TLS and certificates, and its bind DN and password | An [LDAP directory](../authentication/ldap.html) |
 | Microsoft Entra ID | The app registration of a provider: its tenant ID, client ID, client secret and redirect URI | An [Entra ID provider](../authentication/entra-id.html) |

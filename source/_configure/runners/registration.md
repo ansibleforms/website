@@ -37,7 +37,7 @@ At most 20 RTEs wait for approval at once: more are refused until some are appro
 24 hours is removed by the worker, with its credential.
 
 An RTE named after a runner the app knows already, but with another token, is refused and does not ask to join. Give it that runner's
-token, delete the runner so that it asks to join, or give it a [join token](#join-tokens).
+token, or delete the runner so that it asks to join. A [join token](#join-tokens) helps only while that runner still waits for approval.
 
 ---
 
@@ -94,17 +94,29 @@ curl -X POST https://forms.example.com/api/v2/runner/jointoken \
 
 The answer holds the token, which starts with `afj_`, this once: only its SHA-256 is stored. An RTE that presents it gets the same
 credential and runner as one that [asks to join](#asking-to-join), enabled, and its description names the join token. From then on the
-RTE signs in with its own token, so the join token can expire or be revoked without affecting it. An RTE runner of that name that
-already exists, with another token (the RTE was installed again), keeps its row and gets the new token. A runner or a credential
-managed by the [config seed](../seed/) is refused: its token is set there. Revoking or deleting a join token leaves the runners it added.
+RTE signs in with its own token, so the join token can expire or be revoked without affecting it. Revoking or deleting a join token
+leaves the runners it added.
+
+A join token never gives an approved runner a new token. When an RTE runner of that name already exists:
+
+| The runner | What happens |
+|---|---|
+| Waits for approval | It gets the new token in its credential, and still waits for an admin's approval |
+| Is approved | Refused with `409`: *runner '&lt;name&gt;' exists and is approved: a join token cannot give it a new token. Use its current RTE_TOKEN, or have an admin change the token in its credential (or remove the runner) under Connections*. The join token is not used up |
+| Comes from the [config seed](../seed/) | Refused: *runner '&lt;name&gt;' is managed by the config seed: its token is set there* |
+
+An RTE installed again with a new token therefore signs in with the token of its runner's credential, or an admin changes that token
+under **Connections > Credentials**, or deletes the runner so that the RTE joins as new.
 
 ---
 
 ## Registration in database mode
 
-An RTE in database mode, deprecated since 7.3.0, registers itself by default, at its `RTE_URL` or else at its own address and port. Such
-a runner counts as unresponsive once its RTE has not answered for two minutes, and the worker removes it after ten. A runner added by
-hand, by the config seed or by an RTE in a socket mode is never removed that way.
+An RTE in database mode, deprecated since 7.3.0, registers itself by default, at its `RTE_URL` or else at its own address and port. The
+worker removes such a runner once its RTE has written no heartbeat for 10 minutes. A runner added by hand, by the config seed or by an
+RTE in a socket mode is never removed that way.
 
-To manage such runners yourself, start the RTE with `RTE_REGISTER=0` and add it here with type RTE, mode **Database (deprecated)**, and an
-RTE credential with its address and the same token.
+[`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER), which turns this registration on or off, is deprecated in 7.3.0 with
+database mode: an RTE in a socket mode asks to join, or joins with a join token. To manage such runners yourself meanwhile, start the
+RTE with `RTE_REGISTER=0` and add it here with type RTE, mode **Database (deprecated)**, and an RTE credential with its address and the
+same token. To move it to a socket mode, see [Modes](../rte/modes.html#database-deprecated).
