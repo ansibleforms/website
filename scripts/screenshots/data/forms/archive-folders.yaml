@@ -5,7 +5,7 @@
   categories:
   - Backups
   roles:
-  - public
+  - default
   icon: folder-tree
   overlayIcon: box-archive
   overlayIconColor: warning

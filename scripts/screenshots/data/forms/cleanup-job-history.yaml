@@ -5,7 +5,7 @@
   categories:
   - Operations
   roles:
-  - public
+  - default
   icon: circle-play
   overlayIcon: trash-can
   overlayIconColor: danger

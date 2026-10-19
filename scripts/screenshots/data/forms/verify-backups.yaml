@@ -5,7 +5,7 @@
   categories:
   - Backups
   roles:
-  - public
+  - default
   icon: floppy-disk
   overlayIcon: check
   overlayIconColor: info

@@ -5,7 +5,7 @@
   categories:
   - Operations
   roles:
-  - public
+  - default
   icon: gears
   overlayIcon: rotate
   overlayIconColor: warning

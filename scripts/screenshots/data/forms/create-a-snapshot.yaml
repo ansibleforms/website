@@ -5,7 +5,7 @@
   categories:
   - Instances
   roles:
-  - public
+  - default
   icon: camera
   overlayIcon: plus
   overlayIconColor: success

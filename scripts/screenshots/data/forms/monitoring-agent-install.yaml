@@ -5,7 +5,7 @@
   categories:
   - Setup
   roles:
-  - public
+  - default
   icon: chart-line
   overlayIcon: download
   overlayIconColor: info

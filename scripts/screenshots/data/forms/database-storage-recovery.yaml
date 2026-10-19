@@ -5,7 +5,7 @@
   categories:
   - Recovery
   roles:
-  - public
+  - default
   icon: database
   overlayIcon: trash-can-arrow-up
   overlayIconColor: warning

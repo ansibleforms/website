@@ -186,7 +186,7 @@ const SHOTS = {
   },
   async schedules() {
     const { page, context } = await open();
-    await visit(page, '/jobs/schedules');
+    await visit(page, '/jobs/scheduled');
     await save(page, 'schedules');
     await context.close();
   },
@@ -249,8 +249,10 @@ const SHOTS = {
   },
   async ldap() {
     const { page, context } = await open();
-    // the Server tab : the seeded connection (the General tab only holds the switch)
-    await visit(page, '/settings/ldap/server');
+    // the directories, then the seeded one (main) : its Details tab holds the search settings
+    await visit(page, '/settings/ldap');
+    await page.getByText('main', { exact: true }).first().click();
+    await page.waitForTimeout(1500);
     await save(page, 'ldap');
     await context.close();
   },

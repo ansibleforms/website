@@ -5,7 +5,7 @@
   categories:
   - Updates
   roles:
-  - public
+  - default
   icon: fab,linux
   overlayIcon: download
   overlayIconColor: info

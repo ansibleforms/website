@@ -5,7 +5,7 @@
   categories:
   - Setup
   roles:
-  - public
+  - default
   icon: network-wired
   overlayIcon: plus
   overlayIconColor: success

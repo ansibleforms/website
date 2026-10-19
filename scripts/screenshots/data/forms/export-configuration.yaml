@@ -5,7 +5,7 @@
   categories:
   - Backups
   roles:
-  - public
+  - default
   icon: file-export
   overlayIcon: download
   overlayIconColor: info
