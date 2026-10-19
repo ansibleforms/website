@@ -120,7 +120,7 @@ The app may listen on a port under 1024, such as `443`, without root. The RTE ke
 
 ## Upgrade and roll back
 
-`sudo ansibleforms-installer upgrade` upgrades a native install as it does the others (see [Upgrade](installer.html#upgrade)), in
+`sudo /usr/local/bin/ansibleforms-installer upgrade` upgrades a native install as it does the others (see [Upgrade](installer.html#upgrade)), in
 this order:
 
 1. Puts the new release in place next to the one that runs: its bundle, Node.js, Python, Ansible and the collections. The running
@@ -140,7 +140,7 @@ and `upgrade`, which offer to take them over (see [An existing installation](ins
 
 ## Uninstall
 
-`sudo ansibleforms-installer uninstall` stops and removes the services. It keeps the folder and the database, unless you choose to delete
+`sudo /usr/local/bin/ansibleforms-installer uninstall` stops and removes the services. It keeps the folder and the database, unless you choose to delete
 the data (or pass `--purge`), and type the instance's name to confirm. Then it also drops the database and its user (a controller),
 deletes the folder and removes the system user.
 
@@ -154,7 +154,7 @@ The packages stay installed, MariaDB among them: other software may use them.
 architecture, `ansibleforms-<version>-linux-amd64.tar.gz` or `-arm64`, from the app's [Releases](https://github.com/ansibleforms/ansibleforms/releases):
 
 ```bash
-sudo ansibleforms-installer install --mode native --bundle /tmp/ansibleforms-7.3.0-linux-amd64.tar.gz
+sudo /usr/local/bin/ansibleforms-installer install --mode native --bundle /tmp/ansibleforms-7.3.0-linux-amd64.tar.gz
 ```
 
 `--source` does the same for the starting files, from a local copy of the [ansibleforms/docker](https://github.com/ansibleforms/docker)
