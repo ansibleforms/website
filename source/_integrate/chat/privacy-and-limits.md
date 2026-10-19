@@ -28,7 +28,7 @@ The following is never sent to the provider, the page or the log:
 
 - passwords (the user enters those in the browser), stored credentials and the API key;
 - a job's output, and its stored extravars (the assistant reads a job's status only, and only
-  when **Job status** is on in the settings).
+  when **Let the assistant follow its jobs** is on in the settings).
 
 Anything under a key that looks like a secret (`password`, `secret`, `token`, `api_key`, ...)
 is masked before the model or the page sees it.

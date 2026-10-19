@@ -82,8 +82,13 @@ The job fails when a node failed and nothing handled it, by AWX's rule; otherwis
 An approval node holds the workflow job until someone answers it.
 
 When the workflow reaches an approval node, the job's status turns to **Needs approval**: it shows in the bell and on the
-job's page, as a form's [approval point](../forms/approval.html), and the users the form's `approval` names can approve or
-reject it. The form's approval notifications are sent as well.
+job's page, as a form's [approval point](../forms/approval.html). The node's name is the approval's title and its description
+the message; the rest comes from the form's `approval`:
+
+- its `roles` decide who can approve or reject it, and `allowSelf` whether the launcher may approve it too;
+- its `notifications` and `channels` are sent the request.
+
+A workflow form without an `approval` still holds the job at an approval node, but then only an admin can approve it.
 
 - **Approved**, the node succeeds and the workflow goes on along its *on success* links.
 - **Rejected**, the node fails and the workflow goes on along its *on failure* links.

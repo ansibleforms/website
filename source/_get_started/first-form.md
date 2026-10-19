@@ -59,11 +59,11 @@ Put the file in the `playbooks` folder of the persistent folder
 </div>
 <div class="af-tab-panel" role="tabpanel" data-tab="docker" markdown="1">
 
-The folder you mounted at `/app/dist/persistent`, `/srv/apps/ansibleforms/server/persistent` in the installation example:
+The folder you mounted at `/app/dist/persistent`, `/srv/apps/ansibleforms/persistent` in the installation example:
 
 ```bash
-mkdir -p /srv/apps/ansibleforms/server/persistent/playbooks
-cp hello.yaml /srv/apps/ansibleforms/server/persistent/playbooks/
+mkdir -p /srv/apps/ansibleforms/persistent/playbooks
+cp hello.yaml /srv/apps/ansibleforms/persistent/playbooks/
 ```
 
 </div>

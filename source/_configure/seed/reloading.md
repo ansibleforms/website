@@ -65,8 +65,7 @@ Validation is strict: unknown fields are rejected rather than ignored, and the e
 the offending key:
 
 ```
-Config seed failed, refusing to start : Seed file validation failed :
-/awx/items/0 must NOT have additional properties 'tokenn'
+Config seed failed, refusing to start: Seed file validation failed: /awx/items/0 must NOT have additional properties 'tokenn'
 ```
 
 ---

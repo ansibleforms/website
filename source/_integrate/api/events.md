@@ -47,6 +47,7 @@ An event carries a name only, never data, so it reveals nothing the user may not
 | `jobs` | A job: launched, its status or output, deleted |
 | `appearance` | The settings the header shows: the theme, the name, an announcement, an environment variable |
 | `designer` | A lock of the designer, taken or released |
+| `runners` | A runner (from 7.3.0): an RTE connected or disconnected, asked to join, was approved or rejected, or changed its mode or settings |
 
 On hearing a name, re-read what you show through the normal API (for example `GET /api/v2/job/42`), with your own
 permissions. A busy name is sent at most once a second.

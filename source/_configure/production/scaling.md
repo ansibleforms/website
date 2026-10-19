@@ -49,15 +49,17 @@ To serve more users, or to survive the loss of one node, split the app into `app
 
 The nodes agree with each other through the database and a shared volume:
 
-* **The database** : the jobs, the worker lock, the designer lock, the list of nodes and the change notices that keep every node's
-  caches current. A credential, a runner or a schedule edited on one node is in force on all of them within 5 seconds
+* **The database** : the jobs, the worker lock, the designer lock, the list of nodes, the runner leases (which app node holds the
+  socket of each RTE) and the change notices that keep every node's caches current. A credential, a runner or a schedule edited
+  on one node is in force on all of them within 5 seconds
 * **The persistent volume** (`/app/dist/persistent`) : forms, the config, repositories, uploads, backups and the managed `.env`.
   Every app node and the worker mount the same one, read-write
 * **The ssh folder** (`/home/node/.ssh`) : the key and the known hosts for git over ssh; the worker creates the key at its first start
 * **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : the same on every app node, or a token signed
   by one node is refused by the next. An app node refuses to start without it
-* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : the same on every container, or a credential
-  stored by one cannot be read by another
+* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : the same on every app node and worker, or a
+  credential stored by one cannot be read by another. An RTE in socket mode never reads it; only a deprecated database-mode RTE
+  that registers itself needs it
 
 Give every container the same database user, too: a waiting worker can end the session of a dead one only when it is its own.
 
@@ -114,11 +116,15 @@ The app repository has a complete starting point in [examples/scale](https://git
 | `db` | `mariadb:11` | The database, with a user that has rights on the `AnsibleForms` schema only |
 | `app1`, `app2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=app`, behind the load balancer |
 | `worker1`, `worker2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=worker`: the second one waits and takes over |
-| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Runs the playbooks, registered as the runner `rte` (`RTE_URL=http://rte:8000`) |
+| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Runs the playbooks with `RTE_MODE=inbound` and `RTE_FILES=local`: the app dials it |
 | `lb` | `nginx:stable` | Terminates HTTPS on port 8443 and spreads the browsers over the app nodes with `ip_hash` |
 
-Every AnsibleForms container shares one `.env`, with the database user, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
-`HTTPS=0` behind the load balancer and a `LOG_PATH` off the shared volume. The app nodes, the workers and the RTE mount the same
+The RTE's runner `rte` and the credential it signs in with (its address `http://rte:8000` and `RTE_TOKEN`) are declared in the
+[config seed](../seed/) `seed.yaml`, which the worker applies at every start; the RTE sets no `RTE_URL` and is not published on the host.
+
+The app nodes and the workers share one `.env`, with the database user, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
+`CONFIG_SEED_PATH`, `HTTPS=0` behind the load balancer and a `LOG_PATH` off the shared volume. The RTE has no `env_file`: it gets
+only `RTE_TOKEN` from `compose.yaml`, so it holds no database password. The app nodes, the workers and the RTE mount the same
 persistent and ssh volumes:
 
 ```bash

@@ -33,13 +33,13 @@ so you can link to it directly:
 | View | Address |
 |---|---|
 | Account | `/profile/account` |
-| API token | `/profile/token` |
+| API tokens | `/profile/token` |
 | Password | `/profile/password` |
 | Permissions | `/profile/permissions` |
 | Preferences | `/profile/preferences` |
 
 `/profile` alone opens the first view of the menu. Views your roles do not allow are hidden; their address opens the first
-view instead.
+view instead. **API tokens** is shown only when one of your roles has the `allowApiTokens` role option.
 
 ---
 
@@ -53,4 +53,4 @@ Each topic is described on its own page:
 | [Preferences](preferences.html) | Language, theme, time zone, date format and desktop notifications |
 | [Password](password.html) | Change the password of a local account |
 | [Permissions](permissions.html) | What your roles allow you to do |
-| [API token](api-token.html) | Create a token for scripts and AI agents |
+| [API tokens](api-token.html) | Create a token for scripts and AI agents |

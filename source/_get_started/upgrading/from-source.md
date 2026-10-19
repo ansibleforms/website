@@ -71,17 +71,21 @@ mkdir views
 cp -r ../client/dist/. views/
 ```
 
-Compare `server/.env.example` with your `persistent/.env` to pick up any settings that the release adds.
+Compare `.env.example`, at the repository root, with your `persistent/.env` to pick up any settings that the release adds.
 
 ---
 
 ## 3. Restart
 
-Restart the application to load the new code. The database schema is upgraded at the first start:
+Restart the application and its RTE to load the new code. The database schema is upgraded at the first start:
 
 ```bash
-pm2 restart ansibleforms
+pm2 restart ansibleforms ansibleforms-rte
 ```
+
+Coming from 7.2, the RTE ran in database mode, with the database settings and `RTE_URL`, deprecated in 7.3.0 and removed in 8.0.0.
+Start it again in inbound mode, and declare its runner with an RTE credential in the seed or under **Connections → Runners**, as the
+[installation](../installation/from-source.html#run) shows: `pm2 delete ansibleforms-rte`, then its `pm2 start` command.
 
 If you run the application without PM2, stop `npm run start` and start it again.
 

@@ -49,6 +49,7 @@ log, which you can read under [Server Log](gui/administration.html#server-log) o
 * [Playbook was aborted by the main process](#playbook-was-aborted-by-the-main-process)
 * [Failed to launch awx template](#failed-to-launch-awx-template)
 * [A job shows the status abandoned](#a-job-shows-the-status-abandoned)
+* [An RTE does not connect](#an-rte-does-not-connect)
 * [The form data is not valid](#the-form-data-is-not-valid)
 
 **Git repositories and backups**
@@ -162,20 +163,30 @@ applied, and [Example](seed/example.html) for a valid file.
 Every start logs this warning:
 
 ```
-[SECURITY] ENCRYPTION_SECRET is not set. Stored passwords are encrypted with the default key, which is public in the source code. Set ENCRYPTION_SECRET before you store credentials : changing it later makes the existing ones unreadable.
+[SECURITY] ENCRYPTION_SECRET is not set. Stored passwords are encrypted with the default key, which is public in the source code. Set ENCRYPTION_SECRET: the stored ones are re-encrypted with it on the next start.
+```
+
+Or the worker refuses to start with:
+
+```
+[SECURITY] The stored secrets were encrypted with a key that is not ENCRYPTION_SECRET: set ENCRYPTION_SECRET_PREVIOUS to the key they were encrypted with, and they are re-encrypted with ENCRYPTION_SECRET on the next start. Nothing was changed.
 ```
 
 **Why this happens**
 
-Stored passwords (credentials, the LDAP bind password, runner tokens, SSO client secrets, Slack and Teams webhook
-addresses) are encrypted with [`ENCRYPTION_SECRET`](customization/security.html#env_ENCRYPTION_SECRET). Without it, a key that is public
-in the source code is used. The same applies the other way round: when the secret changes, the stored passwords can no
-longer be decrypted, so LDAP logins, credentials and runners that worked before start failing.
+Stored secrets are encrypted with [`ENCRYPTION_SECRET`](customization/security.html#env_ENCRYPTION_SECRET): since 7.3.0 they live in
+credentials (the passwords and tokens of LDAP directories, SSO providers, runners and secret stores, among others), next to the Slack
+and Teams webhook addresses. Without it, a key that is public in the source code is used. Since 7.3.0, a start with a new
+`ENCRYPTION_SECRET` re-encrypts every stored secret with it, in one transaction: from the default key when it is set for the first
+time, or from [`ENCRYPTION_SECRET_PREVIOUS`](customization/security.html#env_ENCRYPTION_SECRET_PREVIOUS) when it changes. When the
+stored secrets were encrypted with neither, nothing is changed and AnsibleForms does not start.
 
 **How to fix it**
 
-Set `ENCRYPTION_SECRET` before you store any password, and keep it with your other secrets: backups never contain it.
-If you changed it by mistake, set the old value back. Otherwise re-enter every stored password after the change.
+Set `ENCRYPTION_SECRET`, and keep it with your other secrets: backups never contain it. The next start logs
+`[SECURITY] Re-encrypted <n> stored secrets from the default key with ENCRYPTION_SECRET`. To change it later, set the new value in
+`ENCRYPTION_SECRET` and the old one in `ENCRYPTION_SECRET_PREVIOUS` for one start, then remove `ENCRYPTION_SECRET_PREVIOUS`. When the
+worker refuses to start, set `ENCRYPTION_SECRET_PREVIOUS` to the key the secrets were encrypted with, or set the old value back.
 
 ---
 
@@ -362,22 +373,23 @@ Authentication failed: Invalid credentials
 **Why this happens**
 
 The login page gives the same answer for every failure, so that it does not reveal whether a user exists. AnsibleForms
-tries the local users first and LDAP after, and the real reason goes to the log. LDAP failures are logged as
-`Error connecting to ldap : <reason>`, with reasons such as `Wrong binding credentials` or
+tries the local users first and LDAP after: with several directories, a username is looked up in their order under **Access > LDAP**,
+unless it names a directory (`corp\jane`) or one of its sign-in domains (`jane@corp.example`). The real reason goes to the log. LDAP
+failures are logged as `Error connecting to ldap: <reason>`, with reasons such as `Wrong binding credentials` or
 `Unable to verify the certificate`; Active Directory codes are translated to `Wrong password`, `User not found`,
 `Account disabled`, `Account locked` or `Password expired`.
 
 **How to fix it**
 
 Read the reason in the log. For the full reason of every failed login, set
-[`LOG_LEVEL`](customization/logging.html#env_LOG_LEVEL) to `debug`, which logs `Ldap authentication failed : <reason>`.
+[`LOG_LEVEL`](customization/logging.html#env_LOG_LEVEL) to `debug`, which logs `Ldap authentication failed: <reason>`.
 If the local admin password is lost, see [Recovering a lost admin password](faq.html#recovering-a-lost-admin-password).
 
 ---
 
 ## LDAP check failed
 
-Testing the LDAP connection in the settings fails with one of these:
+Testing an LDAP directory under **Access > LDAP** fails with one of these:
 
 ```
 LDAP check failed: Error: Wrong binding credentials
@@ -388,15 +400,15 @@ LDAP check failed: Error: Certificate is not valid
 
 **Why this happens**
 
-The bind user or its password is wrong, the server or port cannot be reached, or, with **Enable TLS**, the server's
-certificate cannot be verified against the certificate and CA bundle in the settings. A test user that does not exist
+The bind user or its password is wrong, the server or port cannot be reached, or, with TLS, the server's certificate cannot be
+verified against the CA bundle. Since 7.3.0 these are on the directory's ldap credential, under **Connections > Credentials**. A test user that does not exist
 still counts as a successful test, because the connection and the bind worked.
 
 **How to fix it**
 
-Correct **Bind User Dn** and **Bind User Password**, the server and the port (usually 389, or 636 for LDAPS). For TLS
-problems, paste the CA bundle that signed the LDAP server's certificate; **Ignore Certs** skips the check, but is not
-for production. See [LDAP](authentication/ldap.html).
+Open the credential the directory names (the default directory is `main`) under **Connections > Credentials**, and correct the bind
+DN and its password, the servers and the port (usually 389, or 636 for LDAPS). For TLS problems, paste the CA bundle that signed the
+LDAP server's certificate; skipping the certificate check is not for production. See [LDAP](authentication/ldap.html).
 
 ---
 
@@ -560,16 +572,18 @@ failed to launch awx template <name>
 
 **Why this happens**
 
-The next line gives the reason. `Request failed with status code 401` means the token or user name and password of the
-AWX runner is refused. `could not find job template <name>` means neither a job template nor a workflow job template
+The next line gives the reason. `Request failed with status code 401` means the token or user name and password on the
+AWX runner's credential is refused. `could not find job template <name>` means neither a job template nor a workflow job template
 has that exact name, or the connection's user cannot see it. A certificate error, such as
 `unable to verify the first certificate`, means the AWX certificate is not trusted.
 
 **How to fix it**
 
-Use **Test connection** on the runner (**Connections > Runners**), which answers `Runner connection is OK` when it works. Renew the
-token or password, check the template's name and permissions, and for certificate errors paste the CA into **CA bundle**. Enter
-the URI without `/api/v2`: AnsibleForms adds [`AWX_API_PREFIX`](customization/features.html#env_AWX_API_PREFIX) itself.
+Use **Test connection** on the runner (**Connections > Runners**), which answers `Runner connection is OK` when it works. Since
+7.3.0 the token or user and password, the address and the **CA bundle** are on the runner's credential, under
+**Connections > Credentials**: renew the token or password there, and for certificate errors paste the CA into its **CA bundle**.
+Check the template's name and permissions. Enter the address without `/api/v2`: AnsibleForms adds
+[`AWX_API_PREFIX`](customization/features.html#env_AWX_API_PREFIX) itself.
 See [AWX forms](forms/awx.html).
 
 ---
@@ -582,24 +596,78 @@ A job that was running is now marked `abandoned`, and the log of a node or an RT
 Abandoned <n> jobs this node followed before it restarted
 Abandoned <n> jobs this worker followed before it restarted
 Abandoned <n> jobs followed by a node that stopped answering
-RTE : abandoned <n> job(s) left running by a previous start
-RTE : stopping with <n> job(s) still running : they end as abandoned
+Job <id>: RTE '<name>' came back without it: abandoned
 Abandoned <n> jobs
+```
+
+An RTE in database mode, deprecated, logs its own:
+
+```
+RTE: abandoned <n> job(s) left running by a previous start
+RTE: stopping with <n> job(s) still running: they end as abandoned
 ```
 
 **Why this happens**
 
 A job belongs to the container that runs or follows it: a playbook to its RTE, any other job (an AWX job, the steps of a multistep
 form) to the app node that started it. When that container restarts, it ends its own unfinished jobs. When it disappears, a replaced
-pod for example, the worker ends its jobs once it has not answered for two minutes. A stopping RTE waits
+pod for example, the worker ends its jobs once it has not answered for two minutes. An RTE in a socket mode that comes back without
+a job it was running, a new container without its spool for example, has that job end as abandoned. A stopping RTE waits
 [`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) for its playbooks first. Each hour, jobs that have been running for more
 than a day are marked abandoned too.
 
+Since 7.3.0 a job on AWX, AAP or Ascender carries on on its runner: right after a restart abandons it, a node follows it again,
+when it started within the last 24 hours, and it ends with what really happened there. The log then says `Following <n> abandoned job(s) again on their runner`.
+
 **How to fix it**
 
-Relaunch the job. Restart or upgrade RTEs and app nodes while no job is running, and give a stopping RTE enough time
+Relaunch a playbook job. Restart or upgrade RTEs and app nodes while no job is running, and give a stopping RTE enough time
 (see [Scaling](rte/run.html)). Check whether the playbook really finished on the managed hosts before you
 relaunch, because it may have run partly.
+
+---
+
+## An RTE does not connect
+
+**Test connection** on an RTE runner (**Connections > Runners**) fails with:
+
+```
+the RTE '<name>' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app
+the RTE '<name>' (inbound) is not connected: no app node could dial it at <address>: check its RTE_URL, its token and the network from the app to the RTE
+```
+
+**Why this happens**
+
+An RTE in a socket mode talks to the app over one WebSocket: outbound it dials the app, inbound the app dials it (see
+[Modes](rte/modes.html)). The logs of the app and of the RTE say why the socket is not open:
+
+| Message | Where | What it means |
+|---|---|---|
+| `RTE: refused a socket without the right token from <address>` | The RTE (inbound) | The token of the runner's RTE credential is not the RTE's `RTE_TOKEN` |
+| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | The app (inbound) | The same, seen from the app |
+| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | The app, and the RTE that is refused (`401`) | The RTE signs in with another token than the one the app keeps for its runner |
+| `RTE '<name>': waiting for an admin to approve it under Connections > Runners (fingerprint <fingerprint>)` | The RTE (outbound) | It asked to join and waits for an approval |
+| `RTE '<name>': asked to join as inbound runner '<name>': the app dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | The RTE (inbound, with `APP_URL`) | The same, for an inbound RTE |
+| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | The app, and the RTE that is refused (`409`) | The config seed declares the runner without `rte_mode`, so in database mode, and the seed decides its mode. An inbound RTE gets `rte_mode: inbound` and `(and its credential with the address the app dials, RTE_URL)` |
+| `RTE: RTE_MODE=inbound with APP_URL registers with the app, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | The RTE | An inbound RTE that registers itself needs the address the app dials it on |
+| `Runner '<name>': dialing <address>: <reason>` | The app, at `debug` level | The app cannot open the socket, for example because the RTE's certificate is not the one pinned for its runner |
+| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the app, APP_URL) or RTE_MODE=inbound (the app dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | The RTE | It runs in database mode, and does not open a socket at all |
+
+**How to fix it**
+
+* **A token refused** : give the RTE the token of its runner's RTE credential (**Connections > Credentials**), or the other way round
+* **Waiting for approval** : approve it under **Connections > Runners**, after checking that the fingerprint shown there is the one in its
+  log (see [Approving an RTE](runners/registration.html#approving-an-rte))
+* **Managed by the config seed in database mode** : set `rte_mode` on the runner in the seed, with an RTE credential (for inbound, its
+  address), then restart the RTE
+* **Inbound without `RTE_URL`** : set `RTE_URL` to the address the app reaches the RTE on, or leave `APP_URL` out and declare the
+  runner in the seed or under **Connections > Runners**
+* **A certificate that is not the one pinned** : an inbound RTE over HTTPS sends its certificate when it registers, and the app dials
+  it only with that one. After a new certificate, the RTE sends it again when it registers; when the credential's CA bundle was set
+  by hand, the app keeps it and logs
+  `Runner '<name>': its ca_bundle was set by hand: the certificate its RTE sent (fingerprint <fingerprint>) is not stored. Empty the ca_bundle to have the RTE's certificate pinned again`
+* **The [DEPRECATED] warning** : set `RTE_MODE` on the RTE, remove `DB_*` from its environment, and set its runner to that mode (see
+  [Modes](rte/modes.html))
 
 ---
 

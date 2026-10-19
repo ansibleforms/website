@@ -143,7 +143,8 @@ fn.fnRestAdvanced(
 
 ## Certificates and timeouts
 
-From 7.3.0 every REST helper function checks the TLS certificate of the endpoint and stops waiting after a set time:
+From 7.3.0 every REST helper function (`fnRestBasic`, `fnRestAdvanced`, `fnRestJwt`, `fnRestJwtSecure`) checks the TLS
+certificate of the endpoint and stops waiting after a set time:
 
 | Setting | What it changes |
 |---|---|
@@ -152,3 +153,5 @@ From 7.3.0 every REST helper function checks the TLS certificate of the endpoint
 
 From 7.3.0 a field whose endpoint has a self-signed certificate fails with a certificate error until one of the two is set.
 [REST calls and jq](../customization/security.html#rest-calls-and-jq) describes both, and how to trust a private CA for every REST call at once.
+[`fn.fnParseHtmlWithRegex`](remote.html#parse-html-page) is not a REST helper: it ignores both settings, always checks the
+certificate and waits at most 30 seconds.

@@ -8,7 +8,7 @@ nav_order: 1
 # Server and database
 {: .no_toc }
 
-The web server, the MySQL connection and the admin account
+The web server, the MySQL connection, the admin account, and what each process runs (AF_ROLE and the RTE_* variables)
 {: .fs-6 .fw-300 }
 
 1. TOC

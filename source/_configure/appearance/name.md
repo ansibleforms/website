@@ -11,4 +11,5 @@ nav_order: 2
 The application name in the browser tab and on the sign-in page
 {: .fs-6 .fw-300 }
 
-**Name** holds the **Application name**, shown in the browser tab and on the sign-in page; empty, it is Ansible Forms.
+**Name** holds the **Application name**, shown in the browser tab and on the sign-in page. Empty, the browser tab shows
+`AnsibleForms` and the sign-in page shows no name.

@@ -8,7 +8,7 @@ nav_order: 4
 # Features
 {: .no_toc }
 
-The designer, MCP, chat, launch validation, the AWX API and query logging
+The designer, MCP, chat, launch validation, the jobs list, metrics, the AWX API and query logging
 {: .fs-6 .fw-300 }
 
 1. TOC

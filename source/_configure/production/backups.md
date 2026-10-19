@@ -35,6 +35,11 @@ Users with the `allowBackupOps` role option can also take a backup at any time o
 backups are removed by the retention, and only backups with a usable dump count towards it, so a series of failed
 nights never pushes out the last good one.
 
+Before an upgrade changes the database, the worker takes a regular backup first, once per release, named *Before the upgrade to
+&lt;version&gt;*. It shows on the **Backups** page and is never removed by the nightly retention. If it fails (no dump tool,
+`BACKUP_PATH` not writable), the upgrade stops and says why, so the app never starts on a half-upgraded database.
+[`UPGRADE_BACKUP`](../customization/retention.html#env_UPGRADE_BACKUP)`=0` upgrades without a backup.
+
 The commands may be wrappers such as `docker exec <container> mysqldump`, if their first word exists locally. From 7.3.0 they run
 without a shell: quotes and `$NAME` from the command's environment work, but `;`, `|`, `&&`, `>` and `<` are refused.
 
@@ -50,7 +55,7 @@ GRANT ALL PRIVILEGES ON `AnsibleForms`.* TO 'ansibleforms'@'%';
 ```
 
 The dump is taken with `--no-tablespaces`, so the server-wide `PROCESS` right is not needed, and it skips the tables
-that describe the running processes (`nodes`, `cache_epochs`, `designer_lock`). The restore replays it as the same user.
+that describe the running processes (`nodes`, `cache_epochs`, `designer_lock`, `runner_leases`). The restore replays it as the same user.
 The **Status** page shows a warning on its **Database user** check when the user has rights on every database, as `root` has.
 
 ---
@@ -64,7 +69,7 @@ Each backup is a folder under `BACKUP_PATH`, named after its UTC timestamp (`YYY
 | `ansibleforms.sql` | The dump of the `AnsibleForms` database: users, groups, credentials, jobs, settings, the audit trail |
 | `config.yaml` | The file at [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
 | `forms/` | The folder at [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) |
-| `managed.env` | The environment file the settings pages write, without `ENCRYPTION_SECRET` and `ACCESS_TOKEN_SECRET` |
+| `managed.env` | The environment file the settings pages write, without `ENCRYPTION_SECRET`, `ENCRYPTION_SECRET_PREVIOUS` and `ACCESS_TOKEN_SECRET` |
 | `meta.yaml` | The description of the backup |
 
 A backup whose dump fails is removed again and logged as an error. The **Status** page warns when there is no backup,

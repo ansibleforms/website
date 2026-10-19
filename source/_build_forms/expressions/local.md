@@ -97,6 +97,9 @@ fnGetNumberedName($(fieldlist),'server###','server001',true)
 // - fillgaps : a boolean to indicate it can fill gaps in the numbers, 1,2,3,6 => 4
 ```
 
+When the first argument is not an array, the local function returns the default. The server function `fn.fnGetNumberedName`
+fails with an error instead.
+
 ---
 
 ## Object-Array Manipulation
@@ -107,7 +110,7 @@ AnsibleForms includes a custom helper that keeps this code concise.
 ```javascript
 /* 
   fnArray.from($(your_array_field))                               // custom helper library
-      .filterBy({property1:'value1',property2:'value2', ...})     // filters the array by property value (* wildcards allowed)
+      .filterBy({property1:'value1',property2:'value2', ...})     // filters by property value (a string, * wildcards allowed)
       .regexBy({property1:'regex1',property2:'regex2', ...})      // filters the array by property matched against regex
       .distinctBy('property1','property2', ...)                   // will make the array entries unique by property
       .selectAttr({prop1:'property1',prop2:'property2'})          // only selects a certain property, and you can relabel them
@@ -139,7 +142,7 @@ AnsibleForms includes a custom helper that keeps this code concise.
 
 fnArray.from($(mylist))         // take data from another field 'mylist'
 .regexBy({name:'.*man$'})       // name must end with 'man'
-.filterBy({has_ability:true})   // must have abilities
+.filterBy({has_ability:'true'}) // must have abilities (a string: 'true', not true)
 .selectAttr({name:'name',ability:'ability'})   // only take properties name and ability
 .sortBy('-name')                // sort by name descending
 

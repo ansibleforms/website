@@ -52,13 +52,17 @@ From 7.3.0 a credential that a connection or a sign-in depends on can only be ad
 | Any credential a runner names | The runner signs in with it, and a change of the runner itself needs an admin too |
 
 Other users with access to the credentials see these read only. A user who could point such a credential at another
-server would receive every secret sent through it, which is why the rule follows the one for runners. Two more rules
+server would receive every secret sent through it, which is why the rule follows the one for runners. Three more rules
 keep those users away from secrets they could not otherwise read:
 
 - **Naming a guarded credential**: only an admin can name one of these credentials elsewhere, such as in a repository,
-  a notification channel or the chat assistant settings.
+  a notification channel or the chat assistant settings. A credential that reads its password from a secret store is
+  guarded the same way, whatever its type.
 - **Choosing a secret store**: only an admin can point a credential at a [secret store](secret-stores/), or change the
   store or the reference it reads; another user may still send them back unchanged, or empty all of them.
+- **Moving a credential**: when another user changes where a credential logs in (its host, port, issuer, tenant or
+  server address) without typing its password again, the stored password is cleared, and so is the secret store
+  reference it reads, so the old secret never goes to the new target.
 
 ---
 

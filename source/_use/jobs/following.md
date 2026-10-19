@@ -26,8 +26,8 @@ From 7.3.0 the page is made of cards, and each one folds away under its header:
 
 | Card | What it shows |
 |---|---|
-| **Summary** | The job's name, status and type as its header, and its facts below, one per line |
-| **Workflow graph** | For a workflow job, its graph (see [The workflow graph](#the-workflow-graph)) |
+| **Summary** | The job's name, status and type as its header, and its facts below in a grid of three columns (two, then one, on a narrow page) |
+| **Workflow** | For a workflow job, also an AWX or AAP workflow job, its graph and its number of nodes (see [The workflow graph](#the-workflow-graph)) |
 | **Output** | The job's output and its toolbar |
 
 A job that ran on AWX, AAP, Ascender, Jenkins, Semaphore or Rundeck shows its number there as a link to its page in that tool, opened
@@ -46,20 +46,24 @@ The output toolbar has:
 
 | Button | What it does |
 |---|---|
-| **Show Extravars** | Shows the extravars the job ran with, as JSON or YAML (**View as YAML**), with a copy icon |
-| **Show Artifacts** | Shows the job's artifacts, as JSON or YAML (see below) |
-| **Show parameters** | Shows the values a Jenkins job ran with, its build parameters |
+| **Show extravars** | Shows the extravars the job ran with in a panel over the output, with a **JSON** / **YAML** switch and **Copy** |
+| **Show artifacts** | Shows the job's artifacts in the same panel (see below) |
+| **Show parameters** | Takes the place of **Show extravars** for a Jenkins job: the values it ran with, its build parameters |
+| **Show payload** | Takes the place of **Show extravars** for a Rundeck job: the payload it was sent |
 | **Hosts and tasks** | Shows a playbook's hosts and tasks over its output (see [Hosts and tasks](#hosts-and-tasks)) |
 | **Refresh** | Reloads the output |
 | **Apply filter** | Hides the tasks whose name matches the output filter; **Remove filter** shows them again |
-| **Copy Output** | Copies the output as plain text, with the filter applied or not |
-| **Download Output** | Downloads the output as `ansibleforms-job-<id>.txt` |
+| **Copy output** | Copies the output as plain text, with the filter applied or not |
+| **Download output** | Downloads the output as `ansibleforms-job-<id>.txt` |
 
-**Show Artifacts** is offered for a template job that ran on AWX, AAP or Ascender, and for a playbook on the RTE or a
-workflow whose playbooks gathered artifacts with `set_stats`. Semaphore, Rundeck and Jenkins jobs have no artifacts, so it
-is never offered for them.
+**Show artifacts** is offered for every job that is not a template job, such as a playbook on the RTE or a workflow (empty when
+its playbooks gathered no artifacts with `set_stats`), and for a template job that ran on AWX, AAP or Ascender. Semaphore, Rundeck
+and Jenkins jobs have no artifacts, so it is never offered for them.
 
-**Show Extravars** requires the `showExtravars` role option and **Show Artifacts** the `showArtifacts` role option (see
+At the left of the toolbar, the **Collapse all** button folds every section of the output (each play and task) and turns to
+**Expand all**, which unfolds them again.
+
+**Show extravars** requires the `showExtravars` role option and **Show artifacts** the `showArtifacts` role option (see
 [role options](../config/roles.html#role-options)). Values of password fields and keys matching
 [`MASK_EXTRAVARS_REGEX`](../customization/security.html#env_MASK_EXTRAVARS_REGEX) are masked.
 
@@ -67,7 +71,7 @@ The filter is set by [`REGEX_FILTER_JOB_OUTPUT`](../customization/security.html#
 default. Put `[low]` in the name of a noisy task, and **Apply filter** hides that task and its lines.
 
 A multistep job's page shows every step under the main job, one under the other, each under a title bar such as
-**Step 1 · Prepare the server (jobid 98)** with its status. Click a title (or press Enter or Space on it) to fold that output
+**Step 1 · Prepare the server (job id 98)** with its status. Click a title (or press Enter or Space on it) to fold that output
 away, and again to unfold it. AWX/AAP workflows also show their nodes' status.
 
 [Workflow](../workflows/running.html#the-job) jobs keep every node's output in their own, under a `WORKFLOW NODE` banner per
@@ -77,7 +81,7 @@ node; they draw their graph, live, and a click on a node opens its output.
 
 ## Finding a text in the output
 
-From 7.3.0 the job's page has a search box, **Find in the output**, at the left of the controls under its title.
+From 7.3.0 the job's page has a search box, **Find in the output**, on its title line, left of the job's actions.
 
 Every place the text appears in the output is highlighted, whatever its case, and the page moves to the first one. **Enter** goes to
 the next, shown stronger, and the toolbar says which one of how many (**2 of 4**), or **Not found**. Searching unfolds the output and

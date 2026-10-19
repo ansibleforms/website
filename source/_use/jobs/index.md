@@ -39,38 +39,43 @@ The same jobs can be launched, followed and managed through the [REST API](../ap
 
 ## The Jobs page
 
-The **Jobs** link in the header opens the list of jobs, newest first. The page and its link are shown to users whose role
-sets the `showJobs` [role option](../config/roles.html#role-options).
+The **Jobs** link in the header opens the list of every job, newest first (`/jobs/all`). The page and its link are shown to users
+whose role sets the `showJobs` [role option](../config/roles.html#role-options).
 
 ![The jobs list](../assets/screenshots/job-log.jpg)
 
-The left menu filters the list by status, with the number of jobs in each:
+The left menu sorts the jobs in time, with the number of jobs in each entry; a status entry filters the list on that status:
 
-| Menu entry | Shows |
-|---|---|
-| **All jobs** | Every job in the list |
-| **Running** | Jobs with status `running` |
-| **Needs approval** | Jobs with status `approve`; the count turns orange when one is waiting |
-| **Success** | Jobs with status `success` |
-| **Failed** | Jobs with status `failed` |
-| **Aborted** | Jobs with status `aborted` |
+| Section | Menu entry | Shows |
+|---|---|---|
+| **Past** | **Succeeded** | Jobs with status `success` |
+| | **Failed** | Jobs with status `failed` |
+| | **Aborted** | Jobs with status `aborted` |
+| | **Rejected** | Jobs with status `rejected` |
+| | **Abandoned** | Jobs with status `abandoned` |
+| **Present** | **Running** | Jobs with status `running` |
+| | **Waiting for approval** | Jobs with status `approve`; the count turns orange when one is waiting |
+| **Future** | **Scheduled** | The [Schedules](schedules.html) page (role option `allowScheduledJobs`) |
+| | **Stored** | The [Stored jobs](stored-jobs.html) page (role option `allowStoredJobs`) |
 
-Under **Planned**, the same menu links to [Schedules](schedules.html) (role option `allowScheduledJobs`) and to **Stored
-Jobs** (role option `allowStoredJobs`). The other statuses (`warning`, `rejected`, `abandoned`) appear under **All jobs**.
+The menu has no entry for every job: the header's **Jobs** link shows them all, `warning` jobs included.
 
-Above the table:
+Above the table, on the title line:
 
-* **Refresh** reloads the list.
+* the **search box** keeps the jobs whose shown columns hold the text (case-insensitive), or one of whose steps has it as its id
+  or target;
+* **Delete** (with the number of jobs ticked) deletes the jobs ticked in the first column together;
 * **Columns** shows or hides the columns `id`, `form`, `job type`, `status`, `start time`, `end time`, `duration` and `user`;
-  a running job's duration counts up.
+  a running job's duration counts up;
+* **Refresh** reloads the list.
 
 The list loads the newest jobs, as many as the [`JOBS_LIST_SIZE`](../customization/features.html#env_JOBS_LIST_SIZE) setting says
-(**Settings > Jobs**, `1000` by default); its pages and filters cover those jobs.
+(**Settings > System > General**, **Jobs** tab, `1000` by default); its pages, search and filters cover those jobs.
 
 Each column can be sorted and has its own filter field. A multistep job has an arrow just before its `form` that expands
 its steps; a click on the rest of a row opens the job.
 
-The bell in the header counts the jobs waiting for your approval and opens the list on **Needs approval**. For the users who can see
+The bell in the header counts the jobs waiting for your approval and opens the list on **Waiting for approval**. For the users who can see
 the runners, it also counts the [runners waiting for approval](../runners/registration.html#approving-an-rte), RTEs that asked to join,
 and opens **Connections > Runners** when only runners wait. With both waiting, it opens a menu, **Jobs waiting for approval** and
 **Runners waiting for approval**, each with its count.

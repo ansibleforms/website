@@ -96,15 +96,15 @@ Version 7 changes how playbooks run and tightens several defaults. Check each it
 
 Version 7 no longer runs `ansible-playbook` in the AnsibleForms container. Playbooks run on a runtime environment (RTE),
 a container of its own, and the app image no longer contains ansible or python. Start an RTE next to the app, from the
-`ghcr.io/ansibleforms/ansibleforms-rte-full:7` image, with these settings:
+`ghcr.io/ansibleforms/ansibleforms-rte-full:7` image. Since 7.3.0 the app dials the RTE and keeps one WebSocket open (see
+[Modes](rte/modes.html)): the RTE gets no database settings and no `ENCRYPTION_SECRET`. Its settings:
 
 | Setting | Value |
 |---|---|
 | `AF_ROLE` | `rte`. The RTE images set it already. |
-| `RTE_TOKEN` | A token of at least 16 characters. The app sends it with every call, and the RTE refuses to start without one. |
-| `RTE_URL` | The address the app reaches the RTE on, for example `http://rte:8000`. |
-| `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` | The same database as the app. |
-| `ENCRYPTION_SECRET` | The same value as the app. Only needed when the RTE registers itself. |
+| `RTE_MODE` | `inbound`: the app dials the RTE. A Runner in another network uses `outbound` (see [Modes](rte/modes.html)). |
+| `RTE_TOKEN` | A token of at least 16 characters. The app signs in to the RTE's socket with it, and the RTE refuses to start without one. |
+| `RTE_FILES` | `local` when the RTE mounts the same persistent folder as the app, as next to it. |
 
 Then move the ansible mounts from the app container to the RTE:
 
@@ -112,9 +112,27 @@ Then move the ansible mounts from the app container to the RTE:
   `/etc/ansible/collections`.
 - Mount the same persistent folder as the app on the RTE too, so that it finds the playbooks and the repositories.
 
-An RTE adds itself under **Connections → Runners** when it starts, and the first one becomes the default runner, so
-playbook forms run on it at once. With `RTE_REGISTER=0` it does not: add it under **Connections → Runners** yourself, or
-in the `runners:` section of the [config seed](seed/). See [Runners](runners.html) and [Runtime environments](rte/).
+Then declare the RTE as a runner, in the [config seed](seed/) as the Docker Compose project does, or under **Connections → Runners**:
+an RTE credential with the RTE's address (for example `http://rte:8000`) and the same token, and a runner of type RTE, mode inbound,
+that names it:
+
+```yaml
+credentials:
+  items:
+    - name: rte
+      credential_type: rte
+      url: http://rte:8000
+      password: ${RTE_TOKEN}
+runners:
+  items:
+    - name: rte
+      type: rte
+      rte_mode: inbound
+      credential: rte
+      is_default: true
+```
+
+The seed reads `RTE_TOKEN` from the app's environment. See [Runners](runners.html) and [Runtime environments](rte/).
 
 {: .warning }
 > **The same contract for the app and the RTE** The app resolves a job's credentials and hands them to the RTE sealed for
@@ -259,6 +277,14 @@ These still work in 7, but each logs a warning when it is used. Move to the repl
 | `type: multistep` on a form, with its `steps` | `type: workflow`, with nodes that name a `runner`. See [Workflow forms](forms/workflow.html). |
 | The `awx:` section of the config seed | `runners:` items with `type: awx` |
 | `LOCK_PATH` | Nothing: no longer read, the designer lock is kept in the database. |
+| An RTE in database mode, since 7.3.0: `RTE_MODE=database` or no `RTE_MODE`, with the database's `DB_*` and `ENCRYPTION_SECRET` on the RTE | `RTE_MODE=outbound` or `RTE_MODE=inbound`, without `DB_*`. The RTE joins once with a join token (`RTE_JOIN_TOKEN`), or its runner is set to that mode under **Connections → Runners** or in the config seed (`rte_mode`). See [Modes](rte/modes.html). |
+| `RTE_REGISTER`, since 7.3.0 (database mode only) | A join token (`RTE_JOIN_TOKEN`): the RTE adds itself as a runner that signs in with an RTE credential. |
+| An `api` or `userpass` credential on a runner of the config seed, since 7.3.0 | A credential of the runner's kind (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` or `jenkins`), with its server in `url`. |
+| A runner of the config seed with its own `token`, or `username` and `password`, since 7.3.0 | A credential of the runner's kind in the `credentials` section, with its server in `url`, that the runner names with `credential:`. The seed makes one named after the runner meanwhile. |
+
+`ENABLE_SSO` and `SSO_AUTO_LOGIN` are no longer read since 7.3.0. The first 7.3 start carries them over once: `ENABLE_SSO=0` disables
+every SSO provider, and `SSO_AUTO_LOGIN=1` ticks **Skip the login page** on the only enabled provider. They are then ignored: each start
+logs a warning while they are set, and each provider has **Enabled** and **Skip the login page** under **Access → SSO**.
 
 ---
 

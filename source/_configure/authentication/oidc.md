@@ -73,7 +73,7 @@ Add the provider under **Access > SSO**: a wizard asks its fields in four steps,
 |---|---|---|
 | Details | Name, Description | A unique name for the provider, and an optional description |
 | Type | Provider | **Open ID**; set when it is made, it stays |
-| Credentials | Credential | Required from 7.3.0. An **Open ID** credential of [Connections > Credentials](../credentials.html), see below |
+| Credentials | Credential | An **Open ID** credential of [Connections > Credentials](../credentials.html), see below |
 | Groups | Group filter | Regular expression; only the values of the `groups` claim that match are kept. Empty keeps every group |
 
 The credential holds the client, so only an admin can add or change it:
@@ -81,12 +81,14 @@ The credential holds the client, so only an admin can add or change it:
 | Field | Meaning |
 |---|---|
 | Issuer | Required. The issuer URL, e.g. `https://keycloak.example.com/realms/example` |
-| User | The client ID at the provider, e.g. `ansibleforms` |
-| Password | The client secret, stored encrypted or read from a [secret store](../secret-stores/) |
+| Client ID | The client ID at the provider, e.g. `ansibleforms` |
+| Client secret | The client secret, stored encrypted or read from a [secret store](../secret-stores/) |
 | Redirect URI | As registered, e.g. `https://af.example.com/api/v2/auth/oidc/callback`. Empty: the app's URL and the callback path |
 
 Up to 7.2.0 the issuer, client ID, secret and redirect URL were fields of the provider. The upgrade to 7.3.0 moves them into a
 credential named `<provider>-sso`, see [Addresses in credentials](../credentials/types.html#addresses-in-credentials).
+Choose a credential for every new provider: the server still accepts a provider with its own client ID and secret from
+before 7.3.0, which signs in with them until a credential is chosen.
 
 One OIDC provider is enabled at a time, the one the OpenID button signs in with. **Enable** in the row menu of another one,
 or its **Enabled** switch, turns the others of its type off; the **Enabled** column of the list shows which one is in use.
@@ -122,7 +124,8 @@ The values are matched exactly, case included. See [Roles](../config/roles.html)
 
 OIDC users sign in at the provider, so a few things work differently from local and LDAP accounts:
 
-- They have no password in AnsibleForms, so they cannot change it there or create API tokens on their profile page.
+- They have no password in AnsibleForms, so they cannot change it there; from 7.2.0 an [API token](../profile/api-token.html)
+  is made from their session.
 - Keep the `groups` claim short: send only the groups that matter to AnsibleForms, for example with a dedicated
   client scope or group structure at the provider, or filter them with the **Group Filter**. From 7.1.0 the sign-in
   token of AnsibleForms no longer carries the groups; before, a user in a hundred groups or more could see no forms, see

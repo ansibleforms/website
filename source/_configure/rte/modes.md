@@ -88,12 +88,23 @@ The RTE of 7.0 to 7.2: the app calls its API over HTTP, and the RTE claims the j
 own runner row up to date, with [`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER). [Database mode](./#database-mode-deprecated)
 says how its steps differ. It still works in 7.x, with a warning at every start, and is removed in 8.0.0.
 
-To move such an RTE to a socket mode:
+To move such an RTE to a socket mode, keep its runner and its token:
 
-1. Set `RTE_MODE=outbound` with `APP_URL`, or `RTE_MODE=inbound`, on the RTE
-2. Remove `DB_*` and `ENCRYPTION_SECRET` from its environment, and `RTE_REGISTER`, which only database mode reads
-3. Set its runner's **Mode** under **Connections > Runners**, or `rte_mode` in the config seed, or give it a join token
-   (`RTE_JOIN_TOKEN`, see [Join tokens](../runners/registration.html#join-tokens))
+1. A runner of the [config seed](../seed/): set `rte_mode: outbound` or `rte_mode: inbound` for it in the seed first (inbound: with
+   the address the app dials in its credential's `url`). The RTE cannot move a seeded runner itself
+2. On the RTE, set `RTE_MODE=outbound` with `APP_URL`, or `RTE_MODE=inbound` (with `APP_URL` and `RTE_URL` to make its one
+   registration call), and set [`RTE_NAME`](../customization/server.html#env_RTE_NAME) to the name its runner has under
+   **Connections > Runners**. Keep its `RTE_TOKEN`
+3. Remove `DB_*` and `ENCRYPTION_SECRET` from its environment, and `RTE_REGISTER`, which only database mode reads, then restart it
+
+When the upgraded RTE signs in with the runner's name and the runner's own token, the app moves that runner to the RTE's mode at
+once, without an approval, and logs *Runner '&lt;name&gt;' moved from database mode to outbound: its RTE signed in with the runner's own
+token*. The runner is no longer a row its RTE registered, so the worker never removes it when the old container stops answering. A
+runner of the config seed still in database mode is refused instead, with *runner '&lt;name&gt;' is managed by the config seed in
+database mode: set rte_mode: outbound for it in the seed ..., then restart this RTE*. Do not use a join token for this: a join
+token is refused for a runner that is already approved. An inbound RTE without `APP_URL` makes no call: set its runner's **Mode** to
+**Inbound** under **Connections > Runners** instead, and the app dials it. The [installer](../installation/installer.html#a-72-runner)
+upgrades a 7.2 Runner this way.
 
 ---
 

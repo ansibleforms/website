@@ -120,8 +120,8 @@ database, the schema and the other systems AnsibleForms depends on.
 
 ## Roll back
 
-To go back to the previous release, pin its exact tag in `docker-compose.yml`, for example
-`image: ghcr.io/ansibleforms/ansibleforms:6.5.3`, and run step 2 again. If that release does not start on the upgraded
+To go back to the previous release, pin its exact tag in `docker-compose.yml`,
+`image: ghcr.io/ansibleforms/ansibleforms:<previous release>`, and run step 2 again. If that release does not start on the upgraded
 database, restore the backup you took under **Settings → Backups**. Set the tag back to `6` to receive updates again.
 
 **VIDEO**: [How to upgrade AnsibleForms](https://www.youtube.com/watch?v=5ZDJ8CcUx5c)

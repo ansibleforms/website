@@ -27,14 +27,14 @@ A form can do more than run right away: the dropdown next to its **Submit** butt
 
 | Action | What it does | Role option |
 |---|---|---|
-| **Schedule (Recurring)** | Creates a schedule that runs the form on a cron expression | `allowScheduledJobs` |
-| **Run Later (One-time)** | Creates a schedule that runs the form once, at a date and time you pick | `allowPlannedJobs` |
+| **Schedule (recurring)** | Creates a schedule that runs the form on a cron expression | `allowScheduledJobs` |
+| **Run later (one-time)** | Creates a schedule that runs the form once, at a date and time you pick | `allowPlannedJobs` |
 | **Store** | Saves the field values, to load them into the form again later | `allowStoredJobs` |
 
 An action whose role option is off is not shown. The form is validated before any of them, as it is for **Submit**. Both
-schedule actions create an entry on the **Schedules** page; **Store** creates an entry on the **Stored Jobs** page. Both
-pages are in the **Planned** section of the sidebar on the [Jobs](./) page. The role options are described in
-[Role options](../config/roles.html#role-options).
+schedule actions create an entry on the **Schedules** page; **Store** creates an entry on the **Stored jobs** page. The
+sidebar of the [Jobs](./) page opens them under **Future**, as **Scheduled** and **Stored**. The role options are described
+in [Role options](../config/roles.html#role-options).
 
 {: .warning }
 > Treat `allowScheduledJobs` as an admin-level option. Its schedules are not owned by the user who created them: every user
@@ -42,7 +42,7 @@ pages are in the **Planned** section of the sidebar on the [Jobs](./) page. The 
 > creator's own access. Grant it only to roles you would trust as admins.
 
 {: .note }
-> **Run Later (One-time)** needs only `allowPlannedJobs`. For a user without `allowScheduledJobs`, it plans a run **as that
+> **Run later (one-time)** needs only `allowPlannedJobs`. For a user without `allowScheduledJobs`, it plans a run **as that
 > user**: the server checks that the user may run the form, and the job runs as them, owned by them, when its time comes
 > (see [Planned runs](#planned-runs)).
 
@@ -52,10 +52,10 @@ pages are in the **Planned** section of the sidebar on the [Jobs](./) page. The 
 
 Fill in the form, then open the dropdown next to **Submit** and choose one of the schedule actions.
 
-- **Schedule (Recurring)** opens **Create Schedule**: enter a **Name** and a **Cron Expression** (the default, `0 0 * * *`,
-  runs daily at midnight), then select **Create Schedule**.
-- **Run Later (One-time)** opens **Run Later**: enter a **Name** and pick the **Run At** date and time, then select
-  **Schedule Job**.
+- **Schedule (recurring)** opens **Create schedule**: enter a **Name** and a **Cron expression** (the default, `0 0 * * *`,
+  runs daily at midnight), then select **Create schedule**.
+- **Run later (one-time)** opens **Run later**: enter a **Name** and pick the **Run at** date and time, then select
+  **Schedule job**.
 
 The name must be unique across all schedules. The schedule keeps the form's name and a copy of the extravars the form produced
 at that moment, written as YAML; every run uses that copy, so edit it on the **Schedules** page to change what the job gets.
@@ -136,7 +136,7 @@ schedule:
 
 ## Planned runs
 
-**Run Later (One-time)** by a user without `allowScheduledJobs` creates a planned run: a one-time schedule tied to that user.
+**Run later (one-time)** by a user without `allowScheduledJobs` creates a planned run: a one-time schedule tied to that user.
 
 - **When it is planned**, the server checks that the user may run the form (its `roles`), and verbose mode needs
   `allowVerboseMode`. A planned run is always one-time; a cron expression is refused.

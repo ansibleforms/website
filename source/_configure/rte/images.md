@@ -45,11 +45,22 @@ The python environment and the collections folder belong to `node`, so these ins
 packages switches to `USER root` for them and back to `USER node` at the end. To bring your own python and ansible, build on
 `ansibleforms-rte-base` (`Dockerfile.own-ansible` in the same folder).
 
-Keep the image on the app's release: `:7` follows the app's `:7`, and an exact `7.x.y` pins both. What the app and an RTE must
-share is their contract, a number both report: 7.0.0 brought contract 2, so an RTE of an older 7 release keeps working with a newer
-app as long as both still speak contract 2. When a release changes the contract, its release notes say that RTEs must be updated,
-the RTE refuses the app's jobs, and **Test connection** on the runner and the **Status** page show it in red.
+Keep the image on the app's release: `:7` follows the app's `:7`. Collections and roles can also be mounted instead of baked in, at
+`/etc/ansible/collections` and `/etc/ansible/roles`. Then no rebuild is needed per change, but what runs depends on that volume;
+python libraries always go into the image. Baking everything in is reproducible and starts fast, which makes it the way for production.
 
-Collections and roles can also be mounted instead of baked in, at `/etc/ansible/collections` and `/etc/ansible/roles`. Then no
-rebuild is needed per change, but what runs depends on that volume; python libraries always go into the image. Baking everything
-in is reproducible and starts fast, which makes it the way for production.
+---
+
+## The contract
+
+What the app and an RTE must share is their contract, a number both report. An RTE of an older release keeps working with a newer
+app as long as both speak the same contract; when a release changes it, its release notes say that RTEs must be updated. Each mode
+has its own:
+
+| Mode | Contract | On a mismatch |
+|---|---|---|
+| Outbound, Inbound | 3, new in 7.3.0 | The app closes the RTE's socket with the code `4409` and logs *RTE '&lt;name&gt;' speaks contract &lt;n&gt;, this app (&lt;release&gt;) contract 3: refused*. An outbound RTE logs *the app speaks another contract (an upgrade in progress?): dialing again in 60 seconds*. A job sent with another contract is refused |
+| Database (deprecated) | 2, since 7.0.0 | The RTE refuses the app's jobs |
+
+**Test connection** on the runner says which contract the RTE speaks and which one the app needs (see
+[Test connection](../runners/runner-page.html#test-connection)), and the **Runners** row of the **Status** page runs the same check.

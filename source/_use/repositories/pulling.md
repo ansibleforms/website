@@ -25,8 +25,8 @@ A repository is pulled on its schedule, at start, from the page, or through the 
 | Schedule | **Enable scheduled pull** and a **Pull schedule**, for example `0 * * * *` for every hour |
 | Start | **Pull on app start** clones the repository, or pulls it when it is already cloned |
 | Settings page | **Pull** in the row menu, or **Pull all** above the list |
-| Designer | **Load (repository)**, which pulls the forms repositories and reloads the designer |
-| API | `POST /api/v2/repository/<name>/pull` (`showSettings`) or `POST /api/v2/forms-repos/pull/<name>` (`showDesigner`) |
+| Designer | **Load (repository)**, which pulls the forms repositories and reloads the designer; taking the designer lock pulls every forms repository first too |
+| API | `POST /api/v2/repository/<name>/pull` (`showSettings` or `showConnectionsSettings`) or `POST /api/v2/forms-repos/pull/<name>` (see below) |
 
 ### Pull from a pipeline or a webhook
 
@@ -36,9 +36,10 @@ AnsibleForms has no dedicated webhook receiver, but a CI job or a git server web
 curl -X POST -H "Authorization: Bearer $TOKEN" https://af.example.com/api/v2/repository/forms/pull
 ```
 
-Create the token as described in [API token](../profile/api-token.html), for a user whose role has `showSettings`, or `showDesigner`
-for `/api/v2/forms-repos/pull/<name>`. `GET /api/v2/repository/<name>` returns the `head`,
-`status` and `output`, so a pipeline can check which commit the instance runs after a pull.
+Create the token as described in [API tokens](../profile/api-token.html), for a user whose role has `showSettings` or
+`showConnectionsSettings`. `/api/v2/forms-repos/pull/<name>` needs `showDesigner` and `allowFormDesign` instead, with the designer
+switched on ([`SHOW_DESIGNER`](../customization/features.html#env_SHOW_DESIGNER)). `GET /api/v2/repository/<name>` returns the
+`head`, `status` and `output`, so a pipeline can check which commit the instance runs after a pull.
 
 ### Local changes
 

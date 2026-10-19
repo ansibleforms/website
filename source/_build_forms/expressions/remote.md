@@ -74,12 +74,16 @@ Run a command on a remote host over SSH and use its output:
 ```javascript
 fn.fnSsh('root','172.16.0.1','ls -la')
 
-// fn.fnSsh(user,host,command,jq-expression)
+// fn.fnSsh(user,host,command,jq-expression,timeoutSeconds)
 // - user : the ssh user
 // - host : the host
-// - command : the command to trigger by ssh
-// - jq-expression : an optional jq-expression (https://jqplay.org)  
-//  
+// - command : the command to trigger by ssh, as the remote host's shell reads it
+// - jq-expression : an optional jq-expression (https://jqplay.org), applied to the output lines
+// - timeoutSeconds : an optional time limit, 60 seconds by default; running out of time is an error
+//
+// it returns the output lines (stdout and stderr) and a last line exit(<code>) with the exit code.
+// ssh itself is started without a local shell, so the user and host can never become a second local command.
+//
 // You must use 'known_hosts' and 'public-key' to setup non-interactive password-less authentication.
 // In the settings you can find the public-key and add your target-host to known_hosts
 ```
@@ -97,8 +101,10 @@ fn.fnLs('/tmp',{ recursive: true, regex: '.*\\.log$', metadata: true })
 // - path : path to directory
 // - options : recursive:boolean, regex:string ,metadata:boolean
 //   - recursive : whether to list files recursively
-//   - regex : a regular expression to filter files
-//   - metadata : whether to include file metadata (size,mtime,... directories will be shown too)
+//   - regex : a regular expression, matched against the path relative to the listed directory
+//   - metadata : whether to return objects with file metadata (path, name, type, size, created, modified, ...)
+//
+// directories are always listed too, with a trailing / (such as 'logs/'), and the regex sees that slash as well
 ```
 
 ---
@@ -112,13 +118,18 @@ fn.fnParseHtmlWithRegex('https://ansibleguy.com','<h2.*?>(.*?)</h2>','g')
 
 // fn.fnParseHtmlWithRegex(url,regex,flags,credential)
 // - url : url to html page
-// - regex : a regular expression with at least one group ( )
-// - flags : regex flags (such as g,i,m), defaults to 'g'
+// - regex : a regular expression, groups ( ) are optional
+// - flags : regex flags (such as g,i,m), defaults to 'g'; without g only the first match is returned
 // - credential : an optional credential name, used for basic authentication
+//                (a credential without both a user and a password is ignored, the page is fetched without authentication)
 //
-// it will grab the html source and return an array with one object per match :
+// it will grab the html source and return an array with one object per match, at most 10000 :
 // { fullMatch, groups (the numbered group matches), namedGroups }
 ```
+
+The page is fetched under [`REST_ALLOWED_HOSTS`](../customization/security.html#env_REST_ALLOWED_HOSTS) and
+[`REST_DENIED_HOSTS`](../customization/security.html#env_REST_DENIED_HOSTS), like the REST functions. Unlike them, it ignores
+`REST_IGNORE_CERTS` and `REST_TIMEOUT_SECONDS`: it always checks the certificate and waits at most 30 seconds.
 
 ---
 
@@ -188,6 +199,9 @@ fn.fnGetNumberedName($(fieldlist),'server###','server001',true)
 // - fillgaps : a boolean to indicate it can fill gaps in the numbers, 1,2,3,6 => 4
 ```
 
+On the server, `fn.fnGetNumberedName` fails with an error when the first argument is not an array. The local expression
+(without `fn.`) returns the default instead.
+
 ---
 
 ## Your own functions
@@ -203,9 +217,14 @@ const fnSum = function(a,b) {
   logger.debug("[fnSum] sum is happening")
   return a+b
 };
+const fnMultiply = function(a,b) {
+  logger.debug("[fnMultiply] multiply is happening")
+  return a*b
+};
 
 export default {
-  fnSum
+  fnSum,
+  fnMultiply
 };
 ```
 

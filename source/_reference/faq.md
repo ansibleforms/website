@@ -30,8 +30,9 @@ To run several replicas behind a load balancer, split the process with `AF_ROLE`
   syncs and the cleanups. One worker works at a time, holding a database lock; a second one waits and takes over when the first stops
 - `rte` containers run the playbooks: run more of them to run more playbooks at once
 
-The nodes share the database, the persistent volume and `ENCRYPTION_SECRET`. The chat assistant needs sticky sessions, and each node
-keeps its own log. See [Scaling](production/scaling.html) and the
+The app nodes and the worker share the database, the persistent volume and `ENCRYPTION_SECRET`. An RTE in a socket mode (outbound or
+inbound, see [Modes](rte/modes.html)) needs neither the database nor `ENCRYPTION_SECRET`. The chat assistant needs sticky sessions, and
+each node keeps its own log. See [Scaling](production/scaling.html) and the
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) setup.
 
 ### Multi-Repository Form Management
@@ -697,6 +698,11 @@ REST_DENIED_HOSTS=169.254.169.254,127.0.0.0/8,internal-admin.example
 {: .warning }
 > **This guard only protects the AnsibleForms Node.js process.** Once a playbook runs, Ansible itself can reach anything from the host, outside the control of AnsibleForms. Use these lists to prevent form authors from turning expressions into a proxy for metadata services or internal UIs; do not rely on them as a network firewall.
 
+Since 7.3.0 the REST helpers check the TLS certificate of the endpoint, as every other connection does, and give up after
+[`REST_TIMEOUT_SECONDS`](customization/security.html#env_REST_TIMEOUT_SECONDS) (`60` by default). Trust a private CA with
+`NODE_EXTRA_CA_CERTS`, or set [`REST_IGNORE_CERTS`](customization/security.html#env_REST_IGNORE_CERTS) to `1` only for endpoints with a
+self-signed certificate.
+
 ### HashiCorp Vault Integration
 
 Credentials can read their user and password from HashiCorp Vault, configured as a
@@ -714,7 +720,9 @@ lookup plugin, which reads from Vault directly and bypasses AnsibleForms.
 
 Query information from AWX or Ansible Automation Platform.
 
-To populate dropdown boxes with data from AWX or Tower, use `fn.fnRestBasic` or `fn.fnRestJwtSecure`.
+To populate dropdown boxes with data from AWX or Tower, use `fn.fnRestBasic` or `fn.fnRestJwtSecure`. Since 7.3.0 these helpers check
+the certificate of the AWX address: with a self-signed one, trust its CA with `NODE_EXTRA_CA_CERTS`, or set
+[`REST_IGNORE_CERTS`](customization/security.html#env_REST_IGNORE_CERTS) to `1`.
 
 ```yaml
 name: Query awx

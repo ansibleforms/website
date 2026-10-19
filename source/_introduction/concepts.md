@@ -24,7 +24,7 @@ The terms used across this documentation:
 | **[Role](config/roles.html)** | A set of users and groups; a form lists the roles that may see and run it, `default` for everyone |
 | **[Expression](expressions/)** | JavaScript that computes a field value, in the browser (`runLocal: true`) or on the server |
 | **[Extravars](formfields/)** | The variables sent to the playbook or template, built from the field values |
-| **[Credential](expressions/credentials.html)** | A stored user and password (and host, port, database), encrypted with `ENCRYPTION_SECRET` |
+| **[Credential](expressions/credentials.html)** | A stored login, encrypted with `ENCRYPTION_SECRET`: a user and password (and host, port, database), or since 7.3.0 the address and secrets of an LDAP directory, an SSO provider, a runner or a HashiCorp Vault |
 | **[Secret store](secret-stores/)** | A connection to HashiCorp Vault or CyberArk that supplies a credential's user and password |
 | **[Job](gui/forms-and-jobs.html)** | One run of a form, with its status, extravars and output, kept in the job history |
 | **[Runner](runners.html)** | Where a job runs, added under **Connections > Runners**: `rte` for playbooks, `awx` (AWX, or the flavour `aap` or `ascender`), `semaphore`, `rundeck` or `jenkins` for templates and jobs. A form picks one with `runner:`, or runs on the default `rte` (playbooks) or `awx` (templates) runner |

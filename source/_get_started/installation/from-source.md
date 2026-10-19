@@ -132,12 +132,13 @@ cp -r ../client/dist/. views/
 The server reads its settings from environment variables and, in production, also from `server/persistent/.env`, the file
 that the settings pages write to.
 
-Start from the example file and set at least the MySQL connection (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`):
+Start from the example file at the repository root and set at least the MySQL connection (`DB_HOST`, `DB_PORT`, `DB_USER`,
+`DB_PASSWORD`):
 
 ```bash
 cd /srv/apps/ansibleforms/server
 mkdir -p persistent
-cp .env.example persistent/.env
+cp ../.env.example persistent/.env
 ```
 
 All variables are described under [Environment Variables](../customization). Everything else is stored in `server/persistent` by default:
@@ -176,17 +177,47 @@ pm2 save
 pm2 startup   # prints the command that starts PM2 at boot
 ```
 
-Playbooks run on an RTE: start the same server a second time with `AF_ROLE=rte`, on a port of its own. It reads the same
-`persistent/.env` (the database settings and `ENCRYPTION_SECRET`), and adds itself under **Connections > Runners** as the default runner:
+Playbooks run on an RTE: start the same server a second time with `AF_ROLE=rte`, on a port of its own. The app dials it and keeps
+one WebSocket open (`RTE_MODE=inbound`, see [Modes](../rte/modes.html)), and it runs the playbooks from the same folders
+(`RTE_FILES=local`). It reads `persistent/.env` too, but uses none of its database settings. Add the token the app and the RTE share,
+at least 16 characters, and the config seed that declares the RTE, to `persistent/.env`:
+
+```bash
+RTE_TOKEN=<at least 16 characters>
+CONFIG_SEED_PATH=/srv/apps/ansibleforms/server/persistent/seed.yaml
+```
+
+The [config seed](../seed/) declares an RTE credential with the RTE's address and its token, and the default runner `rte` that signs
+in with it:
+
+```yaml
+version: 1
+credentials:
+  items:
+    - name: rte
+      credential_type: rte
+      url: http://127.0.0.1:8010
+      password: ${RTE_TOKEN}
+runners:
+  items:
+    - name: rte
+      type: rte
+      rte_mode: inbound
+      credential: rte
+      is_default: true
+```
+
+Without a seed, add them under **Connections > Credentials** (an RTE credential with that address and the token) and
+**Connections > Runners** (type RTE, **Mode** **Inbound**). Then start the RTE, on `127.0.0.1` only:
 
 ```bash
 cd /srv/apps/ansibleforms/server
-AF_ROLE=rte PORT=8010 HTTPS=0 RTE_TOKEN='<at least 16 characters>' RTE_URL=http://127.0.0.1:8010 \
+AF_ROLE=rte RTE_MODE=inbound RTE_FILES=local PORT=8010 HTTPS=0 LISTEN_HOST=127.0.0.1 \
   NODE_ENV=production pm2 start index.js --name ansibleforms-rte
 pm2 save
 ```
 
-The RTE settings are described on the [Scaling](../rte/run.html) page. Check that PM2 lists both processes:
+The RTE settings are described on the [Run an RTE](../rte/run.html) page. Check that PM2 lists both processes:
 
 ```bash
 pm2 status
@@ -212,13 +243,13 @@ and the client on `https://localhost:8443`. In this mode, the server and the RTE
 ```bash
 cd /srv/apps/ansibleforms
 npm install
-(cd server && npm install && cp .env.example .env.development)
+(cd server && npm install && cp ../.env.example .env.development)
 (cd client && npm install)
 npm run dev
 ```
 
-The RTE (`npm run dev:rte`) needs `ansible-playbook` on the path, and adds itself as a runner; `npm run dev:local` starts the client and the
-server without it. The [contributing guide](https://github.com/ansibleforms/ansibleforms/blob/main/CONTRIBUTING.md) describes the tests and checks to run.
+The RTE (`npm run dev:rte`) needs `ansible-playbook` on the path, and adds itself as a runner in database mode, deprecated, for
+development only; `npm run dev:local` starts the client and the server without it. The [contributing guide](https://github.com/ansibleforms/ansibleforms/blob/main/CONTRIBUTING.md) describes the tests and checks to run.
 
 </div>
 </div>

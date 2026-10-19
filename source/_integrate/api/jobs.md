@@ -134,7 +134,9 @@ These endpoints read more of one job:
 
 | Call | What it returns |
 |---|---|
-| `GET /api/v2/job/{id}/rawformdata` | The field values the job was launched with, as the form held them. The same permissions as a relaunch apply: your own job (or every job for an admin), a form that allows relaunch, and the `allowJobRelaunch` role option. |
+| `GET /api/v2/job/{id}/rawformdata` | The field values the job was launched with, as the form held them. The same permissions as a relaunch apply: your own job (or every job for an admin or a role with `manageAllJobs`), a form that allows relaunch, and the `allowJobRelaunch` role option. |
+| `GET /api/v2/job/{id}/events` | A playbook job's structured events (from 7.3.0, for a playbook on an RTE of 7.3.0 or later): each play, task, host result and the recap, with their `order`, `type`, `play`, `task`, `host`, `duration` and `time` |
+| `GET /api/v2/job/{id}/events/{order}` | One of those events with its whole `result`, as the **Task result** dialog shows it; `400` when `order` is not a whole number, `404` when the job has no such event |
 | `GET /api/v2/job/{id}/node/{nodeId}` | One node of a workflow job: `{ "node", "job", "extravars", "artifacts" }`, where `job` is the ID of the node's own job, or `null` when the node did not run. |
 
 ---
@@ -147,7 +149,7 @@ These endpoints act on an existing job:
 |---|---|
 | `POST /api/v2/job/{id}/abort` | Abort a running job |
 | `POST /api/v2/job/{id}/relaunch` | Relaunch a job, as it ran or with changes (see [Relaunching](../launch-validation/relaunching.html)) |
-| `POST /api/v2/job/{id}/approve` | Approve a job that waits for approval |
+| `POST /api/v2/job/{id}/approve` | Approve a job that waits for approval; your own job answers `403`, unless its approval sets `allowSelf: true` or you are an admin |
 | `POST /api/v2/job/{id}/reject` | Reject a job that waits for approval |
 | `GET /api/v2/job/{id}/download` | Download the job's output |
 | `DELETE /api/v2/job/{id}` | Delete a job |

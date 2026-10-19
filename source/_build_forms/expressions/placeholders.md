@@ -102,6 +102,15 @@ How a value is written into the text depends on where the placeholder sits.
 A field whose placeholders cannot all be resolved yet is not evaluated; with `ignoreIncomplete: true` a missing value is
 written in as `undefined` instead.
 
+### Backticks and `${` in a value
+
+From 7.3.0 a field value cannot run as code when the server writes it into an expression (remote expressions, launch
+validation, MCP and chat). A backtick or `${` in the value is written as a unicode escape (`\u0060`, `\u0024{`), so it stays
+text even inside a template literal. Server-side expressions refuse template literals altogether; use `runLocal` for those.
+
+A `runLocal` expression evaluated in the browser writes the value in as the table above says, without that escape, so do not put
+a placeholder inside a template literal there.
+
 ---
 
 ## See also

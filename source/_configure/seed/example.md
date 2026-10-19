@@ -36,11 +36,14 @@ secret_stores:
   items:
     - name: vault
       type: vault
-      url: https://vault.example.com:8200
-      token: ${SEED_VAULT_TOKEN}
+      credential: vault-login    # a vault credential of the credentials section: the store's address and token
 
 credentials:
   items:
+    - name: vault-login
+      credential_type: vault     # how the secret store vault logs in, and where
+      url: https://vault.example.com:8200
+      password: ${SEED_VAULT_TOKEN}   # the Vault token
     - name: rte01
       credential_type: rte       # an RTE's token, and its address unless it is outbound
       url: http://rte01.example.com:8000
@@ -61,8 +64,11 @@ credentials:
       user: svc_forms
       password: ${SEED_ONTAP_PW}
     - name: smtp-login
-      credential_type: smtp
-      user: svc_forms
+      credential_type: smtp      # a mail server and its login: host is required
+      host: smtp.example.com
+      port: 587
+      secure: false              # true: Use TLS to the mail server
+      user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
 
 repositories:
@@ -93,15 +99,19 @@ notification_channels:
   items:
     - name: mail
       type: mail                 # mail, slack, teams, telegram or webhook
-      server: smtp.example.com
-      port: 587
-      secure: false
+      credential: smtp-login     # an smtp credential: the server, port, TLS and login it sends with
       from_address: ansibleforms@example.com
-      credential: smtp-login     # an smtp credential ; leave it out for a relay
       is_active: true            # the mail channel the application sends its mail with
     - name: ops-slack
       type: slack
       webhook_url: ${SEED_SLACK_WEBHOOK}
+
+labels:
+  items:
+    - name: Production           # the text of a label beside the header's logo, 40 characters at most
+      color: red                 # blue, green, amber, orange, red or grey
+      enabled: true
+      position: 1                # its place among the labels, lowest first
 
 # ldap and settings are single-row sections, so EVERY field must be declared - see
 # "Single-row sections are all or nothing" below. Empty is a perfectly good value.
@@ -172,7 +182,29 @@ ones; an optional field that is omitted is left unchanged.
 The chat assistant also needs `ENABLE_CHAT=1`; see the [Chat assistant](../chat) page.
 
 Since 7.3.0 a runner signs in with a credential of its type, which holds its server's address in `url`. A runner with its own `token`,
-or `username` and `password`, still works: the seed logs a warning and turns them into such a credential, named after the runner. An
-RTE runner without `rte_mode` is in database mode, deprecated (see [Modes](../rte/modes.html)). A runner with `enabled: false` gets no
-job, its type's default included (see [Default and Enabled](../runners/list.html#default-and-enabled)); without `enabled`, the seed
-leaves it as it is.
+or `username` and `password`, still works: the seed logs a warning and turns them into such a credential, named after the runner. A
+runner that names an `api` or `userpass` credential still works too, with a warning: give that credential the runner's type instead.
+Both are deprecated since 7.3.0 and removed in 8.0.0. An RTE runner without `rte_mode` is in database mode, deprecated (see
+[Modes](../rte/modes.html)). A runner with `enabled: false` gets no job, its type's default included (see
+[Default and Enabled](../runners/list.html#default-and-enabled)); without `enabled`, the seed leaves it as it is.
+
+A runner item takes these keys besides `name`, `type`, `description`, `credential`, `is_default` and `enabled`:
+
+| Key | What it sets |
+|---|---|
+| `rte_mode` | An RTE's mode: `outbound`, `inbound` or `database` (deprecated, the default) |
+| `rte_max_jobs` | A socket-mode RTE's **Max concurrent jobs**, `0` to `10000` (`0`: no limit) |
+| `rte_cache_mb` | Its **Job files cache** in MB, `0` to `1048576` (`0` keeps none) |
+| `rte_files` | Its **Job files**: `transfer` or `local` |
+| `rte_drain_seconds` | Its **Drain time on stop** in seconds, `0` to `86400` |
+| `flavour` | An `awx` runner that is an AAP or an Ascender: `aap` or `ascender`; none for AWX |
+| `project` | A Semaphore runner's project id, a Rundeck runner's project name, a Jenkins runner's folder |
+| `uri`, `ignore_certs`, `ca_bundle` | The runner's own address and TLS, from before 7.3.0: used only while its credential holds no `url` |
+
+The four `rte_*` settings are those of the runner page's RTE tab (see [An RTE's settings](../runners/runner-page.html#an-rtes-settings)):
+they win over the same variables set on the RTE, and an RTE in database mode ignores them. A value out of its range fails the seed's
+validation.
+
+An RTE in database mode may register itself before the seed is applied. A seeded RTE runner whose `uri` is the address such an RTE
+registered at **adopts** that row: it takes the declared name and fields, and the worker no longer removes it when the RTE stops
+answering, instead of a second runner for the same RTE.

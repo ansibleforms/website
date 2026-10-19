@@ -22,10 +22,9 @@ The page under **Connections > Runners** lists every runner with these columns:
 
 | Column | Meaning |
 |---|---|
-| Default | Whether it is the default runner of its type. |
 | Enabled | Whether it takes jobs. A runner turned off gets no job, even as the default of its type. |
 | Name | How forms refer to it, with `runner: <name>`. |
-| Type | RTE, AWX, Ansible Automation Platform, Ascender, Semaphore UI, Rundeck or Jenkins. |
+| Type | RTE, AWX, Ansible Automation Platform, Ascender, Semaphore UI, Rundeck or Jenkins. The default runner of its type has a **Default** pill after it. |
 | Description | What it is for. |
 
 **Columns** adds two more, off by default: **Mode**, an RTE's mode (Outbound, Inbound or Database (deprecated), see
@@ -33,14 +32,15 @@ The page under **Connections > Runners** lists every runner with these columns:
 **Not connected**.
 
 From 7.3.0 the runners waiting for approval are not in the list but in a notice above it, see [Approving an RTE](registration.html#approving-an-rte).
-**Add runner** opens a dialog in three steps: **Runner** (name and description), **Type** (for an RTE also its **Mode**) and
-**Credentials**. In the **Type** step each product has a hint: the RTE's gives its full name, *Runtime Environment*. A row opens the
-runner's own page, and its menu offers:
+**Add runner** opens a dialog in steps: **Runner** (name and description), **Type** and **Credentials**, with a **Mode** step after
+**Type** for an RTE (Outbound, the default for a new one, Inbound or Database (deprecated)): four steps for an RTE, three for the
+others. In the **Type** step each product has a hint: the RTE's gives its full name, *Runtime Environment*. A row opens the runner's
+own page, and its menu offers:
 
 | Action | What it does |
 |---|---|
 | Edit | Opens its page |
-| Test connection | Checks that it answers and accepts its credential |
+| Test connection | Checks that it answers and accepts its credential, see [Test connection](runner-page.html#test-connection) |
 | Enable, Disable | Turns it on or off, whichever it is not |
 | Change credentials | Opens the Credentials tab of its page |
 | Delete | Removes it |

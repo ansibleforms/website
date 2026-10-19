@@ -46,7 +46,7 @@ From 7.3.0 the settings are per directory. **Access > LDAP** lists the directori
 | Test connection | Tries a login with a test username and password, see [Testing the connection](#testing-the-connection) |
 | Enable, Disable | Turns the directory on or off; `main` is turned off rather than deleted |
 | Move up, Move down | Changes its place in the lookup order |
-| Delete | Removes the directory; not offered on `main` |
+| Delete | Removes the directory; shown but disabled on `main` |
 
 Adding a directory asks its fields in four steps, the tabs of its page. **Details** holds **Enabled**, the **Name** and a **Description**:
 
@@ -74,12 +74,22 @@ The `ldap` credential holds how the directory is reached and as whom it searches
 | Port | `389` for plain LDAP, `636` for LDAPS |
 | Enable TLS | Connect with LDAPS (`ldaps://`). StartTLS on port 389 is not supported |
 | Ignore certs | Skip the validation of the server certificate. Shown only with **Enable TLS** |
-| Certificate, CA bundle | The server certificate and the CA certificate(s) that signed it, in PEM, when the certificate is checked |
-| User, Password | The bind DN of the service account that searches the directory, and its password, stored encrypted or read from a [secret store](../secret-stores/) |
+| Certificate | The client certificate AnsibleForms presents to the servers, in PEM, when the certificates are checked |
+| CA bundle | The CA certificate(s) that signed the server certificate, in PEM, when the certificates are checked |
+| Bind user DN | The DN of the service account that searches the directory |
+| Bind user password | Its password, stored encrypted or read from a [secret store](../secret-stores/) |
 
 Only an admin can add or change an `ldap` credential, see [Who may change a credential](../credentials.html#who-may-change-a-credential).
-Up to 7.2.0 the servers, TLS and bind account were fields of the LDAP settings. The upgrade to 7.3.0 moves them into a credential
-named `main-ldap`, see [Addresses in credentials](../credentials/types.html#addresses-in-credentials).
+Up to 7.2.0 the servers, TLS and bind account were fields of the LDAP settings. The upgrade to 7.3.0 moves them into a credential,
+see [Addresses in credentials](../credentials/types.html#addresses-in-credentials):
+
+| The directory before the upgrade | Where its servers go |
+|---|---|
+| Its own bind DN and password, no credential | A new `ldap` credential named `<directory>-ldap`, such as `main-ldap` |
+| A credential without servers | Into that credential |
+| A credential that already holds other servers | A copy of the credential named `<credential>-<directory>`, which the directory then names |
+
+A name that is taken gets `-2`, `-3` and so on. A directory from the config seed is left as it is: the seed owns it.
 
 ---
 
@@ -136,7 +146,11 @@ From 7.3.0 there can be several directories, each with its own servers, users an
 | Any other, such as `corp` | `corp/jdoe` | `ldap/corp/AF-Admins` | `ldap/corp/jdoe`, `ldap/corp/AF-Admins` |
 
 A user names the directory at sign-in as `corp\jdoe` or `corp/jdoe`, or signs in with an address of a domain the directory
-owns. A bare username is tried in every enabled directory, in their order.
+owns. A bare username is tried in every enabled directory, in their order, and so is a name such as `other\jdoe` when no
+directory is named `other`: it is then looked up as typed.
+
+The first directory that knows the user decides: a wrong password there is the answer, and the next directory is not
+tried, since it might hold someone else of that name. A directory that cannot be reached is skipped.
 
 The directory named `default` up to 7.2.0 is named `main` from 7.3.0: the upgrade renames it, and a new installation starts
 with `main`. Its members keep their short names, so the roles that name them need no change. The `main` directory cannot be
@@ -170,8 +184,8 @@ This example connects to two domain controllers over LDAPS and keeps only the gr
 | Credential > Servers | `dc01.example.com`, then `dc02.example.com` |
 | Credential > Port | `636` |
 | Credential > Enable TLS | on |
-| Credential > Ignore certs | off, with the domain controller certificate and the CA chain of the enterprise CA |
-| Credential > User | `CN=svc-ansibleforms,OU=Service Accounts,DC=example,DC=com` |
+| Credential > Ignore certs | off, with a client certificate and the CA chain of the enterprise CA |
+| Credential > Bind user DN | `CN=svc-ansibleforms,OU=Service Accounts,DC=example,DC=com` |
 | Search Base | `OU=Users,DC=example,DC=com` |
 | Mail Attribute | `mail` |
 | Username Attribute | `sAMAccountName` |
@@ -191,7 +205,7 @@ This example uses a group search on `groupOfNames` entries, so it works without 
 | Credential > Servers | `ldap.example.com` |
 | Credential > Port | `636` |
 | Credential > Enable TLS | on |
-| Credential > User | `cn=readonly,dc=example,dc=com` |
+| Credential > Bind user DN | `cn=readonly,dc=example,dc=com` |
 | Search Base | `ou=people,dc=example,dc=com` |
 | Mail Attribute | `mail` |
 | Username Attribute | `uid` |

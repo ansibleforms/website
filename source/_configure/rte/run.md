@@ -56,12 +56,12 @@ An RTE in database mode (deprecated) reads the database settings instead, and re
 |---|---|
 | `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` | The app's own values: the RTE reads its jobs from the database and writes their output there |
 | [`RTE_URL`](../customization/server.html#env_RTE_URL) | The address the app calls the RTE on, such as `http://rte:8000`. The runner is named after its host (`rte`), so forms can use `runner: rte` |
-| [`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER) | `1` (default): the RTE adds itself under **Connections > Runners** at its start, and the first one becomes the default runner. `0`: add it there yourself, or in the [config seed](../seed/) |
+| [`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER) | Deprecated in 7.3.0, with database mode: a socket-mode RTE joins with a join token instead. `1` (default): the RTE adds itself under **Connections > Runners** at its start, and the first one becomes the default runner. `0`: add it there yourself, or in the [config seed](../seed/) |
 | [`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET) | The app's own value, needed only to register itself (the runner's token is stored encrypted); leave it out with `RTE_REGISTER=0` |
 
 In database mode, without `RTE_URL` the RTE registers its IP address and port under the name `rte-<hostname>-<port>`, which change when
-the container is recreated: set `RTE_URL` in production. Once the RTE has not answered for two minutes its runner counts as
-unresponsive, and the worker removes it 10 minutes after its last answer.
+the container is recreated: set `RTE_URL` in production. The worker removes a runner the RTE registered itself 10 minutes after the
+RTE's last heartbeat.
 
 ---
 

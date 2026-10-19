@@ -138,11 +138,14 @@ secret_stores:
   items:
     - name: vault
       type: vault
-      url: https://vault.example.com:8200
-      token: ${SEED_VAULT_TOKEN}
+      credential: vault-login        # its address and token
 
 credentials:
   items:
+    - name: vault-login
+      credential_type: vault
+      url: https://vault.example.com:8200
+      password: ${SEED_VAULT_TOKEN}  # the Vault token
     - name: production-db
       secret_store: vault
       secret_ref: secret/forms/production-db
@@ -152,6 +155,8 @@ credentials:
       is_database: true
 ```
 
+The store logs in with its credential: a `vault` one holds the Vault's address in `url` and the token as its password, a `cyberark`
+one the AppID and the CCP address. Without a credential, the store's own `url` and `token` are used.
 For details, see [Config seed](../seed).
 
 ---

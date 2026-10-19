@@ -37,9 +37,9 @@ The bar above the fields offers a few tools, each shown only when your role allo
 
 | Button | What it does | Role option |
 |---|---|---|
-| **Show Extravars** | Previews the extravars the job will receive, as you fill in the fields | `showExtraVars` |
+| **Show extravars** | Previews the extravars the job will receive, as you fill in the fields | `showExtraVars` |
 | **verbose** | Runs the job in verbose mode | `allowVerboseMode` |
-| **Load from Store** | Fills the fields from a [stored job](stored-jobs.html) | `allowStoredJobs` |
+| **Load from store** | Fills the fields from a [stored job](stored-jobs.html) | `allowStoredJobs` |
 | **Reload this form** | Loads the form again, with its default values | none |
 
 ### Choices at launch time
@@ -90,7 +90,7 @@ A form can also start a job without a person pressing **Submit**:
 
 | Started by | How | Page |
 |---|---|---|
-| Run later or a cron schedule | **Run Later (One-time)** or **Schedule (Recurring)** next to **Submit** | [Schedules](schedules.html) |
+| Run later or a cron schedule | **Run later (one-time)** or **Schedule (recurring)** next to **Submit** | [Schedules](schedules.html) |
 | A script or a pipeline | `POST /api/v2/job` with an API token | [REST API jobs](../api/jobs.html) |
 | An AI agent | The MCP server's `launch_job` tool | [MCP tools](../mcp/tools.html) |
 | A conversation | The chat assistant fills in the form and launches it | [Chat assistant](../chat/) |
@@ -127,7 +127,7 @@ The dialog offers:
 
 * **Relaunch**: runs the job again with the values it ran with, as a new job under your name.
 * **Verbose mode**: relaunches in verbose mode; shown with the `allowVerboseMode` role option.
-* **Edit values before relaunching**, then **Edit & Relaunch**: opens the form pre-filled with the job's values, so you
+* **Edit values before relaunching**, then **Edit & relaunch**: opens the form pre-filled with the job's values, so you
   can change them before you submit.
 
 A relaunch also requires the form to allow it (`allowRelaunch`, true by default) and the job to be **your own**, unless
@@ -136,7 +136,7 @@ password field may refuse it, is described in [Relaunching](../launch-validation
 
 ### Relaunch with pre-filled data
 
-**Edit & Relaunch** opens the form with the `prefillJobId` URL parameter, which you can also use in a link of your own:
+**Edit & relaunch** opens the form with the `prefillJobId` URL parameter, which you can also use in a link of your own:
 
 ```text
 https://af.example.com/form?form=New%20Virtual%20Machine&prefillJobId=61
@@ -193,5 +193,5 @@ click **Delete (n)** above it.
 
 You can delete your own jobs. Admins and, from 7.3.0, users with the `manageAllJobs` role option can delete any job; `showAllJobLogs`
 no longer can. A role that sets `allowJobDeletion: false` deletes no job at all, not even its own, so the job history stays whole. On the job's
-page the button is hidden while the job is running (except for admins) and while it waits for approval; in the list, the
+page the button is hidden while the job is running or aborting (except for admins and `manageAllJobs`) and while it waits for approval; in the list, the
 menu entry and the checkbox are greyed out for a job you cannot delete.

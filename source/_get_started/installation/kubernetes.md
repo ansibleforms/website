@@ -17,7 +17,8 @@ Install AnsibleForms and its MySQL database with the Helm chart
 ---
 
 The Helm chart deploys AnsibleForms with MySQL and the RTE that runs the playbooks (see the [values reference](https://github.com/ansibleforms/helm-charts/blob/main/charts/ansibleforms/VALUES.md)).
-The [installer](installer.html) installs the chart too, from a few questions, and upgrades a release it did not install.
+The [installer](installer.html) installs the chart too, from a few questions, and upgrades a release it did not install. The same
+chart also installs a Runner on its own, for an AnsibleForms that runs elsewhere (see [A Runner on Kubernetes](#a-runner-on-kubernetes)).
 
 ---
 
@@ -88,7 +89,8 @@ classes do not offer; `ReadWriteOnce` is fine with a single replica. For pre-cre
 ## 3. Set the credentials
 
 AnsibleForms needs an admin account, a database password and an `ENCRYPTION_SECRET`, the key that encrypts the credentials
-stored in AnsibleForms. Never change that key once data exists. Supply them in one of three ways:
+stored in AnsibleForms. To change that key later, set [`ENCRYPTION_SECRET_PREVIOUS`](../customization/security.html#env_ENCRYPTION_SECRET_PREVIOUS)
+to the old one for one start: every stored secret is then re-encrypted with the new key. Supply them in one of three ways:
 
 <div class="af-tabs" data-tab-group="helmcreds">
 <div class="af-tab-list" role="tablist">
@@ -260,6 +262,35 @@ kubectl -n ansibleforms get secret ansibleforms-secrets \
 ```
 
 With `secrets.existingSecret`, read it from your own Secret instead.
+
+---
+
+## A Runner on Kubernetes
+
+With `runner.enabled`, the chart installs only an RTE: a Runner for an AnsibleForms installed elsewhere, in another namespace, another
+cluster or on a VM. It dials the app and keeps one WebSocket open (`RTE_MODE=outbound`, see [Modes](../rte/modes.html)), so it needs
+no database, no encryption key and no inbound port. It renders no app, no MySQL, no Service and no Ingress:
+
+```bash
+helm install runner1 ansibleforms/ansibleforms \
+  --namespace runners --create-namespace \
+  --set runner.enabled=true \
+  --set runner.appUrl=https://forms.example.com \
+  --set runner.name=zone-a \
+  --set runner.joinToken=afj_...
+```
+
+| Value | What it does |
+|---|---|
+| `runner.enabled` | Installs only the Runner: no app, no MySQL, no Service, no Ingress |
+| `runner.appUrl` | The app's address as people open it, with its `BASE_URL` if any. Required |
+| `runner.name` | The runner name it joins as (`RTE_NAME`). Empty: the release name |
+| `runner.joinToken` | A [join token](../runners/registration.html#join-tokens) made in the app, read on the first start to approve the Runner at once |
+| `runner.appTlsVerify` | `false` accepts the app's self-signed certificate (`APP_TLS_VERIFY=0`), inside one trusted network only |
+
+Without a join token, the Runner asks to join and waits until an admin approves it under **Connections > Runners**. Once approved, it
+signs in with its own `RTE_TOKEN`, kept in the `<release>-keys` Secret: keep that Secret with the release. The
+[installer](installer.html#kubernetes) installs this runner mode too, when you choose the Runner role and Kubernetes.
 
 ---
 

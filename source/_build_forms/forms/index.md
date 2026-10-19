@@ -52,6 +52,19 @@ AnsibleForms loads forms from the following locations:
 
 ---
 
+## Where a form runs
+
+A form's type decides the kind of [runner](../runners.html) its job runs on: an RTE for `ansible`, an AWX runner for `awx`,
+`aap` and `ascender`, and a runner of its own type for `semaphore`, `rundeck` and `jenkins`.
+
+- `runner: <name>` on the form picks a runner of that type by name; without it, the job runs on the default runner of the type.
+- A runner disabled under **Connections > Runners** fails the job, whether the form names it or it is the default. The job
+  never falls back to another runner.
+- When one of the user's roles lists `runners` in `config.yaml`, the job may only run on a runner such a role lists, or it is
+  refused. Roles without the list do not limit it, and an admin is never limited.
+
+---
+
 ## In this section
 
 The following pages describe the form properties in detail:

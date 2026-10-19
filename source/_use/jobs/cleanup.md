@@ -26,7 +26,12 @@ A running job is tracked by the AnsibleForms process that started it. When that 
   runs on an RTE is not touched: it carries on without the process that started it.
 * **Every minute**, the jobs followed by another AnsibleForms process (or RTE) that stopped answering for 2 minutes are
   marked abandoned; the log shows `Abandoned <n> jobs followed by a node that stopped answering`.
-* **Every hour**, jobs that started more than a day ago and are still `running` are marked abandoned.
+* **Every hour**, jobs that started more than a day ago, are still `running` and wrote no output for a day are marked abandoned.
+  A job that runs on an RTE is left alone here too: the RTE cleans up its own jobs when it restarts.
+
+From 7.3.0 a template job on AWX, AAP or Ascender that a restart or a stopped node abandoned is picked up again, if it started
+within the last 24 hours: one AnsibleForms process takes it over, follows it on the runner again, and the job ends with what
+really happened there. Jobs on the other runners, playbooks, workflows and multistep jobs stay abandoned.
 
 An abandoned playbook may have run partly. Check the managed hosts before you relaunch it; see
 [A job shows the status abandoned](../troubleshooting.html#a-job-shows-the-status-abandoned).

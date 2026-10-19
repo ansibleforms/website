@@ -36,7 +36,7 @@ The engines it installs them on:
 |---|---|
 | Docker | The [Docker Compose project](docker-compose.html), on Docker Engine with its compose plugin. The containers restart together with Docker |
 | Podman | The same project on Podman, rootless or as root, with podman-compose. A systemd unit starts the containers at boot |
-| Kubernetes | The [Helm chart](kubernetes.html), on the cluster that `kubectl` reaches, served behind an ingress. A controller only |
+| Kubernetes | The [Helm chart](kubernetes.html), on the cluster that `kubectl` reaches. A controller is served behind an ingress; a Runner uses the chart's runner mode |
 | Directly on this server | No containers: Node.js, MariaDB and Ansible on the server, and AnsibleForms as systemd services. See [Native install](native.html) |
 
 After the install, the same program upgrades the installation, backs it up, shows its status and removes it. It also takes over an
@@ -86,11 +86,11 @@ The wizard asks one question at a time, with the steps listed at the left. **Esc
 | Role | Controller or Runner |
 | Engine | Docker, Podman, Kubernetes, or directly on this server |
 | Folder | The installation folder, and the instance name |
-| Join, App, Mode | A Runner only: see [A Runner](#a-runner) |
-| Network | The port of the web interface, or of the Runner |
+| Join, App, Mode | A Runner only: see [A Runner](#a-runner). Not the mode on Kubernetes |
+| Network | The port of the web interface, or of the Runner. Not on Kubernetes |
 | HTTPS | How browsers connect to a controller |
 | Admin | The password of the first admin, typed twice |
-| Cluster, Ingress, Storage | Kubernetes only: the namespace and release, the ingress, the storage class |
+| Cluster, Ingress, Storage | Kubernetes only: the namespace and release, the ingress (a controller), the storage class |
 | Review | Every answer: **Install**, or **Change answers** |
 
 **Engine.** The list shows what this server has. An engine it lacks is offered as *Docker (not installed: the installer installs it)*
@@ -178,7 +178,8 @@ Certificate fingerprint: 3f9c-07a1
 It is the first 8 hexadecimal digits of the SHA-256 of the certificate's DER bytes, as `xxxx-xxxx`. Before you approve the Runner,
 check that the approval dialog shows the same certificate fingerprint. A Runner registered with `--join` prints it too.
 
-For a Runner, Kubernetes is greyed out: *Kubernetes (a Runner there is installed with the Helm chart)*.
+On Kubernetes, a Runner is the Helm chart's runner mode, and always outbound: the wizard asks no mode and no network, as nothing
+reaches it from outside (see [Kubernetes](#kubernetes)).
 
 ---
 
@@ -197,6 +198,19 @@ For a controller on Kubernetes, the installer installs the [Helm chart](kubernet
 
 The admin password is in the Secret `<release>-secrets` of that namespace, under the key `ADMIN_PASSWORD`. The installer keeps the
 chart values in a file next to its state file, `<release>-values.yaml`, and applies it again on upgrades; `--values` adds a file of your own. The chart of a release is published shortly after it.
+
+For a Runner, the installer installs the same chart in its [runner mode](kubernetes.html#a-runner-on-kubernetes) (`runner.enabled`): an RTE
+alone, with no app, no database and no ingress, which dials AnsibleForms (outbound). After the app's address, the wizard asks:
+
+| Question | Default |
+|---|---|
+| Namespace | `ansibleforms` |
+| Helm release name | `ansibleforms-runner`, which is also its runner's name under **Connections > Runners** |
+| Storage class for the volumes | The cluster default |
+
+The installer makes the Runner's token and sets the app's address, the runner's name and, when you trust the app's certificate,
+`runner.appTlsVerify: false`. With `--join`, the join token approves the Runner at once; without it, the Runner asks to join, and the
+installer prints its fingerprint to check before you approve it under **Connections > Runners**.
 
 ---
 
@@ -304,7 +318,8 @@ AnsibleForms already on the server, whatever installed it:
 
 Only the app's and the RTE's images count: a MySQL container named after AnsibleForms is not an installation. The installer lists what
 it found, one line each, with the reason and what to do by hand for one it cannot take over: its compose file is not the repository's,
-its database is outside its compose project, it runs on Kubernetes without the Helm chart, or its version cannot be read.
+its database is outside its compose project, it runs on Kubernetes without the Helm chart, it is managed by Argo CD (upgrade it there,
+by changing the chart version of the Application), or its version cannot be read.
 
 For an installation it can take over, `install` offers three choices:
 
@@ -313,6 +328,9 @@ For an installation it can take over, `install` offers three choices:
 | Take over and upgrade | Shows what it will remember, then writes `installer.json` once you confirm, and continues with the [upgrade](#upgrade) |
 | Install a new AnsibleForms beside it anyway | A second installation, with its own folder, ports and database, after a confirmation of its own |
 | Stop | Nothing is changed |
+
+For an installation that already runs the version the installer would install, the first choice is **Take over** instead: the installer
+remembers where it is and how it runs, for its backups, status and next upgrades, and nothing is changed now.
 
 `upgrade` offers the same without the second choice, and stops when nothing can be taken over. Unattended, `install` stops with a message,
 and `upgrade --yes` takes an installation over only when it finds exactly one it can take over. A Kubernetes release's current values are

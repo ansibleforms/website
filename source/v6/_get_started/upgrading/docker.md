@@ -122,6 +122,6 @@ database, the schema and the other systems AnsibleForms depends on.
 
 ## Roll back
 
-To go back to the previous release, run step 2 again with its exact tag, for example
-`ghcr.io/ansibleforms/ansibleforms:6.5.3`. If that release does not start on the upgraded database, restore the backup you
+To go back to the previous release, run step 2 again with its exact tag,
+`ghcr.io/ansibleforms/ansibleforms:<previous release>`. If that release does not start on the upgraded database, restore the backup you
 took under **Settings → Backups**.

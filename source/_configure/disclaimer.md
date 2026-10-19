@@ -45,9 +45,11 @@ With a version enabled, every user who signs in gets it in a dialog before anyth
 
 From 7.3.0 the page behind the dialog is blurred until they answer.
 
-A user accepts each version once: they are not asked again at their next sign-in, only when a new version comes.
+A user accepts each version once: they are not asked again at their next sign-in, only when a new version comes, when
+an admin saves a changed text with [Ask everyone again](disclaimer/versions.html#changing-the-text), or when an admin uses
+[Ask again](disclaimer/acceptances.html#asking-users-again) on their acceptance.
 
 Until they accept, the API answers every call of their session with status `403` and the code `disclaimer_required`,
-except reading and accepting the disclaimer, reading their profile and the live events the browser follows.
+except the calls under `/api/v2/disclaimer` and `/api/v2/profile`, and the live events the browser follows.
 An [API token](profile/api-token.html) is never asked, since a script has no one to click.
 

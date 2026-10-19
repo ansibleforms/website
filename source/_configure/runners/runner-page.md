@@ -78,5 +78,13 @@ The buttons top right act on the runner as it is saved.
 Next to **Save** are **Test connection** and **Delete**, and on the Credentials tab **Add credential**, which makes a credential of the
 runner's type and chooses it. A token or password is never shown again once saved: change it on the credential.
 
-**Test connection** checks that the runner answers and accepts its token or login. For an RTE it also shows its release and its
-Ansible version, and refuses an RTE that needs to be updated to work with this app.
+**Test connection** checks that the runner answers and accepts its token or login, and says so in a message: **Runner connection is
+OK**, or why it failed. It runs no job. For an RTE it also checks the contract the RTE speaks (see
+[The contract](../rte/images.html#the-contract)):
+
+| RTE | What the test reads | When it fails |
+|---|---|---|
+| Outbound or Inbound | Who holds its socket, as every app node records it, and what the RTE said when it connected. It calls nothing | No app node holds a socket to it: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app*, or for an inbound one, *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE*. Or the RTE speaks another contract than 3 |
+| Database (deprecated) | The RTE's `/rte/v1/health`, called with its token | The RTE does not answer at its address, refuses the token, or speaks another contract than 2 |
+
+The **Connection** badge of the RTE tab shows the same socket state without a test.
