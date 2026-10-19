@@ -67,7 +67,8 @@ The script:
 2. Downloads `ansibleforms-installer_linux_<arch>` from the latest release of
    [ansibleforms/installer](https://github.com/ansibleforms/installer/releases), or of the release `AF_INSTALLER_VERSION` names
 3. Checks it against the release's `checksums.txt`, and uses no download whose checksum differs
-4. Keeps it as `ansibleforms-installer`, in `/usr/local/bin` for root and `~/.local/bin` otherwise, for the upgrades and backups later on
+4. Keeps it as `ansibleforms-installer`, in `/usr/local/bin` for root and `~/.local/bin` otherwise, for the upgrades and backups later on.
+   Through sudo, run it by its full path: sudo's `secure_path`, as on Red Hat systems, often leaves out `/usr/local/bin`
 5. Starts it with the flags given, reading the keyboard from the terminal even though the script came through a pipe
 
 Without a terminal, such as in a CI job, the installer runs unattended (see [Unattended](#unattended)).
@@ -214,12 +215,13 @@ The installer takes a command, before or after its flags. Without one, it instal
 | `version` | Print the installer's version |
 
 The installer remembers the installation in `/etc/ansibleforms/installer.json` for root, or `~/.config/ansibleforms/installer.json`
-for another user, so the commands after `install` need no flags and find the installation on their own:
+for another user, so the commands after `install` need no flags and find the installation on their own. That folder holds no binary,
+and only exists once the installer has installed an AnsibleForms or taken one over:
 
 ```bash
-sudo ansibleforms-installer status
-sudo ansibleforms-installer backup
-sudo ansibleforms-installer upgrade
+sudo /usr/local/bin/ansibleforms-installer status
+sudo /usr/local/bin/ansibleforms-installer backup
+sudo /usr/local/bin/ansibleforms-installer upgrade
 ```
 
 `uninstall` asks **Also delete its data (database, forms, playbooks, logs)?**. To delete it, type the instance's name (the Helm release
