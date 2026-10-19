@@ -7,9 +7,7 @@ x-database: &database
   DB_PORT: 3306
   DB_USER: root
   DB_PASSWORD: Screenshots!123
-  # the app stores the RTE's token encrypted with it : both must share the same one
   ENCRYPTION_SECRET: Screenshots!Encryption!Secret!1
-  RTE_TOKEN: Screenshots!RTE!Token!123
 services:
   db:
     image: mysql:8.4
@@ -33,6 +31,9 @@ services:
       # the public default password : seed.mjs changes it through the api, as the app asks
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: AnsibleForms!123
+      # data/seed.yaml declares the RTE's credential (this token) and its runner, rte_mode inbound
+      CONFIG_SEED_PATH: /app/dist/persistent/seed.yaml
+      RTE_TOKEN: Screenshots!RTE!Token!123
     # healthy once the app answers, which it only does after creating the schema
     healthcheck:
       test: ["CMD", "node", "./healthcheck.js"]
@@ -44,21 +45,21 @@ services:
       - "${AF_PORT:-8444}:443"
     volumes:
       - ${AF_DATA:?the copy of ./data that run.sh makes}:/app/dist/persistent
-  # runs the playbooks of the seeded jobs ; it registers itself as the default runner at
-  # RTE_URL, so no runner has to be added. It only starts once the app created the schema.
+  # runs the playbooks of the seeded jobs : the app dials it on http://rte:8000 with RTE_TOKEN
+  # (RTE_MODE=inbound) and keeps one WebSocket open, so the RTE holds no database settings.
   rte:
     image: ghcr.io/ansibleforms/ansibleforms-rte-full:${AF_VERSION:-latest}
     depends_on:
-      db:
-        condition: service_healthy
       app:
         condition: service_healthy
     environment:
-      <<: *database
       AF_ROLE: rte
+      RTE_MODE: inbound
+      RTE_TOKEN: Screenshots!RTE!Token!123
+      # its files are the app's own (the same folder, mounted below)
+      RTE_FILES: local
       PORT: 8000
       HTTPS: 0
-      RTE_URL: http://rte:8000
     healthcheck:
       test: ["CMD", "node", "./healthcheck.js"]
       interval: 5s

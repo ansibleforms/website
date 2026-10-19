@@ -5,7 +5,7 @@
   categories:
   - Web Servers
   roles:
-  - public
+  - default
   icon: globe
   overlayIcon: rotate-right
   overlayIconColor: warning

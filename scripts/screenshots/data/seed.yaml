@@ -1,0 +1,18 @@
+# The config seed of the screenshot instance : the RTE's credential and its runner. The app
+# dials the rte container (RTE_MODE=inbound) with the RTE_TOKEN of docker-compose.yml.
+version: 1
+credentials:
+  items:
+    - name: rte
+      credential_type: rte
+      description: The RTE_TOKEN of the rte container, and its address
+      url: http://rte:8000
+      password: ${RTE_TOKEN}
+runners:
+  items:
+    - name: rte
+      type: rte
+      rte_mode: inbound
+      description: The rte container of docker-compose.yml
+      credential: rte
+      is_default: true

@@ -5,7 +5,7 @@
   categories:
   - Updates
   roles:
-  - public
+  - default
   icon: cube
   overlayIcon: download
   overlayIconColor: info

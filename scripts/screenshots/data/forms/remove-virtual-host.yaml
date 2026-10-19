@@ -5,7 +5,7 @@
   categories:
   - Web Servers
   roles:
-  - public
+  - default
   icon: sitemap
   overlayIcon: trash-can
   overlayIconColor: danger

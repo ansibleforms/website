@@ -4,7 +4,7 @@
   categories:
   - Automation
   roles:
-  - public
+  - default
   icon: robot
   overlayIcon: play
   overlayIconColor: success

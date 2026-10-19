@@ -113,7 +113,7 @@ Who may sign in, and what they may do once in.
 | **LDAP** | Sign-in with an LDAP directory or Active Directory. See [LDAP](../authentication/ldap.html). |
 | **SSO** | Single sign-on with Entra ID or OpenID Connect providers. See [Authentication](../authentication/). |
 
-![Access > LDAP, the Server tab](../assets/screenshots/ldap.jpg)
+![Access > LDAP, the main directory](../assets/screenshots/ldap.jpg)
 
 ---
 

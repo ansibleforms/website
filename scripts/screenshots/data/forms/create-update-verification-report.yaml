@@ -5,7 +5,7 @@
   categories:
   - Updates
   roles:
-  - public
+  - default
   icon: list-check
   overlayIcon: clipboard-check
   overlayIconColor: info

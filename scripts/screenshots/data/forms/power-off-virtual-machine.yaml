@@ -5,7 +5,7 @@
   categories:
   - Instances
   roles:
-  - public
+  - default
   icon: server
   overlayIcon: power-off
   overlayIconColor: danger

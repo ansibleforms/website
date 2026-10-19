@@ -5,7 +5,7 @@
   categories:
   - Instances
   roles:
-  - public
+  - default
   icon: clone
   overlayIcon: plus
   overlayIconColor: success

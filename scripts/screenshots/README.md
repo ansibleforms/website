@@ -20,8 +20,9 @@ Run it from this folder, with Docker and Node.js installed. The version is an im
 ./run.sh latest-rc                  # from the latest release candidate
 ```
 
-AnsibleForms 7 runs every playbook on an RTE (runtime environment), so the instance has one: it
-registers itself as the default runner, and the seeded jobs run there. The admin starts with the
+AnsibleForms 7 runs every playbook on an RTE (runtime environment), so the instance has one: the
+config seed (`data/seed.yaml`) declares it as the default runner in inbound mode, the app dials it
+with its token, and the seeded jobs run there. The admin starts with the
 public default password, which AnsibleForms 7 refuses everything but changing: `seed.mjs` changes
 it first, and `capture.mjs` signs in with the new one.
 

@@ -5,7 +5,7 @@
   categories:
   - Instances
   roles:
-  - public
+  - default
   icon: server
   overlayIcon: plus
   overlayIconColor: success
@@ -111,7 +111,7 @@
   categories:
   - Updates
   roles:
-  - public
+  - default
   icon: fab,windows
   overlayIcon: download
   overlayIconColor: info
@@ -133,7 +133,7 @@
   categories:
   - Web Servers
   roles:
-  - public
+  - default
   icon: globe
   overlayIcon: plus
   overlayIconColor: success

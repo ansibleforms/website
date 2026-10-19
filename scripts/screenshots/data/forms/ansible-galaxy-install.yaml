@@ -5,7 +5,7 @@
   categories:
   - Setup
   roles:
-  - public
+  - default
   icon: compact-disc
   overlayIcon: a
   overlayIconColor: info

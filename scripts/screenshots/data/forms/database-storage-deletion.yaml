@@ -5,7 +5,7 @@
   categories:
   - Database
   roles:
-  - public
+  - default
   icon: database
   overlayIcon: trash-can
   overlayIconColor: danger

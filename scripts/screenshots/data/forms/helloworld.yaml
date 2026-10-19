@@ -5,7 +5,7 @@
   categories:
   - Demo
   roles:
-  - public
+  - default
   icon: heart
   overlayIcon: play
   overlayIconColor: info

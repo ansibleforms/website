@@ -5,7 +5,7 @@
   categories:
   - Setup
   roles:
-  - public
+  - default
   icon: building
   overlayIcon: plus
   overlayIconColor: success
