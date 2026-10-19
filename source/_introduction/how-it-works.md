@@ -24,7 +24,7 @@ from YAML files and runs nothing itself: it hands each job to a [runner](runners
 <div class="af-diagram" markdown="0">
 <svg viewBox="0 0 760 500" role="img" aria-labelledby="afd-title afd-desc" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:100%;height:auto;color:var(--body-text-color);font-family:inherit">
 <title id="afd-title">AnsibleForms architecture</title>
-<desc id="afd-desc">The browser and an optional MCP client talk to the AnsibleForms server. The server stores its data in MySQL and in the persistent folder, and connects to data sources, secret stores, git repositories, login providers, notification channels, syslog servers and an optional model provider. Its runners hand each playbook to one of one or more RTE containers, which run ansible-playbook and write the output to MySQL, and each template or job to AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins.</desc>
+<desc id="afd-desc">The browser and an optional MCP client talk to the AnsibleForms server. The server stores its data in MySQL and in the persistent folder, and connects to data sources, secret stores, git repositories, login providers, notification channels, syslog servers and an optional model provider. Its runners hand each playbook to one of one or more RTE containers over a WebSocket each, which run ansible-playbook and send the output back to the server, and each template or job to AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins.</desc>
 <style>
 .afd-box{fill:var(--af-accent-soft);stroke:currentColor;stroke-opacity:.45;stroke-width:1.2}
 .afd-main{fill:none;stroke:var(--link-color);stroke-width:1.8}
@@ -108,10 +108,10 @@ from YAML files and runs nothing itself: it hands each job to a [runner](runners
 <rect class="afd-box" x="570" y="420" width="182" height="60" rx="10"/>
 <text class="afd-t" x="661" y="445" text-anchor="middle">AWX / AAP / Ascender</text>
 <text class="afd-s" x="661" y="463" text-anchor="middle">Semaphore, Rundeck, Jenkins</text>
-<line class="afd-go" x1="420" y1="354" x2="420" y2="405" marker-end="url(#afd-arrow)"/>
+<line class="afd-go" x1="420" y1="354" x2="420" y2="405" marker-start="url(#afd-arrow)" marker-end="url(#afd-arrow)"/>
 <polyline class="afd-go" points="470,354 470,394 661,394 661,418" marker-end="url(#afd-arrow)"/>
-<line class="afd-line" x1="398" y1="450" x2="362" y2="450" marker-end="url(#afd-arrow)"/>
-<text class="afd-s" x="413" y="392" text-anchor="end">playbooks</text>
+<text class="afd-s" x="413" y="387" text-anchor="end">playbooks,</text>
+<text class="afd-s" x="413" y="400" text-anchor="end">WebSocket</text>
 <text class="afd-s" x="566" y="388" text-anchor="middle">templates, jobs</text>
 </svg>
 </div>
@@ -123,9 +123,9 @@ The components in the diagram each have a role of their own:
 | **Browser** | The Vue web application: the forms, the [Designer](gui/designer-and-git.html), the job history and the settings |
 | **AnsibleForms server** | Evaluates the forms, records the jobs, runs the workflows and the schedules, hands each job to its runner and follows it, and serves the [REST API](api/) |
 | **Runners** | Where jobs run, added under **Connections > Runners**: a form names one with `runner: <name>`, or uses the default runner of its type (see [Runners](runners.html)) |
-| **RTE containers** | One or more runtime environment containers, the same server started with `AF_ROLE=rte`: each runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the python libraries and collections of its image, and writes the output and the final status to the database itself (see [How the RTE runs](rte/#how-the-rte-runs)) |
+| **RTE containers** | One or more runtime environment containers, the same server started with `AF_ROLE=rte`: each runs `ansible-playbook` for [ansible forms](forms/ansible.html), with the python libraries and collections of its image, and sends the output and the final status back to the server over one WebSocket, without database credentials (see [How the RTE runs](rte/#how-the-rte-runs)) |
 | **AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins** | Runners for templates and jobs: [AWX forms](forms/awx.html) launch a job or workflow template, [Semaphore](forms/semaphore.html), [Rundeck](forms/rundeck.html) and [Jenkins](forms/jenkins.html) forms launch one of their jobs, and the server follows its output |
-| **MySQL / MariaDB** | Holds the jobs and their output, the users, the credentials and the connections; the app and every RTE share it |
+| **MySQL / MariaDB** | Holds the jobs and their output, the users, the credentials and the connections; only the server reads and writes it |
 | **Persistent folder** | Holds `config.yaml`, the form files, the playbooks, the logs and the backups |
 | **Data sources** | Fill the fields: [database queries](formfields/enum.html), [REST APIs](expressions/rest-apis.html), files and [other functions](expressions/remote.html) |
 | **Secret stores** | Supply the user and password of a credential at use time, see [Secret stores](secret-stores/) |
@@ -164,8 +164,8 @@ A launch goes through the same steps whether it comes from the browser or from t
    with its credentials sealed for it, and runs `ansible-playbook` (see [How the RTE runs](rte/#how-the-rte-runs)),
    and AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins runs a template or a job. A [workflow](workflows/) runs its nodes, each as a
    job of its own on its own runner
-8. **Follow** : the output is saved in the database as it arrives, by the RTE itself for a playbook, or by the server as it reads it
-   from the other runners. The form page re-reads the job every two seconds, and the Jobs page follows it live as the server
+8. **Follow** : the server saves the output in the database as it arrives, sent by the RTE for a playbook, or read from the
+   other runners. The form page re-reads the job every two seconds, and the Jobs page follows it live as the server
    announces each change
 9. **End** : the job gets its final status, and its [`notifications`](forms/notifications.html) go out by mail and to its
    [notification channels](notification-channels.html) when the form asks for them

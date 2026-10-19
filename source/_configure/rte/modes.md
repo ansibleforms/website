@@ -85,8 +85,8 @@ The [installer](../installation/installer.html#a-runner) sets up its inbound Run
 ## Database (deprecated)
 
 The RTE of 7.0 to 7.2: the app calls its API over HTTP, and the RTE claims the job in the database, writes the output there and keeps its
-own runner row up to date, with [`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER). [How the RTE runs](./#how-the-rte-runs)
-describes it step by step. It still works in 7.x, with a warning at every start, and is removed in 8.0.0.
+own runner row up to date, with [`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER). [Database mode](./#database-mode-deprecated)
+says how its steps differ. It still works in 7.x, with a warning at every start, and is removed in 8.0.0.
 
 To move such an RTE to a socket mode:
 
