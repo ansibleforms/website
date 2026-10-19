@@ -222,10 +222,10 @@ const SHOTS = {
   async credentials() {
     const { page, context } = await open();
     await visit(page, '/settings/credentials');
-    // a row opens the credential's page : its Connection tab shows the most of it
+    // a row opens the credential's page : its Login tab (host, port, database and user) shows the most of it
     await page.getByText('cmdb-database', { exact: true }).first().click();
     await page.waitForTimeout(1500);
-    await page.getByRole('link', { name: 'Connection' }).click();
+    await page.getByRole('link', { name: 'Login' }).click();
     await page.waitForTimeout(1000);
     await save(page, 'credentials');
     await context.close();
