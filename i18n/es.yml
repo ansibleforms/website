@@ -1,0 +1,40 @@
+# The Spanish docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: es
+docs_language: "es"
+
+title: Documentación de AnsibleForms
+description: Documentación técnica de AnsibleForms
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. Todos los derechos reservados."
+
+# "Edit this page on GitHub" opens the Spanish page's source
+gh_edit_link_text: "Editar esta página en GitHub"
+gh_edit_source: i18n/es
+
+just_the_docs:
+  collections:
+    introduction:
+      name: Introducción
+    get_started:
+      name: Primeros pasos
+    configure:
+      name: Configurar
+    build_forms:
+      name: Crear formularios
+    use:
+      name: Guía de usuario
+    integrate:
+      name: Integrar
+    reference:
+      name: Referencia
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x (última)"
+    url: "/es/"
+  - name: "6"
+    title: "6.x (en inglés)"
+    url: "/v6/"
