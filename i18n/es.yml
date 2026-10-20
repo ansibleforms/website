@@ -27,6 +27,8 @@ just_the_docs:
       name: Guía de usuario
     integrate:
       name: Integrar
+    security_assessment:
+      name: Seguridad
     reference:
       name: Referencia
 

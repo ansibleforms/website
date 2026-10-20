@@ -74,6 +74,18 @@ jobs:
           { printf -- "$front"; cat _app/CHANGELOG.md; } > source/_reference/changelog.md
           { printf -- "$front6"; cat _app6/CHANGELOG.md; } > source/v6/_reference/changelog.md
 
+      # The published security advisories of the app, for the Security advisories page
+      # (source/_security_assessment/security-assessment/advisories.md). Fetched on every build, so a
+      # new advisory reaches the site with the next build; a failed fetch fails the build rather than
+      # publishing a list that silently lost its entries.
+      - name: Bring in the security advisories
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api 'repos/ansibleforms/ansibleforms/security-advisories?state=published&per_page=100' > source/_data/advisories.json
+          echo "$(jq length source/_data/advisories.json) published advisories"
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:

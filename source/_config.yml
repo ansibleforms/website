@@ -126,6 +126,9 @@ collections:
   integrate:
     permalink: "/:path:output_ext"
     output: true
+  security_assessment:
+    permalink: "/:path:output_ext"
+    output: true
   reference:
     permalink: "/:path:output_ext"
     output: true
@@ -155,6 +158,10 @@ just_the_docs:
     integrate:
       name: Integrate
       icon: plug
+      nav_fold: true
+    security_assessment:
+      name: Security
+      icon: shield-halved
       nav_fold: true
     reference:
       name: Reference
