@@ -256,3 +256,13 @@ pre.highlight .language-treeview {
     margin-right: 0;
   }
 }
+
+/* Paragraphs, list items and table cells never end on a word or two alone on their last line, at any
+   width : the browser evens out the lines of a short one (balance, up to six lines) and
+   rebalances the last lines of a longer one (pretty). Browsers without them wrap as before */
+.main-content p,
+.main-content li,
+.main-content td {
+  text-wrap: pretty;
+  text-wrap: balance;
+}
