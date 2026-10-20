@@ -19,9 +19,9 @@
 <table>
   <thead>
     <tr>
-      <th>Variable</th>
-      <th>Choices/Defaults</th>
-      <th>Comments</th>
+      <th>{{ site.data.ui[site.docs_language].variable }}</th>
+      <th>{{ site.data.ui[site.docs_language].choices_defaults }}</th>
+      <th>{{ site.data.ui[site.docs_language].comments }}</th>
     </tr>
   </thead>
   <tbody>
@@ -32,19 +32,19 @@
         <span class="af-type">{{ var.type}}</span>
         {% if var.required==true %}<span class="af-required"> / required</span>{% endif %}
         {% if var.unique==true %}<span class="af-unique"> / unique</span>{% endif %}
-        {% if site.data.env_secrets contains var.name %}<span class="af-badge af-badge-secret" title="Holds a secret : keep it out of version control">Secret</span>{% endif %}
+        {% if site.data.env_secrets contains var.name %}<span class="af-badge af-badge-secret" title="{{ site.data.ui[site.docs_language].secret_title }}">{{ site.data.ui[site.docs_language].secret }}</span>{% endif %}
         <br>
         {% if var.version %}<span class="af-version">added in version {{var.version}}</span>{% endif %}
       </td>
       <td>
         {% if var.choices.size > 0 %}
         <div>
-          <strong>Choices:</strong><br>
+          <strong>{{ site.data.ui[site.docs_language].choices }}</strong><br>
           <ul class="af-choices-list">
             {% for c in var.choices %}
             <li>
               {% if c.name == var.default %}
-              <span title="{{ c.description }}" class="af-default-choice">{{ c.name }} (default)</span>
+              <span title="{{ c.description }}" class="af-default-choice">{{ c.name }} {{ site.data.ui[site.docs_language].default_choice }}</span>
               {% else %}
               <span title="{{ c.description }}">{{ c.name }}</span>
               {% endif %}
@@ -54,7 +54,7 @@
         </div>
         {% elsif var.default != nil %}               
         <div>
-          <strong>Default:</strong><br>
+          <strong>{{ site.data.ui[site.docs_language].default }}</strong><br>
           <span>{{ var.default }}</span>
         </div>   
         {% endif %}       
@@ -73,7 +73,7 @@
         <div class="af-changelog">
           {% if c.type == "added" %}
           <div class="af-changelog-header">
-            <span class="af-badge af-badge-added">Added</span>
+            <span class="af-badge af-badge-added">{{ site.data.ui[site.docs_language].added }}</span>
             <span class="af-badge af-badge-version">{{ c.version }}</span>
           </div>
           {% endif %}
@@ -84,7 +84,7 @@
         {% endfor %}
         {% if var.example != nil %}
         <p>
-          <strong>Examples:</strong><br>
+          <strong>{{ site.data.ui[site.docs_language].examples }}</strong><br>
           <code>{{ var.example }}</code>
         </p>
         {% endif %}

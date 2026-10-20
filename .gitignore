@@ -12,3 +12,6 @@ vendor/
 _app/
 _app6/
 source/_data/help.yaml
+
+# A language other than English is assembled here before it is built (scripts/build-language.sh)
+_build/

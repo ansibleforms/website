@@ -45,10 +45,19 @@ docs_version: "7"
 docs_versions:
   - name: "7"
     title: "7.x (latest)"
-    url: "/"
+    url: "/en/"
   - name: "6"
     title: "6.x"
     url: "/v6/"
+
+# Docs languages : the selector at the right of the header (_includes/language_select.html).
+# Each language is its own build under /<code>/ ; docs_language marks the one this site is
+# written in. A language is listed here once its pages exist : its pages live in i18n/<code>/,
+# its settings in i18n/<code>.yml, and scripts/build-language.sh builds it.
+docs_language: "en"
+docs_languages:
+  - code: "en"
+    label: "English"
 
 # Aux links (top right)
 aux_links:

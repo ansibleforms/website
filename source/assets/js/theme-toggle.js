@@ -25,7 +25,7 @@
     // the label sits in a span like the other header links, so phones can show the icon alone
     const label = document.createElement('span');
     label.className = 'aux-nav-label';
-    label.textContent = 'Theme';
+    label.textContent = '{{ site.data.ui[site.docs_language].theme }}';
     link.appendChild(label);
     
     listItem.appendChild(link);

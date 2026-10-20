@@ -45,7 +45,7 @@ docs_version: "6"
 docs_versions:
   - name: "7"
     title: "7.x (latest)"
-    url: "/"
+    url: "/en/"
   - name: "6"
     title: "6.x"
     url: "/v6/"

@@ -19,7 +19,7 @@
     
     const tocTitle = document.createElement('div');
     tocTitle.className = 'right-toc-title';
-    tocTitle.textContent = 'On this page';
+    tocTitle.textContent = '{{ site.data.ui[site.docs_language].on_this_page }}';
     tocContainer.appendChild(tocTitle);
     
     // Build TOC structure

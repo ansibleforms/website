@@ -17,3 +17,13 @@
 <script defer src="{{ '/assets/js/right-toc.js' | relative_url }}"></script>
 <script defer src="{{ '/assets/js/tabs.js' | relative_url }}"></script>
 <script defer src="{{ '/assets/js/nav-groups.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/language-select.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/search-strings.js' | relative_url }}"></script>
+
+<!-- The same page in every docs language (docs_languages in _config.yml), for search engines -->
+{%- unless page.nav_exclude %}
+{%- for lang in site.docs_languages %}
+<link rel="alternate" hreflang="{{ lang.code }}" href="{{ site.url }}/{{ lang.code }}{{ page.url }}">
+{%- endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ site.url }}/en{{ page.url }}">
+{%- endunless %}

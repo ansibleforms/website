@@ -162,3 +162,97 @@ pre.highlight .language-treeview {
     border: 0;
   }
 }
+
+/* Language selector (_includes/language_select.html) : the flag of the current language in
+   the header, a menu of every language below it, as in the app */
+.af-lang {
+  position: relative;
+}
+
+/* the theme scrolls the header links (overflow: auto), which would clip the menu ; they fit
+   on every width, phones showing the icons alone. The extra .main-header outweighs the
+   theme stylesheet, which theme-toggle.js loads after this one */
+.main-header .aux-nav {
+  overflow: visible;
+}
+
+.af-lang-button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 14px;
+}
+
+.af-flag {
+  width: 1.35em;
+  height: 0.9em;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+  vertical-align: -0.1em;
+  flex-shrink: 0;
+}
+
+.af-lang-button .af-flag {
+  margin-right: 0.5rem;
+}
+
+.af-lang-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  min-width: 11rem;
+  margin: 0.25rem 0 0;
+  padding: 0.35rem;
+  list-style: none;
+  background: var(--body-background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.12);
+}
+
+.af-lang-menu[hidden] {
+  display: none;
+}
+
+.af-lang-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+.af-lang-menu li::before {
+  content: none;
+}
+
+.af-lang-menu a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  color: var(--body-text-color);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.af-lang-menu a:hover,
+.af-lang-menu a.active {
+  background: var(--af-accent-soft);
+}
+
+.af-lang-check {
+  margin-left: auto;
+  padding-left: 1rem;
+  color: var(--link-color);
+}
+
+@media (max-width: 49.99rem) {
+  .af-lang-button {
+    font-size: 18px;
+  }
+
+  .af-lang-button .af-flag {
+    margin-right: 0;
+  }
+}

@@ -8,8 +8,8 @@
 <table>
   <thead>
     <tr>
-      <th>Attribute</th>
-      <th>Comments</th>
+      <th>{{ site.data.ui[site.docs_language].attribute }}</th>
+      <th>{{ site.data.ui[site.docs_language].comments }}</th>
     </tr>
   </thead>
   <tbody>
@@ -48,7 +48,7 @@
         <div class="af-changelog">
           {% if c.type == "added" %}
           <div class="af-changelog-header">
-            <span class="af-badge af-badge-added">Added</span>
+            <span class="af-badge af-badge-added">{{ site.data.ui[site.docs_language].added }}</span>
             <span class="af-badge af-badge-version">{{ c.version }}</span>
           </div>
           {% endif %}
@@ -58,7 +58,7 @@
         </div>
         {% endfor %}
         {% if var.examples %}
-        <p><strong>Examples:</strong></p>
+        <p><strong>{{ site.data.ui[site.docs_language].examples }}</strong></p>
         {% endif %}
         {% for e in var.examples %}
         <div>

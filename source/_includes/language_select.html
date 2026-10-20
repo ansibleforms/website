@@ -1,0 +1,41 @@
+{%- comment -%}
+  Docs language selector, the last item of the header (components/aux_nav.html), as in the
+  app : the button shows the flag of the current language, the menu lists every language
+  with its flag and name, the current one checked. The languages are listed in _config.yml
+  (docs_languages), and docs_language marks the one this site is written in.
+
+  Each language is its own build under /<code>/, with the same paths, so a link keeps the
+  reader on the same page in the other language. A page outside the docs (the Helm charts
+  page, the 404 page, both served from the root) links to the home page of each language.
+  The urls are absolute on purpose, like the version selector : relative_url would put
+  this language's own prefix in front of every other language.
+
+  Opening and closing the menu : assets/js/language-select.js.
+{%- endcomment -%}
+{%- assign af_current = site.docs_languages | where: "code", site.docs_language | first -%}
+{%- if af_current -%}
+<li class="aux-nav-list-item af-lang">
+  <button type="button" class="site-button af-lang-button" aria-haspopup="true" aria-expanded="false"
+    aria-label="{{ site.data.ui[site.docs_language].language }}" title="{{ af_current.label }}">
+    {% include flag.html code=af_current.code %}
+    <span class="aux-nav-label">{{ af_current.label }}</span>
+  </button>
+  <ul class="af-lang-menu" hidden>
+    {%- for lang in site.docs_languages %}
+    {%- if page.nav_exclude -%}
+      {%- assign af_href = "/" | append: lang.code | append: "/" -%}
+    {%- else -%}
+      {%- assign af_href = "/" | append: lang.code | append: page.url -%}
+    {%- endif %}
+    <li>
+      <a href="{{ af_href }}" hreflang="{{ lang.code }}" lang="{{ lang.code }}"
+        {% if lang.code == site.docs_language %}class="active" aria-current="true"{% endif %}>
+        {% include flag.html code=lang.code %}
+        <span>{{ lang.label }}</span>
+        {%- if lang.code == site.docs_language %}<i class="fa-solid fa-check af-lang-check" aria-hidden="true"></i>{% endif %}
+      </a>
+    </li>
+    {%- endfor %}
+  </ul>
+</li>
+{%- endif -%}
