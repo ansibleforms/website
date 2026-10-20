@@ -52,7 +52,7 @@
     {% if nav_footer_custom != "" %}
       {{ nav_footer_custom }}
     {% else %}
-      This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.
+      {{ site.data.ui[site.docs_language].theme_credit }}
     {% endif %}
   </div>
 </footer>

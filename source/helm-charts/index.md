@@ -2,6 +2,7 @@
 layout: default
 title: Helm charts
 permalink: /helm-charts/
+canonical_url: https://ansibleforms.com/helm-charts/
 nav_exclude: true
 search_exclude: true
 gh_edit_link: false

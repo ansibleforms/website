@@ -5,7 +5,7 @@
   in front of the link back to the current docs.
 {%- endcomment -%}
 <div class="version-select">
-  <label for="version-select">Version</label>
+  <label for="version-select">{{ site.data.ui[site.docs_language].version }}</label>
   <select id="version-select" onchange="window.location.href = this.value">
     {%- for version in site.docs_versions %}
     <option value="{{ version.url }}"{% if version.name == site.docs_version %} selected{% endif %}>{{ version.title }}</option>

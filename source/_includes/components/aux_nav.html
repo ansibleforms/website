@@ -3,7 +3,9 @@
   - aux_links_new_tab only opens links to other sites in a new tab ; a link into this site
     (one that starts with site.url, such as the Helm charts page) opens in the same tab ;
   - the label sits in a span (aux-nav-label), which phones hide to show the icons alone
-    (assets/css/custom.css).
+    (assets/css/custom.css) ;
+  - the label is translated when _data/ui.yml has it for the docs language ;
+  - the language selector closes the list (_includes/language_select.html).
   When the theme is upgraded, compare with its components/aux_nav.html.
 {%- endcomment -%}
 <nav aria-label="Auxiliary" class="aux-nav">
@@ -17,9 +19,10 @@
           target="_blank" rel="noopener noreferrer"
           {% endif %}
         >
-          <span class="aux-nav-label">{{ link.first }}</span>
+          <span class="aux-nav-label">{{ site.data.ui[site.docs_language].aux[link.first] | default: link.first }}</span>
         </a>
       </li>
     {% endfor %}
+    {% include language_select.html %}
   </ul>
 </nav>

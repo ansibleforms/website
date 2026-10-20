@@ -89,8 +89,19 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v6
 
+      # The docs live under a language prefix : English under /en/, built from source/, and every
+      # other language of docs_languages (source/_config.yml) under its own code, built from
+      # source/ with its translated pages laid over it (scripts/build-language.sh). English comes
+      # first : the other languages reuse its heading anchors. The install script, the Helm
+      # repository and the 404 page stay at the root, served from the English build.
       - name: Build with Jekyll
-        run: bundle exec jekyll build --source source --destination _site --baseurl "${{ steps.pages.outputs.base_path }}"
+        run: |
+          set -euo pipefail
+          scripts/build-language.sh en _site "${{ steps.pages.outputs.base_path }}"
+          for code in $(ruby -ryaml -e 'puts YAML.load_file("source/_config.yml")["docs_languages"].map { |l| l["code"] } - ["en"]'); do
+            scripts/build-language.sh "$code" _site "${{ steps.pages.outputs.base_path }}"
+            scripts/i18n-status.sh "$code"
+          done
         env:
           JEKYLL_ENV: production
 
@@ -100,6 +111,13 @@ jobs:
         run: bundle exec jekyll build --source source/v6 --destination _site/v6 --baseurl "${{ steps.pages.outputs.base_path }}/v6"
         env:
           JEKYLL_ENV: production
+
+      # Every page that used to live at the root (ansibleforms.com/seed) keeps its address,
+      # as a page that sends the browser on to /en/. Released apps link to these addresses.
+      - name: Redirect the old addresses to /en/
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url || 'https://ansibleforms.com' }}
+        run: scripts/redirects.sh _site "${{ steps.pages.outputs.base_path }}"
 
       # curl -fsSL https://ansibleforms.com/install | sh : source/install, served as it is. It
       # must reach the site unchanged (no front matter, so Jekyll copies it) and be valid sh.

@@ -1,0 +1,28 @@
+# The site's own interface strings, per docs language (docs_language in _config.yml) : the
+# includes read them as site.data.ui[site.docs_language]. The page text itself is translated
+# page by page, under i18n/<language>/ ; a language added to docs_languages needs its block here.
+en:
+  language: Language
+  version: Version
+  previous: "&larr; Previous"
+  next: "Next &rarr;"
+  prev_next_label: Previous and next page
+  attribute: Attribute
+  comments: Comments
+  variable: Variable
+  choices_defaults: Choices/Defaults
+  choices: "Choices:"
+  default: "Default:"
+  default_choice: (default)
+  examples: "Examples:"
+  added: Added
+  secret: Secret
+  secret_title: "Holds a secret : keep it out of version control"
+  with_types: "Only available with types:"
+  search: Search
+  toc: Table of contents
+  on_this_page: On this page
+  no_results: No results found
+  theme: Theme
+  aux: {}
+  theme_credit: 'This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.'

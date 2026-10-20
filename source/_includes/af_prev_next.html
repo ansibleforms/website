@@ -32,18 +32,18 @@
   {%- comment -%} Step 3 : the two cards ; Next stays in the right column when there is no Previous {%- endcomment -%}
   {%- if af_found -%}
     {%- if af_prev == "" -%}{%- assign af_prev = nil -%}{%- endif -%}
-    <nav class="af-prev-next" aria-label="Previous and next page">
+    <nav class="af-prev-next" aria-label="{{ site.data.ui[site.docs_language].prev_next_label }}">
       {%- if af_prev -%}
         {%- assign af_parts = af_prev | split: "##" -%}
         <a class="af-prev-next-link af-prev" href="{{ af_parts[0] | relative_url }}" rel="prev">
-          <span class="af-prev-next-label">&larr; Previous</span>
+          <span class="af-prev-next-label">{{ site.data.ui[site.docs_language].previous }}</span>
           <strong>{{ af_parts[1] | escape }}</strong>
         </a>
       {%- endif -%}
       {%- if af_next -%}
         {%- assign af_parts = af_next | split: "##" -%}
         <a class="af-prev-next-link af-next" href="{{ af_parts[0] | relative_url }}" rel="next">
-          <span class="af-prev-next-label">Next &rarr;</span>
+          <span class="af-prev-next-label">{{ site.data.ui[site.docs_language].next }}</span>
           <strong>{{ af_parts[1] | escape }}</strong>
         </a>
       {%- endif -%}
