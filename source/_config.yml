@@ -58,6 +58,8 @@ docs_language: "en"
 docs_languages:
   - code: "en"
     label: "English"
+  - code: "es"
+    label: "Español"
 
 # Aux links (top right)
 aux_links:

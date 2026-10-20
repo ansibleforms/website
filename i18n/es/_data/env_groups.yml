@@ -1,0 +1,53 @@
+# Subpáginas de Variables de entorno: qué variables de help.yaml muestra cada página. Una variable
+# que no está en ningún grupo se lista en "Otras variables" en la página de Variables de entorno.
+- slug: server
+  title: Servidor y base de datos
+  lead: el servidor web, los proxies de confianza, la conexión a MySQL, la cuenta de admin y lo que ejecuta cada proceso (app o RTE)
+  vars: [NODE_ENV, PORT, BASE_URL, TRUST_PROXY, HTTPS, HTTPS_KEY, HTTPS_CERT, DEFAULT_LANGUAGE,
+         DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_POOL_SIZE, ALLOW_SCHEMA_CREATION,
+         ADMIN_USERNAME, ADMIN_PASSWORD, REINIT_ADMIN, API_BODY_LIMIT_MB, MAX_HTTP_HEADER_SIZE, UPLOAD_MAX_GB,
+         PROCESS_MAX_BUFFER,
+         AF_ROLE, RTE_MODE, APP_URL, APP_TLS_VERIFY, RTE_JOIN_TOKEN, RTE_NAME, RTE_FILES, RTE_FILES_MAX_MB,
+         RTE_SPOOL_PATH, RTE_CACHE_PATH, RTE_CACHE_MB, RTE_URL, RTE_TOKEN, RTE_REGISTER, RTE_MAX_JOBS, RTE_DRAIN_SECONDS, RTE_QUEUE_MINUTES,
+         LISTEN_HOST]
+- slug: paths
+  title: Rutas
+  lead: dónde están la configuración, los formularios, los playbooks, los workflows, los archivos subidos y las copias de seguridad
+  vars: [CONFIG_PATH, FORMS_FOLDER_PATH, FORMS_STAGING_PATH, FORMS_BACKUP_PATH, HOME_PATH, REPO_PATH,
+         VARS_FILES_PATH, INVENTORY_PATH, ANSIBLE_PATH, WORKFLOWS_PATH, UPLOAD_PATH, BACKUP_PATH]
+- slug: retention
+  title: Copias de seguridad y retención
+  lead: los comandos de copia de seguridad, la copia antes de una actualización y cuánto tiempo se conservan las copias, los trabajos y los registros de auditoría
+  vars: [MYSQLDUMP_COMMAND, MYSQL_COMMAND, BACKUP_COMMAND_TIMEOUT_SECONDS, UPGRADE_BACKUP, OLD_BACKUP_DAYS,
+         NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
+- slug: features
+  title: Funciones
+  lead: el diseñador, MCP, el chat, la validación del lanzamiento, la lista de trabajos, las métricas, la API de AWX y el registro de consultas
+  vars: [SHOW_DESIGNER, ENABLE_MCP, MCP_READ_ONLY, MCP_CHAT_FORMS_ONLY, ENABLE_CHAT, LAUNCH_VALIDATION, JOBS_LIST_SIZE,
+         METRICS_TOKEN, AWX_API_PREFIX, AWX_LOST_MINUTES, ENABLE_DB_QUERY_LOGGING]
+- slug: configuration
+  title: Configuración
+  lead: la semilla de configuración, dónde se guarda la configuración, git e ytt
+  vars: [CONFIG_SEED_PATH, CONFIG_SEED_RELOAD_SECONDS, ALLOW_ENV_EDIT, ENABLE_CONFIG_IN_DATABASE, GIT_CLONE_COMMAND,
+         GIT_PULL_COMMAND, GIT_PUSH_COMMAND, USE_YTT, YTT_ALLOW_SYMLINK_DESTINATIONS,
+         YTT_DANGEROUS_ALLOW_ALL_SYMLINK_DESTINATIONS, YTT_VARS_PREFIX, "YTT_LIB_DATA_{dynamic}"]
+- slug: security
+  title: Variables de seguridad
+  lead: límites de inicio de sesión, contraseñas, inicio de sesión único, tokens, cifrado, la política del navegador, límites de REST saliente y de jq, enmascaramiento y las variables VAULT_*, leídas una vez para importar un almacén de secretos
+  # ENABLE_SSO y SSO_AUTO_LOGIN se eliminan en la 7.3.0: en su lugar, un interruptor por proveedor SSO, consulta
+  # /authentication/#switching-single-sign-on
+  vars: [LOGIN_MAX_FAILURES, LOGIN_MAX_FAILURES_PER_IP, LOGIN_LOCKOUT_MINUTES, AUTH_RATE_LIMIT, PASSWORD_MIN_LENGTH,
+         ACCESS_TOKEN_SECRET, ACCESS_TOKEN_EXPIRATION, ACCESS_TOKEN_REFRESH_EXPIRATION,
+         ACCESS_TOKEN_ISSUER, API_TOKEN_MAX_DAYS, ENCRYPTION_SECRET, ENCRYPTION_SECRET_PREVIOUS, CONTENT_SECURITY_POLICY,
+         ENTRA_AUTHORITY_URI, ENTRA_GRAPH_URI, AZURE_AUTHORITY_URI, AZURE_GRAPH_URI,
+         REST_ALLOWED_HOSTS, REST_DENIED_HOSTS, REST_IGNORE_CERTS, REST_TIMEOUT_SECONDS, JQ_TIMEOUT_SECONDS, EXPRESSION_SANITIZER,
+         REGEX_FILTER_JOB_OUTPUT, MASK_EXTRAVARS_REGEX, EXTRAVARS_USER_FIELDS,
+         # VAULT_*: solo las lee el primer arranque de la 7.x, que las importa una vez como el almacén de secretos `vault`
+         # (server/src/secrets/importVaultEnv.js); después el almacén se gestiona en Conexiones > Almacenes de secretos
+         VAULT_ADDR, VAULT_TOKEN, VAULT_NAMESPACE, VAULT_KV_VERSION, VAULT_DEFAULT_MOUNT, VAULT_CACHE_TTL_MS, VAULT_SKIP_VERIFY]
+- slug: logging
+  title: Registro
+  lead: los niveles de log, el formato del log, los archivos y cuánto tiempo se conservan, syslog y los colores de la consola
+  vars: [LOG_LEVEL, LOG_FORMAT, LOG_PATH, LOG_RETENTION_DAYS, LOG_CONSOLE_LEVEL, LOG_TZ, LOG_SYSLOG_HOST, LOG_SYSLOG_LEVEL, LOG_SYSLOG_PORT,
+         LOG_SYSLOG_PROTOCOL, LOG_SYSLOG_PATH, LOG_SYSLOG_SOURCE, LOG_SYSLOG_TYPE, LOG_SYSLOG_APPNAME,
+         LOG_COLOR_ERROR, LOG_COLOR_WARN, LOG_COLOR_NOTICE, LOG_COLOR_INFO, LOG_COLOR_DEBUG]

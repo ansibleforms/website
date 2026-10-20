@@ -26,3 +26,30 @@ en:
   theme: Theme
   aux: {}
   theme_credit: 'This site uses <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.'
+es:
+  language: Idioma
+  version: Versión
+  previous: "&larr; Anterior"
+  next: "Siguiente &rarr;"
+  prev_next_label: Página anterior y siguiente
+  attribute: Atributo
+  comments: Comentarios
+  variable: Variable
+  choices_defaults: Opciones/Valores predeterminados
+  choices: "Opciones:"
+  default: "Valor predeterminado:"
+  default_choice: (predeterminado)
+  examples: "Ejemplos:"
+  added: Añadido
+  secret: Secreto
+  secret_title: "Contiene un secreto: mantenlo fuera del control de versiones"
+  with_types: "Solo disponible con los tipos:"
+  search: Buscar en
+  toc: Índice
+  on_this_page: En esta página
+  no_results: No se han encontrado resultados
+  theme: Tema
+  # the header links of _config.yml (aux_links), by their English label
+  aux:
+    Images: Imágenes
+  theme_credit: 'Este sitio usa <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, un tema de documentación para Jekyll.'
