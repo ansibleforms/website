@@ -1,0 +1,46 @@
+# The Japanese docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: ja
+docs_language: "ja"
+
+title: "AnsibleForms ドキュメント"
+description: "AnsibleForms の技術ドキュメント"
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. All rights reserved."
+
+# "Edit this page on GitHub" opens the Japanese page's source
+gh_edit_link_text: "GitHub でこのページを編集"
+gh_edit_source: i18n/ja
+
+just_the_docs:
+  collections:
+    introduction:
+      name: "はじめに"
+    get_started:
+      name: "クイックスタート"
+    configure:
+      name: "設定"
+    build_forms:
+      name: "フォームの作成"
+    use:
+      name: "ユーザーガイド"
+    integrate:
+      name: "連携"
+    security_assessment:
+      name: "セキュリティ"
+    reference:
+      name: "リファレンス"
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x (最新)"
+    url: "/ja/"
+  - name: "6"
+    title: "6.x (英語)"
+    url: "/v6/"
+
+# Search : full-width punctuation separates words too (the CJK pairing is in _includes/lunr/custom-index.js)
+search:
+  tokenizer_separator: /[\s/、。，．：；！？「」『』（）【】・]+/

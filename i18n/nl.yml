@@ -1,0 +1,42 @@
+# The Dutch docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: nl
+docs_language: "nl"
+
+title: "AnsibleForms-documentatie"
+description: "Technische documentatie van AnsibleForms"
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. Alle rechten voorbehouden."
+
+# "Edit this page on GitHub" opens the Dutch page's source
+gh_edit_link_text: "Deze pagina bewerken op GitHub"
+gh_edit_source: i18n/nl
+
+just_the_docs:
+  collections:
+    introduction:
+      name: "Introductie"
+    get_started:
+      name: "Aan de slag"
+    configure:
+      name: "Configureren"
+    build_forms:
+      name: "Formulieren bouwen"
+    use:
+      name: "Gebruikershandleiding"
+    integrate:
+      name: "Integreren"
+    security_assessment:
+      name: "Beveiliging"
+    reference:
+      name: "Naslag"
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x (nieuwste)"
+    url: "/nl/"
+  - name: "6"
+    title: "6.x (in het Engels)"
+    url: "/v6/"

@@ -50,16 +50,35 @@ docs_versions:
     title: "6.x"
     url: "/v6/"
 
-# Docs languages : the selector at the right of the header (_includes/language_select.html).
+# Docs languages : the selector at the right of the header (_includes/language_select.html),
+# in the app's order (client/src/config/languages.js), alphabetical by label.
 # Each language is its own build under /<code>/ ; docs_language marks the one this site is
 # written in. A language is listed here once its pages exist : its pages live in i18n/<code>/,
 # its settings in i18n/<code>.yml, and scripts/build-language.sh builds it.
 docs_language: "en"
 docs_languages:
+  - code: "ca"
+    label: "Català"
+  - code: "de"
+    label: "Deutsch"
   - code: "en"
     label: "English"
   - code: "es"
     label: "Español"
+  - code: "fr"
+    label: "Français"
+  - code: "it"
+    label: "Italiano"
+  - code: "nl"
+    label: "Nederlands"
+  - code: "pl"
+    label: "Polski"
+  - code: "pt"
+    label: "Português"
+  - code: "ja"
+    label: "日本語"
+  - code: "zh"
+    label: "简体中文"
 
 # Aux links (top right)
 aux_links:

@@ -1,0 +1,46 @@
+# The Simplified Chinese docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: zh
+docs_language: "zh"
+
+title: "AnsibleForms 文档"
+description: "AnsibleForms 技术文档"
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. 保留所有权利。"
+
+# "Edit this page on GitHub" opens the Simplified Chinese page's source
+gh_edit_link_text: "在 GitHub 上编辑此页"
+gh_edit_source: i18n/zh
+
+just_the_docs:
+  collections:
+    introduction:
+      name: "简介"
+    get_started:
+      name: "快速入门"
+    configure:
+      name: "配置"
+    build_forms:
+      name: "构建表单"
+    use:
+      name: "用户指南"
+    integrate:
+      name: "集成"
+    security_assessment:
+      name: "安全"
+    reference:
+      name: "参考"
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x（最新）"
+    url: "/zh/"
+  - name: "6"
+    title: "6.x（英文）"
+    url: "/v6/"
+
+# Search : full-width punctuation separates words too (the CJK pairing is in _includes/lunr/custom-index.js)
+search:
+  tokenizer_separator: /[\s/、。，．：；！？「」『』（）【】・]+/

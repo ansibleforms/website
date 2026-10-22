@@ -18,7 +18,7 @@ The site covers everything a user of AnsibleForms needs, from the first install 
 - The app's changelog, rebuilt into the site on every release
 - The Helm chart repository, served under `/helm-charts/`
 - The 6.x documentation, kept alongside under `/v6/`
-- The docs in English and Spanish under `/en/` and `/es/`, picked from the reader's browser language
+- The docs in the app's eleven languages, each under its ISO 639-1 code (`/en/`, `/es/`, `/fr/`, `/ja/`...), picked from the reader's browser language
 
 ## Previewing locally
 

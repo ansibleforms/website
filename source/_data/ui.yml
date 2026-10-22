@@ -53,3 +53,238 @@ es:
   aux:
     Images: Imágenes
   theme_credit: 'Este sitio usa <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, un tema de documentación para Jekyll.'
+ca:
+  language: Idioma
+  version: Versió
+  previous: "&larr; Anterior"
+  next: "Següent &rarr;"
+  prev_next_label: Pàgina anterior i següent
+  attribute: Atribut
+  comments: Comentaris
+  variable: Variable
+  choices_defaults: Opcions/Valors per defecte
+  choices: "Opcions:"
+  default: "Valor per defecte:"
+  default_choice: (per defecte)
+  examples: "Exemples:"
+  added: Afegit
+  secret: Secret
+  secret_title: "Conté un secret: mantén-lo fora del control de versions"
+  with_types: "Només disponible amb els tipus:"
+  search: Cerca
+  toc: Índex
+  on_this_page: En aquesta pàgina
+  no_results: No s'ha trobat cap resultat
+  theme: Tema
+  aux:
+    Images: Imatges
+  theme_credit: 'Aquest lloc fa servir <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, un tema de documentació per a Jekyll.'
+de:
+  language: Sprache
+  version: Version
+  previous: "&larr; Zurück"
+  next: "Weiter &rarr;"
+  prev_next_label: Vorherige und nächste Seite
+  attribute: Attribut
+  comments: Kommentare
+  variable: Variable
+  choices_defaults: Auswahl/Standardwerte
+  choices: "Auswahl:"
+  default: "Standard:"
+  default_choice: (Standard)
+  examples: "Beispiele:"
+  added: Hinzugefügt
+  secret: Geheim
+  secret_title: "Enthält ein Geheimnis: nicht in die Versionskontrolle aufnehmen"
+  with_types: "Nur verfügbar mit den Typen:"
+  search: Suchen
+  toc: Inhaltsverzeichnis
+  on_this_page: Auf dieser Seite
+  no_results: Keine Ergebnisse gefunden
+  theme: Design
+  aux:
+    Images: Images
+  theme_credit: 'Diese Website verwendet <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, ein Dokumentations-Theme für Jekyll.'
+fr:
+  language: Langue
+  version: Version
+  previous: "&larr; Précédent"
+  next: "Suivant &rarr;"
+  prev_next_label: Page précédente et suivante
+  attribute: Attribut
+  comments: Commentaires
+  variable: Variable
+  choices_defaults: Choix/Valeurs par défaut
+  choices: "Choix :"
+  default: "Par défaut :"
+  default_choice: (par défaut)
+  examples: "Exemples :"
+  added: Ajouté
+  secret: Secret
+  secret_title: "Contient un secret : à garder hors du contrôle de version"
+  with_types: "Disponible uniquement avec les types :"
+  search: Rechercher
+  toc: Table des matières
+  on_this_page: Sur cette page
+  no_results: Aucun résultat
+  theme: Thème
+  aux:
+    Images: Images
+  theme_credit: 'Ce site utilise <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, un thème de documentation pour Jekyll.'
+it:
+  language: Lingua
+  version: Versione
+  previous: "&larr; Precedente"
+  next: "Successiva &rarr;"
+  prev_next_label: Pagina precedente e successiva
+  attribute: Attributo
+  comments: Commenti
+  variable: Variabile
+  choices_defaults: Scelte/Valori predefiniti
+  choices: "Scelte:"
+  default: "Predefinito:"
+  default_choice: (predefinito)
+  examples: "Esempi:"
+  added: Aggiunto
+  secret: Segreto
+  secret_title: "Contiene un segreto: tienilo fuori dal controllo di versione"
+  with_types: "Disponibile solo con i tipi:"
+  search: Cerca
+  toc: Indice
+  on_this_page: In questa pagina
+  no_results: Nessun risultato trovato
+  theme: Tema
+  aux:
+    Images: Immagini
+  theme_credit: 'Questo sito usa <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, un tema di documentazione per Jekyll.'
+nl:
+  language: Taal
+  version: Versie
+  previous: "&larr; Vorige"
+  next: "Volgende &rarr;"
+  prev_next_label: Vorige en volgende pagina
+  attribute: Attribuut
+  comments: Opmerkingen
+  variable: Variabele
+  choices_defaults: Keuzes/Standaardwaarden
+  choices: "Keuzes:"
+  default: "Standaard:"
+  default_choice: (standaard)
+  examples: "Voorbeelden:"
+  added: Toegevoegd
+  secret: Geheim
+  secret_title: "Bevat een geheim: houd het buiten versiebeheer"
+  with_types: "Alleen beschikbaar bij de types:"
+  search: Zoeken
+  toc: Inhoudsopgave
+  on_this_page: Op deze pagina
+  no_results: Geen resultaten gevonden
+  theme: Thema
+  aux:
+    Images: Images
+  theme_credit: 'Deze site gebruikt <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, een documentatiethema voor Jekyll.'
+pl:
+  language: Język
+  version: Wersja
+  previous: "&larr; Poprzednia"
+  next: "Następna &rarr;"
+  prev_next_label: Poprzednia i następna strona
+  attribute: Atrybut
+  comments: Komentarze
+  variable: Zmienna
+  choices_defaults: Opcje/Wartości domyślne
+  choices: "Opcje:"
+  default: "Domyślnie:"
+  default_choice: (domyślnie)
+  examples: "Przykłady:"
+  added: Dodano
+  secret: Sekret
+  secret_title: "Zawiera sekret: trzymaj go poza systemem kontroli wersji"
+  with_types: "Dostępne tylko dla typów:"
+  search: Szukaj
+  toc: Spis treści
+  on_this_page: Na tej stronie
+  no_results: Brak wyników
+  theme: Motyw
+  aux:
+    Images: Obrazy
+  theme_credit: 'Ta strona korzysta z <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, motywu dokumentacji dla Jekylla.'
+pt:
+  language: Idioma
+  version: Versão
+  previous: "&larr; Anterior"
+  next: "Seguinte &rarr;"
+  prev_next_label: Página anterior e seguinte
+  attribute: Atributo
+  comments: Comentários
+  variable: Variável
+  choices_defaults: Opções/Valores predefinidos
+  choices: "Opções:"
+  default: "Predefinição:"
+  default_choice: (predefinição)
+  examples: "Exemplos:"
+  added: Adicionado
+  secret: Segredo
+  secret_title: "Contém um segredo: mantém-no fora do controlo de versões"
+  with_types: "Disponível apenas com os tipos:"
+  search: Pesquisar
+  toc: Índice
+  on_this_page: Nesta página
+  no_results: Nenhum resultado encontrado
+  theme: Tema
+  aux:
+    Images: Imagens
+  theme_credit: 'Este site usa o <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>, um tema de documentação para Jekyll.'
+ja:
+  language: 言語
+  version: バージョン
+  previous: "&larr; 前へ"
+  next: "次へ &rarr;"
+  prev_next_label: 前のページと次のページ
+  attribute: 属性
+  comments: 説明
+  variable: 変数
+  choices_defaults: 選択肢/既定値
+  choices: "選択肢:"
+  default: "既定値:"
+  default_choice: (既定)
+  examples: "例:"
+  added: 追加
+  secret: シークレット
+  secret_title: "シークレットを含みます。バージョン管理に含めないでください"
+  with_types: "次のタイプでのみ使用可能:"
+  search: 検索
+  toc: 目次
+  on_this_page: このページの内容
+  no_results: 該当する結果はありません
+  theme: テーマ
+  aux:
+    Images: イメージ
+    Charts: チャート
+  theme_credit: 'このサイトは Jekyll 用のドキュメントテーマ <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a> を使用しています。'
+zh:
+  language: 语言
+  version: 版本
+  previous: "&larr; 上一页"
+  next: "下一页 &rarr;"
+  prev_next_label: 上一页和下一页
+  attribute: 属性
+  comments: 说明
+  variable: 变量
+  choices_defaults: 可选值/默认值
+  choices: "可选值："
+  default: "默认值："
+  default_choice: （默认）
+  examples: "示例："
+  added: 新增于
+  secret: 机密
+  secret_title: "包含机密信息：请勿纳入版本控制"
+  with_types: "仅适用于以下类型："
+  search: 搜索
+  toc: 目录
+  on_this_page: 本页内容
+  no_results: 未找到结果
+  theme: 主题
+  aux:
+    Images: 镜像
+  theme_credit: '本站使用 Jekyll 文档主题 <a href="https://github.com/just-the-docs/just-the-docs">Just the Docs</a>。'
