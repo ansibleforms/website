@@ -1,0 +1,42 @@
+# The Catalan docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: ca
+docs_language: "ca"
+
+title: "Documentació d'AnsibleForms"
+description: "Documentació tècnica d'AnsibleForms"
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. Tots els drets reservats."
+
+# "Edit this page on GitHub" opens the Catalan page's source
+gh_edit_link_text: "Edita aquesta pàgina a GitHub"
+gh_edit_source: i18n/ca
+
+just_the_docs:
+  collections:
+    introduction:
+      name: "Introducció"
+    get_started:
+      name: "Primers passos"
+    configure:
+      name: "Configuració"
+    build_forms:
+      name: "Creació de formularis"
+    use:
+      name: "Guia d'usuari"
+    integrate:
+      name: "Integració"
+    security_assessment:
+      name: "Seguretat"
+    reference:
+      name: "Referència"
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x (la més recent)"
+    url: "/ca/"
+  - name: "6"
+    title: "6.x (en anglès)"
+    url: "/v6/"

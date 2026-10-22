@@ -1,0 +1,42 @@
+# The German docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: de
+docs_language: "de"
+
+title: "AnsibleForms-Dokumentation"
+description: "Technische Dokumentation von AnsibleForms"
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. Alle Rechte vorbehalten."
+
+# "Edit this page on GitHub" opens the German page's source
+gh_edit_link_text: "Diese Seite auf GitHub bearbeiten"
+gh_edit_source: i18n/de
+
+just_the_docs:
+  collections:
+    introduction:
+      name: "Einführung"
+    get_started:
+      name: "Erste Schritte"
+    configure:
+      name: "Konfigurieren"
+    build_forms:
+      name: "Formulare erstellen"
+    use:
+      name: "Benutzerhandbuch"
+    integrate:
+      name: "Integrieren"
+    security_assessment:
+      name: "Sicherheit"
+    reference:
+      name: "Referenz"
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x (aktuell)"
+    url: "/de/"
+  - name: "6"
+    title: "6.x (auf Englisch)"
+    url: "/v6/"

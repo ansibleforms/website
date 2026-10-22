@@ -1,0 +1,42 @@
+# The Polish docs : read after source/_config.yml by scripts/build-language.sh, so only what
+# differs from the English site is set here. Jekyll merges the two, nested keys included.
+
+lang: pl
+docs_language: "pl"
+
+title: "Dokumentacja AnsibleForms"
+description: "Dokumentacja techniczna AnsibleForms"
+
+footer_content: "Copyright &copy; 2023-2026 AnsibleForms. Wszelkie prawa zastrzeżone."
+
+# "Edit this page on GitHub" opens the Polish page's source
+gh_edit_link_text: "Edytuj tę stronę w GitHub"
+gh_edit_source: i18n/pl
+
+just_the_docs:
+  collections:
+    introduction:
+      name: "Wprowadzenie"
+    get_started:
+      name: "Pierwsze kroki"
+    configure:
+      name: "Konfiguracja"
+    build_forms:
+      name: "Tworzenie formularzy"
+    use:
+      name: "Podręcznik użytkownika"
+    integrate:
+      name: "Integracje"
+    security_assessment:
+      name: "Bezpieczeństwo"
+    reference:
+      name: "Dokumentacja referencyjna"
+
+# The version selector (_includes/version_select.html) : a list is replaced, not merged
+docs_versions:
+  - name: "7"
+    title: "7.x (najnowsza)"
+    url: "/pl/"
+  - name: "6"
+    title: "6.x (po angielsku)"
+    url: "/v6/"

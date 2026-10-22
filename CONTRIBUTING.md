@@ -25,7 +25,7 @@ The site is everything under `source/`. Most of it is written here, but two file
 | `/helm-charts/` (the Helm chart repository) | the chart packages of the `ansibleforms/helm-charts` releases, indexed at build time | the `helm-charts` repository |
 | everything else in `source/` | this repository | here |
 
-The docs are served under a language prefix (`/en/`, `/es/`), and the language selector in the header lists
+The docs are served under a language prefix, its ISO 639-1 code (`/en/`, `/es/`, `/de/`...), and the language selector in the header lists
 every language in `docs_languages` (`source/_config.yml`). Every page that used to live at the root keeps
 its address as a redirect, written at build time by `scripts/redirects.sh`, to the reader's language: the
 one they last picked, else their browser's, else English. The install script (`/install`) and the Helm chart
