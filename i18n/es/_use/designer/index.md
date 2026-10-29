@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 77ea52f327e41f36adaf3be7d2b50c1d1716bcb6
+translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 ---
 
 # Diseñador
@@ -28,6 +28,7 @@ activadas por defecto: `allowPlaybookDesign` para los **Playbooks**, `allowWorkf
 de solo lectura y el servidor se niega a guardar, crear, eliminar o hacer push de sus archivos; los formularios y workflows aún pueden elegirlos. Los
 **Formularios**, las **Categorías** y las **Constantes** necesitan `allowFormDesign` del mismo modo: sin ella son de solo lectura, y el servidor
 se niega a guardarlos, hacer pull o hacer push de ellos. Solo una persona edita a la vez: consulta [El bloqueo del diseñador](lock.html).
+Un rol también puede ocultar los formularios, playbooks y workflows de otros equipos: consulta [Diseñadores limitados](#limited-designers).
 
 ---
 
@@ -75,3 +76,35 @@ Lo que muestran las pestañas Visual y Vista previa, sección por sección:
 | **Flujos de trabajo** | El grafo del workflow, para [editarlo](../workflows/designer.html) | Una [ejecución de prueba](../workflows/designer.html#trying-it-out): haz clic en un nodo para que falle |
 
 Cuando el YAML no se puede leer, las pestañas Visual y Vista previa dicen por qué, con **Ver en YAML** para abrir el YAML en esa línea.
+
+---
+
+## Diseñadores limitados
+
+Desde la 7.5.0 tres opciones de rol limitan qué formularios, playbooks y workflows muestra el diseñador, para que cada equipo diseñe los suyos.
+Las tres están activadas por defecto y siempre activadas para los admins:
+
+| Opción | Desactivada, el diseñador muestra solo |
+|---|---|
+| `designAllForms` (**Editar Todos los Formularios**) | Los formularios cuyos `roles` contienen uno de los roles del usuario, y los subformularios que ningún formulario oculto usa |
+| `designAllPlaybooks` (**Editar Todos los Playbooks**) | Los playbooks que ejecutan los formularios del usuario, y los que ningún formulario usa aún |
+| `designAllWorkflows` (**Editar Todos los Flujos de trabajo**) | Los archivos de workflow que ejecutan los formularios del usuario, anidados incluidos, y los que ningún formulario usa aún |
+
+Un formulario ejecuta un playbook mediante su `playbook`, sus pasos de ansible y los workflows que ejecuta. Lo que un diseñador limitado no puede hacer:
+
+- **Ver un archivo oculto.** Nunca se lista ni se nombra: abrir uno responde como un archivo que no existe, y un archivo nuevo con su nombre
+  como un archivo que ya existe.
+- **Apuntar a uno.** Un formulario que nombra un formulario oculto como subformulario no muestra nada de él, y se rechaza un formulario o
+  un archivo de workflow que nombra un playbook o un workflow oculto.
+- **Cambiar un subformulario compartido.** Un subformulario que también usa un formulario oculto es de solo lectura, y un formulario guardado
+  debe conservar uno de los roles del usuario.
+- **Tocar los formularios ocultos de un archivo.** Un archivo con varios formularios conserva los ocultos tal como están al guardar, y se
+  rechaza restaurar una copia de seguridad de los formularios.
+- **Añadir código que ejecuta el servidor.** Un formulario guardado no puede ganar una expresión ni una consulta que ejecute el servidor, y la
+  vista previa de un formulario aún no guardado no ejecuta ninguna expresión propia.
+- **Leer nombres de archivo en la salida de git.** La salida de un pull o de un push omite las líneas que nombran archivos.
+
+`allowFormDesign`, `allowPlaybookDesign` y `allowWorkflowDesign` siguen decidiendo si los archivos mostrados se pueden cambiar.
+Los inventarios, los archivos de variables, las categorías y las constantes siguen visibles para todo diseñador. Un usuario con solo una parte
+de la configuración ve solo sus propios formularios y archivos de workflow en las pestañas **Formularios** de las páginas de configuración y en
+la pestaña **Usado por** de una credencial.

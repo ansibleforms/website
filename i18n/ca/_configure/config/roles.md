@@ -3,7 +3,7 @@ layout: default
 title: Rols
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Rols
@@ -71,8 +71,11 @@ cada opció amb una (i) que explica què dona, el mateix text que mostra la vist
 | **Dissenyador** | | |
 | `showDesigner` | Veure i utilitzar el dissenyador | Només admins |
 | `allowFormDesign` | Editar la configuració de formularis al dissenyador: categories, constants i formularis. Sense aquesta opció, només lectura (des de la 7.3.0) | Activat |
+| `designAllForms` | Veure i editar tots els formularis al dissenyador. Sense aquesta opció, només els formularis dels rols de l'usuari (des de la 7.5.0) | Activat |
 | `allowPlaybookDesign` | Editar els playbooks al dissenyador: desar-los, crear-los, treure'ls i fer-ne push. Sense aquesta opció, només lectura | Activat |
+| `designAllPlaybooks` | Veure i editar tots els playbooks al dissenyador. Sense aquesta opció, només els que fan servir els formularis de l'usuari o que cap formulari fa servir encara (des de la 7.5.0) | Activat |
 | `allowWorkflowDesign` | Editar els workflows al dissenyador: desar-los, crear-los, treure'ls i fer-ne push. Sense aquesta opció, només lectura | Activat |
+| `designAllWorkflows` | Veure i editar tots els workflows al dissenyador. Sense aquesta opció, només els que fan servir els formularis de l'usuari o que cap formulari fa servir encara (des de la 7.5.0) | Activat |
 | `allowInventoryDesign` | Editar els inventaris al dissenyador: desar-los, crear-los, treure'ls i fer-ne push. Sense aquesta opció, només lectura | Activat |
 | `allowVarsFileDesign` | Editar els fitxers de variables al dissenyador: desar-los, crear-los, treure'ls i fer-ne push. Sense aquesta opció, només lectura | Activat |
 | **Tasques** | | |
@@ -104,6 +107,9 @@ Algunes opcions n'inclouen d'altres, i la pàgina del rol mostra les incloses ac
 
 Fins a la 7.2.0, `showAllJobLogs` també permetia a l'usuari avortar i suprimir les tasques que mostrava; des de la 7.3.0 això requereix `manageAllJobs`.
 Un rol d'abans de la 7.3.0 amb `extendedTokenExpiration` i sense `allowApiTokens` rep `allowApiTokens`, de manera que conserva els seus tokens.
+
+`designAllForms`, `designAllPlaybooks` i `designAllWorkflows` estan sempre activades per als admins, i el que el dissenyador mostra a un usuari
+sense aquestes opcions es descriu a [Dissenyadors limitats](../designer/#limited-designers).
 
 **Només admins** vol dir activat per als usuaris que tenen el rol `admin`, i desactivat per a tota la resta. Quan un usuari coincideix amb diversos rols,
 les opcions es combinen així:

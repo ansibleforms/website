@@ -3,7 +3,7 @@ layout: default
 title: Rollen
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Rollen
@@ -71,8 +71,11 @@ elke instelling met een (i) die zegt wat ze geeft, dezelfde tekst die de weergav
 | **Designer** | | |
 | `showDesigner` | De designer te zien en te gebruiken | Alleen admins |
 | `allowFormDesign` | De formulierconfiguratie in de designer te bewerken: categorieën, constanten en formulieren. Zonder deze instelling alleen-lezen (vanaf 7.3.0) | Aan |
+| `designAllForms` | Elk formulier in de designer te zien en te bewerken. Zonder deze instelling alleen de formulieren van de rollen van de gebruiker (vanaf 7.5.0) | Aan |
 | `allowPlaybookDesign` | De playbooks in de designer te bewerken: opslaan, aanmaken, verwijderen en pushen. Zonder deze instelling alleen-lezen | Aan |
+| `designAllPlaybooks` | Elk playbook in de designer te zien en te bewerken. Zonder deze instelling alleen die de formulieren van de gebruiker gebruiken of die nog geen formulier gebruikt (vanaf 7.5.0) | Aan |
 | `allowWorkflowDesign` | De workflows in de designer te bewerken: opslaan, aanmaken, verwijderen en pushen. Zonder deze instelling alleen-lezen | Aan |
+| `designAllWorkflows` | Elke workflow in de designer te zien en te bewerken. Zonder deze instelling alleen die de formulieren van de gebruiker gebruiken of die nog geen formulier gebruikt (vanaf 7.5.0) | Aan |
 | `allowInventoryDesign` | De inventories in de designer te bewerken: opslaan, aanmaken, verwijderen en pushen. Zonder deze instelling alleen-lezen | Aan |
 | `allowVarsFileDesign` | De vars-bestanden in de designer te bewerken: opslaan, aanmaken, verwijderen en pushen. Zonder deze instelling alleen-lezen | Aan |
 | **Jobs** | | |
@@ -104,6 +107,9 @@ Sommige instellingen omvatten andere, en de pagina van de rol toont de inbegrepe
 
 Tot en met 7.2.0 liet `showAllJobLogs` een gebruiker ook de getoonde jobs afbreken en verwijderen; vanaf 7.3.0 is daarvoor `manageAllJobs` nodig.
 Een rol van vóór 7.3.0 met `extendedTokenExpiration` en zonder `allowApiTokens` krijgt `allowApiTokens`, zodat hij zijn tokens behoudt.
+
+`designAllForms`, `designAllPlaybooks` en `designAllWorkflows` staan altijd aan voor admins, en wat de designer een gebruiker zonder
+deze instellingen toont, staat in [Beperkte ontwerpers](../designer/#limited-designers).
 
 **Alleen admins** betekent aan voor gebruikers met de rol `admin`, en uit voor alle anderen. Als een gebruiker met meerdere rollen overeenkomt,
 worden de instellingen als volgt gecombineerd:

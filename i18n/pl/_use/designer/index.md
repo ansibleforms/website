@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 77ea52f327e41f36adaf3be7d2b50c1d1716bcb6
+translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 ---
 
 # Projektant
@@ -28,6 +28,7 @@ domyślnie włączone: `allowPlaybookDesign` dla **Playbooki**, `allowWorkflowDe
 tylko do odczytu, a serwer odmawia zapisywania, tworzenia, usuwania i wypychania jej plików; formularze i workflowy nadal mogą je wybierać.
 **Formularze**, **Kategorie** i **Stałe** w ten sam sposób wymagają `allowFormDesign`: bez niej są tylko do odczytu, a serwer
 odmawia ich zapisywania, pobierania (pull) i wypychania (push). Edytować może tylko jedna osoba naraz: zobacz [Blokada projektanta](lock.html).
+Rola może też ukryć formularze, playbooki i workflowy innych zespołów: zobacz [Ograniczeni projektanci](#limited-designers).
 
 ---
 
@@ -75,3 +76,34 @@ Co pokazują karty Wizualny i Podgląd w poszczególnych sekcjach:
 | **Przepływy pracy** | Graf workflow, do [edycji](../workflows/designer.html) | [Próbne uruchomienie](../workflows/designer.html#trying-it-out): kliknij węzeł, aby zakończył się błędem |
 
 Gdy YAML nie da się odczytać, karty Wizualny i Podgląd podają przyczynę, z przyciskiem **Pokaż w YAML**, który otwiera YAML w odpowiednim wierszu.
+
+---
+
+## Ograniczeni projektanci
+
+Od 7.5.0 trzy opcje roli ograniczają, które formularze, playbooki i workflowy pokazuje projektant, tak aby każdy zespół projektował własne.
+Wszystkie trzy są domyślnie włączone i zawsze włączone dla adminów:
+
+| Opcja | Gdy jest wyłączona, projektant pokazuje tylko |
+|---|---|
+| `designAllForms` (**Edytować Wszystkie Formularze**) | Formularze, których `roles` zawierają jedną z ról użytkownika, oraz podformularze, których nie używa żaden ukryty formularz |
+| `designAllPlaybooks` (**Edytować Wszystkie Playbooki**) | Playbooki uruchamiane przez formularze użytkownika oraz te, których nie używa jeszcze żaden formularz |
+| `designAllWorkflows` (**Edytować Wszystkie Przepływy pracy**) | Pliki workflow uruchamiane przez formularze użytkownika, łącznie z zagnieżdżonymi, oraz te, których nie używa jeszcze żaden formularz |
+
+Formularz uruchamia playbook przez swój `playbook`, swoje kroki ansible i workflowy, które uruchamia. Czego ograniczony projektant nie może zrobić:
+
+- **Zobaczyć ukrytego pliku.** Nigdy nie jest wyświetlany na liście ani wymieniany: otwarcie go odpowiada jak brakujący plik, a nowy plik o jego
+  nazwie jak plik, który już istnieje.
+- **Wskazać na niego.** Formularz, który wymienia ukryty formularz jako podformularz, nic z niego nie pokazuje, a formularz lub plik workflow,
+  który wymienia ukryty playbook lub workflow, zostaje odrzucony.
+- **Zmienić wspólnego podformularza.** Podformularz, którego używa też ukryty formularz, jest tylko do odczytu, a zapisany formularz musi
+  zachować jedną z ról użytkownika.
+- **Ruszyć ukrytych formularzy pliku.** Plik z kilkoma formularzami zachowuje przy zapisie ukryte bez zmian, a przywrócenie kopii zapasowej
+  formularzy zostaje odrzucone.
+- **Dodać kodu, który uruchamia serwer.** Zapisany formularz nie może zyskać wyrażenia ani zapytania uruchamianego przez serwer, a podgląd
+  formularza jeszcze niezapisanego nie uruchamia żadnego własnego wyrażenia.
+- **Czytać nazw plików w wyjściu git.** Wyjście pull lub push pomija wiersze, które wymieniają pliki.
+
+`allowFormDesign`, `allowPlaybookDesign` i `allowWorkflowDesign` nadal decydują, czy pokazane pliki można zmieniać.
+Inwentarze, pliki zmiennych, kategorie i stałe pozostają widoczne dla każdego projektanta. Użytkownik z tylko częścią ustawień widzi tylko
+własne formularze i pliki workflow na kartach **Formularze** stron ustawień i na karcie **Używane przez** poświadczenia.

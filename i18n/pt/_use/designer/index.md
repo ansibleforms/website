@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 77ea52f327e41f36adaf3be7d2b50c1d1716bcb6
+translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 ---
 
 # Designer
@@ -28,6 +28,7 @@ ligadas por predefinição: `allowPlaybookDesign` para os **Playbooks**, `allowW
 só de leitura e o servidor recusa-se a guardar, criar, remover ou enviar (push) os seus ficheiros; os formulários e os workflows continuam a poder escolhê-los. Os
 **Formulários**, as **Categorias** e as **Constantes** precisam de `allowFormDesign` da mesma forma: sem ela ficam só de leitura, e o servidor
 recusa-se a guardá-los, a fazer pull ou a enviá-los. Só uma pessoa edita de cada vez: ver [O bloqueio do designer](lock.html).
+Uma função também pode esconder os formulários, playbooks e workflows de outras equipas: ver [Designers limitados](#limited-designers).
 
 ---
 
@@ -75,3 +76,35 @@ O que mostram os separadores Visual e Pré-visualização, secção a secção:
 | **Fluxos de trabalho** | O grafo do workflow, para o [editar](../workflows/designer.html) | Um [ensaio](../workflows/designer.html#trying-it-out): clique num nó para o fazer falhar |
 
 Quando o YAML não pode ser lido, os separadores Visual e Pré-visualização dizem porquê, com **Ver em YAML** para abrir o YAML na linha.
+
+---
+
+## Designers limitados
+
+A partir da 7.5.0, três opções de função limitam que formulários, playbooks e workflows o designer mostra, para que cada equipa desenhe os seus.
+As três estão ligadas por predefinição e sempre ligadas para os admins:
+
+| Opção | Desligada, o designer mostra só |
+|---|---|
+| `designAllForms` (**Editar Todos os Formulários**) | Os formulários cujos `roles` contêm uma das funções do utilizador, e os subformulários que nenhum formulário escondido usa |
+| `designAllPlaybooks` (**Editar Todos os Playbooks**) | Os playbooks que os formulários do utilizador executam, e os que nenhum formulário usa ainda |
+| `designAllWorkflows` (**Editar Todos os Fluxos de trabalho**) | Os ficheiros de workflow que os formulários do utilizador executam, aninhados incluídos, e os que nenhum formulário usa ainda |
+
+Um formulário executa um playbook através do seu `playbook`, dos seus passos ansible e dos workflows que executa. O que um designer limitado não pode fazer:
+
+- **Ver um ficheiro escondido.** Nunca é listado nem nomeado: abrir um responde como um ficheiro que não existe, e um ficheiro novo com o seu
+  nome como um ficheiro que já existe.
+- **Apontar para um.** Um formulário que nomeia um formulário escondido como subformulário não mostra nada dele, e um formulário ou ficheiro de
+  workflow que nomeia um playbook ou workflow escondido é recusado.
+- **Alterar um subformulário partilhado.** Um subformulário que um formulário escondido também usa fica só de leitura, e um formulário guardado
+  tem de manter uma das funções do utilizador.
+- **Mexer nos formulários escondidos de um ficheiro.** Um ficheiro com vários formulários mantém os escondidos como estão ao guardar, e a
+  restauração de uma cópia de segurança dos formulários é recusada.
+- **Acrescentar código que o servidor executa.** Um formulário guardado não pode ganhar uma expressão nem uma consulta que o servidor execute, e
+  a pré-visualização de um formulário ainda não guardado não executa nenhuma expressão própria.
+- **Ler nomes de ficheiros na saída do git.** A saída de um pull ou de um push omite as linhas que nomeiam ficheiros.
+
+`allowFormDesign`, `allowPlaybookDesign` e `allowWorkflowDesign` continuam a decidir se os ficheiros mostrados podem ser alterados.
+Os inventários, ficheiros de variáveis, categorias e constantes continuam visíveis para todos os designers. Um utilizador com só uma parte das
+definições vê só os seus próprios formulários e ficheiros de workflow nos separadores **Formulários** das páginas de definições e no separador
+**Usado por** de uma credencial.

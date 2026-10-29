@@ -3,7 +3,7 @@ layout: default
 title: 角色
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # 角色
@@ -71,8 +71,11 @@ config.yaml 的顶层 `roles` 列表：
 | **设计器** | | |
 | `showDesigner` | 查看和使用设计器 | 仅管理员 |
 | `allowFormDesign` | 在设计器中编辑表单配置：类别、常量和表单。没有它则为只读（从 7.3.0 起） | 开 |
+| `designAllForms` | 在设计器中查看和编辑所有表单。没有它则只有用户角色的表单（从 7.5.0 起） | 开 |
 | `allowPlaybookDesign` | 在设计器中编辑 playbook：保存、创建、删除和推送。没有它则为只读 | 开 |
+| `designAllPlaybooks` | 在设计器中查看和编辑所有 playbook。没有它则只有用户的表单使用的，以及尚无表单使用的（从 7.5.0 起） | 开 |
 | `allowWorkflowDesign` | 在设计器中编辑工作流：保存、创建、删除和推送。没有它则为只读 | 开 |
+| `designAllWorkflows` | 在设计器中查看和编辑所有工作流。没有它则只有用户的表单使用的，以及尚无表单使用的（从 7.5.0 起） | 开 |
 | `allowInventoryDesign` | 在设计器中编辑清单：保存、创建、删除和推送。没有它则为只读 | 开 |
 | `allowVarsFileDesign` | 在设计器中编辑变量文件：保存、创建、删除和推送。没有它则为只读 | 开 |
 | **作业** | | |
@@ -104,6 +107,9 @@ config.yaml 的顶层 `roles` 列表：
 
 在 7.2.0 及更早版本中，`showAllJobLogs` 还允许用户中止和删除其显示的作业；从 7.3.0 起，这需要 `manageAllJobs`。
 7.3.0 之前设置了 `extendedTokenExpiration` 但没有 `allowApiTokens` 的角色会获得 `allowApiTokens`，以便保留其令牌。
+
+`designAllForms`、`designAllPlaybooks` 和 `designAllWorkflows` 对管理员始终开启；没有这些选项时设计器向用户显示什么，
+见[受限的设计者](../designer/#limited-designers)。
 
 **仅管理员** 表示对拥有 `admin` 角色的用户打开，对其他所有人关闭。当用户匹配多个角色时，
 选项按如下方式合并：
