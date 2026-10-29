@@ -3,7 +3,7 @@ layout: default
 title: Funções
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Funções
@@ -71,8 +71,11 @@ cada opção com um (i) que diz o que concede, o mesmo texto que a vista **Permi
 | **Designer** | | |
 | `showDesigner` | Ver e usar o designer | Só admins |
 | `allowFormDesign` | Editar a configuração dos formulários no designer: categorias, constantes e formulários. Sem ela, só leitura (a partir da 7.3.0) | Ligado |
+| `designAllForms` | Ver e editar todos os formulários no designer. Sem ela, só os formulários das funções do utilizador (a partir da 7.5.0) | Ligado |
 | `allowPlaybookDesign` | Editar os playbooks no designer: guardá-los, criá-los, removê-los e enviá-los (push). Sem ela, só leitura | Ligado |
+| `designAllPlaybooks` | Ver e editar todos os playbooks no designer. Sem ela, só os que os formulários do utilizador usam ou que nenhum formulário usa ainda (a partir da 7.5.0) | Ligado |
 | `allowWorkflowDesign` | Editar os workflows no designer: guardá-los, criá-los, removê-los e enviá-los (push). Sem ela, só leitura | Ligado |
+| `designAllWorkflows` | Ver e editar todos os workflows no designer. Sem ela, só os que os formulários do utilizador usam ou que nenhum formulário usa ainda (a partir da 7.5.0) | Ligado |
 | `allowInventoryDesign` | Editar os inventários no designer: guardá-los, criá-los, removê-los e enviá-los (push). Sem ela, só leitura | Ligado |
 | `allowVarsFileDesign` | Editar os ficheiros de variáveis no designer: guardá-los, criá-los, removê-los e enviá-los (push). Sem ela, só leitura | Ligado |
 | **Tarefas** | | |
@@ -104,6 +107,9 @@ Algumas opções incluem outras, e a página da função mostra as incluídas li
 
 Até à 7.2.0, `showAllJobLogs` também deixava um utilizador abortar e eliminar as tarefas que mostrava; a partir da 7.3.0 isso requer `manageAllJobs`.
 Uma função de antes da 7.3.0 com `extendedTokenExpiration` e sem `allowApiTokens` recebe `allowApiTokens`, para manter os seus tokens.
+
+`designAllForms`, `designAllPlaybooks` e `designAllWorkflows` estão sempre ligadas para os admins, e o que o designer mostra a um utilizador
+sem elas é descrito em [Designers limitados](../designer/#limited-designers).
 
 **Só admins** significa ligado para os utilizadores que têm a função `admin`, e desligado para todos os outros. Quando um utilizador corresponde a várias funções,
 as opções combinam-se assim:

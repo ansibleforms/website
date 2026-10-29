@@ -3,7 +3,7 @@ layout: default
 title: ロール
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # ロール
@@ -71,8 +71,11 @@ config.yaml の最上位の `roles` リスト：
 | **デザイナー** | | |
 | `showDesigner` | デザイナーの表示と使用 | 管理者のみ |
 | `allowFormDesign` | デザイナーでフォームの設定（カテゴリ、定数、フォーム）を編集。ない場合は読み取り専用（7.3.0 から） | オン |
+| `designAllForms` | デザイナーですべてのフォームを表示・編集。ない場合はユーザーのロールのフォームだけ（7.5.0 から） | オン |
 | `allowPlaybookDesign` | デザイナーでプレイブックを編集（保存、作成、削除、プッシュ）。ない場合は読み取り専用 | オン |
+| `designAllPlaybooks` | デザイナーですべてのプレイブックを表示・編集。ない場合はユーザーのフォームが使うものと、まだどのフォームも使っていないものだけ（7.5.0 から） | オン |
 | `allowWorkflowDesign` | デザイナーでワークフローを編集（保存、作成、削除、プッシュ）。ない場合は読み取り専用 | オン |
+| `designAllWorkflows` | デザイナーですべてのワークフローを表示・編集。ない場合はユーザーのフォームが使うものと、まだどのフォームも使っていないものだけ（7.5.0 から） | オン |
 | `allowInventoryDesign` | デザイナーでインベントリを編集（保存、作成、削除、プッシュ）。ない場合は読み取り専用 | オン |
 | `allowVarsFileDesign` | デザイナーで変数ファイルを編集（保存、作成、削除、プッシュ）。ない場合は読み取り専用 | オン |
 | **ジョブ** | | |
@@ -104,6 +107,9 @@ config.yaml の最上位の `roles` リスト：
 
 7.2.0 までは、 `showAllJobLogs` で表示されるジョブの中止と削除もできました。7.3.0 からは `manageAllJobs` が必要です。
 7.3.0 より前の、 `extendedTokenExpiration` があって `allowApiTokens` がないロールには `allowApiTokens` が付与されるので、トークンはそのまま使えます。
+
+`designAllForms`、 `designAllPlaybooks`、 `designAllWorkflows` は管理者には常にオンです。これらがないユーザーにデザイナーが何を表示するかは
+[制限付きのデザイナー利用者](../designer/#limited-designers) で説明しています。
 
 **管理者のみ** は、 `admin` ロールを持つユーザーにはオン、それ以外の全員にはオフという意味です。ユーザーが複数のロールに一致する場合、
 オプションは次のように組み合わされます。

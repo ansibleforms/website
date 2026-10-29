@@ -70,8 +70,11 @@ each option with an (i) that says what it gives, the same text the **Permissions
 | **Designer** | | |
 | `showDesigner` | See and use the designer | Admins only |
 | `allowFormDesign` | Edit the forms config in the designer: categories, constants and forms. Without it, read-only (from 7.3.0) | On |
+| `designAllForms` | Show and edit every form in the designer. Without it, only the forms of the user's roles (from 7.5.0) | On |
 | `allowPlaybookDesign` | Edit the playbooks in the designer: save, create, remove and push them. Without it, read-only | On |
+| `designAllPlaybooks` | Show and edit every playbook in the designer. Without it, only the ones the user's forms use or no form uses yet (from 7.5.0) | On |
 | `allowWorkflowDesign` | Edit the workflows in the designer: save, create, remove and push them. Without it, read-only | On |
+| `designAllWorkflows` | Show and edit every workflow in the designer. Without it, only the ones the user's forms use or no form uses yet (from 7.5.0) | On |
 | `allowInventoryDesign` | Edit the inventories in the designer: save, create, remove and push them. Without it, read-only | On |
 | `allowVarsFileDesign` | Edit the vars files in the designer: save, create, remove and push them. Without it, read-only | On |
 | **Jobs** | | |
@@ -103,6 +106,9 @@ Some options include others, and the role's page shows the included ones on and 
 
 Up to 7.2.0, `showAllJobLogs` also let a user abort and delete the jobs it showed; from 7.3.0 that takes `manageAllJobs`.
 A role from before 7.3.0 with `extendedTokenExpiration` and without `allowApiTokens` gets `allowApiTokens`, so it keeps its tokens.
+
+`designAllForms`, `designAllPlaybooks` and `designAllWorkflows` are always on for admins, and what the designer shows a user
+without them is described in [Limited designers](../designer/#limited-designers).
 
 **Admins only** means on for users who hold the `admin` role, and off for everyone else. When a user matches several roles,
 the options are combined as follows:

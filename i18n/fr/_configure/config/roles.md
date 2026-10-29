@@ -3,7 +3,7 @@ layout: default
 title: Rôles
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Rôles
@@ -71,8 +71,11 @@ chaque option avec un (i) qui explique ce qu'elle donne, le même texte que celu
 | **Concepteur** | | |
 | `showDesigner` | Voir et utiliser le concepteur | Admins uniquement |
 | `allowFormDesign` | Modifier la config des formulaires dans le concepteur : catégories, constantes et formulaires. Sans elle, lecture seule (depuis la 7.3.0) | Activé |
+| `designAllForms` | Voir et modifier tous les formulaires dans le concepteur. Sans elle, seulement les formulaires des rôles de l'utilisateur (depuis la 7.5.0) | Activé |
 | `allowPlaybookDesign` | Modifier les playbooks dans le concepteur : les enregistrer, créer, retirer et pousser. Sans elle, lecture seule | Activé |
+| `designAllPlaybooks` | Voir et modifier tous les playbooks dans le concepteur. Sans elle, seulement ceux qu'utilisent les formulaires de l'utilisateur ou qu'aucun formulaire n'utilise encore (depuis la 7.5.0) | Activé |
 | `allowWorkflowDesign` | Modifier les workflows dans le concepteur : les enregistrer, créer, retirer et pousser. Sans elle, lecture seule | Activé |
+| `designAllWorkflows` | Voir et modifier tous les workflows dans le concepteur. Sans elle, seulement ceux qu'utilisent les formulaires de l'utilisateur ou qu'aucun formulaire n'utilise encore (depuis la 7.5.0) | Activé |
 | `allowInventoryDesign` | Modifier les inventaires dans le concepteur : les enregistrer, créer, retirer et pousser. Sans elle, lecture seule | Activé |
 | `allowVarsFileDesign` | Modifier les fichiers de variables dans le concepteur : les enregistrer, créer, retirer et pousser. Sans elle, lecture seule | Activé |
 | **Jobs** | | |
@@ -104,6 +107,9 @@ Certaines options en incluent d'autres, et la page du rôle affiche celles qui s
 
 Jusqu'à la 7.2.0, `showAllJobLogs` permettait aussi à un utilisateur d'interrompre et de supprimer les jobs qu'elle affichait ; depuis la 7.3.0, il faut `manageAllJobs`.
 Un rôle d'avant la 7.3.0 avec `extendedTokenExpiration` et sans `allowApiTokens` reçoit `allowApiTokens`, et garde donc ses jetons.
+
+`designAllForms`, `designAllPlaybooks` et `designAllWorkflows` sont toujours activées pour les admins, et ce que le concepteur montre à un
+utilisateur sans elles est décrit dans [Concepteurs limités](../designer/#limited-designers).
 
 **Admins uniquement** signifie activé pour les utilisateurs qui ont le rôle `admin`, et désactivé pour tous les autres. Quand un utilisateur correspond à plusieurs rôles,
 les options se combinent comme suit :

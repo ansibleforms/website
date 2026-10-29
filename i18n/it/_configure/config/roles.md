@@ -3,7 +3,7 @@ layout: default
 title: Ruoli
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Ruoli
@@ -71,8 +71,11 @@ ogni opzione con una (i) che dice cosa concede, lo stesso testo mostrato dalla v
 | **Designer** | | |
 | `showDesigner` | Vedere e usare il designer | Solo admin |
 | `allowFormDesign` | Modificare la configurazione dei moduli nel designer: categorie, costanti e moduli. Senza, sola lettura (dalla 7.3.0) | Attivo |
+| `designAllForms` | Vedere e modificare tutti i moduli nel designer. Senza, solo i moduli dei ruoli dell'utente (dalla 7.5.0) | Attivo |
 | `allowPlaybookDesign` | Modificare i playbook nel designer: salvarli, crearli, rimuoverli e farne push. Senza, sola lettura | Attivo |
+| `designAllPlaybooks` | Vedere e modificare tutti i playbook nel designer. Senza, solo quelli usati dai moduli dell'utente o che nessun modulo usa ancora (dalla 7.5.0) | Attivo |
 | `allowWorkflowDesign` | Modificare i workflow nel designer: salvarli, crearli, rimuoverli e farne push. Senza, sola lettura | Attivo |
+| `designAllWorkflows` | Vedere e modificare tutti i workflow nel designer. Senza, solo quelli usati dai moduli dell'utente o che nessun modulo usa ancora (dalla 7.5.0) | Attivo |
 | `allowInventoryDesign` | Modificare gli inventari nel designer: salvarli, crearli, rimuoverli e farne push. Senza, sola lettura | Attivo |
 | `allowVarsFileDesign` | Modificare i file di variabili nel designer: salvarli, crearli, rimuoverli e farne push. Senza, sola lettura | Attivo |
 | **Job** | | |
@@ -104,6 +107,9 @@ Alcune opzioni ne includono altre, e la pagina del ruolo mostra quelle incluse a
 
 Fino alla 7.2.0, `showAllJobLogs` permetteva anche a un utente di interrompere ed eliminare i job che mostrava; dalla 7.3.0 serve `manageAllJobs`.
 Un ruolo di prima della 7.3.0 con `extendedTokenExpiration` e senza `allowApiTokens` riceve `allowApiTokens`, così mantiene i suoi token.
+
+`designAllForms`, `designAllPlaybooks` e `designAllWorkflows` sono sempre attive per gli admin, e ciò che il designer mostra a un utente
+senza di esse è descritto in [Designer limitati](../designer/#limited-designers).
 
 **Solo admin** significa attivo per gli utenti che hanno il ruolo `admin`, e disattivo per tutti gli altri. Quando un utente corrisponde a più ruoli,
 le opzioni si combinano così:

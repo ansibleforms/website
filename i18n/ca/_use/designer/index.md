@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 77ea52f327e41f36adaf3be7d2b50c1d1716bcb6
+translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 ---
 
 # Dissenyador
@@ -28,6 +28,7 @@ activades per defecte: `allowPlaybookDesign` per als **Playbooks**, `allowWorkfl
 de només lectura i el servidor es nega a desar, crear, treure o fer push dels seus fitxers; els formularis i els workflows encara els poden triar. Els
 **Formularis**, les **Categories** i les **Constants** necessiten `allowFormDesign` de la mateixa manera: sense aquesta opció són de només lectura, i el servidor
 es nega a desar-los, fer-ne pull o fer-ne push. Només edita una persona alhora: vegeu [El bloqueig del dissenyador](lock.html).
+Un rol també pot amagar els formularis, playbooks i workflows d'altres equips: vegeu [Dissenyadors limitats](#limited-designers).
 
 ---
 
@@ -75,3 +76,35 @@ Què mostren les pestanyes Visual i Previsualització, secció per secció:
 | **Fluxos de treball** | El graf del workflow, per [editar-lo](../workflows/designer.html) | Una [simulació](../workflows/designer.html#trying-it-out): fes clic en un node perquè falli |
 
 Quan el YAML no es pot llegir, les pestanyes Visual i Previsualització diuen per què, amb **Mostra en YAML** per obrir el YAML a la línia.
+
+---
+
+## Dissenyadors limitats
+
+Des de la 7.5.0 tres opcions de rol limiten quins formularis, playbooks i workflows mostra el dissenyador, perquè cada equip dissenyi els seus.
+Totes tres estan activades per defecte i sempre activades per als admins:
+
+| Opció | Desactivada, el dissenyador mostra només |
+|---|---|
+| `designAllForms` (**Editar Tots els Formularis**) | Els formularis amb uns `roles` que contenen un dels rols de l'usuari, i els subformularis que cap formulari amagat fa servir |
+| `designAllPlaybooks` (**Editar Tots els Playbooks**) | Els playbooks que executen els formularis de l'usuari, i els que cap formulari fa servir encara |
+| `designAllWorkflows` (**Editar Tots els Fluxos de treball**) | Els fitxers de workflow que executen els formularis de l'usuari, inclosos els imbricats, i els que cap formulari fa servir encara |
+
+Un formulari executa un playbook amb el seu `playbook`, els seus passos d'ansible i els workflows que executa. El que un dissenyador limitat no pot fer:
+
+- **Veure un fitxer amagat.** Mai no es llista ni s'anomena: obrir-ne un respon com un fitxer que no existeix, i un fitxer nou amb el seu nom
+  com un fitxer que ja existeix.
+- **Apuntar-hi.** Un formulari que anomena un formulari amagat com a subformulari no en mostra res, i es rebutja un formulari o un fitxer de
+  workflow que anomena un playbook o un workflow amagat.
+- **Canviar un subformulari compartit.** Un subformulari que també fa servir un formulari amagat és de només lectura, i un formulari desat ha
+  de conservar un dels rols de l'usuari.
+- **Tocar els formularis amagats d'un fitxer.** Un fitxer amb diversos formularis conserva els amagats tal com són en desar, i es rebutja
+  restaurar una còpia de seguretat dels formularis.
+- **Afegir codi que executa el servidor.** Un formulari desat no pot guanyar cap expressió ni cap consulta que executi el servidor, i la
+  previsualització d'un formulari encara no desat no executa cap expressió pròpia.
+- **Llegir noms de fitxer a la sortida de git.** La sortida d'un pull o d'un push omet les línies que anomenen fitxers.
+
+`allowFormDesign`, `allowPlaybookDesign` i `allowWorkflowDesign` continuen decidint si els fitxers mostrats es poden canviar.
+Els inventaris, els fitxers de variables, les categories i les constants continuen visibles per a tot dissenyador. Un usuari amb només una part
+de la configuració veu només els seus propis formularis i fitxers de workflow a les pestanyes **Formularis** de les pàgines de configuració i a
+la pestanya **Usat per** d'una credencial.

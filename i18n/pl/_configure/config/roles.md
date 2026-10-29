@@ -3,7 +3,7 @@ layout: default
 title: Role
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Role
@@ -71,8 +71,11 @@ każdą opcję z (i), które mówi, co daje, tym samym tekstem, który pokazuje 
 | **Projektant** | | |
 | `showDesigner` | Widzieć projektanta i z niego korzystać | Tylko admini |
 | `allowFormDesign` | Edytować konfigurację formularzy w projektancie: kategorie, stałe i formularze. Bez niej tylko do odczytu (od 7.3.0) | Włączona |
+| `designAllForms` | Widzieć i edytować każdy formularz w projektancie. Bez niej tylko formularze ról użytkownika (od 7.5.0) | Włączona |
 | `allowPlaybookDesign` | Edytować playbooki w projektancie: zapisywać, tworzyć, usuwać i wypychać je. Bez niej tylko do odczytu | Włączona |
+| `designAllPlaybooks` | Widzieć i edytować każdy playbook w projektancie. Bez niej tylko te, których używają formularze użytkownika lub których nie używa jeszcze żaden formularz (od 7.5.0) | Włączona |
 | `allowWorkflowDesign` | Edytować workflowy w projektancie: zapisywać, tworzyć, usuwać i wypychać je. Bez niej tylko do odczytu | Włączona |
+| `designAllWorkflows` | Widzieć i edytować każdy workflow w projektancie. Bez niej tylko te, których używają formularze użytkownika lub których nie używa jeszcze żaden formularz (od 7.5.0) | Włączona |
 | `allowInventoryDesign` | Edytować inwentarze w projektancie: zapisywać, tworzyć, usuwać i wypychać je. Bez niej tylko do odczytu | Włączona |
 | `allowVarsFileDesign` | Edytować pliki zmiennych w projektancie: zapisywać, tworzyć, usuwać i wypychać je. Bez niej tylko do odczytu | Włączona |
 | **Zadania** | | |
@@ -104,6 +107,9 @@ Niektóre opcje obejmują inne, a strona roli pokazuje te objęte jako włączon
 
 Do wersji 7.2.0 `showAllJobLogs` pozwalało też przerywać i usuwać wyświetlane zadania; od 7.3.0 wymaga to `manageAllJobs`.
 Rola sprzed 7.3.0 z `extendedTokenExpiration` i bez `allowApiTokens` dostaje `allowApiTokens`, więc zachowuje swoje tokeny.
+
+`designAllForms`, `designAllPlaybooks` i `designAllWorkflows` są zawsze włączone dla adminów, a to, co projektant pokazuje użytkownikowi
+bez nich, opisuje [Ograniczeni projektanci](../designer/#limited-designers).
 
 **Tylko admini** oznacza włączoną dla użytkowników z rolą `admin` i wyłączoną dla wszystkich pozostałych. Gdy użytkownik pasuje do kilku ról,
 opcje łączą się następująco:

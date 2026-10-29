@@ -26,7 +26,8 @@ on by default: `allowPlaybookDesign` for the **Playbooks**, `allowWorkflowDesign
 `allowInventoryDesign` for the **Inventories** and `allowVarsFileDesign` for the **Vars files**. Without one, its section is
 read-only and the server refuses to save, create, remove or push its files; forms and workflows can still pick them. The
 **Forms**, **Categories** and **Constants** need `allowFormDesign` the same way: without it they are read-only, and the server
-refuses to save, pull or push them. Only one person edits at a time: see [The designer lock](lock.html).
+refuses to save, pull or push them. A role can also hide the forms, playbooks and workflows of other teams: see
+[Limited designers](#limited-designers). Only one person edits at a time: see [The designer lock](lock.html).
 
 ---
 
@@ -74,3 +75,34 @@ What the Visual and Preview tabs show, section by section:
 | **Workflows** | The workflow's graph, to [edit it](../workflows/designer.html) | A [dry run](../workflows/designer.html#trying-it-out): click a node to make it fail |
 
 When the YAML cannot be read, the Visual and Preview tabs say why, with **Show in YAML** to open the YAML on the line.
+
+---
+
+## Limited designers
+
+From 7.5.0 three role options limit which forms, playbooks and workflows the designer shows, so each team designs its own.
+All three are on by default and always on for admins:
+
+| Option | Turned off, the designer shows only |
+|---|---|
+| `designAllForms` (**Edit All Forms**) | The forms whose `roles` hold one of the user's roles, and the subforms no hidden form uses |
+| `designAllPlaybooks` (**Edit All Playbooks**) | The playbooks the user's forms run, and the ones no form uses yet |
+| `designAllWorkflows` (**Edit All Workflows**) | The workflow files the user's forms run, nested ones included, and the ones no form uses yet |
+
+A form runs a playbook through its `playbook`, its ansible steps and the workflows it runs. What a limited designer cannot do:
+
+- **See a hidden file.** It is never listed nor named: opening one answers as a missing file, and a new file with its name
+  as a file that is already there.
+- **Point at one.** A form that names a hidden form as a subform shows nothing of it, and a form or workflow file that
+  names a hidden playbook or workflow is refused.
+- **Change a shared subform.** A subform that a hidden form uses too is read-only, and a saved form must keep one of the
+  user's roles.
+- **Touch the hidden forms of a file.** A file holding several forms keeps the hidden ones as they are on a save, and
+  restoring a forms backup is refused.
+- **Add code the server runs.** A saved form may not gain an expression or a query the server runs, and the preview of a
+  form not saved yet runs no expression of its own.
+- **Read file names in git output.** The output of a pull or a push leaves out the lines that name files.
+
+`allowFormDesign`, `allowPlaybookDesign` and `allowWorkflowDesign` still decide whether the files shown can be changed.
+Inventories, vars files, categories and constants stay visible to every designer. A user with only part of the settings sees
+only their own forms and workflow files on the settings pages' **Forms** tabs and on a credential's **Used by** tab.

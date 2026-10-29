@@ -3,7 +3,7 @@ layout: default
 title: Roles
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Roles
@@ -71,8 +71,11 @@ cada opción con una (i) que dice lo que da, el mismo texto que muestra la vista
 | **Diseñador** | | |
 | `showDesigner` | Ver y usar el diseñador | Solo admins |
 | `allowFormDesign` | Editar la configuración de formularios en el diseñador: categorías, constantes y formularios. Sin ella, solo lectura (desde la 7.3.0) | Activado |
+| `designAllForms` | Ver y editar todos los formularios en el diseñador. Sin ella, solo los formularios de los roles del usuario (desde la 7.5.0) | Activado |
 | `allowPlaybookDesign` | Editar los playbooks en el diseñador: guardarlos, crearlos, quitarlos y hacer push. Sin ella, solo lectura | Activado |
+| `designAllPlaybooks` | Ver y editar todos los playbooks en el diseñador. Sin ella, solo los que usan los formularios del usuario o que ningún formulario usa aún (desde la 7.5.0) | Activado |
 | `allowWorkflowDesign` | Editar los workflows en el diseñador: guardarlos, crearlos, quitarlos y hacer push. Sin ella, solo lectura | Activado |
+| `designAllWorkflows` | Ver y editar todos los workflows en el diseñador. Sin ella, solo los que usan los formularios del usuario o que ningún formulario usa aún (desde la 7.5.0) | Activado |
 | `allowInventoryDesign` | Editar los inventories en el diseñador: guardarlos, crearlos, quitarlos y hacer push. Sin ella, solo lectura | Activado |
 | `allowVarsFileDesign` | Editar los archivos de variables en el diseñador: guardarlos, crearlos, quitarlos y hacer push. Sin ella, solo lectura | Activado |
 | **Trabajos** | | |
@@ -104,6 +107,9 @@ Algunas opciones incluyen otras, y la página del rol muestra las incluidas acti
 
 Hasta la 7.2.0, `showAllJobLogs` también permitía al usuario abortar y eliminar los trabajos que mostraba; desde la 7.3.0 eso requiere `manageAllJobs`.
 Un rol de antes de la 7.3.0 con `extendedTokenExpiration` y sin `allowApiTokens` recibe `allowApiTokens`, así que conserva sus tokens.
+
+`designAllForms`, `designAllPlaybooks` y `designAllWorkflows` están siempre activadas para los admins, y lo que el diseñador muestra a un usuario
+sin ellas se describe en [Diseñadores limitados](../designer/#limited-designers).
 
 **Solo admins** significa activado para los usuarios que tienen el rol `admin`, y desactivado para todos los demás. Cuando un usuario coincide con varios roles,
 las opciones se combinan así:

@@ -3,7 +3,7 @@ layout: default
 title: Rollen
 parent: config.yaml
 nav_order: 2
-translated_from: c23a8fb9203e85e81cd128d2c129228c0a207f6c
+translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
 ---
 
 # Rollen
@@ -71,8 +71,11 @@ jede Option mit einem (i), das sagt, was sie gewährt, derselbe Text, den die An
 | **Designer** | | |
 | `showDesigner` | Den Designer sehen und verwenden | Nur Admins |
 | `allowFormDesign` | Die Formularkonfiguration im Designer bearbeiten: Kategorien, Konstanten und Formulare. Ohne sie nur lesen (ab 7.3.0) | Ein |
+| `designAllForms` | Jedes Formular im Designer sehen und bearbeiten. Ohne sie nur die Formulare der Rollen des Benutzers (ab 7.5.0) | Ein |
 | `allowPlaybookDesign` | Die Playbooks im Designer bearbeiten: speichern, erstellen, entfernen und pushen. Ohne sie nur lesen | Ein |
+| `designAllPlaybooks` | Jedes Playbook im Designer sehen und bearbeiten. Ohne sie nur die, die die Formulare des Benutzers verwenden oder noch kein Formular verwendet (ab 7.5.0) | Ein |
 | `allowWorkflowDesign` | Die Workflows im Designer bearbeiten: speichern, erstellen, entfernen und pushen. Ohne sie nur lesen | Ein |
+| `designAllWorkflows` | Jeden Workflow im Designer sehen und bearbeiten. Ohne sie nur die, die die Formulare des Benutzers verwenden oder noch kein Formular verwendet (ab 7.5.0) | Ein |
 | `allowInventoryDesign` | Die Inventare im Designer bearbeiten: speichern, erstellen, entfernen und pushen. Ohne sie nur lesen | Ein |
 | `allowVarsFileDesign` | Die Variablendateien im Designer bearbeiten: speichern, erstellen, entfernen und pushen. Ohne sie nur lesen | Ein |
 | **Jobs** | | |
@@ -104,6 +107,9 @@ Manche Optionen schließen andere ein, und die Seite der Rolle zeigt die eingesc
 
 Bis 7.2.0 ließ `showAllJobLogs` einen Benutzer auch die angezeigten Jobs abbrechen und löschen; ab 7.3.0 braucht das `manageAllJobs`.
 Eine Rolle aus der Zeit vor 7.3.0 mit `extendedTokenExpiration` und ohne `allowApiTokens` erhält `allowApiTokens`, sodass sie ihre Token behält.
+
+`designAllForms`, `designAllPlaybooks` und `designAllWorkflows` sind für Admins immer eingeschaltet, und was der Designer einem Benutzer
+ohne sie zeigt, beschreibt [Eingeschränkte Designer](../designer/#limited-designers).
 
 **Nur Admins** bedeutet eingeschaltet für Benutzer mit der Rolle `admin` und ausgeschaltet für alle anderen. Passt ein Benutzer zu mehreren Rollen,
 werden die Optionen wie folgt kombiniert:
