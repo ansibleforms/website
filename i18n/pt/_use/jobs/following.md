@@ -3,7 +3,7 @@ layout: default
 title: Acompanhar uma tarefa
 parent: Tarefas
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Acompanhar uma tarefa
@@ -118,9 +118,10 @@ posterior, já que o resultado vem dos mesmos eventos que [Hosts e tarefas](#hos
 | **JSON** e **YAML** | O resultado completo do módulo, colorido e com as linhas numeradas |
 | **Saída padrão** e **Erro padrão** | O `stdout` e o `stderr` do resultado, quando os tem |
 
-O resultado completo, e com ele os separadores **JSON**, **YAML** e de saída, só é guardado quando a tarefa corre em modo verbose, já que o resultado
-também o mostra nesse caso; caso contrário, o diálogo mostra só os detalhes. Mesmo em modo verbose, os argumentos do módulo (`invocation`) ficam
-de fora, os valores das chaves que se parecem com um segredo são ocultados, e um resultado é cortado quando ultrapassa 64 KB de JSON.
+A partir da 7.5.0, o resultado completo, e com ele os separadores **JSON**, **YAML** e de saída, é guardado seja qual for a verbosidade da
+tarefa, como no AWX; um RTE anterior à 7.5.0 só o guarda em modo verbose. Uma tarefa com `no_log` tem o resultado censurado pelo Ansible,
+os argumentos do módulo (`invocation`) e as chaves próprias do Ansible `_ansible*` ficam de fora, os valores das chaves que se parecem com
+um segredo são ocultados, e um resultado é cortado quando ultrapassa 64 KB de JSON.
 
 ---
 

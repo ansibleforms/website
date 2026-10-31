@@ -3,7 +3,7 @@ layout: default
 title: Einen Job verfolgen
 parent: Jobs
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Einen Job verfolgen
@@ -118,9 +118,10 @@ lief, da das Ergebnis aus denselben Ereignissen stammt wie [Hosts und Tasks](#ho
 | **JSON** und **YAML** | Das gesamte Ergebnis des Moduls, farbig und mit nummerierten Zeilen |
 | **Standardausgabe** und **Standardfehler** | `stdout` und `stderr` des Ergebnisses, sofern vorhanden |
 
-Das gesamte Ergebnis, und damit die Tabs **JSON**, **YAML** und die Ausgabe-Tabs, wird nur gespeichert, wenn der Job im Verbose-Modus läuft, da die Ausgabe
-es dann ebenfalls zeigt; andernfalls zeigt der Dialog nur die Details. Auch im Verbose-Modus werden die Argumente des Moduls (`invocation`)
-weggelassen, Werte von Schlüsseln, die nach einem Secret aussehen, maskiert, und ein Ergebnis wird abgeschnitten, sobald es größer als 64 KB JSON ist.
+Ab 7.5.0 wird das gesamte Ergebnis, und damit die Tabs **JSON**, **YAML** und die Ausgabe-Tabs, unabhängig von der Ausführlichkeit des Jobs
+gespeichert, wie in AWX; eine RTE älter als 7.5.0 speichert es nur im Verbose-Modus. Bei einer Task mit `no_log` zensiert Ansible das Ergebnis,
+die Argumente des Moduls (`invocation`) und die eigenen `_ansible*`-Schlüssel von Ansible werden weggelassen, Werte von Schlüsseln, die nach
+einem Secret aussehen, maskiert, und ein Ergebnis wird abgeschnitten, sobald es größer als 64 KB JSON ist.
 
 ---
 

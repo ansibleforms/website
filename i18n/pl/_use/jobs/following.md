@@ -3,7 +3,7 @@ layout: default
 title: Śledzenie zadania
 parent: Zadania
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Śledzenie zadania
@@ -118,9 +118,10 @@ nowszej, ponieważ wynik pochodzi z tych samych zdarzeń co [Hosty i zadania](#h
 | **JSON** i **YAML** | Cały wynik modułu, pokolorowany i z numerowanymi wierszami |
 | **Standardowe wyjście** i **Standardowy błąd** | `stdout` i `stderr` wyniku, jeśli je ma |
 
-Cały wynik, a wraz z nim karty **JSON**, **YAML** i karty wyjścia, jest zapisywany tylko wtedy, gdy zadanie działa w trybie verbose, ponieważ wynik
-również go wtedy pokazuje; w przeciwnym razie okno dialogowe pokazuje same szczegóły. Nawet w trybie verbose argumenty modułu (`invocation`) są
-pomijane, wartości kluczy wyglądających na sekret są maskowane, a wynik jest obcinany, gdy przekracza 64 KB JSON.
+Od wersji 7.5.0 cały wynik, a wraz z nim karty **JSON**, **YAML** i karty wyjścia, jest zapisywany bez względu na poziom szczegółowości
+zadania, jak w AWX; RTE starsze niż 7.5.0 zapisuje go tylko w trybie verbose. Zadanie z `no_log` ma wynik ocenzurowany przez Ansible,
+argumenty modułu (`invocation`) i własne klucze Ansible `_ansible*` są pomijane, wartości kluczy wyglądających na sekret są maskowane,
+a wynik jest obcinany, gdy przekracza 64 KB JSON.
 
 ---
 

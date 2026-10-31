@@ -3,7 +3,7 @@ layout: default
 title: 跟踪作业
 parent: 作业
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # 跟踪作业
@@ -118,9 +118,9 @@ translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
 | **JSON** 和 **YAML** | 模块的完整结果，带语法着色和行号 |
 | **标准输出**和**标准错误** | 结果的 `stdout` 和 `stderr` （如果有） |
 
-只有当作业以详细模式运行时，才会保存完整结果，以及相应的 **JSON**、**YAML** 和输出选项卡，因为这时输出
-本身也会显示它；否则对话框只显示详情。即使在详细模式下，模块的参数（ `invocation` ）也会被
-排除，看起来像机密的键的值会被掩码，并且结果一旦超过 64 KB 的 JSON 就会被截断。
+从 7.5.0 起，与 AWX 一样，无论作业的详细级别如何，都会保存完整结果，以及相应的 **JSON**、**YAML** 和输出选项卡；
+早于 7.5.0 的 RTE 只在详细模式下保存它。带有 `no_log` 的任务，其结果会被 Ansible 屏蔽；模块的参数（ `invocation` ）和
+Ansible 自身的 `_ansible*` 键会被排除，看起来像机密的键的值会被掩码，并且结果一旦超过 64 KB 的 JSON 就会被截断。
 
 ---
 
