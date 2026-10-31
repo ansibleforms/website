@@ -3,7 +3,7 @@ layout: default
 title: Seguir una tasca
 parent: Tasques
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Seguir una tasca
@@ -118,9 +118,10 @@ posterior, ja que el resultat surt dels mateixos esdeveniments que [Hosts i tasq
 | **JSON** i **YAML** | Tot el resultat del mòdul, amb colors i amb les línies numerades |
 | **Sortida estàndard** i **Error estàndard** | L'`stdout` i l'`stderr` del resultat, quan en té |
 
-El resultat sencer, i amb ell les pestanyes **JSON**, **YAML** i de sortida, només es desa quan la tasca s'executa en mode detallat, ja que llavors la sortida
-també el mostra; si no, el diàleg només mostra els detalls. Fins i tot en mode detallat, els arguments del mòdul (`invocation`) es deixen
-fora, els valors de les claus que semblen un secret s'emmascaren, i un resultat es talla quan supera els 64 KB de JSON.
+A partir de la 7.5.0, el resultat sencer, i amb ell les pestanyes **JSON**, **YAML** i de sortida, es desa sigui quin sigui el nivell de detall
+de la tasca, com a AWX; un RTE anterior a la 7.5.0 només el desa en mode detallat. Una tasca amb `no_log` té el resultat censurat per Ansible,
+els arguments del mòdul (`invocation`) i les claus pròpies d'Ansible `_ansible*` es deixen fora, els valors de les claus que semblen un secret
+s'emmascaren, i un resultat es talla quan supera els 64 KB de JSON.
 
 ---
 

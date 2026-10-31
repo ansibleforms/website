@@ -3,7 +3,7 @@ layout: default
 title: Suivre un job
 parent: Jobs
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Suivre un job
@@ -118,9 +118,10 @@ plus récent, car le résultat provient des mêmes événements que [Hôtes et t
 | **JSON** et **YAML** | Le résultat complet du module, coloré et avec des lignes numérotées |
 | **Sortie standard** et **Erreur standard** | Le `stdout` et le `stderr` du résultat, quand il en a |
 
-Le résultat complet, et avec lui les onglets **JSON**, **YAML** et de sortie, n'est stocké que lorsque le job s'exécute en mode verbeux, puisque la sortie
-l'affiche alors aussi ; sinon, la boîte de dialogue n'affiche que les détails. Même en mode verbeux, les arguments du module (`invocation`) sont
-omis, les valeurs des clés qui ressemblent à un secret sont masquées, et un résultat est tronqué dès qu'il dépasse 64 Ko de JSON.
+Depuis la 7.5.0, le résultat complet, et avec lui les onglets **JSON**, **YAML** et de sortie, est stocké quel que soit le niveau de verbosité
+du job, comme sur AWX ; un RTE antérieur à la 7.5.0 ne le stocke qu'en mode verbeux. Une tâche avec `no_log` a son résultat censuré par Ansible,
+les arguments du module (`invocation`) et les clés propres à Ansible `_ansible*` sont omis, les valeurs des clés qui ressemblent à un secret
+sont masquées, et un résultat est tronqué dès qu'il dépasse 64 Ko de JSON.
 
 ---
 

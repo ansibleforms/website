@@ -3,7 +3,7 @@ layout: default
 title: Seguir un trabajo
 parent: Trabajos
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Seguir un trabajo
@@ -118,9 +118,10 @@ posterior, ya que el resultado viene de los mismos eventos que [Hosts y tareas](
 | **JSON** y **YAML** | El resultado completo del módulo, coloreado y con líneas numeradas |
 | **Salida estándar** y **Error estándar** | El `stdout` y el `stderr` del resultado, cuando los tiene |
 
-El resultado completo, y con él las pestañas **JSON**, **YAML** y de salida, solo se guarda cuando el trabajo se ejecuta en modo detallado, ya que la salida
-también lo muestra entonces; si no, el diálogo muestra solo los detalles. Incluso en modo detallado se omiten los argumentos del módulo (`invocation`),
-se enmascaran los valores de las claves que parecen un secreto, y un resultado se corta cuando supera los 64 KB de JSON.
+Desde 7.5.0 el resultado completo, y con él las pestañas **JSON**, **YAML** y de salida, se guarda sea cual sea el nivel de detalle del trabajo,
+como en AWX; un RTE anterior a 7.5.0 solo lo guarda en modo detallado. Una tarea con `no_log` tiene su resultado censurado por Ansible, se omiten
+los argumentos del módulo (`invocation`) y las claves propias de Ansible `_ansible*`, se enmascaran los valores de las claves que parecen un
+secreto, y un resultado se corta cuando supera los 64 KB de JSON.
 
 ---
 

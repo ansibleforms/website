@@ -117,9 +117,10 @@ later, as the result comes from the same events as [Hosts and tasks](#hosts-and-
 | **JSON** and **YAML** | The module's whole result, coloured and with numbered lines |
 | **Standard output** and **Standard error** | The result's `stdout` and `stderr`, when it has them |
 
-The whole result, and with it the **JSON**, **YAML** and output tabs, is stored only when the job runs in verbose mode, as the output
-then shows it too; otherwise the dialog shows the details alone. Even in verbose mode the module's arguments (`invocation`) are left
-out, values of keys that look like a secret are masked, and a result is cut once it is larger than 64 KB of JSON.
+From 7.5.0 the whole result, and with it the **JSON**, **YAML** and output tabs, is stored whatever the job's verbosity, as on AWX; an
+RTE older than 7.5.0 stores it only in verbose mode. A task with `no_log` has its result censored by Ansible, the module's arguments
+(`invocation`) and Ansible's own `_ansible*` keys are left out, values of keys that look like a secret are masked, and a result is cut
+once it is larger than 64 KB of JSON.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Een job volgen
 parent: Jobs
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Een job volgen
@@ -118,9 +118,10 @@ later draaide, omdat het resultaat uit dezelfde gebeurtenissen komt als [Hosts e
 | **JSON** en **YAML** | Het volledige resultaat van de module, gekleurd en met genummerde regels |
 | **Standaarduitvoer** en **Standaardfout** | De `stdout` en `stderr` van het resultaat, als het die heeft |
 
-Het volledige resultaat, en daarmee de tabbladen **JSON**, **YAML** en de uitvoertabbladen, wordt alleen opgeslagen wanneer de job in verbose-modus draait, omdat de uitvoer
-het dan ook toont; anders toont de dialoog alleen de details. Ook in verbose-modus worden de argumenten van de module (`invocation`) weggelaten,
-worden waarden van sleutels die op een geheim lijken gemaskeerd, en wordt een resultaat afgekapt zodra het groter is dan 64 KB JSON.
+Vanaf 7.5.0 wordt het volledige resultaat, en daarmee de tabbladen **JSON**, **YAML** en de uitvoertabbladen, opgeslagen ongeacht de verbositeit
+van de job, zoals in AWX; een RTE ouder dan 7.5.0 slaat het alleen in verbose-modus op. Bij een taak met `no_log` censureert Ansible het resultaat,
+de argumenten van de module (`invocation`) en de eigen `_ansible*`-sleutels van Ansible worden weggelaten, worden waarden van sleutels die op
+een geheim lijken gemaskeerd, en wordt een resultaat afgekapt zodra het groter is dan 64 KB JSON.
 
 ---
 

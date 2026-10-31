@@ -3,7 +3,7 @@ layout: default
 title: Seguire un job
 parent: Job
 nav_order: 2
-translated_from: 3beb53d60eeac0e108e31a8dabf2877ab15d2126
+translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
 ---
 
 # Seguire un job
@@ -118,9 +118,10 @@ successivo, perché il risultato viene dagli stessi eventi di [Host e task](#hos
 | **JSON** e **YAML** | L'intero risultato del modulo, colorato e con le righe numerate |
 | **Output standard** ed **Errore standard** | Lo `stdout` e lo `stderr` del risultato, quando ci sono |
 
-L'intero risultato, e con esso le schede **JSON**, **YAML** e di output, viene salvato solo quando il job gira in modalità verbose, perché allora anche l'output
-lo mostra; altrimenti la finestra di dialogo mostra solo i dettagli. Anche in modalità verbose gli argomenti del modulo (`invocation`) vengono
-esclusi, i valori delle chiavi che sembrano segreti vengono mascherati, e un risultato viene troncato quando supera i 64 KB di JSON.
+Dalla 7.5.0 l'intero risultato, e con esso le schede **JSON**, **YAML** e di output, viene salvato qualunque sia la verbosità del job, come su
+AWX; un RTE precedente alla 7.5.0 lo salva solo in modalità verbose. Un task con `no_log` ha il risultato censurato da Ansible, gli argomenti
+del modulo (`invocation`) e le chiavi proprie di Ansible `_ansible*` vengono esclusi, i valori delle chiavi che sembrano segreti vengono
+mascherati, e un risultato viene troncato quando supera i 64 KB di JSON.
 
 ---
 
