@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Inloggegevens
@@ -40,6 +40,9 @@ ernaar met haar naam, zodat het wachtwoord zelf nooit in een formulier verschijn
 AnsibleForms-database bewaard, versleuteld met `ENCRYPTION_SECRET`, ofwel elke keer dat de referentie wordt gebruikt uit een [secret store](secret-stores/)
 gelezen.
 
+Vanaf 7.5.0 bevragen formulieren een [database](databases.html) uit **Verbindingen > Databases**, die de referentie van het type
+**Database** noemt waarmee hij verbinding maakt; een formulier dat de referentie zelf in `dbConfig` noemt, werkt nog steeds, zoals voorheen.
+
 ---
 
 ## Wie een referentie mag wijzigen
@@ -69,6 +72,7 @@ houden die gebruikers weg van geheimen die ze anders niet zouden kunnen lezen:
 
 ## Referenties in gebruik
 
-Een referentie die nog door records wordt genoemd, kan niet worden verwijderd of hernoemd, omdat die records dan naar niets zouden wijzen.
+Een referentie die nog door records wordt genoemd, vanaf 7.5.0 ook door een [database](databases.html), kan niet worden verwijderd of hernoemd,
+omdat die records dan naar niets zouden wijzen.
 De weigering noemt hoeveel records haar gebruiken; het tabblad **Gebruikt door** van [haar pagina](credentials/credential-page.html) toont ze.
 Laat ze eerst naar een andere referentie wijzen, en verwijder of hernoem haar daarna.

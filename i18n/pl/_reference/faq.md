@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 6616eaf626411a615cb68d8cc4f2a43401fe21d9
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Najczęściej zadawane pytania
@@ -171,11 +171,11 @@ Aplikacja webowa klienta ponownie oblicza pola co 100 ms; przy obecnych procesor
 > Odwołanie do innego pola enum zwraca wybrane wartości, **a nie** całą listę rozwijaną. Użyj właściwości `placeholderColumn` lub notacji z kropką, na przykład `$(city.name)`.  
 > **Nowość w v4.0.20**: ustawienie placeholderColumn na "*" zwraca cały rekord zamiast jednej kolumny.
 
+Przykłady odpytują `CONN1`, [bazę danych](databases.html) z Połączenia > Bazy danych (od wersji 7.5.0) lub poświadczenie typu baza danych.
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -184,9 +184,7 @@ Aplikacja webowa klienta ponownie oblicza pola co 100 ms; przy obecnych procesor
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -201,9 +199,7 @@ Aplikacja webowa klienta ponownie oblicza pola co 100 ms; przy obecnych procesor
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -218,9 +214,7 @@ Aplikacja webowa klienta ponownie oblicza pola co 100 ms; przy obecnych procesor
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

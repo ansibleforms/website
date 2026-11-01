@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Secret Stores
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: 595f94a84c4e8182b1b79289eb309a814dec1287
+translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 ---
 
 # Secret Stores
@@ -94,6 +94,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+Ab 7.5.0 nennt eine `dbConfig` zuerst eine [Datenbank](../databases.html); ein Verweis wie dieser ist keine Datenbank und wird daher weiterhin
+aus dem Store gelesen. Auch eine Datenbank kann ihre Anmeldung aus einem Store lesen, über Anmeldedaten vom Typ Datenbank, die einen verwenden.
 
 Ohne Anmeldedaten-Zeile braucht ein Datenbank-Secret mindestens einen `db_type` und einen Host, zum Beispiel:
 

@@ -3,7 +3,7 @@ layout: default
 title: 例
 parent: 構成シード
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # 例
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ RTE で設定された同じ変数より優先され、データベースモー�
 データベースモードの RTE は、シードが適用される前に自分自身を登録することがあります。シードで宣言した RTE ランナーの `uri` が、そうした RTE が
 登録したアドレスである場合、そのランナーはその行を **引き継ぎます** 。宣言した名前とフィールドを取り込み、RTE が応答しなくなっても
 ワーカーはそれを削除しなくなります。同じ RTE に対して 2 つ目のランナーが作られることはありません。
+
+7.5.0 からは、 `databases` セクションでフォームが照会する [データベース](../databases.html) を宣言します。項目には `name` 、種類がデータベースの
+`credential` 、任意の `description` があります。シードは認証情報の後にそれを適用し、ほかの種類の認証情報は拒否します。

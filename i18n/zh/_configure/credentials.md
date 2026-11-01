@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # 凭据
@@ -40,6 +40,9 @@ translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
 AnsibleForms 数据库中并用 `ENCRYPTION_SECRET` 加密，要么在每次使用凭据时从 [密钥库](secret-stores/)
 读取。
 
+从 7.5.0 起，表单查询 **连接 > 数据库** 中的 [数据库](databases.html)，该数据库引用它用于连接的、类型为
+**数据库** 的凭据；在 `dbConfig` 中直接指定凭据的表单仍和以前一样有效。
+
 ---
 
 ## 谁可以修改凭据
@@ -69,6 +72,6 @@ AnsibleForms 数据库中并用 `ENCRYPTION_SECRET` 加密，要么在每次使�
 
 ## 正在使用的凭据
 
-仍被记录引用的凭据不能删除或重命名，否则这些记录将指向不存在的对象。
+仍被记录引用的凭据（从 7.5.0 起也包括 [数据库](databases.html)）不能删除或重命名，否则这些记录将指向不存在的对象。
 拒绝消息会说明有多少条记录在使用它；[其页面](credentials/credential-page.html) 的 **使用者** 选项卡会列出这些记录。
 请先将它们指向另一个凭据，然后再删除或重命名该凭据。

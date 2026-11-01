@@ -3,7 +3,7 @@ layout: default
 title: Tipos de credencial
 parent: Credenciales
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Tipos de credencial
@@ -27,7 +27,7 @@ El tipo indica para qué sirve una credencial. Decide qué campos pide el diálo
 | SSH | Un usuario y una contraseña para SSH a un servidor, con su host y su puerto | Playbooks, mediante las `credentials` o `ansibleCredentials` de un formulario o un campo de credencial, y el acceso de un nodo de workflow |
 | Git | Un usuario y una contraseña o un token para repositorios git | [Repositorios](../repositories/authentication.html) |
 | API | Un usuario y una contraseña o un token para una API REST | [Expresiones REST](../expressions/credentials.html), el token de un bot de Telegram, el bearer token de un webhook, la clave de API del asistente de chat |
-| Base de datos | Un acceso a base de datos, con su tipo, host, puerto y nombre de base de datos | Consultas de formularios (`dbConfig`) y `fnCredentials`; se puede probar |
+| Base de datos | Un acceso a base de datos, con su tipo, host, puerto y nombre de base de datos | Una [base de datos](../databases.html) que consultan los formularios (`dbConfig`), desde la 7.5.0, o el `dbConfig` de un formulario directamente; `fnCredentials`; se puede probar |
 | CyberArk | La dirección del CyberArk Central Credential Provider (CCP) y su TLS, y el AppID, el certificado de cliente y la clave con los que accede un almacén CyberArk | Un almacén de secretos [CyberArk](../secret-stores/cyberark.html) |
 | SMTP | Un servidor de correo, su puerto y TLS, y su acceso (ninguno para un relay) | Un [canal de notificación](../notification-channels.html) de correo |
 | LDAP | Los servidores, el puerto, el TLS y los certificados de un directorio, y su DN y contraseña de vinculación | Un [directorio LDAP](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ El tipo indica para qué sirve una credencial. Decide qué campos pide el diálo
 | Jenkins | Un usuario, su token de API y la dirección de un Jenkins | Un runner Jenkins |
 | HashiCorp Vault | El token y la dirección con los que accede un almacén Vault | Un almacén de secretos [HashiCorp Vault](../secret-stores/hashicorp-vault.html) |
 
-Una credencial de base de datos puede ser de tipo MySQL, MSSQL, PostgreSQL, Oracle o MongoDB.
+Una credencial de base de datos puede ser de tipo MySQL, MSSQL, PostgreSQL, Oracle o MongoDB. Desde la 7.5.0 la elige una base de datos de
+[Conexiones > Bases de datos](../databases.html), y la actualización a la 7.5.0 crea una base de datos para cada una, con el mismo nombre.
 
 En la API y en la [semilla de configuración](../seed/), los tipos son `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` y `vault`. La actualización desde la 6

@@ -39,6 +39,9 @@ to it by its name, so the password itself never appears in a form. Its user and 
 AnsibleForms database, encrypted with `ENCRYPTION_SECRET`, or read from a [secret store](secret-stores/) each time the
 credential is used.
 
+From 7.5.0 forms query a [database](databases.html) of **Connections > Databases**, which names the credential of type
+**Database** it connects with; a form that names the credential itself in `dbConfig` still works, as before.
+
 ---
 
 ## Who may change a credential
@@ -68,6 +71,7 @@ keep those users away from secrets they could not otherwise read:
 
 ## Credentials in use
 
-A credential that records still name cannot be deleted or renamed, as they would be left pointing at nothing.
+A credential that records still name, a [database](databases.html) among them from 7.5.0, cannot be deleted or renamed, as they
+would be left pointing at nothing.
 The refusal names how many records use it; the **Used by** tab of [its page](credentials/credential-page.html) lists them.
 Point them at another credential first, then delete or rename it.

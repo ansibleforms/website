@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Variabili d'ambiente
-nav_order: 8
+nav_order: 9
 has_children: true
 has_toc: false
 permalink: /customization/
-translated_from: fd6e83f3550f59aa576c8addaf28bfa6115b96a0
+translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
 ---
 
 # Variabili d'ambiente

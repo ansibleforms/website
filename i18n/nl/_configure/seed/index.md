@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
+translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 ---
 
 # Configuratie-seed
@@ -33,6 +33,7 @@ declareert objecten die voorheen alleen in de database bestonden:
 | `runners`               | Waar jobs draaien: RTE's, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
 | `secret_stores`         | Secret stores (HashiCorp Vault, ...)                                |
 | `credentials`           | Referenties                                                         |
+| `databases`             | De databases die formulieren bevragen, elk met zijn referentie, vanaf 7.5.0 |
 | `oauth2`                | SSO-providers: Entra ID en OIDC                                     |
 | `repositories`          | Git-repositories                                                    |
 | `syslog_servers`        | De syslogservers die het serverlog en de auditregels krijgen        |

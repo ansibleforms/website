@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Canals de notificació
-nav_order: 9
+nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1488a67f6f281b0236e4bad3a8b3d0c3bb32326c
+translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
 ---
 
 # Canals de notificació

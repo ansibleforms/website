@@ -3,7 +3,7 @@ layout: default
 title: Types d'identifiants
 parent: Identifiants
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Types d'identifiants
@@ -27,7 +27,7 @@ Le type indique à quoi sert un identifiant. Il décide des champs que demande l
 | SSH | Un utilisateur et un mot de passe pour SSH vers un serveur, avec son hôte et son port | Les playbooks, via les `credentials` ou `ansibleCredentials` d'un formulaire ou un champ d'identifiant, et l'accès d'un nœud de workflow |
 | Git | Un utilisateur et un mot de passe ou un jeton pour des dépôts git | Les [dépôts](../repositories/authentication.html) |
 | API | Un utilisateur et un mot de passe ou un jeton pour une API REST | Les [expressions REST](../expressions/credentials.html), un jeton de bot Telegram, le bearer token d'un webhook, la clé d'API de l'assistant de chat |
-| Base de données | Un accès à une base de données, avec son type, son hôte, son port et le nom de la base | Les requêtes de formulaire (`dbConfig`) et `fnCredentials` ; il peut être testé |
+| Base de données | Un accès à une base de données, avec son type, son hôte, son port et le nom de la base | Une [base de données](../databases.html) que les formulaires interrogent (`dbConfig`), depuis la 7.5.0, ou directement le `dbConfig` d'un formulaire ; `fnCredentials` ; il peut être testé |
 | CyberArk | L'adresse du CyberArk Central Credential Provider (CCP) et son TLS, ainsi que l'AppID, le certificat client et la clé avec lesquels se connecte un coffre CyberArk | Un coffre de secrets [CyberArk](../secret-stores/cyberark.html) |
 | SMTP | Un serveur mail, son port et son TLS, et son accès (aucun pour un relais) | Un [canal de notification](../notification-channels.html) mail |
 | LDAP | Les serveurs, le port, le TLS et les certificats d'un annuaire, et son DN et mot de passe de bind | Un [annuaire LDAP](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ Le type indique à quoi sert un identifiant. Il décide des champs que demande l
 | Jenkins | Un utilisateur, son jeton d'API et l'adresse d'un Jenkins | Un runner Jenkins |
 | HashiCorp Vault | Le jeton et l'adresse avec lesquels se connecte un coffre Vault | Un coffre de secrets [HashiCorp Vault](../secret-stores/hashicorp-vault.html) |
 
-Un identifiant de base de données peut être de type MySQL, MSSQL, PostgreSQL, Oracle ou MongoDB.
+Un identifiant de base de données peut être de type MySQL, MSSQL, PostgreSQL, Oracle ou MongoDB. Depuis la 7.5.0, il est choisi par une base de données de
+[Connexions > Bases de données](../databases.html), et la mise à jour vers la 7.5.0 crée une base de données pour chacun, avec le même nom.
 
 Dans l'API et le [seed de configuration](../seed/), les types sont `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` et `vault`. La mise à jour depuis la 6

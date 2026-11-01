@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Secret stores
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: 595f94a84c4e8182b1b79289eb309a814dec1287
+translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 ---
 
 # Secret stores
@@ -94,6 +94,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+Vanaf 7.5.0 noemt een `dbConfig` eerst een [database](../databases.html); een verwijzing als deze is geen database, dus ze wordt nog steeds uit
+de store gelezen. Ook een database kan zijn aanmelding uit een store lezen, via een referentie van het type database die er een gebruikt.
 
 Zonder referentierij heeft een databasegeheim minstens een `db_type` en een host nodig, bijvoorbeeld:
 

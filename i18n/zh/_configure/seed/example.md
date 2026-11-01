@@ -3,7 +3,7 @@ layout: default
 title: 示例
 parent: 配置种子
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # 示例
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ chat:                        # the chat assistant's model provider (6.5)
 数据库模式的 RTE 可能会在种子应用之前自行注册。当种子中 RTE 运行器的 `uri` 与这样一个 RTE
 注册时使用的地址相同时，它会 **接管** 那一行：它采用声明的名称和字段，RTE 不再应答时 worker 也不会再删除它，
 从而不会为同一个 RTE 出现第二个运行器。
+
+从 7.5.0 起，`databases` 部分声明表单查询的 [数据库](../databases.html)。每一项有一个 `name`、一个类型为数据库的
+`credential` 和可选的 `description`；种子在凭据之后应用它，并拒绝其他类型的凭据。

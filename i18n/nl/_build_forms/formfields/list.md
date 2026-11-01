@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Formuliervelden
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Veld List
@@ -284,6 +284,9 @@ Rijen die uit een databasequery worden geladen:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` noemt een [database](../databases.html) uit **Verbindingen > Databases** (vanaf 7.5.0), of anders een referentie van het type database,
+zoals voorheen (zie [Databases in formulieren](../databases/in-forms.html)).
 
 #### Uit een lokale expressie (`runLocal`)
 

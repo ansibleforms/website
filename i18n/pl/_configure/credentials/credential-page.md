@@ -3,7 +3,7 @@ layout: default
 title: "Strona poświadczenia"
 parent: Poświadczenia
 nav_order: 3
-translated_from: 0269b5c0d313622bea6c910b96231f41ffd852d7
+translated_from: 204eca949763c8c23625369f1d8d8d0d06545c87
 ---
 
 # Strona poświadczenia
@@ -20,7 +20,7 @@ Strona poświadczenia pokazuje kroki jego okna jako karty, a do tego to, co go u
 | Typ | Do czego służy poświadczenie. |
 | Logowanie | Każde pole jego typu, jak w kroku **Logowanie** okna: użytkownik, hasło i miejsce logowania (host i port, baza danych, serwer poczty, serwery katalogu, dzierżawa lub wystawca, adres serwera i jego TLS). W poświadczeniu CyberArk: AppID, certyfikat klienta i klucz. |
 | Magazyn | Baza danych lub Magazyn sekretów oraz magazyn i odwołanie. Nie dotyczy CyberArk ani HashiCorp Vault. |
-| Używane przez | Wszystko, co wskazuje to poświadczenie: magazyny sekretów, kanały powiadomień, repozytoria, katalogi LDAP, dostawcy SSO, runnery, asystent czatu, formularze i workflowy projektanta. Wiersz je otwiera. |
+| Używane przez | Wszystko, co wskazuje to poświadczenie: magazyny sekretów, kanały powiadomień, repozytoria, katalogi LDAP, dostawcy SSO, runnery, [bazy danych](../databases.html) (od wersji 7.5.0), asystent czatu, formularze i workflowy projektanta. Wiersz je otwiera. |
 
 Hasło wpisuje się na karcie **Logowanie** i po zapisaniu nigdy nie jest już pokazywane: pozostawione puste, zapisane hasło zostaje. W poświadczeniu
 CyberArk zostaw klucz klienta pusty, żeby zachować zapisany. W prawym górnym rogu są **Testuj połączenie** (tylko poświadczenia bazy danych),

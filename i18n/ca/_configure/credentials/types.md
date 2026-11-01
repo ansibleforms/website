@@ -3,7 +3,7 @@ layout: default
 title: Tipus de credencial
 parent: Credencials
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Tipus de credencial
@@ -27,7 +27,7 @@ El tipus indica per a què serveix una credencial. Decideix quins camps demana e
 | SSH | Un usuari i una contrasenya per a SSH a un servidor, amb el seu host i el seu port | Playbooks, mitjançant les `credentials` o `ansibleCredentials` d'un formulari o un camp de credencial, i l'accés d'un node de workflow |
 | Git | Un usuari i una contrasenya o un token per a repositoris git | [Repositoris](../repositories/authentication.html) |
 | API | Un usuari i una contrasenya o un token per a una API REST | [Expressions REST](../expressions/credentials.html), el token d'un bot de Telegram, el bearer token d'un webhook, la clau d'API de l'assistent de xat |
-| Base de dades | Un accés a base de dades, amb el seu tipus, host, port i nom de base de dades | Consultes de formularis (`dbConfig`) i `fnCredentials`; es pot provar |
+| Base de dades | Un accés a base de dades, amb el seu tipus, host, port i nom de base de dades | Una [base de dades](../databases.html) que consulten els formularis (`dbConfig`), des de la 7.5.0, o directament el `dbConfig` d'un formulari; `fnCredentials`; es pot provar |
 | CyberArk | L'adreça del CyberArk Central Credential Provider (CCP) i el seu TLS, i l'AppID, el certificat de client i la clau amb què accedeix un magatzem CyberArk | Un magatzem de secrets [CyberArk](../secret-stores/cyberark.html) |
 | SMTP | Un servidor de correu, el seu port i TLS, i el seu accés (cap per a un relay) | Un [canal de notificació](../notification-channels.html) de correu |
 | LDAP | Els servidors, el port, el TLS i els certificats d'un directori, i el seu DN i contrasenya de bind | Un [directori LDAP](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ El tipus indica per a què serveix una credencial. Decideix quins camps demana e
 | Jenkins | Un usuari, el seu token d'API i l'adreça d'un Jenkins | Un runner Jenkins |
 | HashiCorp Vault | El token i l'adreça amb què accedeix un magatzem Vault | Un magatzem de secrets [HashiCorp Vault](../secret-stores/hashicorp-vault.html) |
 
-Una credencial de base de dades pot ser de tipus MySQL, MSSQL, PostgreSQL, Oracle o MongoDB.
+Una credencial de base de dades pot ser de tipus MySQL, MSSQL, PostgreSQL, Oracle o MongoDB. Des de la 7.5.0 la tria una base de dades de
+[Connexions > Bases de dades](../databases.html), i l'actualització a la 7.5.0 en crea una per a cadascuna, amb el mateix nom.
 
 A l'API i a la [llavor de configuració](../seed/), els tipus són `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` i `vault`. L'actualització des de la 6

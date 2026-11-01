@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Identifiants
@@ -40,6 +40,9 @@ par son nom, si bien que le mot de passe lui-même n'apparaît jamais dans un fo
 base de données d'AnsibleForms, chiffrés avec `ENCRYPTION_SECRET`, soit lus depuis un [coffre de secrets](secret-stores/) à chaque utilisation de
 l'identifiant.
 
+Depuis la 7.5.0, les formulaires interrogent une [base de données](databases.html) de **Connexions > Bases de données**, qui nomme l'identifiant de type
+**Base de données** avec lequel elle se connecte ; un formulaire qui nomme l'identifiant lui-même dans `dbConfig` fonctionne toujours, comme avant.
+
 ---
 
 ## Qui peut modifier un identifiant
@@ -69,6 +72,7 @@ tiennent ces utilisateurs à l'écart de secrets qu'ils ne pourraient pas lire a
 
 ## Identifiants utilisés
 
-Un identifiant que des enregistrements nomment encore ne peut être ni supprimé ni renommé, car ils pointeraient alors vers rien.
+Un identifiant que des enregistrements nomment encore, dont une [base de données](databases.html) depuis la 7.5.0, ne peut être ni supprimé ni
+renommé, car ils pointeraient alors vers rien.
 Le refus indique combien d'enregistrements l'utilisent ; l'onglet **Utilisé par** de [sa page](credentials/credential-page.html) les liste.
 Pointez-les d'abord vers un autre identifiant, puis supprimez-le ou renommez-le.

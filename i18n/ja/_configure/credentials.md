@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # 認証情報
@@ -40,6 +40,9 @@ translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
 `ENCRYPTION_SECRET` で暗号化して AnsibleForms のデータベースに保存するか、認証情報が使われるたびに [シークレットストア](secret-stores/) から
 読み込みます。
 
+7.5.0 からは、フォームは **接続 > データベース** の [データベース](databases.html) を照会し、そのデータベースが接続に使う種類が
+**データベース** の認証情報を指定します。 `dbConfig` で認証情報そのものを指定するフォームも、これまでどおり動作します。
+
 ---
 
 ## 認証情報を変更できるユーザー
@@ -68,6 +71,6 @@ translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
 
 ## 使用中の認証情報
 
-レコードが指定している認証情報は、削除も名前の変更もできません。そうしたレコードが何も指さない状態になってしまうためです。
+レコード（7.5.0 からは [データベース](databases.html) も含む）が指定している認証情報は、削除も名前の変更もできません。そうしたレコードが何も指さない状態になってしまうためです。
 拒否されたときは、その認証情報を使っているレコードの数が示されます。 [認証情報のページ](credentials/credential-page.html) の **使用元** タブに一覧が表示されます。
 先にそれらを別の認証情報に向けてから、削除または名前の変更を行ってください。

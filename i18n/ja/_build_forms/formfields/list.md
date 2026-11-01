@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: フォームフィールド
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # List フィールド
@@ -284,6 +284,9 @@ list には 3 種類のソースから事前に値を入れられます。いず
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` は **接続 > データベース** の [データベース](../databases.html) （7.5.0 から）を指定し、それ以外はこれまでどおり種類がデータベースの
+認証情報を指定します（ [フォームでのデータベース](../databases/in-forms.html) を参照）。
 
 #### ローカル式から (`runLocal`)
 

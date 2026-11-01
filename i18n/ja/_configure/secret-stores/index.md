@@ -1,11 +1,11 @@
 ---
 layout: default
 title: シークレットストア
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: 595f94a84c4e8182b1b79289eb309a814dec1287
+translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 ---
 
 # シークレットストア
@@ -94,6 +94,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+7.5.0 からは、 `dbConfig` はまず [データベース](../databases.html) を指定します。このような参照はデータベースではないので、これまでどおり
+ストアから読み込まれます。データベースも、ストアを使う種類がデータベースの認証情報を通じて、ログインをストアから読み込めます。
 
 認証情報の行がない場合、データベースのシークレットには少なくとも `db_type` とホストが必要です。たとえば次のとおりです。
 

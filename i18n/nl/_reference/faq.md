@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 6616eaf626411a615cb68d8cc4f2a43401fe21d9
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Veelgestelde vragen
@@ -171,11 +171,11 @@ De webapplicatie aan de clientkant evalueert velden elke 100 ms opnieuw; met de 
 > Een verwijzing naar een ander enum-veld geeft de geselecteerde waarden terug, **niet** de volledige keuzelijst. Gebruik de eigenschap `placeholderColumn` of puntnotatie zoals `$(city.name)`.  
 > **Nieuw in v4.0.20**: als je placeholderColumn op "*" zet, wordt het hele record uitgevoerd in plaats van één kolom.
 
+De voorbeelden bevragen `CONN1`, een [database](databases.html) uit Verbindingen > Databases (vanaf 7.5.0) of een referentie van het type database.
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -184,9 +184,7 @@ De webapplicatie aan de clientkant evalueert velden elke 100 ms opnieuw; met de 
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -201,9 +199,7 @@ De webapplicatie aan de clientkant evalueert velden elke 100 ms opnieuw; met de 
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -218,9 +214,7 @@ De webapplicatie aan de clientkant evalueert velden elke 100 ms opnieuw; met de 
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

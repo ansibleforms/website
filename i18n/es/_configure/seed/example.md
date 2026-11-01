@@ -3,7 +3,7 @@ layout: default
 title: Ejemplo
 parent: Semilla de configuración
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # Ejemplo
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ validación de la semilla.
 Un RTE en modo base de datos puede registrarse por sí mismo antes de que se aplique la semilla. Un runner RTE de la semilla cuya `uri` sea la dirección con la que
 se registró ese RTE **adopta** esa fila: toma el nombre y los campos declarados, y el worker ya no la elimina cuando el RTE deja
 de responder, en lugar de tener un segundo runner para el mismo RTE.
+
+Desde la 7.5.0 la sección `databases` declara las [bases de datos](../databases.html) que consultan los formularios. Una entrada tiene un `name`, una
+`credential` de tipo base de datos y una `description` opcional; la semilla la aplica después de las credenciales, y rechaza una credencial de otro tipo.

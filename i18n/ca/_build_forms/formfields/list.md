@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Camps de formulari
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Camp List
@@ -284,6 +284,9 @@ Files carregades des d'una consulta a base de dades:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` nomena una [base de dades](../databases.html) de **Connexions > Bases de dades** (des de la 7.5.0), o si no una credencial de tipus base de
+dades, com abans (vegeu [Bases de dades als formularis](../databases/in-forms.html)).
 
 #### Des d'una expressió local (`runLocal`)
 

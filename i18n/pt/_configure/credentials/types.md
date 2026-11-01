@@ -3,7 +3,7 @@ layout: default
 title: Tipos de credencial
 parent: Credenciais
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Tipos de credencial
@@ -27,7 +27,7 @@ O tipo diz para que serve uma credencial. Decide que campos a caixa de diálogo 
 | SSH | Um utilizador e uma palavra-passe para SSH a um servidor, com o seu host e porta | Playbooks, através das `credentials` ou `ansibleCredentials` de um formulário ou de um campo de credencial, e o acesso de um nó de workflow |
 | Git | Um utilizador e uma palavra-passe ou um token para repositórios git | [Repositórios](../repositories/authentication.html) |
 | API | Um utilizador e uma palavra-passe ou um token para uma API REST | [Expressões REST](../expressions/credentials.html), o token de um bot do Telegram, o bearer token de um webhook, a chave de API do assistente de chat |
-| Base de dados | Um acesso a uma base de dados, com o seu tipo, host, porta e nome da base de dados | Consultas de formulários (`dbConfig`) e `fnCredentials`; pode ser testado |
+| Base de dados | Um acesso a uma base de dados, com o seu tipo, host, porta e nome da base de dados | Uma [base de dados](../databases.html) que os formulários consultam (`dbConfig`), a partir da 7.5.0, ou diretamente o `dbConfig` de um formulário; `fnCredentials`; pode ser testado |
 | CyberArk | O endereço do CyberArk Central Credential Provider (CCP) e o seu TLS, e o AppID, o certificado de cliente e a chave com que um cofre CyberArk inicia sessão | Um cofre de segredos [CyberArk](../secret-stores/cyberark.html) |
 | SMTP | Um servidor de correio, a sua porta e TLS, e o seu acesso (nenhum para um relay) | Um [canal de notificação](../notification-channels.html) de correio |
 | LDAP | Os servidores, a porta, o TLS e os certificados de um diretório, e o seu bind DN e palavra-passe | Um [diretório LDAP](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ O tipo diz para que serve uma credencial. Decide que campos a caixa de diálogo 
 | Jenkins | Um utilizador, o seu token de API e o endereço de um Jenkins | Um runner Jenkins |
 | HashiCorp Vault | O token e o endereço com que um cofre Vault inicia sessão | Um cofre de segredos [HashiCorp Vault](../secret-stores/hashicorp-vault.html) |
 
-Uma credencial de base de dados pode ser do tipo MySQL, MSSQL, PostgreSQL, Oracle ou MongoDB.
+Uma credencial de base de dados pode ser do tipo MySQL, MSSQL, PostgreSQL, Oracle ou MongoDB. A partir da 7.5.0 é escolhida por uma base de
+dados de [Ligações > Bases de dados](../databases.html), e a atualização para a 7.5.0 cria uma base de dados para cada uma, com o mesmo nome.
 
 Na API e no [config seed](../seed/), os tipos são `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` e `vault`. A atualização a partir da 6

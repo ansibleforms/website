@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Credencials
@@ -40,6 +40,9 @@ s'hi refereixen pel seu nom, de manera que la contrasenya mai no apareix en un f
 base de dades d'AnsibleForms, xifrats amb `ENCRYPTION_SECRET`, o bé es llegeixen d'un [magatzem de secrets](secret-stores/) cada vegada que
 s'utilitza la credencial.
 
+Des de la 7.5.0 els formularis consulten una [base de dades](databases.html) de **Connexions > Bases de dades**, que nomena la credencial de tipus
+**Base de dades** amb què es connecta; un formulari que nomena la mateixa credencial al `dbConfig` encara funciona, com abans.
+
 ---
 
 ## Qui pot canviar una credencial
@@ -69,6 +72,7 @@ mantenen aquests usuaris lluny de secrets que d'una altra manera no podrien lleg
 
 ## Credencials en ús
 
-Una credencial que encara nomenen altres registres no es pot suprimir ni reanomenar, perquè quedarien apuntant a res.
+Una credencial que encara nomenen altres registres, entre ells una [base de dades](databases.html) des de la 7.5.0, no es pot suprimir ni
+reanomenar, perquè quedarien apuntant a res.
 El rebuig indica quants registres la utilitzen; la pestanya **Usat per** de [la seva pàgina](credentials/credential-page.html) els llista.
 Apunta'ls primer a una altra credencial, i després suprimeix-la o reanomena-la.

@@ -3,7 +3,7 @@ layout: default
 title: Exemple
 parent: Llavor de configuració
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # Exemple
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ validació de la llavor.
 Un RTE en mode base de dades es pot registrar ell mateix abans que s'apliqui la llavor. Un runner RTE de la llavor l'`uri` del qual és l'adreça on s'ha
 registrat un RTE d'aquests **adopta** aquella fila: en pren el nom i els camps declarats, i el worker ja no l'elimina quan l'RTE deixa de
 respondre, en lloc de crear un segon runner per al mateix RTE.
+
+Des de la 7.5.0 la secció `databases` declara les [bases de dades](../databases.html) que consulten els formularis. Un element té un `name`, una
+`credential` de tipus base de dades i una `description` opcional; la llavor l'aplica després de les credencials, i rebutja una credencial d'un altre tipus.
