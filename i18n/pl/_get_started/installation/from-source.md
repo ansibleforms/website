@@ -25,7 +25,7 @@ Repozytorium zawiera dwie aplikacje Node.js, a budowanie łączy je w jedną:
 * **server** : API, napisane w Express. Przekazuje zadania runnerom, łączy się z bazą danych i udostępnia zbudowanego klienta.
   Uruchomiony z `AF_ROLE=rte`, ten sam serwer jest RTE (runtime environment), które uruchamia playbooki
 
-Budowany jest tylko klient; jego wynik trafia do folderu `views` serwera, tak jak w [obrazie Docker](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile).
+Budowany jest tylko klient; jego wynik trafia do folderu `views` serwera, tak jak w [obrazie Docker](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile).
 
 ---
 

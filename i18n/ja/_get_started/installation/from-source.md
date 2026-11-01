@@ -25,7 +25,7 @@ AnsibleForms をソースからビルドし、Node.js で実行します
 * **server** : API。Express で書かれています。ジョブをランナーに渡し、データベースに接続し、ビルドしたクライアントを配信します。
   `AF_ROLE=rte` で起動すると、同じサーバーがプレイブックを実行する RTE（ランタイム環境）になります
 
-ビルドするのはクライアントだけです。その出力は [Docker イメージ](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile) と同じく、サーバーの `views` フォルダーに入ります。
+ビルドするのはクライアントだけです。その出力は [Docker イメージ](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile) と同じく、サーバーの `views` フォルダーに入ります。
 
 ---
 

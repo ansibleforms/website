@@ -25,7 +25,7 @@ O repositório contém duas aplicações Node.js, e uma compilação junta-as nu
 * **server** : a API, escrita em Express. Entrega as tarefas aos runners, liga-se à base de dados e serve o client compilado.
   Iniciado com `AF_ROLE=rte`, o mesmo servidor é o RTE (ambiente de execução) que executa os playbooks
 
-Só o client é compilado; o resultado vai para a pasta `views` do servidor, tal como na [imagem Docker](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile).
+Só o client é compilado; o resultado vai para a pasta `views` do servidor, tal como na [imagem Docker](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile).
 
 ---
 

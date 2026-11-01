@@ -25,7 +25,7 @@ translated_from: 5a30cd6f93473aa6d47bf91aabbe13af37d97127
 * **server**：API，用 Express 编写。它把作业交给运行器、连接数据库，并提供构建好的 client。
   以 `AF_ROLE=rte` 启动时，同一个 server 就是运行 playbook 的 RTE（运行环境）
 
-只有 client 需要构建；其输出放入 server 的 `views` 文件夹，与 [Docker 镜像](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile) 中的做法相同。
+只有 client 需要构建；其输出放入 server 的 `views` 文件夹，与 [Docker 镜像](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile) 中的做法相同。
 
 ---
 
