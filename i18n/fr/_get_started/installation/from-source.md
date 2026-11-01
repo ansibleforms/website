@@ -25,7 +25,7 @@ Le dépôt contient deux applications Node.js, qu'une construction réunit en un
 * **server** : l'API, écrite avec Express. Elle confie les jobs aux runners, se connecte à la base de données et sert le client construit.
   Démarré avec `AF_ROLE=rte`, le même serveur est le RTE (runtime environment) qui exécute les playbooks
 
-Seul le client est construit ; sa sortie va dans le dossier `views` du serveur, comme dans l'[image Docker](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile).
+Seul le client est construit ; sa sortie va dans le dossier `views` du serveur, comme dans l'[image Docker](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile).
 
 ---
 

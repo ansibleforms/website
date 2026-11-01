@@ -25,7 +25,7 @@ De repository bevat twee Node.js-applicaties, en een build voegt ze samen tot é
 * **server** : de API, geschreven in Express. Die geeft de jobs door aan runners, maakt verbinding met de database en serveert de gebouwde client.
   Gestart met `AF_ROLE=rte` is dezelfde server de RTE (runtime-omgeving) die de playbooks uitvoert
 
-Alleen de client wordt gebouwd; de uitvoer daarvan gaat naar de map `views` van de server, zoals in de [Docker-image](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile).
+Alleen de client wordt gebouwd; de uitvoer daarvan gaat naar de map `views` van de server, zoals in de [Docker-image](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile).
 
 ---
 

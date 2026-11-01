@@ -25,7 +25,7 @@ Das Repository enthält zwei Node.js-Anwendungen, die ein Build zu einer zusamme
 * **server** : die API, in Express geschrieben. Sie übergibt die Jobs an Runner, verbindet sich mit der Datenbank und liefert den gebauten Client aus.
   Mit `AF_ROLE=rte` gestartet, ist derselbe Server die RTE (Laufzeitumgebung), die die Playbooks ausführt
 
-Nur der Client wird gebaut; seine Ausgabe landet im Ordner `views` des Servers, wie im [Docker-Image](https://github.com/ansibleforms/ansibleforms/blob/main/Dockerfile).
+Nur der Client wird gebaut; seine Ausgabe landet im Ordner `views` des Servers, wie im [Docker-Image](https://github.com/ansibleforms/ansibleforms/blob/main/docker/controller/Dockerfile).
 
 ---
 
