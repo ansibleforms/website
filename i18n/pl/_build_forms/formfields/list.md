@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Pola formularza
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Pole List
@@ -284,6 +284,9 @@ Wiersze ładowane z zapytania do bazy danych:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` wskazuje [bazę danych](../databases.html) z **Połączenia > Bazy danych** (od wersji 7.5.0), a w przeciwnym razie poświadczenie typu
+baza danych, jak dotąd (zobacz [Bazy danych w formularzach](../databases/in-forms.html)).
 
 #### Z wyrażenia lokalnego (`runLocal`)
 

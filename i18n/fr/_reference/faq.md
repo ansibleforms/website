@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 6616eaf626411a615cb68d8cc4f2a43401fe21d9
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Questions fréquentes
@@ -171,11 +171,11 @@ L'application web cliente réévalue les champs toutes les 100 ms ; avec les pro
 > Une référence à un autre champ enum renvoie les valeurs sélectionnées, **pas** la liste déroulante complète. Utilisez la propriété `placeholderColumn` ou la notation pointée comme `$(city.name)`.  
 > **Nouveau en v4.0.20** : mettre placeholderColumn à "*" renvoie l'enregistrement entier au lieu d'une seule colonne.
 
+Les exemples interrogent `CONN1`, une [base de données](databases.html) de Connexions > Bases de données (depuis la 7.5.0) ou un identifiant de type base de données.
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -184,9 +184,7 @@ L'application web cliente réévalue les champs toutes les 100 ms ; avec les pro
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -201,9 +199,7 @@ L'application web cliente réévalue les champs toutes les 100 ms ; avec les pro
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -218,9 +214,7 @@ L'application web cliente réévalue les champs toutes les 100 ms ; avec les pro
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
+translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 ---
 
 # Llavor de configuració
@@ -33,6 +33,7 @@ declara objectes que abans només existien a la base de dades:
 | `runners`               | On s'executen les tasques: RTE, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
 | `secret_stores`         | Magatzems de secrets (HashiCorp Vault, ...)                         |
 | `credentials`           | Credencials                                                         |
+| `databases`             | Les bases de dades que consulten els formularis, cadascuna amb la seva credencial, des de la 7.5.0 |
 | `oauth2`                | Proveïdors SSO: Entra ID i OIDC                                     |
 | `repositories`          | Repositoris git                                                     |
 | `syslog_servers`        | Els servidors syslog que reben el registre del servidor i les entrades d'auditoria |

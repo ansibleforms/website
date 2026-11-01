@@ -284,6 +284,9 @@ Rows loaded from a database query:
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
 
+`dbConfig` names a [database](../databases.html) of **Connections > Databases** (from 7.5.0), or else a credential of type database,
+as before (see [Databases in forms](../databases/in-forms.html)).
+
 #### From a local expression (`runLocal`)
 
 Rows computed in the browser by a local expression:

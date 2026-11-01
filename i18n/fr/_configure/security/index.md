@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Sécurité
-nav_order: 14
+nav_order: 15
 has_children: true
 has_toc: false
 permalink: /security/
-translated_from: f2b18fd1638cb4ccb2401652eafb82e6ce0e82eb
+translated_from: e299ab0a4ffb1c12441a3b3fec6eaaef4a19de79
 ---
 
 # Sécurité

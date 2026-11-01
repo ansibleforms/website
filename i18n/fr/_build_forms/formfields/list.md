@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Champs de formulaire
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Champ List
@@ -284,6 +284,9 @@ Des lignes chargées depuis une requête de base de données :
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` nomme une [base de données](../databases.html) de **Connexions > Bases de données** (depuis la 7.5.0), ou sinon un identifiant de type base de données,
+comme avant (voir [Les bases de données dans les formulaires](../databases/in-forms.html)).
 
 #### Depuis une expression locale (`runLocal`)
 

@@ -3,7 +3,7 @@ layout: default
 title: 認証情報の種類
 parent: 認証情報
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # 認証情報の種類
@@ -27,7 +27,7 @@ translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
 | SSH | サーバーへの SSH 用のユーザーとパスワード、およびそのホストとポート | フォームの `credentials` 、 `ansibleCredentials` 、または認証情報フィールドを通じたプレイブック、ワークフローノードのログイン |
 | Git | git リポジトリ用のユーザーとパスワードまたはトークン | [リポジトリ](../repositories/authentication.html) |
 | API | REST API 用のユーザーとパスワードまたはトークン | [REST 式](../expressions/credentials.html) 、Telegram ボットのトークン、Webhook のベアラートークン、チャットアシスタントの API キー |
-| データベース | データベースのログイン。種類、ホスト、ポート、データベース名を含みます | フォームのクエリ（ `dbConfig` ）と `fnCredentials` 。テストできます |
+| データベース | データベースのログイン。種類、ホスト、ポート、データベース名を含みます | フォームが照会する [データベース](../databases.html) （ `dbConfig` 、7.5.0 から）、またはフォームの `dbConfig` から直接。 `fnCredentials` 。テストできます |
 | CyberArk | CyberArk Central Credential Provider（CCP）のアドレスとその TLS、CyberArk ストアがログインに使う AppID、クライアント証明書、キー | [CyberArk](../secret-stores/cyberark.html) シークレットストア |
 | SMTP | メールサーバー、そのポートと TLS、ログイン（リレーの場合はなし） | メールの [通知チャネル](../notification-channels.html) |
 | LDAP | ディレクトリのサーバー、ポート、TLS、証明書、バインド DN とパスワード | [LDAP ディレクトリ](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
 | Jenkins | Jenkins のユーザー、その API トークンとアドレス | Jenkins ランナー |
 | HashiCorp Vault | Vault ストアがログインに使うトークンとアドレス | [HashiCorp Vault](../secret-stores/hashicorp-vault.html) シークレットストア |
 
-データベースの認証情報の種類には、MySQL、MSSQL、PostgreSQL、Oracle、MongoDB があります。
+データベースの認証情報の種類には、MySQL、MSSQL、PostgreSQL、Oracle、MongoDB があります。7.5.0 からは
+[接続 > データベース](../databases.html) のデータベースがそれを選び、7.5.0 へのアップグレードでは、それぞれに同じ名前のデータベースが一つ作られます。
 
 API と [構成シード](../seed/) では、種類は `userpass` 、 `ssh` 、 `git` 、 `api` 、 `database` 、 `cyberark` 、 `smtp` 、
 `ldap` 、 `entraid` 、 `oidc` 、 `rte` 、 `awx` 、 `aap` 、 `ascender` 、 `semaphore` 、 `rundeck` 、 `jenkins` 、 `vault` です。バージョン 6 からの

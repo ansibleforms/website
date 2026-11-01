@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Campos de formulário
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Campo List
@@ -284,6 +284,9 @@ Linhas carregadas a partir de uma consulta à base de dados:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` nomeia uma [base de dados](../databases.html) de **Ligações > Bases de dados** (a partir da 7.5.0), ou então uma credencial do tipo
+base de dados, como antes (consulte [Bases de dados nos formulários](../databases/in-forms.html)).
 
 #### A partir de uma expressão local (`runLocal`)
 

@@ -3,7 +3,7 @@ layout: default
 title: Typen referenties
 parent: Inloggegevens
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Typen referenties
@@ -27,7 +27,7 @@ Het type zegt waarvoor een referentie dient. Het bepaalt welke velden het dialoo
 | SSH | Een gebruiker en wachtwoord voor SSH naar een server, met de host en poort | Playbooks, via de `credentials` of `ansibleCredentials` van een formulier of een referentieveld, en de aanmelding van een workflownode |
 | Git | Een gebruiker en wachtwoord of token voor git-repositories | [Repositories](../repositories/authentication.html) |
 | API | Een gebruiker en wachtwoord of token voor een REST API | [REST-expressies](../expressions/credentials.html), een Telegram-bottoken, het bearer-token van een webhook, de API-sleutel van de chat-assistent |
-| Database | Een database-aanmelding, met het type, de host, de poort en de databasenaam | Formulierquery's (`dbConfig`) en `fnCredentials`; ze kan worden getest |
+| Database | Een database-aanmelding, met het type, de host, de poort en de databasenaam | Een [database](../databases.html) die formulieren bevragen (`dbConfig`), vanaf 7.5.0, of rechtstreeks de `dbConfig` van een formulier; `fnCredentials`; ze kan worden getest |
 | CyberArk | Het adres van de CyberArk Central Credential Provider (CCP) en de TLS ervan, en de AppID, het clientcertificaat en de sleutel waarmee een CyberArk-store zich aanmeldt | Een [CyberArk](../secret-stores/cyberark.html)-secret store |
 | SMTP | Een mailserver, de poort en TLS, en de aanmelding (geen voor een relay) | Een [meldingskanaal](../notification-channels.html) voor mail |
 | LDAP | De servers, poort, TLS en certificaten van een directory, en de bind-DN en het wachtwoord | Een [LDAP-directory](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ Het type zegt waarvoor een referentie dient. Het bepaalt welke velden het dialoo
 | Jenkins | Een gebruiker, het API-token en het adres van een Jenkins | Een Jenkins-runner |
 | HashiCorp Vault | Het token en het adres waarmee een Vault-store zich aanmeldt | Een [HashiCorp Vault](../secret-stores/hashicorp-vault.html)-secret store |
 
-Een databasereferentie kan van het type MySQL, MSSQL, PostgreSQL, Oracle of MongoDB zijn.
+Een databasereferentie kan van het type MySQL, MSSQL, PostgreSQL, Oracle of MongoDB zijn. Vanaf 7.5.0 wordt ze gekozen door een database uit
+[Verbindingen > Databases](../databases.html), en de upgrade naar 7.5.0 maakt voor elke databasereferentie een database met dezelfde naam.
 
 In de API en de [configuratie-seed](../seed/) zijn de typen `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` en `vault`. De upgrade vanaf 6

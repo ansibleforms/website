@@ -30,7 +30,7 @@ value, and is evaluated again each time that value changes. This is how cascaded
   values: [Amsterdam, Brussels]
 - name: datacenter
   type: enum
-  dbConfig: { name: CMDB, type: mysql }
+  dbConfig: CMDB            # a database of Connections > Databases
   query: select name from cmdb.datacenter where city='$(city)'
 ```
 
@@ -72,7 +72,7 @@ Setting `placeholderColumn: "*"` on an enum makes `$(field)` give the whole sele
 ```yaml
 - name: city
   type: enum
-  dbConfig: { name: CMDB, type: mysql }
+  dbConfig: CMDB
   query: select id, name from cmdb.city
   valueColumn: name
   placeholderColumn: id        # $(city) gives the id; $(city.name) still gives the name

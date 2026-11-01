@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Campi del modulo
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Campo List
@@ -284,6 +284,9 @@ Righe caricate da una query su database:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` indica un [database](../databases.html) di **Connessioni > Database** (dalla 7.5.0), o altrimenti una credenziale di tipo database,
+come prima (vedi [I database nei moduli](../databases/in-forms.html)).
 
 #### Da un'espressione locale (`runLocal`)
 

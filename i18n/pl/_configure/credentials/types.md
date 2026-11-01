@@ -3,7 +3,7 @@ layout: default
 title: Typy poświadczeń
 parent: Poświadczenia
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Typy poświadczeń
@@ -27,7 +27,7 @@ Typ mówi, do czego służy poświadczenie. Decyduje, o które pola pyta okno i 
 | SSH | Użytkownik i hasło do SSH na serwer, z jego hostem i portem | Playbooki, przez `credentials`, `ansibleCredentials` formularza lub pole poświadczenia, oraz logowanie węzła workflow |
 | Git | Użytkownik i hasło lub token do repozytoriów git | [Repozytoria](../repositories/authentication.html) |
 | API | Użytkownik i hasło lub token do API REST | [Wyrażenia REST](../expressions/credentials.html), token bota Telegram, token bearer webhooka, klucz API asystenta czatu |
-| Baza danych | Dostęp do bazy danych z jej typem, hostem, portem i nazwą bazy | Zapytania formularzy (`dbConfig`) i `fnCredentials`; można go przetestować |
+| Baza danych | Dostęp do bazy danych z jej typem, hostem, portem i nazwą bazy | [Baza danych](../databases.html), którą odpytują formularze (`dbConfig`), od wersji 7.5.0, lub bezpośrednio `dbConfig` formularza; `fnCredentials`; można go przetestować |
 | CyberArk | Adres CyberArk Central Credential Provider (CCP) i jego TLS oraz AppID, certyfikat klienta i klucz, którymi loguje się magazyn CyberArk | Magazyn sekretów [CyberArk](../secret-stores/cyberark.html) |
 | SMTP | Serwer poczty, jego port i TLS oraz logowanie (brak dla przekaźnika) | Pocztowy [kanał powiadomień](../notification-channels.html) |
 | LDAP | Serwery katalogu, port, TLS i certyfikaty oraz jego bind DN i hasło | [Katalog LDAP](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ Typ mówi, do czego służy poświadczenie. Decyduje, o które pola pyta okno i 
 | Jenkins | Użytkownik, jego token API i adres Jenkinsa | Runner Jenkins |
 | HashiCorp Vault | Token i adres, którymi loguje się magazyn Vault | Magazyn sekretów [HashiCorp Vault](../secret-stores/hashicorp-vault.html) |
 
-Poświadczenie bazy danych może być typu MySQL, MSSQL, PostgreSQL, Oracle lub MongoDB.
+Poświadczenie bazy danych może być typu MySQL, MSSQL, PostgreSQL, Oracle lub MongoDB. Od wersji 7.5.0 wybiera je baza danych z
+[Połączenia > Bazy danych](../databases.html), a aktualizacja do 7.5.0 tworzy jedną bazę danych dla każdego z nich, o tej samej nazwie.
 
 W API i w [config seed](../seed/) typy to `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` i `vault`. Aktualizacja z wersji 6

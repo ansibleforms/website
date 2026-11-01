@@ -71,6 +71,12 @@ credentials:
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
 
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
+
 repositories:
   prune: true
   items:
@@ -208,3 +214,6 @@ validation.
 An RTE in database mode may register itself before the seed is applied. A seeded RTE runner whose `uri` is the address such an RTE
 registered at **adopts** that row: it takes the declared name and fields, and the worker no longer removes it when the RTE stops
 answering, instead of a second runner for the same RTE.
+
+From 7.5.0 the `databases` section declares the [databases](../databases.html) forms query. An item has a `name`, a `credential` of
+type database and an optional `description`; the seed applies it after the credentials, and refuses a credential of another type.

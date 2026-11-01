@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Anmeldedaten
@@ -40,6 +40,9 @@ Ein **Anmeldedaten-Eintrag** ist eine benannte Anmeldung, angelegt unter **Verbi
 AnsibleForms-Datenbank gespeichert, verschlüsselt mit `ENCRYPTION_SECRET`, oder bei jeder Verwendung der Anmeldedaten aus einem [Secret Store](secret-stores/)
 gelesen.
 
+Ab 7.5.0 fragen Formulare eine [Datenbank](databases.html) unter **Verbindungen > Datenbanken** ab, die die Anmeldedaten vom Typ **Datenbank** nennt,
+mit denen sie sich verbindet; ein Formular, das die Anmeldedaten selbst in `dbConfig` nennt, funktioniert weiterhin wie bisher.
+
 ---
 
 ## Wer Anmeldedaten ändern darf
@@ -69,6 +72,7 @@ halten diese Benutzer von Geheimnissen fern, die sie sonst nicht lesen könnten:
 
 ## Verwendete Anmeldedaten
 
-Anmeldedaten, die noch von Datensätzen genannt werden, können weder gelöscht noch umbenannt werden, da diese sonst ins Leere zeigen würden.
+Anmeldedaten, die noch von Datensätzen genannt werden, ab 7.5.0 auch von einer [Datenbank](databases.html), können weder gelöscht noch
+umbenannt werden, da diese sonst ins Leere zeigen würden.
 Die Ablehnung nennt, wie viele Datensätze sie verwenden; der Tab **Verwendet von** [ihrer Seite](credentials/credential-page.html) listet sie auf.
 Richten Sie diese zuerst auf andere Anmeldedaten und löschen oder benennen Sie sie dann um.

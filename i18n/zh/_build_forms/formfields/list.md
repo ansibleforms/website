@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: 表单字段
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # List 字段
@@ -284,6 +284,9 @@ list 字段提供以下功能：
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` 指定 **连接 > 数据库** 中的 [数据库](../databases.html)（从 7.5.0 起），否则和以前一样指定类型为数据库的
+凭据（参见 [表单中的数据库](../databases/in-forms.html)）。
 
 #### 来自本地表达式（ `runLocal` ）
 

@@ -3,7 +3,7 @@ layout: default
 title: "Die Seite eines Anmeldedaten-Eintrags"
 parent: Anmeldedaten
 nav_order: 3
-translated_from: 0269b5c0d313622bea6c910b96231f41ffd852d7
+translated_from: 204eca949763c8c23625369f1d8d8d0d06545c87
 ---
 
 # Die Seite eines Anmeldedaten-Eintrags
@@ -20,7 +20,7 @@ Die Seite eines Anmeldedaten-Eintrags zeigt die Schritte seines Dialogs als Tabs
 | Typ | Wofür die Anmeldedaten sind. |
 | Anmeldung | Jedes Feld seines Typs, wie im Schritt **Anmeldung** des Dialogs: der Benutzer, das Passwort und wo er sich anmeldet (Host und Port, die Datenbank, der Mail-Server, die Server des Verzeichnisses, der Tenant oder Issuer, die Adresse des Servers und sein TLS). Bei CyberArk-Anmeldedaten AppID, Client-Zertifikat und Schlüssel. |
 | Speicher | Datenbank oder Secret Store sowie der Store und die Referenz. Nicht für CyberArk und HashiCorp Vault. |
-| Verwendet von | Alles, was diese Anmeldedaten nennt: Secret Stores, Benachrichtigungskanäle, Repositories, LDAP-Verzeichnisse, SSO-Anbieter, Runner, der Chat-Assistent, Formulare und die Workflows des Designers. Eine Zeile öffnet das Element. |
+| Verwendet von | Alles, was diese Anmeldedaten nennt: Secret Stores, Benachrichtigungskanäle, Repositories, LDAP-Verzeichnisse, SSO-Anbieter, Runner, [Datenbanken](../databases.html) (ab 7.5.0), der Chat-Assistent, Formulare und die Workflows des Designers. Eine Zeile öffnet das Element. |
 
 Das Passwort wird im Tab **Anmeldung** eingegeben und nach dem Speichern nie wieder angezeigt: Leer gelassen bleibt das gespeicherte erhalten. Bei CyberArk-Anmeldedaten
 lassen Sie den Client-Schlüssel leer, um den gespeicherten zu behalten. Oben rechts befinden sich **Verbindung testen** (nur bei Datenbank-Anmeldedaten),

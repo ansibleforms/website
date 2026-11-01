@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Secret stores
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
@@ -93,6 +93,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+From 7.5.0 a `dbConfig` names a [database](../databases.html) first; a reference like this one is no database, so it is still read
+from the store. A database can also read its login from a store, through a credential of type database that uses one.
 
 Without a credential row, a database secret needs at least a `db_type` and a host, for example:
 

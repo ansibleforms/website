@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Archivi di segreti
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: 595f94a84c4e8182b1b79289eb309a814dec1287
+translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 ---
 
 # Archivi di segreti
@@ -94,6 +94,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+Dalla 7.5.0 un `dbConfig` indica prima un [database](../databases.html); un riferimento come questo non è un database, quindi viene ancora letto
+dall'archivio. Anche un database può leggere il suo accesso da un archivio, tramite una credenziale di tipo database che ne usa uno.
 
 Senza una riga di credenziale, un segreto di database richiede almeno un `db_type` e un host, per esempio:
 

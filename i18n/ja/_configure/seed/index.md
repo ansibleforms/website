@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
+translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 ---
 
 # 構成シード
@@ -33,6 +33,7 @@ git から構築する管理者向けです。管理オブジェクトをファ�
 | `runners`               | ジョブの実行場所：RTE、AWX / AAP / Ascender、Semaphore、Rundeck、Jenkins |
 | `secret_stores`         | シークレットストア（HashiCorp Vault など）                                |
 | `credentials`           | 認証情報                                                         |
+| `databases`             | フォームが照会するデータベースとその認証情報（7.5.0 から）            |
 | `oauth2`                | SSO プロバイダー：Entra ID と OIDC                                    |
 | `repositories`          | Git リポジトリ                                                    |
 | `syslog_servers`        | サーバーログと監査エントリを受け取る syslog サーバー    |

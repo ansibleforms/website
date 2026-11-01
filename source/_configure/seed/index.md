@@ -32,6 +32,7 @@ declares objects that previously existed only in the database:
 | `runners`               | Where jobs run: RTEs, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
 | `secret_stores`         | Secret stores (HashiCorp Vault, ...)                                |
 | `credentials`           | Credentials                                                         |
+| `databases`             | The databases forms query, each with its credential, from 7.5.0      |
 | `oauth2`                | SSO providers: Entra ID and OIDC                                    |
 | `repositories`          | Git repositories                                                    |
 | `syslog_servers`        | The syslog servers that get the server log and the audit entries    |

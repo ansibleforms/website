@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Disclaimer
-nav_order: 7
+nav_order: 8
 has_children: true
 has_toc: false
 permalink: /disclaimer.html
-translated_from: a22b56db001904583c51e6bd28f1281737f32a32
+translated_from: ad00bcbac9d3c64c103b15d26914eec84174f6b6
 ---
 
 # Disclaimer

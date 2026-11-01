@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Formularfelder
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # List-Feld
@@ -284,6 +284,9 @@ Zeilen, die aus einer Datenbankabfrage geladen werden:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` nennt eine [Datenbank](../databases.html) unter **Verbindungen > Datenbanken** (ab 7.5.0) oder sonst Anmeldedaten vom Typ Datenbank,
+wie bisher (siehe [Datenbanken in Formularen](../databases/in-forms.html)).
 
 #### Aus einem lokalen Ausdruck (`runLocal`)
 

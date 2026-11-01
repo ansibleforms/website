@@ -170,11 +170,11 @@ The client web application re-evaluates fields every 100 ms; with current proces
 > A reference to another enum field returns the selected values, **not** the full dropdown list. Use the `placeholderColumn` property or dot notation such as `$(city.name)`.  
 > **New in v4.0.20**: setting placeholderColumn to "*" outputs the entire record instead of a single column.
 
+The examples query `CONN1`, a [database](databases.html) of Connections > Databases (from 7.5.0) or a credential of type database.
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -183,9 +183,7 @@ The client web application re-evaluates fields every 100 ms; with current proces
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -200,9 +198,7 @@ The client web application re-evaluates fields every 100 ms; with current proces
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -217,9 +213,7 @@ The client web application re-evaluates fields every 100 ms; with current proces
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

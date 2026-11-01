@@ -151,9 +151,7 @@ Reference it with the standard `$(...)` expression syntax in the field definitio
       label: VLAN
       # filter available VLANs based on the parent's selected region
       query: "select id,name from vlans where region='$(__parent__.region)'"
-      dbConfig:
-        name: MYDB
-        type: mysql
+      dbConfig: MYDB      # a database of Connections > Databases
       valueColumn: id
       placeholderColumn: name
 

@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
+translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 ---
 
 # Config-Seed
@@ -33,6 +33,7 @@ deklariert Objekte, die früher nur in der Datenbank existierten:
 | `runners`               | Wo Jobs laufen: RTEs, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
 | `secret_stores`         | Secret Stores (HashiCorp Vault, ...)                                |
 | `credentials`           | Anmeldedaten                                                        |
+| `databases`             | Die Datenbanken, die Formulare abfragen, jede mit ihren Anmeldedaten, ab 7.5.0 |
 | `oauth2`                | SSO-Anbieter: Entra ID und OIDC                                     |
 | `repositories`          | Git-Repositories                                                    |
 | `syslog_servers`        | Die Syslog-Server, die das Serverprotokoll und die Audit-Einträge erhalten |

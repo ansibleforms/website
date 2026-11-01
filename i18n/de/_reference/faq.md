@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 6616eaf626411a615cb68d8cc4f2a43401fe21d9
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Häufig gestellte Fragen
@@ -171,11 +171,11 @@ Die Client-Webanwendung wertet Felder alle 100 ms neu aus; mit aktuellen Prozess
 > Eine Referenz auf ein anderes Enum-Feld gibt die ausgewählten Werte zurück, **nicht** die ganze Auswahlliste. Verwenden Sie die Eigenschaft `placeholderColumn` oder die Punktnotation wie `$(city.name)`.
 > **Neu in v4.0.20**: wird placeholderColumn auf "*" gesetzt, wird der ganze Datensatz statt einer einzelnen Spalte ausgegeben.
 
+Die Beispiele fragen `CONN1` ab, eine [Datenbank](databases.html) unter Verbindungen > Datenbanken (ab 7.5.0) oder Anmeldedaten vom Typ Datenbank.
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -184,9 +184,7 @@ Die Client-Webanwendung wertet Felder alle 100 ms neu aus; mit aktuellen Prozess
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -201,9 +199,7 @@ Die Client-Webanwendung wertet Felder alle 100 ms neu aus; mit aktuellen Prozess
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -218,9 +214,7 @@ Die Client-Webanwendung wertet Felder alle 100 ms neu aus; mit aktuellen Prozess
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

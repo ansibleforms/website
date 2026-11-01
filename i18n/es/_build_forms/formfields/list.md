@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Campos de formulario
 nav_order: 13
-translated_from: b6209effaf1cc9783a27c36669004a239751fb3e
+translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
 ---
 
 # Campo List
@@ -284,6 +284,9 @@ Filas cargadas desde una consulta a base de datos:
   dbConfig: CMDB_CONN
   query: SELECT hostname, role FROM servers WHERE active = 1
 ```
+
+`dbConfig` nombra una [base de datos](../databases.html) de **Conexiones > Bases de datos** (desde la 7.5.0), o si no una credencial de tipo base de datos,
+como antes (consulta [Bases de datos en los formularios](../databases/in-forms.html)).
 
 #### Desde una expresión local (`runLocal`)
 

@@ -3,7 +3,7 @@ layout: default
 title: Tipi di credenziale
 parent: Credenziali
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # Tipi di credenziale
@@ -27,7 +27,7 @@ Il tipo dice a cosa serve una credenziale. Decide quali campi chiede la finestra
 | SSH | Un utente e una password per SSH verso un server, con il suo host e la sua porta | Playbook, tramite le `credentials` di un modulo, `ansibleCredentials` o un campo credenziale, e l'accesso di un nodo di workflow |
 | Git | Un utente e una password o un token per repository git | [Repository](../repositories/authentication.html) |
 | API | Un utente e una password o un token per una API REST | [Espressioni REST](../expressions/credentials.html), il token di un bot Telegram, il bearer token di un webhook, la chiave API dell'assistente chat |
-| Database | Un accesso a un database, con il suo tipo, host, porta e nome del database | Query dei moduli (`dbConfig`) e `fnCredentials`; si può testare |
+| Database | Un accesso a un database, con il suo tipo, host, porta e nome del database | Un [database](../databases.html) che i moduli interrogano (`dbConfig`), dalla 7.5.0, o direttamente il `dbConfig` di un modulo; `fnCredentials`; si può testare |
 | CyberArk | L'indirizzo del CyberArk Central Credential Provider (CCP) e il suo TLS, e l'AppID, il certificato client e la chiave con cui accede un archivio CyberArk | Un archivio di segreti [CyberArk](../secret-stores/cyberark.html) |
 | SMTP | Un server mail, la sua porta e il TLS, e il suo accesso (nessuno per un relay) | Un [canale di notifica](../notification-channels.html) mail |
 | LDAP | I server di una directory, la porta, il TLS e i certificati, e il suo bind DN e la password | Una [directory LDAP](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ Il tipo dice a cosa serve una credenziale. Decide quali campi chiede la finestra
 | Jenkins | Un utente, il suo token API e l'indirizzo di un Jenkins | Un runner Jenkins |
 | HashiCorp Vault | Il token e l'indirizzo con cui accede un archivio Vault | Un archivio di segreti [HashiCorp Vault](../secret-stores/hashicorp-vault.html) |
 
-Una credenziale database può essere di tipo MySQL, MSSQL, PostgreSQL, Oracle o MongoDB.
+Una credenziale database può essere di tipo MySQL, MSSQL, PostgreSQL, Oracle o MongoDB. Dalla 7.5.0 viene scelta da un database di
+[Connessioni > Database](../databases.html), e l'aggiornamento alla 7.5.0 crea un database per ognuna, con lo stesso nome.
 
 Nell'API e nel [config seed](../seed/), i tipi sono `userpass`, `ssh`, `git`, `api`, `database`, `cyberark`, `smtp`,
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` e `vault`. L'aggiornamento dalla 6

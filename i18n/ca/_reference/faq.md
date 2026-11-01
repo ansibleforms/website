@@ -2,7 +2,7 @@
 layout: default
 title: PMF
 nav_order: 2
-translated_from: 6616eaf626411a615cb68d8cc4f2a43401fe21d9
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Preguntes més freqüents
@@ -171,11 +171,11 @@ L'aplicació web client torna a avaluar els camps cada 100 ms; amb els processad
 > Una referència a un altre camp enum retorna els valors seleccionats, **no** la llista completa del desplegable. Fes servir la propietat `placeholderColumn` o la notació amb punts com ara `$(city.name)`.  
 > **Novetat a la v4.0.20**: posar placeholderColumn a "*" retorna el registre complet en lloc d'una sola columna.
 
+Els exemples consulten `CONN1`, una [base de dades](databases.html) de Connexions > Bases de dades (des de la 7.5.0) o una credencial de tipus base de dades.
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -184,9 +184,7 @@ L'aplicació web client torna a avaluar els camps cada 100 ms; amb els processad
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -201,9 +199,7 @@ L'aplicació web client torna a avaluar els camps cada 100 ms; amb els processad
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -218,9 +214,7 @@ L'aplicació web client torna a avaluar els camps cada 100 ms; amb els processad
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

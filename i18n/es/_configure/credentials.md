@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Credenciales
@@ -40,6 +40,9 @@ se refieren a ella por su nombre, así que la contraseña nunca aparece en un fo
 base de datos de AnsibleForms, cifrados con `ENCRYPTION_SECRET`, o se leen de un [almacén de secretos](secret-stores/) cada vez que se
 usa la credencial.
 
+Desde la 7.5.0 los formularios consultan una [base de datos](databases.html) de **Conexiones > Bases de datos**, que nombra la credencial de tipo
+**Base de datos** con la que se conecta; un formulario que nombra la propia credencial en `dbConfig` sigue funcionando, como antes.
+
 ---
 
 ## Quién puede cambiar una credencial
@@ -69,6 +72,7 @@ mantienen a esos usuarios lejos de secretos que de otro modo no podrían leer:
 
 ## Credenciales en uso
 
-Una credencial que todavía nombran otros registros no se puede eliminar ni renombrar, ya que quedarían apuntando a nada.
+Una credencial que todavía nombran otros registros, entre ellos una [base de datos](databases.html) desde la 7.5.0, no se puede eliminar ni
+renombrar, ya que quedarían apuntando a nada.
 El rechazo indica cuántos registros la usan; la pestaña **Usado por** de [su página](credentials/credential-page.html) los lista.
 Apúntalos antes a otra credencial y después elimínala o renómbrala.

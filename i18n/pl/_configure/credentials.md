@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Poświadczenia
@@ -40,6 +40,9 @@ do niego po nazwie, więc samo hasło nigdy nie pojawia się w formularzu. Jego 
 bazie danych AnsibleForms, zaszyfrowane kluczem `ENCRYPTION_SECRET`, albo odczytywane z [magazynu sekretów](secret-stores/) przy każdym
 użyciu poświadczenia.
 
+Od wersji 7.5.0 formularze odpytują [bazę danych](databases.html) z **Połączenia > Bazy danych**, która wskazuje poświadczenie typu
+**Baza danych**, którym się łączy; formularz, który wskazuje samo poświadczenie w `dbConfig`, nadal działa jak dotąd.
+
 ---
 
 ## Kto może zmienić poświadczenie
@@ -69,6 +72,7 @@ trzymają tych użytkowników z dala od sekretów, których inaczej nie mogliby 
 
 ## Poświadczenia w użyciu
 
-Poświadczenia, na które wciąż wskazują jakieś rekordy, nie można usunąć ani przemianować, bo te rekordy wskazywałyby na nic.
+Poświadczenia, na które wciąż wskazują jakieś rekordy, od wersji 7.5.0 także [baza danych](databases.html), nie można usunąć ani
+przemianować, bo te rekordy wskazywałyby na nic.
 Odmowa podaje, ile rekordów go używa; karta **Używane przez** na [jego stronie](credentials/credential-page.html) je wymienia.
 Najpierw skieruj je na inne poświadczenie, potem je usuń lub przemianuj.

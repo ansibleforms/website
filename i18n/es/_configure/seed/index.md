@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
+translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 ---
 
 # Semilla de configuración
@@ -33,6 +33,7 @@ declara objetos que antes solo existían en la base de datos:
 | `runners`               | Dónde se ejecutan los trabajos: RTE, AWX / AAP / Ascender, Semaphore, Rundeck, Jenkins |
 | `secret_stores`         | Almacenes de secretos (HashiCorp Vault, ...)                                |
 | `credentials`           | Credenciales                                                         |
+| `databases`             | Las bases de datos que consultan los formularios, cada una con su credencial, desde la 7.5.0 |
 | `oauth2`                | Proveedores SSO: Entra ID y OIDC                                    |
 | `repositories`          | Repositorios git                                                    |
 | `syslog_servers`        | Los servidores syslog que reciben el log del servidor y las entradas de auditoría    |

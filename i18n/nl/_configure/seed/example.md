@@ -3,7 +3,7 @@ layout: default
 title: Voorbeeld
 parent: Configuratie-seed
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # Voorbeeld
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ validatie van de seed mislukken.
 Een RTE in databasemodus kan zichzelf registreren voordat de seed wordt toegepast. Een RTE-runner uit de seed waarvan de `uri` het adres is waarop zo'n RTE
 zich registreerde, **neemt** die rij **over**: hij krijgt de gedeclareerde naam en velden, en de worker verwijdert hem niet meer als de RTE niet meer
 antwoordt, in plaats van een tweede runner voor dezelfde RTE.
+
+Vanaf 7.5.0 declareert de sectie `databases` de [databases](../databases.html) die formulieren bevragen. Een item heeft een `name`, een `credential`
+van het type database en een optionele `description`; de seed past het toe na de referenties, en weigert een referentie van een ander type.

@@ -3,7 +3,7 @@ layout: default
 title: Esempio
 parent: Config seed
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # Esempio
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ validazione del seed.
 Un RTE in modalità database può registrarsi da solo prima che il seed venga applicato. Un runner RTE del seed il cui `uri` è l'indirizzo con cui un RTE del genere
 si è registrato **adotta** quella riga: prende il nome e i campi dichiarati, e il worker non lo rimuove più quando l'RTE smette di
 rispondere, invece di avere un secondo runner per lo stesso RTE.
+
+Dalla 7.5.0 la sezione `databases` dichiara i [database](../databases.html) che i moduli interrogano. Un elemento ha un `name`, una `credential`
+di tipo database e una `description` facoltativa; il seed lo applica dopo le credenziali, e rifiuta una credenziale di un altro tipo.

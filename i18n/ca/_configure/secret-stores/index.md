@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Magatzems de secrets
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: 595f94a84c4e8182b1b79289eb309a814dec1287
+translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 ---
 
 # Magatzems de secrets
@@ -94,6 +94,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+Des de la 7.5.0 un `dbConfig` nomena primer una [base de dades](../databases.html); una referència com aquesta no és cap base de dades, així que
+encara es llegeix del magatzem. Una base de dades també pot llegir el seu accés d'un magatzem, amb una credencial de tipus base de dades que en faci servir un.
 
 Sense fila de credencial, un secret de base de dades necessita com a mínim un `db_type` i un host, per exemple:
 

@@ -5,7 +5,7 @@ nav_order: 6
 has_children: true
 has_toc: false
 permalink: /credentials.html
-translated_from: 08110077a1cf59a4a52e078fc2ebc252f7cae48d
+translated_from: 0c8fddace3f97bb7d5a3a2642e3fccc296680454
 ---
 
 # Credenziali
@@ -40,6 +40,9 @@ la indicano con il suo nome, così la password stessa non compare mai in un modu
 database di AnsibleForms, cifrati con `ENCRYPTION_SECRET`, oppure letti da un [archivio di segreti](secret-stores/) ogni volta che
 la credenziale viene usata.
 
+Dalla 7.5.0 i moduli interrogano un [database](databases.html) di **Connessioni > Database**, che indica la credenziale di tipo
+**Database** con cui si connette; un modulo che indica la credenziale stessa nel `dbConfig` funziona ancora, come prima.
+
 ---
 
 ## Chi può modificare una credenziale
@@ -69,6 +72,7 @@ tengono questi utenti lontani dai segreti che altrimenti non potrebbero leggere:
 
 ## Credenziali in uso
 
-Una credenziale ancora indicata da dei record non si può eliminare né rinominare, perché questi resterebbero a puntare verso il nulla.
+Una credenziale ancora indicata da dei record, tra cui un [database](databases.html) dalla 7.5.0, non si può eliminare né rinominare, perché
+questi resterebbero a puntare verso il nulla.
 Il rifiuto indica quanti record la usano; la scheda **Usato da** della [sua pagina](credentials/credential-page.html) li elenca.
 Puntali prima verso un'altra credenziale, poi eliminala o rinominala.

@@ -3,7 +3,7 @@ layout: default
 title: Platzhalter
 parent: Ausdrücke
 nav_order: 0.5
-translated_from: bd63e437a4f77c707a1bf8d8ee99b1516063b62a
+translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
 ---
 
 # Platzhalter
@@ -31,7 +31,7 @@ Wert hat, und wird jedes Mal neu ausgewertet, wenn sich dieser Wert ändert. So 
   values: [Amsterdam, Brussels]
 - name: datacenter
   type: enum
-  dbConfig: { name: CMDB, type: mysql }
+  dbConfig: CMDB            # a database of Connections > Databases
   query: select name from cmdb.datacenter where city='$(city)'
 ```
 
@@ -73,7 +73,7 @@ Mit `placeholderColumn: "*"` auf einem Enum liefert `$(field)` den ganzen ausgew
 ```yaml
 - name: city
   type: enum
-  dbConfig: { name: CMDB, type: mysql }
+  dbConfig: CMDB
   query: select id, name from cmdb.city
   valueColumn: name
   placeholderColumn: id        # $(city) gives the id; $(city.name) still gives the name

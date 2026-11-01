@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
+translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 ---
 
 # 配置种子
@@ -33,6 +33,7 @@ translated_from: 030ff83b1d7c3920600b7e0668b05ab24b949b67
 | `runners`               | 作业的运行位置：RTE、AWX / AAP / Ascender、Semaphore、Rundeck、Jenkins |
 | `secret_stores`         | 密钥库（HashiCorp Vault 等）                                        |
 | `credentials`           | 凭据                                                                |
+| `databases`             | 表单查询的数据库及其凭据，从 7.5.0 起                                 |
 | `oauth2`                | SSO 提供商：Entra ID 和 OIDC                                        |
 | `repositories`          | Git 仓库                                                            |
 | `syslog_servers`        | 接收服务器日志和审计条目的 syslog 服务器                            |

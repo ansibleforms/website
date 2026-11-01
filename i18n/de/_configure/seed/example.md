@@ -3,7 +3,7 @@ layout: default
 title: Beispiel
 parent: Config-Seed
 nav_order: 1
-translated_from: f085641a12234a5485ea59e73e76c29e7452d5e9
+translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
 ---
 
 # Beispiel
@@ -71,6 +71,12 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+
+databases:                       # from 7.5.0
+  items:
+    - name: production-db        # the name a field's dbConfig gives
+      description: The CMDB
+      credential: production-db  # a credential of the credentials section, of type database
 
 repositories:
   prune: true
@@ -209,3 +215,6 @@ Validierung des Seeds fehlschlagen.
 Eine RTE im Datenbankmodus kann sich selbst registrieren, bevor der Seed angewendet wird. Ein RTE-Runner aus dem Seed, dessen `uri` die Adresse ist, unter der eine solche RTE
 sich registriert hat, **übernimmt** diese Zeile: Sie erhält den deklarierten Namen und die Felder, und der Worker entfernt sie nicht mehr, wenn die RTE nicht mehr
 antwortet, statt eines zweiten Runners für dieselbe RTE.
+
+Ab 7.5.0 deklariert der Abschnitt `databases` die [Datenbanken](../databases.html), die Formulare abfragen. Ein Eintrag hat einen `name`, eine
+`credential` vom Typ Datenbank und eine optionale `description`; der Seed wendet ihn nach den Anmeldedaten an und weist Anmeldedaten eines anderen Typs ab.

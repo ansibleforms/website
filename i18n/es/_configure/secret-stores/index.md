@@ -1,11 +1,11 @@
 ---
 layout: default
 title: Almacenes de secretos
-nav_order: 13
+nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: 595f94a84c4e8182b1b79289eb309a814dec1287
+translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 ---
 
 # Almacenes de secretos
@@ -94,6 +94,9 @@ fn.fnCredentials('vault:secret/myapp/prod')          // the store named `vault`
   query: SELECT name FROM servers
   dbConfig: secret:vault:secret/cmdb/db
 ```
+
+Desde la 7.5.0 un `dbConfig` nombra primero una [base de datos](../databases.html); una referencia como esta no es una base de datos, así que
+se sigue leyendo del almacén. Una base de datos también puede leer su acceso de un almacén, mediante una credencial de tipo base de datos que use uno.
 
 Sin fila de credencial, un secreto de base de datos necesita al menos un `db_type` y un host, por ejemplo:
 

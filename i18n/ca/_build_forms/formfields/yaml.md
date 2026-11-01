@@ -3,7 +3,7 @@ layout: default
 title: YAML
 parent: Camps de formulari
 nav_order: 14
-translated_from: c7439c165a54cf525a91d0458a268a66ee8a136f
+translated_from: 8dde3e82c2a53e38adc729f5a8f3764b182718c7
 ---
 
 # Camp YAML
@@ -152,9 +152,7 @@ Fes-hi referència amb la sintaxi d'expressió estàndard `$(...)` a les definic
       label: VLAN
       # filter available VLANs based on the parent's selected region
       query: "select id,name from vlans where region='$(__parent__.region)'"
-      dbConfig:
-        name: MYDB
-        type: mysql
+      dbConfig: MYDB      # a database of Connections > Databases
       valueColumn: id
       placeholderColumn: name
 

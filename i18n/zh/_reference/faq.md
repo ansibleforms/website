@@ -2,7 +2,7 @@
 layout: default
 title: 常见问题
 nav_order: 2
-translated_from: 6616eaf626411a615cb68d8cc4f2a43401fe21d9
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # 常见问题
@@ -171,11 +171,11 @@ expression: $(__user__.roles)
 > 对另一个 enum 字段的引用返回的是所选的值，**而不是** 完整的下拉列表。请使用 `placeholderColumn` 属性或 `$(city.name)` 这样的点号写法。  
 > **v4.0.20 新增**：把 placeholderColumn 设为 "*" 会输出整条记录，而不是单独一列。
 
+示例查询 `CONN1`，它是 连接 > 数据库 中的 [数据库](databases.html)（从 7.5.0 起），或类型为数据库的凭据。
+
 ```yaml
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name from cmdb.city
   name: city_name
   label: Select a city
@@ -184,9 +184,7 @@ expression: $(__user__.roles)
   model: cmdb.city
   group: CMDB
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select datacenter.name from cmdb.datacenter,cmdb.city where datacenter.city_id=city.id
     and city.name='$(city_name)'
   name: datacenter_name
@@ -201,9 +199,7 @@ expression: $(__user__.roles)
 # or use the placeholderColumn property
 
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select id,name,description from cmdb.city
   name: city
   label: Select a city
@@ -218,9 +214,7 @@ expression: $(__user__.roles)
   - name
   - description
 - type: enum
-  dbConfig: 
-    name: CONN1
-    type: mysql
+  dbConfig: CONN1
   query: select name, capacity_pct from cmdb.datacenter where datacenter.city_id=$(city)
 # this cascaded dropdown will react using "id" as placeholder
 # or "query":"select name from cmdb.datacenter where datacenter.city_id=$(city.id)",  

@@ -3,7 +3,7 @@ layout: default
 title: 凭据类型
 parent: 凭据
 nav_order: 1
-translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
+translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 ---
 
 # 凭据类型
@@ -27,7 +27,7 @@ translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
 | SSH | 用于 SSH 连接服务器的用户和密码，以及主机和端口 | Playbook，通过表单的 `credentials`、`ansibleCredentials` 或凭据字段，以及工作流节点的登录 |
 | Git | 用于 git 仓库的用户名和密码或令牌 | [仓库](../repositories/authentication.html) |
 | API | 用于 REST API 的用户名和密码或令牌 | [REST 表达式](../expressions/credentials.html)、Telegram 机器人令牌、webhook 的 bearer 令牌、聊天助手的 API 密钥 |
-| 数据库 | 数据库登录，包括其类型、主机、端口和数据库名称 | 表单查询（`dbConfig`）和 `fnCredentials`；可以测试 |
+| 数据库 | 数据库登录，包括其类型、主机、端口和数据库名称 | 表单查询的 [数据库](../databases.html)（`dbConfig`，从 7.5.0 起），或直接由表单的 `dbConfig` 引用；`fnCredentials`；可以测试 |
 | CyberArk | CyberArk Central Credential Provider（CCP）的地址及其 TLS，以及 CyberArk 密钥库登录所用的 AppID、客户端证书和密钥 | [CyberArk](../secret-stores/cyberark.html) 密钥库 |
 | SMTP | 邮件服务器、其端口和 TLS，以及登录信息（中继无需） | 邮件 [通知通道](../notification-channels.html) |
 | LDAP | 目录的服务器、端口、TLS 和证书，以及绑定 DN 和密码 | [LDAP 目录](../authentication/ldap.html) |
@@ -39,7 +39,8 @@ translated_from: 1f21f8fc1ae73953922d8c9f21de6db05b3b1a87
 | Jenkins | Jenkins 的用户、其 API 令牌和地址 | Jenkins 运行器 |
 | HashiCorp Vault | Vault 密钥库登录所用的令牌和地址 | [HashiCorp Vault](../secret-stores/hashicorp-vault.html) 密钥库 |
 
-数据库凭据的类型可以是 MySQL、MSSQL、PostgreSQL、Oracle 或 MongoDB。
+数据库凭据的类型可以是 MySQL、MSSQL、PostgreSQL、Oracle 或 MongoDB。从 7.5.0 起，它由
+[连接 > 数据库](../databases.html) 中的数据库选择，升级到 7.5.0 时会为每个这样的凭据创建一个同名的数据库。
 
 在 API 和 [配置种子](../seed/) 中，类型为 `userpass`、`ssh`、`git`、`api`、`database`、`cyberark`、`smtp`、
 `ldap`、`entraid`、`oidc`、`rte`、`awx`、`aap`、`ascender`、`semaphore`、`rundeck`、`jenkins` 和 `vault`。从 6 升级时，
