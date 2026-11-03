@@ -91,11 +91,12 @@ cada opción con una (i) que dice lo que da, el mismo texto que muestra la vista
 | `allowScheduledJobs` | Crear y gestionar programaciones recurrentes y puntuales, en la página **Programaciones** (consulta el aviso más abajo) | Solo admins |
 | `allowPlannedJobs` | Planificar un trabajo para que se ejecute una vez a una hora fijada (**Ejecutar más tarde**) | Activado |
 | `allowStoredJobs` | Guardar los datos de un formulario y volver a cargarlos más tarde | Activado |
+| `allowFileUploads` | Subir archivos mediante los campos de archivo de un formulario (desde la 7.3.0) | Activado |
 | **Acceso e integraciones** | | |
+| `admin` | Ser administrador, como los miembros del rol `admin`: todos los formularios, el diseñador, la configuración y los usuarios (desde la 7.6.0) | Desactivado; siempre activado para `admin`, nunca para `default` |
 | `allowLogin` | Iniciar sesión en AnsibleForms | Activado |
 | `allowChat` | Usar el [asistente de chat](../chat/), cuando está habilitado | Activado |
 | `allowMcp` | Usar el [servidor MCP](../mcp/) desde un agente de IA, cuando está habilitado | El `allowChat` del rol |
-| `allowFileUploads` | Subir archivos mediante los campos de archivo de un formulario (desde la 7.3.0) | Activado |
 | `allowApiTokens` | Crear [tokens de API](../profile/api-token.html) para scripts, hasta la duración máxima que permite la instancia (desde la 7.3.0) | Desactivado |
 | `extendedTokenExpiration` | Crear también tokens de API que no caducan nunca; necesita `allowApiTokens` | Desactivado |
 
@@ -110,6 +111,8 @@ Un rol de antes de la 7.3.0 con `extendedTokenExpiration` y sin `allowApiTokens`
 
 `designAllForms`, `designAllPlaybooks` y `designAllWorkflows` están siempre activadas para los admins, y lo que el diseñador muestra a un usuario
 sin ellas se describe en [Diseñadores limitados](../designer/#limited-designers).
+
+`admin` hace administradores a los usuarios de un rol se llame como se llame, así un equipo conserva su propia nomenclatura (`platformAdmins`, `infra_admins`): reciben el rol `admin` al iniciar sesión, con sus valores por defecto. Solo un administrador lo activa en un rol que tiene miembros, o añade miembros a un rol así, y se rechaza guardar unos roles que quitarían la administración al administrador que los guarda.
 
 **Solo admins** significa activado para los usuarios que tienen el rol `admin`, y desactivado para todos los demás. Cuando un usuario coincide con varios roles,
 las opciones se combinan así:

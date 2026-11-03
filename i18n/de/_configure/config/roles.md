@@ -91,11 +91,12 @@ jede Option mit einem (i), das sagt, was sie gewährt, derselbe Text, den die An
 | `allowScheduledJobs` | Wiederkehrende und einmalige Zeitpläne erstellen und verwalten, auf der Seite **Zeitpläne** (siehe die Warnung unten) | Nur Admins |
 | `allowPlannedJobs` | Einen Job einplanen, der einmal zu einer festgelegten Zeit läuft (**Später ausführen**) | Ein |
 | `allowStoredJobs` | Die Daten eines Formulars speichern und später wieder laden | Ein |
+| `allowFileUploads` | Dateien über die Dateifelder eines Formulars hochladen (ab 7.3.0) | Ein |
 | **Zugang und Integrationen** | | |
+| `admin` | Administrator sein wie die Mitglieder der Rolle `admin`: jedes Formular, der Designer, die Einstellungen und die Benutzer (ab 7.6.0) | Aus; für `admin` immer ein, für `default` nie |
 | `allowLogin` | Sich bei AnsibleForms anmelden | Ein |
 | `allowChat` | Den [Chat-Assistenten](../chat/) verwenden, wenn er aktiviert ist | Ein |
 | `allowMcp` | Den [MCP-Server](../mcp/) von einem KI-Agenten aus verwenden, wenn er aktiviert ist | `allowChat` der Rolle |
-| `allowFileUploads` | Dateien über die Dateifelder eines Formulars hochladen (ab 7.3.0) | Ein |
 | `allowApiTokens` | [API-Token](../profile/api-token.html) für Skripte erstellen, bis zur längsten Laufzeit, die die Instanz erlaubt (ab 7.3.0) | Aus |
 | `extendedTokenExpiration` | Auch API-Token erstellen, die nie ablaufen; erfordert `allowApiTokens` | Aus |
 
@@ -110,6 +111,8 @@ Eine Rolle aus der Zeit vor 7.3.0 mit `extendedTokenExpiration` und ohne `allowA
 
 `designAllForms`, `designAllPlaybooks` und `designAllWorkflows` sind für Admins immer eingeschaltet, und was der Designer einem Benutzer
 ohne sie zeigt, beschreibt [Eingeschränkte Designer](../designer/#limited-designers).
+
+`admin` macht die Benutzer einer Rolle zu Administratoren, egal wie die Rolle heißt, sodass ein Team seine eigene Benennung behält (`platformAdmins`, `infra_admins`): Sie erhalten bei der Anmeldung die Rolle `admin` mit deren Standardwerten. Nur ein Administrator schaltet es für eine Rolle mit Mitgliedern ein oder fügt einer solchen Rolle Mitglieder hinzu, und ein Speichern der Rollen, das dem speichernden Administrator die Administratorrechte nehmen würde, wird abgelehnt.
 
 **Nur Admins** bedeutet eingeschaltet für Benutzer mit der Rolle `admin` und ausgeschaltet für alle anderen. Passt ein Benutzer zu mehreren Rollen,
 werden die Optionen wie folgt kombiniert:

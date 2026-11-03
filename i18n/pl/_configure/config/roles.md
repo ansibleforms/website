@@ -91,11 +91,12 @@ każdą opcję z (i), które mówi, co daje, tym samym tekstem, który pokazuje 
 | `allowScheduledJobs` | Tworzyć harmonogramy cykliczne i jednorazowe oraz nimi zarządzać na stronie **Harmonogramy** (zobacz ostrzeżenie poniżej) | Tylko admini |
 | `allowPlannedJobs` | Zaplanować jednorazowe uruchomienie zadania o ustalonej porze (**Uruchom później**) | Włączona |
 | `allowStoredJobs` | Zapisywać dane formularza i wczytywać je później | Włączona |
+| `allowFileUploads` | Przesyłać pliki przez pola plików formularza (od 7.3.0) | Włączona |
 | **Dostęp i integracje** | | |
+| `admin` | Być administratorem, jak członkowie roli `admin`: każdy formularz, projektant, ustawienia i użytkownicy (od 7.6.0) | Wyłączona; zawsze włączona dla `admin`, nigdy dla `default` |
 | `allowLogin` | Logować się do AnsibleForms | Włączona |
 | `allowChat` | Używać [asystenta czatu](../chat/), gdy jest włączony | Włączona |
 | `allowMcp` | Używać [serwera MCP](../mcp/) z agenta AI, gdy jest włączony | `allowChat` danej roli |
-| `allowFileUploads` | Przesyłać pliki przez pola plików formularza (od 7.3.0) | Włączona |
 | `allowApiTokens` | Tworzyć [tokeny API](../profile/api-token.html) dla skryptów, do najdłuższego czasu życia, na jaki pozwala instancja (od 7.3.0) | Wyłączona |
 | `extendedTokenExpiration` | Tworzyć też tokeny API, które nigdy nie wygasają; wymaga `allowApiTokens` | Wyłączona |
 
@@ -110,6 +111,8 @@ Rola sprzed 7.3.0 z `extendedTokenExpiration` i bez `allowApiTokens` dostaje `al
 
 `designAllForms`, `designAllPlaybooks` i `designAllWorkflows` są zawsze włączone dla adminów, a to, co projektant pokazuje użytkownikowi
 bez nich, opisuje [Ograniczeni projektanci](../designer/#limited-designers).
+
+`admin` czyni użytkowników roli administratorami niezależnie od nazwy roli, więc zespół zachowuje własne nazewnictwo (`platformAdmins`, `infra_admins`): przy logowaniu dostają rolę `admin` z jej wartościami domyślnymi. Tylko administrator włącza ją dla roli, która ma członków, lub dodaje członków do takiej roli, a zapis ról, który odebrałby uprawnienia administratora zapisującemu je administratorowi, jest odrzucany.
 
 **Tylko admini** oznacza włączoną dla użytkowników z rolą `admin` i wyłączoną dla wszystkich pozostałych. Gdy użytkownik pasuje do kilku ról,
 opcje łączą się następująco:
