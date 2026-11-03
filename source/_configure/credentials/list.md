@@ -20,8 +20,8 @@ number of records, forms and workflows that name it (see [Credentials in use](..
 |---|---|
 | Credential | Name and description, both required. |
 | Type | One of 18 types, see below. |
+| Store | Where the user and password are kept: **Database** (encrypted in the AnsibleForms database) or **Secret store**, with the store and the **Reference** in it. Not for CyberArk nor HashiCorp Vault, which a secret store logs in with. The **Reference** shows once a store is chosen; its example follows the store: a HashiCorp Vault path, or a CyberArk account. |
 | Login | What the type logs in with and where, see below. |
-| Store | Where the user and password are kept: **Database** (encrypted in the AnsibleForms database) or **Secret store**, with the store and the **Reference** in it. Not for CyberArk nor HashiCorp Vault, which a secret store logs in with. |
 
 The **Type** step lists the types by name: AAP, API, Ascender, AWX, CyberArk, Database, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH, and User and password (see [Credential types](types.html)).
@@ -39,6 +39,8 @@ The **Login** step holds every field of the type, the address included; there is
 | Open ID | **Issuer** (required) and **Redirect URI** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, the address it logs in to, required, with **Skip certificate verification** and the **CA bundle** |
 | CyberArk | **Client certificate** and **Client key** |
+
+With **Secret store**, the user and password are not asked: the store gives them. The **Login** step then keeps only the address fields of the type (SSH, database, mail and directory servers, a server address), and a plain login (User and password, Git, API) has no **Login** step at all: it is saved from the **Store** step.
 
 A row opens the credential's own page. Its menu offers **Edit**, **Test connection** (database credentials only) and **Delete**. The
 password is changed on the credential's page, in its **Login** tab.
