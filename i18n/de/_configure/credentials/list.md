@@ -21,8 +21,8 @@ Anzahl der Datensätze, Formulare und Workflows, die sie nennen (siehe [Verwende
 |---|---|
 | Anmeldedaten | Name und Beschreibung, beide erforderlich. |
 | Typ | Einer von 18 Typen, siehe unten. |
+| Speicher | Wo Benutzer und Passwort gespeichert werden: **Datenbank** (verschlüsselt in der AnsibleForms-Datenbank) oder **Secret Store**, mit dem Store und der **Referenz** darin. Nicht für CyberArk und HashiCorp Vault, mit denen sich ein Secret Store anmeldet. Die **Referenz** erscheint, sobald ein Store gewählt ist; ihr Beispiel folgt dem Store: ein HashiCorp-Vault-Pfad oder ein CyberArk-Konto. |
 | Anmeldung | Womit und wo sich der Typ anmeldet, siehe unten. |
-| Speicher | Wo Benutzer und Passwort gespeichert werden: **Datenbank** (verschlüsselt in der AnsibleForms-Datenbank) oder **Secret Store**, mit dem Store und der **Referenz** darin. Nicht für CyberArk und HashiCorp Vault, mit denen sich ein Secret Store anmeldet. |
 
 Der Schritt **Typ** listet die Typen nach Namen auf: AAP, API, Ascender, AWX, CyberArk, Datenbank, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH sowie Benutzer und Passwort (siehe [Typen von Anmeldedaten](types.html)).
@@ -40,6 +40,8 @@ Der Schritt **Anmeldung** enthält jedes Feld des Typs, die Adresse eingeschloss
 | Open ID | **Issuer** (erforderlich) und **Umleitungs-URI** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, die Adresse, bei der er sich anmeldet, erforderlich, mit **Zertifikatsprüfung überspringen** und dem **CA-Bundle** |
 | CyberArk | **Client-Zertifikat** und **Client-Schlüssel** |
+
+Mit **Secret Store** werden Benutzer und Passwort nicht abgefragt: Der Store liefert sie. Der Schritt **Anmeldung** behält dann nur die Adressfelder des Typs (SSH, Datenbank, Mail- und Verzeichnisserver, eine Serveradresse), und eine einfache Anmeldung (Benutzer und Passwort, Git, API) hat gar keinen Schritt **Anmeldung**: Sie wird im Schritt **Speicher** gespeichert.
 
 Eine Zeile öffnet die eigene Seite des Eintrags. Ihr Menü bietet **Bearbeiten**, **Verbindung testen** (nur bei Datenbank-Anmeldedaten) und **Löschen**. Das
 Passwort wird auf der Seite des Eintrags geändert, in seinem Tab **Anmeldung**.

@@ -21,8 +21,8 @@ aantal records, formulieren en workflows dat haar noemt (zie [Referenties in geb
 |---|---|
 | Referentie | Naam en beschrijving, beide verplicht. |
 | Type | Een van 18 typen, zie hieronder. |
+| Opslag | Waar de gebruiker en het wachtwoord worden bewaard: **Database** (versleuteld in de AnsibleForms-database) of **Geheimenkluis**, met de store en de **Referentie** daarin. Niet voor CyberArk of HashiCorp Vault, waarmee een secret store zich aanmeldt. De **Referentie** verschijnt zodra een store is gekozen; het voorbeeld volgt de store: een HashiCorp Vault-pad of een CyberArk-account. |
 | Aanmelding | Waarmee en waar het type zich aanmeldt, zie hieronder. |
-| Opslag | Waar de gebruiker en het wachtwoord worden bewaard: **Database** (versleuteld in de AnsibleForms-database) of **Geheimenkluis**, met de store en de **Referentie** daarin. Niet voor CyberArk of HashiCorp Vault, waarmee een secret store zich aanmeldt. |
 
 De stap **Type** toont de typen op naam: AAP, API, Ascender, AWX, CyberArk, Database, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH, en Gebruiker en wachtwoord (zie [Typen referenties](types.html)).
@@ -40,6 +40,8 @@ De stap **Aanmelding** bevat elk veld van het type, het adres inbegrepen; er is 
 | Open ID | **Issuer** (verplicht) en **Omleidings-URI** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, het adres waarbij het zich aanmeldt, verplicht, met **Certificaatcontrole overslaan** en de **CA-bundel** |
 | CyberArk | **Clientcertificaat** en **Clientsleutel** |
+
+Met **Geheimenkluis** worden gebruiker en wachtwoord niet gevraagd: de store levert ze. De stap **Aanmelding** houdt dan alleen de adresvelden van het type (SSH, database, mail- en directoryservers, een serveradres), en een eenvoudige aanmelding (Gebruiker en wachtwoord, Git, API) heeft helemaal geen stap **Aanmelding**: ze wordt opgeslagen vanuit de stap **Opslag**.
 
 Een rij opent de eigen pagina van de referentie. Het menu biedt **Bewerken**, **Verbinding testen** (alleen voor databasereferenties) en **Verwijderen**. Het
 wachtwoord wordt gewijzigd op de pagina van de referentie, in het tabblad **Aanmelding**.
