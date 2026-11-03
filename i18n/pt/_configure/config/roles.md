@@ -91,11 +91,12 @@ cada opção com um (i) que diz o que concede, o mesmo texto que a vista **Permi
 | `allowScheduledJobs` | Criar e gerir agendamentos recorrentes e únicos, na página **Agendamentos** (consulte o aviso abaixo) | Só admins |
 | `allowPlannedJobs` | Planear uma tarefa para correr uma vez a uma hora definida (**Executar mais tarde**) | Ligado |
 | `allowStoredJobs` | Guardar os dados de um formulário e voltar a carregá-los mais tarde | Ligado |
+| `allowFileUploads` | Carregar ficheiros pelos campos de ficheiro de um formulário (a partir da 7.3.0) | Ligado |
 | **Acesso e integrações** | | |
+| `admin` | Ser administrador, como os membros da função `admin`: todos os formulários, o designer, as definições e os utilizadores (a partir da 7.6.0) | Desligado; sempre ligado para `admin`, nunca para `default` |
 | `allowLogin` | Iniciar sessão no AnsibleForms | Ligado |
 | `allowChat` | Usar o [assistente de chat](../chat/), quando está ativado | Ligado |
 | `allowMcp` | Usar o [servidor MCP](../mcp/) a partir de um agente de IA, quando está ativado | O `allowChat` da função |
-| `allowFileUploads` | Carregar ficheiros pelos campos de ficheiro de um formulário (a partir da 7.3.0) | Ligado |
 | `allowApiTokens` | Criar [tokens de API](../profile/api-token.html) para scripts, até à duração máxima que a instância permite (a partir da 7.3.0) | Desligado |
 | `extendedTokenExpiration` | Criar também tokens de API que nunca expiram; precisa de `allowApiTokens` | Desligado |
 
@@ -110,6 +111,8 @@ Uma função de antes da 7.3.0 com `extendedTokenExpiration` e sem `allowApiToke
 
 `designAllForms`, `designAllPlaybooks` e `designAllWorkflows` estão sempre ligadas para os admins, e o que o designer mostra a um utilizador
 sem elas é descrito em [Designers limitados](../designer/#limited-designers).
+
+`admin` torna administradores os utilizadores de uma função, seja qual for o seu nome, assim uma equipa mantém a sua própria nomenclatura (`platformAdmins`, `infra_admins`): recebem a função `admin` ao iniciar sessão, com os seus valores por omissão. Só um administrador a liga numa função que tem membros, ou adiciona membros a uma função assim, e é recusado guardar funções que tirariam a administração ao administrador que as guarda.
 
 **Só admins** significa ligado para os utilizadores que têm a função `admin`, e desligado para todos os outros. Quando um utilizador corresponde a várias funções,
 as opções combinam-se assim:

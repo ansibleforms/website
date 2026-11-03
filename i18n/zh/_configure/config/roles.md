@@ -91,11 +91,12 @@ config.yaml 的顶层 `roles` 列表：
 | `allowScheduledJobs` | 在 **调度** 页面创建和管理周期性及一次性调度（参见下方警告） | 仅管理员 |
 | `allowPlannedJobs` | 计划作业在设定的时间运行一次（**稍后运行**） | 开 |
 | `allowStoredJobs` | 保存表单的数据，之后再加载 | 开 |
+| `allowFileUploads` | 通过表单的文件字段上传文件（从 7.3.0 起） | 开 |
 | **访问和集成** | | |
+| `admin` | 成为管理员，与 `admin` 角色的成员一样：所有表单、设计器、设置和用户（从 7.6.0 起） | 关；`admin` 始终开，`default` 不可用 |
 | `allowLogin` | 登录 AnsibleForms | 开 |
 | `allowChat` | 使用 [聊天助手](../chat/)（在其启用时） | 开 |
 | `allowMcp` | 从 AI 代理使用 [MCP 服务器](../mcp/)（在其启用时） | 该角色的 `allowChat` |
-| `allowFileUploads` | 通过表单的文件字段上传文件（从 7.3.0 起） | 开 |
 | `allowApiTokens` | 为脚本创建 [API 令牌](../profile/api-token.html)，有效期最长为实例允许的上限（从 7.3.0 起） | 关 |
 | `extendedTokenExpiration` | 还可以创建永不过期的 API 令牌；需要 `allowApiTokens` | 关 |
 
@@ -110,6 +111,8 @@ config.yaml 的顶层 `roles` 列表：
 
 `designAllForms`、`designAllPlaybooks` 和 `designAllWorkflows` 对管理员始终开启；没有这些选项时设计器向用户显示什么，
 见[受限的设计者](../designer/#limited-designers)。
+
+`admin` 让角色的用户成为管理员，无论该角色叫什么，因此团队可以保留自己的命名（`platformAdmins`、`infra_admins`）：他们在登录时获得 `admin` 角色及其默认值。只有管理员可以为有成员的角色打开它，或向这样的角色添加成员；会让保存者失去管理员权限的角色保存会被拒绝。
 
 **仅管理员** 表示对拥有 `admin` 角色的用户打开，对其他所有人关闭。当用户匹配多个角色时，
 选项按如下方式合并：

@@ -91,11 +91,12 @@ ogni opzione con una (i) che dice cosa concede, lo stesso testo mostrato dalla v
 | `allowScheduledJobs` | Creare e gestire pianificazioni ricorrenti e una tantum, nella pagina **Pianificazioni** (vedi l'avviso qui sotto) | Solo admin |
 | `allowPlannedJobs` | Pianificare un job da eseguire una volta a un'ora stabilita (**Esegui più tardi**) | Attivo |
 | `allowStoredJobs` | Salvare i dati di un modulo e caricarli di nuovo in seguito | Attivo |
+| `allowFileUploads` | Caricare file tramite i campi file di un modulo (dalla 7.3.0) | Attivo |
 | **Accesso e integrazioni** | | |
+| `admin` | Essere amministratore, come i membri del ruolo `admin`: ogni modulo, il designer, le impostazioni e gli utenti (dalla 7.6.0) | Disattivo; sempre attivo per `admin`, mai per `default` |
 | `allowLogin` | Accedere ad AnsibleForms | Attivo |
 | `allowChat` | Usare l'[assistente chat](../chat/), quando è abilitato | Attivo |
 | `allowMcp` | Usare il [server MCP](../mcp/) da un agente IA, quando è abilitato | L'`allowChat` del ruolo |
-| `allowFileUploads` | Caricare file tramite i campi file di un modulo (dalla 7.3.0) | Attivo |
 | `allowApiTokens` | Creare [token API](../profile/api-token.html) per gli script, fino alla durata massima consentita dall'istanza (dalla 7.3.0) | Disattivato |
 | `extendedTokenExpiration` | Creare anche token API che non scadono mai; richiede `allowApiTokens` | Disattivato |
 
@@ -110,6 +111,8 @@ Un ruolo di prima della 7.3.0 con `extendedTokenExpiration` e senza `allowApiTok
 
 `designAllForms`, `designAllPlaybooks` e `designAllWorkflows` sono sempre attive per gli admin, e ciò che il designer mostra a un utente
 senza di esse è descritto in [Designer limitati](../designer/#limited-designers).
+
+`admin` rende amministratori gli utenti di un ruolo comunque si chiami, così un team mantiene la propria nomenclatura (`platformAdmins`, `infra_admins`): ricevono il ruolo `admin` all'accesso, con i suoi valori predefiniti. Solo un amministratore lo attiva per un ruolo che ha membri, o aggiunge membri a un ruolo così, e un salvataggio dei ruoli che toglierebbe l'amministrazione all'amministratore che salva viene rifiutato.
 
 **Solo admin** significa attivo per gli utenti che hanno il ruolo `admin`, e disattivo per tutti gli altri. Quando un utente corrisponde a più ruoli,
 le opzioni si combinano così:

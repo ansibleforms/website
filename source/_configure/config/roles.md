@@ -90,11 +90,12 @@ each option with an (i) that says what it gives, the same text the **Permissions
 | `allowScheduledJobs` | Create and manage recurring and one-time schedules, on the **Schedules** page (see the warning below) | Admins only |
 | `allowPlannedJobs` | Plan a job to run once at a set time (**Run later**) | On |
 | `allowStoredJobs` | Store the data of a form and load it again later | On |
+| `allowFileUploads` | Upload files through a form's file fields (from 7.3.0) | On |
 | **Access and integrations** | | |
+| `admin` | Be an admin, as the members of the `admin` role: every form, the designer, the settings and the users (from 7.6.0) | Off; always on for `admin`, never for `default` |
 | `allowLogin` | Sign in to AnsibleForms | On |
 | `allowChat` | Use the [chat assistant](../chat/), when it is enabled | On |
 | `allowMcp` | Use the [MCP server](../mcp/) from an AI agent, when it is enabled | The role's `allowChat` |
-| `allowFileUploads` | Upload files through a form's file fields (from 7.3.0) | On |
 | `allowApiTokens` | Make [API tokens](../profile/api-token.html) for scripts, up to the longest lifetime the instance allows (from 7.3.0) | Off |
 | `extendedTokenExpiration` | Also make API tokens that never expire; it needs `allowApiTokens` | Off |
 
@@ -109,6 +110,8 @@ A role from before 7.3.0 with `extendedTokenExpiration` and without `allowApiTok
 
 `designAllForms`, `designAllPlaybooks` and `designAllWorkflows` are always on for admins, and what the designer shows a user
 without them is described in [Limited designers](../designer/#limited-designers).
+
+`admin` makes a role's users admins whatever the role is called, so a team keeps its own naming (`platformAdmins`, `infra_admins`): they get the `admin` role at sign-in, with its defaults. Only an admin turns it on for a role that has members, or adds members to such a role, and a save of the roles that would take admin away from the admin saving them is refused.
 
 **Admins only** means on for users who hold the `admin` role, and off for everyone else. When a user matches several roles,
 the options are combined as follows:

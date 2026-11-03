@@ -91,11 +91,12 @@ chaque option avec un (i) qui explique ce qu'elle donne, le même texte que celu
 | `allowScheduledJobs` | Créer et gérer des planifications récurrentes et ponctuelles, sur la page **Planifications** (voir l'avertissement ci-dessous) | Admins uniquement |
 | `allowPlannedJobs` | Planifier un job pour qu'il s'exécute une fois à une heure donnée (**Exécuter plus tard**) | Activé |
 | `allowStoredJobs` | Enregistrer les données d'un formulaire et les recharger plus tard | Activé |
+| `allowFileUploads` | Téléverser des fichiers via les champs fichier d'un formulaire (depuis la 7.3.0) | Activé |
 | **Accès et intégrations** | | |
+| `admin` | Être administrateur, comme les membres du rôle `admin` : tous les formulaires, le concepteur, les paramètres et les utilisateurs (depuis la 7.6.0) | Désactivé ; toujours activé pour `admin`, jamais pour `default` |
 | `allowLogin` | Se connecter à AnsibleForms | Activé |
 | `allowChat` | Utiliser l'[assistant de chat](../chat/), quand il est activé | Activé |
 | `allowMcp` | Utiliser le [serveur MCP](../mcp/) depuis un agent IA, quand il est activé | Le `allowChat` du rôle |
-| `allowFileUploads` | Téléverser des fichiers via les champs fichier d'un formulaire (depuis la 7.3.0) | Activé |
 | `allowApiTokens` | Créer des [jetons d'API](../profile/api-token.html) pour des scripts, jusqu'à la durée de vie maximale qu'autorise l'instance (depuis la 7.3.0) | Désactivé |
 | `extendedTokenExpiration` | Créer aussi des jetons d'API qui n'expirent jamais ; nécessite `allowApiTokens` | Désactivé |
 
@@ -110,6 +111,8 @@ Un rôle d'avant la 7.3.0 avec `extendedTokenExpiration` et sans `allowApiTokens
 
 `designAllForms`, `designAllPlaybooks` et `designAllWorkflows` sont toujours activées pour les admins, et ce que le concepteur montre à un
 utilisateur sans elles est décrit dans [Concepteurs limités](../designer/#limited-designers).
+
+`admin` rend administrateurs les utilisateurs d'un rôle quel que soit son nom, si bien qu'une équipe garde sa propre nomenclature (`platformAdmins`, `infra_admins`) : ils reçoivent le rôle `admin` à la connexion, avec ses valeurs par défaut. Seul un administrateur l'active pour un rôle qui a des membres, ou ajoute des membres à un tel rôle, et un enregistrement des rôles qui retirerait l'administration à l'administrateur qui enregistre est refusé.
 
 **Admins uniquement** signifie activé pour les utilisateurs qui ont le rôle `admin`, et désactivé pour tous les autres. Quand un utilisateur correspond à plusieurs rôles,
 les options se combinent comme suit :

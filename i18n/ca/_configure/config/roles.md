@@ -91,11 +91,12 @@ cada opció amb una (i) que explica què dona, el mateix text que mostra la vist
 | `allowScheduledJobs` | Crear i gestionar programacions recurrents i puntuals, a la pàgina **Programacions** (vegeu l'avís més avall) | Només admins |
 | `allowPlannedJobs` | Planificar una tasca perquè s'executi una vegada a una hora fixada (**Executa més tard**) | Activat |
 | `allowStoredJobs` | Desar les dades d'un formulari i tornar-les a carregar més tard | Activat |
+| `allowFileUploads` | Pujar fitxers mitjançant els camps de fitxer d'un formulari (des de la 7.3.0) | Activat |
 | **Accés i integracions** | | |
+| `admin` | Ser administrador, com els membres del rol `admin`: tots els formularis, el dissenyador, la configuració i els usuaris (des de la 7.6.0) | Desactivat; sempre activat per a `admin`, mai per a `default` |
 | `allowLogin` | Iniciar sessió a AnsibleForms | Activat |
 | `allowChat` | Utilitzar l'[assistent de xat](../chat/), quan està activat | Activat |
 | `allowMcp` | Utilitzar el [servidor MCP](../mcp/) des d'un agent d'IA, quan està activat | L'`allowChat` del rol |
-| `allowFileUploads` | Pujar fitxers mitjançant els camps de fitxer d'un formulari (des de la 7.3.0) | Activat |
 | `allowApiTokens` | Crear [tokens d'API](../profile/api-token.html) per a scripts, fins a la durada màxima que permet la instància (des de la 7.3.0) | Desactivat |
 | `extendedTokenExpiration` | Crear també tokens d'API que no caduquen mai; necessita `allowApiTokens` | Desactivat |
 
@@ -110,6 +111,8 @@ Un rol d'abans de la 7.3.0 amb `extendedTokenExpiration` i sense `allowApiTokens
 
 `designAllForms`, `designAllPlaybooks` i `designAllWorkflows` estan sempre activades per als admins, i el que el dissenyador mostra a un usuari
 sense aquestes opcions es descriu a [Dissenyadors limitats](../designer/#limited-designers).
+
+`admin` fa administradors els usuaris d'un rol sigui quin sigui el seu nom, de manera que un equip conserva la seva nomenclatura (`platformAdmins`, `infra_admins`): reben el rol `admin` en iniciar sessió, amb els seus valors per defecte. Només un administrador l'activa en un rol que té membres, o afegeix membres a un rol així, i es rebutja desar uns rols que traurien l'administració a l'administrador que els desa.
 
 **Només admins** vol dir activat per als usuaris que tenen el rol `admin`, i desactivat per a tota la resta. Quan un usuari coincideix amb diversos rols,
 les opcions es combinen així:
