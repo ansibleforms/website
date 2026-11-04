@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: Archivi di segreti
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-Leggi le credenziali dal CyberArk Central Credential Provider (CCP)
+Leggere credenziali tramite il CCP di CyberArk, scriverle tramite il suo PVWA
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -51,6 +51,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - Un `AppID` nel riferimento viene ignorato: si usa sempre l'AppID dell'archivio.
 - La password dell'account (`Content`) diventa la password; `UserName`, `Address`, `Port` e
   `Database` compilano utente, host, porta e nome del database.
+
+---
+
+## Scrivere le credenziali
+
+Da 7.6.0 utente e password di una credenziale possono essere scritti in CyberArk al **Salvataggio** (vedi [Scrivere le credenziali](./#writing-credentials)).
+Il CCP legge soltanto, quindi AnsibleForms scrive tramite l'API REST del PVWA, con una credenziale propria.
+
+Attiva **Consenti la scrittura** nelle **Opzioni** dell'archivio, poi compila:
+
+| Campo | Significato |
+|---|---|
+| Consenti la scrittura | Permette a una credenziale di scrivere utente e password in questo archivio al **Salvataggio**. Disattivato per impostazione predefinita. |
+| Safe in cui scrivere | I safe in cui si possono scrivere credenziali, separati da virgole, ad es. `Linux, DB`. Obbligatorio con la scrittura attiva. |
+| Indirizzo del PVWA | L'URL di base del PVWA, ad es. `https://pvwa.example.com`. Obbligatorio. |
+| Credenziale del PVWA | Una credenziale propria di tipo **Utente e password** o **API**, mai letta da un archivio di segreti, che può aggiungere account a quei safe e cambiarne le password. Obbligatoria. |
+| Metodo di accesso | Come accede la credenziale del PVWA: CyberArk (predefinito), LDAP, RADIUS o Windows. |
+| ID piattaforma | La piattaforma degli account che aggiunge, ad es. `UnixSSH`. Necessario per aggiungere un nuovo account. |
+
+Il riferimento indica l'account come per la lettura, `Safe=Linux;Object=srv01-root`, con `Address=srv01.example.com` quando la sua piattaforma ne richiede uno.
+
+- Un nuovo account viene aggiunto al safe con la piattaforma, il nome utente e la password.
+- Un account esistente viene modificato solo se **Sovrascrivi un segreto già presente** è spuntato: prima il nome utente, poi la password.
+- La sessione del PVWA viene chiusa dopo ogni scrittura. L'accesso OAuth di Privilege Cloud non è supportato.
 
 ---
 

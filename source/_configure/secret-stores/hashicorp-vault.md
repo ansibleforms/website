@@ -8,7 +8,7 @@ nav_order: 1
 # HashiCorp Vault
 {: .no_toc }
 
-Read credentials from HashiCorp Vault, from KV v1 or v2 or a dynamic secrets engine
+Read and write credentials in HashiCorp Vault KV, read dynamic secrets
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -29,6 +29,30 @@ In addition to the [fields every store has](./#adding-a-store), a HashiCorp Vaul
 
 The secret reference is the path, e.g. `secret/myapp/prod`. For KV v2 the `/data/` segment
 is inserted when you leave it out.
+
+---
+
+## Writing credentials
+
+From 7.6.0 a credential's user and password can be written to the Vault on **Save** (see [Writing credentials](./#writing-credentials)).
+
+Switch on **Allow writing** in the store's **Options**, and set where it may write:
+
+| Field | Meaning |
+|---|---|
+| Allow writing | Lets a credential write its user and password to this store on **Save**. Off by default. |
+| Write prefix | The path credentials are written at or below, e.g. `secret/ansibleforms`. A mount alone, e.g. `secret`, allows the whole mount. Required with writing on. |
+
+The secret is written as `username` and `password`, to KV v2 or v1 as the store's **KV version** says. The token needs the read, create and
+update capabilities below the prefix; read checks whether a secret is already there. For KV v2 and the prefix `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+A dynamic secrets engine's path, e.g. `database/creds/readonly`, is never written: Vault makes those credentials itself.
 
 ---
 

@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Almacenes de secretos
 {: .no_toc }
 
-Leer credenciales de un gestor de secretos en lugar de guardarlas en AnsibleForms
+Leer y escribir credenciales en un gestor de secretos en lugar de en AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Leer credenciales de un gestor de secretos en lugar de guardarlas en AnsibleForm
 
 ---
 
-Para administradores: conecta un gestor de secretos, y deja que las credenciales lean de él su usuario y su contraseña.
+Para administradores: conectar un gestor de secretos, para que las credenciales lean de él su usuario y contraseña o los escriban en él.
 
 ---
 
@@ -41,6 +41,8 @@ nada en tus formularios.
 | HashiCorp Vault (KV v1 y v2, autenticación por token) | disponible |
 | Credenciales dinámicas de HashiCorp Vault (`<mount>/creds/<role>`) | experimental |
 | CyberArk Central Credential Provider (CCP) | experimental |
+| Escritura de credenciales en HashiCorp Vault KV | disponible |
+| Escritura de credenciales en CyberArk, a través de su PVWA | experimental |
 
 ---
 
@@ -75,8 +77,8 @@ Cada gestor de secretos tiene su propia página:
 
 ### En una credencial
 
-En **Conexiones > Credenciales**, en el paso **Almacén** de la credencial, elige **Almacén de secretos**, luego selecciona el
-**Almacén de secretos** y rellena la **Referencia**. El usuario y la contraseña se leen entonces del almacén, no se escriben.
+En **Conexiones > Credenciales**, en el paso **Almacén** de la credencial, elige **Almacén de secretos** y **Apuntar a una clave**, luego
+elige el **Almacén de secretos** y rellena la **Referencia**. El usuario y la contraseña se leen entonces del almacén, no se escriben.
 
 ### En línea, sin fila de credencial
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Escribir credenciales
+
+Desde 7.6.0, el usuario y la contraseña de una credencial se pueden escribir en un almacén al guardarla, sin tener que ponerlos allí antes.
+
+En el paso **Almacén** de la credencial, elige **Almacén de secretos** y **Escribir en una clave**, elige el almacén y rellena la **Referencia**.
+El paso **Acceso** pide entonces el usuario y la contraseña, y **Guardar** los escribe en el almacén; AnsibleForms solo guarda el almacén y la referencia.
+
+- Solo se ofrece un almacén con **Permitir la escritura** activado en sus **Opciones**, y solo escribe donde sus opciones lo permiten.
+- Una clave que ya tiene un secreto solo se reemplaza si **Sobrescribir un secreto que ya esté allí** está marcado; si no, no se escribe ni se guarda nada.
+- Solo un admin puede escribir, y cada escritura se audita como `credential.secret_write`, sin el secreto.
+
+Cómo se configura cada gestor de secretos para escribir:
+
+| Página | Qué trata |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Un prefijo de escritura, y las capacidades del token |
+| [CyberArk](cyberark.html#writing-credentials) | Las cajas fuertes, y el PVWA con su credencial y plataforma |
+
+---
+
 ## En la semilla de configuración
 
 Los almacenes también se pueden declarar en la semilla de configuración, como los demás objetos de administración:
@@ -161,7 +183,8 @@ credentials:
 
 El almacén inicia sesión con su credencial: una `vault` contiene la dirección del Vault en `url` y el token como contraseña, una `cyberark`
 el AppID y la dirección del CCP. Sin credencial, se usan el `url` y el `token` propios del almacén.
-Para más detalles, consulta [Semilla de configuración](../seed).
+Un almacén que permite escribir define `write_enabled: true` y `write_prefix` (en CyberArk, sus cajas fuertes), y un CyberArk también `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` y `platform_id`. Para más detalles, consulta [Semilla de configuración](../seed).
 
 ---
 

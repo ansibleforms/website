@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Archivi di segreti
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Leggi le credenziali da HashiCorp Vault, da KV v1 o v2 o da un motore di segreti dinamici
+Leggere e scrivere credenziali in HashiCorp Vault KV, leggere segreti dinamici
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ Oltre ai [campi che ha ogni archivio](./#adding-a-store), un archivio HashiCorp 
 
 Il riferimento al segreto è il percorso, es. `secret/myapp/prod`. Per KV v2 il segmento `/data/`
 viene inserito quando lo ometti.
+
+---
+
+## Scrivere le credenziali
+
+Da 7.6.0 utente e password di una credenziale possono essere scritti nel Vault al **Salvataggio** (vedi [Scrivere le credenziali](./#writing-credentials)).
+
+Attiva **Consenti la scrittura** nelle **Opzioni** dell'archivio, e indica dove può scrivere:
+
+| Campo | Significato |
+|---|---|
+| Consenti la scrittura | Permette a una credenziale di scrivere utente e password in questo archivio al **Salvataggio**. Disattivato per impostazione predefinita. |
+| Prefisso di scrittura | Il percorso in cui, o sotto cui, vengono scritte le credenziali, ad es. `secret/ansibleforms`. Un mount da solo, ad es. `secret`, consente l'intero mount. Obbligatorio con la scrittura attiva. |
+
+Il segreto viene scritto come `username` e `password`, in KV v2 o v1 come indica la **Versione KV** dell'archivio. Il token richiede le capacità
+read, create e update sotto il prefisso; read verifica se c'è già un segreto. Per KV v2 e il prefisso `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+Il percorso di un motore di segreti dinamici, ad es. `database/creds/readonly`, non viene mai scritto: è Vault a creare quelle credenziali.
 
 ---
 

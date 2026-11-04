@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Coffres de secrets
 {: .no_toc }
 
-Lisez les identifiants depuis un gestionnaire de secrets au lieu de les stocker dans AnsibleForms
+Lire et écrire les identifiants dans un gestionnaire de secrets plutôt que dans AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Lisez les identifiants depuis un gestionnaire de secrets au lieu de les stocker 
 
 ---
 
-Pour les administrateurs : connectez un gestionnaire de secrets, et laissez les identifiants y lire leur utilisateur et leur mot de passe.
+Pour les administrateurs : connecter un gestionnaire de secrets, pour que les identifiants y lisent leur utilisateur et leur mot de passe ou les y écrivent.
 
 ---
 
@@ -41,6 +41,8 @@ rien à vos formulaires.
 | HashiCorp Vault (KV v1 et v2, authentification par jeton) | disponible |
 | Identifiants dynamiques HashiCorp Vault (`<mount>/creds/<role>`) | expérimental |
 | CyberArk Central Credential Provider (CCP) | expérimental |
+| Écriture des identifiants dans HashiCorp Vault KV | disponible |
+| Écriture des identifiants dans CyberArk, via son PVWA | expérimental |
 
 ---
 
@@ -75,8 +77,8 @@ Chaque gestionnaire de secrets a sa propre page :
 
 ### Dans un identifiant
 
-Dans **Connexions > Identifiants**, à l'étape **Stockage** de l'identifiant, choisissez **Coffre de secrets**, puis sélectionnez le
-**Coffre de secrets** et renseignez la **Référence**. L'utilisateur et le mot de passe sont alors lus depuis le coffre, et non saisis.
+Sous **Connexions > Identifiants**, à l'étape **Stockage** de l'identifiant, choisissez **Coffre de secrets** et **Pointer vers une clé**, puis
+choisissez le **Coffre de secrets** et remplissez la **Référence**. L'utilisateur et le mot de passe sont alors lus dans le coffre, pas saisis.
 
 ### En ligne, sans ligne d'identifiant
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Écrire des identifiants
+
+Depuis 7.6.0, l'utilisateur et le mot de passe d'un identifiant peuvent être écrits dans un coffre à l'enregistrement, sans devoir les y placer d'abord.
+
+À l'étape **Stockage** de l'identifiant, choisissez **Coffre de secrets** et **Écrire dans une clé**, choisissez le coffre et remplissez la **Référence**.
+L'étape **Connexion** demande alors l'utilisateur et le mot de passe, et **Enregistrer** les écrit dans le coffre ; AnsibleForms ne garde que le coffre et la référence.
+
+- Seul un coffre dont **Autoriser l'écriture** est activé dans ses **Options** est proposé, et il n'écrit que là où ses options le permettent.
+- Une clé qui contient déjà un secret n'est remplacée que si **Écraser un secret déjà présent** est coché ; sinon rien n'est écrit ni enregistré.
+- Seul un admin peut écrire, et chaque écriture est auditée comme `credential.secret_write`, sans le secret.
+
+Comment chaque gestionnaire de secrets se configure pour l'écriture :
+
+| Page | Ce qu'elle couvre |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Un préfixe d'écriture, et les capacités du jeton |
+| [CyberArk](cyberark.html#writing-credentials) | Les coffres, et le PVWA avec son identifiant et sa plateforme |
+
+---
+
 ## Dans le seed de configuration
 
 Les coffres peuvent aussi être déclarés dans le seed de configuration, comme les autres objets d'administration :
@@ -161,7 +183,8 @@ credentials:
 
 Le coffre se connecte avec son identifiant : un identifiant `vault` contient l'adresse du Vault dans `url` et le jeton comme mot de passe, un identifiant `cyberark`
 l'AppID et l'adresse du CCP. Sans identifiant, ce sont le `url` et le `token` propres au coffre qui sont utilisés.
-Pour les détails, voir [Seed de configuration](../seed).
+Un coffre qui autorise l'écriture définit `write_enabled: true` et `write_prefix` (pour CyberArk, ses coffres), et un CyberArk aussi `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` et `platform_id`. Pour les détails, voir [Seed de configuration](../seed).
 
 ---
 

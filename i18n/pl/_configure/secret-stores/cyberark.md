@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: Magazyny sekretów
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-Odczytuj poświadczenia z CyberArk Central Credential Provider (CCP)
+Odczytuj poświadczenia przez CCP CyberArk, zapisuj je przez jego PVWA
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -51,6 +51,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - `AppID` w odwołaniu jest ignorowany: zawsze używany jest AppID magazynu.
 - Hasło konta (`Content`) staje się hasłem; `UserName`, `Address`, `Port` i
   `Database` wypełniają użytkownika, host, port i nazwę bazy danych.
+
+---
+
+## Zapisywanie poświadczeń
+
+Od 7.6.0 użytkownika i hasło poświadczenia można zapisać w CyberArk przy **Zapisie** (zob. [Zapisywanie poświadczeń](./#writing-credentials)).
+CCP tylko odczytuje, więc AnsibleForms zapisuje przez REST API PVWA, zalogowany własnym poświadczeniem.
+
+Włącz **Zezwól na zapis** w **Opcjach** magazynu, a potem wypełnij:
+
+| Pole | Znaczenie |
+|---|---|
+| Zezwól na zapis | Pozwala poświadczeniu zapisać użytkownika i hasło w tym magazynie przy **Zapisie**. Domyślnie wyłączone. |
+| Sejfy do zapisu | Sejfy, w których można zapisywać poświadczenia, rozdzielone przecinkami, np. `Linux, DB`. Wymagane przy włączonym zapisie. |
+| Adres PVWA | Bazowy URL PVWA, np. `https://pvwa.example.com`. Wymagany. |
+| Poświadczenie PVWA | Własne poświadczenie typu **Użytkownik i hasło** lub **API**, nigdy nie odczytywane z magazynu sekretów, które może dodawać konta do tych sejfów i zmieniać ich hasła. Wymagane. |
+| Metoda logowania | Jak loguje się poświadczenie PVWA: CyberArk (domyślnie), LDAP, RADIUS lub Windows. |
+| ID platformy | Platforma dodawanych kont, np. `UnixSSH`. Potrzebne do dodania nowego konta. |
+
+Odwołanie wskazuje konto tak jak przy odczycie, `Safe=Linux;Object=srv01-root`, z `Address=srv01.example.com`, gdy platforma go wymaga.
+
+- Nowe konto jest dodawane do sejfu z platformą, nazwą użytkownika i hasłem.
+- Istniejące konto jest zmieniane tylko po zaznaczeniu **Nadpisz sekret, który już tam jest**: najpierw nazwa użytkownika, potem hasło.
+- Sesja PVWA jest wylogowywana po każdym zapisie. Logowanie OAuth Privilege Cloud nie jest obsługiwane.
 
 ---
 
