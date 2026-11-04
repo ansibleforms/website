@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Magazyny sekretów
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Odczytuj poświadczenia z HashiCorp Vault, z KV v1 lub v2 albo z silnika sekretów dynamicznych
+Odczytuj i zapisuj poświadczenia w HashiCorp Vault KV, odczytuj sekrety dynamiczne
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ Oprócz [pól, które ma każdy magazyn](./#adding-a-store), magazyn HashiCorp V
 
 Odwołanie do sekretu to ścieżka, np. `secret/myapp/prod`. Dla KV v2 segment `/data/`
 jest wstawiany, gdy go pominiesz.
+
+---
+
+## Zapisywanie poświadczeń
+
+Od 7.6.0 użytkownika i hasło poświadczenia można zapisać w Vault przy **Zapisie** (zob. [Zapisywanie poświadczeń](./#writing-credentials)).
+
+Włącz **Zezwól na zapis** w **Opcjach** magazynu i wskaż, gdzie może zapisywać:
+
+| Pole | Znaczenie |
+|---|---|
+| Zezwól na zapis | Pozwala poświadczeniu zapisać użytkownika i hasło w tym magazynie przy **Zapisie**. Domyślnie wyłączone. |
+| Prefiks zapisu | Ścieżka, w której lub pod którą zapisywane są poświadczenia, np. `secret/ansibleforms`. Sam punkt montowania, np. `secret`, zezwala na cały punkt montowania. Wymagany przy włączonym zapisie. |
+
+Sekret jest zapisywany jako `username` i `password`, w KV v2 lub v1 zgodnie z **Wersją KV** magazynu. Token potrzebuje uprawnień
+read, create i update pod prefiksem; read sprawdza, czy sekret już tam jest. Dla KV v2 i prefiksu `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+Ścieżka silnika sekretów dynamicznych, np. `database/creds/readonly`, nigdy nie jest zapisywana: te poświadczenia tworzy sam Vault.
 
 ---
 

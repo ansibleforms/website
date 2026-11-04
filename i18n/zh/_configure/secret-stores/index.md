@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # 密钥库
 {: .no_toc }
 
-从密钥管理器读取凭据，而不是将其保存在 AnsibleForms 中
+在密钥管理器中而非 AnsibleForms 中读写凭据
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 
 ---
 
-面向管理员：连接密钥管理器，并让凭据从中读取其用户和密码。
+面向管理员：连接一个密钥管理器，让凭据从中读取用户和密码，或将其写入其中。
 
 ---
 
@@ -41,6 +41,8 @@ translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 | HashiCorp Vault（KV v1 和 v2，令牌认证） | 可用 |
 | HashiCorp Vault 动态凭据（`<mount>/creds/<role>`） | 实验性 |
 | CyberArk Central Credential Provider（CCP） | 实验性 |
+| 将凭据写入 HashiCorp Vault KV | 可用 |
+| 通过 PVWA 将凭据写入 CyberArk | 实验性 |
 
 ---
 
@@ -75,8 +77,8 @@ translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
 
 ### 在凭据中
 
-在 **连接 > 凭据** 下，在凭据的 **存储** 步骤中选择 **密钥库**，然后选择
-**密钥库** 并填写 **引用**。这样用户和密码就从密钥库读取，而不是手动输入。
+在 **连接 > 凭据** 中，在凭据的 **存储** 步骤选择 **密钥库** 和 **指向键**，
+然后选择 **密钥库** 并填写 **引用**。用户和密码随后从存储中读取，而不是手动输入。
 
 ### 内联方式，无需凭据行
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## 写入凭据
+
+从 7.6.0 起，凭据的用户和密码可在保存时写入存储，无需事先放入其中。
+
+在凭据的 **存储** 步骤选择 **密钥库** 和 **写入键**，选择存储并填写 **引用**。
+**登录** 步骤随后会询问用户和密码，**保存** 会将其写入存储；AnsibleForms 只保留存储和引用。
+
+- 只提供在其 **选项** 中开启了 **允许写入** 的存储，且只写入其选项允许的位置。
+- 已有密钥的键只有在勾选 **覆盖已存在的密钥** 时才会被替换；否则不写入也不保存任何内容。
+- 只有管理员可以写入，每次写入都会以 `credential.secret_write` 记录审计，不含密钥本身。
+
+各密钥管理器的写入设置：
+
+| 页面 | 内容 |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | 写入前缀，以及令牌的权限 |
+| [CyberArk](cyberark.html#writing-credentials) | 保险箱，以及 PVWA 及其凭据和平台 |
+
+---
+
 ## 在配置种子中
 
 与其他管理对象一样，密钥库也可以在配置种子中声明：
@@ -161,7 +183,8 @@ credentials:
 
 密钥库使用其凭据登录：`vault` 凭据在 `url` 中保存 Vault 的地址，并以令牌作为其密码；`cyberark`
 凭据保存 AppID 和 CCP 地址。没有凭据时，使用密钥库自身的 `url` 和 `token`。
-详情参见 [配置种子](../seed)。
+允许写入的存储设置 `write_enabled: true` 和 `write_prefix`（CyberArk 为其保险箱），CyberArk 还需设置 `pvwa_url`、
+`pvwa_credential`、`pvwa_auth` 和 `platform_id`。详情参见 [配置种子](../seed)。
 
 ---
 

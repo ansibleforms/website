@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: 密钥库
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-从 HashiCorp Vault 的 KV v1 或 v2 或动态密钥引擎读取凭据
+在 HashiCorp Vault KV 中读写凭据，读取动态密钥
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
 
 密钥引用即路径，例如 `secret/myapp/prod`。对于 KV v2，如果您省略了 `/data/` 段，
 会自动插入。
+
+---
+
+## 写入凭据
+
+从 7.6.0 起，凭据的用户和密码可在 **保存** 时写入 Vault（参见 [写入凭据](./#writing-credentials)）。
+
+在存储的 **选项** 中开启 **允许写入**，并设置它可以写入的位置：
+
+| 字段 | 含义 |
+|---|---|
+| 允许写入 | 允许凭据在 **保存** 时将其用户和密码写入此存储。默认关闭。 |
+| 写入前缀 | 凭据写入的路径或其下级路径，例如 `secret/ansibleforms`。只写挂载点（例如 `secret`）则允许整个挂载点。开启写入时必填。 |
+
+密钥以 `username` 和 `password` 写入，按存储的 **KV 版本** 写入 KV v2 或 v1。令牌需要在前缀下具有
+read、create 和 update 权限；read 用于检查是否已有密钥。对于 KV v2 和前缀 `secret/ansibleforms`：
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+动态密钥引擎的路径（例如 `database/creds/readonly`）永远不会被写入：这些凭据由 Vault 自己创建。
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Strona poświadczeń
 parent: Poświadczenia
 nav_order: 2
-translated_from: 986d768c15d0b91bdc3760026bd904d3f89ff3e0
+translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
 ---
 
 # Strona poświadczeń
@@ -21,7 +21,7 @@ liczbą rekordów, formularzy i workflowów, które je wskazują (zobacz [Poświ
 |---|---|
 | Poświadczenie | Nazwa i opis, oba wymagane. |
 | Typ | Jeden z 18 typów, zobacz niżej. |
-| Magazyn | Gdzie przechowywane są użytkownik i hasło: **Baza danych** (zaszyfrowane w bazie danych AnsibleForms) lub **Magazyn sekretów**, z magazynem i **Odwołaniem** w nim. Nie dotyczy CyberArk ani HashiCorp Vault, którymi loguje się magazyn sekretów. **Odwołanie** pojawia się po wybraniu magazynu; jego przykład zależy od magazynu: ścieżka HashiCorp Vault albo konto CyberArk. |
+| Magazyn | Gdzie są przechowywane użytkownik i hasło: **Baza danych** (zaszyfrowane w bazie danych AnsibleForms) lub **Magazyn sekretów**. W **Magazyn sekretów** opcja **Wskaż klucz** odczytuje sekret, który już jest w magazynie, a **Zapisz w kluczu** zapisuje w magazynie, przy **Zapisie**, użytkownika i hasło wpisane w kroku **Logowanie**. Potem wybierz magazyn i wypełnij **Odwołanie**; jego przykład zależy od magazynu: ścieżka HashiCorp Vault lub konto CyberArk. Nie dla CyberArk ani HashiCorp Vault, którymi loguje się magazyn sekretów. |
 | Logowanie | Czym i gdzie loguje się dany typ, zobacz niżej. |
 
 Krok **Typ** wyświetla typy według nazwy: AAP, API, Ascender, AWX, CyberArk, Baza danych, Git, HashiCorp Vault, Jenkins, LDAP,
@@ -41,7 +41,9 @@ Krok **Logowanie** zawiera każde pole typu, łącznie z adresem; nie ma osobneg
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Serwer**, adres, do którego się loguje, wymagany, z **Pomiń weryfikację certyfikatu** i **Pakietem CA** |
 | CyberArk | **Certyfikat klienta** i **Klucz klienta** |
 
-Przy **Magazynie sekretów** użytkownik i hasło nie są pytane: podaje je magazyn. Krok **Logowanie** zachowuje wtedy tylko pola adresu danego typu (SSH, baza danych, serwery poczty i katalogu, adres serwera), a proste logowanie (Użytkownik i hasło, Git, API) nie ma kroku **Logowanie**: zapisuje się je z kroku **Magazyn**.
+Przy **Wskaż klucz** użytkownik i hasło nie są pytane: podaje je magazyn. Krok **Logowanie** zachowuje wtedy tylko pola adresu danego typu (SSH, baza danych, serwery poczty i katalogu, adres serwera), a proste logowanie (Użytkownik i hasło, Git, API) nie ma kroku **Logowanie**: zapisuje się je z kroku **Magazyn**.
+
+Przy **Zapisz w kluczu** (od 7.6.0) krok **Logowanie** pyta o użytkownika i hasło, a **Zapisz** zapisuje je w magazynie pod **Odwołaniem**; AnsibleForms przechowuje tylko magazyn i odwołanie. Oferowane są tylko magazyny, które zezwalają na zapis, a **Dodaj magazyn sekretów** tworzy taki z już włączonym zapisem. Klucz, w którym jest już sekret, zostaje zastąpiony tylko po zaznaczeniu **Nadpisz sekret, który już tam jest**, zob. [Zapisywanie poświadczeń](../secret-stores/#writing-credentials).
 
 Wiersz otwiera własną stronę poświadczenia. Jego menu oferuje **Edytuj**, **Testuj połączenie** (tylko poświadczenia bazy danych) i **Usuń**.
 Hasło zmienia się na stronie poświadczenia, na karcie **Logowanie**.

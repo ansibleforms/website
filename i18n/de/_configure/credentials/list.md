@@ -3,7 +3,7 @@ layout: default
 title: Die Seite Anmeldedaten
 parent: Anmeldedaten
 nav_order: 2
-translated_from: 986d768c15d0b91bdc3760026bd904d3f89ff3e0
+translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
 ---
 
 # Die Seite Anmeldedaten
@@ -21,7 +21,7 @@ Anzahl der Datensätze, Formulare und Workflows, die sie nennen (siehe [Verwende
 |---|---|
 | Anmeldedaten | Name und Beschreibung, beide erforderlich. |
 | Typ | Einer von 18 Typen, siehe unten. |
-| Speicher | Wo Benutzer und Passwort gespeichert werden: **Datenbank** (verschlüsselt in der AnsibleForms-Datenbank) oder **Secret Store**, mit dem Store und der **Referenz** darin. Nicht für CyberArk und HashiCorp Vault, mit denen sich ein Secret Store anmeldet. Die **Referenz** erscheint, sobald ein Store gewählt ist; ihr Beispiel folgt dem Store: ein HashiCorp-Vault-Pfad oder ein CyberArk-Konto. |
+| Speicher | Wo Benutzer und Passwort gespeichert werden: **Datenbank** (verschlüsselt in der AnsibleForms-Datenbank) oder **Secret Store**. Unter **Secret Store** liest **Auf einen Schlüssel verweisen** ein Secret, das schon im Store liegt, und **In einen Schlüssel schreiben** schreibt die im Schritt **Anmeldung** eingegebenen Benutzer und Passwort beim **Speichern** in den Store. Wählen Sie dann den Store und füllen Sie die **Referenz** aus; ihr Beispiel folgt dem Store: ein HashiCorp-Vault-Pfad oder ein CyberArk-Konto. Nicht für CyberArk und HashiCorp Vault, mit denen sich ein Secret Store anmeldet. |
 | Anmeldung | Womit und wo sich der Typ anmeldet, siehe unten. |
 
 Der Schritt **Typ** listet die Typen nach Namen auf: AAP, API, Ascender, AWX, CyberArk, Datenbank, Git, HashiCorp Vault, Jenkins, LDAP,
@@ -41,7 +41,9 @@ Der Schritt **Anmeldung** enthält jedes Feld des Typs, die Adresse eingeschloss
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, die Adresse, bei der er sich anmeldet, erforderlich, mit **Zertifikatsprüfung überspringen** und dem **CA-Bundle** |
 | CyberArk | **Client-Zertifikat** und **Client-Schlüssel** |
 
-Mit **Secret Store** werden Benutzer und Passwort nicht abgefragt: Der Store liefert sie. Der Schritt **Anmeldung** behält dann nur die Adressfelder des Typs (SSH, Datenbank, Mail- und Verzeichnisserver, eine Serveradresse), und eine einfache Anmeldung (Benutzer und Passwort, Git, API) hat gar keinen Schritt **Anmeldung**: Sie wird im Schritt **Speicher** gespeichert.
+Mit **Auf einen Schlüssel verweisen** werden Benutzer und Passwort nicht abgefragt: Der Store liefert sie. Der Schritt **Anmeldung** behält dann nur die Adressfelder des Typs (SSH, Datenbank, Mail- und Verzeichnisserver, eine Serveradresse), und eine einfache Anmeldung (Benutzer und Passwort, Git, API) hat gar keinen Schritt **Anmeldung**: Sie wird im Schritt **Speicher** gespeichert.
+
+Mit **In einen Schlüssel schreiben** (ab 7.6.0) fragt der Schritt **Anmeldung** Benutzer und Passwort ab, und **Speichern** schreibt sie an der **Referenz** in den Store; AnsibleForms behält nur Store und Referenz. Angeboten werden nur Stores, die Schreiben erlauben, und **Secret Store hinzufügen** legt einen mit bereits eingeschaltetem Schreiben an. Ein Schlüssel, der schon ein Secret enthält, wird nur ersetzt, wenn **Ein vorhandenes Geheimnis überschreiben** angehakt ist, siehe [Anmeldedaten schreiben](../secret-stores/#writing-credentials).
 
 Eine Zeile öffnet die eigene Seite des Eintrags. Ihr Menü bietet **Bearbeiten**, **Verbindung testen** (nur bei Datenbank-Anmeldedaten) und **Löschen**. Das
 Passwort wird auf der Seite des Eintrags geändert, in seinem Tab **Anmeldung**.

@@ -3,7 +3,7 @@ layout: default
 title: De pagina met inloggegevens
 parent: Inloggegevens
 nav_order: 2
-translated_from: 986d768c15d0b91bdc3760026bd904d3f89ff3e0
+translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
 ---
 
 # De pagina met inloggegevens
@@ -21,7 +21,7 @@ aantal records, formulieren en workflows dat haar noemt (zie [Referenties in geb
 |---|---|
 | Referentie | Naam en beschrijving, beide verplicht. |
 | Type | Een van 18 typen, zie hieronder. |
-| Opslag | Waar de gebruiker en het wachtwoord worden bewaard: **Database** (versleuteld in de AnsibleForms-database) of **Geheimenkluis**, met de store en de **Referentie** daarin. Niet voor CyberArk of HashiCorp Vault, waarmee een secret store zich aanmeldt. De **Referentie** verschijnt zodra een store is gekozen; het voorbeeld volgt de store: een HashiCorp Vault-pad of een CyberArk-account. |
+| Opslag | Waar gebruiker en wachtwoord worden bewaard: **Database** (versleuteld in de AnsibleForms-database) of **Geheimenkluis**. Onder **Geheimenkluis** leest **Verwijzen naar een sleutel** een geheim dat al in de kluis staat, en **Schrijven naar een sleutel** schrijft de in de stap **Aanmelding** getypte gebruiker en wachtwoord bij **Opslaan** naar de kluis. Kies dan de kluis en vul de **Referentie** in; het voorbeeld volgt de kluis: een HashiCorp Vault-pad of een CyberArk-account. Niet voor CyberArk en HashiCorp Vault, waarmee een geheimenkluis zich aanmeldt. |
 | Aanmelding | Waarmee en waar het type zich aanmeldt, zie hieronder. |
 
 De stap **Type** toont de typen op naam: AAP, API, Ascender, AWX, CyberArk, Database, Git, HashiCorp Vault, Jenkins, LDAP,
@@ -41,7 +41,9 @@ De stap **Aanmelding** bevat elk veld van het type, het adres inbegrepen; er is 
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, het adres waarbij het zich aanmeldt, verplicht, met **Certificaatcontrole overslaan** en de **CA-bundel** |
 | CyberArk | **Clientcertificaat** en **Clientsleutel** |
 
-Met **Geheimenkluis** worden gebruiker en wachtwoord niet gevraagd: de store levert ze. De stap **Aanmelding** houdt dan alleen de adresvelden van het type (SSH, database, mail- en directoryservers, een serveradres), en een eenvoudige aanmelding (Gebruiker en wachtwoord, Git, API) heeft helemaal geen stap **Aanmelding**: ze wordt opgeslagen vanuit de stap **Opslag**.
+Met **Verwijzen naar een sleutel** worden gebruiker en wachtwoord niet gevraagd: de store levert ze. De stap **Aanmelding** houdt dan alleen de adresvelden van het type (SSH, database, mail- en directoryservers, een serveradres), en een eenvoudige aanmelding (Gebruiker en wachtwoord, Git, API) heeft helemaal geen stap **Aanmelding**: ze wordt opgeslagen vanuit de stap **Opslag**.
+
+Met **Schrijven naar een sleutel** (vanaf 7.6.0) vraagt de stap **Aanmelding** gebruiker en wachtwoord, en **Opslaan** schrijft ze op de **Referentie** naar de kluis; AnsibleForms bewaart alleen de kluis en de referentie. Alleen kluizen die schrijven toestaan worden aangeboden, en **Secret store toevoegen** maakt er een met schrijven al aan. Een sleutel waar al een geheim staat, wordt alleen vervangen als **Een bestaand geheim overschrijven** is aangevinkt, zie [Referenties schrijven](../secret-stores/#writing-credentials).
 
 Een rij opent de eigen pagina van de referentie. Het menu biedt **Bewerken**, **Verbinding testen** (alleen voor databasereferenties) en **Verwijderen**. Het
 wachtwoord wordt gewijzigd op de pagina van de referentie, in het tabblad **Aanmelding**.

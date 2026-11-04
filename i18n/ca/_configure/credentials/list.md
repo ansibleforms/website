@@ -3,7 +3,7 @@ layout: default
 title: La pàgina de credencials
 parent: Credencials
 nav_order: 2
-translated_from: 986d768c15d0b91bdc3760026bd904d3f89ff3e0
+translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
 ---
 
 # La pàgina de credencials
@@ -21,7 +21,7 @@ nombre de registres, formularis i workflows que la nomenen (vegeu [Credencials e
 |---|---|
 | Credencial | Nom i descripció, tots dos obligatoris. |
 | Tipus | Un de 18 tipus, vegeu més avall. |
-| Magatzem | On es desen l'usuari i la contrasenya: **Base de dades** (xifrats a la base de dades d'AnsibleForms) o **Magatzem de secrets**, amb el magatzem i la **Referència** que hi ha dins. No per a CyberArk ni HashiCorp Vault, amb els quals inicia sessió un magatzem de secrets. La **Referència** apareix quan s'ha triat un magatzem; el seu exemple segueix el magatzem: un camí de HashiCorp Vault o un compte de CyberArk. |
+| Magatzem | On es guarden l'usuari i la contrasenya: **Base de dades** (xifrats a la base de dades d'AnsibleForms) o **Magatzem de secrets**. Sota **Magatzem de secrets**, **Apunta a una clau** llegeix un secret que ja és al magatzem, i **Escriu a una clau** escriu al magatzem, en **Desar**, l'usuari i la contrasenya escrits al pas **Accés**. Després tria el magatzem i omple la **Referència**; el seu exemple segueix el magatzem: un camí de HashiCorp Vault o un compte de CyberArk. No per a CyberArk ni HashiCorp Vault, amb els quals inicia la sessió un magatzem de secrets. |
 | Accés | Amb què i on inicia sessió el tipus, vegeu més avall. |
 
 El pas **Tipus** llista els tipus pel seu nom: AAP, API, Ascender, AWX, CyberArk, Base de dades, Git, HashiCorp Vault, Jenkins, LDAP,
@@ -41,7 +41,9 @@ El pas **Accés** conté tots els camps del tipus, l'adreça inclosa; no hi ha c
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, l'adreça on inicia sessió, obligatori, amb **Omet la verificació del certificat** i el **Paquet de CA** |
 | CyberArk | **Certificat de client** i **Clau del client** |
 
-Amb **Magatzem de secrets**, no es demanen l'usuari ni la contrasenya: els dona el magatzem. El pas **Accés** només conserva els camps d'adreça del tipus (SSH, base de dades, servidors de correu i de directori, l'adreça d'un servidor), i un accés simple (Usuari i contrasenya, Git, API) no té pas **Accés**: es desa des del pas **Magatzem**.
+Amb **Apunta a una clau**, no es demanen l'usuari ni la contrasenya: els dona el magatzem. El pas **Accés** només conserva els camps d'adreça del tipus (SSH, base de dades, servidors de correu i de directori, l'adreça d'un servidor), i un accés simple (Usuari i contrasenya, Git, API) no té pas **Accés**: es desa des del pas **Magatzem**.
+
+Amb **Escriu a una clau** (des de 7.6.0), el pas **Accés** demana l'usuari i la contrasenya, i **Desa** els escriu al magatzem a la **Referència**; AnsibleForms només en conserva el magatzem i la referència. Només s'ofereixen els magatzems que permeten escriure, i **Afegeix un magatzem de secrets** en crea un amb l'escriptura ja activada. Una clau que ja té un secret només es reemplaça si **Sobreescriu un secret que ja hi sigui** està marcat, vegeu [Escriure credencials](../secret-stores/#writing-credentials).
 
 Una fila obre la pàgina pròpia de la credencial. El seu menú ofereix **Edita**, **Prova la connexió** (només credencials de base de dades) i **Suprimeix**. La
 contrasenya es canvia a la pàgina de la credencial, a la seva pestanya **Accés**.
