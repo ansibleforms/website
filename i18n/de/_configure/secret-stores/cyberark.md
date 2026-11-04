@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: Secret Stores
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-Anmeldedaten aus dem CyberArk Central Credential Provider (CCP) lesen
+Anmeldedaten über das CyberArk CCP lesen, über sein PVWA schreiben
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -51,6 +51,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - Eine `AppID` in der Referenz wird ignoriert: Es wird immer die AppID des Stores verwendet.
 - Das Passwort des Kontos (`Content`) wird zum Passwort; `UserName`, `Address`, `Port` und
   `Database` füllen Benutzer, Host, Port und Datenbankname.
+
+---
+
+## Anmeldedaten schreiben
+
+Ab 7.6.0 können Benutzer und Passwort von Anmeldedaten beim **Speichern** in CyberArk geschrieben werden (siehe [Anmeldedaten schreiben](./#writing-credentials)).
+Das CCP liest nur, daher schreibt AnsibleForms über die PVWA-REST-API, angemeldet mit eigenen Anmeldedaten.
+
+Schalten Sie **Schreiben erlauben** in den **Optionen** des Stores ein, und füllen Sie dann aus:
+
+| Feld | Bedeutung |
+|---|---|
+| Schreiben erlauben | Erlaubt Anmeldedaten, beim **Speichern** Benutzer und Passwort in diesen Store zu schreiben. Standardmäßig aus. |
+| Safes zum Schreiben | Die Safes, in die Anmeldedaten geschrieben werden dürfen, durch Kommas getrennt, z. B. `Linux, DB`. Bei eingeschaltetem Schreiben erforderlich. |
+| PVWA-Adresse | Die Basis-URL des PVWA, z. B. `https://pvwa.example.com`. Erforderlich. |
+| PVWA-Anmeldeinformation | Eigene Anmeldedaten vom Typ **Benutzer und Passwort** oder **API**, nie aus einem Secret Store gelesen, die in diesen Safes Konten anlegen und deren Passwörter ändern dürfen. Erforderlich. |
+| Anmeldemethode | Wie sich die PVWA-Anmeldeinformation anmeldet: CyberArk (Standard), LDAP, RADIUS oder Windows. |
+| Plattform-ID | Die Plattform der angelegten Konten, z. B. `UnixSSH`. Zum Anlegen eines neuen Kontos nötig. |
+
+Die Referenz nennt das Konto wie beim Lesen, `Safe=Linux;Object=srv01-root`, mit `Address=srv01.example.com`, wenn seine Plattform eine braucht.
+
+- Ein neues Konto wird mit Plattform, Benutzername und Passwort im Safe angelegt.
+- Ein vorhandenes Konto wird nur geändert, wenn **Ein vorhandenes Geheimnis überschreiben** angehakt ist: erst der Benutzername, dann das Passwort.
+- Die PVWA-Sitzung wird nach jedem Schreiben abgemeldet. Die OAuth-Anmeldung von Privilege Cloud wird nicht unterstützt.
 
 ---
 

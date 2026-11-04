@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: Cofres de segredos
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-Leia as credenciais do CyberArk Central Credential Provider (CCP)
+Ler credenciais através do CCP do CyberArk, escrevê-las através do seu PVWA
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -51,6 +51,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - Um `AppID` na referência é ignorado: é sempre usado o AppID do cofre.
 - A palavra-passe da conta (`Content`) torna-se a palavra-passe; `UserName`, `Address`, `Port` e
   `Database` preenchem o utilizador, o host, a porta e o nome da base de dados.
+
+---
+
+## Escrever credenciais
+
+Desde 7.6.0, o utilizador e a palavra-passe de uma credencial podem ser escritos no CyberArk ao **Guardar** (ver [Escrever credenciais](./#writing-credentials)).
+O CCP só lê, por isso o AnsibleForms escreve através da API REST do PVWA, com uma credencial própria.
+
+Ligue **Permitir escrita** nas **Opções** do cofre e preencha:
+
+| Campo | Significado |
+|---|---|
+| Permitir escrita | Permite que uma credencial escreva o seu utilizador e palavra-passe neste cofre ao **Guardar**. Desligado por omissão. |
+| Cofres onde escrever | Os cofres onde se podem escrever credenciais, separados por vírgulas, p. ex. `Linux, DB`. Obrigatório com a escrita ligada. |
+| Endereço do PVWA | O URL base do PVWA, p. ex. `https://pvwa.example.com`. Obrigatório. |
+| Credencial do PVWA | Uma credencial própria do tipo **Utilizador e palavra-passe** ou **API**, nunca lida de um cofre de segredos, que pode adicionar contas a esses cofres e mudar as suas palavras-passe. Obrigatória. |
+| Método de início de sessão | Como a credencial do PVWA inicia sessão: CyberArk (por omissão), LDAP, RADIUS ou Windows. |
+| ID da plataforma | A plataforma das contas que adiciona, p. ex. `UnixSSH`. Necessário para adicionar uma conta nova. |
+
+A referência indica a conta como na leitura, `Safe=Linux;Object=srv01-root`, com `Address=srv01.example.com` quando a sua plataforma precisa de um.
+
+- Uma conta nova é adicionada ao cofre com a plataforma, o nome de utilizador e a palavra-passe.
+- Uma conta existente só é alterada se **Substituir um segredo que já lá esteja** estiver marcado: primeiro o nome de utilizador, depois a palavra-passe.
+- A sessão do PVWA é terminada após cada escrita. O início de sessão OAuth do Privilege Cloud não é suportado.
 
 ---
 

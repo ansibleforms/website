@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Secret Stores
 {: .no_toc }
 
-Anmeldedaten aus einem Secret Manager lesen, statt sie in AnsibleForms zu speichern
+Anmeldedaten in einem Secret Manager lesen und schreiben statt in AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Anmeldedaten aus einem Secret Manager lesen, statt sie in AnsibleForms zu speich
 
 ---
 
-Für Administratoren: Binden Sie einen Secret Manager an, und lassen Sie Anmeldedaten ihren Benutzer und ihr Passwort daraus lesen.
+Für Administratoren: Binden Sie einen Secret Manager an, und lassen Sie Anmeldedaten ihren Benutzer und ihr Passwort daraus lesen oder dorthin schreiben.
 
 ---
 
@@ -41,6 +41,8 @@ nichts an Ihren Formularen.
 | HashiCorp Vault (KV v1 und v2, Token-Authentifizierung) | verfügbar |
 | Dynamische Anmeldedaten von HashiCorp Vault (`<mount>/creds/<role>`) | experimentell |
 | CyberArk Central Credential Provider (CCP) | experimentell |
+| Anmeldedaten in HashiCorp Vault KV schreiben | verfügbar |
+| Anmeldedaten über das PVWA in CyberArk schreiben | experimentell |
 
 ---
 
@@ -75,8 +77,8 @@ Jeder Secret Manager hat eine eigene Seite:
 
 ### In Anmeldedaten
 
-Wählen Sie unter **Verbindungen > Anmeldedaten** im Schritt **Speicher** der Anmeldedaten **Secret Store**, wählen Sie dann den
-**Secret Store** und füllen Sie die **Referenz** aus. Benutzer und Passwort werden dann aus dem Store gelesen, nicht eingegeben.
+Wählen Sie unter **Verbindungen > Anmeldedaten** im Schritt **Speicher** der Anmeldedaten **Secret Store** und **Auf einen Schlüssel verweisen**,
+wählen Sie dann den **Secret Store** und füllen Sie die **Referenz** aus. Benutzer und Passwort werden dann aus dem Store gelesen, nicht eingegeben.
 
 ### Inline, ohne Anmeldedaten-Zeile
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Anmeldedaten schreiben
+
+Ab 7.6.0 können Benutzer und Passwort von Anmeldedaten beim Speichern in einen Store geschrieben werden, sie müssen also nie zuerst dort abgelegt werden.
+
+Wählen Sie im Schritt **Speicher** der Anmeldedaten **Secret Store** und **In einen Schlüssel schreiben**, wählen Sie den Store und füllen Sie die **Referenz** aus.
+Der Schritt **Anmeldung** fragt dann Benutzer und Passwort ab, und **Speichern** schreibt sie in den Store; AnsibleForms behält nur Store und Referenz.
+
+- Angeboten wird nur ein Store, bei dem **Schreiben erlauben** in seinen **Optionen** eingeschaltet ist, und er schreibt nur, wo seine Optionen es erlauben.
+- Ein Schlüssel, der schon ein Secret enthält, wird nur ersetzt, wenn **Ein vorhandenes Geheimnis überschreiben** angehakt ist; sonst wird nichts geschrieben oder gespeichert.
+- Nur ein Admin kann schreiben, und jedes Schreiben wird als `credential.secret_write` protokolliert, ohne das Secret.
+
+Wie jeder Secret Manager für das Schreiben eingerichtet wird:
+
+| Seite | Inhalt |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Ein Schreibpräfix und die Fähigkeiten des Tokens |
+| [CyberArk](cyberark.html#writing-credentials) | Die Safes und das PVWA mit seiner Anmeldeinformation und Plattform |
+
+---
+
 ## Im Config-Seed
 
 Stores lassen sich wie die anderen Admin-Objekte auch im Config-Seed deklarieren:
@@ -161,7 +183,8 @@ credentials:
 
 Der Store meldet sich mit seinen Anmeldedaten an: `vault`-Anmeldedaten enthalten die Adresse des Vault in `url` und das Token als Passwort, `cyberark`-Anmeldedaten
 die AppID und die Adresse des CCP. Ohne Anmeldedaten werden `url` und `token` des Stores selbst verwendet.
-Details finden Sie unter [Config-Seed](../seed).
+Ein Store, der Schreiben erlaubt, setzt `write_enabled: true` und `write_prefix` (bei CyberArk seine Safes), und CyberArk zusätzlich `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` und `platform_id`. Details finden Sie unter [Config-Seed](../seed).
 
 ---
 

@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Almacenes de secretos
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Leer credenciales de HashiCorp Vault, de KV v1 o v2 o de un motor de secretos dinámicos
+Leer y escribir credenciales en HashiCorp Vault KV, leer secretos dinámicos
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ Además de los [campos que tiene todo almacén](./#adding-a-store), un almacén 
 
 La referencia del secreto es la ruta, p. ej. `secret/myapp/prod`. Para KV v2 el segmento `/data/`
 se inserta si lo omites.
+
+---
+
+## Escribir credenciales
+
+Desde 7.6.0, el usuario y la contraseña de una credencial se pueden escribir en el Vault al **Guardar** (ver [Escribir credenciales](./#writing-credentials)).
+
+Activa **Permitir la escritura** en las **Opciones** del almacén, e indica dónde puede escribir:
+
+| Campo | Significado |
+|---|---|
+| Permitir la escritura | Permite que una credencial escriba su usuario y contraseña en este almacén al **Guardar**. Desactivado por defecto. |
+| Prefijo de escritura | La ruta en la que, o bajo la que, se escriben las credenciales, p. ej. `secret/ansibleforms`. Un montaje solo, p. ej. `secret`, permite todo el montaje. Obligatorio con la escritura activada. |
+
+El secreto se escribe como `username` y `password`, en KV v2 o v1 según la **Versión KV** del almacén. El token necesita las capacidades
+read, create y update bajo el prefijo; read comprueba si ya hay un secreto. Para KV v2 y el prefijo `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+La ruta de un motor de secretos dinámicos, p. ej. `database/creds/readonly`, nunca se escribe: Vault crea esas credenciales él mismo.
 
 ---
 

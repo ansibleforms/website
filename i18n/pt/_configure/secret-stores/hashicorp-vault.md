@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Cofres de segredos
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Leia as credenciais do HashiCorp Vault, de KV v1 ou v2 ou de um motor de segredos dinâmicos
+Ler e escrever credenciais no HashiCorp Vault KV, ler segredos dinâmicos
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ Além dos [campos que todos os cofres têm](./#adding-a-store), um cofre HashiCo
 
 A referência do segredo é o caminho, ex. `secret/myapp/prod`. Para KV v2, o segmento `/data/`
 é inserido quando o omite.
+
+---
+
+## Escrever credenciais
+
+Desde 7.6.0, o utilizador e a palavra-passe de uma credencial podem ser escritos no Vault ao **Guardar** (ver [Escrever credenciais](./#writing-credentials)).
+
+Ligue **Permitir escrita** nas **Opções** do cofre, e indique onde pode escrever:
+
+| Campo | Significado |
+|---|---|
+| Permitir escrita | Permite que uma credencial escreva o seu utilizador e palavra-passe neste cofre ao **Guardar**. Desligado por omissão. |
+| Prefixo de escrita | O caminho onde, ou sob o qual, as credenciais são escritas, p. ex. `secret/ansibleforms`. Uma montagem sozinha, p. ex. `secret`, permite toda a montagem. Obrigatório com a escrita ligada. |
+
+O segredo é escrito como `username` e `password`, em KV v2 ou v1 conforme a **Versão KV** do cofre. O token precisa das capacidades
+read, create e update sob o prefixo; read verifica se já lá existe um segredo. Para KV v2 e o prefixo `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+O caminho de um motor de segredos dinâmicos, p. ex. `database/creds/readonly`, nunca é escrito: é o Vault que cria essas credenciais.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: La página de credenciales
 parent: Credenciales
 nav_order: 2
-translated_from: 986d768c15d0b91bdc3760026bd904d3f89ff3e0
+translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
 ---
 
 # La página de credenciales
@@ -21,7 +21,7 @@ número de registros, formularios y workflows que la nombran (consulta [Credenci
 |---|---|
 | Credencial | Nombre y descripción, ambos obligatorios. |
 | Tipo | Uno de 18 tipos, ver más abajo. |
-| Almacén | Dónde se guardan el usuario y la contraseña: **Base de datos** (cifrados en la base de datos de AnsibleForms) o **Almacén de secretos**, con el almacén y la **Referencia** dentro de él. No para CyberArk ni HashiCorp Vault, con los que inicia sesión un almacén de secretos. La **Referencia** aparece cuando se elige un almacén; su ejemplo sigue al almacén: una ruta de HashiCorp Vault o una cuenta de CyberArk. |
+| Almacén | Dónde se guardan el usuario y la contraseña: **Base de datos** (cifrados en la base de datos de AnsibleForms) o **Almacén de secretos**. En **Almacén de secretos**, **Apuntar a una clave** lee un secreto que ya está en el almacén, y **Escribir en una clave** escribe en el almacén, al **Guardar**, el usuario y la contraseña escritos en el paso **Acceso**. Luego elige el almacén y rellena la **Referencia**; su ejemplo sigue al almacén: una ruta de HashiCorp Vault o una cuenta de CyberArk. No para CyberArk ni HashiCorp Vault, con los que inicia sesión un almacén de secretos. |
 | Acceso | Con qué y dónde inicia sesión el tipo, ver más abajo. |
 
 El paso **Tipo** lista los tipos por su nombre: AAP, API, Ascender, AWX, CyberArk, Base de datos, Git, HashiCorp Vault, Jenkins, LDAP,
@@ -41,7 +41,9 @@ El paso **Acceso** contiene todos los campos del tipo, la dirección incluida; n
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, la dirección en la que inicia sesión, obligatorio, con **Omitir la verificación del certificado** y el **Paquete CA** |
 | CyberArk | **Certificado de cliente** y **Clave de cliente** |
 
-Con **Almacén de secretos**, no se piden el usuario ni la contraseña: los da el almacén. El paso **Acceso** solo conserva los campos de dirección del tipo (SSH, base de datos, servidores de correo y de directorio, la dirección de un servidor), y un acceso simple (Usuario y contraseña, Git, API) no tiene paso **Acceso**: se guarda desde el paso **Almacén**.
+Con **Apuntar a una clave**, no se piden el usuario ni la contraseña: los da el almacén. El paso **Acceso** solo conserva los campos de dirección del tipo (SSH, base de datos, servidores de correo y de directorio, la dirección de un servidor), y un acceso simple (Usuario y contraseña, Git, API) no tiene paso **Acceso**: se guarda desde el paso **Almacén**.
+
+Con **Escribir en una clave** (desde 7.6.0), el paso **Acceso** pide el usuario y la contraseña, y **Guardar** los escribe en el almacén en la **Referencia**; AnsibleForms solo guarda el almacén y la referencia. Solo se ofrecen los almacenes que permiten escribir, y **Añadir almacén de secretos** crea uno con la escritura ya activada. Una clave que ya tiene un secreto solo se reemplaza si **Sobrescribir un secreto que ya esté allí** está marcado, ver [Escribir credenciales](../secret-stores/#writing-credentials).
 
 Una fila abre la página propia de la credencial. Su menú ofrece **Editar**, **Probar conexión** (solo credenciales de base de datos) y **Eliminar**. La
 contraseña se cambia en la página de la credencial, en su pestaña **Acceso**.

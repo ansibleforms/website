@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Magatzems de secrets
 {: .no_toc }
 
-Llegeix les credencials d'un gestor de secrets en lloc de desar-les a AnsibleForms
+Llegir i escriure credencials en un gestor de secrets en lloc d'a AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Llegeix les credencials d'un gestor de secrets en lloc de desar-les a AnsibleFor
 
 ---
 
-Per a administradors: connecta un gestor de secrets, i deixa que les credencials en llegeixin l'usuari i la contrasenya.
+Per als administradors: connectar un gestor de secrets, perquè les credencials en llegeixin l'usuari i la contrasenya o els hi escriguin.
 
 ---
 
@@ -41,6 +41,8 @@ res als teus formularis.
 | HashiCorp Vault (KV v1 i v2, autenticació per token) | disponible |
 | Credencials dinàmiques d'HashiCorp Vault (`<mount>/creds/<role>`) | experimental |
 | CyberArk Central Credential Provider (CCP) | experimental |
+| Escriptura de credencials a HashiCorp Vault KV | disponible |
+| Escriptura de credencials a CyberArk, a través del seu PVWA | experimental |
 
 ---
 
@@ -75,8 +77,8 @@ Cada gestor de secrets té la seva pròpia pàgina:
 
 ### En una credencial
 
-A **Connexions > Credencials**, al pas **Magatzem** de la credencial, tria **Magatzem de secrets**, després tria el
-**Magatzem de secrets** i omple la **Referència**. L'usuari i la contrasenya es llegeixen llavors del magatzem, no s'escriuen.
+A **Connexions > Credencials**, al pas **Magatzem** de la credencial, tria **Magatzem de secrets** i **Apunta a una clau**, després
+tria el **Magatzem de secrets** i omple la **Referència**. L'usuari i la contrasenya es llegeixen llavors del magatzem, no s'escriuen.
 
 ### En línia, sense fila de credencial
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Escriure credencials
+
+Des de 7.6.0, l'usuari i la contrasenya d'una credencial es poden escriure en un magatzem en desar-la, sense haver-los de posar-hi abans.
+
+Al pas **Magatzem** de la credencial, tria **Magatzem de secrets** i **Escriu a una clau**, tria el magatzem i omple la **Referència**.
+El pas **Accés** demana llavors l'usuari i la contrasenya, i **Desa** els escriu al magatzem; AnsibleForms només en conserva el magatzem i la referència.
+
+- Només s'ofereix un magatzem amb **Permet l'escriptura** activat a les seves **Opcions**, i només escriu on les seves opcions ho permeten.
+- Una clau que ja té un secret només es reemplaça si **Sobreescriu un secret que ja hi sigui** està marcat; si no, no s'escriu ni es desa res.
+- Només un admin pot escriure, i cada escriptura s'audita com a `credential.secret_write`, sense el secret.
+
+Com es configura cada gestor de secrets per escriure:
+
+| Pàgina | Què hi trobaràs |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Un prefix d'escriptura, i les capacitats del testimoni |
+| [CyberArk](cyberark.html#writing-credentials) | Les caixes fortes, i el PVWA amb la seva credencial i plataforma |
+
+---
+
 ## A la llavor de configuració
 
 Els magatzems també es poden declarar a la llavor de configuració, com els altres objectes d'administració:
@@ -161,7 +183,8 @@ credentials:
 
 El magatzem inicia sessió amb la seva credencial: una de `vault` conté l'adreça del Vault a `url` i el token com a contrasenya, una de `cyberark`
 l'AppID i l'adreça del CCP. Sense credencial, es fan servir l'`url` i el `token` propis del magatzem.
-Per als detalls, vegeu [Llavor de configuració](../seed).
+Un magatzem que permet escriure defineix `write_enabled: true` i `write_prefix` (a CyberArk, les seves caixes fortes), i un CyberArk també `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` i `platform_id`. Per als detalls, vegeu [Llavor de configuració](../seed).
 
 ---
 

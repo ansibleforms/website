@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: シークレットストア
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-HashiCorp Vault の KV v1、v2、または動的シークレットエンジンから認証情報を読み込みます
+HashiCorp Vault KV で認証情報を読み書きし、動的シークレットを読み取ります
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ HashiCorp Vault の KV v1、v2、または動的シークレットエンジン�
 
 シークレットの参照はパスで、たとえば `secret/myapp/prod` です。KV v2 では、 `/data/` の部分を省くと
 自動的に挿入されます。
+
+---
+
+## 認証情報の書き込み
+
+7.6.0 以降、認証情報のユーザーとパスワードを **保存** 時に Vault へ書き込めます（[認証情報の書き込み](./#writing-credentials) を参照）。
+
+ストアの **オプション** で **書き込みを許可** をオンにし、書き込み先を指定します。
+
+| フィールド | 意味 |
+|---|---|
+| 書き込みを許可 | **保存** 時に認証情報がユーザーとパスワードをこのストアへ書き込めるようにします。既定ではオフです。 |
+| 書き込みプレフィックス | 認証情報を書き込むパス、またはその配下、例 `secret/ansibleforms`。マウントだけ（例 `secret`）ならマウント全体を許可します。書き込みがオンのとき必須です。 |
+
+シークレットは `username` と `password` として、ストアの **KV バージョン** に従い KV v2 または v1 に書き込まれます。トークンにはプレフィックス配下で
+read、create、update の権限が必要です。read はすでにシークレットがあるかを確認します。KV v2 でプレフィックスが `secret/ansibleforms` の場合：
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+動的シークレットエンジンのパス（例 `database/creds/readonly`）には書き込みません。これらの認証情報は Vault 自身が作成します。
 
 ---
 

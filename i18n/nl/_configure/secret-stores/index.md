@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Secret stores
 {: .no_toc }
 
-Lees referenties uit een secret manager in plaats van ze in AnsibleForms op te slaan
+Referenties lezen en schrijven in een geheimenbeheerder in plaats van in AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Lees referenties uit een secret manager in plaats van ze in AnsibleForms op te s
 
 ---
 
-Voor beheerders: koppel een secret manager, en laat referenties hun gebruiker en wachtwoord daaruit lezen.
+Voor beheerders: koppel een geheimenbeheerder, zodat referenties er hun gebruiker en wachtwoord uit lezen of erin schrijven.
 
 ---
 
@@ -41,6 +41,8 @@ niets aan je formulieren.
 | HashiCorp Vault (KV v1 en v2, tokenauthenticatie) | beschikbaar |
 | Dynamische referenties van HashiCorp Vault (`<mount>/creds/<role>`) | experimenteel |
 | CyberArk Central Credential Provider (CCP) | experimenteel |
+| Referenties schrijven naar HashiCorp Vault KV | beschikbaar |
+| Referenties schrijven naar CyberArk, via de PVWA | experimenteel |
 
 ---
 
@@ -75,8 +77,8 @@ Elke secret manager heeft een eigen pagina:
 
 ### In een referentie
 
-Kies onder **Verbindingen > Inloggegevens**, in de stap **Opslag** van de referentie, **Geheimenkluis**, kies dan de
-**Secret store** en vul de **Referentie** in. De gebruiker en het wachtwoord worden dan uit de store gelezen, niet ingetypt.
+Kies onder **Verbindingen > Inloggegevens**, in de stap **Opslag** van de referentie, **Geheimenkluis** en **Verwijzen naar een sleutel**, kies dan
+de **Geheimenkluis** en vul de **Referentie** in. Gebruiker en wachtwoord worden dan uit de kluis gelezen, niet getypt.
 
 ### Inline, zonder referentierij
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Referenties schrijven
+
+Vanaf 7.6.0 kunnen gebruiker en wachtwoord van een referentie bij het opslaan naar een kluis worden geschreven, zodat ze daar nooit eerst hoeven te staan.
+
+Kies in de stap **Opslag** van de referentie **Geheimenkluis** en **Schrijven naar een sleutel**, kies de kluis en vul de **Referentie** in.
+De stap **Aanmelding** vraagt dan gebruiker en wachtwoord, en **Opslaan** schrijft ze naar de kluis; AnsibleForms bewaart alleen de kluis en de referentie.
+
+- Alleen een kluis met **Schrijven toestaan** aan in haar **Opties** wordt aangeboden, en ze schrijft alleen waar haar opties dat toestaan.
+- Een sleutel waar al een geheim staat, wordt alleen vervangen als **Een bestaand geheim overschrijven** is aangevinkt; anders wordt niets geschreven of opgeslagen.
+- Alleen een admin kan schrijven, en elke schrijfactie wordt geaudit als `credential.secret_write`, zonder het geheim.
+
+Hoe elke geheimenbeheerder wordt ingericht om te schrijven:
+
+| Pagina | Wat er aan bod komt |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Een schrijfprefix, en de rechten van het token |
+| [CyberArk](cyberark.html#writing-credentials) | De kluizen, en de PVWA met haar referentie en platform |
+
+---
+
 ## In de configuratie-seed
 
 Stores kunnen ook in de configuratie-seed worden gedeclareerd, net als de andere beheerobjecten:
@@ -161,7 +183,8 @@ credentials:
 
 De store meldt zich aan met zijn referentie: een `vault`-referentie bevat het adres van de Vault in `url` en het token als wachtwoord, een `cyberark`-referentie
 de AppID en het CCP-adres. Zonder referentie worden de eigen `url` en `token` van de store gebruikt.
-Zie [Configuratie-seed](../seed) voor details.
+Een kluis die schrijven toestaat, zet `write_enabled: true` en `write_prefix` (bij CyberArk de kluizen), en een CyberArk ook `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` en `platform_id`. Zie [Configuratie-seed](../seed) voor details.
 
 ---
 

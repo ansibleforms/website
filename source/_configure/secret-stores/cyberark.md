@@ -8,7 +8,7 @@ nav_order: 2
 # CyberArk
 {: .no_toc }
 
-Read credentials from the CyberArk Central Credential Provider (CCP)
+Read credentials through the CyberArk CCP, write them through its PVWA
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -50,6 +50,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - An `AppID` in the reference is ignored: the store's AppID is always used.
 - The account's password (`Content`) becomes the password; `UserName`, `Address`, `Port` and
   `Database` fill user, host, port and database name.
+
+---
+
+## Writing credentials
+
+From 7.6.0 a credential's user and password can be written to CyberArk on **Save** (see [Writing credentials](./#writing-credentials)).
+The CCP only reads, so AnsibleForms writes through the PVWA REST API, logged on with a credential of its own.
+
+Switch on **Allow writing** in the store's **Options**, then fill in:
+
+| Field | Meaning |
+|---|---|
+| Allow writing | Lets a credential write its user and password to this store on **Save**. Off by default. |
+| Safes to write to | The safes credentials may be written to, comma separated, e.g. `Linux, DB`. Required with writing on. |
+| PVWA address | The PVWA's base URL, e.g. `https://pvwa.example.com`. Required. |
+| PVWA credential | A **User and password** or **API** credential of its own, never read from a secret store, that may add accounts to those safes and change their passwords. Required. |
+| Logon method | How the PVWA credential logs on: CyberArk (default), LDAP, RADIUS or Windows. |
+| Platform ID | The platform of the accounts it adds, e.g. `UnixSSH`. Needed to add a new account. |
+
+The reference names the account as for reading, `Safe=Linux;Object=srv01-root`, with `Address=srv01.example.com` when its platform needs one.
+
+- A new account is added to the safe with the platform, the user name and the password.
+- An existing account is changed only when **Overwrite a secret already there** is ticked: its user name, then its password.
+- The PVWA session is logged off after each write. Privilege Cloud's OAuth sign-in is not supported.
 
 ---
 

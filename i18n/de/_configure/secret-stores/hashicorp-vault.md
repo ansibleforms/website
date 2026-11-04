@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Secret Stores
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Anmeldedaten aus HashiCorp Vault lesen, aus KV v1 oder v2 oder einer Engine für dynamische Secrets
+Anmeldedaten in HashiCorp Vault KV lesen und schreiben, dynamische Secrets lesen
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ Zusätzlich zu den [Feldern, die jeder Store hat](./#adding-a-store), hat ein Ha
 
 Die Secret-Referenz ist der Pfad, z. B. `secret/myapp/prod`. Bei KV v2 wird das Segment `/data/`
 eingefügt, wenn Sie es weglassen.
+
+---
+
+## Anmeldedaten schreiben
+
+Ab 7.6.0 können Benutzer und Passwort von Anmeldedaten beim **Speichern** in den Vault geschrieben werden (siehe [Anmeldedaten schreiben](./#writing-credentials)).
+
+Schalten Sie **Schreiben erlauben** in den **Optionen** des Stores ein, und legen Sie fest, wohin er schreiben darf:
+
+| Feld | Bedeutung |
+|---|---|
+| Schreiben erlauben | Erlaubt Anmeldedaten, beim **Speichern** Benutzer und Passwort in diesen Store zu schreiben. Standardmäßig aus. |
+| Schreibpräfix | Der Pfad, an oder unter dem Anmeldedaten geschrieben werden, z. B. `secret/ansibleforms`. Ein Mount allein, z. B. `secret`, erlaubt den ganzen Mount. Bei eingeschaltetem Schreiben erforderlich. |
+
+Das Secret wird als `username` und `password` geschrieben, in KV v2 oder v1, wie die **KV-Version** des Stores es angibt. Das Token braucht die
+Fähigkeiten read, create und update unterhalb des Präfixes; read prüft, ob dort schon ein Secret liegt. Für KV v2 und das Präfix `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+Der Pfad einer Engine für dynamische Secrets, z. B. `database/creds/readonly`, wird nie beschrieben: Vault erzeugt diese Anmeldedaten selbst.
 
 ---
 

@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: 密钥库
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-从 CyberArk Central Credential Provider（CCP）读取凭据
+通过 CyberArk CCP 读取凭据，通过其 PVWA 写入
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -50,6 +50,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - 引用中的 `AppID` 会被忽略：始终使用密钥库的 AppID。
 - 账户的密码（`Content`）成为密码；`UserName`、`Address`、`Port` 和
   `Database` 分别填入用户、主机、端口和数据库名称。
+
+---
+
+## 写入凭据
+
+从 7.6.0 起，凭据的用户和密码可在 **保存** 时写入 CyberArk（参见 [写入凭据](./#writing-credentials)）。
+CCP 只能读取，因此 AnsibleForms 使用自己的凭据登录，通过 PVWA REST API 写入。
+
+在存储的 **选项** 中开启 **允许写入**，然后填写：
+
+| 字段 | 含义 |
+|---|---|
+| 允许写入 | 允许凭据在 **保存** 时将其用户和密码写入此存储。默认关闭。 |
+| 写入的保险箱 | 可写入凭据的保险箱，以逗号分隔，例如 `Linux, DB`。开启写入时必填。 |
+| PVWA 地址 | PVWA 的基础 URL，例如 `https://pvwa.example.com`。必填。 |
+| PVWA 凭据 | 一个专用的 **用户和密码** 或 **API** 凭据，从不从密钥库读取，可在这些保险箱中添加账户并更改其密码。必填。 |
+| 登录方式 | PVWA 凭据的登录方式：CyberArk（默认）、LDAP、RADIUS 或 Windows。 |
+| 平台 ID | 所添加账户的平台，例如 `UnixSSH`。添加新账户时需要。 |
+
+引用与读取时一样指定账户，`Safe=Linux;Object=srv01-root`，平台需要时加上 `Address=srv01.example.com`。
+
+- 新账户会以平台、用户名和密码添加到保险箱。
+- 现有账户只有在勾选 **覆盖已存在的密钥** 时才会更改：先改用户名，再改密码。
+- 每次写入后都会注销 PVWA 会话。不支持 Privilege Cloud 的 OAuth 登录。
 
 ---
 

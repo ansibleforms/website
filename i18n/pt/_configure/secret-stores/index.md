@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Cofres de segredos
 {: .no_toc }
 
-Leia as credenciais de um gestor de segredos em vez de as guardar no AnsibleForms
+Ler e escrever credenciais num gestor de segredos em vez de no AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Leia as credenciais de um gestor de segredos em vez de as guardar no AnsibleForm
 
 ---
 
-Para administradores: ligue um gestor de segredos, e deixe as credenciais ler dele o seu utilizador e a sua palavra-passe.
+Para administradores: ligar um gestor de segredos, para que as credenciais leiam dele o utilizador e a palavra-passe ou os escrevam nele.
 
 ---
 
@@ -41,6 +41,8 @@ nada nos seus formulários.
 | HashiCorp Vault (KV v1 e v2, autenticação por token) | disponível |
 | Credenciais dinâmicas do HashiCorp Vault (`<mount>/creds/<role>`) | experimental |
 | CyberArk Central Credential Provider (CCP) | experimental |
+| Escrita de credenciais no HashiCorp Vault KV | disponível |
+| Escrita de credenciais no CyberArk, através do seu PVWA | experimental |
 
 ---
 
@@ -75,8 +77,8 @@ Cada gestor de segredos tem uma página própria:
 
 ### Numa credencial
 
-Em **Ligações > Credenciais**, no passo **Armazenamento** da credencial, escolha **Cofre de segredos**, depois escolha o
-**Cofre de segredos** e preencha a **Referência**. O utilizador e a palavra-passe passam então a ser lidos do cofre, não escritos.
+Em **Ligações > Credenciais**, no passo **Armazenamento** da credencial, escolha **Cofre de segredos** e **Apontar para uma chave**, depois
+escolha o **Cofre de segredos** e preencha a **Referência**. O utilizador e a palavra-passe são então lidos do cofre, não escritos.
 
 ### Diretamente, sem linha de credencial
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Escrever credenciais
+
+Desde 7.6.0, o utilizador e a palavra-passe de uma credencial podem ser escritos num cofre ao guardá-la, sem terem de lá ser postos antes.
+
+No passo **Armazenamento** da credencial, escolha **Cofre de segredos** e **Escrever numa chave**, escolha o cofre e preencha a **Referência**.
+O passo **Acesso** pede então o utilizador e a palavra-passe, e **Guardar** escreve-os no cofre; o AnsibleForms guarda apenas o cofre e a referência.
+
+- Só é oferecido um cofre com **Permitir escrita** ligado nas suas **Opções**, e só escreve onde as suas opções o permitem.
+- Uma chave que já tem um segredo só é substituída se **Substituir um segredo que já lá esteja** estiver marcado; caso contrário nada é escrito nem guardado.
+- Só um admin pode escrever, e cada escrita é auditada como `credential.secret_write`, sem o segredo.
+
+Como se configura cada gestor de segredos para escrever:
+
+| Página | O que abrange |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Um prefixo de escrita, e as capacidades do token |
+| [CyberArk](cyberark.html#writing-credentials) | Os cofres, e o PVWA com a sua credencial e plataforma |
+
+---
+
 ## No config seed
 
 Os cofres também podem ser declarados no config seed, como os outros objetos de administração:
@@ -161,7 +183,8 @@ credentials:
 
 O cofre inicia sessão com a sua credencial: uma `vault` contém o endereço do Vault em `url` e o token como palavra-passe, uma `cyberark`
 o AppID e o endereço do CCP. Sem credencial, são usados o `url` e o `token` próprios do cofre.
-Para mais detalhes, consulte [Config seed](../seed).
+Um cofre que permite escrita define `write_enabled: true` e `write_prefix` (no CyberArk, os seus cofres), e um CyberArk também `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` e `platform_id`. Para mais detalhes, consulte [Config seed](../seed).
 
 ---
 

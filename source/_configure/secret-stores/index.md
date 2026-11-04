@@ -10,7 +10,7 @@ permalink: /secret-stores/
 # Secret stores
 {: .no_toc }
 
-Read credentials from a secret manager instead of storing them in AnsibleForms
+Read and write credentials in a secret manager instead of in AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -18,7 +18,7 @@ Read credentials from a secret manager instead of storing them in AnsibleForms
 
 ---
 
-For administrators: connect a secret manager, and let credentials read their user and password from it.
+For administrators: connect a secret manager, and let credentials read their user and password from it or write them to it.
 
 ---
 
@@ -40,6 +40,8 @@ nothing in your forms.
 | HashiCorp Vault (KV v1 and v2, token authentication) | available |
 | HashiCorp Vault dynamic credentials (`<mount>/creds/<role>`) | experimental |
 | CyberArk Central Credential Provider (CCP) | experimental |
+| Writing credentials to HashiCorp Vault KV | available |
+| Writing credentials to CyberArk, through its PVWA | experimental |
 
 ---
 
@@ -74,8 +76,8 @@ Each secret manager has a page of its own:
 
 ### In a credential
 
-Under **Connections > Credentials**, on the credential's **Store** step, choose **Secret store**, then pick the
-**Secret store** and fill in the **Reference**. The user and password are then read from the store, not typed in.
+Under **Connections > Credentials**, on the credential's **Store** step, choose **Secret store** and **Point to a key**, then pick
+the **Secret store** and fill in the **Reference**. The user and password are then read from the store, not typed in.
 
 ### Inline, without a credential row
 
@@ -132,6 +134,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Writing credentials
+
+From 7.6.0 a credential's user and password can be written to a store when the credential is saved, so they never have to be put there first.
+
+On the credential's **Store** step, choose **Secret store** and **Write to a key**, pick the store and fill in the **Reference**. The
+**Login** step then asks the user and password, and **Save** writes them to the store; AnsibleForms keeps only the store and the reference.
+
+- Only a store with **Allow writing** switched on in its **Options** is offered, and it writes only where its options allow.
+- A key that already holds a secret is replaced only when **Overwrite a secret already there** is ticked; otherwise nothing is written or saved.
+- Only an admin can write, and each write is audited as `credential.secret_write`, without the secret.
+
+How each secret manager is set up for writing:
+
+| Page | What it covers |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | A write prefix, and the token's capabilities |
+| [CyberArk](cyberark.html#writing-credentials) | The safes, and the PVWA with its credential and platform |
+
+---
+
 ## In the config seed
 
 Stores can also be declared in the config seed, like the other admin objects:
@@ -160,7 +182,8 @@ credentials:
 
 The store logs in with its credential: a `vault` one holds the Vault's address in `url` and the token as its password, a `cyberark`
 one the AppID and the CCP address. Without a credential, the store's own `url` and `token` are used.
-For details, see [Config seed](../seed).
+A store that allows writing sets `write_enabled: true` and `write_prefix` (a CyberArk its safes), and a CyberArk also `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` and `platform_id`. For details, see [Config seed](../seed).
 
 ---
 
