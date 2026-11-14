@@ -91,11 +91,12 @@ elke instelling met een (i) die zegt wat ze geeft, dezelfde tekst die de weergav
 | `allowScheduledJobs` | Terugkerende en eenmalige planningen aan te maken en te beheren, op de pagina **Planner** (zie de waarschuwing hieronder) | Alleen admins |
 | `allowPlannedJobs` | Een job te plannen om eenmaal op een vast tijdstip te draaien (**Later uitvoeren**) | Aan |
 | `allowStoredJobs` | De gegevens van een formulier op te slaan en later weer te laden | Aan |
+| `allowFileUploads` | Bestanden te uploaden via de bestandsvelden van een formulier (vanaf 7.3.0) | Aan |
 | **Toegang en integraties** | | |
+| `admin` | Beheerder te zijn, zoals de leden van de rol `admin`: elk formulier, de designer, de instellingen en de gebruikers (vanaf 7.6.0) | Uit; altijd aan voor `admin`, nooit voor `default` |
 | `allowLogin` | Zich aan te melden bij AnsibleForms | Aan |
 | `allowChat` | De [chat-assistent](../chat/) te gebruiken, als die is ingeschakeld | Aan |
 | `allowMcp` | De [MCP-server](../mcp/) vanuit een AI-agent te gebruiken, als die is ingeschakeld | De `allowChat` van de rol |
-| `allowFileUploads` | Bestanden te uploaden via de bestandsvelden van een formulier (vanaf 7.3.0) | Aan |
 | `allowApiTokens` | [API-tokens](../profile/api-token.html) voor scripts te maken, tot de langste levensduur die de instantie toestaat (vanaf 7.3.0) | Uit |
 | `extendedTokenExpiration` | Ook API-tokens te maken die nooit verlopen; vereist `allowApiTokens` | Uit |
 
@@ -110,6 +111,8 @@ Een rol van vóór 7.3.0 met `extendedTokenExpiration` en zonder `allowApiTokens
 
 `designAllForms`, `designAllPlaybooks` en `designAllWorkflows` staan altijd aan voor admins, en wat de designer een gebruiker zonder
 deze instellingen toont, staat in [Beperkte ontwerpers](../designer/#limited-designers).
+
+`admin` maakt de gebruikers van een rol beheerder, hoe de rol ook heet, zodat een team zijn eigen naamgeving houdt (`platformAdmins`, `infra_admins`): ze krijgen bij het aanmelden de rol `admin`, met de standaardwaarden ervan. Alleen een beheerder zet het aan voor een rol met leden, of voegt leden toe aan zo'n rol, en het opslaan van rollen waardoor de beheerder die opslaat geen beheerder meer zou zijn, wordt geweigerd.
 
 **Alleen admins** betekent aan voor gebruikers met de rol `admin`, en uit voor alle anderen. Als een gebruiker met meerdere rollen overeenkomt,
 worden de instellingen als volgt gecombineerd:

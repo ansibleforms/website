@@ -91,11 +91,12 @@ config.yaml の最上位の `roles` リスト：
 | `allowScheduledJobs` | **スケジュール** ページで、繰り返しと一回限りのスケジュールを作成、管理（下の警告を参照） | 管理者のみ |
 | `allowPlannedJobs` | 決まった時刻に一度だけ実行するようジョブを計画（ **後で実行** ） | オン |
 | `allowStoredJobs` | フォームのデータを保存し、後で再び読み込む | オン |
+| `allowFileUploads` | フォームのファイルフィールドからファイルをアップロード（7.3.0 から） | オン |
 | **アクセスと連携** | | |
+| `admin` | `admin` ロールのメンバーと同じく管理者になる: すべてのフォーム、デザイナー、設定、ユーザー（7.6.0 から） | オフ。`admin` では常にオン、`default` では使えない |
 | `allowLogin` | AnsibleForms にサインイン | オン |
 | `allowChat` | 有効な場合に [チャットアシスタント](../chat/) を使用 | オン |
 | `allowMcp` | 有効な場合に AI エージェントから [MCP サーバー](../mcp/) を使用 | ロールの `allowChat` |
-| `allowFileUploads` | フォームのファイルフィールドからファイルをアップロード（7.3.0 から） | オン |
 | `allowApiTokens` | インスタンスが許す最長の有効期間まで、スクリプト用の [API トークン](../profile/api-token.html) を作成（7.3.0 から） | オフ |
 | `extendedTokenExpiration` | 期限切れにならない API トークンも作成。 `allowApiTokens` が必要です | オフ |
 
@@ -110,6 +111,8 @@ config.yaml の最上位の `roles` リスト：
 
 `designAllForms`、 `designAllPlaybooks`、 `designAllWorkflows` は管理者には常にオンです。これらがないユーザーにデザイナーが何を表示するかは
 [制限付きのデザイナー利用者](../designer/#limited-designers) で説明しています。
+
+`admin` は、ロールの名前に関係なくそのユーザーを管理者にするので、チームは独自の命名（`platformAdmins` 、 `infra_admins`）を保てます。ユーザーはサインイン時に `admin` ロールとその既定値を得ます。メンバーのいるロールでこれをオンにすること、またそのようなロールにメンバーを追加することは管理者だけができます。保存する管理者から管理者権限を奪うロールの保存は拒否されます。
 
 **管理者のみ** は、 `admin` ロールを持つユーザーにはオン、それ以外の全員にはオフという意味です。ユーザーが複数のロールに一致する場合、
 オプションは次のように組み合わされます。
