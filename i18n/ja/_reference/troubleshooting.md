@@ -686,7 +686,7 @@ The form data is not valid
 `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>` で拒否されます。
 
 7.6.0 からは、フォームのメッセージはフィールドをそのラベルで示します。入力が必要なものと、値をまだ読み込み中のものです。
-*The form data is not valid. Fill in: Owner. Still loading: Disks.*
+*フォームのデータが無効です。入力が必要: Owner。読み込み中: Disks。*
 
 **解決方法**
 

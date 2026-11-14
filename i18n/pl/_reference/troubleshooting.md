@@ -687,7 +687,7 @@ je pod `details`. Uruchomienie bez `rawFormData` również jest odrzucane. Formu
 jest odrzucany komunikatem `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
 Od wersji 7.6.0 komunikat formularza wymienia pola po ich etykietach: te do wypełnienia i te, których wartości wciąż się wczytują:
-*The form data is not valid. Fill in: Owner. Still loading: Disks.*
+*Dane formularza są nieprawidłowe. Do wypełnienia: Owner. Nadal wczytywane: Disks.*
 
 **Jak to naprawić**
 

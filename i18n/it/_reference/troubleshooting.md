@@ -687,7 +687,7 @@ sotto `details`. Anche un avvio senza `rawFormData` viene rifiutato. Un modulo c
 viene rifiutato con `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
 Dalla 7.6.0 il messaggio del modulo indica i campi con le loro etichette, quelli da compilare e quelli i cui valori si stanno ancora
-caricando: *The form data is not valid. Fill in: Owner. Still loading: Disks.*
+caricando: *I dati del modulo non sono validi. Da compilare: Owner. Ancora in caricamento: Disks.*
 
 **Come risolverlo**
 

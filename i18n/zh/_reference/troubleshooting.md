@@ -686,7 +686,7 @@ The form data is not valid
 会被拒绝并显示 `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`。
 
 从 7.6.0 起，表单的消息会按标签列出字段，包括需要填写的字段和值仍在加载的字段：
-*The form data is not valid. Fill in: Owner. Still loading: Disks.*
+*表单数据无效。请填写：Owner。仍在加载：Disks。*
 
 **解决方法**
 

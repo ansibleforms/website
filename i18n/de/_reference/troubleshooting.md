@@ -687,7 +687,7 @@ sie unter `details` auf. Ein Start ohne `rawFormData` wird ebenfalls abgelehnt. 
 wird mit `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>` abgelehnt.
 
 Ab 7.6.0 nennt die Meldung des Formulars die Felder bei ihren Beschriftungen, die auszufüllenden und die, deren Werte noch laden:
-*The form data is not valid. Fill in: Owner. Still loading: Disks.*
+*Die Formulardaten sind ungültig. Ausfüllen: Owner. Wird noch geladen: Disks.*
 
 **Wie Sie es beheben**
 

@@ -687,7 +687,7 @@ bajo `details`. Un lanzamiento sin `rawFormData` también se rechaza. Un formula
 se rechaza con `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
 Desde la 7.6.0 el mensaje del formulario nombra los campos por sus etiquetas, los que hay que rellenar y aquellos cuyos valores aún se cargan:
-*The form data is not valid. Fill in: Owner. Still loading: Disks.*
+*Los datos del formulario no son válidos. Por rellenar: Owner. Todavía cargando: Disks.*
 
 **Cómo corregirlo**
 

@@ -687,7 +687,7 @@ ze op onder `details`. Een start zonder `rawFormData` wordt ook geweigerd. Een f
 wordt geweigerd met `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
 Vanaf 7.6.0 noemt de melding van het formulier de velden bij hun labels, de velden die je moet invullen en die waarvan de waarden nog laden:
-*The form data is not valid. Invullen: Owner. Nog aan het laden: Disks.*
+*De formuliergegevens zijn niet geldig. Invullen: Owner. Nog aan het laden: Disks.*
 
 **Hoe je het oplost**
 

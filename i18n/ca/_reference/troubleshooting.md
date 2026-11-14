@@ -687,7 +687,7 @@ a `details`. També es rebutja un llançament sense `rawFormData`. Un formulari 
 es rebutja amb `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
 Des de la 7.6.0 el missatge del formulari nomena els camps per les seves etiquetes, els que cal emplenar i aquells els valors dels quals
-encara s'estan carregant: *The form data is not valid. Fill in: Owner. Still loading: Disks.*
+encara s'estan carregant: *Les dades del formulari no són vàlides. Per omplir: Owner. Encara carregant: Disks.*
 
 **Com corregir-ho**
 

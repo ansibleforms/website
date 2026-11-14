@@ -687,7 +687,7 @@ em `details`. Um lançamento sem `rawFormData` também é recusado. Um formulár
 é recusado com `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
 A partir da 7.6.0, a mensagem do formulário indica os campos pelas suas etiquetas, os que faltam preencher e aqueles cujos valores ainda
-estão a carregar: *The form data is not valid. Fill in: Owner. Still loading: Disks.*
+estão a carregar: *Os dados do formulário não são válidos. Por preencher: Owner. Ainda a carregar: Disks.*
 
 **Como corrigir**
 
