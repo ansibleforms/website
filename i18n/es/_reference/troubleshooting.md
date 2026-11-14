@@ -2,7 +2,7 @@
 layout: default
 title: Resolución de problemas
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Resolución de problemas
@@ -685,6 +685,9 @@ The form data is not valid
 El servidor comprobó los valores de los campos frente a las reglas del formulario y encontró campos que faltan o no son válidos; la respuesta los lista
 bajo `details`. Un lanzamiento sin `rawFormData` también se rechaza. Un formulario que aún no se puede comprobar, como un wizard,
 se rechaza con `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
+
+Desde la 7.6.0 el mensaje del formulario nombra los campos por sus etiquetas, los que hay que rellenar y aquellos cuyos valores aún se cargan:
+*Los datos del formulario no son válidos. Por rellenar: Owner. Todavía cargando: Disks.*
 
 **Cómo corregirlo**
 

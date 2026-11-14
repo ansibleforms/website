@@ -3,7 +3,7 @@ layout: default
 title: Images
 parent: RTE
 nav_order: 1
-translated_from: cb917c5cb9cbca9d530398171265e91f1ba8e94b
+translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
 ---
 
 # RTE-images
@@ -28,6 +28,10 @@ De RTE wordt in drie lagen gepubliceerd, elk gebouwd op de vorige, met dezelfde 
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | De core, plus het pakket `ansible` op dezelfde ansible-core, en wat de image van AnsibleForms 6.5 had: de collecties van NetApp, AWS en community, `pandas`, `pyvmomi`, `boto3`, de mariadb-client, ytt en een paar os-tools | **De standaard.** Draai haar zoals ze is: playbooks van 6.5 vinden wat ze gebruikten |
 
 Net als de app-image draait elke laag als de gebruiker `node` (uid 1000), en de playbooks draaien ook als die gebruiker.
+
+Vanaf 7.6.0 wordt elke laag onder dezelfde tag gepubliceerd voor `linux/amd64` en `linux/arm64`. Een RTE die je zelf bouwt, is gebouwd voor de
+architectuur van de machine die hem bouwt: voor arm64-hosts bouw je hem dus op zo'n arm64-host zelf, of op een andere machine
+met `docker buildx build --platform linux/arm64`.
 
 ---
 

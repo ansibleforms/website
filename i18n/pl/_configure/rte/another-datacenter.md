@@ -3,7 +3,7 @@ layout: default
 title: Inne centrum danych
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # RTE w innym centrum danych
@@ -77,7 +77,7 @@ RTE to kontener, więc host potrzebuje silnika kontenerów i niczego więcej: No
 
 | Potrzeba | Dlaczego |
 |---|---|
-| Linux na **x86_64** (amd64) | Obrazy RTE są publikowane tylko dla amd64 |
+| Linux na **x86_64** (amd64) lub **aarch64** (arm64) | Obrazy RTE są publikowane dla obu od wersji 7.6.0, wcześniej tylko dla amd64 |
 | 2 CPU i 4 GB pamięci lub więcej | Jedno RTE uruchamia naraz do [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooków (10), każdy z jego forkami: dobierz rozmiar pod nie |
 | 20 GB wolnego miejsca na dysku | Obraz `-rte-full` ma około 3,3 GB, do tego obraz w trakcie aktualizacji, pliki zadań wysyłane przez aplikację i pliki tymczasowe zadań |
 | Docker lub Podman z podman-compose | Do pobrania i uruchomienia obrazu |

@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Campi del modulo
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Campo List
@@ -27,6 +27,7 @@ Il campo list offre le seguenti funzionalità:
 - Le proprietà marker (`insertMarker`, `updateMarker`, `deleteMarker`) supportano schemi di playbook idempotenti.
 - Con `allowDelete: false`, le righe preesistenti sono protette; si possono eliminare solo le righe aggiunte nella sessione corrente (quelle con l'`insertMarker`).
 - La proprietà `columns` stabilisce quali campi del sottomodulo compaiono come colonne nella tabella riepilogativa.
+- Dalla 7.6.0, `readonlyColumns` mantiene in sola lettura i campi scelti del sottomodulo sulle righe esistenti, mentre le nuove righe li compilano.
 - L'output è sempre un array di oggetti. `model`, `output`, `outputObject` e `valueColumn` dichiarati sui campi del sottomodulo vengono rispettati quando si generano le extravars.
 
 ---
@@ -228,6 +229,24 @@ Le righe precaricate sono protette, e i marker indicano al playbook quali righe 
     - name
     - email
 ```
+
+### Colonne in sola lettura sulle righe esistenti
+
+Dalla 7.6.0 una lista indica con `readonlyColumns` i campi del sottomodulo che le righe che contiene già mantengono come sono:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Modificando una riga esistente quei campi compaiono con un lucchetto, disattivati, e la riga mantiene i loro valori; una nuova riga li
+compila come qualsiasi altro campo, e la validazione si applica comunque. La proprietà sta sulla lista, non sul sottomodulo, così un
+sottomodulo può essere in sola lettura in una lista e modificabile in un'altra. Sostituisce le `readonlyColumns` del vecchio campo `table`.
 
 ### Precompilare le righe
 

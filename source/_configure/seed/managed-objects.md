@@ -23,7 +23,7 @@ How the seed owns the objects it lists, and how it keeps secrets out
 A seed that omits a field refuses to start and names it:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Declare an empty value explicitly with `""` or `false`. A few fields are optional, and one that is omitted is left unchanged:
@@ -32,9 +32,9 @@ Declare an empty value explicitly with `""` or `false`. A few fields are optiona
 |---|---|
 | `ldap` | `description`, `credential` (a credential to bind with) and `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` and `extra_headers` |
-| `settings` | None |
+| `settings` | The `mail_*` keys, deprecated since 7.6.0 (see [Example](example.html)) |
 
-`settings` covers only the mail fields and the URL; all other settings stay editable.
+`settings` covers only the URL, and the deprecated mail keys; all other settings stay editable.
 
 ---
 

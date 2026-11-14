@@ -63,7 +63,7 @@ schedule**), and AnsibleForms starts the clone in the background as soon as you 
 |---|---|---|
 | **Name** | yes | The folder name under `REPO_PATH`; letters, digits, dash, underscore and dot |
 | **Branch** | yes | The branch to clone, pull and push, for example `main`; required from 7.3.0. Only a repository of the config seed may leave it out, to clone the remote's default branch |
-| **Credential** | no | A credential of [Connections > Credentials](../credentials.html) with the user and the password or token git uses; **Add credential** creates one |
+| **Credential** | no | A credential of [Connections > Credentials](../credentials.html) with the password or token git uses, its user optional; **Add credential** creates one |
 | **Uri** | yes | The remote, `https://...` or SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Enable scheduled pull** | no | Pull the repository on a schedule |
 | **Pull schedule** | no | When to pull, as a cron expression; shown once the scheduled pull is enabled |

@@ -22,15 +22,15 @@ The type says what a credential is for. It decides which fields the dialog asks 
 
 | Type | What it holds | Used by |
 |---|---|---|
-| User and password | A user and password for any login: a REST API with basic auth, a service and more. The default | Playbooks, through a form's `credentials` or a credential field; [REST expressions](../expressions/credentials.html) |
-| SSH | A user and password for SSH to a server, with its host and port | Playbooks, through a form's `credentials`, `ansibleCredentials` or a credential field, and a workflow node's login |
-| Git | A user and password or token for git repositories | [Repositories](../repositories/authentication.html) |
-| API | A user and password or token for a REST API | [REST expressions](../expressions/credentials.html), a Telegram bot token, a webhook's bearer token, the chat assistant's API key |
+| User and password | A user and password for any login: a REST API with basic auth, a service and more, with an optional host and port. The default | Playbooks, through a form's `credentials` or a credential field; [REST expressions](../expressions/credentials.html) |
+| SSH | A user with a password or a private key for SSH to a server, with its host and port | Playbooks, through a form's `credentials`, `ansibleCredentials` or a credential field, and a workflow node's login |
+| Git | A token, or a user and password, for git repositories | [Repositories](../repositories/authentication.html) |
+| API | A user and password or token for a REST API, with an optional host and port | [REST expressions](../expressions/credentials.html), a Telegram bot token, a webhook's bearer token, the chat assistant's API key |
 | Database | A database login, with its type, host, port and database name | A [database](../databases.html) that forms query (`dbConfig`), from 7.5.0, or a form's `dbConfig` directly; `fnCredentials`; it can be tested |
 | CyberArk | The address of the CyberArk Central Credential Provider (CCP) and its TLS, and the AppID, client certificate and key a CyberArk store logs in with | A [CyberArk](../secret-stores/cyberark.html) secret store |
-| SMTP | A mail server, its port and TLS, and its login (none for a relay) | A mail [notification channel](../notification-channels.html) |
+| SMTP | A mail server, its port and TLS, and its optional login (none for a relay) | A mail [notification channel](../notification-channels.html) |
 | LDAP | A directory's servers, port, TLS and certificates, and its bind DN and password | An [LDAP directory](../authentication/ldap.html) |
-| Microsoft Entra ID | The app registration of a provider: its tenant ID, client ID, client secret and redirect URI | An [Entra ID provider](../authentication/entra-id.html) |
+| Microsoft Entra ID | An app registration: its tenant ID, client ID, client secret or certificate, and redirect URI | An [Entra ID provider](../authentication/entra-id.html); a mail channel sending through [Microsoft 365](../notification-channels/microsoft-365.html) |
 | Open ID | The client of a provider: its issuer, client ID, client secret and redirect URI | An [OIDC provider](../authentication/oidc.html) |
 | RTE | The token (`RTE_TOKEN`) and address of an RTE | An RTE [runner](../runners.html) |
 | AWX, AAP, Ascender | The token or login, and the address, of that platform | A runner of that type |
@@ -45,6 +45,27 @@ In the API and the [config seed](../seed/), the types are `userpass`, `ssh`, `gi
 `ldap`, `entraid`, `oidc`, `rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck`, `jenkins` and `vault`. The upgrade from 6
 gives every credential the type `userpass`, or `database` for a database one: a form uses it as in 6. Change it to SSH for a
 login a workflow node's playbook connects with, or to API for a REST API.
+
+---
+
+## How a credential signs in
+
+From 7.6.0 the **Login** step of these types first asks how the credential signs in, then shows only the fields that choice needs:
+
+| Type | Choice | Fields |
+|---|---|---|
+| SSH | **Log in with**: **Password** or **Private key** | Password: the user and its password. Private key: the user, the PEM or OpenSSH **Private key** and an optional **Passphrase** |
+| AWX, AAP, Ascender | **Sign in with**: **Token** or **Password** | Token: the **Token**, no user. Password: the user and its password |
+| Git | **Sign in with**: **Token** or **Password** | Token: the **Token**, no user (git then sends the user `oauth2`). Password: the user and its password |
+| SMTP | **Sign in with**: **No login** or **Login** | No login, for a relay: only the **Mail server**, **Mail port** and **Use TLS**. Login: those, plus the user and its password |
+| Microsoft Entra ID | **Sign in with**: **Secret** or **Certificate** | Secret: the **Client secret**. Certificate: the PEM **Certificate** and its private key, for mail through Microsoft 365 only |
+
+A credential keeps only what its choice needs: an SSH one never holds both a password and a key, the other is dropped on save. With
+**Write to a key** in the **Store** step, only the choices with a password are offered, not **Private key**, **No login** nor **Certificate**.
+
+The other types sign in one way. A User and password or an API credential has the **Add a host and port** switch after its password, see
+[Host and port of a login](#host-and-port-of-a-login). The dialog names the LDAP bind password **Password**, the RTE token **Token**,
+and a database's type **Engine**.
 
 ---
 
@@ -63,3 +84,38 @@ From 7.3.0 a login that works on one server carries that server, so the record t
 The upgrade to 7.3.0 makes these moves once. A record that already named a credential keeps it, and gets a copy of it when
 another record used the same login with another server. Records declared in the [config seed](../seed/) are left as the seed has them.
 The credentials of the connections and sign-ins can only be changed by an admin, see [Who may change a credential](../credentials.html#who-may-change-a-credential).
+
+---
+
+## Host and port of a login
+
+From 7.6.0 a User and password or an API credential can also hold a **Host** and a **Port**, both optional: on its **Login** step,
+the **Add a host and port** switch after the password shows them.
+
+They reach the playbook and the expressions with the credential, as `host` and `port`, next to `user` and `password`: through a
+form's `credentials` and [`fn.fnCredentials`](../expressions/credentials.html). A credential read from a secret
+store keeps its own host and port, and takes the secret's only where it leaves them empty. SSH and database credentials always had them.
+
+---
+
+## An SSH credential's private key
+
+From 7.6.0 an SSH credential can log in with a private key instead of its password: **Log in with** set to **Private key** asks for these:
+
+| Field | Meaning |
+|---|---|
+| Private key | The PEM or OpenSSH private key the playbook logs in with. Stored encrypted, never shown again: left empty, the stored one stays. |
+| Passphrase | The key's passphrase, if it has one. Stored encrypted. |
+
+It logs in with one or the other, never both: on save, a key drops the stored password, and **Password** drops the stored key and
+passphrase, as the credential's page says. The key and its passphrase are never returned by the API, and are masked in job output.
+
+When a form names the credential in `ansibleCredentials`, the RTE writes the key to a private temporary file (a folder of its own,
+readable by its user only) and passes it to the playbook as `ansible_ssh_private_key_file`. A key with a passphrase is loaded into
+an `ssh-agent` started for that job only, and the file is removed once it is loaded. The file and the agent are gone when the job
+ends, failed or aborted ones included, so no key is left behind on the RTE.
+
+The RTE images have `ssh-agent` and `ssh-add`; an RTE of your own without them fails a job whose key has a passphrase, saying so.
+
+A form's `credentials` that names an SSH credential hands the key to the playbook as `private_key`, and its passphrase as
+`private_key_passphrase`. In the [config seed](../seed/), the key is the credential's `client_key` and its passphrase `key_passphrase`.

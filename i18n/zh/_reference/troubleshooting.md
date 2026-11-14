@@ -2,7 +2,7 @@
 layout: default
 title: 故障排查
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # 故障排查
@@ -684,6 +684,9 @@ The form data is not valid
 服务器按照表单的规则检查了字段值，发现有缺失或无效的字段；响应在 `details` 下列出了
 它们。没有 `rawFormData` 的启动也会被拒绝。尚无法检查的表单，例如向导，
 会被拒绝并显示 `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`。
+
+从 7.6.0 起，表单的消息会按标签列出字段，包括需要填写的字段和值仍在加载的字段：
+*表单数据无效。请填写：Owner。仍在加载：Disks。*
 
 **解决方法**
 

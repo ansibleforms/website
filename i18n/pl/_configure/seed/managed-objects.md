@@ -3,7 +3,7 @@ layout: default
 title: Obiekty zarządzane
 parent: Config seed
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # Obiekty zarządzane
@@ -24,7 +24,7 @@ Jak seed przejmuje obiekty, które wymienia, i jak trzyma sekrety poza plikiem
 Seed, który pomija pole, odmawia startu i podaje to pole:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Pustą wartość deklaruj jawnie przez `""` lub `false`. Kilka pól jest opcjonalnych, a pominięte pozostaje bez zmian:
@@ -33,9 +33,9 @@ Pustą wartość deklaruj jawnie przez `""` lub `false`. Kilka pól jest opcjona
 |---|---|
 | `ldap` | `description`, `credential` (poświadczenie do bind) i `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` i `extra_headers` |
-| `settings` | Brak |
+| `settings` | Klucze `mail_*`, przestarzałe od wersji 7.6.0 (zobacz [Przykład](example.html)) |
 
-`settings` obejmuje tylko pola poczty i URL; wszystkie pozostałe ustawienia można nadal edytować.
+`settings` obejmuje tylko URL i przestarzałe klucze poczty; wszystkie pozostałe ustawienia można nadal edytować.
 
 ---
 

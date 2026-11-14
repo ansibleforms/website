@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # Kanały powiadomień
@@ -27,7 +27,8 @@ Dla administratorów: dodaj serwery poczty i kanały czatu, do których formular
 
 | Strona | Czego dotyczy |
 |---|---|
-| [Poczta](notification-channels/mail.html) | Serwery SMTP, serwer domyślny i ich logowanie |
+| [Poczta](notification-channels/mail.html) | Serwery poczty, serwer domyślny i sposób ich logowania |
+| [Microsoft 365](notification-channels/microsoft-365.html) | Poczta przez Microsoft 365 z OAuth2, od wersji 7.6.0 |
 | [Slack i Microsoft Teams](notification-channels/slack-and-teams.html) | Webhook kanału Slack lub Teams |
 | [Telegram](notification-channels/telegram.html) | Bot piszący na czacie Telegram |
 | [Webhook](notification-channels/webhook.html) | Żądanie JSON do dowolnego endpointu HTTP |
@@ -44,7 +45,7 @@ jeden z tych typów:
 
 | Typ | Co wysyła |
 |---|---|
-| Poczta | Pocztę przez serwer SMTP: prośby o zatwierdzenie i powiadomienia o zadaniach. |
+| Poczta | Pocztę przez serwer SMTP lub Microsoft 365: prośby o zatwierdzenie i powiadomienia o zadaniach. |
 | Slack | Wiadomość na kanale Slack, przez jego webhook przychodzący, z przyciskiem do zadania. |
 | Microsoft Teams | Kartę na kanale Teams, przez webhook Workflows, z przyciskiem do zadania. |
 | Telegram | Wiadomość od bota na czacie Telegram, z linkiem do zadania. |

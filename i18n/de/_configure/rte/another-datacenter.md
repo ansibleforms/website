@@ -3,7 +3,7 @@ layout: default
 title: Ein anderes Rechenzentrum
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # Eine RTE in einem anderen Rechenzentrum
@@ -77,7 +77,7 @@ Die RTE ist ein Container, daher braucht der Host eine Container-Engine und sons
 
 | Bedarf | Warum |
 |---|---|
-| Linux auf **x86_64** (amd64) | Die RTE-Images werden nur für amd64 veröffentlicht |
+| Linux auf **x86_64** (amd64) oder **aarch64** (arm64) | Die RTE-Images werden ab 7.6.0 für beide veröffentlicht, davor nur für amd64 |
 | 2 CPUs und 4 GB Speicher oder mehr | Eine RTE führt bis zu [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) Playbooks gleichzeitig aus (10), jedes mit seinen Forks: Dimensionieren Sie sie dafür |
 | 20 GB freier Festplattenplatz | Das Image `-rte-full` ist etwa 3,3 GB groß, dazu ein Image während Updates, die Jobdateien, die die App sendet, und die temporären Dateien der Jobs |
 | Docker oder Podman mit podman-compose | Um das Image zu ziehen und auszuführen |

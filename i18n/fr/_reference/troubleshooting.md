@@ -2,7 +2,7 @@
 layout: default
 title: Dépannage
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Dépannage
@@ -685,6 +685,9 @@ The form data is not valid
 Le serveur a vérifié les valeurs des champs selon les règles du formulaire et a trouvé des champs manquants ou invalides ; la réponse les liste
 sous `details`. Un lancement sans `rawFormData` est refusé aussi. Un formulaire qui ne peut pas encore être vérifié, comme un assistant (wizard),
 est refusé avec `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
+
+Depuis la 7.6.0, le message du formulaire nomme les champs par leurs libellés, ceux à remplir et ceux dont les valeurs sont encore en chargement :
+*Les données du formulaire ne sont pas valides. À remplir : Owner. Encore en chargement : Disks.*
 
 **Comment le corriger**
 

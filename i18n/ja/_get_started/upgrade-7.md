@@ -3,7 +3,7 @@ layout: default
 title: v7 へのアップグレード
 parent: アップグレード
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # v7 へのアップグレード
@@ -43,6 +43,8 @@ translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
 バージョン 7 では `table` フィールドはエラーになり、そのプロパティ（ `tableFields` 、 `insertColumns` 、 `readonlyColumns` 、
 `tableTitleAdd` 、 `tableTitleEdit` ）も一緒に削除されます。 `subform` を持つ `list` フィールドを使い、各列の `from` を
 `__parent__` に対する式に置き換えてください（ [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform) を参照）。
+
+7.6.0 からは、 `list` フィールドは、すでに持っている行に対して再び `readonlyColumns` を受け付けます（ [List](formfields/list.html) を参照）。
 
 ### 名前が変わったプロパティ
 
@@ -281,6 +283,8 @@ Kubernetes は Pod を自動的に再起動します。
 | 7.3.0 以降の `RTE_REGISTER` （データベースモードのみ） | 参加トークン（ `RTE_JOIN_TOKEN` ）。RTE は、RTE の認証情報でサインインするランナーとして自分自身を追加します。 |
 | 7.3.0 以降、設定シードのランナーにある `api` または `userpass` の認証情報 | ランナーの種類に合った認証情報（ `credential_type: rte` 、 `awx` 、 `aap` 、 `ascender` 、 `semaphore` 、 `rundeck` 、 `jenkins` ）。サーバーは `url` に指定します。 |
 | 7.3.0 以降、独自の `token` 、または `username` と `password` を持つ設定シードのランナー | `credentials` セクションにある、ランナーの種類に合った認証情報。サーバーは `url` に指定し、ランナーは `credential:` でそれを指定します。それまでの間、シードはランナー名を付けた認証情報を 1 つ作成します。 |
+| 7.6.0 以降、設定シードの `settings:` にあるメールのキー（ `mail_server` 、 `mail_port` 、 `mail_secure` 、 `mail_username` 、 `mail_password` 、 `mail_from` ） | `notification_channels:` の下のメールチャネル。 `credentials` セクションの smtp 認証情報を使うか、リレーの場合は独自の `server` 、 `port` 、 `secure` を持ちます。それまでの間、シードはこれらをメールチャネル `default` にします。 [メール](notification-channels/mail.html) を参照してください。 |
+| 7.6.0 以降、 `GET` と `PUT /api/v2/settings/config` の `forms_yaml` | `config_yaml` 。 `forms_yaml` を使った `PUT` も引き続き動作し、警告をログに記録します。 |
 
 `ENABLE_SSO` と `SSO_AUTO_LOGIN` は 7.3.0 以降読み取られなくなりました。7.3 の初回起動時に一度だけ引き継がれます。 `ENABLE_SSO=0` は
 すべての SSO プロバイダーを無効にし、 `SSO_AUTO_LOGIN=1` は唯一有効なプロバイダーの **ログインページをスキップ** にチェックを入れます。その後は無視されます。設定されている間は

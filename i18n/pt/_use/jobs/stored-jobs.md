@@ -5,7 +5,7 @@ parent: Tarefas
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Tarefas guardadas
@@ -40,6 +40,10 @@ uma segunda com o mesmo nome falha com "Já existe um formulário guardado com e
 ## Gerir as tarefas guardadas
 
 A página **Tarefas guardadas** lista as tarefas guardadas com o seu formulário, utilizador e datas de criação e de expiração, e precisa de `allowStoredJobs`.
+
+A partir da 7.6.0, `allowStoredJobs` sozinho abre **Tarefas > Guardados** e **Adicionar tarefa guardada**, que antes também exigiam
+`showSettings` ou `allowScheduledJobs`. A sua lista **Formulário** oferece os formulários que as suas funções abrem; os utilizadores com
+`showSettings` ou `allowScheduledJobs` veem todos os formulários.
 
 - **Editar** abre a página própria da tarefa guardada: os seus **Detalhes** (nome, formulário, expiração) e os seus **Valores**, os
   valores dos campos guardados em YAML, que aí podem ser alterados e guardados.

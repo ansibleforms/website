@@ -3,7 +3,7 @@ layout: default
 title: Credenciais
 parent: Expressões
 nav_order: 4
-translated_from: bfa50c90495c68300d189f9a0eb38e25df9e7c8e
+translated_from: e599378365aae2598c5e3ec20f8808b995863764
 ---
 
 # Credenciais
@@ -25,6 +25,9 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 ```
 
 Primeiro tenta-se o nome exato. Quando nenhuma credencial tem esse nome, o nome é usado como expressão regular e, a seguir, tenta-se a alternativa.
+
+A partir da 7.6.0, uma credencial Utilizador e palavra-passe ou API também pode ter um `host` e uma `port`,
+ver [Tipos de credencial](../credentials/types.html#host-and-port-of-a-login), que o objeto devolvido inclui como acima.
 
 #### Limitado por função
 

@@ -3,7 +3,7 @@ layout: default
 title: 配置
 parent: 环境变量
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # 配置
@@ -52,6 +52,9 @@ translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
 
 显式设置的 `ENABLE_CONFIG_IN_DATABASE` 始终优先，即使是 `0` 也优先于保存的 `database`。每次加载
 配置时都会读取它，因此更改无需重启即可生效。**状态** 页面的 **信息** 选项卡显示正在使用的来源。
+
+数据库中的副本是 `settings` 表的 `config_yaml` 列，7.6.0 之前名为 `forms_yaml`：升级时会将其改名并保留其内容。
+`GET /api/v2/settings/config` 以 `config_yaml` 返回它，同时也以已弃用的 `forms_yaml` 返回。
 
 ---
 

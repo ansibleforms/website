@@ -5,7 +5,7 @@ parent: Tasques
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Tasques desades
@@ -40,6 +40,10 @@ un segon amb el mateix nom falla amb "A saved form with this name already exists
 ## Gestionar les tasques desades
 
 La pàgina **Tasques desades** mostra les tasques desades amb el seu formulari, l'usuari i les dates de creació i de caducitat, i necessita `allowStoredJobs`.
+
+Des de la 7.6.0 `allowStoredJobs` sol obre **Tasques > Desades** i **Afegeix una tasca desada**, que abans també necessitaven `showSettings`
+o `allowScheduledJobs`. La seva llista **Formulari** ofereix els formularis que obren els teus rols; els usuaris amb `showSettings` o amb
+`allowScheduledJobs` hi tenen tots els formularis, sense cap límit de rol.
 
 - **Edita** obre la pàgina pròpia de la tasca desada: els seus **Detalls** (nom, formulari, caducitat) i els seus **Valors**, els valors
   dels camps desats en YAML, que s'hi poden canviar i desar.

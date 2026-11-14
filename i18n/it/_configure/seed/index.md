@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
+translated_from: a13463bbe343f9ae4e95589ae364207832a16bde
 ---
 
 # Config seed
@@ -40,7 +40,7 @@ dichiara oggetti che prima esistevano solo nel database:
 | `notification_channels` | Server mail, Slack, Teams, Telegram e webhook per le notifiche      |
 | `labels`                | Le etichette accanto al logo dell'intestazione, dalla 7.3.0          |
 | `ldap`                  | La configurazione LDAP                                              |
-| `settings`              | L'URL pubblico, e le impostazioni mail usate quando nessun canale mail è attivo |
+| `settings`              | L'URL pubblico; le sue chiavi mail sono deprecate dalla 7.6.0, a favore di un canale mail |
 | `chat`                  | Il provider del modello dell'assistente chat                        |
 | `awx`                   | Deprecata dalla 7, rimossa nella 8: usa `runners` con `type: awx`   |
 

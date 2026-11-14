@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Magatzems de secrets
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Llegeix credencials d'HashiCorp Vault, de KV v1 o v2 o d'un motor de secrets dinàmics
+Llegir i escriure credencials a HashiCorp Vault KV, llegir secrets dinàmics
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ A més dels [camps que té tot magatzem](./#adding-a-store), un magatzem HashiCo
 
 La referència del secret és el camí, p. ex. `secret/myapp/prod`. Per a KV v2 el segment `/data/`
 s'insereix quan no el poses.
+
+---
+
+## Escriure credencials
+
+Des de 7.6.0, l'usuari i la contrasenya d'una credencial es poden escriure al Vault en **Desar** (vegeu [Escriure credencials](./#writing-credentials)).
+
+Activa **Permet l'escriptura** a les **Opcions** del magatzem, i indica on pot escriure:
+
+| Camp | Significat |
+|---|---|
+| Permet l'escriptura | Permet que una credencial escrigui el seu usuari i contrasenya en aquest magatzem en **Desar**. Desactivat per defecte. |
+| Prefix d'escriptura | El camí on, o sota el qual, s'escriuen les credencials, p. ex. `secret/ansibleforms`. Un muntatge sol, p. ex. `secret`, permet tot el muntatge. Obligatori amb l'escriptura activada. |
+
+El secret s'escriu com a `username` i `password`, a KV v2 o v1 segons la **Versió KV** del magatzem. El testimoni necessita les capacitats
+read, create i update sota el prefix; read comprova si ja hi ha un secret. Per a KV v2 i el prefix `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+El camí d'un motor de secrets dinàmics, p. ex. `database/creds/readonly`, no s'escriu mai: Vault crea aquestes credencials ell mateix.
 
 ---
 

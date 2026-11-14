@@ -22,8 +22,8 @@ How AnsibleForms authenticates depends on the form of the **Uri**.
 
 ### HTTPS with a token
 
-For a private HTTPS remote, pick a **Credential** whose user is the git user and whose password is a personal access token
-(or the password).
+For a private HTTPS remote, pick a **Credential** with a personal access token or a password, its user optional. From 7.6.0 a Git
+credential signing in with a **Token** has no user: git then sends the user `oauth2`, which GitHub, GitLab and Azure DevOps accept.
 
 From 7.3.0 git signs in through `GIT_ASKPASS`: the user and token go to each git command that talks to the server, never into
 the URL, so they are not kept in the clone's `.git/config` and a changed token is used on the next pull or push. The token needs

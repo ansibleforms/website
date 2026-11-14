@@ -5,7 +5,7 @@ parent: 作业
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # 保存的作业
@@ -40,6 +40,9 @@ translated_from: c4e55de429d31936d8735965a2f487c070b9140d
 ## 管理保存的作业
 
 **保存的作业**页面列出保存的作业，以及其表单、用户、创建日期和过期日期，需要 `allowStoredJobs` 。
+
+从 7.6.0 起，仅凭 `allowStoredJobs` 即可打开**作业 > 已保存**和**添加保存的作业**，之前还需要 `showSettings` 或
+`allowScheduledJobs`。其**表单**列表提供您的角色可以打开的表单；拥有 `showSettings` 或 `allowScheduledJobs` 的用户可以看到所有表单。
 
 - **编辑**会打开该保存作业自己的页面：其**详细信息**（名称、表单、过期时间）以及其**值**，即以 YAML 表示的已保存
   字段值，可以在那里修改并保存。

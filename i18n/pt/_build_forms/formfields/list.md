@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Campos de formulário
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Campo List
@@ -27,6 +27,7 @@ O campo list oferece as seguintes capacidades:
 - As propriedades de marcação (`insertMarker`, `updateMarker`, `deleteMarker`) suportam padrões de playbook idempotentes.
 - Com `allowDelete: false`, as linhas pré-existentes ficam protegidas; só as linhas adicionadas na sessão atual (que levam o `insertMarker`) podem ser eliminadas.
 - A propriedade `columns` controla que campos do subformulário aparecem como colunas na tabela de resumo.
+- A partir da 7.6.0, `readonlyColumns` mantém só de leitura os campos escolhidos do subformulário nas linhas existentes, e as linhas novas continuam a preenchê-los.
 - O resultado é sempre um array de objetos. `model`, `output`, `outputObject` e `valueColumn` declarados nos campos do subformulário são respeitados quando as extravars são geradas.
 
 ---
@@ -228,6 +229,24 @@ As linhas pré-carregadas ficam protegidas, e os marcadores indicam ao playbook 
     - name
     - email
 ```
+
+### Colunas só de leitura nas linhas existentes
+
+A partir da 7.6.0, uma lista indica com `readonlyColumns` os campos do subformulário que as linhas que já contém mantêm como estão:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Ao editar uma linha existente, esses campos aparecem com um cadeado, desativados, e a linha mantém os seus valores; uma linha nova
+preenche-os como qualquer outro campo, e a validação continua a aplicar-se. A propriedade fica na lista, não no subformulário, por isso
+o mesmo subformulário pode ser só de leitura numa lista e editável noutra. Substitui o `readonlyColumns` do antigo campo `table`.
 
 ### Preencher linhas antecipadamente
 

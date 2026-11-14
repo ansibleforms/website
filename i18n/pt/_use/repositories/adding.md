@@ -3,7 +3,7 @@ layout: default
 title: Adicionar um repositório
 parent: Repositórios git
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Adicionar um repositório
@@ -64,7 +64,7 @@ do pull**), e o AnsibleForms inicia o clone em segundo plano assim que guardar.
 |---|---|---|
 | **Nome** | sim | O nome da pasta em `REPO_PATH`; letras, dígitos, hífen, underscore e ponto |
 | **Ramo** | sim | O ramo a clonar, a puxar e a enviar, por exemplo `main`; obrigatório a partir da 7.3.0. Só um repositório do config seed o pode omitir, para clonar o ramo predefinido do remoto |
-| **Credencial** | não | Uma credencial de [Ligações > Credenciais](../credentials.html) com o utilizador e a palavra-passe ou o token que o git usa; **Adicionar credencial** cria uma |
+| **Credencial** | não | Uma credencial de [Ligações > Credenciais](../credentials.html) com a palavra-passe ou o token que o git usa, com utilizador opcional; **Adicionar credencial** cria uma |
 | **Uri** | sim | O remoto, `https://...` ou SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Ativar o pull agendado** | não | Fazer pull do repositório segundo um agendamento |
 | **Agendamento do pull** | não | Quando fazer pull, como expressão cron; mostrado depois de o pull agendado ser ativado |

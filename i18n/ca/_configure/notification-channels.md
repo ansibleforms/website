@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # Canals de notificació
@@ -27,7 +27,8 @@ Per a administradors: afegeix els servidors de correu i els canals de xat als qu
 
 | Pàgina | Què hi trobaràs |
 |---|---|
-| [Correu](notification-channels/mail.html) | Els servidors SMTP, el predeterminat i el seu inici de sessió |
+| [Correu](notification-channels/mail.html) | Els servidors de correu, el predeterminat i com inicien sessió |
+| [Microsoft 365](notification-channels/microsoft-365.html) | Correu a través de Microsoft 365 amb OAuth2, des de la 7.6.0 |
 | [Slack i Microsoft Teams](notification-channels/slack-and-teams.html) | El webhook d'un canal de Slack o de Teams |
 | [Telegram](notification-channels/telegram.html) | Un bot que publica en un xat de Telegram |
 | [Webhook](notification-channels/webhook.html) | Una petició JSON a qualsevol endpoint HTTP |
@@ -44,7 +45,7 @@ d'un d'aquests tipus:
 
 | Tipus | Què envia |
 |---|---|
-| Correu | Correu a través d'un servidor SMTP: sol·licituds d'aprovació i notificacions de tasques. |
+| Correu | Correu a través d'un servidor SMTP o de Microsoft 365: sol·licituds d'aprovació i notificacions de tasques. |
 | Slack | Un missatge en un canal de Slack, mitjançant el seu webhook d'entrada, amb un botó que porta a la tasca. |
 | Microsoft Teams | Una targeta en un canal de Teams, mitjançant un webhook de Workflows, amb un botó que porta a la tasca. |
 | Telegram | Un missatge d'un bot en un xat de Telegram, amb un enllaç a la tasca. |

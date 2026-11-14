@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: フォームフィールド
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # List フィールド
@@ -27,6 +27,7 @@ list フィールドには次の機能があります。
 - マーカープロパティ (`insertMarker`、`updateMarker`、`deleteMarker`) により、冪等な playbook のパターンを実現できます。
 - `allowDelete: false` の場合、既存の行は保護されます。削除できるのは、現在のセッションで追加された行 ( `insertMarker` が付いた行) だけです。
 - `columns` プロパティで、サブフォームのどのフィールドを一覧表の列として表示するかを指定します。
+- 7.6.0 からは、 `readonlyColumns` で、選んだサブフォームのフィールドを既存の行では読み取り専用にできます。新しい行では引き続き入力できます。
 - 出力は常にオブジェクトの配列です。サブフォームのフィールドで宣言した `model`、`output`、`outputObject`、`valueColumn` は、extravars の生成時に反映されます。
 
 ---
@@ -228,6 +229,24 @@ list フィールドには次の機能があります。
     - name
     - email
 ```
+
+### 既存の行の読み取り専用の列
+
+7.6.0 からは、list はすでに持っている行で値を変えないサブフォームのフィールドを、 `readonlyColumns` で指定できます。
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+既存の行を編集すると、これらのフィールドは鍵のアイコン付きで無効になり、行はその値を保ちます。新しい行では他のフィールドと同じように
+入力でき、検証も適用されます。このプロパティはサブフォームではなく list に置くので、一つのサブフォームを、ある list では読み取り専用、
+別の list では編集可能にできます。これは古い `table` フィールドの `readonlyColumns` に代わるものです。
 
 ### 行を事前に入力する
 

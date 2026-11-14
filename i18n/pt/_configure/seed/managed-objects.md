@@ -3,7 +3,7 @@ layout: default
 title: Objetos geridos
 parent: Config seed
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # Objetos geridos
@@ -24,7 +24,7 @@ Como o seed é dono dos objetos que lista, e como mantém os segredos de fora
 Um seed que omite um campo recusa-se a arrancar e indica-o:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Declare um valor vazio explicitamente com `""` ou `false`. Alguns campos são opcionais, e um que seja omitido fica sem alterações:
@@ -33,9 +33,9 @@ Declare um valor vazio explicitamente com `""` ou `false`. Alguns campos são op
 |---|---|
 | `ldap` | `description`, `credential` (uma credencial com que fazer bind) e `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` e `extra_headers` |
-| `settings` | Nenhum |
+| `settings` | As chaves `mail_*`, obsoletas desde a 7.6.0 (consulte [Exemplo](example.html)) |
 
-`settings` cobre só os campos de email e o URL; todas as outras definições continuam editáveis.
+`settings` cobre só o URL, e as chaves de email obsoletas; todas as outras definições continuam editáveis.
 
 ---
 

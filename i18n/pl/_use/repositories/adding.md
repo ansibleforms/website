@@ -3,7 +3,7 @@ layout: default
 title: Dodawanie repozytorium
 parent: Repozytoria git
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Dodawanie repozytorium
@@ -64,7 +64,7 @@ pull**), a AnsibleForms rozpoczyna klonowanie w tle, gdy tylko zapiszesz.
 |---|---|---|
 | **Nazwa** | tak | Nazwa folderu w `REPO_PATH`; litery, cyfry, myślnik, podkreślenie i kropka |
 | **Gałąź** | tak | Gałąź do klonowania, pull i push, na przykład `main`; wymagana od wersji 7.3.0. Tylko repozytorium z config seed może ją pominąć, aby sklonować domyślną gałąź repozytorium zdalnego |
-| **Poświadczenie** | nie | Poświadczenie z [Połączenia > Poświadczenia](../credentials.html) z użytkownikiem i hasłem lub tokenem, których używa git; **Dodaj poświadczenie** tworzy nowe |
+| **Poświadczenie** | nie | Poświadczenie z [Połączenia > Poświadczenia](../credentials.html) z hasłem lub tokenem, którego używa git, użytkownik opcjonalny; **Dodaj poświadczenie** tworzy nowe |
 | **Uri** | tak | Repozytorium zdalne, `https://...` lub SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Włącz zaplanowany pull** | nie | Wykonuje pull repozytorium według harmonogramu |
 | **Harmonogram pull** | nie | Kiedy wykonywać pull, jako wyrażenie cron; widoczne po włączeniu zaplanowanego pull |

@@ -3,7 +3,7 @@ layout: default
 title: Ein Repository hinzufügen
 parent: Git-Repositories
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Ein Repository hinzufügen
@@ -64,7 +64,7 @@ und AnsibleForms startet den Clone im Hintergrund, sobald Sie speichern.
 |---|---|---|
 | **Name** | ja | Der Ordnername unter `REPO_PATH`; Buchstaben, Ziffern, Bindestrich, Unterstrich und Punkt |
 | **Branch** | ja | Der Branch, der geklont, gepullt und gepusht wird, zum Beispiel `main`; ab 7.3.0 erforderlich. Nur ein Repository aus dem Config-Seed darf ihn weglassen, um den Standard-Branch des Remotes zu klonen |
-| **Anmeldedaten** | nein | Anmeldedaten aus [Verbindungen > Anmeldedaten](../credentials.html) mit dem Benutzer und dem Passwort oder Token, die git verwendet; **Anmeldedaten hinzufügen** erstellt welche |
+| **Anmeldedaten** | nein | Anmeldedaten aus [Verbindungen > Anmeldedaten](../credentials.html) mit dem Passwort oder Token, das git verwendet, der Benutzer optional; **Anmeldedaten hinzufügen** erstellt welche |
 | **URI** | ja | Das Remote, `https://...` oder SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Geplanten Pull aktivieren** | nein | Das Repository nach Zeitplan pullen |
 | **Pull-Zeitplan** | nein | Wann gepullt wird, als Cron-Ausdruck; erscheint, sobald der geplante Pull aktiviert ist |

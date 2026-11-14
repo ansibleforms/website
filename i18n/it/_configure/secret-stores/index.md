@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Archivi di segreti
 {: .no_toc }
 
-Leggi le credenziali da un gestore di segreti invece di salvarle in AnsibleForms
+Leggere e scrivere le credenziali in un gestore di segreti invece che in AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Leggi le credenziali da un gestore di segreti invece di salvarle in AnsibleForms
 
 ---
 
-Per gli amministratori: collega un gestore di segreti, e lascia che le credenziali ne leggano l'utente e la password.
+Per gli amministratori: collegare un gestore di segreti, perché le credenziali ne leggano utente e password o ve li scrivano.
 
 ---
 
@@ -41,6 +41,8 @@ nulla nei tuoi moduli.
 | HashiCorp Vault (KV v1 e v2, autenticazione con token) | disponibile |
 | Credenziali dinamiche di HashiCorp Vault (`<mount>/creds/<role>`) | sperimentale |
 | CyberArk Central Credential Provider (CCP) | sperimentale |
+| Scrittura delle credenziali in HashiCorp Vault KV | disponibile |
+| Scrittura delle credenziali in CyberArk, tramite il suo PVWA | sperimentale |
 
 ---
 
@@ -75,8 +77,8 @@ Ogni gestore di segreti ha una pagina propria:
 
 ### In una credenziale
 
-In **Connessioni > Credenziali**, nel passaggio **Archivio** della credenziale, scegli **Archivio di segreti**, poi scegli
-l'**Archivio di segreti** e compila il **Riferimento**. L'utente e la password vengono allora letti dall'archivio, non digitati.
+In **Connessioni > Credenziali**, nel passaggio **Archivio** della credenziale, scegli **Archivio di segreti** e **Punta a una chiave**, poi
+scegli l'**Archivio di segreti** e compila il **Riferimento**. Utente e password vengono allora letti dall'archivio, non digitati.
 
 ### In linea, senza una riga di credenziale
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Scrivere le credenziali
+
+Da 7.6.0 utente e password di una credenziale possono essere scritti in un archivio al salvataggio, senza doverli mettere lì prima.
+
+Nel passaggio **Archivio** della credenziale scegli **Archivio di segreti** e **Scrivi in una chiave**, scegli l'archivio e compila il **Riferimento**.
+Il passaggio **Accesso** chiede allora utente e password, e **Salva** li scrive nell'archivio; AnsibleForms conserva solo l'archivio e il riferimento.
+
+- Viene offerto solo un archivio con **Consenti la scrittura** attivato nelle sue **Opzioni**, e scrive solo dove le sue opzioni lo consentono.
+- Una chiave che contiene già un segreto viene sostituita solo se **Sovrascrivi un segreto già presente** è spuntato; altrimenti non si scrive né si salva nulla.
+- Solo un admin può scrivere, e ogni scrittura è registrata come `credential.secret_write`, senza il segreto.
+
+Come si configura ogni gestore di segreti per la scrittura:
+
+| Pagina | Cosa tratta |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Un prefisso di scrittura, e le capacità del token |
+| [CyberArk](cyberark.html#writing-credentials) | I safe, e il PVWA con la sua credenziale e piattaforma |
+
+---
+
 ## Nel config seed
 
 Gli archivi si possono dichiarare anche nel config seed, come gli altri oggetti di amministrazione:
@@ -161,7 +183,8 @@ credentials:
 
 L'archivio accede con la sua credenziale: una `vault` contiene l'indirizzo del Vault in `url` e il token come password, una `cyberark`
 l'AppID e l'indirizzo del CCP. Senza una credenziale, si usano l'`url` e il `token` propri dell'archivio.
-Per i dettagli, vedi [Config seed](../seed).
+Un archivio che consente la scrittura imposta `write_enabled: true` e `write_prefix` (per CyberArk i suoi safe), e un CyberArk anche `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` e `platform_id`. Per i dettagli, vedi [Config seed](../seed).
 
 ---
 

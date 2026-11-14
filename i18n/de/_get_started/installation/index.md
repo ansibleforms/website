@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /installation/
-translated_from: c5efb1a569cf31ab6b1817687a024e12c26eb128
+translated_from: 55830463d7134c2c7ea776065b82a1aa8c2ba678
 ---
 
 # Installation
@@ -65,7 +65,8 @@ Seit 7 laufen Playbooks auf einer RTE, die in drei Schichten neben der App verö
 | `ghcr.io/ansibleforms/ansibleforms-rte-core` | Die Basis mit python, ansible-core und einigen Bibliotheken: das Image, dem Sie Ihre Collections hinzufügen |
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | Das Core-Image mit dem Paket `ansible`, seinen Collections und Bibliotheken: die Standard-RTE |
 
-Die vier Images werden im selben Lauf gebaut und tragen dieselben Tags, daher passt ein RTE-Tag immer zu dem der App.
+Die vier Images werden im selben Lauf gebaut und tragen dieselben Tags, daher passt ein RTE-Tag immer zu dem der App. Ab 7.6.0 enthält
+jedes Tag ein Image für `linux/amd64` und eines für `linux/arm64`, und Docker, Podman und Kubernetes ziehen selbst das des Hosts.
 
 Das alte Docker-Hub-Repository, `ansibleguy/ansibleforms`, wird nicht mehr aktualisiert. Es behält seine bisherigen
 Versionen, erhält aber keine neuen Versionen mehr, in keiner der beiden Linien. Wenn Sie von dort ziehen, wechseln Sie

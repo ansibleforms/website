@@ -3,7 +3,7 @@ layout: default
 title: Configuratie
 parent: Omgevingsvariabelen
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Configuratie
@@ -52,6 +52,9 @@ De categorieën, rollen en constanten komen uit `config.yaml` op schijf of uit d
 
 Een expliciet ingestelde `ENABLE_CONFIG_IN_DATABASE` wint altijd, zelfs `0` boven een opgeslagen `database`. Ze wordt gelezen elke keer dat de
 configuratie laadt, dus een wijziging geldt zonder herstart. De pagina **Status** toont de gebruikte bron op het tabblad **Informatie**.
+
+De kopie in de database is de kolom `config_yaml` van de tabel `settings`, vóór 7.6.0 `forms_yaml` genoemd: de upgrade hernoemt haar
+en behoudt de inhoud. `GET /api/v2/settings/config` geeft haar terug als `config_yaml`, en ook als `forms_yaml`, verouderd.
 
 ---
 

@@ -5,13 +5,13 @@ nav_order: 14
 has_children: true
 has_toc: false
 permalink: /secret-stores/
-translated_from: c7e5d9fb5e640896bd51e3fa20d76be092857ce2
+translated_from: 46ee77acbbf03c7b7536aa87ab0f44f0d486de6f
 ---
 
 # Magazyny sekretów
 {: .no_toc }
 
-Odczytuj poświadczenia z menedżera sekretów zamiast przechowywać je w AnsibleForms
+Odczytuj i zapisuj poświadczenia w menedżerze sekretów zamiast w AnsibleForms
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -19,7 +19,7 @@ Odczytuj poświadczenia z menedżera sekretów zamiast przechowywać je w Ansibl
 
 ---
 
-Dla administratorów: podłącz menedżer sekretów i pozwól poświadczeniom odczytywać z niego użytkownika i hasło.
+Dla administratorów: podłącz menedżer sekretów, aby poświadczenia odczytywały z niego użytkownika i hasło albo je w nim zapisywały.
 
 ---
 
@@ -41,6 +41,8 @@ nie zmienia w Twoich formularzach.
 | HashiCorp Vault (KV v1 i v2, uwierzytelnianie tokenem) | dostępny |
 | Dynamiczne poświadczenia HashiCorp Vault (`<mount>/creds/<role>`) | eksperymentalny |
 | CyberArk Central Credential Provider (CCP) | eksperymentalny |
+| Zapis poświadczeń w HashiCorp Vault KV | dostępny |
+| Zapis poświadczeń w CyberArk, przez jego PVWA | eksperymentalny |
 
 ---
 
@@ -75,8 +77,8 @@ Każdy menedżer sekretów ma własną stronę:
 
 ### W poświadczeniu
 
-W **Połączenia > Poświadczenia**, w kroku **Magazyn** poświadczenia, wybierz **Magazyn sekretów**, a potem wskaż
-**Magazyn sekretów** i wypełnij **Odwołanie**. Użytkownik i hasło są wtedy odczytywane z magazynu, a nie wpisywane.
+W **Połączenia > Poświadczenia**, w kroku **Magazyn** poświadczenia, wybierz **Magazyn sekretów** i **Wskaż klucz**, potem
+wybierz **Magazyn sekretów** i wypełnij **Odwołanie**. Użytkownik i hasło są wtedy odczytywane z magazynu, a nie wpisywane.
 
 ### Bezpośrednio, bez wiersza poświadczenia
 
@@ -133,6 +135,26 @@ fn.fnCredentials('vault:secret/weird', '', '.creds | { user: .u, password: .p }'
 
 ---
 
+## Zapisywanie poświadczeń
+
+Od 7.6.0 użytkownika i hasło poświadczenia można zapisać w magazynie przy zapisie poświadczenia, więc nigdy nie trzeba ich tam najpierw umieszczać.
+
+W kroku **Magazyn** poświadczenia wybierz **Magazyn sekretów** i **Zapisz w kluczu**, wybierz magazyn i wypełnij **Odwołanie**.
+Krok **Logowanie** pyta wtedy o użytkownika i hasło, a **Zapisz** zapisuje je w magazynie; AnsibleForms przechowuje tylko magazyn i odwołanie.
+
+- Oferowany jest tylko magazyn z włączonym **Zezwól na zapis** w jego **Opcjach**, i zapisuje tylko tam, gdzie pozwalają jego opcje.
+- Klucz, w którym jest już sekret, zostaje zastąpiony tylko po zaznaczeniu **Nadpisz sekret, który już tam jest**; w przeciwnym razie nic nie jest zapisywane.
+- Zapisywać może tylko admin, a każdy zapis jest audytowany jako `credential.secret_write`, bez sekretu.
+
+Jak skonfigurować każdy menedżer sekretów do zapisu:
+
+| Strona | Czego dotyczy |
+|---|---|
+| [HashiCorp Vault](hashicorp-vault.html#writing-credentials) | Prefiks zapisu i uprawnienia tokena |
+| [CyberArk](cyberark.html#writing-credentials) | Sejfy oraz PVWA z jego poświadczeniem i platformą |
+
+---
+
 ## W config seed
 
 Magazyny można też deklarować w config seed, jak pozostałe obiekty administracyjne:
@@ -161,7 +183,8 @@ credentials:
 
 Magazyn loguje się swoim poświadczeniem: poświadczenie `vault` zawiera adres Vault w `url` i token jako hasło, poświadczenie `cyberark`
 AppID i adres CCP. Bez poświadczenia używane są własne `url` i `token` magazynu.
-Szczegóły opisuje strona [Config seed](../seed).
+Magazyn, który zezwala na zapis, ustawia `write_enabled: true` i `write_prefix` (w CyberArk jego sejfy), a CyberArk także `pvwa_url`,
+`pvwa_credential`, `pvwa_auth` i `platform_id`. Szczegóły opisuje strona [Config seed](../seed).
 
 ---
 

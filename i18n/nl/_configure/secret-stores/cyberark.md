@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: Secret stores
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-Referenties lezen uit de CyberArk Central Credential Provider (CCP)
+Referenties lezen via de CyberArk CCP, schrijven via de PVWA
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -51,6 +51,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - Een `AppID` in de verwijzing wordt genegeerd: de AppID van de store wordt altijd gebruikt.
 - Het wachtwoord van het account (`Content`) wordt het wachtwoord; `UserName`, `Address`, `Port` en
   `Database` vullen gebruiker, host, poort en databasenaam in.
+
+---
+
+## Referenties schrijven
+
+Vanaf 7.6.0 kunnen gebruiker en wachtwoord van een referentie bij **Opslaan** naar CyberArk worden geschreven (zie [Referenties schrijven](./#writing-credentials)).
+De CCP leest alleen, dus AnsibleForms schrijft via de REST-API van de PVWA, aangemeld met een eigen referentie.
+
+Zet **Schrijven toestaan** aan in de **Opties** van de kluis en vul in:
+
+| Veld | Betekenis |
+|---|---|
+| Schrijven toestaan | Laat een referentie bij **Opslaan** haar gebruiker en wachtwoord naar deze kluis schrijven. Standaard uit. |
+| Kluizen om naar te schrijven | De safes waarnaar referenties mogen worden geschreven, gescheiden door komma's, bv. `Linux, DB`. Verplicht als schrijven aan staat. |
+| PVWA-adres | De basis-URL van de PVWA, bv. `https://pvwa.example.com`. Verplicht. |
+| PVWA-referentie | Een eigen referentie van het type **Gebruiker en wachtwoord** of **API**, nooit uit een geheimenkluis gelezen, die accounts aan die safes mag toevoegen en hun wachtwoorden mag wijzigen. Verplicht. |
+| Aanmeldmethode | Hoe de PVWA-referentie zich aanmeldt: CyberArk (standaard), LDAP, RADIUS of Windows. |
+| Platform-ID | Het platform van de accounts die ze toevoegt, bv. `UnixSSH`. Nodig om een nieuw account toe te voegen. |
+
+De referentie noemt het account zoals bij lezen, `Safe=Linux;Object=srv01-root`, met `Address=srv01.example.com` als het platform er een nodig heeft.
+
+- Een nieuw account wordt aan de safe toegevoegd met het platform, de gebruikersnaam en het wachtwoord.
+- Een bestaand account wordt alleen gewijzigd als **Een bestaand geheim overschrijven** is aangevinkt: eerst de gebruikersnaam, dan het wachtwoord.
+- De PVWA-sessie wordt na elke schrijfactie afgemeld. De OAuth-aanmelding van Privilege Cloud wordt niet ondersteund.
 
 ---
 

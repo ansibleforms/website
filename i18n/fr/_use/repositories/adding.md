@@ -3,7 +3,7 @@ layout: default
 title: Ajouter un dépôt
 parent: Dépôts git
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Ajouter un dépôt
@@ -64,7 +64,7 @@ du pull**), et AnsibleForms lance le clonage en arrière-plan dès que vous enre
 |---|---|---|
 | **Nom** | oui | Le nom du dossier sous `REPO_PATH` ; lettres, chiffres, tiret, tiret bas et point |
 | **Branche** | oui | La branche à cloner, à puller et à pousser, par exemple `main` ; obligatoire depuis la 7.3.0. Seul un dépôt du config seed peut l'omettre, pour cloner la branche par défaut du dépôt distant |
-| **Identifiant** | non | Un identifiant de [Connexions > Identifiants](../credentials.html) avec l'utilisateur et le mot de passe ou le jeton qu'utilise git ; **Ajouter un identifiant** en crée un |
+| **Identifiant** | non | Un identifiant de [Connexions > Identifiants](../credentials.html) avec le mot de passe ou le jeton qu'utilise git, l'utilisateur étant facultatif ; **Ajouter un identifiant** en crée un |
 | **URI** | oui | Le dépôt distant, `https://...` ou SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Activer le pull planifié** | non | Faire un pull du dépôt selon une planification |
 | **Planification du pull** | non | Quand faire le pull, sous forme d'expression cron ; affiché une fois le pull planifié activé |

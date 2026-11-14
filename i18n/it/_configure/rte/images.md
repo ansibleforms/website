@@ -3,7 +3,7 @@ layout: default
 title: Immagini
 parent: RTE
 nav_order: 1
-translated_from: cb917c5cb9cbca9d530398171265e91f1ba8e94b
+translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
 ---
 
 # Immagini RTE
@@ -28,6 +28,9 @@ L'RTE è pubblicato in tre livelli, ognuno costruito su quello precedente, con g
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | Il core, più il pacchetto `ansible` sullo stesso ansible-core, e ciò che aveva l'immagine di AnsibleForms 6.5: le collection NetApp, AWS e community, `pandas`, `pyvmomi`, `boto3`, il client mariadb, ytt e alcuni strumenti di sistema | **Il predefinito.** Eseguila così com'è: i playbook della 6.5 trovano ciò che usavano |
 
 Come l'immagine dell'app, ogni livello gira come utente `node` (uid 1000), e anche i playbook girano come quell'utente.
+
+Dalla 7.6.0 ogni livello è pubblicato per `linux/amd64` e `linux/arm64` con lo stesso tag. Un RTE che costruisci tu ha
+l'architettura della macchina che lo costruisce: per gli host arm64, costruiscilo su uno di essi, o con `docker buildx build --platform linux/arm64`.
 
 ---
 

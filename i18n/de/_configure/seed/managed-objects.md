@@ -3,7 +3,7 @@ layout: default
 title: Verwaltete Objekte
 parent: Config-Seed
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # Verwaltete Objekte
@@ -24,7 +24,7 @@ Wie der Seed die aufgef체hrten Objekte verwaltet und wie er Geheimnisse heraush�
 Ein Seed, der ein Feld ausl채sst, verweigert den Start und nennt es:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Deklarieren Sie einen leeren Wert ausdr체cklich mit `""` oder `false`. Einige Felder sind optional, und ein ausgelassenes bleibt unver채ndert:
@@ -33,9 +33,9 @@ Deklarieren Sie einen leeren Wert ausdr체cklich mit `""` oder `false`. Einige Fe
 |---|---|
 | `ldap` | `description`, `credential` (Anmeldedaten zum Binden) und `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` und `extra_headers` |
-| `settings` | Keine |
+| `settings` | Die `mail_*`-Schl체ssel, seit 7.6.0 veraltet (siehe [Beispiel](example.html)) |
 
-`settings` deckt nur die Mail-Felder und die URL ab; alle 체brigen Einstellungen bleiben bearbeitbar.
+`settings` deckt nur die URL und die veralteten Mail-Schl체ssel ab; alle 체brigen Einstellungen bleiben bearbeitbar.
 
 ---
 

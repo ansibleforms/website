@@ -3,7 +3,7 @@ layout: default
 title: Een ander datacenter
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # Een RTE in een ander datacenter
@@ -77,7 +77,7 @@ De RTE is een container, dus de host heeft een container-engine nodig en verder 
 
 | Nodig | Waarom |
 |---|---|
-| Linux op **x86_64** (amd64) | De RTE-images worden alleen voor amd64 gepubliceerd |
+| Linux op **x86_64** (amd64) of **aarch64** (arm64) | De RTE-images worden vanaf 7.6.0 voor beide gepubliceerd, daarvoor alleen voor amd64 |
 | 2 CPU's en 4 GB geheugen, of meer | Eén RTE draait tot [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks tegelijk (10), elk met zijn forks: dimensioneer haar daarvoor |
 | 20 GB vrije schijfruimte | De image `-rte-full` is ongeveer 3,3 GB, plus een image tijdens updates, de jobbestanden die de app stuurt en de tijdelijke bestanden van de jobs |
 | Docker, of Podman met podman-compose | Om de image te pullen en te draaien |

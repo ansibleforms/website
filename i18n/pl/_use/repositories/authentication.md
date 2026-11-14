@@ -3,7 +3,7 @@ layout: default
 title: Uwierzytelnianie
 parent: Repozytoria git
 nav_order: 2
-translated_from: 9e2bb180b35951e97851c21f388db0d7d54d4c73
+translated_from: 4d7f58fd454c4caacd674b861ad5a43672910b1c
 ---
 
 # Uwierzytelnianie
@@ -23,8 +23,8 @@ Sposób uwierzytelniania AnsibleForms zależy od postaci **Uri**.
 
 ### HTTPS z tokenem
 
-Dla prywatnego repozytorium zdalnego HTTPS wybierz **Poświadczenie**, którego użytkownik jest użytkownikiem git, a hasło osobistym tokenem dostępu
-(lub hasłem).
+Dla prywatnego repozytorium zdalnego HTTPS wybierz **Poświadczenie** z osobistym tokenem dostępu lub hasłem, użytkownik opcjonalny. Od
+wersji 7.6.0 poświadczenie Git logujące się **Tokenem** nie ma użytkownika: git wysyła wtedy użytkownika `oauth2`, którego akceptują GitHub, GitLab i Azure DevOps.
 
 Od wersji 7.3.0 git loguje się przez `GIT_ASKPASS`: użytkownik i token trafiają do każdego polecenia git, które komunikuje się z serwerem, nigdy do
 URL, więc nie są przechowywane w `.git/config` klonu, a zmieniony token jest używany przy następnym pull lub push. Token potrzebuje

@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /installation/
-translated_from: c5efb1a569cf31ab6b1817687a024e12c26eb128
+translated_from: 55830463d7134c2c7ea776065b82a1aa8c2ba678
 ---
 
 # インストール
@@ -65,7 +65,8 @@ curl -fsSL https://ansibleforms.com/install | sh
 | `ghcr.io/ansibleforms/ansibleforms-rte-core` | ベースに python、ansible-core、いくつかのライブラリを加えたもの。コレクションを追加するならこれです |
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | core に `ansible` パッケージ、そのコレクションとライブラリを加えたもの。既定の RTE です |
 
-4 つのイメージは同じ実行でビルドされ、同じタグが付くため、RTE のタグは常にアプリのタグと一致します。
+4 つのイメージは同じ実行でビルドされ、同じタグが付くため、RTE のタグは常にアプリのタグと一致します。7.6.0 からは、
+各タグが `linux/amd64` 用と `linux/arm64` 用のイメージを持ち、Docker、Podman、Kubernetes はホストに合うものを自動的に pull します。
 
 以前の Docker Hub リポジトリ `ansibleguy/ansibleforms` は更新されなくなりました。既存の
 リリースは残っていますが、どちらの系列の新しいバージョンも公開されません。そこから pull している場合は、同じタグのまま

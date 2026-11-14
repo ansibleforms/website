@@ -3,13 +3,13 @@ layout: default
 title: CyberArk
 parent: Almacenes de secretos
 nav_order: 2
-translated_from: f001addbd5578169444a321ab9e668e54139842b
+translated_from: 2c82742312515c87bc1c83fea368929c0a32bfb3
 ---
 
 # CyberArk
 {: .no_toc }
 
-Leer credenciales del Central Credential Provider (CCP) de CyberArk
+Leer credenciales a través del CCP de CyberArk, escribirlas a través de su PVWA
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -51,6 +51,30 @@ Query=Safe=Linux;Folder=Root;Object=root-srv01
 - Un `AppID` en la referencia se ignora: siempre se usa el AppID del almacén.
 - La contraseña de la cuenta (`Content`) pasa a ser la contraseña; `UserName`, `Address`, `Port` y
   `Database` rellenan el usuario, el host, el puerto y el nombre de la base de datos.
+
+---
+
+## Escribir credenciales
+
+Desde 7.6.0, el usuario y la contraseña de una credencial se pueden escribir en CyberArk al **Guardar** (ver [Escribir credenciales](./#writing-credentials)).
+El CCP solo lee, así que AnsibleForms escribe a través de la API REST del PVWA, con una credencial propia.
+
+Activa **Permitir la escritura** en las **Opciones** del almacén y rellena:
+
+| Campo | Significado |
+|---|---|
+| Permitir la escritura | Permite que una credencial escriba su usuario y contraseña en este almacén al **Guardar**. Desactivado por defecto. |
+| Cajas fuertes donde escribir | Las cajas fuertes donde se pueden escribir credenciales, separadas por comas, p. ej. `Linux, DB`. Obligatorio con la escritura activada. |
+| Dirección del PVWA | La URL base del PVWA, p. ej. `https://pvwa.example.com`. Obligatoria. |
+| Credencial del PVWA | Una credencial propia de tipo **Usuario y contraseña** o **API**, nunca leída de un almacén de secretos, que puede añadir cuentas a esas cajas fuertes y cambiar sus contraseñas. Obligatoria. |
+| Método de inicio de sesión | Cómo inicia sesión la credencial del PVWA: CyberArk (por defecto), LDAP, RADIUS o Windows. |
+| ID de plataforma | La plataforma de las cuentas que añade, p. ej. `UnixSSH`. Necesario para añadir una cuenta nueva. |
+
+La referencia nombra la cuenta como al leer, `Safe=Linux;Object=srv01-root`, con `Address=srv01.example.com` cuando su plataforma lo necesita.
+
+- Una cuenta nueva se añade a la caja fuerte con la plataforma, el nombre de usuario y la contraseña.
+- Una cuenta existente solo se cambia si **Sobrescribir un secreto que ya esté allí** está marcado: su nombre de usuario y luego su contraseña.
+- La sesión del PVWA se cierra después de cada escritura. El inicio de sesión OAuth de Privilege Cloud no está soportado.
 
 ---
 

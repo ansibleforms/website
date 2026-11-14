@@ -3,7 +3,7 @@ layout: default
 title: 別のデータセンター
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # 別のデータセンターの RTE
@@ -77,7 +77,7 @@ RTE はコンテナーなので、ホストに必要なのはコンテナーエ�
 
 | 必要なもの | 理由 |
 |---|---|
-| **x86_64** （amd64）の Linux | RTE イメージは amd64 向けにしか公開されていません |
+| **x86_64** （amd64）または **aarch64** （arm64）の Linux | RTE イメージは 7.6.0 からは両方向けに公開されています。それより前は amd64 向けのみです |
 | 2 CPU と 4 GB 以上のメモリ | 一つの RTE は最大 [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) 個（10）のプレイブックを同時に、それぞれのフォークとともに実行します。それに合わせてサイズを決めてください |
 | 20 GB の空きディスク | `-rte-full` イメージは約 3.3 GB で、さらに更新時のイメージ、アプリが送るジョブのファイル、ジョブの一時ファイルが加わります |
 | Docker、または podman-compose を伴う Podman | イメージを取得して実行するため |

@@ -3,7 +3,7 @@ layout: default
 title: Autenticazione
 parent: Repository Git
 nav_order: 2
-translated_from: 9e2bb180b35951e97851c21f388db0d7d54d4c73
+translated_from: 4d7f58fd454c4caacd674b861ad5a43672910b1c
 ---
 
 # Autenticazione
@@ -23,8 +23,8 @@ Il modo in cui AnsibleForms si autentica dipende dalla forma dell'**URI**.
 
 ### HTTPS con un token
 
-Per un remoto HTTPS privato, scegli una **Credenziale** il cui utente è l'utente git e la cui password è un personal access token
-(o la password).
+Per un remoto HTTPS privato, scegli una **Credenziale** con un personal access token o una password, l'utente facoltativo. Dalla 7.6.0
+una credenziale Git che accede con un **Token** non ha utente: git invia allora l'utente `oauth2`, che GitHub, GitLab e Azure DevOps accettano.
 
 Dalla 7.3.0 git accede tramite `GIT_ASKPASS`: l'utente e il token vengono passati a ogni comando git che parla con il server, mai inseriti
 nell'URL, quindi non restano nel `.git/config` del clone e un token cambiato viene usato al pull o push successivo. Il token richiede

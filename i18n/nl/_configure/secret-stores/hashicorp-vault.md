@@ -3,13 +3,13 @@ layout: default
 title: HashiCorp Vault
 parent: Secret stores
 nav_order: 1
-translated_from: 33cbbea1ca86bf474182d220bd6824af81aa752f
+translated_from: 1134189481b234cb2b18edbabd74427e37d2f43c
 ---
 
 # HashiCorp Vault
 {: .no_toc }
 
-Referenties lezen uit HashiCorp Vault, uit KV v1 of v2 of een dynamische secrets engine
+Referenties lezen en schrijven in HashiCorp Vault KV, dynamische geheimen lezen
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -30,6 +30,30 @@ Naast de [velden die elke store heeft](./#adding-a-store) heeft een HashiCorp Va
 
 De secret reference is het pad, bijv. `secret/myapp/prod`. Voor KV v2 wordt het segment `/data/`
 ingevoegd als je het weglaat.
+
+---
+
+## Referenties schrijven
+
+Vanaf 7.6.0 kunnen gebruiker en wachtwoord van een referentie bij **Opslaan** naar de Vault worden geschreven (zie [Referenties schrijven](./#writing-credentials)).
+
+Zet **Schrijven toestaan** aan in de **Opties** van de kluis, en geef aan waar ze mag schrijven:
+
+| Veld | Betekenis |
+|---|---|
+| Schrijven toestaan | Laat een referentie bij **Opslaan** haar gebruiker en wachtwoord naar deze kluis schrijven. Standaard uit. |
+| Schrijfprefix | Het pad waarop of waaronder referenties worden geschreven, bv. `secret/ansibleforms`. Alleen een mount, bv. `secret`, staat de hele mount toe. Verplicht als schrijven aan staat. |
+
+Het geheim wordt geschreven als `username` en `password`, in KV v2 of v1 zoals de **KV-versie** van de kluis aangeeft. Het token heeft de rechten
+read, create en update onder het prefix nodig; read controleert of er al een geheim staat. Voor KV v2 en het prefix `secret/ansibleforms`:
+
+```hcl
+path "secret/data/ansibleforms/*" {
+  capabilities = ["read", "create", "update"]
+}
+```
+
+Het pad van een engine voor dynamische geheimen, bv. `database/creds/readonly`, wordt nooit beschreven: Vault maakt die referenties zelf.
 
 ---
 

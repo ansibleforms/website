@@ -25,6 +25,8 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 
 The exact name is tried first. When no credential has that name, the name is used as a regular expression, and then the fallback is tried.
 
+From 7.6.0 a User and password or an API credential can carry a `host` and `port` too, see [Credential types](../credentials/types.html#host-and-port-of-a-login).
+
 #### Limited by role
 
 When one of the user's roles lists `credentials` in `config.yaml`, `fn.fnCredentials` returns only a credential such a role

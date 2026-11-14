@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
+translated_from: a13463bbe343f9ae4e95589ae364207832a16bde
 ---
 
 # Llavor de configuració
@@ -40,7 +40,7 @@ declara objectes que abans només existien a la base de dades:
 | `notification_channels` | Servidors de correu, Slack, Teams, Telegram i webhooks per a les notificacions |
 | `labels`                | Les etiquetes al costat del logotip de la capçalera, des de la 7.3.0 |
 | `ldap`                  | La configuració de LDAP                                             |
-| `settings`              | La URL pública, i els ajustos de correu que es fan servir quan no hi ha cap canal de correu actiu |
+| `settings`              | La URL pública; les seves claus de correu són obsoletes des de la 7.6.0, en favor d'un canal de correu |
 | `chat`                  | El proveïdor de models de l'assistent de xat                        |
 | `awx`                   | Obsolet des de la 7, eliminat a la 8: fes servir `runners` amb `type: awx` |
 
