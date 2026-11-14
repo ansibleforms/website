@@ -3,7 +3,7 @@ layout: default
 title: Tipos de credencial
 parent: Credenciais
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Tipos de credencial
@@ -59,7 +59,7 @@ A partir da 7.6.0, o passo **Acesso** destes tipos pergunta primeiro como a cred
 | AWX, AAP, Ascender | **Iniciar sessão com**: **Token** ou **Palavra-passe** | Token: o **Token**, sem utilizador. Palavra-passe: o utilizador e a sua palavra-passe |
 | Git | **Iniciar sessão com**: **Token** ou **Palavra-passe** | Token: o **Token**, sem utilizador (o git envia então o utilizador `oauth2`). Palavra-passe: o utilizador e a sua palavra-passe |
 | SMTP | **Iniciar sessão com**: **Sem autenticação** ou **Autenticação** | Sem autenticação, para um relay: só o **Servidor de correio**, a **Porta de correio** e **Usar TLS**. Autenticação: esses, mais o utilizador e a sua palavra-passe |
-| Microsoft Entra ID | **Iniciar sessão com**: **Segredo** ou **Certificado** | Segredo: o **Client secret**. Certificado: o **Certificado** PEM e a sua chave privada, só para correio através do Microsoft 365 |
+| Microsoft Entra ID | **Iniciar sessão com**: **Segredo** ou **Certificado** | Segredo: o **Client secret**. Certificado: o **Certificado** PEM e a sua chave privada, para correio através do Microsoft 365, e um **Client secret** opcional guardado para o início de sessão SSO |
 
 Uma credencial guarda só o que a sua escolha precisa: uma SSH nunca tem ao mesmo tempo uma palavra-passe e uma chave, a outra é removida ao
 guardar. Com **Escrever numa chave** no passo **Armazenamento**, só são oferecidas as escolhas com palavra-passe, não **Chave privada**,

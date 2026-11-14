@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: 通知通道
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,8 +98,8 @@ Entra ID 凭据可以使用证书代替其客户端密钥登录，但仅限于�
 3. 在凭据上，将 **登录方式** 设为 **证书**，并粘贴 **证书** 及其私钥，即 **客户端密钥**（PEM、RSA，不带密码短语）。
    两者都会在 **保存** 时检查；私钥会加密存储，且永不再显示。
 
-SSO 提供商始终使用客户端密钥登录，因此同时用于登录和邮件的凭据也要保留其密钥。在 [配置种子](../seed/) 中，
-`entraid` 凭据在 `client_cert` 中保存证书，在 `client_key` 中保存其私钥，邮件通道则使用 `send_through: graph` 或 `send_through: smtp`。
+SSO 登录始终使用客户端密钥：选择 **证书** 时，凭据会为此显示一个可选的 **客户端密钥**，因此同一个凭据可同时用于登录和邮件。在 [配置种子](../seed/) 中， `entraid` 凭据在 `client_cert` 中保存证书，在
+`client_key` 中保存其私钥，邮件通道则使用 `send_through: graph` 或 `send_through: smtp`。
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Tipus de credencial
 parent: Credencials
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Tipus de credencial
@@ -59,7 +59,7 @@ Des de la 7.6.0 el pas **Accés** d'aquests tipus pregunta primer com inicia la 
 | AWX, AAP, Ascender | **Inicia la sessió amb**: **Token** o **Contrasenya** | Token: el **Token**, sense usuari. Contrasenya: l'usuari i la seva contrasenya |
 | Git | **Inicia la sessió amb**: **Token** o **Contrasenya** | Token: el **Token**, sense usuari (git envia llavors l'usuari `oauth2`). Contrasenya: l'usuari i la seva contrasenya |
 | SMTP | **Inicia la sessió amb**: **Sense inici de sessió** o **Inici de sessió** | Sense inici de sessió, per a un relay: només el **Servidor de correu**, el **Port de correu** i **Utilitza TLS**. Inici de sessió: aquests, més l'usuari i la seva contrasenya |
-| Microsoft Entra ID | **Inicia la sessió amb**: **Secret** o **Certificat** | Secret: el **Secret del client**. Certificat: el **Certificat** PEM i la seva clau privada, només per al correu a través de Microsoft 365 |
+| Microsoft Entra ID | **Inicia la sessió amb**: **Secret** o **Certificat** | Secret: el **Secret del client**. Certificat: el **Certificat** PEM i la seva clau privada, per al correu a través de Microsoft 365, i un **Secret del client** opcional que es conserva per a l'inici de sessió SSO |
 
 Una credencial només conserva el que necessita la seva tria: una SSH mai no té alhora una contrasenya i una clau, l'altra s'elimina en desar.
 Amb **Escriu a una clau** al pas **Magatzem**, només s'ofereixen les tries amb contrasenya, no **Clau privada**, **Sense inici de sessió** ni **Certificat**.

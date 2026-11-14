@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Kanały powiadomień
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,9 @@ Poświadczenie Entra ID może logować się certyfikatem zamiast client secret, 
 3. W poświadczeniu ustaw **Logowanie za pomocą** na **Certyfikat** i wklej **Certyfikat** oraz jego klucz prywatny, **Klucz klienta**
    (PEM, RSA, bez hasła). Oba są sprawdzane przy **Zapisz**; klucz jest przechowywany zaszyfrowany i nigdy więcej nie jest pokazywany.
 
-Dostawca SSO zawsze loguje się client secret, więc poświadczenie używane do logowania i do poczty też zachowuje swój sekret. W
-[config seed](../seed/) poświadczenie `entraid` przechowuje certyfikat w `client_cert`, a jego klucz w `client_key`, a kanał
-pocztowy przyjmuje `send_through: graph` lub `send_through: smtp`.
+Logowanie SSO zawsze używa client secret: gdy wybrano **Certyfikat**, poświadczenie pokazuje do tego opcjonalny **Client secret**, więc
+jedno poświadczenie może służyć i do logowania, i do poczty. W [config seed](../seed/) poświadczenie `entraid` przechowuje certyfikat w
+`client_cert`, a jego klucz w `client_key`, a kanał pocztowy przyjmuje `send_through: graph` lub `send_through: smtp`.
 
 ---
 

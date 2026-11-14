@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Meldingskanalen
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,10 @@ Een Entra ID-referentie kan zich aanmelden met een certificaat in plaats van haa
 3. Zet op de referentie **Aanmelden met** op **Certificaat** en plak het **Certificaat** en de privésleutel ervan, de **Clientsleutel** (PEM, RSA,
    zonder wachtwoordzin). Beide worden gecontroleerd bij **Opslaan**; de sleutel wordt versleuteld opgeslagen en nooit meer getoond.
 
-Een SSO-provider meldt zich altijd aan met het clientgeheim, dus een referentie die voor zowel aanmelding als mail dient, behoudt ook haar geheim.
-In de [configuratie-seed](../seed/) draagt een `entraid`-referentie het certificaat in `client_cert` en de sleutel in `client_key`, en het
-mailkanaal neemt `send_through: graph` of `send_through: smtp`.
+De SSO-aanmelding gebruikt altijd het client secret: met **Certificaat** gekozen toont de referentie daarvoor een optioneel
+**Client secret**, zodat één referentie zowel aanmelding als mail kan bedienen. In de [configuratie-seed](../seed/) draagt een
+`entraid`-referentie het certificaat in `client_cert` en de sleutel in `client_key`, en het mailkanaal neemt `send_through: graph` of
+`send_through: smtp`.
 
 ---
 

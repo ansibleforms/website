@@ -3,7 +3,7 @@ layout: default
 title: Tipos de credencial
 parent: Credenciales
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Tipos de credencial
@@ -59,7 +59,7 @@ Desde la 7.6.0 el paso **Acceso** de estos tipos pregunta primero cómo inicia s
 | AWX, AAP, Ascender | **Iniciar sesión con**: **Token** o **Contraseña** | Token: el **Token**, sin usuario. Contraseña: el usuario y su contraseña |
 | Git | **Iniciar sesión con**: **Token** o **Contraseña** | Token: el **Token**, sin usuario (git envía entonces el usuario `oauth2`). Contraseña: el usuario y su contraseña |
 | SMTP | **Iniciar sesión con**: **Sin inicio de sesión** o **Inicio de sesión** | Sin inicio de sesión, para un relay: solo el **Servidor de correo**, el **Puerto de correo** y **Usar TLS**. Inicio de sesión: esos, más el usuario y su contraseña |
-| Microsoft Entra ID | **Iniciar sesión con**: **Secreto** o **Certificado** | Secreto: el **Secreto de cliente**. Certificado: el **Certificado** PEM y su clave privada, solo para el correo a través de Microsoft 365 |
+| Microsoft Entra ID | **Iniciar sesión con**: **Secreto** o **Certificado** | Secreto: el **Secreto de cliente**. Certificado: el **Certificado** PEM y su clave privada, para el correo a través de Microsoft 365, y un **Secreto de cliente** opcional que se conserva para el inicio de sesión SSO |
 
 Una credencial guarda solo lo que pide su opción: una SSH nunca tiene a la vez una contraseña y una clave, la otra se descarta al guardar.
 Con **Escribir en una clave** en el paso **Almacén**, solo se ofrecen las opciones con contraseña, no **Clave privada**, **Sin inicio de sesión** ni **Certificado**.

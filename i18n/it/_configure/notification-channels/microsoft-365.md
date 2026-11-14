@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canali di notifica
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,10 @@ Una credenziale Entra ID può accedere con un certificato invece del suo client 
 3. Sulla credenziale, imposta **Accedi con** su **Certificato** e incolla il **Certificato** e la sua chiave privata, la **Chiave client**
    (PEM, RSA, senza passphrase). Entrambi vengono verificati al **Salva**; la chiave è salvata cifrata e non viene più mostrata.
 
-Un provider SSO accede sempre con il client secret, quindi una credenziale usata sia per l'accesso sia per la mail mantiene anche il suo
-segreto. Nel [config seed](../seed/), una credenziale `entraid` porta il certificato in `client_cert` e la sua chiave in `client_key`, e
-il canale mail prende `send_through: graph` o `send_through: smtp`.
+L'accesso SSO usa sempre il client secret: con **Certificato** scelto, la credenziale mostra un **Client secret** facoltativo per
+questo, quindi una sola credenziale può servire sia per l'accesso sia per la mail. Nel [config seed](../seed/), una credenziale
+`entraid` porta il certificato in `client_cert` e la sua chiave in `client_key`, e il canale mail prende `send_through: graph` o
+`send_through: smtp`.
 
 ---
 

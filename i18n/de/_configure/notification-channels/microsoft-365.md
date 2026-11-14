@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Benachrichtigungskanäle
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,10 @@ Ein Entra ID-Eintrag kann sich statt mit seinem Client-Secret mit einem Zertifik
 3. Setzen Sie am Eintrag **Anmelden mit** auf **Zertifikat** und fügen Sie das **Zertifikat** und seinen privaten Schlüssel als **Client-Schlüssel** ein (PEM, RSA,
    ohne Passphrase). Beide werden beim **Speichern** geprüft; der Schlüssel wird verschlüsselt gespeichert und nie wieder angezeigt.
 
-Ein SSO-Anbieter meldet sich immer mit dem Client-Secret an, daher behalten Anmeldedaten, die für Anmeldung und Mail dienen, auch ihr
-Secret. Im [Config-Seed](../seed/) trägt ein `entraid`-Eintrag das Zertifikat in `client_cert` und seinen Schlüssel in `client_key`, und
-der Mail-Kanal nimmt `send_through: graph` oder `send_through: smtp`.
+Die SSO-Anmeldung nutzt immer das Client-Secret: Mit **Zertifikat** zeigen die Anmeldedaten dafür ein optionales **Client-Secret**,
+sodass dieselben Anmeldedaten für Anmeldung und Mail dienen können. Im [Config-Seed](../seed/) trägt ein `entraid`-Eintrag das
+Zertifikat in `client_cert` und seinen Schlüssel in `client_key`, und der Mail-Kanal nimmt `send_through: graph` oder
+`send_through: smtp`.
 
 ---
 

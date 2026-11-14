@@ -97,9 +97,9 @@ An Entra ID credential can sign in with a certificate instead of its client secr
 3. On the credential, set **Sign in with** to **Certificate** and paste the **Certificate** and its private key, the **Client key** (PEM, RSA,
    without a passphrase). Both are checked on **Save**; the key is stored encrypted and never shown again.
 
-An SSO provider always signs in with the client secret, so a credential used for both sign-in and mail keeps its secret too. In the
-[config seed](../seed/), an `entraid` credential carries the certificate in `client_cert` and its key in `client_key`, and the mail
-channel takes `send_through: graph` or `send_through: smtp`.
+The SSO sign-in always uses the client secret: with **Certificate** chosen, the credential shows an optional **Client secret** for it,
+so one credential can serve both sign-in and mail. In the [config seed](../seed/), an `entraid` credential carries the certificate in
+`client_cert` and its key in `client_key`, and the mail channel takes `send_through: graph` or `send_through: smtp`.
 
 ---
 

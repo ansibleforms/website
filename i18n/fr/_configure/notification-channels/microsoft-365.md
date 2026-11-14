@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canaux de notification
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,10 @@ Un identifiant Entra ID peut se connecter avec un certificat au lieu de son secr
 3. Sur l'identifiant, réglez **Se connecter avec** sur **Certificat** et collez le **Certificat** et sa clé privée, la **Clé client** (PEM, RSA, sans phrase
    secrète). Les deux sont vérifiés au moment d'**Enregistrer** ; la clé est stockée chiffrée et n'est plus jamais affichée.
 
-Un fournisseur SSO se connecte toujours avec le secret client, si bien qu'un identifiant utilisé à la fois pour l'authentification et pour le mail garde
-aussi son secret. Dans le [seed de configuration](../seed/), un identifiant `entraid` porte le certificat dans `client_cert` et sa clé dans
-`client_key`, et le canal mail prend `send_through: graph` ou `send_through: smtp`.
+La connexion SSO utilise toujours le secret client : avec **Certificat** choisi, l'identifiant affiche un **Secret client** facultatif
+pour elle, si bien qu'un même identifiant peut servir à la fois à l'authentification et au mail. Dans le [seed de
+configuration](../seed/), un identifiant `entraid` porte le certificat dans `client_cert` et sa clé dans `client_key`, et le canal mail
+prend `send_through: graph` ou `send_through: smtp`.
 
 ---
 

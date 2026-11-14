@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canales de notificación
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,10 @@ Una credencial Entra ID puede iniciar sesión con un certificado en lugar de su 
 3. En la credencial, pon **Iniciar sesión con** en **Certificado** y pega el **Certificado** y su clave privada, la **Clave de cliente** (PEM, RSA, sin
    frase de contraseña). Ambos se comprueban al pulsar **Guardar**; la clave se guarda cifrada y no se vuelve a mostrar.
 
-Un proveedor SSO siempre inicia sesión con el secreto de cliente, así que una credencial usada para el inicio de sesión y para el correo
-conserva también su secreto. En la [semilla de configuración](../seed/), una credencial `entraid` lleva el certificado en `client_cert` y
-su clave en `client_key`, y el canal de correo toma `send_through: graph` o `send_through: smtp`.
+El inicio de sesión SSO siempre usa el secreto de cliente: con **Certificado** elegido, la credencial muestra un **Secreto de cliente**
+opcional para ello, así que una misma credencial puede servir para el inicio de sesión y para el correo. En la [semilla de
+configuración](../seed/), una credencial `entraid` lleva el certificado en `client_cert` y su clave en `client_key`, y el canal de
+correo toma `send_through: graph` o `send_through: smtp`.
 
 ---
 

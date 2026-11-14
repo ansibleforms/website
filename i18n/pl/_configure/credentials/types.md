@@ -3,7 +3,7 @@ layout: default
 title: Typy poświadczeń
 parent: Poświadczenia
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Typy poświadczeń
@@ -59,7 +59,7 @@ Od wersji 7.6.0 krok **Logowanie** tych typów najpierw pyta, jak poświadczenie
 | AWX, AAP, Ascender | **Logowanie za pomocą**: **Token** lub **Hasło** | Token: **Token**, bez użytkownika. Hasło: użytkownik i jego hasło |
 | Git | **Logowanie za pomocą**: **Token** lub **Hasło** | Token: **Token**, bez użytkownika (git wysyła wtedy użytkownika `oauth2`). Hasło: użytkownik i jego hasło |
 | SMTP | **Logowanie za pomocą**: **Bez logowania** lub **Logowanie** | Bez logowania, dla przekaźnika: tylko **Serwer poczty**, **Port poczty** i **Używaj TLS**. Logowanie: te pola oraz użytkownik i jego hasło |
-| Microsoft Entra ID | **Logowanie za pomocą**: **Sekret** lub **Certyfikat** | Sekret: **Client secret**. Certyfikat: **Certyfikat** PEM i jego klucz prywatny, tylko do poczty przez Microsoft 365 |
+| Microsoft Entra ID | **Logowanie za pomocą**: **Sekret** lub **Certyfikat** | Sekret: **Client secret**. Certyfikat: **Certyfikat** PEM i jego klucz prywatny, do poczty przez Microsoft 365, oraz opcjonalny **Client secret** zachowywany do logowania SSO |
 
 Poświadczenie zachowuje tylko to, czego wymaga jego wybór: poświadczenie SSH nigdy nie ma jednocześnie hasła i klucza, drugie jest usuwane
 przy zapisie. Przy **Zapisz w kluczu** w kroku **Magazyn** oferowane są tylko wybory z hasłem, bez **Klucz prywatny**, **Bez logowania** i **Certyfikat**.
