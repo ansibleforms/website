@@ -5,7 +5,7 @@ parent: Jobs
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Opgeslagen jobs
@@ -40,6 +40,10 @@ met dezelfde naam opslaan mislukt met "Er bestaat al een opgeslagen formulier me
 ## Opgeslagen jobs beheren
 
 De pagina **Opgeslagen invoer** toont de opgeslagen jobs met hun formulier, gebruiker, aanmaak- en vervaldatum, en vereist `allowStoredJobs`.
+
+Vanaf 7.6.0 opent `allowStoredJobs` alleen al **Jobs > Opgeslagen** en **Opgeslagen invoer toevoegen**, waarvoor eerder ook `showSettings` of
+`allowScheduledJobs` nodig was. De lijst **Formulier** biedt de formulieren die je rollen mogen openen; gebruikers met `showSettings` of `allowScheduledJobs` krijgen
+daar elk formulier te zien.
 
 - **Bewerken** opent de eigen pagina van de opgeslagen job: de **Details** (naam, formulier, vervaldatum) en de **Waarden**, de opgeslagen
   veldwaarden als YAML, die je daar kunt wijzigen en opslaan.

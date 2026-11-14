@@ -2,7 +2,7 @@
 layout: default
 title: Probleemoplossing
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Probleemoplossing
@@ -685,6 +685,9 @@ The form data is not valid
 De server heeft de veldwaarden gecontroleerd tegen de regels van het formulier en ontbrekende of ongeldige velden gevonden; het antwoord somt
 ze op onder `details`. Een start zonder `rawFormData` wordt ook geweigerd. Een formulier dat nog niet kan worden gecontroleerd, zoals een wizard,
 wordt geweigerd met `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
+
+Vanaf 7.6.0 noemt de melding van het formulier de velden bij hun labels, de velden die je moet invullen en die waarvan de waarden nog laden:
+*De formuliergegevens zijn niet geldig. Invullen: Owner. Nog aan het laden: Disks.*
 
 **Hoe je het oplost**
 

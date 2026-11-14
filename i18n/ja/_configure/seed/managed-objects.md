@@ -3,7 +3,7 @@ layout: default
 title: 管理対象オブジェクト
 parent: 構成シード
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # 管理対象オブジェクト
@@ -24,7 +24,7 @@ translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
 フィールドを省いたシードは起動を拒否し、そのフィールドの名前を示します。
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 空の値は `""` または `false` で明示的に宣言します。いくつかのフィールドは任意で、省いた場合は変更されません。
@@ -33,9 +33,9 @@ Config seed failed, refusing to start: Seed file validation failed: /settings mu
 |---|---|
 | `ldap` | `description` 、 `credential` （バインドに使う認証情報）、 `groupfilter` |
 | `chat` | `auth_type` 、 `api_version` 、 `request_user` 、 `ignore_certs` 、 `extra_headers` |
-| `settings` | なし |
+| `settings` | `mail_*` キー。7.6.0 から非推奨です（ [例](example.html) を参照） |
 
-`settings` が対象とするのはメールのフィールドと URL だけです。ほかの設定はすべて編集可能なままです。
+`settings` が対象とするのは URL と、非推奨のメールのキーだけです。ほかの設定はすべて編集可能なままです。
 
 ---
 

@@ -5,7 +5,7 @@ parent: Jobs
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Jobs enregistrés
@@ -40,6 +40,9 @@ un second job portant le même nom échoue avec « Un formulaire enregistré por
 ## Gérer les jobs enregistrés
 
 La page **Jobs enregistrés** liste les jobs enregistrés avec leur formulaire, leur utilisateur et leurs dates de création et d'expiration, et nécessite `allowStoredJobs`.
+
+Depuis la 7.6.0, `allowStoredJobs` suffit à ouvrir **Jobs > Enregistrés** et **Ajouter un job enregistré**, qui demandaient avant aussi `showSettings` ou
+`allowScheduledJobs`. Sa liste **Formulaire** propose les formulaires que vos rôles ouvrent ; les utilisateurs avec `showSettings` ou `allowScheduledJobs` ont tous les formulaires.
 
 - **Modifier** ouvre la page propre au job enregistré : ses **Détails** (nom, formulaire, expiration) et ses **Valeurs**, les valeurs de champ
   enregistrées en YAML, qui peuvent y être modifiées et enregistrées.

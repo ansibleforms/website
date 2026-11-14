@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # Canaux de notification
@@ -27,7 +27,8 @@ Pour les administrateurs : ajoutez les serveurs mail et les canaux de chat vers 
 
 | Page | Ce qu'elle couvre |
 |---|---|
-| [Mail](notification-channels/mail.html) | Les serveurs SMTP, celui par défaut, et leur accès |
+| [Mail](notification-channels/mail.html) | Les serveurs mail, celui par défaut, et la façon dont ils se connectent |
+| [Microsoft 365](notification-channels/microsoft-365.html) | Le mail via Microsoft 365 avec OAuth2, depuis la 7.6.0 |
 | [Slack et Microsoft Teams](notification-channels/slack-and-teams.html) | Un webhook de canal Slack ou Teams |
 | [Telegram](notification-channels/telegram.html) | Un bot qui publie dans un chat Telegram |
 | [Webhook](notification-channels/webhook.html) | Une requête JSON vers n'importe quel endpoint HTTP |
@@ -44,7 +45,7 @@ l'un de ces types :
 
 | Type | Ce qu'il envoie |
 |---|---|
-| Mail | Du mail via un serveur SMTP : demandes d'approbation et notifications de job. |
+| Mail | Du mail via un serveur SMTP ou Microsoft 365 : demandes d'approbation et notifications de job. |
 | Slack | Un message dans un canal Slack, via son webhook entrant, avec un bouton vers le job. |
 | Microsoft Teams | Une carte dans un canal Teams, via un webhook Workflows, avec un bouton vers le job. |
 | Telegram | Un message d'un bot dans un chat Telegram, avec un lien vers le job. |

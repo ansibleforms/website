@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Pola formularza
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Pole List
@@ -27,6 +27,7 @@ Pole list oferuje następujące możliwości:
 - Właściwości znaczników (`insertMarker`, `updateMarker`, `deleteMarker`) wspierają idempotentne wzorce playbooków.
 - Przy `allowDelete: false` istniejące wcześniej wiersze są chronione; usunąć można tylko wiersze dodane w bieżącej sesji (oznaczone `insertMarker`).
 - Właściwość `columns` określa, które pola podformularza pojawiają się jako kolumny w tabeli podsumowania.
+- Od wersji 7.6.0 `readonlyColumns` zostawia wybrane pola podformularza tylko do odczytu w istniejących wierszach, a nowe wiersze nadal je wypełniają.
 - Wynikiem jest zawsze tablica obiektów. Właściwości `model`, `output`, `outputObject` i `valueColumn` zadeklarowane w polach podformularza są respektowane przy generowaniu extravars.
 
 ---
@@ -228,6 +229,24 @@ Wstępnie załadowane wiersze są chronione, a znaczniki mówią playbookowi, kt
     - name
     - email
 ```
+
+### Kolumny tylko do odczytu w istniejących wierszach
+
+Od wersji 7.6.0 lista wskazuje w `readonlyColumns` pola podformularza, które wiersze już w niej obecne zachowują bez zmian:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Edycja istniejącego wiersza pokazuje te pola z kłódką, wyłączone, a wiersz zachowuje ich wartości; nowy wiersz wypełnia je jak każde
+inne pole, a walidacja nadal obowiązuje. Właściwość jest ustawiana na liście, nie w podformularzu, więc ten sam podformularz może być
+tylko do odczytu w jednej liście i edytowalny w innej. Zastępuje ona `readonlyColumns` dawnego pola `table`.
 
 ### Wstępne wypełnianie wierszy
 

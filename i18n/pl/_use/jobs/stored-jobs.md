@@ -5,7 +5,7 @@ parent: Zadania
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Zapisane zadania
@@ -40,6 +40,10 @@ drugiego z tą samą nazwą kończy się błędem „Zapisany formularz o tej na
 ## Zarządzanie zapisanymi zadaniami
 
 Strona **Zapisane zadania** wyświetla zapisane zadania z ich formularzem, użytkownikiem, datą utworzenia i wygaśnięcia i wymaga `allowStoredJobs`.
+
+Od wersji 7.6.0 samo `allowStoredJobs` otwiera **Zadania > Zapisane** i **Dodaj zapisane zadanie**, które wcześniej wymagały także
+`showSettings` lub `allowScheduledJobs`. Jego lista **Formularz** oferuje formularze, które otwierają Twoje role; użytkownicy z `showSettings`
+lub `allowScheduledJobs` dostają każdy formularz.
 
 - **Edytuj** otwiera własną stronę zapisanego zadania: jego **Szczegóły** (nazwa, formularz, wygaśnięcie) i **Wartości**, czyli zapisane
   wartości pól jako YAML, które można tam zmienić i zapisać.

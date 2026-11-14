@@ -3,7 +3,7 @@ layout: default
 title: 升级到 v7
 parent: 升级
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # 升级到 v7
@@ -43,6 +43,8 @@ translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
 版本 7 会拒绝 `table` 字段，其属性（`tableFields`、`insertColumns`、`readonlyColumns`、
 `tableTitleAdd`、`tableTitleEdit`）也随之移除：请使用带 `subform` 的 `list` 字段，并把每列的 `from` 改为基于
 `__parent__` 的表达式（参见 [常见问题](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)）。
+
+从 7.6.0 起， `list` 字段重新支持 `readonlyColumns` ，用于其已有的行（参见 [List](formfields/list.html)）。
 
 ### 重命名的属性
 
@@ -281,6 +283,8 @@ Kubernetes 会自行重启 pod。
 | `RTE_REGISTER`（自 7.3.0 起，仅限数据库模式） | 加入令牌（`RTE_JOIN_TOKEN`）：RTE 会把自己添加为使用 RTE 凭据登录的运行器。 |
 | 配置种子中运行器上的 `api` 或 `userpass` 凭据（自 7.3.0 起） | 与运行器种类相同的凭据（`credential_type: rte`、`awx`、`aap`、`ascender`、`semaphore`、`rundeck` 或 `jenkins`），其服务器写在 `url` 中。 |
 | 配置种子中带有自己的 `token`，或 `username` 和 `password` 的运行器（自 7.3.0 起） | `credentials` 部分中与运行器种类相同的凭据，其服务器写在 `url` 中，由运行器用 `credential:` 引用。在此期间，种子会创建一个以该运行器命名的凭据。 |
+| 配置种子 `settings:` 中的邮件键（`mail_server`、`mail_port`、`mail_secure`、`mail_username`、`mail_password`、`mail_from`）（自 7.6.0 起） | `notification_channels:` 下的邮件通道，带有 `credentials` 部分中的 smtp 凭据，中继时则使用其自身的 `server`、`port` 和 `secure`。在此期间，种子会将它们转换为邮件通道 `default`。参见 [邮件](notification-channels/mail.html)。 |
+| `GET` 和 `PUT /api/v2/settings/config` 中的 `forms_yaml`（自 7.6.0 起） | `config_yaml`。带 `forms_yaml` 的 `PUT` 仍然有效，并会记录一条警告。 |
 
 自 7.3.0 起不再读取 `ENABLE_SSO` 和 `SSO_AUTO_LOGIN`。7.3 首次启动时会把它们迁移一次：`ENABLE_SSO=0` 会禁用
 所有 SSO 提供方，`SSO_AUTO_LOGIN=1` 会在唯一启用的提供方上勾选 **跳过登录页**。之后它们会被忽略：只要它们仍被设置，每次启动

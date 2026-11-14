@@ -76,7 +76,7 @@ The RTE is a container, so the host needs a container engine and nothing else: N
 
 | Need | Why |
 |---|---|
-| Linux on **x86_64** (amd64) | The RTE images are published for amd64 only |
+| Linux on **x86_64** (amd64) or **aarch64** (arm64) | The RTE images are published for both from 7.6.0, for amd64 only before |
 | 2 CPU and 4 GB of memory, or more | One RTE runs up to [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks at once (10), each with its forks: size it for them |
 | 20 GB of free disk | The `-rte-full` image is about 3.3 GB, plus an image during updates, the job files the app sends and the jobs' temporary files |
 | Docker, or Podman with podman-compose | To pull and run the image |

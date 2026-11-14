@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # Canali di notifica
@@ -27,7 +27,8 @@ Per gli amministratori: aggiungi i server mail e i canali di chat a cui i moduli
 
 | Pagina | Cosa tratta |
 |---|---|
-| [Mail](notification-channels/mail.html) | I server SMTP, quello predefinito, e il loro accesso |
+| [Mail](notification-channels/mail.html) | I server mail, quello predefinito, e come accedono |
+| [Microsoft 365](notification-channels/microsoft-365.html) | Mail tramite Microsoft 365 con OAuth2, dalla 7.6.0 |
 | [Slack e Microsoft Teams](notification-channels/slack-and-teams.html) | Un webhook di canale di Slack o Teams |
 | [Telegram](notification-channels/telegram.html) | Un bot che pubblica in una chat Telegram |
 | [Webhook](notification-channels/webhook.html) | Una richiesta JSON a qualsiasi endpoint HTTP |
@@ -44,7 +45,7 @@ uno di questi tipi:
 
 | Tipo | Cosa invia |
 |---|---|
-| Mail | Mail tramite un server SMTP: richieste di approvazione e notifiche dei job. |
+| Mail | Mail tramite un server SMTP o Microsoft 365: richieste di approvazione e notifiche dei job. |
 | Slack | Un messaggio in un canale Slack, tramite il suo webhook in entrata, con un pulsante per il job. |
 | Microsoft Teams | Una scheda in un canale Teams, tramite un webhook di Workflows, con un pulsante per il job. |
 | Telegram | Un messaggio di un bot in una chat Telegram, con un collegamento al job. |

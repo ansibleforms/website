@@ -3,7 +3,7 @@ layout: default
 title: 镜像
 parent: RTE
 nav_order: 1
-translated_from: cb917c5cb9cbca9d530398171265e91f1ba8e94b
+translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
 ---
 
 # RTE 镜像
@@ -28,6 +28,9 @@ RTE 分三层发布，每一层都基于前一层构建，标签与应用相同�
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | core 层，加上基于同一 ansible-core 的 `ansible` 包，以及 AnsibleForms 6.5 镜像中原有的内容：NetApp、AWS 和 community 集合、`pandas`、`pyvmomi`、`boto3`、mariadb 客户端、ytt 和一些操作系统工具 | **默认镜像。** 直接运行即可：来自 6.5 的 playbook 能找到它们原来使用的内容 |
 
 与应用镜像一样，每一层都以用户 `node`（uid 1000）运行，playbook 也以该用户运行。
+
+从 7.6.0 起，每一层都以同一标签同时发布 `linux/amd64` 和 `linux/arm64` 版本。您基于某一层构建的 RTE，其架构取决于
+构建它的机器：对于 arm64 主机，请在 arm64 机器上构建，或使用 `docker buildx build --platform linux/arm64` 构建。
 
 ---
 

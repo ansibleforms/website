@@ -3,7 +3,7 @@ layout: default
 title: Poświadczenia
 parent: Wyrażenia
 nav_order: 4
-translated_from: bfa50c90495c68300d189f9a0eb38e25df9e7c8e
+translated_from: e599378365aae2598c5e3ec20f8808b995863764
 ---
 
 # Poświadczenia
@@ -25,6 +25,8 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 ```
 
 Najpierw sprawdzana jest dokładna nazwa. Gdy żadne poświadczenie nie ma takiej nazwy, nazwa jest traktowana jako wyrażenie regularne, a potem sprawdzana jest wartość zapasowa.
+
+Od wersji 7.6.0 poświadczenie typu Użytkownik i hasło lub API może mieć też `host` i `port`, zobacz [Typy poświadczeń](../credentials/types.html#host-and-port-of-a-login).
 
 #### Ograniczenie przez rolę
 

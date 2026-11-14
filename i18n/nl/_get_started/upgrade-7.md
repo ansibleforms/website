@@ -3,7 +3,7 @@ layout: default
 title: Upgraden naar v7
 parent: Upgraden
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # Upgraden naar v7
@@ -43,6 +43,8 @@ Formulieren staan alleen nog in de map met formulieren (`FORMS_FOLDER_PATH`) of 
 Versie 7 weigert velden van het type `table`, en hun eigenschappen (`tableFields`, `insertColumns`, `readonlyColumns`,
 `tableTitleAdd`, `tableTitleEdit`) verdwijnen mee: gebruik een veld `list` met een `subform`, en maak van de `from` van elke kolom een expressie
 op `__parent__` (zie de [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
+
+Vanaf 7.6.0 neemt een `list`-veld weer `readonlyColumns`, voor de rijen die het al bevat (zie [Veld List](formfields/list.html)).
 
 ### Hernoemde eigenschappen
 
@@ -282,6 +284,8 @@ Deze werken nog in 7, maar elk logt een waarschuwing als het wordt gebruikt. Sta
 | `RTE_REGISTER`, sinds 7.3.0 (alleen databasemodus) | Een jointoken (`RTE_JOIN_TOKEN`): de RTE voegt zichzelf toe als runner die zich aanmeldt met een RTE-referentie. |
 | Een referentie `api` of `userpass` op een runner van de config seed, sinds 7.3.0 | Een referentie van het soort van de runner (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` of `jenkins`), met de server in `url`. |
 | Een runner van de config seed met een eigen `token`, of `username` en `password`, sinds 7.3.0 | Een referentie van het soort van de runner in de sectie `credentials`, met de server in `url`, die de runner noemt met `credential:`. De seed maakt intussen een referentie met de naam van de runner. |
+| De mailsleutels van `settings:` van de config seed (`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password`, `mail_from`), sinds 7.6.0 | Een mailkanaal onder `notification_channels:`, met een smtp-referentie uit de sectie `credentials`, of met een eigen `server`, `port` en `secure` voor een relay. De seed maakt er intussen het mailkanaal `default` van. Zie [Mail](notification-channels/mail.html). |
+| `forms_yaml` in `GET` en `PUT /api/v2/settings/config`, sinds 7.6.0 | `config_yaml`. Een `PUT` met `forms_yaml` werkt nog en logt een waarschuwing. |
 
 `ENABLE_SSO` en `SSO_AUTO_LOGIN` worden sinds 7.3.0 niet meer gelezen. De eerste start van 7.3 neemt ze één keer over: `ENABLE_SSO=0` schakelt
 elke SSO-provider uit, en `SSO_AUTO_LOGIN=1` vinkt **Aanmeldpagina overslaan** aan bij de enige ingeschakelde provider. Daarna worden ze genegeerd: elke start

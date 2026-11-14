@@ -3,7 +3,7 @@ layout: default
 title: Objectes gestionats
 parent: Llavor de configuració
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # Objectes gestionats
@@ -24,7 +24,7 @@ Com la llavor és propietària dels objectes que llista, i com manté els secret
 Una llavor que omet un camp es nega a arrencar i el nomena:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Declara un valor buit explícitament amb `""` o `false`. Alguns camps són opcionals, i un que s'omet es deixa sense canvis:
@@ -33,9 +33,9 @@ Declara un valor buit explícitament amb `""` o `false`. Alguns camps són opcio
 |---|---|
 | `ldap` | `description`, `credential` (una credencial amb què fer bind) i `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` i `extra_headers` |
-| `settings` | Cap |
+| `settings` | Les claus `mail_*`, obsoletes des de la 7.6.0 (vegeu [Exemple](example.html)) |
 
-`settings` només cobreix els camps de correu i la URL; tota la resta de la configuració continua sent editable.
+`settings` només cobreix la URL i les claus de correu obsoletes; tota la resta de la configuració continua sent editable.
 
 ---
 

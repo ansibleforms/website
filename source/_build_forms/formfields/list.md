@@ -26,6 +26,7 @@ The list field offers the following capabilities:
 - Marker properties (`insertMarker`, `updateMarker`, `deleteMarker`) support idempotent playbook patterns.
 - When `allowDelete: false`, pre-existing rows are protected; only rows added in the current session (carrying the `insertMarker`) can be deleted.
 - The `columns` property controls which subform fields appear as columns in the summary table.
+- From 7.6.0, `readonlyColumns` keeps chosen subform fields read only on existing rows, while new rows still fill them in.
 - The output is always an array of objects. `model`, `output`, `outputObject` and `valueColumn` declared on subform fields are honored when the extravars are generated.
 
 ---
@@ -227,6 +228,24 @@ Preloaded rows are protected, and the markers tell the playbook which rows are n
     - name
     - email
 ```
+
+### Read only columns on existing rows
+
+From 7.6.0 a list names the subform fields that rows it already holds keep as they are, with `readonlyColumns`:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Editing an existing row shows those fields with a lock, disabled, and the row keeps their values; a new row fills them in like any
+other field, and validation still applies. The property sits on the list, not on the subform, so one subform can be read only in one
+list and editable in another. It replaces the `readonlyColumns` of the old `table` field.
 
 ### Pre-populating rows
 

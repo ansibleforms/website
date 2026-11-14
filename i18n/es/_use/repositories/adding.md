@@ -3,7 +3,7 @@ layout: default
 title: Añadir un repositorio
 parent: Repositorios git
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Añadir un repositorio
@@ -64,7 +64,7 @@ Haz clic en **Añadir repositorio**: un asistente pide los campos en cuatro paso
 |---|---|---|
 | **Nombre** | sí | El nombre de la carpeta bajo `REPO_PATH`; letras, dígitos, guion, guion bajo y punto |
 | **Rama** | sí | La rama que se clona, de la que se hace pull y a la que se hace push, por ejemplo `main`; obligatoria desde 7.3.0. Solo un repositorio del config seed puede omitirla, para clonar la rama predeterminada del remoto |
-| **Credencial** | no | Una credencial de [Conexiones > Credenciales](../credentials.html) con el usuario y la contraseña o el token que usa git; **Añadir credencial** crea una |
+| **Credencial** | no | Una credencial de [Conexiones > Credenciales](../credentials.html) con la contraseña o el token que usa git, con el usuario opcional; **Añadir credencial** crea una |
 | **Uri** | sí | El remoto, `https://...` o SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Activar el pull programado** | no | Hacer pull del repositorio según una programación |
 | **Programación del pull** | no | Cuándo hacer pull, como expresión cron; se muestra una vez activado el pull programado |

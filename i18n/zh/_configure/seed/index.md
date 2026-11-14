@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
+translated_from: a13463bbe343f9ae4e95589ae364207832a16bde
 ---
 
 # 配置种子
@@ -40,7 +40,7 @@ translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
 | `notification_channels` | 用于通知的邮件服务器、Slack、Teams、Telegram 和 webhook             |
 | `labels`                | 页眉徽标旁的标签，从 7.3.0 起                                       |
 | `ldap`                  | LDAP 配置                                                           |
-| `settings`              | 公共 URL，以及没有活动邮件通道时使用的邮件设置                      |
+| `settings`              | 公共 URL；其邮件键自 7.6.0 起弃用，改用邮件通道                      |
 | `chat`                  | 聊天助手的模型提供商                                                |
 | `awx`                   | 自 7 起已弃用，将在 8 中移除：请使用 `type: awx` 的 `runners`       |
 

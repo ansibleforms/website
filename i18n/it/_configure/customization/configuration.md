@@ -3,7 +3,7 @@ layout: default
 title: Configurazione
 parent: Variabili d'ambiente
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Configurazione
@@ -52,6 +52,9 @@ Le categorie, i ruoli e le costanti arrivano da `config.yaml` su disco o dalla s
 
 Una `ENABLE_CONFIG_IN_DATABASE` impostata esplicitamente vince sempre, anche `0` su un `database` salvato. Viene letta ogni volta che
 la configurazione si carica, quindi una modifica si applica senza riavvio. La pagina **Stato** mostra l'origine in uso nella sua scheda **Informazioni**.
+
+La copia nel database è la colonna `config_yaml` della tabella `settings`, chiamata `forms_yaml` prima della 7.6.0: l'aggiornamento la
+rinomina e ne mantiene il contenuto. `GET /api/v2/settings/config` la restituisce come `config_yaml`, e anche come `forms_yaml`, deprecata.
 
 ---
 

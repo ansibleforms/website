@@ -3,7 +3,7 @@ layout: default
 title: Outro centro de dados
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # Um RTE noutro centro de dados
@@ -77,7 +77,7 @@ O RTE é um contentor, por isso o host precisa de um motor de contentores e de n
 
 | Necessidade | Porquê |
 |---|---|
-| Linux em **x86_64** (amd64) | As imagens do RTE só são publicadas para amd64 |
+| Linux em **x86_64** (amd64) ou **aarch64** (arm64) | As imagens do RTE são publicadas para ambas a partir da 7.6.0, só para amd64 antes |
 | 2 CPU e 4 GB de memória, ou mais | Um RTE corre até [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks ao mesmo tempo (10), cada um com os seus forks: dimensione-o para eles |
 | 20 GB de disco livre | A imagem `-rte-full` tem cerca de 3,3 GB, mais uma imagem durante as atualizações, os ficheiros das tarefas que a aplicação envia e os ficheiros temporários das tarefas |
 | Docker, ou Podman com podman-compose | Para descarregar e correr a imagem |

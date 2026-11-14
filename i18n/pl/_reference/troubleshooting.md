@@ -2,7 +2,7 @@
 layout: default
 title: Rozwiązywanie problemów
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Rozwiązywanie problemów
@@ -685,6 +685,9 @@ The form data is not valid
 Serwer sprawdził wartości pól względem reguł formularza i znalazł brakujące lub nieprawidłowe pola; odpowiedź wymienia
 je pod `details`. Uruchomienie bez `rawFormData` również jest odrzucane. Formularz, którego nie da się jeszcze sprawdzić, na przykład kreator,
 jest odrzucany komunikatem `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
+
+Od wersji 7.6.0 komunikat formularza wymienia pola po ich etykietach: te do wypełnienia i te, których wartości wciąż się wczytują:
+*Dane formularza są nieprawidłowe. Do wypełnienia: Owner. Nadal wczytywane: Disks.*
 
 **Jak to naprawić**
 

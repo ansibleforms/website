@@ -3,7 +3,7 @@ layout: default
 title: 示例
 parent: 配置种子
 nav_order: 1
-translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
+translated_from: 3b80574712dfc8f514f0ff20403fc53f1d521279
 ---
 
 # 示例
@@ -71,6 +71,11 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+    - name: m365-mail
+      credential_type: entraid   # an app registration, to send through Microsoft 365 (from 7.6.0)
+      tenant_id: ${SEED_M365_TENANT}
+      user: ${SEED_M365_CLIENT_ID}    # the client ID
+      password: ${SEED_M365_SECRET}   # the client secret ; or client_cert and client_key
 
 databases:                       # from 7.5.0
   items:
@@ -109,6 +114,17 @@ notification_channels:
       credential: smtp-login     # an smtp credential: the server, port, TLS and login it sends with
       from_address: ansibleforms@example.com
       is_active: true            # the mail channel the application sends its mail with
+    - name: relay
+      type: mail                 # no credential (from 7.6.0): its own server, sent without a login
+      server: relay.example.com
+      port: 25
+      secure: false
+      from_address: ansibleforms@example.com
+    - name: m365
+      type: mail
+      credential: m365-mail      # an entraid credential: mail through Microsoft 365
+      send_through: graph        # graph (the default) or smtp
+      from_address: noreply@example.com
     - name: ops-slack
       type: slack
       webhook_url: ${SEED_SLACK_WEBHOOK}
@@ -120,8 +136,8 @@ labels:
       enabled: true
       position: 1                # its place among the labels, lowest first
 
-# ldap and settings are single-row sections, so EVERY field must be declared - see
-# "Single-row sections are all or nothing" below. Empty is a perfectly good value.
+# ldap is a single-row section, so EVERY field must be declared - see "Single-row
+# sections are all or nothing" below. Empty is a perfectly good value.
 ldap:
   server: ldap.example.com
   port: 389
@@ -143,13 +159,7 @@ ldap:
   groupfilter: ""            # optional, see below
 
 settings:
-  mail_server: smtp.example.com
-  mail_port: 587
-  mail_secure: false
-  mail_username: ""
-  mail_password: ""
-  mail_from: ansibleforms@example.com
-  url: https://forms.example.com
+  url: https://forms.example.com   # the only key it needs from 7.6.0
 
 chat:                        # the chat assistant's model provider (6.5)
   provider: anthropic        # see below, or "" (chat off)
@@ -187,6 +197,11 @@ chat:                        # the chat assistant's model provider (6.5)
 省略的可选字段保持不变。
 
 聊天助手还需要 `ENABLE_CHAT=1`；参见 [聊天助手](../chat) 页面。
+
+邮件通过 `notification_channels:` 中的邮件通道发送（参见 [邮件](../notification-channels/mail.html)）。`settings:` 下的
+`mail_server`、`mail_port`、`mail_secure`、`mail_username`、`mail_password` 和 `mail_from` 键自 7.6.0 起弃用，
+并将在 8.0.0 中移除。它们仍然有效，并会记录一次警告：种子会将它们转换为名为 `default` 的邮件通道，有 `mail_username` 时
+带有 smtp 凭据 `mail-login`，中继时则使用其自身的服务器。请改为自行声明邮件通道及其凭据，如上文文件中的 `mail` 和 `smtp-login`。
 
 从 7.3.0 起，运行器使用其类型的凭据登录，该凭据在 `url` 中保存其服务器的地址。自带 `token`，
 或 `username` 和 `password` 的运行器仍然有效：种子会记录一条警告，并将它们转换为这样一个以运行器命名的凭据。

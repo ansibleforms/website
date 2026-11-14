@@ -3,7 +3,7 @@ layout: default
 title: Aktualizacja do v7
 parent: Aktualizacja
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # Aktualizacja do v7
@@ -43,6 +43,8 @@ Formularze znajdują się wyłącznie w folderze formularzy (`FORMS_FOLDER_PATH`
 Wersja 7 odrzuca pola `table`, a razem z nimi ich właściwości (`tableFields`, `insertColumns`, `readonlyColumns`,
 `tableTitleAdd`, `tableTitleEdit`): użyj pola `list` z `subform` i zamień `from` każdej kolumny na wyrażenie
 na `__parent__` (zobacz [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
+
+Od wersji 7.6.0 pole `list` znowu przyjmuje `readonlyColumns`, dla wierszy, które już zawiera (zobacz [Lista](formfields/list.html)).
 
 ### Zmienione nazwy właściwości
 
@@ -282,6 +284,8 @@ Te elementy nadal działają w 7, ale każdy zapisuje ostrzeżenie w dzienniku, 
 | `RTE_REGISTER`, od wersji 7.3.0 (tylko tryb bazy danych) | Token dołączenia (`RTE_JOIN_TOKEN`): RTE dodaje się jako runner, który loguje się poświadczeniem RTE. |
 | Poświadczenie `api` lub `userpass` w runnerze config seed, od wersji 7.3.0 | Poświadczenie rodzaju runnera (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` lub `jenkins`), z jego serwerem w `url`. |
 | Runner config seed z własnym `token` albo `username` i `password`, od wersji 7.3.0 | Poświadczenie rodzaju runnera w sekcji `credentials`, z jego serwerem w `url`, które runner wskazuje przez `credential:`. W międzyczasie seed tworzy jedno nazwane od runnera. |
+| Klucze poczty w `settings:` config seed (`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password`, `mail_from`), od wersji 7.6.0 | Kanał pocztowy w `notification_channels:`, z poświadczeniem smtp z sekcji `credentials` albo z własnymi `server`, `port` i `secure` dla przekaźnika. W międzyczasie seed robi z nich kanał pocztowy `default`. Zobacz [Poczta](notification-channels/mail.html). |
+| `forms_yaml` w `GET` i `PUT /api/v2/settings/config`, od wersji 7.6.0 | `config_yaml`. `PUT` z `forms_yaml` nadal działa i zapisuje ostrzeżenie w dzienniku. |
 
 `ENABLE_SSO` i `SSO_AUTO_LOGIN` nie są odczytywane od wersji 7.3.0. Pierwsze uruchomienie 7.3 przenosi je raz: `ENABLE_SSO=0` wyłącza
 wszystkich dostawców SSO, a `SSO_AUTO_LOGIN=1` zaznacza **Pomiń stronę logowania** u jedynego włączonego dostawcy. Potem są ignorowane: każde uruchomienie

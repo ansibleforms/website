@@ -28,6 +28,9 @@ The RTE is published in three layers, each built on the one before, with the sam
 
 Like the app image, every layer runs as the user `node` (uid 1000), and the playbooks run as that user too.
 
+From 7.6.0 every layer is published for `linux/amd64` and `linux/arm64` under the same tag. An RTE you build on one is built for the
+architecture of the machine that builds it: for arm64 hosts, build it on one, or with `docker buildx build --platform linux/arm64`.
+
 ---
 
 ## Build your own RTE

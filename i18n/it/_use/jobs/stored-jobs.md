@@ -5,7 +5,7 @@ parent: Job
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Job salvati
@@ -40,6 +40,9 @@ un secondo con lo stesso nome fallisce con "A saved form with this name already 
 ## Gestire i job salvati
 
 La pagina **Job salvati** elenca i job salvati con il loro modulo, utente, data di creazione e di scadenza, e richiede `allowStoredJobs`.
+
+Dalla 7.6.0 basta `allowStoredJobs` per **Job > Salvati** e **Aggiungi job salvato**, che prima chiedevano anche `showSettings` o
+`allowScheduledJobs`. La lista **Modulo** offre i moduli aperti dai tuoi ruoli; con `showSettings` o `allowScheduledJobs` li offre tutti.
 
 - **Modifica** apre la pagina del job salvato: i suoi **Dettagli** (nome, modulo, scadenza) e i suoi **Valori**, i valori dei
   campi salvati in YAML, che lì si possono modificare e salvare.

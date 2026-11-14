@@ -685,6 +685,9 @@ The server checked the field values against the form's rules and found missing o
 them under `details`. A launch without `rawFormData` is refused too. A form that cannot be checked yet, such as a wizard,
 is refused with `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
 
+From 7.6.0 the form's message names the fields by their labels, those to fill in and those whose values are still loading:
+*The form data is not valid. Fill in: Owner. Still loading: Disks.*
+
 **How to fix it**
 
 Correct the fields the details name, or the form's rules if they are too strict. Run under `log` first: it logs

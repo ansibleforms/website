@@ -3,7 +3,7 @@ layout: default
 title: Passer à la v7
 parent: Mise à niveau
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # Passer à la v7
@@ -43,6 +43,8 @@ Les formulaires ne se trouvent que dans le dossier des formulaires (`FORMS_FOLDE
 La version 7 rejette les champs `table`, et leurs propriétés (`tableFields`, `insertColumns`, `readonlyColumns`,
 `tableTitleAdd`, `tableTitleEdit`) disparaissent avec eux : utilisez un champ `list` avec un `subform`, et transformez le `from` de chaque colonne en expression
 sur `__parent__` (voir la [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
+
+Depuis la 7.6.0, un champ `list` accepte de nouveau `readonlyColumns`, pour les lignes qu'il contient déjà (voir [Liste](formfields/list.html)).
 
 ### Propriétés renommées
 
@@ -282,6 +284,8 @@ Ces éléments fonctionnent encore en 7, mais chacun écrit un avertissement dan
 | `RTE_REGISTER`, depuis la 7.3.0 (mode base de données uniquement) | Un jeton d'adhésion (`RTE_JOIN_TOKEN`) : le RTE s'ajoute lui-même comme runner qui s'authentifie avec un identifiant RTE. |
 | Un identifiant `api` ou `userpass` sur un runner du seed de configuration, depuis la 7.3.0 | Un identifiant du type du runner (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` ou `jenkins`), avec son serveur dans `url`. |
 | Un runner du seed de configuration avec son propre `token`, ou `username` et `password`, depuis la 7.3.0 | Un identifiant du type du runner dans la section `credentials`, avec son serveur dans `url`, que le runner nomme avec `credential:`. En attendant, le seed en crée un nommé d'après le runner. |
+| Les clés mail des `settings:` du seed de configuration (`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password`, `mail_from`), depuis la 7.6.0 | Un canal mail sous `notification_channels:`, avec un identifiant smtp de la section `credentials`, ou ses propres `server`, `port` et `secure` pour un relais. En attendant, le seed en fait le canal mail `default`. Voir [Mail](notification-channels/mail.html). |
+| `forms_yaml` dans `GET` et `PUT /api/v2/settings/config`, depuis la 7.6.0 | `config_yaml`. Un `PUT` avec `forms_yaml` fonctionne toujours et journalise un avertissement. |
 
 `ENABLE_SSO` et `SSO_AUTO_LOGIN` ne sont plus lus depuis la 7.3.0. Le premier démarrage en 7.3 les reprend une fois : `ENABLE_SSO=0` désactive
 tous les fournisseurs SSO, et `SSO_AUTO_LOGIN=1` coche **Passer la page de connexion** sur le seul fournisseur activé. Ils sont ensuite ignorés : chaque démarrage

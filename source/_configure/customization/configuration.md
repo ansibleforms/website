@@ -52,6 +52,9 @@ The categories, roles and constants come from `config.yaml` on disk or from its 
 An explicitly set `ENABLE_CONFIG_IN_DATABASE` always wins, even `0` over a stored `database`. It is read each time the
 configuration loads, so a change applies without a restart. The **Status** page shows the source in use on its **Information** tab.
 
+The copy in the database is the `config_yaml` column of the `settings` table, named `forms_yaml` before 7.6.0: the upgrade renames it
+and keeps its content. `GET /api/v2/settings/config` returns it as `config_yaml`, and also as `forms_yaml`, deprecated.
+
 ---
 
 ## Variables

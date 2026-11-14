@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: 表单字段
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # List 字段
@@ -27,6 +27,7 @@ list 字段提供以下功能：
 - 标记属性（ `insertMarker` 、 `updateMarker` 、 `deleteMarker` ）支持幂等的 playbook 模式。
 - 当 `allowDelete: false` 时，已有的行受到保护；只有在当前会话中添加的行（带有 `insertMarker` ）才能删除。
 - `columns` 属性控制哪些子表单字段作为列显示在汇总表格中。
+- 从 7.6.0 起， `readonlyColumns` 让选定的子表单字段在已有行上保持只读，而新行仍可填写这些字段。
 - 输出始终是一个对象数组。生成 extravars 时，会遵循子表单字段上声明的 `model` 、 `output` 、 `outputObject` 和 `valueColumn` 。
 
 ---
@@ -228,6 +229,24 @@ list 字段提供以下功能：
     - name
     - email
 ```
+
+### 已有行上的只读列
+
+从 7.6.0 起，列表可以用 `readonlyColumns` 指定其已有的行保持不变的子表单字段：
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+编辑已有行时，这些字段显示一把锁并处于禁用状态，该行保留其原有值；新行则像其他字段一样填写这些字段，
+校验照常进行。该属性设在列表上而不是子表单上，因此同一个子表单可以在一个列表中只读，在另一个列表中可编辑。
+它取代了旧 `table` 字段的 `readonlyColumns` 。
 
 ### 预填充行
 

@@ -3,7 +3,7 @@ layout: default
 title: Obrazy
 parent: RTE
 nav_order: 1
-translated_from: cb917c5cb9cbca9d530398171265e91f1ba8e94b
+translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
 ---
 
 # Obrazy RTE
@@ -28,6 +28,9 @@ RTE jest publikowane w trzech warstwach, z których każda jest zbudowana na pop
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | Warstwa core plus pakiet `ansible` na tym samym ansible-core i to, co miał obraz AnsibleForms 6.5: kolekcje NetApp, AWS i community, `pandas`, `pyvmomi`, `boto3`, klient mariadb, ytt i kilka narzędzi systemowych | **Domyślny.** Uruchamiaj go bez zmian: playbooki z 6.5 znajdą to, czego używały |
 
 Tak jak obraz aplikacji, każda warstwa działa jako użytkownik `node` (uid 1000) i playbooki też działają jako ten użytkownik.
+
+Od wersji 7.6.0 każda warstwa jest publikowana dla `linux/amd64` i `linux/arm64` pod tym samym tagiem. Własne RTE jest budowane dla
+architektury maszyny, która je buduje: dla hostów arm64 zbuduj je na takim hoście albo przez `docker buildx build --platform linux/arm64`.
 
 ---
 

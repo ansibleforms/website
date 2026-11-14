@@ -3,7 +3,7 @@ layout: default
 title: 凭据
 parent: 表达式
 nav_order: 4
-translated_from: bfa50c90495c68300d189f9a0eb38e25df9e7c8e
+translated_from: e599378365aae2598c5e3ec20f8808b995863764
 ---
 
 # 凭据
@@ -25,6 +25,8 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 ```
 
 首先尝试精确名称。如果没有凭据使用该名称，就把该名称当作正则表达式匹配，最后再尝试备用凭据。
+
+从 7.6.0 起，用户和密码凭据或 API 凭据也可以带有 `host` 和 `port` ，参见[凭据类型](../credentials/types.html#host-and-port-of-a-login)。
 
 #### 受角色限制
 

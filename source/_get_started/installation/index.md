@@ -64,7 +64,8 @@ Since 7, playbooks run on an RTE, published in three layers next to the app (see
 | `ghcr.io/ansibleforms/ansibleforms-rte-core` | The base with python, ansible-core and a few libraries: the one to add your collections to |
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | The core with the `ansible` package, its collections and libraries: the default RTE |
 
-The four images are built in the same run and carry the same tags, so an RTE tag always matches the app's.
+The four images are built in the same run and carry the same tags, so an RTE tag always matches the app's. From 7.6.0 every tag
+holds an image for `linux/amd64` and one for `linux/arm64`, and Docker, Podman and Kubernetes pull the one of the host by themselves.
 
 The old Docker Hub repository, `ansibleguy/ansibleforms`, is no longer updated. It keeps its existing
 releases but receives no new versions of either line. If you pull from it, switch

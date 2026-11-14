@@ -39,7 +39,7 @@ declares objects that previously existed only in the database:
 | `notification_channels` | Mail servers, Slack, Teams, Telegram and webhooks for notifications |
 | `labels`                | The labels beside the header's logo, from 7.3.0                      |
 | `ldap`                  | The LDAP configuration                                              |
-| `settings`              | The public URL, and the mail settings used when no mail channel is active |
+| `settings`              | The public URL; its mail keys are deprecated since 7.6.0, for a mail channel |
 | `chat`                  | The chat assistant's model provider                                 |
 | `awx`                   | Deprecated since 7, removed in 8: use `runners` with `type: awx`    |
 
