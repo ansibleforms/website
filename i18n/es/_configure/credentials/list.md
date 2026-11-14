@@ -21,8 +21,8 @@ número de registros, formularios y workflows que la nombran (consulta [Credenci
 |---|---|
 | Credencial | Nombre y descripción, ambos obligatorios. |
 | Tipo | Uno de 18 tipos, ver más abajo. |
+| Almacén | Dónde se guardan el usuario y la contraseña: **Base de datos** (cifrados en la base de datos de AnsibleForms) o **Almacén de secretos**, con el almacén y la **Referencia** dentro de él. No para CyberArk ni HashiCorp Vault, con los que inicia sesión un almacén de secretos. La **Referencia** aparece cuando se elige un almacén; su ejemplo sigue al almacén: una ruta de HashiCorp Vault o una cuenta de CyberArk. |
 | Acceso | Con qué y dónde inicia sesión el tipo, ver más abajo. |
-| Almacén | Dónde se guardan el usuario y la contraseña: **Base de datos** (cifrados en la base de datos de AnsibleForms) o **Almacén de secretos**, con el almacén y la **Referencia** dentro de él. No para CyberArk ni HashiCorp Vault, con los que inicia sesión un almacén de secretos. |
 
 El paso **Tipo** lista los tipos por su nombre: AAP, API, Ascender, AWX, CyberArk, Base de datos, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH y Usuario y contraseña (consulta [Tipos de credencial](types.html)).
@@ -40,6 +40,8 @@ El paso **Acceso** contiene todos los campos del tipo, la dirección incluida; n
 | Open ID | **Emisor** (obligatorio) y **URI de redirección** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, la dirección en la que inicia sesión, obligatorio, con **Omitir la verificación del certificado** y el **Paquete CA** |
 | CyberArk | **Certificado de cliente** y **Clave de cliente** |
+
+Con **Almacén de secretos**, no se piden el usuario ni la contraseña: los da el almacén. El paso **Acceso** solo conserva los campos de dirección del tipo (SSH, base de datos, servidores de correo y de directorio, la dirección de un servidor), y un acceso simple (Usuario y contraseña, Git, API) no tiene paso **Acceso**: se guarda desde el paso **Almacén**.
 
 Una fila abre la página propia de la credencial. Su menú ofrece **Editar**, **Probar conexión** (solo credenciales de base de datos) y **Eliminar**. La
 contraseña se cambia en la página de la credencial, en su pestaña **Acceso**.

@@ -21,8 +21,8 @@ translated_from: 986d768c15d0b91bdc3760026bd904d3f89ff3e0
 |---|---|
 | 凭据 | 名称和描述，均为必填。 |
 | 类型 | 18 种类型之一，见下文。 |
+| 存储 | 用户和密码的保存位置：**数据库**（加密保存在 AnsibleForms 数据库中）或 **密钥库**，并指定密钥库及其中的 **引用**。不适用于 CyberArk 和 HashiCorp Vault，因为密钥库本身用它们登录。 选择存储后才会显示**引用**；其示例随所选存储而定：HashiCorp Vault 路径或 CyberArk 账户。 |
 | 登录 | 该类型用什么登录以及登录到哪里，见下文。 |
-| 存储 | 用户和密码的保存位置：**数据库**（加密保存在 AnsibleForms 数据库中）或 **密钥库**，并指定密钥库及其中的 **引用**。不适用于 CyberArk 和 HashiCorp Vault，因为密钥库本身用它们登录。 |
 
 **类型** 步骤按名称列出各种类型：AAP、API、Ascender、AWX、CyberArk、数据库、Git、HashiCorp Vault、Jenkins、LDAP、
 Microsoft Entra ID、Open ID、RTE、Rundeck、Semaphore、SMTP、SSH，以及用户名和密码（参见 [凭据类型](types.html)）。
@@ -40,6 +40,8 @@ Microsoft Entra ID、Open ID、RTE、Rundeck、Semaphore、SMTP、SSH，以及�
 | Open ID | **颁发者**（必填）和 **重定向 URI** |
 | HashiCorp Vault、CyberArk、RTE、AWX、AAP、Ascender、Semaphore、Rundeck、Jenkins | **服务器**，即其登录的地址，必填，另有 **跳过证书验证** 和 **CA 证书包** |
 | CyberArk | **客户端证书** 和 **客户端密钥** |
+
+选择**密钥库**时，不会询问用户和密码：由存储提供。**登录**步骤只保留该类型的地址字段（SSH、数据库、邮件和目录服务器、服务器地址），而简单登录（用户和密码、Git、API）完全没有**登录**步骤：在**存储**步骤中保存。
 
 点击某一行会打开该凭据自己的页面。其菜单提供 **编辑**、**测试连接**（仅限数据库凭据）和 **删除**。
 密码在凭据页面的 **登录** 选项卡中修改。

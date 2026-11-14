@@ -21,8 +21,8 @@ nombre de registres, formularis i workflows que la nomenen (vegeu [Credencials e
 |---|---|
 | Credencial | Nom i descripció, tots dos obligatoris. |
 | Tipus | Un de 18 tipus, vegeu més avall. |
+| Magatzem | On es desen l'usuari i la contrasenya: **Base de dades** (xifrats a la base de dades d'AnsibleForms) o **Magatzem de secrets**, amb el magatzem i la **Referència** que hi ha dins. No per a CyberArk ni HashiCorp Vault, amb els quals inicia sessió un magatzem de secrets. La **Referència** apareix quan s'ha triat un magatzem; el seu exemple segueix el magatzem: un camí de HashiCorp Vault o un compte de CyberArk. |
 | Accés | Amb què i on inicia sessió el tipus, vegeu més avall. |
-| Magatzem | On es desen l'usuari i la contrasenya: **Base de dades** (xifrats a la base de dades d'AnsibleForms) o **Magatzem de secrets**, amb el magatzem i la **Referència** que hi ha dins. No per a CyberArk ni HashiCorp Vault, amb els quals inicia sessió un magatzem de secrets. |
 
 El pas **Tipus** llista els tipus pel seu nom: AAP, API, Ascender, AWX, CyberArk, Base de dades, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH i Usuari i contrasenya (vegeu [Tipus de credencial](types.html)).
@@ -40,6 +40,8 @@ El pas **Accés** conté tots els camps del tipus, l'adreça inclosa; no hi ha c
 | Open ID | **Emissor** (obligatori) i **URI de redirecció** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, l'adreça on inicia sessió, obligatori, amb **Omet la verificació del certificat** i el **Paquet de CA** |
 | CyberArk | **Certificat de client** i **Clau del client** |
+
+Amb **Magatzem de secrets**, no es demanen l'usuari ni la contrasenya: els dona el magatzem. El pas **Accés** només conserva els camps d'adreça del tipus (SSH, base de dades, servidors de correu i de directori, l'adreça d'un servidor), i un accés simple (Usuari i contrasenya, Git, API) no té pas **Accés**: es desa des del pas **Magatzem**.
 
 Una fila obre la pàgina pròpia de la credencial. El seu menú ofereix **Edita**, **Prova la connexió** (només credencials de base de dades) i **Suprimeix**. La
 contrasenya es canvia a la pàgina de la credencial, a la seva pestanya **Accés**.

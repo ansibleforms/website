@@ -21,8 +21,8 @@ nombre d'enregistrements, de formulaires et de workflows qui le nomment (voir [I
 |---|---|
 | Identifiant | Nom et description, tous deux obligatoires. |
 | Type | L'un des 18 types, voir plus bas. |
+| Stockage | Où sont conservés l'utilisateur et le mot de passe : **Base de données** (chiffrés dans la base de données d'AnsibleForms) ou **Coffre de secrets**, avec le coffre et la **Référence** qu'il contient. Pas pour CyberArk ni HashiCorp Vault, avec lesquels un coffre de secrets se connecte. La **Référence** apparaît une fois un coffre choisi ; son exemple suit le coffre : un chemin HashiCorp Vault ou un compte CyberArk. |
 | Connexion | Ce avec quoi le type se connecte et où, voir plus bas. |
-| Stockage | Où sont conservés l'utilisateur et le mot de passe : **Base de données** (chiffrés dans la base de données d'AnsibleForms) ou **Coffre de secrets**, avec le coffre et la **Référence** qu'il contient. Pas pour CyberArk ni HashiCorp Vault, avec lesquels un coffre de secrets se connecte. |
 
 L'étape **Type** liste les types par leur nom : AAP, API, Ascender, AWX, CyberArk, Base de données, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH, et Utilisateur et mot de passe (voir [Types d'identifiants](types.html)).
@@ -40,6 +40,8 @@ L'étape **Connexion** contient tous les champs du type, adresse comprise ; il n
 | Open ID | **Issuer** (obligatoire) et **URI de redirection** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Serveur**, l'adresse à laquelle il se connecte, obligatoire, avec **Ignorer la vérification du certificat** et le **Bundle CA** |
 | CyberArk | **Certificat client** et **Clé client** |
+
+Avec **Coffre de secrets**, l'utilisateur et le mot de passe ne sont pas demandés : le coffre les donne. L'étape **Connexion** ne garde alors que les champs d'adresse du type (SSH, base de données, serveurs de messagerie et d'annuaire, l'adresse d'un serveur), et une connexion simple (Utilisateur et mot de passe, Git, API) n'a pas d'étape **Connexion** : elle s'enregistre depuis l'étape **Stockage**.
 
 Une ligne ouvre la page de l'identifiant. Son menu propose **Modifier**, **Tester la connexion** (identifiants de base de données uniquement) et **Supprimer**. Le
 mot de passe se change sur la page de l'identifiant, dans son onglet **Connexion**.

@@ -21,8 +21,8 @@ liczbą rekordów, formularzy i workflowów, które je wskazują (zobacz [Poświ
 |---|---|
 | Poświadczenie | Nazwa i opis, oba wymagane. |
 | Typ | Jeden z 18 typów, zobacz niżej. |
+| Magazyn | Gdzie przechowywane są użytkownik i hasło: **Baza danych** (zaszyfrowane w bazie danych AnsibleForms) lub **Magazyn sekretów**, z magazynem i **Odwołaniem** w nim. Nie dotyczy CyberArk ani HashiCorp Vault, którymi loguje się magazyn sekretów. **Odwołanie** pojawia się po wybraniu magazynu; jego przykład zależy od magazynu: ścieżka HashiCorp Vault albo konto CyberArk. |
 | Logowanie | Czym i gdzie loguje się dany typ, zobacz niżej. |
-| Magazyn | Gdzie przechowywane są użytkownik i hasło: **Baza danych** (zaszyfrowane w bazie danych AnsibleForms) lub **Magazyn sekretów**, z magazynem i **Odwołaniem** w nim. Nie dotyczy CyberArk ani HashiCorp Vault, którymi loguje się magazyn sekretów. |
 
 Krok **Typ** wyświetla typy według nazwy: AAP, API, Ascender, AWX, CyberArk, Baza danych, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH oraz Użytkownik i hasło (zobacz [Typy poświadczeń](types.html)).
@@ -40,6 +40,8 @@ Krok **Logowanie** zawiera każde pole typu, łącznie z adresem; nie ma osobneg
 | Open ID | **Wystawca** (wymagany) i **Identyfikator URI przekierowania** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Serwer**, adres, do którego się loguje, wymagany, z **Pomiń weryfikację certyfikatu** i **Pakietem CA** |
 | CyberArk | **Certyfikat klienta** i **Klucz klienta** |
+
+Przy **Magazynie sekretów** użytkownik i hasło nie są pytane: podaje je magazyn. Krok **Logowanie** zachowuje wtedy tylko pola adresu danego typu (SSH, baza danych, serwery poczty i katalogu, adres serwera), a proste logowanie (Użytkownik i hasło, Git, API) nie ma kroku **Logowanie**: zapisuje się je z kroku **Magazyn**.
 
 Wiersz otwiera własną stronę poświadczenia. Jego menu oferuje **Edytuj**, **Testuj połączenie** (tylko poświadczenia bazy danych) i **Usuń**.
 Hasło zmienia się na stronie poświadczenia, na karcie **Logowanie**.

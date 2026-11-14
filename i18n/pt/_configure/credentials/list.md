@@ -21,8 +21,8 @@ número de registos, formulários e workflows que a nomeiam (consulte [Credencia
 |---|---|
 | Credencial | Nome e descrição, ambos obrigatórios. |
 | Tipo | Um de 18 tipos, ver abaixo. |
+| Armazenamento | Onde ficam o utilizador e a palavra-passe: **Base de dados** (cifrados na base de dados do AnsibleForms) ou **Cofre de segredos**, com o cofre e a **Referência** nele. Não existe para CyberArk nem para HashiCorp Vault, com os quais um cofre de segredos inicia sessão. A **Referência** aparece quando se escolhe um cofre; o seu exemplo segue o cofre: um caminho do HashiCorp Vault ou uma conta CyberArk. |
 | Acesso | Com que e onde o tipo inicia sessão, ver abaixo. |
-| Armazenamento | Onde ficam o utilizador e a palavra-passe: **Base de dados** (cifrados na base de dados do AnsibleForms) ou **Cofre de segredos**, com o cofre e a **Referência** nele. Não existe para CyberArk nem para HashiCorp Vault, com os quais um cofre de segredos inicia sessão. |
 
 O passo **Tipo** lista os tipos pelo nome: AAP, API, Ascender, AWX, CyberArk, Base de dados, Git, HashiCorp Vault, Jenkins, LDAP,
 Microsoft Entra ID, Open ID, RTE, Rundeck, Semaphore, SMTP, SSH, e Utilizador e palavra-passe (consulte [Tipos de credencial](types.html)).
@@ -40,6 +40,8 @@ O passo **Acesso** contém todos os campos do tipo, incluindo o endereço; não 
 | Open ID | **Emissor** (obrigatório) e **URI de redirecionamento** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, o endereço em que inicia sessão, obrigatório, com **Ignorar a verificação do certificado** e o **CA bundle** |
 | CyberArk | **Certificado de cliente** e **Chave de cliente** |
+
+Com **Cofre de segredos**, o utilizador e a palavra-passe não são pedidos: o cofre dá-os. O passo **Acesso** mantém então só os campos de endereço do tipo (SSH, base de dados, servidores de correio e de diretório, o endereço de um servidor), e um acesso simples (Utilizador e palavra-passe, Git, API) não tem passo **Acesso**: é guardado a partir do passo **Armazenamento**.
 
 Uma linha abre a página própria da credencial. O seu menu oferece **Editar**, **Testar ligação** (só para credenciais de base de dados) e **Eliminar**. A
 palavra-passe altera-se na página da credencial, no seu separador **Acesso**.
