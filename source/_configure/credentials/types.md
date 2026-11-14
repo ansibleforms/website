@@ -24,7 +24,7 @@ The type says what a credential is for. It decides which fields the dialog asks 
 |---|---|---|
 | User and password | A user and password for any login: a REST API with basic auth, a service and more, with an optional host and port. The default | Playbooks, through a form's `credentials` or a credential field; [REST expressions](../expressions/credentials.html) |
 | SSH | A user with a password or a private key for SSH to a server, with its host and port | Playbooks, through a form's `credentials`, `ansibleCredentials` or a credential field, and a workflow node's login |
-| Git | A user and password or token for git repositories | [Repositories](../repositories/authentication.html) |
+| Git | A token, or a user and password, for git repositories | [Repositories](../repositories/authentication.html) |
 | API | A user and password or token for a REST API, with an optional host and port | [REST expressions](../expressions/credentials.html), a Telegram bot token, a webhook's bearer token, the chat assistant's API key |
 | Database | A database login, with its type, host, port and database name | A [database](../databases.html) that forms query (`dbConfig`), from 7.5.0, or a form's `dbConfig` directly; `fnCredentials`; it can be tested |
 | CyberArk | The address of the CyberArk Central Credential Provider (CCP) and its TLS, and the AppID, client certificate and key a CyberArk store logs in with | A [CyberArk](../secret-stores/cyberark.html) secret store |
@@ -48,6 +48,27 @@ login a workflow node's playbook connects with, or to API for a REST API.
 
 ---
 
+## How a credential signs in
+
+From 7.6.0 the **Login** step of these types first asks how the credential signs in, then shows only the fields that choice needs:
+
+| Type | Choice | Fields |
+|---|---|---|
+| SSH | **Log in with**: **Password** or **Private key** | Password: the user and its password. Private key: the user, the PEM or OpenSSH **Private key** and an optional **Passphrase** |
+| AWX, AAP, Ascender | **Sign in with**: **Token** or **Password** | Token: the **Token**, no user. Password: the user and its password |
+| Git | **Sign in with**: **Token** or **Password** | Token: the **Token**, no user (git then sends the user `oauth2`). Password: the user and its password |
+| SMTP | **Sign in with**: **No login** or **Login** | No login, for a relay: only the **Mail server**, **Mail port** and **Use TLS**. Login: those, plus the user and its password |
+| Microsoft Entra ID | **Sign in with**: **Secret** or **Certificate** | Secret: the **Client secret**. Certificate: the PEM **Certificate** and its private key, for mail through Microsoft 365 only |
+
+A credential keeps only what its choice needs: an SSH one never holds both a password and a key, the other is dropped on save. With
+**Write to a key** in the **Store** step, only the choices with a password are offered, not **Private key**, **No login** nor **Certificate**.
+
+The other types sign in one way. A User and password or an API credential has the **Add a host and port** switch after its password, see
+[Host and port of a login](#host-and-port-of-a-login). The dialog names the LDAP bind password **Password**, the RTE token **Token**,
+and a database's type **Engine**.
+
+---
+
 ## Addresses in credentials
 
 From 7.3.0 a login that works on one server carries that server, so the record that uses it only names the credential:
@@ -68,7 +89,8 @@ The credentials of the connections and sign-ins can only be changed by an admin,
 
 ## Host and port of a login
 
-From 7.6.0 a User and password or an API credential can also hold a **Host** and a **Port**, both optional, on its **Login** step.
+From 7.6.0 a User and password or an API credential can also hold a **Host** and a **Port**, both optional: on its **Login** step,
+the **Add a host and port** switch after the password shows them.
 
 They reach the playbook and the expressions with the credential, as `host` and `port`, next to `user` and `password`: through a
 form's `credentials` and [`fn.fnCredentials`](../expressions/credentials.html). A credential read from a secret
@@ -78,16 +100,15 @@ store keeps its own host and port, and takes the secret's only where it leaves t
 
 ## An SSH credential's private key
 
-From 7.6.0 an SSH credential can log in with a private key, instead of its password or next to it:
+From 7.6.0 an SSH credential can log in with a private key instead of its password: **Log in with** set to **Private key** asks for these:
 
 | Field | Meaning |
 |---|---|
 | Private key | The PEM or OpenSSH private key the playbook logs in with. Stored encrypted, never shown again: left empty, the stored one stays. |
 | Passphrase | The key's passphrase, if it has one. Stored encrypted. |
-| Password | Optional with a private key. |
 
-The credential's page has a **Remove the stored private key and its passphrase** switch, applied on **Save**. The key and its
-passphrase are never returned by the API, and are masked in the job output.
+It logs in with one or the other, never both: on save, a key drops the stored password, and **Password** drops the stored key and
+passphrase, as the credential's page says. The key and its passphrase are never returned by the API, and are masked in job output.
 
 When a form names the credential in `ansibleCredentials`, the RTE writes the key to a private temporary file (a folder of its own,
 readable by its user only) and passes it to the playbook as `ansible_ssh_private_key_file`. A key with a passphrase is loaded into

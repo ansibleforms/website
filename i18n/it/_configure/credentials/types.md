@@ -3,7 +3,7 @@ layout: default
 title: Tipi di credenziale
 parent: Credenziali
 nav_order: 1
-translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
+translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
 ---
 
 # Tipi di credenziale
@@ -25,7 +25,7 @@ Il tipo dice a cosa serve una credenziale. Decide quali campi chiede la finestra
 |---|---|---|
 | Utente e password | Un utente e una password per qualsiasi accesso: una API REST con basic auth, un servizio e altro, con un host e una porta facoltativi. Il predefinito | Playbook, tramite le `credentials` di un modulo o un campo credenziale; [espressioni REST](../expressions/credentials.html) |
 | SSH | Un utente con una password o una chiave privata per SSH verso un server, con il suo host e la sua porta | Playbook, tramite le `credentials` di un modulo, `ansibleCredentials` o un campo credenziale, e l'accesso di un nodo di workflow |
-| Git | Un utente e una password o un token per repository git | [Repository](../repositories/authentication.html) |
+| Git | Un token, o un utente e una password, per repository git | [Repository](../repositories/authentication.html) |
 | API | Un utente e una password o un token per una API REST, con un host e una porta facoltativi | [Espressioni REST](../expressions/credentials.html), il token di un bot Telegram, il bearer token di un webhook, la chiave API dell'assistente chat |
 | Database | Un accesso a un database, con il suo tipo, host, porta e nome del database | Un [database](../databases.html) che i moduli interrogano (`dbConfig`), dalla 7.5.0, o direttamente il `dbConfig` di un modulo; `fnCredentials`; si può testare |
 | CyberArk | L'indirizzo del CyberArk Central Credential Provider (CCP) e il suo TLS, e l'AppID, il certificato client e la chiave con cui accede un archivio CyberArk | Un archivio di segreti [CyberArk](../secret-stores/cyberark.html) |
@@ -49,6 +49,26 @@ accesso con cui si connette il playbook di un nodo di workflow, o in API per una
 
 ---
 
+## Come accede una credenziale
+
+Dalla 7.6.0 il passaggio **Accesso** di questi tipi chiede prima come accede la credenziale, poi solo i campi di quella scelta:
+
+| Tipo | Scelta | Campi |
+|---|---|---|
+| SSH | **Accedi con**: **Password** o **Chiave privata** | Password: l'utente e la sua password. Chiave privata: l'utente, la **Chiave privata** PEM o OpenSSH e una **Passphrase** facoltativa |
+| AWX, AAP, Ascender | **Accedi con**: **Token** o **Password** | Token: il **Token**, nessun utente. Password: l'utente e la sua password |
+| Git | **Accedi con**: **Token** o **Password** | Token: il **Token**, nessun utente (git invia allora l'utente `oauth2`). Password: l'utente e la sua password |
+| SMTP | **Accedi con**: **Nessun accesso** o **Accesso** | Nessun accesso, per un relay: solo **Server mail**, **Porta mail** e **Usa TLS**. Accesso: questi, più l'utente e la sua password |
+| Microsoft Entra ID | **Accedi con**: **Segreto** o **Certificato** | Segreto: il **Client secret**. Certificato: il **Certificato** PEM e la sua chiave privata, solo per la mail tramite Microsoft 365 |
+
+Una credenziale conserva solo ciò che richiede la sua scelta: una SSH non ha mai password e chiave insieme, l'altra si elimina. Con **Scrivi in una chiave** nel passaggio **Archivio**, solo le scelte con password: non **Chiave privata**, **Nessun accesso** né **Certificato**.
+
+Gli altri tipi accedono in un solo modo. Utente e password e API hanno l'interruttore **Aggiungi host e porta** dopo la password, vedi
+[Host e porta di un accesso](#host-and-port-of-a-login). La finestra chiama la password di bind LDAP **Password**, il token RTE **Token** e
+il tipo di database **Motore**.
+
+---
+
 ## Indirizzi nelle credenziali
 
 Dalla 7.3.0 un accesso che funziona su un server porta con sé quel server, così il record che lo usa indica solo la credenziale:
@@ -69,7 +89,8 @@ Le credenziali delle connessioni e degli accessi possono essere modificate solo 
 
 ## Host e porta di un accesso
 
-Dalla 7.6.0 anche una credenziale Utente e password o API può avere un **Host** e una **Porta**, facoltativi, nel passaggio **Accesso**.
+Dalla 7.6.0 anche una credenziale Utente e password o API può avere un **Host** e una **Porta**, facoltativi: nel passaggio **Accesso**,
+li mostra l'interruttore **Aggiungi host e porta** dopo la password.
 
 Arrivano al playbook e alle espressioni con la credenziale, come `host` e `port`, accanto a `user` e `password`: tramite le
 `credentials` di un modulo e [`fn.fnCredentials`](../expressions/credentials.html). Una credenziale letta da un archivio di segreti
@@ -79,16 +100,15 @@ mantiene il suo host e la sua porta, e prende quelli del segreto solo dove li la
 
 ## La chiave privata di una credenziale SSH
 
-Dalla 7.6.0 una credenziale SSH può accedere con una chiave privata, al posto della sua password o accanto a essa:
+Dalla 7.6.0 una credenziale SSH può accedere con una chiave privata invece della password: **Accedi con** su **Chiave privata** chiede:
 
 | Campo | Significato |
 |---|---|
 | Chiave privata | La chiave privata PEM o OpenSSH con cui accede il playbook. Salvata cifrata, non più mostrata: se la lasci vuota, resta quella salvata. |
 | Passphrase | La passphrase della chiave, se ne ha una. Salvata cifrata. |
-| Password | Facoltativa con una chiave privata. |
 
-La pagina della credenziale ha un interruttore **Rimuovi la chiave privata salvata e la sua passphrase**, applicato al **Salva**. La
-chiave e la sua passphrase non vengono mai restituite dall'API, e sono mascherate nell'output del job.
+Accede con l'una o l'altra, mai entrambe: al salvataggio, una chiave elimina la password salvata, e **Password** la chiave e la
+passphrase salvate, come dice la pagina. La chiave e la passphrase non tornano mai dall'API, e sono mascherate nell'output del job.
 
 Quando un modulo indica la credenziale in `ansibleCredentials`, l'RTE scrive la chiave in un file temporaneo privato (in una cartella
 tutta sua, leggibile solo dal suo utente) e la passa al playbook come `ansible_ssh_private_key_file`. Una chiave con passphrase viene

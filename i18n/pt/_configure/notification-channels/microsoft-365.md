@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canais de notificação
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -42,7 +42,7 @@ As duas formas começam com um registo de aplicação no Microsoft Entra admin c
 1. **App registrations > New registration**, single tenant. Anote o seu **Application (client) ID** e o **Directory (tenant) ID**.
 2. **Certificates & secrets**: um novo client secret (copie o seu *Value*, não o seu ID), ou um certificado, ver [Um certificado em vez de um segredo](#a-certificate-instead-of-a-secret).
 3. No AnsibleForms, em **Ligações > Credenciais**, uma credencial do tipo **Microsoft Entra ID** com o **Tenant ID** e o
-   **Client ID**, e **Iniciar sessão com** definido como **Segredo de cliente** (depois o valor do segredo) ou **Certificado**.
+   **Client ID**, e **Iniciar sessão com** definido como **Segredo** (depois o valor do segredo como **Client secret**) ou **Certificado**.
 4. No canal de email, escolha essa credencial e o **Enviar através de**.
 
 O token é mantido até cinco minutos antes de expirar; um segredo ou certificado alterado obtém um novo. Uma cloud nacional define
@@ -99,7 +99,7 @@ Uma credencial Entra ID pode iniciar sessão com um certificado em vez do seu cl
    ```
 
 2. Carregue o certificado (`ansibleforms-mail.pem`) no registo de aplicação, em **Certificates & secrets > Certificates**.
-3. Na credencial, defina **Iniciar sessão com** como **Certificado** e cole o **Certificado** e a sua chave privada (PEM, RSA, sem
+3. Na credencial, defina **Iniciar sessão com** como **Certificado** e cole o **Certificado** e a sua chave privada, a **Chave de cliente** (PEM, RSA, sem
    frase-passe). Ambos são verificados ao **Guardar**; a chave é guardada cifrada e nunca mais é mostrada.
 
 Um fornecedor SSO inicia sempre sessão com o client secret, por isso uma credencial usada para o início de sessão e para o email também

@@ -3,7 +3,7 @@ layout: default
 title: Mail
 parent: Benachrichtigungskanäle
 nav_order: 1
-translated_from: 8348d14d37bdc4afc9b68869be9fe8021197597e
+translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
 ---
 
 # Mail
@@ -24,8 +24,8 @@ haben; der mit **Standard** markierte ist der Server, über den die App ihre Mai
 
 | Schritt | Feld | Bedeutung |
 |---|---|---|
-| Anmeldedaten | Anmeldedaten-Eintrag | Ein **smtp**-Eintrag aus [Verbindungen > Anmeldedaten](../credentials.html) (der Mailserver, sein Port und TLS und die Anmeldung) oder ein **Microsoft Entra ID**-Eintrag, um über [Microsoft 365](microsoft-365.html) zu senden. Ab 7.6.0 optional: Ohne Eintrag sendet der Kanal über seinen eigenen Mailserver, siehe unten. |
-| Anmeldedaten | Mail-Server, Mail-Port, TLS verwenden | Nur ohne Anmeldedaten: der Server, über den der Kanal ohne Anmeldung sendet (ein Relay). **Mail-Server** ist dann erforderlich. |
+| Anmeldedaten | Anmeldedaten-Eintrag | Ein **smtp**-Eintrag aus [Verbindungen > Anmeldedaten](../credentials.html) (der Mailserver, sein Port und TLS und seine Anmeldung, oder **Keine Anmeldung** für ein Relay) oder ein **Microsoft Entra ID**-Eintrag, um über [Microsoft 365](microsoft-365.html) zu senden. Für einen neuen Kanal erforderlich; der Schritt fragt sonst nichts zum Server ab. |
+| Anmeldedaten | Mail-Server, Mail-Port, TLS verwenden | Nicht im Dialog. Nur auf der Seite eines Kanals ohne Anmeldedaten oder mit einem smtp-Eintrag ohne Server, siehe unten. |
 | Anmeldedaten | Senden über | Nur mit einem Microsoft Entra ID-Eintrag: **Microsoft Graph** (der Standard) oder **SMTP (OAuth2)**, siehe [Microsoft 365](microsoft-365.html). |
 | Absender | Mail-Absender | Die Absenderadresse, die Empfänger sehen. Bei Microsoft 365 das Postfach, als das die Mail gesendet wird. |
 
@@ -35,10 +35,11 @@ haben; der mit **Standard** markierte ist der Server, über den die App ihre Mai
 
 Ein Mailserver, der Mails ohne Anmeldung annimmt (ein Relay), lässt sich auf zwei Arten nutzen, beide senden ohne Authentifizierung:
 
-- **Ein smtp-Eintrag nur mit seinem Server**: Seine Felder **Benutzer (optional)** und **Passwort (optional)** bleiben leer.
-- **Keine Anmeldedaten** (ab 7.6.0): Der Schritt **Anmeldedaten** fragt den eigenen **Mail-Server**, **Mail-Port** und **TLS verwenden** des Kanals ab.
+- **Ein smtp-Eintrag mit Keine Anmeldung** (ab 7.6.0): Er hält nur **Mail-Server**, **Mail-Port** und **TLS verwenden**, ohne Benutzer und Passwort.
+- **Keine Anmeldedaten**: Ein Kanal ohne Eintrag (von früher, oder das Relay des Upgrades, siehe unten) behält auf seiner Seite seinen eigenen **Mail-Server**, **Mail-Port** und **TLS verwenden**.
 
-Ein Kanal, der Anmeldedaten mit eigenem Server nennt, vergisst einen zuvor am Kanal eingegebenen Server.
+Ein Kanal, dessen smtp-Eintrag keinen Server hat (angelegt, bevor Anmeldedaten einen hielten), behält ebenfalls seinen eigenen Server, Port
+und TLS auf seiner Seite, wo sich die Anmeldung des Eintrags anmeldet. Ein Kanal, der Anmeldedaten mit eigenem Server nennt, vergisst einen zuvor am Kanal eingegebenen Server.
 
 ---
 

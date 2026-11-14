@@ -39,7 +39,7 @@ Both ways start with an app registration in the Microsoft Entra admin center, an
 1. **App registrations > New registration**, single tenant. Note its **Application (client) ID** and **Directory (tenant) ID**.
 2. **Certificates & secrets**: a new client secret (copy its *Value*, not its ID), or a certificate, see [A certificate instead of a secret](#a-certificate-instead-of-a-secret).
 3. In AnsibleForms, under **Connections > Credentials**, a credential of type **Microsoft Entra ID** with the **Tenant ID** and
-   **Client ID**, and **Sign in with** set to **Client secret** (then the secret's value) or **Certificate**.
+   **Client ID**, and **Sign in with** set to **Secret** (then the secret's value as **Client secret**) or **Certificate**.
 4. On the mail channel, choose that credential and the **Send through**.
 
 The token is kept until five minutes before it expires; a changed secret or certificate gets a new one. A national cloud sets
@@ -94,8 +94,8 @@ An Entra ID credential can sign in with a certificate instead of its client secr
    ```
 
 2. Upload the certificate (`ansibleforms-mail.pem`) to the app registration, under **Certificates & secrets > Certificates**.
-3. On the credential, set **Sign in with** to **Certificate** and paste the **Certificate** and its private key (PEM, RSA, without a
-   passphrase). Both are checked on **Save**; the key is stored encrypted and never shown again.
+3. On the credential, set **Sign in with** to **Certificate** and paste the **Certificate** and its private key, the **Client key** (PEM, RSA,
+   without a passphrase). Both are checked on **Save**; the key is stored encrypted and never shown again.
 
 An SSO provider always signs in with the client secret, so a credential used for both sign-in and mail keeps its secret too. In the
 [config seed](../seed/), an `entraid` credential carries the certificate in `client_cert` and its key in `client_key`, and the mail

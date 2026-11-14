@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Kanały powiadomień
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ Oba sposoby zaczynają się od rejestracji aplikacji w centrum administracyjnym 
 1. **App registrations > New registration**, single tenant. Zanotuj jej **Application (client) ID** i **Directory (tenant) ID**.
 2. **Certificates & secrets**: nowy client secret (skopiuj jego *Value*, nie ID) albo certyfikat, zobacz [Certyfikat zamiast sekretu](#a-certificate-instead-of-a-secret).
 3. W AnsibleForms, w **Połączenia > Poświadczenia**, poświadczenie typu **Microsoft Entra ID** z **Tenant ID** i **Client ID**
-   oraz **Logowanie przez** ustawionym na **Sekret klienta** (wtedy wartość sekretu) lub **Certyfikat**.
+   oraz **Logowanie za pomocą** ustawionym na **Sekret** (wtedy wartość sekretu jako **Client secret**) lub **Certyfikat**.
 4. W kanale pocztowym wybierz to poświadczenie i **Wysyłaj przez**.
 
 Token jest przechowywany do pięciu minut przed wygaśnięciem; zmieniony sekret lub certyfikat dostaje nowy. Chmura krajowa ustawia
@@ -95,8 +95,8 @@ Poświadczenie Entra ID może logować się certyfikatem zamiast client secret, 
    ```
 
 2. Prześlij certyfikat (`ansibleforms-mail.pem`) do rejestracji aplikacji, w **Certificates & secrets > Certificates**.
-3. W poświadczeniu ustaw **Logowanie przez** na **Certyfikat** i wklej **Certyfikat** oraz jego klucz prywatny (PEM, RSA, bez
-   hasła). Oba są sprawdzane przy **Zapisz**; klucz jest przechowywany zaszyfrowany i nigdy więcej nie jest pokazywany.
+3. W poświadczeniu ustaw **Logowanie za pomocą** na **Certyfikat** i wklej **Certyfikat** oraz jego klucz prywatny, **Klucz klienta**
+   (PEM, RSA, bez hasła). Oba są sprawdzane przy **Zapisz**; klucz jest przechowywany zaszyfrowany i nigdy więcej nie jest pokazywany.
 
 Dostawca SSO zawsze loguje się client secret, więc poświadczenie używane do logowania i do poczty też zachowuje swój sekret. W
 [config seed](../seed/) poświadczenie `entraid` przechowuje certyfikat w `client_cert`, a jego klucz w `client_key`, a kanał

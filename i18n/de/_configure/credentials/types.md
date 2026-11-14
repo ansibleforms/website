@@ -3,7 +3,7 @@ layout: default
 title: Typen von Anmeldedaten
 parent: Anmeldedaten
 nav_order: 1
-translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
+translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
 ---
 
 # Typen von Anmeldedaten
@@ -25,7 +25,7 @@ Der Typ sagt, wofür Anmeldedaten sind. Er bestimmt, welche Felder der Dialog ab
 |---|---|---|
 | Benutzer und Passwort | Benutzer und Passwort für eine beliebige Anmeldung: eine REST-API mit Basic Auth, ein Dienst und mehr, mit optionalem Host und Port. Der Standard | Playbooks, über die `credentials` eines Formulars oder ein Anmeldedaten-Feld; [REST-Ausdrücke](../expressions/credentials.html) |
 | SSH | Ein Benutzer mit Passwort oder privatem Schlüssel für SSH zu einem Server, mit seinem Host und Port | Playbooks, über die `credentials` oder `ansibleCredentials` eines Formulars oder ein Anmeldedaten-Feld, und die Anmeldung eines Workflow-Knotens |
-| Git | Benutzer und Passwort oder Token für Git-Repositories | [Repositories](../repositories/authentication.html) |
+| Git | Ein Token, oder Benutzer und Passwort, für Git-Repositories | [Repositories](../repositories/authentication.html) |
 | API | Benutzer und Passwort oder Token für eine REST-API, mit optionalem Host und Port | [REST-Ausdrücke](../expressions/credentials.html), ein Telegram-Bot-Token, das Bearer-Token eines Webhooks, der API-Schlüssel des Chat-Assistenten |
 | Datenbank | Eine Datenbankanmeldung, mit Typ, Host, Port und Datenbankname | Eine [Datenbank](../databases.html), die Formulare abfragen (`dbConfig`), ab 7.5.0, oder direkt die `dbConfig` eines Formulars; `fnCredentials`; lässt sich testen |
 | CyberArk | Die Adresse des CyberArk Central Credential Provider (CCP) und sein TLS sowie AppID, Client-Zertifikat und Schlüssel, mit denen sich ein CyberArk-Store anmeldet | Ein [CyberArk](../secret-stores/cyberark.html)-Secret-Store |
@@ -49,6 +49,28 @@ Anmeldung, mit der sich das Playbook eines Workflow-Knotens verbindet, oder auf 
 
 ---
 
+## Wie sich Anmeldedaten anmelden
+
+Ab 7.6.0 fragt der Schritt **Anmeldung** dieser Typen zuerst, wie sich die Anmeldedaten anmelden, und zeigt dann nur die nötigen Felder:
+
+| Typ | Auswahl | Felder |
+|---|---|---|
+| SSH | **Anmelden mit**: **Passwort** oder **Privater Schlüssel** | Passwort: der Benutzer und sein Passwort. Privater Schlüssel: der Benutzer, der PEM- oder OpenSSH-**Privater Schlüssel** und eine optionale **Passphrase** |
+| AWX, AAP, Ascender | **Anmelden mit**: **Token** oder **Passwort** | Token: das **Token**, kein Benutzer. Passwort: der Benutzer und sein Passwort |
+| Git | **Anmelden mit**: **Token** oder **Passwort** | Token: das **Token**, kein Benutzer (git sendet dann den Benutzer `oauth2`). Passwort: der Benutzer und sein Passwort |
+| SMTP | **Anmelden mit**: **Keine Anmeldung** oder **Anmeldung** | Keine Anmeldung, für ein Relay: nur **Mail-Server**, **Mail-Port** und **TLS verwenden**. Anmeldung: diese, dazu der Benutzer und sein Passwort |
+| Microsoft Entra ID | **Anmelden mit**: **Geheimnis** oder **Zertifikat** | Geheimnis: das **Client-Secret**. Zertifikat: das PEM-**Zertifikat** und sein privater Schlüssel, nur für Mail über Microsoft 365 |
+
+Anmeldedaten behalten nur, was ihre Auswahl braucht: SSH-Anmeldedaten halten nie Passwort und Schlüssel zugleich, das andere wird beim Speichern
+entfernt. Mit **In einen Schlüssel schreiben** im Schritt **Speicher** gibt es nur die Auswahlen mit Passwort, nicht **Privater Schlüssel**,
+**Keine Anmeldung** oder **Zertifikat**.
+
+Die anderen Typen melden sich auf eine Weise an. Anmeldedaten vom Typ Benutzer und Passwort oder API haben nach dem Passwort den Schalter
+**Host und Port hinzufügen**, siehe [Host und Port einer Anmeldung](#host-and-port-of-a-login). Der Dialog nennt das LDAP-Bind-Passwort
+**Passwort**, das RTE-Token **Token** und den Typ einer Datenbank **Engine**.
+
+---
+
 ## Adressen in Anmeldedaten
 
 Ab 7.3.0 trägt eine Anmeldung, die auf einem Server funktioniert, diesen Server mit sich, sodass der Datensatz, der sie verwendet, nur die Anmeldedaten nennt:
@@ -69,7 +91,8 @@ Die Anmeldedaten der Verbindungen und Anmeldungen können nur von einem Admin ge
 
 ## Host und Port einer Anmeldung
 
-Ab 7.6.0 können Anmeldedaten vom Typ Benutzer und Passwort oder API im Schritt **Anmeldung** auch einen optionalen **Host** und **Port** halten.
+Ab 7.6.0 können Anmeldedaten vom Typ Benutzer und Passwort oder API auch einen optionalen **Host** und **Port** halten: Im Schritt
+**Anmeldung** zeigt sie der Schalter **Host und Port hinzufügen** nach dem Passwort.
 
 Sie erreichen das Playbook und die Ausdrücke mit den Anmeldedaten, als `host` und `port`, neben `user` und `password`: über die
 `credentials` eines Formulars und [`fn.fnCredentials`](../expressions/credentials.html). Aus einem Secret Store gelesene Anmeldedaten
@@ -79,16 +102,15 @@ behalten ihren eigenen Host und Port und übernehmen die des Secrets nur dort, w
 
 ## Der private Schlüssel von SSH-Anmeldedaten
 
-Ab 7.6.0 können sich SSH-Anmeldedaten mit einem privaten Schlüssel anmelden, statt mit ihrem Passwort oder zusätzlich dazu:
+Ab 7.6.0 können sich SSH-Anmeldedaten mit einem privaten Schlüssel statt mit ihrem Passwort anmelden: **Anmelden mit** auf **Privater Schlüssel** fragt nach:
 
 | Feld | Bedeutung |
 |---|---|
 | Privater Schlüssel | Der private PEM- oder OpenSSH-Schlüssel, mit dem sich das Playbook anmeldet. Verschlüsselt gespeichert, nie wieder angezeigt: leer gelassen, bleibt der gespeicherte. |
 | Passphrase | Die Passphrase des Schlüssels, falls er eine hat. Verschlüsselt gespeichert. |
-| Passwort | Optional mit einem privaten Schlüssel. |
 
-Die Seite der Anmeldedaten hat einen Schalter **Gespeicherten privaten Schlüssel und Passphrase entfernen**, der beim **Speichern** gilt.
-Der Schlüssel und seine Passphrase werden nie von der API zurückgegeben und in der Job-Ausgabe maskiert.
+Sie melden sich mit dem einen oder dem anderen an, nie mit beidem: Beim Speichern entfernt ein Schlüssel das gespeicherte Passwort, und
+**Passwort** entfernt den gespeicherten Schlüssel samt Passphrase, wie die Seite der Anmeldedaten sagt. Die API gibt beide nie zurück, und die Job-Ausgabe maskiert sie.
 
 Nennt ein Formular die Anmeldedaten in `ansibleCredentials`, schreibt die RTE den Schlüssel in eine private temporäre Datei (in einem eigenen
 Ordner, nur für ihren Benutzer lesbar) und übergibt sie dem Playbook als `ansible_ssh_private_key_file`. Ein Schlüssel mit Passphrase wird in

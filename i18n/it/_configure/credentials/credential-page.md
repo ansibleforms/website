@@ -3,7 +3,7 @@ layout: default
 title: "La pagina di una credenziale"
 parent: Credenziali
 nav_order: 3
-translated_from: 0f97a94cda545c02b3d293fdf2de486d1d066905
+translated_from: e6bb8581b39ffc997504889b1b6e8d245cd51d13
 ---
 
 # La pagina di una credenziale
@@ -18,13 +18,18 @@ La pagina di una credenziale mostra i passaggi della sua finestra di dialogo com
 |---|---|
 | Dettagli | Nome e descrizione. |
 | Tipo | A cosa serve la credenziale. |
-| Accesso | Ogni campo del suo tipo, come nel passaggio **Accesso** della finestra di dialogo: l'utente, la password, e dove accede (host e porta, il database, il server mail, i server della directory, il tenant o l'issuer, l'indirizzo del server e il suo TLS). Per una credenziale CyberArk, l'AppID, il certificato client e la chiave. Per una credenziale SSH, la chiave privata e la passphrase, dalla 7.6.0. |
+| Accesso | Ogni campo del suo tipo, come nel passaggio **Accesso** della finestra di dialogo: l'utente, la password, e dove accede (host e porta, il database, il server mail, i server della directory, il tenant o l'issuer, l'indirizzo del server e il suo TLS). Per una credenziale CyberArk, l'AppID, il certificato client e la chiave. Dalla 7.6.0 la scelta di come accede, e la chiave privata e la passphrase di una credenziale SSH. |
 | Archivio | Database o Archivio di segreti, e l'archivio e il riferimento. Non per CyberArk né per HashiCorp Vault. |
 | Usato da | Tutto ciò che indica questa credenziale: archivi di segreti, canali di notifica, repository, directory LDAP, provider SSO, runner, [database](../databases.html) (dalla 7.5.0), l'assistente chat, i moduli e i workflow del designer. Una riga lo apre. |
 
 La password si digita nella scheda **Accesso**, e una volta salvata non viene più mostrata: se la lasci vuota, resta quella salvata. Lo stesso
-vale per la chiave client di una credenziale CyberArk, e dalla 7.6.0 per la chiave privata e la passphrase di una credenziale SSH, che
-l'interruttore **Rimuovi la chiave privata salvata e la sua passphrase** elimina al **Salva**.
+vale per la chiave client di una credenziale CyberArk, e dalla 7.6.0 per la chiave privata e la passphrase di una credenziale SSH.
+
+Dalla 7.6.0 questo vale solo finché la scelta di accesso resta la stessa. Se cambia (una **Chiave privata** SSH in **Password** e viceversa,
+un **Nessun accesso** SMTP in **Accesso**, un **Certificato** Entra ID in **Segreto** e viceversa, un **Token** in una **Password** e
+viceversa), niente di salvato le corrisponde: il nuovo segreto che richiede è obbligatorio, e **Salva** lo chiede. Una credenziale SSH
+passata a **Password** elimina al **Salva** la chiave privata e la passphrase salvate, come dice la scheda sotto la scelta. Con **Scrivi in
+una chiave** nella scheda **Archivio**, sono offerte solo le scelte con una password, vedi [Come accede una credenziale](types.html#how-a-credential-signs-in).
 
 In alto a destra ci sono **Testa connessione** (solo credenziali database), **Elimina** e **Salva**.
 

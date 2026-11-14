@@ -3,7 +3,7 @@ layout: default
 title: Authentification
 parent: Dépôts git
 nav_order: 2
-translated_from: 9e2bb180b35951e97851c21f388db0d7d54d4c73
+translated_from: 4d7f58fd454c4caacd674b861ad5a43672910b1c
 ---
 
 # Authentification
@@ -23,8 +23,8 @@ La façon dont AnsibleForms s'authentifie dépend de la forme de l'**URI**.
 
 ### HTTPS avec un jeton
 
-Pour un dépôt distant HTTPS privé, choisissez un **Identifiant** dont l'utilisateur est l'utilisateur git et dont le mot de passe est un jeton d'accès personnel
-(ou le mot de passe).
+Pour un dépôt distant HTTPS privé, choisissez un **Identifiant** avec un jeton d'accès personnel ou un mot de passe, l'utilisateur étant facultatif. Depuis
+la 7.6.0, un identifiant Git qui se connecte avec **Jeton** n'a pas d'utilisateur : git envoie alors l'utilisateur `oauth2`, qu'acceptent GitHub, GitLab et Azure DevOps.
 
 Depuis la 7.3.0, git se connecte via `GIT_ASKPASS` : l'utilisateur et le jeton sont transmis à chaque commande git qui communique avec le serveur, jamais dans
 l'URL ; ils ne sont donc pas conservés dans le `.git/config` du clone, et un jeton modifié est utilisé au pull ou au push suivant. Le jeton a besoin

@@ -3,7 +3,7 @@ layout: default
 title: Typy poświadczeń
 parent: Poświadczenia
 nav_order: 1
-translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
+translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
 ---
 
 # Typy poświadczeń
@@ -25,7 +25,7 @@ Typ mówi, do czego służy poświadczenie. Decyduje, o które pola pyta okno i 
 |---|---|---|
 | Użytkownik i hasło | Użytkownik i hasło do dowolnego logowania: API REST z basic auth, usługa i inne, z opcjonalnym hostem i portem. Domyślny | Playbooki, przez `credentials` formularza lub pole poświadczenia; [wyrażenia REST](../expressions/credentials.html) |
 | SSH | Użytkownik z hasłem lub kluczem prywatnym do SSH na serwer, z jego hostem i portem | Playbooki, przez `credentials`, `ansibleCredentials` formularza lub pole poświadczenia, oraz logowanie węzła workflow |
-| Git | Użytkownik i hasło lub token do repozytoriów git | [Repozytoria](../repositories/authentication.html) |
+| Git | Token albo użytkownik i hasło do repozytoriów git | [Repozytoria](../repositories/authentication.html) |
 | API | Użytkownik i hasło lub token do API REST, z opcjonalnym hostem i portem | [Wyrażenia REST](../expressions/credentials.html), token bota Telegram, token bearer webhooka, klucz API asystenta czatu |
 | Baza danych | Dostęp do bazy danych z jej typem, hostem, portem i nazwą bazy | [Baza danych](../databases.html), którą odpytują formularze (`dbConfig`), od wersji 7.5.0, lub bezpośrednio `dbConfig` formularza; `fnCredentials`; można go przetestować |
 | CyberArk | Adres CyberArk Central Credential Provider (CCP) i jego TLS oraz AppID, certyfikat klienta i klucz, którymi loguje się magazyn CyberArk | Magazyn sekretów [CyberArk](../secret-stores/cyberark.html) |
@@ -49,6 +49,26 @@ logowania, którym łączy się playbook węzła workflow, albo na API dla API R
 
 ---
 
+## Jak poświadczenie się loguje
+
+Od wersji 7.6.0 krok **Logowanie** tych typów najpierw pyta, jak poświadczenie się loguje, a potem pokazuje tylko pola potrzebne dla tego wyboru:
+
+| Typ | Wybór | Pola |
+|---|---|---|
+| SSH | **Logowanie za pomocą**: **Hasło** lub **Klucz prywatny** | Hasło: użytkownik i jego hasło. Klucz prywatny: użytkownik, **Klucz prywatny** PEM lub OpenSSH i opcjonalne **Hasło klucza** |
+| AWX, AAP, Ascender | **Logowanie za pomocą**: **Token** lub **Hasło** | Token: **Token**, bez użytkownika. Hasło: użytkownik i jego hasło |
+| Git | **Logowanie za pomocą**: **Token** lub **Hasło** | Token: **Token**, bez użytkownika (git wysyła wtedy użytkownika `oauth2`). Hasło: użytkownik i jego hasło |
+| SMTP | **Logowanie za pomocą**: **Bez logowania** lub **Logowanie** | Bez logowania, dla przekaźnika: tylko **Serwer poczty**, **Port poczty** i **Używaj TLS**. Logowanie: te pola oraz użytkownik i jego hasło |
+| Microsoft Entra ID | **Logowanie za pomocą**: **Sekret** lub **Certyfikat** | Sekret: **Client secret**. Certyfikat: **Certyfikat** PEM i jego klucz prywatny, tylko do poczty przez Microsoft 365 |
+
+Poświadczenie zachowuje tylko to, czego wymaga jego wybór: poświadczenie SSH nigdy nie ma jednocześnie hasła i klucza, drugie jest usuwane
+przy zapisie. Przy **Zapisz w kluczu** w kroku **Magazyn** oferowane są tylko wybory z hasłem, bez **Klucz prywatny**, **Bez logowania** i **Certyfikat**.
+
+Pozostałe typy logują się w jeden sposób. Poświadczenie typu Użytkownik i hasło lub API ma po haśle przełącznik **Dodaj host i port**, zobacz
+[Host i port logowania](#host-and-port-of-a-login). Okno nazywa hasło bind LDAP **Hasło**, token RTE **Token**, a typ bazy danych **Silnik**.
+
+---
+
 ## Adresy w poświadczeniach
 
 Od wersji 7.3.0 dane logowania, które działają na jednym serwerze, zawierają ten serwer, więc rekord, który ich używa, tylko wskazuje poświadczenie:
@@ -69,7 +89,8 @@ Poświadczenia połączeń i logowań może zmienić tylko admin, zobacz [Kto mo
 
 ## Host i port logowania
 
-Od wersji 7.6.0 poświadczenie typu Użytkownik i hasło lub API może też zawierać **Host** i **Port**, oba opcjonalne, w kroku **Logowanie**.
+Od wersji 7.6.0 poświadczenie typu Użytkownik i hasło lub API może też zawierać **Host** i **Port**, oba opcjonalne: w kroku
+**Logowanie** pokazuje je przełącznik **Dodaj host i port** po haśle.
 
 Trafiają one do playbooka i do wyrażeń razem z poświadczeniem, jako `host` i `port`, obok `user` i `password`: przez `credentials`
 formularza i [`fn.fnCredentials`](../expressions/credentials.html). Poświadczenie odczytane z magazynu sekretów zachowuje własny host
@@ -79,16 +100,15 @@ i port, a z sekretu bierze je tylko tam, gdzie zostawia je puste. Poświadczenia
 
 ## Klucz prywatny poświadczenia SSH
 
-Od wersji 7.6.0 poświadczenie SSH może logować się kluczem prywatnym, zamiast hasła lub obok niego:
+Od wersji 7.6.0 poświadczenie SSH może logować się kluczem prywatnym zamiast hasła: **Logowanie za pomocą** ustawione na **Klucz prywatny** pyta o:
 
 | Pole | Znaczenie |
 |---|---|
 | Klucz prywatny | Klucz prywatny PEM lub OpenSSH, którym loguje się playbook. Przechowywany zaszyfrowany, nigdy więcej nie pokazywany: pozostawiony pusty, zapisany zostaje. |
 | Hasło klucza | Hasło klucza, jeśli je ma. Przechowywane zaszyfrowane. |
-| Hasło | Opcjonalne przy kluczu prywatnym. |
 
-Strona poświadczenia ma przełącznik **Usuń zapisany klucz prywatny i jego hasło**, stosowany przy **Zapisz**. Klucz i jego hasło
-nigdy nie są zwracane przez API i są maskowane w wyniku zadania.
+Loguje się jednym albo drugim, nigdy obydwoma: przy zapisie klucz usuwa zapisane hasło, a **Hasło** usuwa zapisany klucz i jego
+hasło, jak mówi strona poświadczenia. Klucz i jego hasło nigdy nie są zwracane przez API i są maskowane w wyniku zadania.
 
 Gdy formularz wskazuje poświadczenie w `ansibleCredentials`, RTE zapisuje klucz do prywatnego pliku tymczasowego (we własnym folderze,
 czytelnym tylko dla jego użytkownika) i przekazuje go playbookowi jako `ansible_ssh_private_key_file`. Klucz z hasłem jest ładowany do

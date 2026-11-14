@@ -3,7 +3,7 @@ layout: default
 title: Afegir un repositori
 parent: Repositoris Git
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Afegir un repositori
@@ -64,7 +64,7 @@ del pull**), i AnsibleForms comença el clonatge en segon pla tan bon punt deses
 |---|---|---|
 | **Nom** | sí | El nom de la carpeta dins de `REPO_PATH`; lletres, dígits, guió, guió baix i punt |
 | **Branca** | sí | La branca que es clona, de la qual es fa pull i a la qual es fa push, per exemple `main`; obligatòria a partir de la 7.3.0. Només un repositori del config seed la pot ometre, per clonar la branca per defecte del remot |
-| **Credencial** | no | Una credencial de [Connexions > Credencials](../credentials.html) amb l'usuari i la contrasenya o el token que fa servir git; **Afegeix una credencial** en crea una |
+| **Credencial** | no | Una credencial de [Connexions > Credencials](../credentials.html) amb la contrasenya o el token que fa servir git, l'usuari opcional; **Afegeix una credencial** en crea una |
 | **URI** | sí | El remot, `https://...` o SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Activa el pull programat** | no | Fa pull del repositori segons una programació |
 | **Programació del pull** | no | Quan es fa el pull, com a expressió cron; es mostra un cop activat el pull programat |

@@ -3,7 +3,7 @@ layout: default
 title: 添加仓库
 parent: Git 仓库
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # 添加仓库
@@ -64,7 +64,7 @@ translated_from: 910365ea3ea4dec644e621ff8570917205671a76
 |---|---|---|
 | **名称** | 是 | `REPO_PATH` 下的文件夹名称；字母、数字、短横线、下划线和点 |
 | **分支** | 是 | 要克隆、拉取和推送的分支，例如 `main` ；从 7.3.0 起为必填。只有配置种子中的仓库可以省略它，以克隆远程仓库的默认分支 |
-| **凭据** | 否 | [连接 > 凭据](../credentials.html)中的某个凭据，包含 git 使用的用户名以及密码或令牌；**添加凭据**可创建一个 |
+| **凭据** | 否 | [连接 > 凭据](../credentials.html)中的某个凭据，包含 git 使用的密码或令牌，用户名可选；**添加凭据**可创建一个 |
 | **URI** | 是 | 远程仓库， `https://...` 或 SSH（ `git@git.example.com:team/forms.git` 、 `ssh://...` ） |
 | **启用定时拉取** | 否 | 按计划拉取仓库 |
 | **拉取计划** | 否 | 何时拉取，以 cron 表达式表示；启用定时拉取后才会显示 |

@@ -3,7 +3,7 @@ layout: default
 title: Een repository toevoegen
 parent: Git-repositories
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Een repository toevoegen
@@ -64,7 +64,7 @@ en AnsibleForms start de clone op de achtergrond zodra je opslaat.
 |---|---|---|
 | **Naam** | ja | De mapnaam onder `REPO_PATH`; letters, cijfers, streepje, underscore en punt |
 | **Branch** | ja | De branch om te klonen, te pullen en te pushen, bijvoorbeeld `main`; verplicht vanaf 7.3.0. Alleen een repository uit de config seed mag hem weglaten, om de standaardbranch van de remote te klonen |
-| **Referentie** | nee | Een referentie uit [Verbindingen > Inloggegevens](../credentials.html) met de gebruiker en het wachtwoord of token die git gebruikt; **Referentie toevoegen** maakt er een aan |
+| **Referentie** | nee | Een referentie uit [Verbindingen > Inloggegevens](../credentials.html) met het wachtwoord of token dat git gebruikt, de gebruiker optioneel; **Referentie toevoegen** maakt er een aan |
 | **Uri** | ja | De remote, `https://...` of SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Geplande pull inschakelen** | nee | De repository volgens een schema pullen |
 | **Pull-schema** | nee | Wanneer er wordt gepulld, als cron-expressie; zichtbaar zodra de geplande pull is ingeschakeld |

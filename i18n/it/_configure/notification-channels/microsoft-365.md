@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canali di notifica
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ Entrambi i modi iniziano con una registrazione dell'app nel Microsoft Entra admi
 1. **App registrations > New registration**, single tenant. Annota il suo **Application (client) ID** e il **Directory (tenant) ID**.
 2. **Certificates & secrets**: un nuovo client secret (copia il suo *Value*, non il suo ID), o un certificato, vedi [Un certificato invece di un segreto](#a-certificate-instead-of-a-secret).
 3. In AnsibleForms, in **Connessioni > Credenziali**, una credenziale di tipo **Microsoft Entra ID** con il **Tenant ID** e il
-   **Client ID**, e **Accedi con** impostato su **Segreto client** (poi il valore del segreto) o **Certificato**.
+   **Client ID**, e **Accedi con** impostato su **Segreto** (poi il valore del segreto come **Client secret**) o **Certificato**.
 4. Sul canale mail, scegli quella credenziale e l'opzione **Invia tramite**.
 
 Il token viene conservato fino a cinque minuti prima che scada; un segreto o un certificato cambiato ne ottiene uno nuovo. Un cloud
@@ -95,8 +95,8 @@ Una credenziale Entra ID può accedere con un certificato invece del suo client 
    ```
 
 2. Carica il certificato (`ansibleforms-mail.pem`) nella registrazione dell'app, in **Certificates & secrets > Certificates**.
-3. Sulla credenziale, imposta **Accedi con** su **Certificato** e incolla il **Certificato** e la sua chiave privata (PEM, RSA, senza
-   passphrase). Entrambi vengono verificati al **Salva**; la chiave è salvata cifrata e non viene più mostrata.
+3. Sulla credenziale, imposta **Accedi con** su **Certificato** e incolla il **Certificato** e la sua chiave privata, la **Chiave client**
+   (PEM, RSA, senza passphrase). Entrambi vengono verificati al **Salva**; la chiave è salvata cifrata e non viene più mostrata.
 
 Un provider SSO accede sempre con il client secret, quindi una credenziale usata sia per l'accesso sia per la mail mantiene anche il suo
 segreto. Nel [config seed](../seed/), una credenziale `entraid` porta il certificato in `client_cert` e la sua chiave in `client_key`, e

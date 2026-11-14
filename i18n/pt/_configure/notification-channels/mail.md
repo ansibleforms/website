@@ -3,7 +3,7 @@ layout: default
 title: Email
 parent: Canais de notificação
 nav_order: 1
-translated_from: 8348d14d37bdc4afc9b68869be9fe8021197597e
+translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
 ---
 
 # Email
@@ -24,8 +24,8 @@ Pode manter vários; o marcado como **Predefinido** é o servidor com que a apli
 
 | Passo | Campo | Significado |
 |---|---|---|
-| Credenciais | Credencial | Uma credencial **smtp** de [Ligações > Credenciais](../credentials.html) (o servidor de correio, a sua porta e TLS, e o acesso), ou uma credencial **Microsoft Entra ID** para enviar através do [Microsoft 365](microsoft-365.html). Opcional a partir da 7.6.0: sem nenhuma, envia através do servidor de correio do próprio canal, ver abaixo. |
-| Credenciais | Servidor de correio, Porta de correio, Usar TLS | Só sem credencial: o servidor através do qual o canal envia sem acesso (um relay). O **Servidor de correio** é então obrigatório. |
+| Credenciais | Credencial | Uma credencial **smtp** de [Ligações > Credenciais](../credentials.html) (o servidor de correio, a sua porta e TLS, e o seu acesso, ou **Sem autenticação** para um relay), ou uma credencial **Microsoft Entra ID** para enviar através do [Microsoft 365](microsoft-365.html). Obrigatória para um canal novo; o passo não pede mais nada do servidor. |
+| Credenciais | Servidor de correio, Porta de correio, Usar TLS | Não estão na caixa de diálogo. Só na página de um canal sem credencial, ou cuja credencial smtp não tem servidor, ver abaixo. |
 | Credenciais | Enviar através de | Só com uma credencial Microsoft Entra ID: **Microsoft Graph** (a predefinição) ou **SMTP (OAuth2)**, ver [Microsoft 365](microsoft-365.html). |
 | Remetente | Remetente | O endereço do remetente que os destinatários veem. Com o Microsoft 365, a caixa de correio em nome da qual o email é enviado. |
 
@@ -35,10 +35,11 @@ Pode manter vários; o marcado como **Predefinido** é o servidor com que a apli
 
 Um servidor de correio que aceita email sem acesso (um relay) pode ser usado de duas formas, e ambas enviam sem autenticação:
 
-- **Uma credencial smtp só com o seu servidor**: o seu **Utilizador (opcional)** e a sua **Palavra-passe (opcional)** ficam vazios.
-- **Nenhuma credencial** (a partir da 7.6.0): o passo **Credenciais** pede o **Servidor de correio**, a **Porta de correio** e **Usar TLS** do próprio canal.
+- **Uma credencial smtp com Sem autenticação** (a partir da 7.6.0): tem só o **Servidor de correio**, a **Porta de correio** e **Usar TLS**, sem utilizador nem palavra-passe.
+- **Nenhuma credencial**: um canal sem nenhuma (de antes, ou o relay da atualização, ver abaixo) mantém o seu próprio **Servidor de correio**, **Porta de correio** e **Usar TLS** na sua página.
 
-Um canal que nomeia uma credencial com o seu próprio servidor esquece um servidor escrito antes no canal, que deixa de ser usado.
+Um canal cuja credencial smtp não tem servidor (feita antes de as credenciais o terem) também mantém o seu próprio servidor, porta e TLS na
+sua página, onde o acesso da credencial inicia sessão. Um canal que nomeia uma credencial com o seu próprio servidor esquece um servidor escrito antes nele.
 
 ---
 

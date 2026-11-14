@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: 通知通道
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ smtp 凭据，并由 **发送方式** 决定如何发送：
 1. **App registrations > New registration**，单租户。记下其 **Application (client) ID** 和 **Directory (tenant) ID**。
 2. **Certificates & secrets**：新建一个客户端密钥（复制其 *Value*，而不是其 ID），或者一个证书，参见 [用证书代替密钥](#a-certificate-instead-of-a-secret)。
 3. 在 AnsibleForms 的 **连接 > 凭据** 下，创建一个类型为 **Microsoft Entra ID** 的凭据，填写 **租户 ID** 和
-   **客户端 ID**，并将 **登录方式** 设为 **客户端密钥**（然后填写密钥的值）或 **证书**。
+   **客户端 ID**，并将 **登录方式** 设为 **密钥**（然后将密钥的值填入 **客户端密钥**）或 **证书**。
 4. 在邮件通道上，选择该凭据和 **发送方式**。
 
 令牌会一直保留到过期前五分钟；更改了密钥或证书时会获取新的令牌。国家云需要为令牌设置
@@ -95,7 +95,7 @@ Entra ID 凭据可以使用证书代替其客户端密钥登录，但仅限于�
    ```
 
 2. 在应用注册的 **Certificates & secrets > Certificates** 下上传证书（`ansibleforms-mail.pem`）。
-3. 在凭据上，将 **登录方式** 设为 **证书**，并粘贴 **证书** 及其私钥（PEM、RSA，不带密码短语）。
+3. 在凭据上，将 **登录方式** 设为 **证书**，并粘贴 **证书** 及其私钥，即 **客户端密钥**（PEM、RSA，不带密码短语）。
    两者都会在 **保存** 时检查；私钥会加密存储，且永不再显示。
 
 SSO 提供商始终使用客户端密钥登录，因此同时用于登录和邮件的凭据也要保留其密钥。在 [配置种子](../seed/) 中，

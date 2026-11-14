@@ -3,7 +3,7 @@ layout: default
 title: Tipos de credencial
 parent: Credenciales
 nav_order: 1
-translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
+translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
 ---
 
 # Tipos de credencial
@@ -25,7 +25,7 @@ El tipo indica para qué sirve una credencial. Decide qué campos pide el diálo
 |---|---|---|
 | Usuario y contraseña | Un usuario y una contraseña para cualquier acceso: una API REST con autenticación básica, un servicio y más, con un host y un puerto opcionales. El predeterminado | Playbooks, mediante las `credentials` de un formulario o un campo de credencial; [expresiones REST](../expressions/credentials.html) |
 | SSH | Un usuario con una contraseña o una clave privada para SSH a un servidor, con su host y su puerto | Playbooks, mediante las `credentials` o `ansibleCredentials` de un formulario o un campo de credencial, y el acceso de un nodo de workflow |
-| Git | Un usuario y una contraseña o un token para repositorios git | [Repositorios](../repositories/authentication.html) |
+| Git | Un token, o un usuario y una contraseña, para repositorios git | [Repositorios](../repositories/authentication.html) |
 | API | Un usuario y una contraseña o un token para una API REST, con un host y un puerto opcionales | [Expresiones REST](../expressions/credentials.html), el token de un bot de Telegram, el bearer token de un webhook, la clave de API del asistente de chat |
 | Base de datos | Un acceso a base de datos, con su tipo, host, puerto y nombre de base de datos | Una [base de datos](../databases.html) que consultan los formularios (`dbConfig`), desde la 7.5.0, o el `dbConfig` de un formulario directamente; `fnCredentials`; se puede probar |
 | CyberArk | La dirección del CyberArk Central Credential Provider (CCP) y su TLS, y el AppID, el certificado de cliente y la clave con los que accede un almacén CyberArk | Un almacén de secretos [CyberArk](../secret-stores/cyberark.html) |
@@ -49,6 +49,27 @@ acceso con el que se conecta el playbook de un nodo de workflow, o a API para un
 
 ---
 
+## Cómo inicia sesión una credencial
+
+Desde la 7.6.0 el paso **Acceso** de estos tipos pregunta primero cómo inicia sesión la credencial, y luego muestra solo los campos que pide esa opción:
+
+| Tipo | Opción | Campos |
+|---|---|---|
+| SSH | **Iniciar sesión con**: **Contraseña** o **Clave privada** | Contraseña: el usuario y su contraseña. Clave privada: el usuario, la **Clave privada** PEM u OpenSSH y una **Frase de contraseña** opcional |
+| AWX, AAP, Ascender | **Iniciar sesión con**: **Token** o **Contraseña** | Token: el **Token**, sin usuario. Contraseña: el usuario y su contraseña |
+| Git | **Iniciar sesión con**: **Token** o **Contraseña** | Token: el **Token**, sin usuario (git envía entonces el usuario `oauth2`). Contraseña: el usuario y su contraseña |
+| SMTP | **Iniciar sesión con**: **Sin inicio de sesión** o **Inicio de sesión** | Sin inicio de sesión, para un relay: solo el **Servidor de correo**, el **Puerto de correo** y **Usar TLS**. Inicio de sesión: esos, más el usuario y su contraseña |
+| Microsoft Entra ID | **Iniciar sesión con**: **Secreto** o **Certificado** | Secreto: el **Secreto de cliente**. Certificado: el **Certificado** PEM y su clave privada, solo para el correo a través de Microsoft 365 |
+
+Una credencial guarda solo lo que pide su opción: una SSH nunca tiene a la vez una contraseña y una clave, la otra se descarta al guardar.
+Con **Escribir en una clave** en el paso **Almacén**, solo se ofrecen las opciones con contraseña, no **Clave privada**, **Sin inicio de sesión** ni **Certificado**.
+
+Los demás tipos inician sesión de una sola forma. Una credencial Usuario y contraseña o API tiene el interruptor **Añadir un host y un puerto**
+tras su contraseña, consulta [Host y puerto de un acceso](#host-and-port-of-a-login). El diálogo llama **Contraseña** a la contraseña de
+vinculación de LDAP, **Token** al token del RTE y **Motor** al tipo de una base de datos.
+
+---
+
 ## Direcciones en las credenciales
 
 Desde la 7.3.0 un acceso que funciona en un servidor lleva consigo ese servidor, así que el registro que lo usa solo nombra la credencial:
@@ -69,7 +90,8 @@ Las credenciales de las conexiones y de los inicios de sesión solo las puede ca
 
 ## Host y puerto de un acceso
 
-Desde la 7.6.0 una credencial Usuario y contraseña o API también puede tener un **Servidor** y un **Puerto** opcionales en su paso **Acceso**.
+Desde la 7.6.0 una credencial Usuario y contraseña o API también puede tener un **Servidor** y un **Puerto** opcionales: en su paso
+**Acceso**, el interruptor **Añadir un host y un puerto** tras la contraseña los muestra.
 
 Llegan al playbook y a las expresiones con la credencial, como `host` y `port`, junto a `user` y `password`: mediante las
 `credentials` de un formulario y [`fn.fnCredentials`](../expressions/credentials.html). Una credencial leída de un almacén de
@@ -79,16 +101,15 @@ secretos conserva su propio host y puerto, y toma los del secreto solo donde los
 
 ## La clave privada de una credencial SSH
 
-Desde la 7.6.0 una credencial SSH puede iniciar sesión con una clave privada, en lugar de su contraseña o junto a ella:
+Desde la 7.6.0 una credencial SSH puede iniciar sesión con una clave privada en lugar de su contraseña: **Iniciar sesión con** en **Clave privada** pide esto:
 
 | Campo | Significado |
 |---|---|
 | Clave privada | La clave privada PEM u OpenSSH con la que inicia sesión el playbook. Se guarda cifrada y no se vuelve a mostrar: si se deja vacía, se conserva la guardada. |
 | Frase de contraseña | La frase de contraseña de la clave, si tiene una. Se guarda cifrada. |
-| Contraseña | Opcional con una clave privada. |
 
-La página de la credencial tiene un interruptor **Quitar la clave privada guardada y su frase de contraseña**, que se aplica al pulsar
-**Guardar**. La API nunca devuelve la clave ni su frase de contraseña, y se enmascaran en la salida del trabajo.
+Inicia sesión con una o con otra, nunca con ambas: al guardar, una clave descarta la contraseña guardada, y **Contraseña** descarta la clave
+guardada y su frase, como dice la página de la credencial. La API nunca devuelve la clave ni su frase de contraseña, y se enmascaran en la salida.
 
 Cuando un formulario nombra la credencial en `ansibleCredentials`, el RTE escribe la clave en un archivo temporal privado (en una carpeta
 propia, que solo puede leer su usuario) y la pasa al playbook como `ansible_ssh_private_key_file`. Una clave con frase de contraseña se carga

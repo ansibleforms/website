@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canaux de notification
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ Les deux façons commencent par une inscription d'application dans le Microsoft 
 1. **App registrations > New registration**, single tenant. Notez son **Application (client) ID** et son **Directory (tenant) ID**.
 2. **Certificates & secrets** : un nouveau secret client (copiez sa *Value*, pas son ID), ou un certificat, voir [Un certificat au lieu d'un secret](#a-certificate-instead-of-a-secret).
 3. Dans AnsibleForms, sous **Connexions > Identifiants**, un identifiant de type **Microsoft Entra ID** avec l'**ID du tenant** et
-   l'**ID client**, et **Se connecter avec** réglé sur **Secret client** (puis la valeur du secret) ou **Certificat**.
+   l'**ID client**, et **Se connecter avec** réglé sur **Secret** (puis la valeur du secret comme **Secret client**) ou **Certificat**.
 4. Sur le canal mail, choisissez cet identifiant et l'option **Envoyer par**.
 
 Le jeton est conservé jusqu'à cinq minutes avant son expiration ; un secret ou un certificat modifié en obtient un nouveau. Un cloud national définit
@@ -95,7 +95,7 @@ Un identifiant Entra ID peut se connecter avec un certificat au lieu de son secr
    ```
 
 2. Téléversez le certificat (`ansibleforms-mail.pem`) dans l'inscription d'application, sous **Certificates & secrets > Certificates**.
-3. Sur l'identifiant, réglez **Se connecter avec** sur **Certificat** et collez le **Certificat** et sa clé privée (PEM, RSA, sans phrase
+3. Sur l'identifiant, réglez **Se connecter avec** sur **Certificat** et collez le **Certificat** et sa clé privée, la **Clé client** (PEM, RSA, sans phrase
    secrète). Les deux sont vérifiés au moment d'**Enregistrer** ; la clé est stockée chiffrée et n'est plus jamais affichée.
 
 Un fournisseur SSO se connecte toujours avec le secret client, si bien qu'un identifiant utilisé à la fois pour l'authentification et pour le mail garde

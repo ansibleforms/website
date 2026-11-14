@@ -3,7 +3,7 @@ layout: default
 title: Tipos de credencial
 parent: Credenciais
 nav_order: 1
-translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
+translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
 ---
 
 # Tipos de credencial
@@ -25,7 +25,7 @@ O tipo diz para que serve uma credencial. Decide que campos a caixa de diálogo 
 |---|---|---|
 | Utilizador e palavra-passe | Um utilizador e uma palavra-passe para qualquer acesso: uma API REST com basic auth, um serviço e mais, com um host e uma porta opcionais. A predefinição | Playbooks, através das `credentials` de um formulário ou de um campo de credencial; [expressões REST](../expressions/credentials.html) |
 | SSH | Um utilizador com uma palavra-passe ou uma chave privada para SSH a um servidor, com o seu host e porta | Playbooks, através das `credentials` ou `ansibleCredentials` de um formulário ou de um campo de credencial, e o acesso de um nó de workflow |
-| Git | Um utilizador e uma palavra-passe ou um token para repositórios git | [Repositórios](../repositories/authentication.html) |
+| Git | Um token, ou um utilizador e uma palavra-passe, para repositórios git | [Repositórios](../repositories/authentication.html) |
 | API | Um utilizador e uma palavra-passe ou um token para uma API REST, com um host e uma porta opcionais | [Expressões REST](../expressions/credentials.html), o token de um bot do Telegram, o bearer token de um webhook, a chave de API do assistente de chat |
 | Base de dados | Um acesso a uma base de dados, com o seu tipo, host, porta e nome da base de dados | Uma [base de dados](../databases.html) que os formulários consultam (`dbConfig`), a partir da 7.5.0, ou diretamente o `dbConfig` de um formulário; `fnCredentials`; pode ser testado |
 | CyberArk | O endereço do CyberArk Central Credential Provider (CCP) e o seu TLS, e o AppID, o certificado de cliente e a chave com que um cofre CyberArk inicia sessão | Um cofre de segredos [CyberArk](../secret-stores/cyberark.html) |
@@ -49,6 +49,28 @@ acesso com que se liga o playbook de um nó de workflow, ou para API numa API RE
 
 ---
 
+## Como uma credencial inicia sessão
+
+A partir da 7.6.0, o passo **Acesso** destes tipos pergunta primeiro como a credencial inicia sessão, e mostra só os campos dessa escolha:
+
+| Tipo | Escolha | Campos |
+|---|---|---|
+| SSH | **Iniciar sessão com**: **Palavra-passe** ou **Chave privada** | Palavra-passe: o utilizador e a sua palavra-passe. Chave privada: o utilizador, a **Chave privada** PEM ou OpenSSH e uma **Frase-passe** opcional |
+| AWX, AAP, Ascender | **Iniciar sessão com**: **Token** ou **Palavra-passe** | Token: o **Token**, sem utilizador. Palavra-passe: o utilizador e a sua palavra-passe |
+| Git | **Iniciar sessão com**: **Token** ou **Palavra-passe** | Token: o **Token**, sem utilizador (o git envia então o utilizador `oauth2`). Palavra-passe: o utilizador e a sua palavra-passe |
+| SMTP | **Iniciar sessão com**: **Sem autenticação** ou **Autenticação** | Sem autenticação, para um relay: só o **Servidor de correio**, a **Porta de correio** e **Usar TLS**. Autenticação: esses, mais o utilizador e a sua palavra-passe |
+| Microsoft Entra ID | **Iniciar sessão com**: **Segredo** ou **Certificado** | Segredo: o **Client secret**. Certificado: o **Certificado** PEM e a sua chave privada, só para correio através do Microsoft 365 |
+
+Uma credencial guarda só o que a sua escolha precisa: uma SSH nunca tem ao mesmo tempo uma palavra-passe e uma chave, a outra é removida ao
+guardar. Com **Escrever numa chave** no passo **Armazenamento**, só são oferecidas as escolhas com palavra-passe, não **Chave privada**,
+**Sem autenticação** nem **Certificado**.
+
+Os outros tipos iniciam sessão de uma só forma. Uma credencial Utilizador e palavra-passe ou API tem o interruptor **Adicionar um host e
+uma porta** depois da palavra-passe, consulte [Host e porta de um acesso](#host-and-port-of-a-login). A caixa de diálogo chama à palavra-passe
+de bind do LDAP **Palavra-passe**, ao token do RTE **Token**, e ao tipo de uma base de dados **Motor**.
+
+---
+
 ## Endereços nas credenciais
 
 A partir da 7.3.0, um acesso que funciona num servidor transporta esse servidor, por isso o registo que o usa só nomeia a credencial:
@@ -69,8 +91,8 @@ As credenciais das ligações e dos inícios de sessão só podem ser alteradas 
 
 ## Host e porta de um acesso
 
-A partir da 7.6.0, uma credencial Utilizador e palavra-passe ou API também pode ter um **Host** e uma **Porta**,
-ambos opcionais, no seu passo **Acesso**, ao lado do utilizador e da palavra-passe que já tinha.
+A partir da 7.6.0, uma credencial Utilizador e palavra-passe ou API também pode ter um **Host** e uma **Porta**, ambos opcionais:
+no seu passo **Acesso**, o interruptor **Adicionar um host e uma porta** depois da palavra-passe mostra-os.
 
 Chegam ao playbook e às expressões com a credencial, como `host` e `port`, ao lado de `user` e `password`: através das
 `credentials` de um formulário e de [`fn.fnCredentials`](../expressions/credentials.html). Uma credencial lida de um cofre de segredos
@@ -80,16 +102,17 @@ mantém o seu próprio host e porta, e só usa os do segredo onde os deixa vazio
 
 ## A chave privada de uma credencial SSH
 
-A partir da 7.6.0, uma credencial SSH pode iniciar sessão com uma chave privada, em vez da sua palavra-passe ou junto dela:
+A partir da 7.6.0, uma credencial SSH pode iniciar sessão com uma chave privada em vez da sua palavra-passe: **Iniciar sessão com**
+definido como **Chave privada** pede estes campos:
 
 | Campo | Significado |
 |---|---|
 | Chave privada | A chave privada PEM ou OpenSSH com que o playbook inicia sessão. Guardada cifrada, nunca mais mostrada: deixada vazia, a guardada mantém-se. |
 | Frase-passe | A frase-passe da chave, se tiver uma. Guardada cifrada. |
-| Palavra-passe | Opcional com uma chave privada. |
 
-A página da credencial tem um interruptor **Remover a chave privada guardada e a sua frase-passe**, aplicado ao **Guardar**. A chave e
-a sua frase-passe nunca são devolvidas pela API, e são mascaradas na saída da tarefa.
+Inicia sessão com uma ou com a outra, nunca com as duas: ao guardar, uma chave remove a palavra-passe guardada, e **Palavra-passe** remove a
+chave e a frase-passe guardadas, como diz a página da credencial. A chave e a sua frase-passe nunca são devolvidas pela API, e são
+mascaradas na saída da tarefa.
 
 Quando um formulário nomeia a credencial em `ansibleCredentials`, o RTE escreve a chave num ficheiro temporário privado (numa pasta
 própria, legível só pelo seu utilizador) e passa-a ao playbook como `ansible_ssh_private_key_file`. Uma chave com frase-passe é carregada

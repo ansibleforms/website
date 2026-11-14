@@ -3,7 +3,7 @@ layout: default
 title: Aggiungere un repository
 parent: Repository Git
 nav_order: 1
-translated_from: 910365ea3ea4dec644e621ff8570917205671a76
+translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 ---
 
 # Aggiungere un repository
@@ -64,7 +64,7 @@ del pull**), e AnsibleForms avvia il clone in background appena salvi.
 |---|---|---|
 | **Nome** | sì | Il nome della cartella sotto `REPO_PATH`; lettere, cifre, trattino, trattino basso e punto |
 | **Branch** | sì | Il branch da clonare, da cui fare il pull e su cui fare il push, per esempio `main`; obbligatorio dalla 7.3.0. Solo un repository del config seed può ometterlo, per clonare il branch predefinito del remoto |
-| **Credenziale** | no | Una credenziale di [Connessioni > Credenziali](../credentials.html) con l'utente e la password o il token che usa git; **Aggiungi credenziale** ne crea una |
+| **Credenziale** | no | Una credenziale di [Connessioni > Credenziali](../credentials.html) con la password o il token che usa git, l'utente facoltativo; **Aggiungi credenziale** ne crea una |
 | **URI** | sì | Il remoto, `https://...` o SSH (`git@git.example.com:team/forms.git`, `ssh://...`) |
 | **Attiva il pull pianificato** | no | Fa il pull del repository secondo una pianificazione |
 | **Pianificazione del pull** | no | Quando fare il pull, come espressione cron; compare quando il pull pianificato è attivo |

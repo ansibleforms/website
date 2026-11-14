@@ -3,7 +3,7 @@ layout: default
 title: Mail
 parent: Canaux de notification
 nav_order: 1
-translated_from: 8348d14d37bdc4afc9b68869be9fe8021197597e
+translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
 ---
 
 # Mail
@@ -24,8 +24,8 @@ plusieurs ; celui marqué **Par défaut** est le serveur avec lequel l'applicati
 
 | Étape | Champ | Signification |
 |---|---|---|
-| Identifiants | Identifiant | Un identifiant **smtp** de [Connexions > Identifiants](../credentials.html) (le serveur mail, son port et son TLS, et l'accès), ou un identifiant **Microsoft Entra ID** pour envoyer via [Microsoft 365](microsoft-365.html). Facultatif depuis la 7.6.0 : sans identifiant, l'envoi passe par le serveur mail propre au canal, voir ci-dessous. |
-| Identifiants | Serveur mail, Port mail, Utiliser TLS | Seulement sans identifiant : le serveur par lequel le canal envoie sans accès (un relais). **Serveur mail** est alors obligatoire. |
+| Identifiants | Identifiant | Un identifiant **smtp** de [Connexions > Identifiants](../credentials.html) (le serveur mail, son port et son TLS, et son accès, ou **Sans connexion** pour un relais), ou un identifiant **Microsoft Entra ID** pour envoyer via [Microsoft 365](microsoft-365.html). Obligatoire pour un nouveau canal ; l'étape ne demande rien d'autre du serveur. |
+| Identifiants | Serveur mail, Port mail, Utiliser TLS | Pas dans la boîte de dialogue. Seulement sur la page d'un canal sans identifiant, ou dont l'identifiant smtp n'a pas de serveur, voir ci-dessous. |
 | Identifiants | Envoyer par | Seulement avec un identifiant Microsoft Entra ID : **Microsoft Graph** (par défaut) ou **SMTP (OAuth2)**, voir [Microsoft 365](microsoft-365.html). |
 | Expéditeur | Expéditeur mail | L'adresse d'expéditeur que voient les destinataires. Avec Microsoft 365, la boîte aux lettres au nom de laquelle le mail est envoyé. |
 
@@ -35,10 +35,11 @@ plusieurs ; celui marqué **Par défaut** est le serveur avec lequel l'applicati
 
 Un serveur mail qui accepte du mail sans accès (un relais) peut s'utiliser de deux façons, et les deux envoient sans authentification :
 
-- **Un identifiant smtp avec seulement son serveur** : ses champs **Utilisateur (facultatif)** et **Mot de passe (facultatif)** restent vides.
-- **Aucun identifiant** (depuis la 7.6.0) : l'étape **Identifiants** demande le **Serveur mail**, le **Port mail** et **Utiliser TLS** du canal.
+- **Un identifiant smtp avec Sans connexion** (depuis la 7.6.0) : il ne contient que le **Serveur mail**, le **Port mail** et **Utiliser TLS**, sans utilisateur ni mot de passe.
+- **Aucun identifiant** : un canal sans identifiant (d'avant, ou le relais de la mise à jour, voir ci-dessous) garde sur sa page son propre **Serveur mail**, **Port mail** et **Utiliser TLS**.
 
-Un canal qui nomme un identifiant ayant son propre serveur oublie le serveur saisi auparavant sur le canal.
+Un canal dont l'identifiant smtp n'a pas de serveur (créé avant que les identifiants le contiennent) garde aussi sur sa page son propre serveur,
+port et TLS, où l'accès de son identifiant se connecte. Un canal qui nomme un identifiant ayant son propre serveur oublie celui saisi avant.
 
 ---
 

@@ -23,8 +23,8 @@ the one marked **Default** is the server the app sends its mail with when a form
 
 | Step | Field | Meaning |
 |---|---|---|
-| Credentials | Credential | An **smtp** credential of [Connections > Credentials](../credentials.html) (the mail server, its port and TLS, and the login), or a **Microsoft Entra ID** credential to send through [Microsoft 365](microsoft-365.html). Optional from 7.6.0: none sends through the channel's own mail server, see below. |
-| Credentials | Mail server, Mail port, Use TLS | Only without a credential: the server the channel sends through without a login (a relay). **Mail server** is then required. |
+| Credentials | Credential | An **smtp** credential of [Connections > Credentials](../credentials.html) (the mail server, its port and TLS, and its login, or **No login** for a relay), or a **Microsoft Entra ID** credential to send through [Microsoft 365](microsoft-365.html). Required for a new channel; the step asks nothing else of the server. |
+| Credentials | Mail server, Mail port, Use TLS | Not in the dialog. Only on the page of a channel without a credential, or whose smtp credential has no server, see below. |
 | Credentials | Send through | Only with a Microsoft Entra ID credential: **Microsoft Graph** (the default) or **SMTP (OAuth2)**, see [Microsoft 365](microsoft-365.html). |
 | Sender | Mail from | The sender address recipients see. With Microsoft 365, the mailbox the mail is sent as. |
 
@@ -34,10 +34,11 @@ the one marked **Default** is the server the app sends its mail with when a form
 
 A mail server that takes mail without a login (a relay) can be used in two ways, and both send without authentication:
 
-- **An smtp credential with only its server**: its **User (optional)** and **Password (optional)** stay empty.
-- **No credential** (from 7.6.0): the **Credentials** step asks for the channel's own **Mail server**, **Mail port** and **Use TLS**.
+- **An smtp credential with No login** (from 7.6.0): it holds only the **Mail server**, **Mail port** and **Use TLS**, no user nor password.
+- **No credential**: a channel without one (from before, or the upgrade's relay, see below) keeps its own **Mail server**, **Mail port** and **Use TLS** on its page.
 
-A channel that names a credential with its own server forgets a server typed on the channel before.
+A channel whose smtp credential has no server (made before credentials held one) keeps its own server, port and TLS on its page
+too, where its credential's login signs in. A channel naming a credential with its own server forgets a server typed on it before.
 
 ---
 

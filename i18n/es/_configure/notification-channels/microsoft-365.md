@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Canales de notificación
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ Ambas formas empiezan con un registro de aplicación en el Microsoft Entra admin
 1. **App registrations > New registration**, de un solo inquilino. Anota su **Application (client) ID** y su **Directory (tenant) ID**.
 2. **Certificates & secrets**: un nuevo secreto de cliente (copia su *Value*, no su ID), o un certificado, consulta [Un certificado en lugar de un secreto](#a-certificate-instead-of-a-secret).
 3. En AnsibleForms, en **Conexiones > Credenciales**, una credencial de tipo **Microsoft Entra ID** con el **ID de inquilino** y el
-   **ID de cliente**, e **Iniciar sesión con** en **Secreto de cliente** (y después el valor del secreto) o en **Certificado**.
+   **ID de cliente**, e **Iniciar sesión con** en **Secreto** (y después el valor del secreto como **Secreto de cliente**) o en **Certificado**.
 4. En el canal de correo, elige esa credencial y el **Enviar a través de**.
 
 El token se conserva hasta cinco minutos antes de que caduque; un secreto o un certificado cambiado obtiene uno nuevo. Una nube nacional
@@ -95,7 +95,7 @@ Una credencial Entra ID puede iniciar sesión con un certificado en lugar de su 
    ```
 
 2. Sube el certificado (`ansibleforms-mail.pem`) al registro de aplicación, en **Certificates & secrets > Certificates**.
-3. En la credencial, pon **Iniciar sesión con** en **Certificado** y pega el **Certificado** y su clave privada (PEM, RSA, sin
+3. En la credencial, pon **Iniciar sesión con** en **Certificado** y pega el **Certificado** y su clave privada, la **Clave de cliente** (PEM, RSA, sin
    frase de contraseña). Ambos se comprueban al pulsar **Guardar**; la clave se guarda cifrada y no se vuelve a mostrar.
 
 Un proveedor SSO siempre inicia sesión con el secreto de cliente, así que una credencial usada para el inicio de sesión y para el correo

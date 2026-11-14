@@ -3,7 +3,7 @@ layout: default
 title: Correu
 parent: Canals de notificació
 nav_order: 1
-translated_from: 8348d14d37bdc4afc9b68869be9fe8021197597e
+translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
 ---
 
 # Correu
@@ -24,8 +24,8 @@ En pots tenir diversos; el marcat com a **Predeterminat** és el que fa servir q
 
 | Pas | Camp | Significat |
 |---|---|---|
-| Credencials | Credencial | Una credencial **smtp** de [Connexions > Credencials](../credentials.html) (el servidor de correu, el seu port i TLS, i l'inici de sessió), o una credencial **Microsoft Entra ID** per enviar a través de [Microsoft 365](microsoft-365.html). Opcional des de la 7.6.0: sense credencial, s'envia a través del servidor de correu propi del canal, vegeu més avall. |
-| Credencials | Servidor de correu, Port de correu, Utilitza TLS | Només sense credencial: el servidor a través del qual el canal envia sense inici de sessió (un relay). **Servidor de correu** és llavors obligatori. |
+| Credencials | Credencial | Una credencial **smtp** de [Connexions > Credencials](../credentials.html) (el servidor de correu, el seu port i TLS, i el seu inici de sessió, o **Sense inici de sessió** per a un relay), o una credencial **Microsoft Entra ID** per enviar a través de [Microsoft 365](microsoft-365.html). Obligatòria per a un canal nou; el pas no demana res més del servidor. |
+| Credencials | Servidor de correu, Port de correu, Utilitza TLS | No són al diàleg. Només a la pàgina d'un canal sense credencial, o la credencial smtp del qual no té servidor, vegeu més avall. |
 | Credencials | Envia a través de | Només amb una credencial Microsoft Entra ID: **Microsoft Graph** (el predeterminat) o **SMTP (OAuth2)**, vegeu [Microsoft 365](microsoft-365.html). |
 | Remitent | Remitent | L'adreça del remitent que veuen els destinataris. Amb Microsoft 365, la bústia en nom de la qual s'envia el correu. |
 
@@ -35,10 +35,11 @@ En pots tenir diversos; el marcat com a **Predeterminat** és el que fa servir q
 
 Un servidor de correu que accepta correu sense inici de sessió (un relay) es pot utilitzar de dues maneres, i totes dues envien sense autenticació:
 
-- **Una credencial smtp només amb el seu servidor**: el seu **Usuari (opcional)** i la seva **Contrasenya (opcional)** queden buits.
-- **Cap credencial** (des de la 7.6.0): el pas **Credencials** demana el **Servidor de correu**, el **Port de correu** i **Utilitza TLS** propis del canal.
+- **Una credencial smtp amb Sense inici de sessió** (des de la 7.6.0): només té el **Servidor de correu**, el **Port de correu** i **Utilitza TLS**, sense usuari ni contrasenya.
+- **Cap credencial**: un canal sense credencial (d'abans, o el relay de l'actualització, vegeu més avall) conserva el seu propi **Servidor de correu**, **Port de correu** i **Utilitza TLS** a la seva pàgina.
 
-Un canal que nomena una credencial amb el seu propi servidor oblida el servidor que s'hi havia escrit abans.
+Un canal la credencial smtp del qual no té servidor (feta abans que les credencials en tinguessin) també conserva el seu propi servidor, port i
+TLS a la seva pàgina, on inicia la sessió l'accés de la credencial. Un canal que nomena una credencial amb el seu propi servidor oblida el servidor que s'hi havia escrit abans.
 
 ---
 

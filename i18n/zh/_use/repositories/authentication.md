@@ -3,7 +3,7 @@ layout: default
 title: 认证
 parent: Git 仓库
 nav_order: 2
-translated_from: 9e2bb180b35951e97851c21f388db0d7d54d4c73
+translated_from: 4d7f58fd454c4caacd674b861ad5a43672910b1c
 ---
 
 # 认证
@@ -23,8 +23,8 @@ AnsibleForms 的认证方式取决于 **URI** 的形式。
 
 ### 使用令牌的 HTTPS
 
-对于私有的 HTTPS 远程仓库，请选择一个**凭据**，其用户为 git 用户，其密码为个人访问令牌
-（或密码）。
+对于私有的 HTTPS 远程仓库，请选择一个带有个人访问令牌或密码的**凭据**，用户名可选。从 7.6.0 起，以**令牌**登录的 Git
+凭据没有用户名：git 会随之发送用户名 `oauth2`，GitHub、GitLab 和 Azure DevOps 都接受。
 
 从 7.3.0 起，git 通过 `GIT_ASKPASS` 登录：用户名和令牌会传给每个与服务器通信的 git 命令，从不写入
 URL，因此不会保存在克隆的 `.git/config` 中，修改后的令牌会在下一次拉取或推送时生效。令牌需要

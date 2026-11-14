@@ -3,7 +3,7 @@ layout: default
 title: Types d'identifiants
 parent: Identifiants
 nav_order: 1
-translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
+translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
 ---
 
 # Types d'identifiants
@@ -25,7 +25,7 @@ Le type indique à quoi sert un identifiant. Il décide des champs que demande l
 |---|---|---|
 | Utilisateur et mot de passe | Un utilisateur et un mot de passe pour n'importe quel accès : une API REST avec authentification basique, un service et plus, avec un hôte et un port facultatifs. Le type par défaut | Les playbooks, via les `credentials` d'un formulaire ou un champ d'identifiant ; les [expressions REST](../expressions/credentials.html) |
 | SSH | Un utilisateur avec un mot de passe ou une clé privée pour SSH vers un serveur, avec son hôte et son port | Les playbooks, via les `credentials` ou `ansibleCredentials` d'un formulaire ou un champ d'identifiant, et l'accès d'un nœud de workflow |
-| Git | Un utilisateur et un mot de passe ou un jeton pour des dépôts git | Les [dépôts](../repositories/authentication.html) |
+| Git | Un jeton, ou un utilisateur et un mot de passe, pour des dépôts git | Les [dépôts](../repositories/authentication.html) |
 | API | Un utilisateur et un mot de passe ou un jeton pour une API REST, avec un hôte et un port facultatifs | Les [expressions REST](../expressions/credentials.html), un jeton de bot Telegram, le bearer token d'un webhook, la clé d'API de l'assistant de chat |
 | Base de données | Un accès à une base de données, avec son type, son hôte, son port et le nom de la base | Une [base de données](../databases.html) que les formulaires interrogent (`dbConfig`), depuis la 7.5.0, ou directement le `dbConfig` d'un formulaire ; `fnCredentials` ; il peut être testé |
 | CyberArk | L'adresse du CyberArk Central Credential Provider (CCP) et son TLS, ainsi que l'AppID, le certificat client et la clé avec lesquels se connecte un coffre CyberArk | Un coffre de secrets [CyberArk](../secret-stores/cyberark.html) |
@@ -49,6 +49,27 @@ accès avec lequel se connecte le playbook d'un nœud de workflow, ou en API pou
 
 ---
 
+## Comment un identifiant se connecte
+
+Depuis la 7.6.0, l'étape **Connexion** de ces types demande d'abord comment l'identifiant se connecte, puis n'affiche que les champs de ce choix :
+
+| Type | Choix | Champs |
+|---|---|---|
+| SSH | **Se connecter avec** : **Mot de passe** ou **Clé privée** | Mot de passe : l'utilisateur et son mot de passe. Clé privée : l'utilisateur, la **Clé privée** PEM ou OpenSSH et une **Phrase secrète** facultative |
+| AWX, AAP, Ascender | **Se connecter avec** : **Jeton** ou **Mot de passe** | Jeton : le **Jeton**, sans utilisateur. Mot de passe : l'utilisateur et son mot de passe |
+| Git | **Se connecter avec** : **Jeton** ou **Mot de passe** | Jeton : le **Jeton**, sans utilisateur (git envoie alors l'utilisateur `oauth2`). Mot de passe : l'utilisateur et son mot de passe |
+| SMTP | **Se connecter avec** : **Sans connexion** ou **Connexion** | Sans connexion, pour un relais : seulement le **Serveur mail**, le **Port mail** et **Utiliser TLS**. Connexion : ceux-ci, plus l'utilisateur et son mot de passe |
+| Microsoft Entra ID | **Se connecter avec** : **Secret** ou **Certificat** | Secret : le **Secret client**. Certificat : le **Certificat** PEM et sa clé privée, pour le mail via Microsoft 365 uniquement |
+
+Un identifiant ne garde que ce que son choix demande : un identifiant SSH n'a jamais à la fois un mot de passe et une clé, l'autre est supprimé
+à l'enregistrement. Avec **Écrire dans une clé** à l'étape **Stockage**, seuls les choix avec un mot de passe sont proposés, pas **Clé privée**, **Sans connexion** ni **Certificat**.
+
+Les autres types se connectent d'une seule façon. Un identifiant Utilisateur et mot de passe ou API a l'interrupteur **Ajouter un hôte et un port**
+après son mot de passe, voir [Hôte et port d'un accès](#host-and-port-of-a-login). La boîte de dialogue nomme **Mot de passe** le mot de passe
+de bind LDAP, **Jeton** le jeton RTE, et **Moteur** le type d'une base de données.
+
+---
+
 ## Adresses dans les identifiants
 
 Depuis la 7.3.0, un accès qui fonctionne sur un serveur porte ce serveur, si bien que l'enregistrement qui l'utilise ne fait que nommer l'identifiant :
@@ -69,8 +90,8 @@ Les identifiants des connexions et des authentifications ne peuvent être modifi
 
 ## Hôte et port d'un accès
 
-Depuis la 7.6.0, un identifiant Utilisateur et mot de passe ou API peut aussi contenir, à son étape **Connexion**, un **Hôte** et un
-**Port**, tous deux facultatifs, qui s'ajoutent à l'utilisateur et au mot de passe de l'accès.
+Depuis la 7.6.0, un identifiant Utilisateur et mot de passe ou API peut aussi contenir un **Hôte** et un **Port**, tous deux facultatifs :
+à son étape **Connexion**, l'interrupteur **Ajouter un hôte et un port** après le mot de passe les affiche.
 
 Ils parviennent au playbook et aux expressions avec l'identifiant, sous la forme `host` et `port`, à côté de `user` et `password` : via les
 `credentials` d'un formulaire et [`fn.fnCredentials`](../expressions/credentials.html). Un identifiant lu depuis un coffre de secrets garde son
@@ -80,16 +101,15 @@ propre hôte et son propre port, et ne prend ceux du secret que là où il les l
 
 ## La clé privée d'un identifiant SSH
 
-Depuis la 7.6.0, un identifiant SSH peut se connecter avec une clé privée, à la place de son mot de passe ou en plus de celui-ci :
+Depuis la 7.6.0, un identifiant SSH peut se connecter avec une clé privée à la place de son mot de passe : **Se connecter avec** sur **Clé privée** demande ceci :
 
 | Champ | Signification |
 |---|---|
 | Clé privée | La clé privée PEM ou OpenSSH avec laquelle le playbook se connecte. Stockée chiffrée, plus jamais affichée : laissée vide, celle qui est stockée est conservée. |
 | Phrase secrète | La phrase secrète de la clé, si elle en a une. Stockée chiffrée. |
-| Mot de passe | Facultatif avec une clé privée. |
 
-La page de l'identifiant a un interrupteur **Supprimer la clé privée enregistrée et sa phrase secrète**, appliqué au moment d'**Enregistrer**. La clé
-et sa phrase secrète ne sont jamais renvoyées par l'API, et sont masquées dans la sortie du job.
+Il se connecte avec l'un ou l'autre, jamais les deux : à l'enregistrement, une clé supprime le mot de passe stocké, et **Mot de passe** supprime la clé
+stockée et sa phrase secrète, comme le dit la page de l'identifiant. La clé et sa phrase secrète ne sont jamais renvoyées par l'API, et sont masquées dans la sortie.
 
 Quand un formulaire nomme l'identifiant dans `ansibleCredentials`, le RTE écrit la clé dans un fichier temporaire privé (un dossier à lui, lisible
 par son seul utilisateur) et la passe au playbook sous la forme `ansible_ssh_private_key_file`. Une clé avec une phrase secrète est chargée dans

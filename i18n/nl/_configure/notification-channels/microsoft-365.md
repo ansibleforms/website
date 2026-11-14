@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Meldingskanalen
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ Beide manieren beginnen met een app-registratie in het Microsoft Entra-beheercen
 1. **App registrations > New registration**, single tenant. Noteer de **Application (client) ID** en de **Directory (tenant) ID**.
 2. **Certificates & secrets**: een nieuw clientgeheim (kopieer de *Value*, niet de ID), of een certificaat, zie [Een certificaat in plaats van een geheim](#a-certificate-instead-of-a-secret).
 3. In AnsibleForms, onder **Verbindingen > Inloggegevens**, een referentie van het type **Microsoft Entra ID** met de **Tenant ID** en de
-   **Client ID**, en **Aanmelden met** op **Clientgeheim** (dan de waarde van het geheim) of **Certificaat**.
+   **Client ID**, en **Aanmelden met** op **Geheim** (dan de waarde van het geheim als **Client secret**) of **Certificaat**.
 4. Kies op het mailkanaal die referentie en de optie bij **Verzenden via**.
 
 Het token wordt bewaard tot vijf minuten voordat het verloopt; een gewijzigd geheim of certificaat krijgt een nieuw token. Een nationale cloud
@@ -95,8 +95,8 @@ Een Entra ID-referentie kan zich aanmelden met een certificaat in plaats van haa
    ```
 
 2. Upload het certificaat (`ansibleforms-mail.pem`) naar de app-registratie, onder **Certificates & secrets > Certificates**.
-3. Zet op de referentie **Aanmelden met** op **Certificaat** en plak het **Certificaat** en de privésleutel ervan (PEM, RSA, zonder
-   wachtwoordzin). Beide worden gecontroleerd bij **Opslaan**; de sleutel wordt versleuteld opgeslagen en nooit meer getoond.
+3. Zet op de referentie **Aanmelden met** op **Certificaat** en plak het **Certificaat** en de privésleutel ervan, de **Clientsleutel** (PEM, RSA,
+   zonder wachtwoordzin). Beide worden gecontroleerd bij **Opslaan**; de sleutel wordt versleuteld opgeslagen en nooit meer getoond.
 
 Een SSO-provider meldt zich altijd aan met het clientgeheim, dus een referentie die voor zowel aanmelding als mail dient, behoudt ook haar geheim.
 In de [configuratie-seed](../seed/) draagt een `entraid`-referentie het certificaat in `client_cert` en de sleutel in `client_key`, en het

@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: Benachrichtigungskanäle
 nav_order: 1.5
-translated_from: 7726278c07b456c4b765f5319ffec54361f4c5f9
+translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
 ---
 
 # Microsoft 365
@@ -40,7 +40,7 @@ Beide Wege beginnen mit einer App-Registrierung im Microsoft Entra Admin Center 
 1. **App registrations > New registration**, Single Tenant. Notieren Sie ihre **Application (client) ID** und **Directory (tenant) ID**.
 2. **Certificates & secrets**: ein neues Client-Secret (kopieren Sie seinen *Value*, nicht seine ID) oder ein Zertifikat, siehe [Ein Zertifikat statt eines Secrets](#a-certificate-instead-of-a-secret).
 3. In AnsibleForms unter **Verbindungen > Anmeldedaten** ein Eintrag vom Typ **Microsoft Entra ID** mit **Tenant-ID** und
-   **Client-ID**, und **Anmelden mit** auf **Client-Geheimnis** (dann der Wert des Secrets) oder **Zertifikat** gesetzt.
+   **Client-ID**, und **Anmelden mit** auf **Geheimnis** (dann der Wert des Secrets als **Client-Secret**) oder **Zertifikat** gesetzt.
 4. Wählen Sie am Mail-Kanal diesen Eintrag und **Senden über**.
 
 Das Token wird bis fünf Minuten vor seinem Ablauf behalten; ein geändertes Secret oder Zertifikat bekommt ein neues. Eine nationale Cloud setzt
@@ -95,7 +95,7 @@ Ein Entra ID-Eintrag kann sich statt mit seinem Client-Secret mit einem Zertifik
    ```
 
 2. Laden Sie das Zertifikat (`ansibleforms-mail.pem`) in der App-Registrierung unter **Certificates & secrets > Certificates** hoch.
-3. Setzen Sie am Eintrag **Anmelden mit** auf **Zertifikat** und fügen Sie das **Zertifikat** und seinen privaten Schlüssel ein (PEM, RSA,
+3. Setzen Sie am Eintrag **Anmelden mit** auf **Zertifikat** und fügen Sie das **Zertifikat** und seinen privaten Schlüssel als **Client-Schlüssel** ein (PEM, RSA,
    ohne Passphrase). Beide werden beim **Speichern** geprüft; der Schlüssel wird verschlüsselt gespeichert und nie wieder angezeigt.
 
 Ein SSO-Anbieter meldet sich immer mit dem Client-Secret an, daher behalten Anmeldedaten, die für Anmeldung und Mail dienen, auch ihr

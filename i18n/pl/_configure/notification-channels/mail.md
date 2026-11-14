@@ -3,7 +3,7 @@ layout: default
 title: Poczta
 parent: Kanały powiadomień
 nav_order: 1
-translated_from: 8348d14d37bdc4afc9b68869be9fe8021197597e
+translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
 ---
 
 # Poczta
@@ -24,8 +24,8 @@ ten oznaczony jako **Domyślny** to serwer, przez który aplikacja wysyła poczt
 
 | Krok | Pole | Znaczenie |
 |---|---|---|
-| Poświadczenia | Poświadczenie | Poświadczenie **smtp** z [Połączenia > Poświadczenia](../credentials.html) (serwer poczty, jego port i TLS oraz logowanie) albo poświadczenie **Microsoft Entra ID** do wysyłania przez [Microsoft 365](microsoft-365.html). Opcjonalne od wersji 7.6.0: bez niego poczta idzie przez własny serwer poczty kanału, zobacz niżej. |
-| Poświadczenia | Serwer poczty, Port poczty, Używaj TLS | Tylko bez poświadczenia: serwer, przez który kanał wysyła bez logowania (przekaźnik). **Serwer poczty** jest wtedy wymagany. |
+| Poświadczenia | Poświadczenie | Poświadczenie **smtp** z [Połączenia > Poświadczenia](../credentials.html) (serwer poczty, jego port i TLS oraz logowanie, lub **Bez logowania** dla przekaźnika) albo poświadczenie **Microsoft Entra ID** do wysyłania przez [Microsoft 365](microsoft-365.html). Wymagane dla nowego kanału; krok nie pyta o nic więcej na temat serwera. |
+| Poświadczenia | Serwer poczty, Port poczty, Używaj TLS | Nie w oknie. Tylko na stronie kanału bez poświadczenia lub takiego, którego poświadczenie smtp nie ma serwera, zobacz niżej. |
 | Poświadczenia | Wysyłaj przez | Tylko z poświadczeniem Microsoft Entra ID: **Microsoft Graph** (domyślnie) lub **SMTP (OAuth2)**, zobacz [Microsoft 365](microsoft-365.html). |
 | Nadawca | Nadawca | Adres nadawcy widoczny dla odbiorców. Przy Microsoft 365 skrzynka, w imieniu której wysyłana jest poczta. |
 
@@ -35,10 +35,11 @@ ten oznaczony jako **Domyślny** to serwer, przez który aplikacja wysyła poczt
 
 Serwera poczty, który przyjmuje pocztę bez logowania (przekaźnika), można użyć na dwa sposoby, a oba wysyłają bez uwierzytelniania:
 
-- **Poświadczenie smtp tylko z serwerem**: jego **Użytkownik (opcjonalnie)** i **Hasło (opcjonalnie)** pozostają puste.
-- **Bez poświadczenia** (od wersji 7.6.0): krok **Poświadczenia** pyta o własny **Serwer poczty**, **Port poczty** i **Używaj TLS** kanału.
+- **Poświadczenie smtp z Bez logowania** (od wersji 7.6.0): zawiera tylko **Serwer poczty**, **Port poczty** i **Używaj TLS**, bez użytkownika i hasła.
+- **Bez poświadczenia**: kanał bez niego (sprzed tej wersji lub przekaźnik z aktualizacji, zobacz niżej) zachowuje na swojej stronie własny **Serwer poczty**, **Port poczty** i **Używaj TLS**.
 
-Kanał, który wskazuje poświadczenie z własnym serwerem, zapomina serwer wpisany wcześniej w kanale.
+Kanał, którego poświadczenie smtp nie ma serwera (utworzone, zanim poświadczenia go zawierały), również zachowuje na swojej stronie własny
+serwer, port i TLS, gdzie loguje się login jego poświadczenia. Kanał wskazujący poświadczenie z własnym serwerem zapomina wcześniej wpisany serwer.
 
 ---
 
