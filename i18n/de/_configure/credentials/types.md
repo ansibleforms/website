@@ -3,7 +3,7 @@ layout: default
 title: Typen von Anmeldedaten
 parent: Anmeldedaten
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Typen von Anmeldedaten
@@ -59,7 +59,7 @@ Ab 7.6.0 fragt der Schritt **Anmeldung** dieser Typen zuerst, wie sich die Anmel
 | AWX, AAP, Ascender | **Anmelden mit**: **Token** oder **Passwort** | Token: das **Token**, kein Benutzer. Passwort: der Benutzer und sein Passwort |
 | Git | **Anmelden mit**: **Token** oder **Passwort** | Token: das **Token**, kein Benutzer (git sendet dann den Benutzer `oauth2`). Passwort: der Benutzer und sein Passwort |
 | SMTP | **Anmelden mit**: **Keine Anmeldung** oder **Anmeldung** | Keine Anmeldung, für ein Relay: nur **Mail-Server**, **Mail-Port** und **TLS verwenden**. Anmeldung: diese, dazu der Benutzer und sein Passwort |
-| Microsoft Entra ID | **Anmelden mit**: **Geheimnis** oder **Zertifikat** | Geheimnis: das **Client-Secret**. Zertifikat: das PEM-**Zertifikat** und sein privater Schlüssel, nur für Mail über Microsoft 365 |
+| Microsoft Entra ID | **Anmelden mit**: **Geheimnis** oder **Zertifikat** | Geheimnis: das **Client-Secret**. Zertifikat: das PEM-**Zertifikat** und sein privater Schlüssel, für Mail über Microsoft 365, und ein optionales **Client-Secret**, das für die SSO-Anmeldung erhalten bleibt |
 
 Anmeldedaten behalten nur, was ihre Auswahl braucht: SSH-Anmeldedaten halten nie Passwort und Schlüssel zugleich, das andere wird beim Speichern
 entfernt. Mit **In einen Schlüssel schreiben** im Schritt **Speicher** gibt es nur die Auswahlen mit Passwort, nicht **Privater Schlüssel**,

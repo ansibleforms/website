@@ -3,7 +3,7 @@ layout: default
 title: Typen referenties
 parent: Inloggegevens
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Typen referenties
@@ -59,7 +59,7 @@ Vanaf 7.6.0 vraagt de stap **Aanmelding** van deze typen eerst hoe de referentie
 | AWX, AAP, Ascender | **Aanmelden met**: **Token** of **Wachtwoord** | Token: het **Token**, geen gebruiker. Wachtwoord: de gebruiker en zijn wachtwoord |
 | Git | **Aanmelden met**: **Token** of **Wachtwoord** | Token: het **Token**, geen gebruiker (git stuurt dan de gebruiker `oauth2`). Wachtwoord: de gebruiker en zijn wachtwoord |
 | SMTP | **Aanmelden met**: **Geen aanmelding** of **Aanmelding** | Geen aanmelding, voor een relay: alleen **Mail server**, **Mail poort** en **TLS gebruiken**. Aanmelding: die, plus de gebruiker en zijn wachtwoord |
-| Microsoft Entra ID | **Aanmelden met**: **Geheim** of **Certificaat** | Geheim: het **Client secret**. Certificaat: het PEM-**Certificaat** en de privésleutel ervan, alleen voor mail via Microsoft 365 |
+| Microsoft Entra ID | **Aanmelden met**: **Geheim** of **Certificaat** | Geheim: het **Client secret**. Certificaat: het PEM-**Certificaat** en de privésleutel ervan, voor mail via Microsoft 365, en een optioneel **Client secret** dat bewaard blijft voor de SSO-aanmelding |
 
 Een referentie bewaart alleen wat haar keuze nodig heeft: een SSH-referentie heeft nooit zowel een wachtwoord als een sleutel, het andere
 vervalt bij opslaan. Met **Schrijven naar een sleutel** in de stap **Opslag** worden alleen de keuzes met een wachtwoord aangeboden.

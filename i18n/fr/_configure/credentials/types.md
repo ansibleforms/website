@@ -3,7 +3,7 @@ layout: default
 title: Types d'identifiants
 parent: Identifiants
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Types d'identifiants
@@ -59,7 +59,7 @@ Depuis la 7.6.0, l'étape **Connexion** de ces types demande d'abord comment l'i
 | AWX, AAP, Ascender | **Se connecter avec** : **Jeton** ou **Mot de passe** | Jeton : le **Jeton**, sans utilisateur. Mot de passe : l'utilisateur et son mot de passe |
 | Git | **Se connecter avec** : **Jeton** ou **Mot de passe** | Jeton : le **Jeton**, sans utilisateur (git envoie alors l'utilisateur `oauth2`). Mot de passe : l'utilisateur et son mot de passe |
 | SMTP | **Se connecter avec** : **Sans connexion** ou **Connexion** | Sans connexion, pour un relais : seulement le **Serveur mail**, le **Port mail** et **Utiliser TLS**. Connexion : ceux-ci, plus l'utilisateur et son mot de passe |
-| Microsoft Entra ID | **Se connecter avec** : **Secret** ou **Certificat** | Secret : le **Secret client**. Certificat : le **Certificat** PEM et sa clé privée, pour le mail via Microsoft 365 uniquement |
+| Microsoft Entra ID | **Se connecter avec** : **Secret** ou **Certificat** | Secret : le **Secret client**. Certificat : le **Certificat** PEM et sa clé privée, pour le mail via Microsoft 365, et un **Secret client** facultatif conservé pour la connexion SSO |
 
 Un identifiant ne garde que ce que son choix demande : un identifiant SSH n'a jamais à la fois un mot de passe et une clé, l'autre est supprimé
 à l'enregistrement. Avec **Écrire dans une clé** à l'étape **Stockage**, seuls les choix avec un mot de passe sont proposés, pas **Clé privée**, **Sans connexion** ni **Certificat**.

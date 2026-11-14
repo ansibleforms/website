@@ -3,7 +3,7 @@ layout: default
 title: Tipi di credenziale
 parent: Credenziali
 nav_order: 1
-translated_from: eb4f5cce55db979ca4f0d1304d797decc01192ee
+translated_from: b84ae16b5b68d4d344d1c91c7b4da2f3e71a1db8
 ---
 
 # Tipi di credenziale
@@ -59,7 +59,7 @@ Dalla 7.6.0 il passaggio **Accesso** di questi tipi chiede prima come accede la 
 | AWX, AAP, Ascender | **Accedi con**: **Token** o **Password** | Token: il **Token**, nessun utente. Password: l'utente e la sua password |
 | Git | **Accedi con**: **Token** o **Password** | Token: il **Token**, nessun utente (git invia allora l'utente `oauth2`). Password: l'utente e la sua password |
 | SMTP | **Accedi con**: **Nessun accesso** o **Accesso** | Nessun accesso, per un relay: solo **Server mail**, **Porta mail** e **Usa TLS**. Accesso: questi, più l'utente e la sua password |
-| Microsoft Entra ID | **Accedi con**: **Segreto** o **Certificato** | Segreto: il **Client secret**. Certificato: il **Certificato** PEM e la sua chiave privata, solo per la mail tramite Microsoft 365 |
+| Microsoft Entra ID | **Accedi con**: **Segreto** o **Certificato** | Segreto: il **Client secret**. Certificato: il **Certificato** PEM e la sua chiave privata, per la mail tramite Microsoft 365, e un **Client secret** facoltativo conservato per l'accesso SSO |
 
 Una credenziale conserva solo ciò che richiede la sua scelta: una SSH non ha mai password e chiave insieme, l'altra si elimina. Con **Scrivi in una chiave** nel passaggio **Archivio**, solo le scelte con password: non **Chiave privata**, **Nessun accesso** né **Certificato**.
 

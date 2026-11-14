@@ -3,7 +3,7 @@ layout: default
 title: Microsoft 365
 parent: 通知チャネル
 nav_order: 1.5
-translated_from: ed40e8d615d4ac22fad138311f56e478cccba98a
+translated_from: 5f9f8cf37412e6aa852e9fc1d20d7acc9e14df77
 ---
 
 # Microsoft 365
@@ -98,9 +98,8 @@ Entra ID 認証情報は、メールに限り、クライアントシークレ�
 3. 認証情報で **サインイン方法** を **証明書** にし、 **証明書** とその秘密鍵を **クライアントキー** に（PEM、RSA、パスフレーズなし）貼り付けます。
    どちらも **保存** 時に検証され、鍵は暗号化して保存され、二度と表示されません。
 
-SSO プロバイダーは常にクライアントシークレットでサインインするので、サインインとメールの両方に使う認証情報はシークレットも保持します。
-[構成シード](../seed/) では、 `entraid` 認証情報は証明書を `client_cert` に、その鍵を `client_key` に持ち、メールチャネルは
-`send_through: graph` または `send_through: smtp` を受け付けます。
+SSO のサインインは常にクライアントシークレットを使います。 **証明書** を選ぶと、認証情報にはそのための任意の **クライアントシークレット** が表示されるので、1 つの認証情報でサインインとメールの両方に使えます。 [構成シード](../seed/) では、
+`entraid` 認証情報は証明書を `client_cert` に、その鍵を `client_key` に持ち、メールチャネルは `send_through: graph` または `send_through: smtp` を受け付けます。
 
 ---
 

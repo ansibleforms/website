@@ -58,7 +58,7 @@ From 7.6.0 the **Login** step of these types first asks how the credential signs
 | AWX, AAP, Ascender | **Sign in with**: **Token** or **Password** | Token: the **Token**, no user. Password: the user and its password |
 | Git | **Sign in with**: **Token** or **Password** | Token: the **Token**, no user (git then sends the user `oauth2`). Password: the user and its password |
 | SMTP | **Sign in with**: **No login** or **Login** | No login, for a relay: only the **Mail server**, **Mail port** and **Use TLS**. Login: those, plus the user and its password |
-| Microsoft Entra ID | **Sign in with**: **Secret** or **Certificate** | Secret: the **Client secret**. Certificate: the PEM **Certificate** and its private key, for mail through Microsoft 365 only |
+| Microsoft Entra ID | **Sign in with**: **Secret** or **Certificate** | Secret: the **Client secret**. Certificate: the PEM **Certificate** and its private key, for mail through Microsoft 365, and an optional **Client secret** kept for the SSO sign-in |
 
 A credential keeps only what its choice needs: an SSH one never holds both a password and a key, the other is dropped on save. With
 **Write to a key** in the **Store** step, only the choices with a password are offered, not **Private key**, **No login** nor **Certificate**.
