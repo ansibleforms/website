@@ -3,7 +3,7 @@ layout: default
 title: 凭据类型
 parent: 凭据
 nav_order: 1
-translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
+translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
 ---
 
 # 凭据类型
@@ -23,15 +23,15 @@ translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 
 | 类型 | 保存的内容 | 使用者 |
 |---|---|---|
-| 用户名和密码 | 用于任何登录的用户和密码：使用基本认证的 REST API、某个服务等。默认类型 | Playbook，通过表单的 `credentials` 或凭据字段；[REST 表达式](../expressions/credentials.html) |
-| SSH | 用于 SSH 连接服务器的用户和密码，以及主机和端口 | Playbook，通过表单的 `credentials`、`ansibleCredentials` 或凭据字段，以及工作流节点的登录 |
+| 用户名和密码 | 用于任何登录的用户和密码：使用基本认证的 REST API、某个服务等，可带有可选的主机和端口。默认类型 | Playbook，通过表单的 `credentials` 或凭据字段；[REST 表达式](../expressions/credentials.html) |
+| SSH | 用于 SSH 连接服务器的用户，以及密码或私钥，还有主机和端口 | Playbook，通过表单的 `credentials`、`ansibleCredentials` 或凭据字段，以及工作流节点的登录 |
 | Git | 用于 git 仓库的用户名和密码或令牌 | [仓库](../repositories/authentication.html) |
-| API | 用于 REST API 的用户名和密码或令牌 | [REST 表达式](../expressions/credentials.html)、Telegram 机器人令牌、webhook 的 bearer 令牌、聊天助手的 API 密钥 |
+| API | 用于 REST API 的用户名和密码或令牌，可带有可选的主机和端口 | [REST 表达式](../expressions/credentials.html)、Telegram 机器人令牌、webhook 的 bearer 令牌、聊天助手的 API 密钥 |
 | 数据库 | 数据库登录，包括其类型、主机、端口和数据库名称 | 表单查询的 [数据库](../databases.html)（`dbConfig`，从 7.5.0 起），或直接由表单的 `dbConfig` 引用；`fnCredentials`；可以测试 |
 | CyberArk | CyberArk Central Credential Provider（CCP）的地址及其 TLS，以及 CyberArk 密钥库登录所用的 AppID、客户端证书和密钥 | [CyberArk](../secret-stores/cyberark.html) 密钥库 |
-| SMTP | 邮件服务器、其端口和 TLS，以及登录信息（中继无需） | 邮件 [通知通道](../notification-channels.html) |
+| SMTP | 邮件服务器、其端口和 TLS，以及可选的登录信息（中继无需） | 邮件 [通知通道](../notification-channels.html) |
 | LDAP | 目录的服务器、端口、TLS 和证书，以及绑定 DN 和密码 | [LDAP 目录](../authentication/ldap.html) |
-| Microsoft Entra ID | 提供商的应用注册：租户 ID、客户端 ID、客户端密钥和重定向 URI | [Entra ID 提供商](../authentication/entra-id.html) |
+| Microsoft Entra ID | 应用注册：租户 ID、客户端 ID、客户端密钥或证书，以及重定向 URI | [Entra ID 提供商](../authentication/entra-id.html)；通过 [Microsoft 365](../notification-channels/microsoft-365.html) 发送的邮件通道 |
 | Open ID | 提供商的客户端：颁发者、客户端 ID、客户端密钥和重定向 URI | [OIDC 提供商](../authentication/oidc.html) |
 | RTE | RTE 的令牌（`RTE_TOKEN`）和地址 | RTE [运行器](../runners.html) |
 | AWX、AAP、Ascender | 该平台的令牌或登录信息，以及地址 | 该类型的运行器 |
@@ -64,3 +64,38 @@ translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
 升级到 7.3.0 时只执行一次这些迁移。已经引用凭据的记录会保留该凭据；如果另一条记录以另一台服务器
 使用了相同的登录，则会获得该凭据的一个副本。在 [配置种子](../seed/) 中声明的记录保持种子中的原样。
 连接和登录所用的凭据只能由管理员修改，参见 [谁可以修改凭据](../credentials.html#who-may-change-a-credential)。
+
+---
+
+## 登录的主机和端口
+
+从 7.6.0 起，用户名和密码凭据或 API 凭据也可以在其 **登录** 步骤中保存 **主机** 和 **端口**，两者均为可选。
+
+它们随凭据一起以 `host` 和 `port` 的形式，与 `user` 和 `password` 并列，传给 playbook 和表达式：通过表单的
+`credentials` 和 [`fn.fnCredentials`](../expressions/credentials.html)。从密钥库读取的凭据保留其自身的主机和端口，
+只在它们为空时才采用密钥中的值。SSH 和数据库凭据一直都有这两个字段。
+
+---
+
+## SSH 凭据的私钥
+
+从 7.6.0 起，SSH 凭据可以使用私钥登录，代替密码或与密码并用：
+
+| 字段 | 含义 |
+|---|---|
+| 私钥 | playbook 登录所用的 PEM 或 OpenSSH 私钥。加密存储，永不再显示：留空则保留已保存的私钥。 |
+| 密码短语 | 私钥的密码短语（如果有）。加密存储。 |
+| 密码 | 有私钥时为可选。 |
+
+凭据的页面有一个 **删除已存储的私钥及其密码短语** 开关，在 **保存** 时生效。私钥及其密码短语
+永远不会由 API 返回，并且在作业输出中会被屏蔽。
+
+当表单在 `ansibleCredentials` 中引用该凭据时，RTE 会将私钥写入一个私有临时文件（位于专属文件夹中，
+仅其用户可读），并以 `ansible_ssh_private_key_file` 的形式传给 playbook。带密码短语的私钥会被加载到
+仅为该作业启动的 `ssh-agent` 中，加载后即删除该文件。作业结束时（包括失败或中止的作业），文件和 agent
+都会被清除，因此 RTE 上不会留下任何私钥。
+
+RTE 镜像包含 `ssh-agent` 和 `ssh-add`；自建的 RTE 如果缺少它们，私钥带密码短语的作业会失败，并说明原因。
+
+表单的 `credentials` 引用 SSH 凭据时，会将私钥以 `private_key` 、其密码短语以 `private_key_passphrase` 的形式交给 playbook。
+在 [配置种子](../seed/) 中，私钥是凭据的 `client_key` ，其密码短语是 `key_passphrase` 。

@@ -33,14 +33,16 @@ The **Login** step holds every field of the type, the address included; there is
 | Every type but CyberArk | The password, or what stands for it: the bind password of LDAP, the client secret of Entra ID and Open ID, the token of HashiCorp Vault, the RTE token, the API token of Semaphore, Rundeck and Jenkins, a token or password for AWX, AAP and Ascender |
 | Every type but HashiCorp Vault, RTE, Semaphore and Rundeck | The user: the AppID of CyberArk, the bind DN of LDAP, the client ID of Entra ID and Open ID, optional for AWX, AAP and Ascender |
 | SSH, Database | **Host** and **Port**; for a database also the **Database type** and **Database** |
-| SMTP | **Mail server** (required), its **Port** and **Use TLS** |
+| SSH | **Private key** and its **Passphrase**, from 7.6.0; with a key, the password is optional |
+| User and password, API | **Host** and **Port**, both optional, from 7.6.0 |
+| SMTP | **Mail server** (required), its **Port** and **Use TLS**; from 7.6.0 the user and password are optional, empty for a relay |
 | LDAP | The directory's **Servers** (required), its **Port** and **Enable TLS**; with TLS, **Ignore certs**, the **CA bundle** and a **Client certificate** |
-| Microsoft Entra ID | **Tenant ID** (required) and **Redirect URI** |
+| Microsoft Entra ID | **Tenant ID** (required) and **Redirect URI**; from 7.6.0 **Sign in with**: **Client secret** or **Certificate** (mail only) |
 | Open ID | **Issuer** (required) and **Redirect URI** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, the address it logs in to, required, with **Skip certificate verification** and the **CA bundle** |
 | CyberArk | **Client certificate** and **Client key** |
 
-With **Point to a key**, the user and password are not asked: the store gives them. The **Login** step then keeps only the address fields of the type (SSH, database, mail and directory servers, a server address), and a plain login (User and password, Git, API) has no **Login** step at all: it is saved from the **Store** step.
+With **Point to a key**, the user and password are not asked: the store gives them. The **Login** step then keeps only the address fields of the type (SSH, database, mail and directory servers, a server address, the optional host and port of User and password and API from 7.6.0), and a Git login has no **Login** step at all: it is saved from the **Store** step.
 
 With **Write to a key** (from 7.6.0), the **Login** step asks the user and password, and **Save** writes them to the store at the **Reference**; AnsibleForms keeps only the store and the reference. Only the stores that allow writing are offered, and **Add secret store** makes one with writing already on. A key that already holds a secret is replaced only when **Overwrite a secret already there** is ticked, see [Writing credentials](../secret-stores/#writing-credentials).
 

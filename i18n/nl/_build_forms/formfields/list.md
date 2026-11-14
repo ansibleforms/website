@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Formuliervelden
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Veld List
@@ -27,6 +27,7 @@ Het list-veld biedt de volgende mogelijkheden:
 - Markeringseigenschappen (`insertMarker`, `updateMarker`, `deleteMarker`) ondersteunen idempotente playbookpatronen.
 - Met `allowDelete: false` zijn bestaande rijen beschermd; alleen rijen die in de huidige sessie zijn toegevoegd (met de `insertMarker`) kunnen worden verwijderd.
 - De eigenschap `columns` bepaalt welke velden van het subformulier als kolommen in de overzichtstabel verschijnen.
+- Vanaf 7.6.0 houdt `readonlyColumns` gekozen velden van het subformulier alleen-lezen op bestaande rijen, terwijl nieuwe rijen ze nog invullen.
 - De uitvoer is altijd een array van objecten. `model`, `output`, `outputObject` en `valueColumn` die op velden van het subformulier zijn gedeclareerd, worden gerespecteerd wanneer de extravars worden gegenereerd.
 
 ---
@@ -228,6 +229,24 @@ Vooraf geladen rijen zijn beschermd, en de markeringen vertellen het playbook we
     - name
     - email
 ```
+
+### Alleen-lezen kolommen op bestaande rijen
+
+Vanaf 7.6.0 noemt een lijst met `readonlyColumns` de velden van het subformulier die de rijen die ze al bevat ongewijzigd laten:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Bij het bewerken van een bestaande rij staan die velden uitgeschakeld met een slotje, en houdt de rij hun waarden; een nieuwe rij vult ze in
+zoals elk ander veld, en de validatie blijft gelden. De eigenschap staat op de lijst, niet op het subformulier, zodat één subformulier in de
+ene lijst alleen-lezen en in een andere bewerkbaar kan zijn. Ze vervangt de `readonlyColumns` van het oude veld `table`.
 
 ### Rijen vooraf vullen
 

@@ -3,7 +3,7 @@ layout: default
 title: Strona poświadczeń
 parent: Poświadczenia
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # Strona poświadczeń
@@ -34,14 +34,16 @@ Krok **Logowanie** zawiera każde pole typu, łącznie z adresem; nie ma osobneg
 | Każdy typ poza CyberArk | Hasło lub to, co je zastępuje: hasło bind w LDAP, client secret w Entra ID i Open ID, token w HashiCorp Vault, token RTE, token API w Semaphore, Rundeck i Jenkins, token lub hasło w AWX, AAP i Ascender |
 | Każdy typ poza HashiCorp Vault, RTE, Semaphore i Rundeck | Użytkownik: AppID w CyberArk, bind DN w LDAP, client ID w Entra ID i Open ID, opcjonalny w AWX, AAP i Ascender |
 | SSH, Baza danych | **Host** i **Port**; dla bazy danych także **Typ bazy danych** i **Baza danych** |
-| SMTP | **Serwer poczty** (wymagany), jego **Port** i **Używaj TLS** |
+| SSH | **Klucz prywatny** i jego **Hasło klucza**, od wersji 7.6.0; z kluczem hasło jest opcjonalne |
+| Użytkownik i hasło, API | **Host** i **Port**, oba opcjonalne, od wersji 7.6.0 |
+| SMTP | **Serwer poczty** (wymagany), jego **Port** i **Używaj TLS**; od wersji 7.6.0 użytkownik i hasło są opcjonalne, puste dla przekaźnika |
 | LDAP | **Serwery** katalogu (wymagane), jego **Port** i **Włącz TLS**; z TLS także **Ignoruj certyfikaty**, **Pakiet CA** i **Certyfikat klienta** |
-| Microsoft Entra ID | **Tenant ID** (wymagany) i **Identyfikator URI przekierowania** |
+| Microsoft Entra ID | **Tenant ID** (wymagany) i **Identyfikator URI przekierowania**; od wersji 7.6.0 **Logowanie przez**: **Sekret klienta** lub **Certyfikat** (tylko poczta) |
 | Open ID | **Wystawca** (wymagany) i **Identyfikator URI przekierowania** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Serwer**, adres, do którego się loguje, wymagany, z **Pomiń weryfikację certyfikatu** i **Pakietem CA** |
 | CyberArk | **Certyfikat klienta** i **Klucz klienta** |
 
-Przy **Wskaż klucz** użytkownik i hasło nie są pytane: podaje je magazyn. Krok **Logowanie** zachowuje wtedy tylko pola adresu danego typu (SSH, baza danych, serwery poczty i katalogu, adres serwera), a proste logowanie (Użytkownik i hasło, Git, API) nie ma kroku **Logowanie**: zapisuje się je z kroku **Magazyn**.
+Przy **Wskaż klucz** użytkownik i hasło nie są pytane: podaje je magazyn. Krok **Logowanie** zachowuje wtedy tylko pola adresu danego typu (SSH, baza danych, serwery poczty i katalogu, adres serwera, opcjonalny host i port typów Użytkownik i hasło oraz API od wersji 7.6.0), a logowanie Git nie ma kroku **Logowanie**: zapisuje się je z kroku **Magazyn**.
 
 Przy **Zapisz w kluczu** (od 7.6.0) krok **Logowanie** pyta o użytkownika i hasło, a **Zapisz** zapisuje je w magazynie pod **Odwołaniem**; AnsibleForms przechowuje tylko magazyn i odwołanie. Oferowane są tylko magazyny, które zezwalają na zapis, a **Dodaj magazyn sekretów** tworzy taki z już włączonym zapisem. Klucz, w którym jest już sekret, zostaje zastąpiony tylko po zaznaczeniu **Nadpisz sekret, który już tam jest**, zob. [Zapisywanie poświadczeń](../secret-stores/#writing-credentials).
 

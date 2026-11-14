@@ -3,7 +3,7 @@ layout: default
 title: Configuració
 parent: Variables d'entorn
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Configuració
@@ -52,6 +52,9 @@ Les categories, els rols i les constants surten de `config.yaml` al disc o de la
 
 Un `ENABLE_CONFIG_IN_DATABASE` definit explícitament sempre guanya, fins i tot `0` davant d'un `database` desat. Es llegeix cada vegada que
 es carrega la configuració, així que un canvi s'aplica sense reiniciar. La pàgina **Estat** mostra l'origen en ús a la seva pestanya **Informació**.
+
+La còpia de la base de dades és la columna `config_yaml` de la taula `settings`, anomenada `forms_yaml` abans de la 7.6.0: l'actualització
+la reanomena i en conserva el contingut. `GET /api/v2/settings/config` la retorna com a `config_yaml`, i també com a `forms_yaml`, obsolet.
 
 ---
 

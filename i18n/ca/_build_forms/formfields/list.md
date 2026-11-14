@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Camps de formulari
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Camp List
@@ -27,6 +27,7 @@ El camp list ofereix les possibilitats següents:
 - Les propietats de marcatge (`insertMarker`, `updateMarker`, `deleteMarker`) permeten patrons de playbook idempotents.
 - Amb `allowDelete: false`, les files que ja existien estan protegides; només es poden eliminar les files afegides a la sessió actual (les que porten l'`insertMarker`).
 - La propietat `columns` controla quins camps del subformulari apareixen com a columnes a la taula de resum.
+- Des de la 7.6.0, `readonlyColumns` manté de només lectura els camps del subformulari triats a les files existents, i les files noves els continuen emplenant.
 - La sortida és sempre una matriu d'objectes. Quan es generen les extravars, es respecten els `model`, `output`, `outputObject` i `valueColumn` declarats als camps del subformulari.
 
 ---
@@ -228,6 +229,24 @@ Les files precarregades estan protegides, i els marcadors indiquen al playbook q
     - name
     - email
 ```
+
+### Columnes de només lectura a les files existents
+
+Des de la 7.6.0 una llista indica, amb `readonlyColumns`, els camps del subformulari que les files que ja té conserven tal com són:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+En editar una fila existent, aquests camps es mostren amb un cadenat, desactivats, i la fila en conserva els valors; una fila nova
+els emplena com qualsevol altre camp, i la validació continua aplicant-se. La propietat va a la llista, no al subformulari, així que
+un subformulari pot ser de només lectura en una llista i editable en una altra. Substitueix el `readonlyColumns` de l'antic `table`.
 
 ### Emplenar les files per endavant
 

@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /installation/
-translated_from: c5efb1a569cf31ab6b1817687a024e12c26eb128
+translated_from: 55830463d7134c2c7ea776065b82a1aa8c2ba678
 ---
 
 # 安装
@@ -65,7 +65,8 @@ curl -fsSL https://ansibleforms.com/install | sh
 | `ghcr.io/ansibleforms/ansibleforms-rte-core` | 在 base 的基础上加入 python、ansible-core 和少量库：用来添加您的 collection |
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | 在 core 的基础上加入 `ansible` 包及其 collection 和库：默认的 RTE |
 
-这四个镜像在同一次运行中构建，带有相同的标签，因此 RTE 的标签始终与应用的标签一致。
+这四个镜像在同一次运行中构建，带有相同的标签，因此 RTE 的标签始终与应用的标签一致。从 7.6.0 起，每个标签都包含
+一个 `linux/amd64` 镜像和一个 `linux/arm64` 镜像，Docker、Podman 和 Kubernetes 会自动拉取与主机相符的那个。
 
 旧的 Docker Hub 仓库 `ansibleguy/ansibleforms` 已不再更新。它保留了已有的
 版本，但两条版本线都不会再有新版本。如果您仍从那里拉取，请改用

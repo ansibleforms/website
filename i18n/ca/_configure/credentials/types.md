@@ -3,7 +3,7 @@ layout: default
 title: Tipus de credencial
 parent: Credencials
 nav_order: 1
-translated_from: 2782b0144b1442eceb8684fb1407827cef5fde8f
+translated_from: d6f228571406245ed64b84cb0a6bf1888ae5d53c
 ---
 
 # Tipus de credencial
@@ -23,15 +23,15 @@ El tipus indica per a què serveix una credencial. Decideix quins camps demana e
 
 | Tipus | Què conté | Usat per |
 |---|---|---|
-| Usuari i contrasenya | Un usuari i una contrasenya per a qualsevol accés: una API REST amb autenticació bàsica, un servei i més. El predeterminat | Playbooks, mitjançant les `credentials` d'un formulari o un camp de credencial; [expressions REST](../expressions/credentials.html) |
-| SSH | Un usuari i una contrasenya per a SSH a un servidor, amb el seu host i el seu port | Playbooks, mitjançant les `credentials` o `ansibleCredentials` d'un formulari o un camp de credencial, i l'accés d'un node de workflow |
+| Usuari i contrasenya | Un usuari i una contrasenya per a qualsevol accés: una API REST amb autenticació bàsica, un servei i més, amb un host i un port opcionals. El predeterminat | Playbooks, mitjançant les `credentials` d'un formulari o un camp de credencial; [expressions REST](../expressions/credentials.html) |
+| SSH | Un usuari amb una contrasenya o una clau privada per a SSH a un servidor, amb el seu host i el seu port | Playbooks, mitjançant les `credentials` o `ansibleCredentials` d'un formulari o un camp de credencial, i l'accés d'un node de workflow |
 | Git | Un usuari i una contrasenya o un token per a repositoris git | [Repositoris](../repositories/authentication.html) |
-| API | Un usuari i una contrasenya o un token per a una API REST | [Expressions REST](../expressions/credentials.html), el token d'un bot de Telegram, el bearer token d'un webhook, la clau d'API de l'assistent de xat |
+| API | Un usuari i una contrasenya o un token per a una API REST, amb un host i un port opcionals | [Expressions REST](../expressions/credentials.html), el token d'un bot de Telegram, el bearer token d'un webhook, la clau d'API de l'assistent de xat |
 | Base de dades | Un accés a base de dades, amb el seu tipus, host, port i nom de base de dades | Una [base de dades](../databases.html) que consulten els formularis (`dbConfig`), des de la 7.5.0, o directament el `dbConfig` d'un formulari; `fnCredentials`; es pot provar |
 | CyberArk | L'adreça del CyberArk Central Credential Provider (CCP) i el seu TLS, i l'AppID, el certificat de client i la clau amb què accedeix un magatzem CyberArk | Un magatzem de secrets [CyberArk](../secret-stores/cyberark.html) |
-| SMTP | Un servidor de correu, el seu port i TLS, i el seu accés (cap per a un relay) | Un [canal de notificació](../notification-channels.html) de correu |
+| SMTP | Un servidor de correu, el seu port i TLS, i el seu accés opcional (cap per a un relay) | Un [canal de notificació](../notification-channels.html) de correu |
 | LDAP | Els servidors, el port, el TLS i els certificats d'un directori, i el seu DN i contrasenya de bind | Un [directori LDAP](../authentication/ldap.html) |
-| Microsoft Entra ID | El registre d'aplicació d'un proveïdor: el seu ID de tenant, ID de client, secret de client i URI de redirecció | Un [proveïdor Entra ID](../authentication/entra-id.html) |
+| Microsoft Entra ID | Un registre d'aplicació: el seu ID de tenant, ID de client, secret de client o certificat, i URI de redirecció | Un [proveïdor Entra ID](../authentication/entra-id.html); un canal de correu que envia a través de [Microsoft 365](../notification-channels/microsoft-365.html) |
 | Open ID | El client d'un proveïdor: el seu emissor, ID de client, secret de client i URI de redirecció | Un [proveïdor OIDC](../authentication/oidc.html) |
 | RTE | El token (`RTE_TOKEN`) i l'adreça d'un RTE | Un [runner](../runners.html) RTE |
 | AWX, AAP, Ascender | El token o l'accés, i l'adreça, d'aquesta plataforma | Un runner d'aquest tipus |
@@ -64,3 +64,38 @@ Des de la 7.3.0, un accés que funciona en un servidor porta amb si aquest servi
 L'actualització a la 7.3.0 fa aquests trasllats una sola vegada. Un registre que ja nomenava una credencial la conserva, i en rep una còpia quan
 un altre registre utilitzava el mateix accés amb un altre servidor. Els registres declarats a la [llavor de configuració](../seed/) es deixen tal com els té la llavor.
 Les credencials de les connexions i dels inicis de sessió només les pot canviar un admin, vegeu [Qui pot canviar una credencial](../credentials.html#who-may-change-a-credential).
+
+---
+
+## Host i port d'un accés
+
+Des de la 7.6.0 una credencial d'usuari i contrasenya o d'API també pot tenir un **Amfitrió** i un **Port**, tots dos opcionals, al seu pas **Accés**.
+
+Arriben al playbook i a les expressions amb la credencial, com a `host` i `port`, al costat de `user` i `password`: mitjançant les
+`credentials` d'un formulari i [`fn.fnCredentials`](../expressions/credentials.html). Una credencial llegida d'un magatzem de secrets
+conserva el seu propi host i port, i pren els del secret només on els deixa buits. Les credencials SSH i de base de dades sempre els han tingut.
+
+---
+
+## La clau privada d'una credencial SSH
+
+Des de la 7.6.0 una credencial SSH pot iniciar sessió amb una clau privada, en lloc de la seva contrasenya o al costat d'aquesta:
+
+| Camp | Significat |
+|---|---|
+| Clau privada | La clau privada PEM o OpenSSH amb què inicia sessió el playbook. Es desa xifrada i no es torna a mostrar mai: si es deixa buida, es conserva la desada. |
+| Frase de pas | La frase de pas de la clau, si en té. Es desa xifrada. |
+| Contrasenya | Opcional amb una clau privada. |
+
+La pàgina de la credencial té un interruptor **Treure la clau privada desada i la seva frase de pas**, que s'aplica en fer **Desa**. L'API
+no retorna mai la clau ni la seva frase de pas, i s'emmascaren a la sortida de la tasca.
+
+Quan un formulari nomena la credencial a `ansibleCredentials`, l'RTE escriu la clau en un fitxer temporal privat (una carpeta pròpia,
+llegible només pel seu usuari) i la passa al playbook com a `ansible_ssh_private_key_file`. Una clau amb frase de pas es carrega en un
+`ssh-agent` iniciat només per a aquesta tasca, i el fitxer s'elimina un cop carregada. El fitxer i l'agent desapareixen quan acaba la
+tasca, incloses les fallides o avortades, de manera que no queda cap clau a l'RTE.
+
+Les imatges de l'RTE tenen `ssh-agent` i `ssh-add`; un RTE propi sense aquestes eines fa fallar, i ho diu, una tasca la clau de la qual té frase de pas.
+
+Les `credentials` d'un formulari que nomenen una credencial SSH passen la clau al playbook com a `private_key`, i la seva frase de pas com a
+`private_key_passphrase`. A la [llavor de configuració](../seed/), la clau és el `client_key` de la credencial i la seva frase de pas, `key_passphrase`.

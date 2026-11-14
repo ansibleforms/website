@@ -3,7 +3,7 @@ layout: default
 title: Exemple
 parent: Seed de configuration
 nav_order: 1
-translated_from: cf1f2b0122ca5cd2dfcc411e4ed20fb683b079bf
+translated_from: 3b80574712dfc8f514f0ff20403fc53f1d521279
 ---
 
 # Exemple
@@ -71,6 +71,11 @@ credentials:
       secure: false              # true: Use TLS to the mail server
       user: svc_forms            # leave user and password out for a relay
       password: ${SEED_SMTP_PW}
+    - name: m365-mail
+      credential_type: entraid   # an app registration, to send through Microsoft 365 (from 7.6.0)
+      tenant_id: ${SEED_M365_TENANT}
+      user: ${SEED_M365_CLIENT_ID}    # the client ID
+      password: ${SEED_M365_SECRET}   # the client secret ; or client_cert and client_key
 
 databases:                       # from 7.5.0
   items:
@@ -109,6 +114,17 @@ notification_channels:
       credential: smtp-login     # an smtp credential: the server, port, TLS and login it sends with
       from_address: ansibleforms@example.com
       is_active: true            # the mail channel the application sends its mail with
+    - name: relay
+      type: mail                 # no credential (from 7.6.0): its own server, sent without a login
+      server: relay.example.com
+      port: 25
+      secure: false
+      from_address: ansibleforms@example.com
+    - name: m365
+      type: mail
+      credential: m365-mail      # an entraid credential: mail through Microsoft 365
+      send_through: graph        # graph (the default) or smtp
+      from_address: noreply@example.com
     - name: ops-slack
       type: slack
       webhook_url: ${SEED_SLACK_WEBHOOK}
@@ -120,8 +136,8 @@ labels:
       enabled: true
       position: 1                # its place among the labels, lowest first
 
-# ldap and settings are single-row sections, so EVERY field must be declared - see
-# "Single-row sections are all or nothing" below. Empty is a perfectly good value.
+# ldap is a single-row section, so EVERY field must be declared - see "Single-row
+# sections are all or nothing" below. Empty is a perfectly good value.
 ldap:
   server: ldap.example.com
   port: 389
@@ -143,13 +159,7 @@ ldap:
   groupfilter: ""            # optional, see below
 
 settings:
-  mail_server: smtp.example.com
-  mail_port: 587
-  mail_secure: false
-  mail_username: ""
-  mail_password: ""
-  mail_from: ansibleforms@example.com
-  url: https://forms.example.com
+  url: https://forms.example.com   # the only key it needs from 7.6.0
 
 chat:                        # the chat assistant's model provider (6.5)
   provider: anthropic        # see below, or "" (chat off)
@@ -187,6 +197,12 @@ Comme `ldap`, la section `chat` est une seule ligne, si bien que chaque champ es
 facultatifs ; un champ facultatif omis est laissé inchangé.
 
 L'assistant de chat nécessite aussi `ENABLE_CHAT=1` ; voir la page [Assistant de chat](../chat).
+
+Le mail passe par les canaux mail de `notification_channels:` (voir [Mail](../notification-channels/mail.html)). Les clés
+`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password` et `mail_from` sous `settings:` sont dépréciées
+depuis la 7.6.0 et seront supprimées dans la 8.0.0. Elles fonctionnent toujours et journalisent un avertissement une fois : le seed en fait un canal
+mail nommé `default`, avec un identifiant smtp `mail-login` quand il y a un `mail_username`, ou son propre serveur pour un relais. Déclarez
+plutôt vous-même le canal mail et son identifiant, comme `mail` et `smtp-login` dans le fichier ci-dessus.
 
 Depuis la 7.3.0, un runner se connecte avec un identifiant de son type, qui contient l'adresse de son serveur dans `url`. Un runner avec son propre `token`,
 ou `username` et `password`, fonctionne toujours : le seed journalise un avertissement et les transforme en un tel identifiant, nommé d'après le runner. Un

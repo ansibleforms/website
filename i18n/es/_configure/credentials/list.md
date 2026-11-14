@@ -3,7 +3,7 @@ layout: default
 title: La página de credenciales
 parent: Credenciales
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # La página de credenciales
@@ -34,14 +34,16 @@ El paso **Acceso** contiene todos los campos del tipo, la dirección incluida; n
 | Todos los tipos salvo CyberArk | La contraseña, o lo que la sustituye: la contraseña de vinculación de LDAP, el secreto de cliente de Entra ID y Open ID, el token de HashiCorp Vault, el token del RTE, el token de API de Semaphore, Rundeck y Jenkins, un token o una contraseña para AWX, AAP y Ascender |
 | Todos los tipos salvo HashiCorp Vault, RTE, Semaphore y Rundeck | El usuario: el AppID de CyberArk, el DN de vinculación de LDAP, el ID de cliente de Entra ID y Open ID, opcional para AWX, AAP y Ascender |
 | SSH, Base de datos | **Servidor** y **Puerto**; para una base de datos también el **Tipo de base de datos** y la **Base de datos** |
-| SMTP | **Servidor de correo** (obligatorio), su **Puerto** y **Usar TLS** |
+| SSH | **Clave privada** y su **Frase de contraseña**, desde la 7.6.0; con una clave, la contraseña es opcional |
+| Usuario y contraseña, API | **Servidor** y **Puerto**, ambos opcionales, desde la 7.6.0 |
+| SMTP | **Servidor de correo** (obligatorio), su **Puerto** y **Usar TLS**; desde la 7.6.0 el usuario y la contraseña son opcionales, vacíos para un relay |
 | LDAP | Los **Servidores** del directorio (obligatorio), su **Puerto** y **Habilitar TLS**; con TLS, **Ignorar certificados**, el **Paquete CA** y un **Certificado de cliente** |
-| Microsoft Entra ID | **ID de inquilino** (obligatorio) y **URI de redirección** |
+| Microsoft Entra ID | **ID de inquilino** (obligatorio) y **URI de redirección**; desde la 7.6.0 **Iniciar sesión con**: **Secreto de cliente** o **Certificado** (solo correo) |
 | Open ID | **Emisor** (obligatorio) y **URI de redirección** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, la dirección en la que inicia sesión, obligatorio, con **Omitir la verificación del certificado** y el **Paquete CA** |
 | CyberArk | **Certificado de cliente** y **Clave de cliente** |
 
-Con **Apuntar a una clave**, no se piden el usuario ni la contraseña: los da el almacén. El paso **Acceso** solo conserva los campos de dirección del tipo (SSH, base de datos, servidores de correo y de directorio, la dirección de un servidor), y un acceso simple (Usuario y contraseña, Git, API) no tiene paso **Acceso**: se guarda desde el paso **Almacén**.
+Con **Apuntar a una clave**, no se piden el usuario ni la contraseña: los da el almacén. El paso **Acceso** solo conserva los campos de dirección del tipo (SSH, base de datos, servidores de correo y de directorio, la dirección de un servidor, el host y el puerto opcionales de Usuario y contraseña y API desde la 7.6.0), y un acceso Git no tiene paso **Acceso**: se guarda desde el paso **Almacén**.
 
 Con **Escribir en una clave** (desde 7.6.0), el paso **Acceso** pide el usuario y la contraseña, y **Guardar** los escribe en el almacén en la **Referencia**; AnsibleForms solo guarda el almacén y la referencia. Solo se ofrecen los almacenes que permiten escribir, y **Añadir almacén de secretos** crea uno con la escritura ya activada. Una clave que ya tiene un secreto solo se reemplaza si **Sobrescribir un secreto que ya esté allí** está marcado, ver [Escribir credenciales](../secret-stores/#writing-credentials).
 

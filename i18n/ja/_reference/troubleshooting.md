@@ -2,7 +2,7 @@
 layout: default
 title: トラブルシューティング
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # トラブルシューティング
@@ -684,6 +684,9 @@ The form data is not valid
 サーバーがフィールドの値をフォームのルールに照らしてチェックし、欠けているフィールドや無効なフィールドを見つけました。それらは応答の
 `details` に列挙されます。 `rawFormData` のない起動も拒否されます。ウィザードなど、まだチェックできないフォームは
 `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>` で拒否されます。
+
+7.6.0 からは、フォームのメッセージはフィールドをそのラベルで示します。入力が必要なものと、値をまだ読み込み中のものです。
+*The form data is not valid. Fill in: Owner. Still loading: Disks.*
 
 **解決方法**
 

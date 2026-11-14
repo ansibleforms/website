@@ -3,7 +3,7 @@ layout: default
 title: "La página de una credencial"
 parent: Credenciales
 nav_order: 3
-translated_from: 204eca949763c8c23625369f1d8d8d0d06545c87
+translated_from: 0f97a94cda545c02b3d293fdf2de486d1d066905
 ---
 
 # La página de una credencial
@@ -18,13 +18,15 @@ La página de una credencial muestra los pasos de su diálogo como pestañas, m�
 |---|---|
 | Detalles | Nombre y descripción. |
 | Tipo | Para qué sirve la credencial. |
-| Acceso | Todos los campos de su tipo, como en el paso **Acceso** del diálogo: el usuario, la contraseña y dónde inicia sesión (host y puerto, la base de datos, el servidor de correo, los servidores del directorio, el inquilino o el emisor, la dirección del servidor y su TLS). El AppID, el certificado de cliente y la clave de una credencial CyberArk. |
+| Acceso | Todos los campos de su tipo, como en el paso **Acceso** del diálogo: el usuario, la contraseña y dónde inicia sesión (host y puerto, la base de datos, el servidor de correo, los servidores del directorio, el inquilino o el emisor, la dirección del servidor y su TLS). El AppID, el certificado de cliente y la clave de una credencial CyberArk. La clave privada y la frase de contraseña de una credencial SSH, desde la 7.6.0. |
 | Almacén | Base de datos o Almacén de secretos, y el almacén y la referencia. No para CyberArk ni HashiCorp Vault. |
 | Usado por | Todo lo que nombra esta credencial: almacenes de secretos, canales de notificación, repositorios, directorios LDAP, proveedores SSO, runners, [bases de datos](../databases.html) (desde la 7.5.0), el asistente de chat, formularios y los workflows del diseñador. Una fila lo abre. |
 
-La contraseña se escribe en la pestaña **Acceso** y nunca se vuelve a mostrar una vez guardada: si se deja vacía, se mantiene la guardada. En una credencial
-CyberArk, deja vacía la clave de cliente para mantener la guardada. Arriba a la derecha están **Probar conexión** (solo credenciales de base de datos),
-**Eliminar** y **Guardar**.
+La contraseña se escribe en la pestaña **Acceso** y nunca se vuelve a mostrar una vez guardada: si se deja vacía, se mantiene la guardada. Lo mismo
+vale para la clave de cliente de una credencial CyberArk y, desde la 7.6.0, para la clave privada y la frase de contraseña de una credencial SSH, que
+el interruptor **Quitar la clave privada guardada y su frase de contraseña** elimina al pulsar **Guardar**.
+
+Arriba a la derecha están **Probar conexión** (solo credenciales de base de datos), **Eliminar** y **Guardar**.
 
 Desde la 7.3.0, **Eliminar** y un nombre nuevo se rechazan mientras **Usado por** liste algo, consulta [Credenciales en uso](../credentials.html#credentials-in-use).
 

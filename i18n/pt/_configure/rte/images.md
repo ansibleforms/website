@@ -3,7 +3,7 @@ layout: default
 title: Imagens
 parent: RTE
 nav_order: 1
-translated_from: cb917c5cb9cbca9d530398171265e91f1ba8e94b
+translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
 ---
 
 # Imagens do RTE
@@ -28,6 +28,9 @@ O RTE é publicado em três camadas, cada uma construída sobre a anterior, com 
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | A core, mais o pacote `ansible` sobre o mesmo ansible-core, e o que a imagem do AnsibleForms 6.5 tinha: as collections da NetApp, da AWS e da comunidade, `pandas`, `pyvmomi`, `boto3`, o cliente mariadb, ytt e algumas ferramentas do sistema operativo | **A predefinição.** Corra-a tal como está: os playbooks da 6.5 encontram o que usavam |
 
 Tal como a imagem da aplicação, todas as camadas correm como o utilizador `node` (uid 1000), e os playbooks também correm como esse utilizador.
+
+A partir da 7.6.0, todas as camadas são publicadas para `linux/amd64` e `linux/arm64` com a mesma tag. Um RTE que construa sobre uma é
+construído para a arquitetura da máquina que o constrói: para hosts arm64, construa-o num deles, ou com `docker buildx build --platform linux/arm64`.
 
 ---
 

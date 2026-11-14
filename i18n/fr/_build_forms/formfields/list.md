@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Champs de formulaire
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Champ List
@@ -27,6 +27,7 @@ Le champ list offre les possibilités suivantes :
 - Les propriétés de marqueur (`insertMarker`, `updateMarker`, `deleteMarker`) permettent des modèles de playbook idempotents.
 - Avec `allowDelete: false`, les lignes préexistantes sont protégées ; seules les lignes ajoutées pendant la session en cours (qui portent l'`insertMarker`) peuvent être supprimées.
 - La propriété `columns` contrôle quels champs du sous-formulaire apparaissent comme colonnes dans le tableau récapitulatif.
+- Depuis la 7.6.0, `readonlyColumns` garde certains champs du sous-formulaire en lecture seule sur les lignes existantes ; les nouvelles lignes les remplissent.
 - La sortie est toujours un tableau d'objets. `model`, `output`, `outputObject` et `valueColumn` déclarés sur les champs du sous-formulaire sont respectés lors de la génération des extravars.
 
 ---
@@ -228,6 +229,24 @@ Les lignes préchargées sont protégées, et les marqueurs indiquent au playboo
     - name
     - email
 ```
+
+### Colonnes en lecture seule sur les lignes existantes
+
+Depuis la 7.6.0, une liste nomme avec `readonlyColumns` les champs du sous-formulaire que les lignes qu'elle contient déjà gardent tels quels :
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+La modification d'une ligne existante affiche ces champs avec un cadenas, désactivés, et la ligne garde leurs valeurs ; une nouvelle ligne les
+remplit comme n'importe quel autre champ, et la validation s'applique toujours. La propriété se trouve sur la liste, pas sur le sous-formulaire :
+un même sous-formulaire peut ainsi être en lecture seule dans une liste et modifiable dans une autre. Elle remplace le `readonlyColumns` de l'ancien champ `table`.
 
 ### Pré-remplir les lignes
 

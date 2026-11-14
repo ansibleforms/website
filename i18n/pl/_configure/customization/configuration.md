@@ -3,7 +3,7 @@ layout: default
 title: Konfiguracja
 parent: Zmienne środowiskowe
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Konfiguracja
@@ -52,6 +52,9 @@ Kategorie, role i stałe pochodzą z `config.yaml` na dysku lub z jego kopii w b
 
 Jawnie ustawiona `ENABLE_CONFIG_IN_DATABASE` zawsze wygrywa, nawet `0` z zapisanym `database`. Jest odczytywana przy każdym
 wczytaniu konfiguracji, więc zmiana działa bez restartu. Strona **Stan** pokazuje używane źródło na karcie **Informacje**.
+
+Kopia w bazie danych to kolumna `config_yaml` tabeli `settings`, przed 7.6.0 nazwana `forms_yaml`: aktualizacja zmienia jej nazwę
+i zachowuje zawartość. `GET /api/v2/settings/config` zwraca ją jako `config_yaml`, a także jako `forms_yaml`, przestarzałe.
 
 ---
 

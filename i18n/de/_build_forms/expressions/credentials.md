@@ -3,7 +3,7 @@ layout: default
 title: Anmeldedaten
 parent: Ausdrücke
 nav_order: 4
-translated_from: bfa50c90495c68300d189f9a0eb38e25df9e7c8e
+translated_from: e599378365aae2598c5e3ec20f8808b995863764
 ---
 
 # Anmeldedaten
@@ -25,6 +25,8 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 ```
 
 Zuerst wird der exakte Name versucht. Gibt es keine Anmeldedaten mit diesem Namen, wird der Name als regulärer Ausdruck verwendet, und danach wird die Alternative versucht.
+
+Ab 7.6.0 können auch Anmeldedaten vom Typ Benutzer und Passwort oder API einen `host` und `port` tragen, siehe [Typen von Anmeldedaten](../credentials/types.html#host-and-port-of-a-login).
 
 #### Durch Rollen begrenzt
 

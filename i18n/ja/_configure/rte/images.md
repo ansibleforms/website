@@ -3,7 +3,7 @@ layout: default
 title: イメージ
 parent: RTE
 nav_order: 1
-translated_from: cb917c5cb9cbca9d530398171265e91f1ba8e94b
+translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
 ---
 
 # RTE イメージ
@@ -28,6 +28,9 @@ RTE は三つのレイヤーで公開されており、それぞれが前のも�
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | core に、同じ ansible-core 上の `ansible` パッケージと、AnsibleForms 6.5 のイメージにあったもの（NetApp、AWS、community のコレクション、 `pandas` 、 `pyvmomi` 、 `boto3` 、mariadb クライアント、ytt、いくつかの OS ツール）を加えたもの | **既定。** そのまま実行します。6.5 のプレイブックは使っていたものを見つけられます |
 
 アプリのイメージと同じく、すべてのレイヤーはユーザー `node` （uid 1000）で動作し、プレイブックもそのユーザーで実行されます。
+
+7.6.0 からは、すべてのレイヤーが同じタグで `linux/amd64` と `linux/arm64` 向けに公開されます。自分でビルドする RTE は、ビルドする
+マシンのアーキテクチャ向けになります。arm64 のホスト向けには、arm64 のマシンでビルドするか、 `docker buildx build --platform linux/arm64` を使います。
 
 ---
 

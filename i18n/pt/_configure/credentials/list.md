@@ -3,7 +3,7 @@ layout: default
 title: A página de credenciais
 parent: Credenciais
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # A página de credenciais
@@ -34,14 +34,16 @@ O passo **Acesso** contém todos os campos do tipo, incluindo o endereço; não 
 | Todos os tipos exceto CyberArk | A palavra-passe, ou o que a substitui: a palavra-passe de bind do LDAP, o client secret do Entra ID e do Open ID, o token do HashiCorp Vault, o token do RTE, o token de API do Semaphore, do Rundeck e do Jenkins, um token ou palavra-passe para AWX, AAP e Ascender |
 | Todos os tipos exceto HashiCorp Vault, RTE, Semaphore e Rundeck | O utilizador: o AppID do CyberArk, o bind DN do LDAP, o client ID do Entra ID e do Open ID, opcional para AWX, AAP e Ascender |
 | SSH, Base de dados | **Host** e **Porta**; para uma base de dados também o **Tipo de base de dados** e a **Base de dados** |
-| SMTP | **Servidor de correio** (obrigatório), a sua **Porta** e **Usar TLS** |
+| SSH | **Chave privada** e a sua **Frase-passe**, a partir da 7.6.0; com uma chave, a palavra-passe é opcional |
+| Utilizador e palavra-passe, API | **Host** e **Porta**, ambos opcionais, a partir da 7.6.0 |
+| SMTP | **Servidor de correio** (obrigatório), a sua **Porta** e **Usar TLS**; a partir da 7.6.0, o utilizador e a palavra-passe são opcionais, vazios para um relay |
 | LDAP | Os **Servidores** do diretório (obrigatório), a sua **Porta** e **Ativar TLS**; com TLS, **Ignorar certificados**, o **CA bundle** e um **Certificado de cliente** |
-| Microsoft Entra ID | **Tenant ID** (obrigatório) e **URI de redirecionamento** |
+| Microsoft Entra ID | **Tenant ID** (obrigatório) e **URI de redirecionamento**; a partir da 7.6.0, **Iniciar sessão com**: **Segredo de cliente** ou **Certificado** (só email) |
 | Open ID | **Emissor** (obrigatório) e **URI de redirecionamento** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, o endereço em que inicia sessão, obrigatório, com **Ignorar a verificação do certificado** e o **CA bundle** |
 | CyberArk | **Certificado de cliente** e **Chave de cliente** |
 
-Com **Apontar para uma chave**, o utilizador e a palavra-passe não são pedidos: o cofre dá-os. O passo **Acesso** mantém então só os campos de endereço do tipo (SSH, base de dados, servidores de correio e de diretório, o endereço de um servidor), e um acesso simples (Utilizador e palavra-passe, Git, API) não tem passo **Acesso**: é guardado a partir do passo **Armazenamento**.
+Com **Apontar para uma chave**, o utilizador e a palavra-passe não são pedidos: o cofre dá-os. O passo **Acesso** mantém então só os campos de endereço do tipo (SSH, base de dados, servidores de correio e de diretório, o endereço de um servidor, o host e a porta opcionais de Utilizador e palavra-passe e de API a partir da 7.6.0), e um acesso Git não tem passo **Acesso**: é guardado a partir do passo **Armazenamento**.
 
 Com **Escrever numa chave** (desde 7.6.0), o passo **Acesso** pede o utilizador e a palavra-passe, e **Guardar** escreve-os no cofre na **Referência**; o AnsibleForms guarda apenas o cofre e a referência. Só são oferecidos os cofres que permitem escrita, e **Adicionar cofre de segredos** cria um com a escrita já ligada. Uma chave que já tem um segredo só é substituída se **Substituir um segredo que já lá esteja** estiver marcado, ver [Escrever credenciais](../secret-stores/#writing-credentials).
 

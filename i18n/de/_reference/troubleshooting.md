@@ -2,7 +2,7 @@
 layout: default
 title: Fehlerbehebung
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Fehlerbehebung
@@ -685,6 +685,9 @@ The form data is not valid
 Der Server hat die Feldwerte gegen die Regeln des Formulars geprüft und fehlende oder ungültige Felder gefunden; die Antwort listet
 sie unter `details` auf. Ein Start ohne `rawFormData` wird ebenfalls abgelehnt. Ein Formular, das sich noch nicht prüfen lässt, etwa ein Wizard,
 wird mit `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>` abgelehnt.
+
+Ab 7.6.0 nennt die Meldung des Formulars die Felder bei ihren Beschriftungen, die auszufüllenden und die, deren Werte noch laden:
+*The form data is not valid. Fill in: Owner. Still loading: Disks.*
 
 **Wie Sie es beheben**
 

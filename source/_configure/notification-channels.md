@@ -26,7 +26,8 @@ For administrators: add the mail servers and chat channels that forms send their
 
 | Page | What it covers |
 |---|---|
-| [Mail](notification-channels/mail.html) | SMTP servers, the default one, and their login |
+| [Mail](notification-channels/mail.html) | Mail servers, the default one, and how they log in |
+| [Microsoft 365](notification-channels/microsoft-365.html) | Mail through Microsoft 365 with OAuth2, from 7.6.0 |
 | [Slack and Microsoft Teams](notification-channels/slack-and-teams.html) | A channel webhook of Slack or Teams |
 | [Telegram](notification-channels/telegram.html) | A bot posting in a Telegram chat |
 | [Webhook](notification-channels/webhook.html) | A JSON request to any HTTP endpoint |
@@ -43,7 +44,7 @@ one of these types:
 
 | Type | What it sends |
 |---|---|
-| Mail | Mail through an SMTP server: approval requests and job notifications. |
+| Mail | Mail through an SMTP server or Microsoft 365: approval requests and job notifications. |
 | Slack | A message in a Slack channel, through its incoming webhook, with a button to the job. |
 | Microsoft Teams | A card in a Teams channel, through a Workflows webhook, with a button to the job. |
 | Telegram | A message from a bot in a Telegram chat, with a link to the job. |

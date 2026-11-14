@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # 通知チャネル
@@ -27,7 +27,8 @@ translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
 
 | ページ | 内容 |
 |---|---|
-| [メール](notification-channels/mail.html) | SMTP サーバー、既定のサーバー、そのログイン |
+| [メール](notification-channels/mail.html) | メールサーバー、既定のサーバー、そのログイン方法 |
+| [Microsoft 365](notification-channels/microsoft-365.html) | OAuth2 を使った Microsoft 365 経由のメール（7.6.0 から） |
 | [Slack と Microsoft Teams](notification-channels/slack-and-teams.html) | Slack または Teams のチャネルの Webhook |
 | [Telegram](notification-channels/telegram.html) | Telegram のチャットに投稿するボット |
 | [Webhook](notification-channels/webhook.html) | 任意の HTTP エンドポイントへの JSON リクエスト |
@@ -44,7 +45,7 @@ translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
 
 | 種類 | 送るもの |
 |---|---|
-| メール | SMTP サーバー経由のメール。承認依頼とジョブの通知。 |
+| メール | SMTP サーバーまたは Microsoft 365 経由のメール。承認依頼とジョブの通知。 |
 | Slack | 受信 Webhook を経由した Slack チャネルへのメッセージ。ジョブへのボタン付き。 |
 | Microsoft Teams | Workflows の Webhook を経由した Teams チャネルへのカード。ジョブへのボタン付き。 |
 | Telegram | Telegram のチャットへのボットからのメッセージ。ジョブへのリンク付き。 |

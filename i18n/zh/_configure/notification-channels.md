@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # 通知通道
@@ -27,7 +27,8 @@ translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
 
 | 页面 | 内容 |
 |---|---|
-| [邮件](notification-channels/mail.html) | SMTP 服务器、默认服务器及其登录信息 |
+| [邮件](notification-channels/mail.html) | 邮件服务器、默认服务器及其登录方式 |
+| [Microsoft 365](notification-channels/microsoft-365.html) | 通过 Microsoft 365 使用 OAuth2 发送邮件，从 7.6.0 起 |
 | [Slack 和 Microsoft Teams](notification-channels/slack-and-teams.html) | Slack 或 Teams 的频道 webhook |
 | [Telegram](notification-channels/telegram.html) | 在 Telegram 聊天中发言的机器人 |
 | [Webhook](notification-channels/webhook.html) | 发往任意 HTTP 端点的 JSON 请求 |
@@ -44,7 +45,7 @@ translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
 
 | 类型 | 发送的内容 |
 |---|---|
-| 邮件 | 通过 SMTP 服务器发送的邮件：审批请求和作业通知。 |
+| 邮件 | 通过 SMTP 服务器或 Microsoft 365 发送的邮件：审批请求和作业通知。 |
 | Slack | 通过传入 webhook 发到 Slack 频道的消息，带有跳转到作业的按钮。 |
 | Microsoft Teams | 通过 Workflows webhook 发到 Teams 频道的卡片，带有跳转到作业的按钮。 |
 | Telegram | 机器人在 Telegram 聊天中发送的消息，带有作业的链接。 |

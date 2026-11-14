@@ -3,7 +3,7 @@ layout: default
 title: Die Seite Anmeldedaten
 parent: Anmeldedaten
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # Die Seite Anmeldedaten
@@ -34,14 +34,16 @@ Der Schritt **Anmeldung** enthält jedes Feld des Typs, die Adresse eingeschloss
 | Jeder Typ außer CyberArk | Das Passwort oder was dafür steht: das Bind-Passwort bei LDAP, das Client-Secret bei Entra ID und Open ID, das Token bei HashiCorp Vault, das RTE-Token, das API-Token bei Semaphore, Rundeck und Jenkins, ein Token oder Passwort bei AWX, AAP und Ascender |
 | Jeder Typ außer HashiCorp Vault, RTE, Semaphore und Rundeck | Der Benutzer: die AppID bei CyberArk, der Bind-DN bei LDAP, die Client-ID bei Entra ID und Open ID, optional bei AWX, AAP und Ascender |
 | SSH, Datenbank | **Host** und **Port**; bei einer Datenbank außerdem **Datenbanktyp** und **Datenbank** |
-| SMTP | **Mail-Server** (erforderlich), sein **Port** und **TLS verwenden** |
+| SSH | **Privater Schlüssel** und seine **Passphrase**, ab 7.6.0; mit einem Schlüssel ist das Passwort optional |
+| Benutzer und Passwort, API | **Host** und **Port**, beide optional, ab 7.6.0 |
+| SMTP | **Mail-Server** (erforderlich), sein **Port** und **TLS verwenden**; ab 7.6.0 sind Benutzer und Passwort optional, leer für ein Relay |
 | LDAP | Die **Server** des Verzeichnisses (erforderlich), sein **Port** und **TLS aktivieren**; mit TLS **Zertifikate ignorieren**, das **CA-Bundle** und ein **Client-Zertifikat** |
-| Microsoft Entra ID | **Tenant-ID** (erforderlich) und **Umleitungs-URI** |
+| Microsoft Entra ID | **Tenant-ID** (erforderlich) und **Umleitungs-URI**; ab 7.6.0 **Anmelden mit**: **Client-Geheimnis** oder **Zertifikat** (nur Mail) |
 | Open ID | **Issuer** (erforderlich) und **Umleitungs-URI** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Server**, die Adresse, bei der er sich anmeldet, erforderlich, mit **Zertifikatsprüfung überspringen** und dem **CA-Bundle** |
 | CyberArk | **Client-Zertifikat** und **Client-Schlüssel** |
 
-Mit **Auf einen Schlüssel verweisen** werden Benutzer und Passwort nicht abgefragt: Der Store liefert sie. Der Schritt **Anmeldung** behält dann nur die Adressfelder des Typs (SSH, Datenbank, Mail- und Verzeichnisserver, eine Serveradresse), und eine einfache Anmeldung (Benutzer und Passwort, Git, API) hat gar keinen Schritt **Anmeldung**: Sie wird im Schritt **Speicher** gespeichert.
+Mit **Auf einen Schlüssel verweisen** werden Benutzer und Passwort nicht abgefragt: Der Store liefert sie. Der Schritt **Anmeldung** behält dann nur die Adressfelder des Typs (SSH, Datenbank, Mail- und Verzeichnisserver, eine Serveradresse, ab 7.6.0 der optionale Host und Port von Benutzer und Passwort und API), und eine Git-Anmeldung hat gar keinen Schritt **Anmeldung**: Sie wird im Schritt **Speicher** gespeichert.
 
 Mit **In einen Schlüssel schreiben** (ab 7.6.0) fragt der Schritt **Anmeldung** Benutzer und Passwort ab, und **Speichern** schreibt sie an der **Referenz** in den Store; AnsibleForms behält nur Store und Referenz. Angeboten werden nur Stores, die Schreiben erlauben, und **Secret Store hinzufügen** legt einen mit bereits eingeschaltetem Schreiben an. Ein Schlüssel, der schon ein Secret enthält, wird nur ersetzt, wenn **Ein vorhandenes Geheimnis überschreiben** angehakt ist, siehe [Anmeldedaten schreiben](../secret-stores/#writing-credentials).
 

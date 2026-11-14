@@ -3,7 +3,7 @@ layout: default
 title: La pàgina de credencials
 parent: Credencials
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # La pàgina de credencials
@@ -34,14 +34,16 @@ El pas **Accés** conté tots els camps del tipus, l'adreça inclosa; no hi ha c
 | Tots els tipus excepte CyberArk | La contrasenya, o el que en fa les funcions: la contrasenya de bind de LDAP, el secret de client d'Entra ID i Open ID, el token d'HashiCorp Vault, el token de l'RTE, el token d'API de Semaphore, Rundeck i Jenkins, un token o una contrasenya per a AWX, AAP i Ascender |
 | Tots els tipus excepte HashiCorp Vault, RTE, Semaphore i Rundeck | L'usuari: l'AppID de CyberArk, el DN de bind de LDAP, l'ID de client d'Entra ID i Open ID, opcional per a AWX, AAP i Ascender |
 | SSH, Base de dades | **Amfitrió** i **Port**; per a una base de dades també el **Tipus de base de dades** i la **Base de dades** |
-| SMTP | **Servidor de correu** (obligatori), el seu **Port** i **Utilitza TLS** |
+| SSH | **Clau privada** i la seva **Frase de pas**, des de la 7.6.0; amb una clau, la contrasenya és opcional |
+| Usuari i contrasenya, API | **Amfitrió** i **Port**, tots dos opcionals, des de la 7.6.0 |
+| SMTP | **Servidor de correu** (obligatori), el seu **Port** i **Utilitza TLS**; des de la 7.6.0 l'usuari i la contrasenya són opcionals, buits per a un relay |
 | LDAP | Els **Servidors** del directori (obligatori), el seu **Port** i **Activa TLS**; amb TLS, **Ignora els certificats**, el **Paquet de CA** i un **Certificat de client** |
-| Microsoft Entra ID | **ID del tenant** (obligatori) i **URI de redirecció** |
+| Microsoft Entra ID | **ID del tenant** (obligatori) i **URI de redirecció**; des de la 7.6.0 **Inicia la sessió amb**: **Secret de client** o **Certificat** (només correu) |
 | Open ID | **Emissor** (obligatori) i **URI de redirecció** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Servidor**, l'adreça on inicia sessió, obligatori, amb **Omet la verificació del certificat** i el **Paquet de CA** |
 | CyberArk | **Certificat de client** i **Clau del client** |
 
-Amb **Apunta a una clau**, no es demanen l'usuari ni la contrasenya: els dona el magatzem. El pas **Accés** només conserva els camps d'adreça del tipus (SSH, base de dades, servidors de correu i de directori, l'adreça d'un servidor), i un accés simple (Usuari i contrasenya, Git, API) no té pas **Accés**: es desa des del pas **Magatzem**.
+Amb **Apunta a una clau**, no es demanen l'usuari ni la contrasenya: els dona el magatzem. El pas **Accés** només conserva els camps d'adreça del tipus (SSH, base de dades, servidors de correu i de directori, l'adreça d'un servidor, l'amfitrió i el port opcionals d'Usuari i contrasenya i d'API des de la 7.6.0), i un accés Git no té pas **Accés**: es desa des del pas **Magatzem**.
 
 Amb **Escriu a una clau** (des de 7.6.0), el pas **Accés** demana l'usuari i la contrasenya, i **Desa** els escriu al magatzem a la **Referència**; AnsibleForms només en conserva el magatzem i la referència. Només s'ofereixen els magatzems que permeten escriure, i **Afegeix un magatzem de secrets** en crea un amb l'escriptura ja activada. Una clau que ja té un secret només es reemplaça si **Sobreescriu un secret que ja hi sigui** està marcat, vegeu [Escriure credencials](../secret-stores/#writing-credentials).
 

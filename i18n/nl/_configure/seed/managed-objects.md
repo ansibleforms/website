@@ -3,7 +3,7 @@ layout: default
 title: Beheerde objecten
 parent: Configuratie-seed
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # Beheerde objecten
@@ -24,7 +24,7 @@ Hoe de seed eigenaar is van de objecten die hij noemt, en hoe hij geheimen buite
 Een seed die een veld weglaat, weigert te starten en noemt het veld:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Declareer een lege waarde expliciet met `""` of `false`. Een paar velden zijn optioneel, en een optioneel veld dat wordt weggelaten, blijft ongewijzigd:
@@ -33,9 +33,9 @@ Declareer een lege waarde expliciet met `""` of `false`. Een paar velden zijn op
 |---|---|
 | `ldap` | `description`, `credential` (een referentie om mee te binden) en `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` en `extra_headers` |
-| `settings` | Geen |
+| `settings` | De `mail_*`-sleutels, sinds 7.6.0 verouderd (zie [Voorbeeld](example.html)) |
 
-`settings` dekt alleen de mailvelden en de URL; alle andere instellingen blijven bewerkbaar.
+`settings` dekt alleen de URL, en de verouderde mailsleutels; alle andere instellingen blijven bewerkbaar.
 
 ---
 

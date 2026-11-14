@@ -3,7 +3,7 @@ layout: default
 title: 凭据页面
 parent: 凭据
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # 凭据页面
@@ -34,14 +34,16 @@ Microsoft Entra ID、Open ID、RTE、Rundeck、Semaphore、SMTP、SSH，以及�
 | 除 CyberArk 外的所有类型 | 密码，或代替密码的内容：LDAP 的绑定密码、Entra ID 和 Open ID 的客户端密钥、HashiCorp Vault 的令牌、RTE 令牌、Semaphore、Rundeck 和 Jenkins 的 API 令牌，以及 AWX、AAP 和 Ascender 的令牌或密码 |
 | 除 HashiCorp Vault、RTE、Semaphore 和 Rundeck 外的所有类型 | 用户：CyberArk 的 AppID、LDAP 的绑定 DN、Entra ID 和 Open ID 的客户端 ID；对于 AWX、AAP 和 Ascender 为可选 |
 | SSH、数据库 | **主机** 和 **端口**；数据库还包括 **数据库类型** 和 **数据库** |
-| SMTP | **邮件服务器**（必填）、其 **端口** 和 **使用 TLS** |
+| SSH | **私钥** 及其 **密码短语**，从 7.6.0 起；有私钥时，密码为可选 |
+| 用户名和密码、API | **主机** 和 **端口**，均为可选，从 7.6.0 起 |
+| SMTP | **邮件服务器**（必填）、其 **端口** 和 **使用 TLS**；从 7.6.0 起，用户和密码为可选，中继时留空 |
 | LDAP | 目录的 **服务器**（必填）、其 **端口** 和 **启用 TLS**；启用 TLS 时还有 **忽略证书**、**CA 证书包** 和 **客户端证书** |
-| Microsoft Entra ID | **租户 ID**（必填）和 **重定向 URI** |
+| Microsoft Entra ID | **租户 ID**（必填）和 **重定向 URI**；从 7.6.0 起还有 **登录方式**：**客户端密钥** 或 **证书**（仅用于邮件） |
 | Open ID | **颁发者**（必填）和 **重定向 URI** |
 | HashiCorp Vault、CyberArk、RTE、AWX、AAP、Ascender、Semaphore、Rundeck、Jenkins | **服务器**，即其登录的地址，必填，另有 **跳过证书验证** 和 **CA 证书包** |
 | CyberArk | **客户端证书** 和 **客户端密钥** |
 
-选择**指向键**时，不会询问用户和密码：由存储提供。**登录**步骤只保留该类型的地址字段（SSH、数据库、邮件和目录服务器、服务器地址），而简单登录（用户和密码、Git、API）完全没有**登录**步骤：在**存储**步骤中保存。
+选择**指向键**时，不会询问用户和密码：由存储提供。**登录**步骤只保留该类型的地址字段（SSH、数据库、邮件和目录服务器、服务器地址，以及从 7.6.0 起用户名和密码与 API 的可选主机和端口），而 Git 登录完全没有**登录**步骤：在**存储**步骤中保存。
 
 使用 **写入键**（从 7.6.0 起）时，**登录** 步骤会询问用户和密码，**保存** 会将其写入存储中的 **引用**；AnsibleForms 只保留存储和引用。只提供允许写入的存储，**添加机密存储** 会创建一个已开启写入的存储。已有密钥的键只有在勾选 **覆盖已存在的密钥** 时才会被替换，参见 [写入凭据](../secret-stores/#writing-credentials)。
 

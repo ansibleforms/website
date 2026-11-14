@@ -3,7 +3,7 @@ layout: default
 title: La page des identifiants
 parent: Identifiants
 nav_order: 2
-translated_from: d801d981c9a2a1f17a66580c8af2c49ee567c8eb
+translated_from: 6e745bbf0a6688646a821d2bec900e5f0406f4ba
 ---
 
 # La page des identifiants
@@ -34,14 +34,16 @@ L'étape **Connexion** contient tous les champs du type, adresse comprise ; il n
 | Tous les types sauf CyberArk | Le mot de passe, ou ce qui en tient lieu : le mot de passe de bind de LDAP, le secret client d'Entra ID et d'Open ID, le jeton de HashiCorp Vault, le jeton RTE, le jeton d'API de Semaphore, Rundeck et Jenkins, un jeton ou mot de passe pour AWX, AAP et Ascender |
 | Tous les types sauf HashiCorp Vault, RTE, Semaphore et Rundeck | L'utilisateur : l'AppID de CyberArk, le DN de bind de LDAP, l'ID client d'Entra ID et d'Open ID, facultatif pour AWX, AAP et Ascender |
 | SSH, Base de données | **Hôte** et **Port** ; pour une base de données, aussi le **Type de base de données** et **Base de données** |
-| SMTP | **Serveur mail** (obligatoire), son **Port** et **Utiliser TLS** |
+| SSH | **Clé privée** et sa **Phrase secrète**, depuis la 7.6.0 ; avec une clé, le mot de passe est facultatif |
+| Utilisateur et mot de passe, API | **Hôte** et **Port**, tous deux facultatifs, depuis la 7.6.0 |
+| SMTP | **Serveur mail** (obligatoire), son **Port** et **Utiliser TLS** ; depuis la 7.6.0, l'utilisateur et le mot de passe sont facultatifs, vides pour un relais |
 | LDAP | Les **Serveurs** de l'annuaire (obligatoire), son **Port** et **Activer TLS** ; avec TLS, **Ignorer les certificats**, le **Bundle CA** et un **Certificat client** |
-| Microsoft Entra ID | **ID du tenant** (obligatoire) et **URI de redirection** |
+| Microsoft Entra ID | **ID du tenant** (obligatoire) et **URI de redirection** ; depuis la 7.6.0, **Se connecter avec** : **Secret client** ou **Certificat** (mail uniquement) |
 | Open ID | **Issuer** (obligatoire) et **URI de redirection** |
 | HashiCorp Vault, CyberArk, RTE, AWX, AAP, Ascender, Semaphore, Rundeck, Jenkins | **Serveur**, l'adresse à laquelle il se connecte, obligatoire, avec **Ignorer la vérification du certificat** et le **Bundle CA** |
 | CyberArk | **Certificat client** et **Clé client** |
 
-Avec **Pointer vers une clé**, l'utilisateur et le mot de passe ne sont pas demandés : le coffre les donne. L'étape **Connexion** ne garde alors que les champs d'adresse du type (SSH, base de données, serveurs de messagerie et d'annuaire, l'adresse d'un serveur), et une connexion simple (Utilisateur et mot de passe, Git, API) n'a pas d'étape **Connexion** : elle s'enregistre depuis l'étape **Stockage**.
+Avec **Pointer vers une clé**, l'utilisateur et le mot de passe ne sont pas demandés : le coffre les donne. L'étape **Connexion** ne garde alors que les champs d'adresse du type (SSH, base de données, serveurs de messagerie et d'annuaire, l'adresse d'un serveur, l'hôte et le port facultatifs d'Utilisateur et mot de passe et d'API depuis la 7.6.0), et une connexion Git n'a pas d'étape **Connexion** : elle s'enregistre depuis l'étape **Stockage**.
 
 Avec **Écrire dans une clé** (depuis 7.6.0), l'étape **Connexion** demande l'utilisateur et le mot de passe, et **Enregistrer** les écrit dans le coffre à la **Référence** ; AnsibleForms ne garde que le coffre et la référence. Seuls les coffres qui autorisent l'écriture sont proposés, et **Ajouter un coffre de secrets** en crée un avec l'écriture déjà activée. Une clé qui contient déjà un secret n'est remplacée que si **Écraser un secret déjà présent** est coché, voir [Écrire des identifiants](../secret-stores/#writing-credentials).
 

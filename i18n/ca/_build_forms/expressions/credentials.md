@@ -3,7 +3,7 @@ layout: default
 title: Credencials
 parent: Expressions
 nav_order: 4
-translated_from: bfa50c90495c68300d189f9a0eb38e25df9e7c8e
+translated_from: e599378365aae2598c5e3ec20f8808b995863764
 ---
 
 # Credencials
@@ -25,6 +25,8 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 ```
 
 Primer es prova el nom exacte. Si cap credencial no té aquest nom, el nom s'utilitza com a expressió regular i després es prova l'alternativa.
+
+Des de la 7.6.0 una credencial d'usuari i contrasenya o d'API també pot portar `host` i `port`, vegeu [Tipus de credencial](../credentials/types.html#host-and-port-of-a-login).
 
 #### Limitat per rol
 

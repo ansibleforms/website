@@ -3,7 +3,7 @@ layout: default
 title: 托管对象
 parent: 配置种子
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # 托管对象
@@ -24,7 +24,7 @@ translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
 省略了某个字段的种子会拒绝启动，并指出该字段：
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 请用 `""` 或 `false` 显式声明空值。有几个字段是可选的，省略时保持不变：
@@ -33,9 +33,9 @@ Config seed failed, refusing to start: Seed file validation failed: /settings mu
 |---|---|
 | `ldap` | `description`、`credential`（用于绑定的凭据）和 `groupfilter` |
 | `chat` | `auth_type`、`api_version`、`request_user`、`ignore_certs` 和 `extra_headers` |
-| `settings` | 无 |
+| `settings` | `mail_*` 键，自 7.6.0 起弃用（参见 [示例](example.html)） |
 
-`settings` 只涵盖邮件字段和 URL；其他所有设置仍可编辑。
+`settings` 只涵盖 URL 和已弃用的邮件键；其他所有设置仍可编辑。
 
 ---
 

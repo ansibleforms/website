@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /installation/
-translated_from: c5efb1a569cf31ab6b1817687a024e12c26eb128
+translated_from: 55830463d7134c2c7ea776065b82a1aa8c2ba678
 ---
 
 # Instalacja
@@ -65,7 +65,8 @@ Od wersji 7 playbooki działają na RTE, publikowanym w trzech warstwach obok ap
 | `ghcr.io/ansibleforms/ansibleforms-rte-core` | Baza z pythonem, ansible-core i kilkoma bibliotekami: ten, do którego dodajesz swoje kolekcje |
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | Core z pakietem `ansible`, jego kolekcjami i bibliotekami: domyślne RTE |
 
-Cztery obrazy są budowane w tym samym przebiegu i mają te same tagi, więc tag RTE zawsze odpowiada tagowi aplikacji.
+Cztery obrazy są budowane w tym samym przebiegu i mają te same tagi, więc tag RTE zawsze odpowiada tagowi aplikacji. Od wersji 7.6.0 każdy
+tag zawiera obraz dla `linux/amd64` i jeden dla `linux/arm64`, a Docker, Podman i Kubernetes same pobierają ten, który pasuje do hosta.
 
 Stare repozytorium Docker Hub, `ansibleguy/ansibleforms`, nie jest już aktualizowane. Zachowuje istniejące
 wydania, ale nie dostaje nowych wersji żadnej z linii. Jeśli pobierasz z niego obrazy, przejdź

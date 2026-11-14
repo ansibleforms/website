@@ -3,7 +3,7 @@ layout: default
 title: Actualitzar a la v7
 parent: Actualització
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # Actualitzar a la v7
@@ -43,6 +43,8 @@ Els formularis només són a la carpeta de formularis (`FORMS_FOLDER_PATH`) o en
 La versió 7 rebutja els camps `table`, i les seves propietats (`tableFields`, `insertColumns`, `readonlyColumns`,
 `tableTitleAdd`, `tableTitleEdit`) desapareixen amb ells: fes servir un camp `list` amb un `subform`, i converteix el `from` de cada columna en una expressió
 sobre `__parent__` (consulta les [PMF](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
+
+Des de la 7.6.0 un camp `list` torna a acceptar `readonlyColumns`, per a les files que ja té (consulta [Camp List](formfields/list.html)).
 
 ### Propietats reanomenades
 
@@ -282,6 +284,8 @@ Això encara funciona a la 7, però cada element registra un avís quan es fa se
 | `RTE_REGISTER`, des de la 7.3.0 (només mode database) | Un token d'unió (`RTE_JOIN_TOKEN`): l'RTE s'afegeix ell mateix com a runner que s'autentica amb una credencial d'RTE. |
 | Una credencial `api` o `userpass` en un runner del config seed, des de la 7.3.0 | Una credencial del tipus del runner (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` o `jenkins`), amb el seu servidor a `url`. |
 | Un runner del config seed amb el seu propi `token`, o `username` i `password`, des de la 7.3.0 | Una credencial del tipus del runner a la secció `credentials`, amb el seu servidor a `url`, que el runner anomena amb `credential:`. Mentrestant, el seed en crea una amb el nom del runner. |
+| Les claus de correu de `settings:` del config seed (`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password`, `mail_from`), des de la 7.6.0 | Un canal de correu a `notification_channels:`, amb una credencial smtp de la secció `credentials`, o amb els seus propis `server`, `port` i `secure` per a un relay. Mentrestant, el seed les converteix en el canal de correu `default`. Consulta [Correu](notification-channels/mail.html). |
+| `forms_yaml` a `GET` i `PUT /api/v2/settings/config`, des de la 7.6.0 | `config_yaml`. Un `PUT` amb `forms_yaml` encara funciona i registra un avís. |
 
 `ENABLE_SSO` i `SSO_AUTO_LOGIN` ja no es llegeixen des de la 7.3.0. El primer inici de la 7.3 els trasllada una vegada: `ENABLE_SSO=0` desactiva
 tots els proveïdors d'SSO, i `SSO_AUTO_LOGIN=1` marca **Salta la pàgina d'inici de sessió** a l'únic proveïdor activat. Després s'ignoren: cada inici

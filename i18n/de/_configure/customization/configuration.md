@@ -3,7 +3,7 @@ layout: default
 title: Konfiguration
 parent: Umgebungsvariablen
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Konfiguration
@@ -52,6 +52,9 @@ Die Kategorien, Rollen und Konstanten kommen aus `config.yaml` auf der Festplatt
 
 Ein explizit gesetztes `ENABLE_CONFIG_IN_DATABASE` gewinnt immer, sogar `0` gegenüber einem gespeicherten `database`. Es wird bei jedem Laden der
 Konfiguration gelesen, daher gilt eine Änderung ohne Neustart. Die Seite **Status** zeigt die verwendete Quelle im Tab **Informationen**.
+
+Die Kopie in der Datenbank ist die Spalte `config_yaml` der Tabelle `settings`, vor 7.6.0 `forms_yaml` genannt: Das Upgrade benennt
+sie um und behält ihren Inhalt. `GET /api/v2/settings/config` gibt sie als `config_yaml` zurück, und zusätzlich als veraltetes `forms_yaml`.
 
 ---
 

@@ -2,7 +2,7 @@
 layout: default
 title: Risoluzione dei problemi
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Risoluzione dei problemi
@@ -685,6 +685,9 @@ The form data is not valid
 Il server ha controllato i valori dei campi rispetto alle regole del modulo e ha trovato campi mancanti o non validi; la risposta li elenca
 sotto `details`. Anche un avvio senza `rawFormData` viene rifiutato. Un modulo che non si può ancora controllare, come un wizard,
 viene rifiutato con `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
+
+Dalla 7.6.0 il messaggio del modulo indica i campi con le loro etichette, quelli da compilare e quelli i cui valori si stanno ancora
+caricando: *The form data is not valid. Fill in: Owner. Still loading: Disks.*
 
 **Come risolverlo**
 

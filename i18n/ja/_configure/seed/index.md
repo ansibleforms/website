@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
+translated_from: a13463bbe343f9ae4e95589ae364207832a16bde
 ---
 
 # 構成シード
@@ -40,7 +40,7 @@ git から構築する管理者向けです。管理オブジェクトをファ�
 | `notification_channels` | 通知用のメールサーバー、Slack、Teams、Telegram、Webhook |
 | `labels`                | ヘッダーのロゴの横のラベル（7.3.0 から）                      |
 | `ldap`                  | LDAP の設定                                              |
-| `settings`              | 公開 URL と、有効なメールチャネルがない場合に使われるメール設定 |
+| `settings`              | 公開 URL。メールのキーは 7.6.0 から非推奨で、メールチャネルに代わりました |
 | `chat`                  | チャットアシスタントのモデルプロバイダー                                 |
 | `awx`                   | 7 から非推奨、8 で削除： `type: awx` の `runners` を使ってください    |
 

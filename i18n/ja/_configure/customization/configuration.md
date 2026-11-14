@@ -3,7 +3,7 @@ layout: default
 title: 設定
 parent: 環境変数
 nav_order: 5
-translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # 設定
@@ -52,6 +52,9 @@ translated_from: f460336cad995f3fd6cb5a2e4667e4c1a3b67a2b
 
 明示的に設定された `ENABLE_CONFIG_IN_DATABASE` は常に優先され、保存されている `database` よりも `0` が優先されます。設定を
 読み込むたびに読まれるので、変更は再起動なしで反映されます。 **ステータス** ページの **情報** タブに、使われている取得元が表示されます。
+
+データベース内のコピーは `settings` テーブルの `config_yaml` 列で、7.6.0 より前は `forms_yaml` という名前でした。アップグレードで名前が
+変わり、内容はそのまま残ります。 `GET /api/v2/settings/config` はこれを `config_yaml` として返し、非推奨の `forms_yaml` としても返します。
 
 ---
 

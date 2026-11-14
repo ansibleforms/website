@@ -3,7 +3,7 @@ layout: default
 title: 認証情報
 parent: 式
 nav_order: 4
-translated_from: bfa50c90495c68300d189f9a0eb38e25df9e7c8e
+translated_from: e599378365aae2598c5e3ec20f8808b995863764
 ---
 
 # 認証情報
@@ -25,6 +25,8 @@ fn.fnCredentials('credentialname_or_regex','fallback_credentialname_or_regex')
 ```
 
 まず完全一致の名前が試されます。その名前の認証情報がない場合は、名前が正規表現として使われ、その後フォールバックが試されます。
+
+7.6.0 からは、ユーザーとパスワードまたは API の認証情報も `host` と `port` を持てます。 [認証情報の種類](../credentials/types.html#host-and-port-of-a-login) を参照してください。
 
 #### ロールによる制限
 

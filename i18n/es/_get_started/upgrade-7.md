@@ -3,7 +3,7 @@ layout: default
 title: Actualizar a la v7
 parent: Actualizar
 nav_order: 0.5
-translated_from: 8c6ca072978823febdff10a5f0a3c935f994b50b
+translated_from: df3f9d84a5b18017feb77c693c98e1bf8bf21af1
 ---
 
 # Actualizar a la v7
@@ -43,6 +43,8 @@ Los formularios solo viven en la carpeta de formularios (`FORMS_FOLDER_PATH`) o 
 La versión 7 rechaza los campos `table`, y con ellos sus propiedades (`tableFields`, `insertColumns`, `readonlyColumns`,
 `tableTitleAdd`, `tableTitleEdit`): usa un campo `list` con un `subform`, y convierte el `from` de cada columna en una expresión
 sobre `__parent__` (consulta las [Preguntas frecuentes](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
+
+Desde la 7.6.0 un campo `list` vuelve a aceptar `readonlyColumns`, para las filas que ya contiene (consulta [List](formfields/list.html)).
 
 ### Propiedades renombradas
 
@@ -282,6 +284,8 @@ Esto sigue funcionando en la 7, pero cada uno registra un aviso cuando se usa. P
 | `RTE_REGISTER`, desde la 7.3.0 (solo en modo database) | Un token de unión (`RTE_JOIN_TOKEN`): el RTE se añade a sí mismo como un runner que inicia sesión con una credencial de RTE. |
 | Una credencial `api` o `userpass` en un runner de la semilla de configuración, desde la 7.3.0 | Una credencial del tipo del runner (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` o `jenkins`), con su servidor en `url`. |
 | Un runner de la semilla de configuración con su propio `token`, o `username` y `password`, desde la 7.3.0 | Una credencial del tipo del runner en la sección `credentials`, con su servidor en `url`, que el runner nombra con `credential:`. Mientras tanto, la semilla crea una con el nombre del runner. |
+| Las claves de correo de `settings:` de la semilla de configuración (`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password`, `mail_from`), desde la 7.6.0 | Un canal de correo en `notification_channels:`, con una credencial smtp de la sección `credentials`, o con su propio `server`, `port` y `secure` para un relay. Mientras tanto, la semilla las convierte en el canal de correo `default`. Consulta [Correo](notification-channels/mail.html). |
+| `forms_yaml` en `GET` y `PUT /api/v2/settings/config`, desde la 7.6.0 | `config_yaml`. Un `PUT` con `forms_yaml` sigue funcionando y registra un aviso. |
 
 `ENABLE_SSO` y `SSO_AUTO_LOGIN` ya no se leen desde la 7.3.0. El primer arranque de la 7.3 los traslada una vez: `ENABLE_SSO=0` desactiva
 todos los proveedores SSO, y `SSO_AUTO_LOGIN=1` marca **Saltar la página de inicio de sesión** en el único proveedor activado. Después se ignoran: cada arranque

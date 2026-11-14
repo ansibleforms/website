@@ -3,7 +3,7 @@ layout: default
 title: "La page d'un identifiant"
 parent: Identifiants
 nav_order: 3
-translated_from: 204eca949763c8c23625369f1d8d8d0d06545c87
+translated_from: 0f97a94cda545c02b3d293fdf2de486d1d066905
 ---
 
 # La page d'un identifiant
@@ -18,13 +18,15 @@ La page d'un identifiant affiche les étapes de sa boîte de dialogue sous forme
 |---|---|
 | Détails | Nom et description. |
 | Type | À quoi sert l'identifiant. |
-| Connexion | Tous les champs de son type, comme à l'étape **Connexion** de la boîte de dialogue : l'utilisateur, le mot de passe, et l'endroit où il se connecte (hôte et port, la base de données, le serveur mail, les serveurs de l'annuaire, le tenant ou l'issuer, l'adresse du serveur et son TLS). L'AppID, le certificat client et la clé d'un identifiant CyberArk. |
+| Connexion | Tous les champs de son type, comme à l'étape **Connexion** de la boîte de dialogue : l'utilisateur, le mot de passe, et l'endroit où il se connecte (hôte et port, la base de données, le serveur mail, les serveurs de l'annuaire, le tenant ou l'issuer, l'adresse du serveur et son TLS). L'AppID, le certificat client et la clé d'un identifiant CyberArk. La clé privée et la phrase secrète d'un identifiant SSH, depuis la 7.6.0. |
 | Stockage | Base de données ou Coffre de secrets, et le coffre et la référence. Pas pour CyberArk ni HashiCorp Vault. |
 | Utilisé par | Tout ce qui nomme cet identifiant : coffres de secrets, canaux de notification, dépôts, annuaires LDAP, fournisseurs SSO, runners, [bases de données](../databases.html) (depuis la 7.5.0), l'assistant de chat, les formulaires et les workflows du concepteur. Une ligne l'ouvre. |
 
-Le mot de passe se saisit dans l'onglet **Connexion**, et n'est plus jamais affiché une fois enregistré : laissé vide, celui qui est stocké est conservé. Pour un identifiant
-CyberArk, laissez la clé client vide pour garder celle qui est stockée. En haut à droite se trouvent **Tester la connexion** (identifiants de base de données uniquement),
-**Supprimer** et **Enregistrer**.
+Le mot de passe se saisit dans l'onglet **Connexion**, et n'est plus jamais affiché une fois enregistré : laissé vide, celui qui est stocké est conservé. Il en va de même
+pour la clé client d'un identifiant CyberArk, et depuis la 7.6.0 pour la clé privée et la phrase secrète d'un identifiant SSH, que l'interrupteur
+**Supprimer la clé privée enregistrée et sa phrase secrète** efface au moment d'**Enregistrer**.
+
+En haut à droite se trouvent **Tester la connexion** (identifiants de base de données uniquement), **Supprimer** et **Enregistrer**.
 
 Depuis la 7.3.0, **Supprimer** et un nouveau nom sont refusés tant que **Utilisé par** liste quelque chose, voir [Identifiants utilisés](../credentials.html#credentials-in-use).
 

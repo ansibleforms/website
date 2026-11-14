@@ -5,7 +5,7 @@ nav_order: 4
 has_children: true
 has_toc: false
 permalink: /seed/
-translated_from: 8f8eb798f4ada177abf5210049a523f7f2f4265b
+translated_from: a13463bbe343f9ae4e95589ae364207832a16bde
 ---
 
 # Config-Seed
@@ -40,7 +40,7 @@ deklariert Objekte, die früher nur in der Datenbank existierten:
 | `notification_channels` | Mailserver, Slack, Teams, Telegram und Webhooks für Benachrichtigungen |
 | `labels`                | Die Labels neben dem Logo der Kopfzeile, ab 7.3.0                   |
 | `ldap`                  | Die LDAP-Konfiguration                                              |
-| `settings`              | Die öffentliche URL und die Mail-Einstellungen, die verwendet werden, wenn kein Mail-Kanal aktiv ist |
+| `settings`              | Die öffentliche URL; ihre Mail-Schlüssel sind seit 7.6.0 veraltet, zugunsten eines Mail-Kanals |
 | `chat`                  | Der Modellanbieter des Chat-Assistenten                             |
 | `awx`                   | Seit 7 veraltet, in 8 entfernt: Verwenden Sie `runners` mit `type: awx` |
 

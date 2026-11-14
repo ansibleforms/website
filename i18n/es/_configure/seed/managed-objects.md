@@ -3,7 +3,7 @@ layout: default
 title: Objetos gestionados
 parent: Semilla de configuración
 nav_order: 2
-translated_from: dd0ea4d46391bf9b2e5928063cd30e33ac1285f9
+translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
 ---
 
 # Objetos gestionados
@@ -24,7 +24,7 @@ Cómo la semilla se hace dueña de los objetos que lista y cómo mantiene fuera 
 Una semilla que omite un campo se niega a arrancar y lo nombra:
 
 ```
-Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'mail_server'
+Config seed failed, refusing to start: Seed file validation failed: /settings must have required property 'url'
 ```
 
 Declara un valor vacío de forma explícita con `""` o `false`. Unos pocos campos son opcionales, y uno que se omite se deja sin cambios:
@@ -33,9 +33,9 @@ Declara un valor vacío de forma explícita con `""` o `false`. Unos pocos campo
 |---|---|
 | `ldap` | `description`, `credential` (una credencial con la que hacer bind) y `groupfilter` |
 | `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` y `extra_headers` |
-| `settings` | Ninguno |
+| `settings` | Las claves `mail_*`, obsoletas desde la 7.6.0 (consulta [Ejemplo](example.html)) |
 
-`settings` cubre solo los campos de correo y la URL; el resto de ajustes siguen siendo editables.
+`settings` cubre solo la URL y las claves de correo obsoletas; el resto de ajustes siguen siendo editables.
 
 ---
 

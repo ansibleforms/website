@@ -3,7 +3,7 @@ layout: default
 title: Un altre centre de dades
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # Un RTE en un altre centre de dades
@@ -77,7 +77,7 @@ L'RTE és un contenidor, així que l'host necessita un motor de contenidors i re
 
 | Cal | Per què |
 |---|---|
-| Linux en **x86_64** (amd64) | Les imatges de l'RTE només es publiquen per a amd64 |
+| Linux en **x86_64** (amd64) o **aarch64** (arm64) | Les imatges de l'RTE es publiquen per a totes dues des de la 7.6.0, abans només per a amd64 |
 | 2 CPU i 4 GB de memòria, o més | Un RTE executa fins a [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks alhora (10), cadascun amb els seus forks: dimensiona'l per a ells |
 | 20 GB de disc lliure | La imatge `-rte-full` fa uns 3,3 GB, més una imatge durant les actualitzacions, els fitxers de tasca que envia l'aplicació i els fitxers temporals de les tasques |
 | Docker, o Podman amb podman-compose | Per descarregar i executar la imatge |

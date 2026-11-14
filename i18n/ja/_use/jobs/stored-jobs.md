@@ -5,7 +5,7 @@ parent: ジョブ
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # 保存済みジョブ
@@ -40,6 +40,9 @@ translated_from: c4e55de429d31936d8735965a2f487c070b9140d
 ## 保存済みジョブを管理する
 
 **保存済みジョブ** ページには、保存済みジョブがフォーム、ユーザー、作成日、有効期限とともに一覧表示されます。 `allowStoredJobs` が必要です。
+
+7.6.0 からは、 `allowStoredJobs` だけで **ジョブ > 保存済み** と **保存済みジョブを追加** を開けます。以前は `showSettings` または
+`allowScheduledJobs` も必要でした。 **フォーム** の一覧には、自分のロールで開けるフォームが表示されます。 `showSettings` または `allowScheduledJobs` を持つユーザーにはすべてのフォームが表示されます。
 
 - **編集** で、保存済みジョブ自体のページを開きます。 **詳細** (名前、フォーム、有効期限) と **値** (保存された
   フィールド値の YAML) があり、そこで変更して保存できます。

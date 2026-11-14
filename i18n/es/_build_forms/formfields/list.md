@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Campos de formulario
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # Campo List
@@ -27,6 +27,7 @@ El campo list ofrece las siguientes capacidades:
 - Las propiedades de marcador (`insertMarker`, `updateMarker`, `deleteMarker`) permiten patrones de playbook idempotentes.
 - Con `allowDelete: false`, las filas preexistentes están protegidas; solo se pueden eliminar las filas añadidas en la sesión actual (las que llevan el `insertMarker`).
 - La propiedad `columns` controla qué campos del subformulario aparecen como columnas en la tabla resumen.
+- Desde la 7.6.0, `readonlyColumns` deja de solo lectura los campos del subformulario elegidos en las filas existentes, mientras que las filas nuevas los siguen rellenando.
 - La salida es siempre un array de objetos. `model`, `output`, `outputObject` y `valueColumn` declarados en los campos del subformulario se respetan al generar las extravars.
 
 ---
@@ -228,6 +229,24 @@ Las filas precargadas están protegidas, y los marcadores indican al playbook qu
     - name
     - email
 ```
+
+### Columnas de solo lectura en las filas existentes
+
+Desde la 7.6.0 una lista nombra con `readonlyColumns` los campos del subformulario que las filas que ya contiene mantienen como están:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Al editar una fila existente, esos campos aparecen desactivados con un candado, y la fila conserva sus valores; una fila nueva los rellena
+como cualquier otro campo, y la validación se sigue aplicando. La propiedad está en la lista, no en el subformulario, así que un mismo
+subformulario puede ser de solo lectura en una lista y editable en otra. Sustituye a la `readonlyColumns` del antiguo campo `table`.
 
 ### Rellenar filas de antemano
 

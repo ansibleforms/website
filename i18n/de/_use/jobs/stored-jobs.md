@@ -5,7 +5,7 @@ parent: Jobs
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Gespeicherte Jobs
@@ -40,6 +40,10 @@ eines zweiten mit demselben Namen schlägt mit „Ein gespeichertes Formular mit
 ## Gespeicherte Jobs verwalten
 
 Die Seite **Gespeicherte Jobs** listet gespeicherte Jobs mit Formular, Benutzer, Erstellungs- und Ablaufdatum auf und braucht `allowStoredJobs`.
+
+Ab 7.6.0 öffnet `allowStoredJobs` allein **Jobs > Gespeichert** und **Gespeicherter Job hinzufügen**, wofür vorher auch
+`showSettings` oder `allowScheduledJobs` nötig war. Seine Liste **Formular** bietet die Formulare an, die Ihre Rollen öffnen;
+Benutzer mit `showSettings` oder `allowScheduledJobs` erhalten jedes Formular.
 
 - **Bearbeiten** öffnet die eigene Seite des gespeicherten Jobs: seine **Details** (Name, Formular, Ablauf) und seine **Werte**, die gespeicherten
   Feldwerte als YAML, die sich dort ändern und speichern lassen.

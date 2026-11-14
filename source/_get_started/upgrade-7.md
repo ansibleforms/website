@@ -43,6 +43,8 @@ Version 7 rejects `table` fields, and their properties (`tableFields`, `insertCo
 `tableTitleAdd`, `tableTitleEdit`) go with them: use a `list` field with a `subform`, and turn each column's `from` into an expression
 on `__parent__` (see the [FAQ](faq#how-do-i-migrate-from-table--tablefields-to-list--subform)).
 
+From 7.6.0 a `list` field takes `readonlyColumns` again, for the rows it already holds (see [List](formfields/list.html)).
+
 ### Renamed properties
 
 Each removed property has a direct replacement:
@@ -281,6 +283,8 @@ These still work in 7, but each logs a warning when it is used. Move to the repl
 | `RTE_REGISTER`, since 7.3.0 (database mode only) | A join token (`RTE_JOIN_TOKEN`): the RTE adds itself as a runner that signs in with an RTE credential. |
 | An `api` or `userpass` credential on a runner of the config seed, since 7.3.0 | A credential of the runner's kind (`credential_type: rte`, `awx`, `aap`, `ascender`, `semaphore`, `rundeck` or `jenkins`), with its server in `url`. |
 | A runner of the config seed with its own `token`, or `username` and `password`, since 7.3.0 | A credential of the runner's kind in the `credentials` section, with its server in `url`, that the runner names with `credential:`. The seed makes one named after the runner meanwhile. |
+| The mail keys of the config seed's `settings:` (`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password`, `mail_from`), since 7.6.0 | A mail channel under `notification_channels:`, with an smtp credential of the `credentials` section, or its own `server`, `port` and `secure` for a relay. The seed makes them the mail channel `default` meanwhile. See [Mail](notification-channels/mail.html). |
+| `forms_yaml` in `GET` and `PUT /api/v2/settings/config`, since 7.6.0 | `config_yaml`. A `PUT` with `forms_yaml` still works and logs a warning. |
 
 `ENABLE_SSO` and `SSO_AUTO_LOGIN` are no longer read since 7.3.0. The first 7.3 start carries them over once: `ENABLE_SSO=0` disables
 every SSO provider, and `SSO_AUTO_LOGIN=1` ticks **Skip the login page** on the only enabled provider. They are then ignored: each start

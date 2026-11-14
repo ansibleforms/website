@@ -2,7 +2,7 @@
 layout: default
 title: Resolució de problemes
 nav_order: 4
-translated_from: b7b3f3dfe9b603afe24b167dcc2fc117601638d5
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Resolució de problemes
@@ -685,6 +685,9 @@ The form data is not valid
 El servidor ha comprovat els valors dels camps amb les regles del formulari i ha trobat camps que falten o que no són vàlids; la resposta els llista
 a `details`. També es rebutja un llançament sense `rawFormData`. Un formulari que encara no es pot comprovar, com ara un assistent,
 es rebutja amb `Form '<name>' cannot be launched with launch validation 'enforce' yet : <reason>`.
+
+Des de la 7.6.0 el missatge del formulari nomena els camps per les seves etiquetes, els que cal emplenar i aquells els valors dels quals
+encara s'estan carregant: *The form data is not valid. Fill in: Owner. Still loading: Disks.*
 
 **Com corregir-ho**
 

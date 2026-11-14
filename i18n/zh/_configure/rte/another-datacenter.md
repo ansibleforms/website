@@ -3,7 +3,7 @@ layout: default
 title: 另一个数据中心
 parent: RTE
 nav_order: 5
-translated_from: e2e67586abfd6c910942d1775e5331c1f889727e
+translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 ---
 
 # 位于另一个数据中心的 RTE
@@ -77,7 +77,7 @@ RTE 是一个容器，因此主机只需要容器引擎：Node.js、python 和 a
 
 | 需求 | 原因 |
 |---|---|
-| **x86_64**（amd64）上的 Linux | RTE 镜像只发布了 amd64 版本 |
+| **x86_64**（amd64）或 **aarch64**（arm64）上的 Linux | 从 7.6.0 起，RTE 镜像同时发布这两种版本，之前只发布 amd64 版本 |
 | 2 个 CPU 和 4 GB 内存，或更多 | 一个 RTE 最多同时运行 [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) 个 playbook（10 个），每个都有自己的分支进程：请按此确定规格 |
 | 20 GB 可用磁盘 | `-rte-full` 镜像约 3.3 GB，更新期间还要再加一个镜像，另外还有应用发来的作业文件和作业的临时文件 |
 | Docker，或 Podman 加 podman-compose | 用于拉取和运行镜像 |

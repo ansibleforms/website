@@ -3,7 +3,7 @@ layout: default
 title: List
 parent: Formularfelder
 nav_order: 13
-translated_from: c454e7962323f4d82488bbdd30f92a7619162c32
+translated_from: c0b80c51afc1dcf1c4c5646e304f881cc43f7d1d
 ---
 
 # List-Feld
@@ -27,6 +27,7 @@ Das list-Feld bietet folgende Möglichkeiten:
 - Die Marker-Eigenschaften (`insertMarker`, `updateMarker`, `deleteMarker`) unterstützen idempotente Playbook-Muster.
 - Bei `allowDelete: false` sind bereits vorhandene Zeilen geschützt; nur in der aktuellen Sitzung hinzugefügte Zeilen (mit dem `insertMarker`) können gelöscht werden.
 - Die Eigenschaft `columns` steuert, welche Felder des Unterformulars als Spalten in der Übersichtstabelle erscheinen.
+- Ab 7.6.0 hält `readonlyColumns` ausgewählte Felder des Unterformulars auf vorhandenen Zeilen schreibgeschützt, neue Zeilen füllen sie weiterhin aus.
 - Die Ausgabe ist immer ein Array von Objekten. `model`, `output`, `outputObject` und `valueColumn`, die auf Feldern des Unterformulars deklariert sind, werden beim Erzeugen der Extravars berücksichtigt.
 
 ---
@@ -228,6 +229,25 @@ Vorab geladene Zeilen sind geschützt, und die Marker teilen dem Playbook mit, w
     - name
     - email
 ```
+
+### Schreibgeschützte Spalten auf vorhandenen Zeilen
+
+Ab 7.6.0 nennt eine Liste mit `readonlyColumns` die Felder des Unterformulars, die Zeilen, die sie bereits enthält, unverändert lassen:
+
+```yaml
+- name: addresses
+  type: list
+  label: Addresses
+  subform: Address
+  readonlyColumns:
+    - street
+    - city
+```
+
+Beim Bearbeiten einer vorhandenen Zeile erscheinen diese Felder mit einem Schloss, deaktiviert, und die Zeile behält ihre Werte; eine
+neue Zeile füllt sie wie jedes andere Feld aus, und die Validierung gilt weiterhin. Die Eigenschaft steht auf der Liste, nicht auf dem
+Unterformular, sodass ein Unterformular in einer Liste schreibgeschützt und in einer anderen bearbeitbar sein kann. Sie ersetzt die
+`readonlyColumns` des alten `table`-Felds.
 
 ### Zeilen vorab füllen
 

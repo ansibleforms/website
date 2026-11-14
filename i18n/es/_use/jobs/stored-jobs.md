@@ -5,7 +5,7 @@ parent: Trabajos
 nav_order: 5
 redirect_from:
   - /schedules/stored-jobs.html
-translated_from: c4e55de429d31936d8735965a2f487c070b9140d
+translated_from: 90ae6acdb80d10401ea24f37de675b9a2901bdf9
 ---
 
 # Trabajos almacenados
@@ -41,6 +41,9 @@ un segundo con el mismo nombre falla con "A saved form with this name already ex
 ## Gestionar los trabajos guardados
 
 La página **Trabajos almacenados** lista los trabajos guardados con su formulario, usuario y fechas de creación y caducidad, y necesita `allowStoredJobs`.
+
+Desde la 7.6.0 basta `allowStoredJobs` para abrir **Trabajos > Guardados** y **Añadir trabajo almacenado** (antes hacía falta también
+`showSettings` o `allowScheduledJobs`). Su lista **Formulario** ofrece los formularios de tus roles, o todos con esas dos opciones.
 
 - **Editar** abre la página propia del trabajo guardado: sus **Detalles** (nombre, formulario, caducidad) y sus **Valores**, los
   valores de los campos guardados en YAML, que se pueden cambiar y guardar ahí.

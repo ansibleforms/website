@@ -40,6 +40,9 @@ second one with the same name fails with "A saved form with this name already ex
 
 The **Stored jobs** page lists stored jobs with their form, user, creation and expiry dates, and needs `allowStoredJobs`.
 
+From 7.6.0 `allowStoredJobs` alone opens **Jobs > Stored** and **Add stored job**, which before also took `showSettings` or
+`allowScheduledJobs`. Its **Form** list offers the forms your roles open; users with `showSettings` or `allowScheduledJobs` get every form.
+
 - **Edit** opens the stored job's own page: its **Details** (name, form, expiry) and its **Values**, the stored
   field values as YAML, which can be changed and saved there.
 - **Open in form** opens its form with the stored values filled in; nothing runs until you submit.

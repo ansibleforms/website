@@ -17,13 +17,15 @@ A credential's page shows the steps of its dialog as tabs, plus what uses it:
 |---|---|
 | Details | Name and description. |
 | Type | What the credential is for. |
-| Login | Every field of its type, as in the dialog's **Login** step: the user, the password, and where it logs in (host and port, the database, the mail server, the directory's servers, the tenant or issuer, the server's address and its TLS). A CyberArk credential's AppID, client certificate and key. |
+| Login | Every field of its type, as in the dialog's **Login** step: the user, the password, and where it logs in (host and port, the database, the mail server, the directory's servers, the tenant or issuer, the server's address and its TLS). A CyberArk credential's AppID, client certificate and key. An SSH credential's private key and passphrase, from 7.6.0. |
 | Store | Database or Secret store, and the store and reference. Not for CyberArk nor HashiCorp Vault. |
 | Used by | Everything that names this credential: secret stores, notification channels, repositories, LDAP directories, SSO providers, runners, [databases](../databases.html) (from 7.5.0), the chat assistant, forms and the designer's workflows. A row opens it. |
 
-The password is typed in the **Login** tab, and is never shown again once saved: left empty, the stored one stays. For a CyberArk
-credential, leave the client key empty to keep the stored one. Top right are **Test connection** (database credentials only),
-**Delete** and **Save**.
+The password is typed in the **Login** tab, and is never shown again once saved: left empty, the stored one stays. The same goes
+for a CyberArk credential's client key, and from 7.6.0 for an SSH credential's private key and passphrase, which the switch
+**Remove the stored private key and its passphrase** drops on **Save**.
+
+Top right are **Test connection** (database credentials only), **Delete** and **Save**.
 
 From 7.3.0, **Delete** and a new name are refused while **Used by** lists anything, see [Credentials in use](../credentials.html#credentials-in-use).
 

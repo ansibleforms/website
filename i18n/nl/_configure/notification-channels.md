@@ -5,7 +5,7 @@ nav_order: 10
 has_children: true
 has_toc: false
 permalink: /notification-channels.html
-translated_from: 1756db6ff7b9197f88b34a0c089953a68493e008
+translated_from: 2ba98629fd821adaae42643b8cc9f3f3293b3172
 ---
 
 # Meldingskanalen
@@ -27,7 +27,8 @@ Voor beheerders: voeg de mailservers en chatkanalen toe waarnaar formulieren hun
 
 | Pagina | Wat er aan bod komt |
 |---|---|
-| [Mail](notification-channels/mail.html) | SMTP-servers, de standaardserver, en hun aanmelding |
+| [Mail](notification-channels/mail.html) | Mailservers, de standaardserver, en hoe ze zich aanmelden |
+| [Microsoft 365](notification-channels/microsoft-365.html) | Mail via Microsoft 365 met OAuth2, vanaf 7.6.0 |
 | [Slack en Microsoft Teams](notification-channels/slack-and-teams.html) | Een kanaalwebhook van Slack of Teams |
 | [Telegram](notification-channels/telegram.html) | Een bot die in een Telegram-chat post |
 | [Webhook](notification-channels/webhook.html) | Een JSON-verzoek naar een willekeurig HTTP-endpoint |
@@ -44,7 +45,7 @@ een van deze typen:
 
 | Type | Wat het verstuurt |
 |---|---|
-| Mail | Mail via een SMTP-server: goedkeuringsaanvragen en jobmeldingen. |
+| Mail | Mail via een SMTP-server of Microsoft 365: goedkeuringsaanvragen en jobmeldingen. |
 | Slack | Een bericht in een Slack-kanaal, via zijn inkomende webhook, met een knop naar de job. |
 | Microsoft Teams | Een kaart in een Teams-kanaal, via een Workflows-webhook, met een knop naar de job. |
 | Telegram | Een bericht van een bot in een Telegram-chat, met een link naar de job. |
