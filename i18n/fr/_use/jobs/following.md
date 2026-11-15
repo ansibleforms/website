@@ -3,7 +3,7 @@ layout: default
 title: Suivre un job
 parent: Jobs
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Suivre un job
@@ -132,6 +132,19 @@ Depuis la 7.3.0, le graphe d'un workflow en cours glisse pour garder le nœud en
 Faites défiler le graphe ailleurs et il reste là où vous l'avez mis, avec un bouton **Suivre le nœud en cours** pour le suivre de nouveau. Survoler un nœud
 affiche sa carte avec le nom complet et met en avant le nœud et ses liens, le reste du graphe étant estompé. Le graphe a des boutons **Ajuster à
 l'écran** et **Plein écran**, et sous un formulaire après **Soumettre**, un clic sur un nœud ouvre sa sortie comme sur la page du job.
+
+Un nœud repris par une [relance depuis le nœud en échec](../workflows/running.html#relaunch-from-the-failed-node) est grisé, avec
+*de l'exécution précédente* comme statut : il n'a exécuté aucun job dans cette exécution, il n'a donc pas de sortie à ouvrir.
+
+Depuis la 7.8.0, un job de workflow Ascender montre aussi ce qu'Ascender ajoute à ses nœuds
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)) :
+
+| Nœud Ascender | Sur le graphe | Dans la sortie |
+|---|---|---|
+| Un nœud avec des tentatives | `↻ 1/3` après son statut : les nouvelles tentatives faites, sur celles qu'il peut faire | Un bloc par tentative, chacun avec `tentative 2 sur 3` dans son en-tête |
+| Une tentative en échec avec une nouvelle tentative à venir | **retrying**, pas en échec, tant que la nouvelle tentative est en attente | Le bloc de la tentative en échec |
+| Un nœud repris par une relance | Grisé, *de l'exécution précédente* | Une bannière `carried over`, avec *de l'exécution précédente* dans son en-tête |
+| Un nœud forcé en succès | *succès forcé*, et `Forcé : <raison>` sur sa carte au survol | |
 
 ---
 

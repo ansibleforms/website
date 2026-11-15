@@ -3,7 +3,7 @@ layout: default
 title: Executar un workflow
 parent: Workflows
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Executar un workflow
@@ -101,3 +101,30 @@ Un formulari de workflow sense `approval` també reté la tasca en un node d'apr
 
 **Avorta** en una tasca de workflow en execució l'atura: les tasques dels nodes en curs s'avorten, no comença res més, i l'aprovació que
 estigui esperant es cancel·la. Una tasca de workflow que espera una aprovació també es pot avortar.
+
+---
+
+## Rellançar des del node fallit
+
+A partir de la 7.8.0 una tasca de workflow fallida es pot rellançar des del seu node fallit, conservant els nodes que han acabat bé.
+
+**Rellança la tasca** a la pàgina de la tasca té llavors un desplegable amb **Des del primer node**, el rellançament complet, i **Des del
+node fallit**. La tasca nova passa per la mateixa aprovació, validació de llançament i permisos que qualsevol [rellançament](../jobs/actions.html#relaunch-a-job):
+
+- **Els nodes que han acabat bé** no executen res. El graf els mostra atenuats, *de l'execució anterior*, i la sortida té un
+  encapçalament `WORKFLOW NODE [identifier] (successful) #n carried over` per a cadascun, sense sortida de node per obrir.
+- **El que han passat** continua arribant als nodes de després: els seus artefactes de `set_stats` es desen amb la tasca i es transmeten.
+- **L'execució comença** al node o nodes fallits, i continua pels enllaços del workflow com ho faria una primera execució.
+- **La pàgina de la tasca** mostra **rellançament de #N**, amb *node fallit* al costat, i la seva sortida comença amb
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Una tasca de workflow d'AnsibleForms ofereix **Des del node fallit** només quan es compleix cadascuna d'aquestes condicions; si no, **Rellança la tasca** és el botó simple:
+
+| Condició | Per què |
+|---|---|
+| La tasca ha fallat, amb un node que ha fallat i un altre que ha acabat bé | Sense cap node per conservar, és el rellançament complet |
+| La tasca s'ha executat a la 7.8.0 o posterior | A partir de la 7.8.0 una tasca de workflow desa cada node tal com ha acabat, amb el que ha passat |
+| El workflow és el mateix que quan es va executar la tasca | La tasca en desa un hash: un node, enllaç, extra var o nom canviat ofereix només el rellançament complet |
+
+Una tasca de workflow que s'ha executat a Ascender fa servir el rellançament dels nodes fallits propi d'Ascender, que conserva igualment els nodes
+que han acabat bé. AWX i AAP no tenen aquest rellançament, de manera que les seves tasques de workflow només ofereixen el rellançament complet, com les tasques multistep.

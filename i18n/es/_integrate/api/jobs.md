@@ -3,7 +3,7 @@ layout: default
 title: Trabajos
 parent: API REST
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Trabajos
@@ -139,6 +139,7 @@ Estos endpoints leen más datos de un trabajo:
 | `GET /api/v2/job/{id}/events` | Los eventos estructurados de un trabajo de playbook (desde la 7.3.0, para un playbook en un RTE de la 7.3.0 o posterior): cada play, tarea, resultado de host y el resumen final, con su `order`, `type`, `play`, `task`, `host`, `duration` y `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Uno de esos eventos con todo su `result`, tal como lo muestra el diálogo **Resultado de la tarea**; `400` si `order` no es un número entero, `404` si el trabajo no tiene ese evento |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un nodo de un trabajo de workflow: `{ "node", "job", "extravars", "artifacts" }`, donde `job` es el ID del propio trabajo del nodo, o `null` si el nodo no se ejecutó. |
+| `GET /api/v2/job/{id}/relaunch-options` | Desde 7.8.0, lo que puede ser un relanzamiento además del completo: `{ "failedHosts", "fromFailedNode" }` (ver abajo); `403` para un usuario que no puede relanzar el trabajo |
 
 ---
 
@@ -163,3 +164,31 @@ Abortar, aprobar, rechazar y eliminar responden con un mensaje, y un relanzamien
 
 Añade `?verbose=true` a un relanzamiento para ejecutar el nuevo trabajo en modo detallado, con la opción de rol `allowVerboseMode`. Un trabajo que
 está en un estado que no admite la acción, por ejemplo abortar un trabajo que ya ha terminado, responde `409`.
+
+### Relanzar parte de un trabajo
+
+Desde 7.8.0 el cuerpo de un relanzamiento puede pedir solo una parte del trabajo, con uno de dos indicadores, nunca ambos:
+
+| Cuerpo | El trabajo nuevo |
+|---|---|
+| `{ "failedHostsOnly": true }` | Se ejecuta solo en los hosts en los que falló el trabajo, como hace **En los hosts fallidos** (ver [Relanzar en los hosts fallidos](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Relanza un trabajo de workflow fallido desde su nodo fallido (ver [Relanzar desde el nodo fallido](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Cualquiera de los dos va con o sin `values`. Una nueva ejecución en los hosts fallidos también responde con los hosts:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Un trabajo sin hosts fallidos que volver a ejecutar, o uno que no se puede relanzar desde su nodo fallido, responde `400` con el motivo. Los
+dos indicadores juntos también responden `400`.
+
+Para saber de antemano qué indicador acepta un trabajo, `GET /api/v2/job/{id}/relaunch-options` responde tal como lo lee la página del trabajo:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` es `null` cuando el trabajo no ofrece una nueva ejecución en sus hosts fallidos, también cuando falló en todos los hosts, y
+`fromFailedNode` es `true` para un trabajo de workflow fallido que puede volver a ejecutarse desde su nodo fallido. `GET /api/v2/job/{id}`
+incluye la misma respuesta como `relaunchOptions` para un trabajo terminado, `null` para un usuario que no puede relanzarlo.

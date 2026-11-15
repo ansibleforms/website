@@ -3,7 +3,7 @@ layout: default
 title: ジョブ
 parent: REST API
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # ジョブ
@@ -139,6 +139,7 @@ extravars と出力を見るには、ジョブ自体を読み取ってくださ�
 | `GET /api/v2/job/{id}/events` | プレイブックのジョブの構造化されたイベント（7.3.0 以降、7.3.0 以降の RTE 上のプレイブックの場合）。各プレイ、タスク、ホストの結果、まとめを、 `order` 、 `type` 、 `play` 、 `task` 、 `host` 、 `duration` 、 `time` とともに返します |
 | `GET /api/v2/job/{id}/events/{order}` | それらのイベントの 1 つを、 **タスクの結果** ダイアログと同じく `result` 全体とともに返します。 `order` が整数でない場合は `400` 、そのイベントがジョブにない場合は `404` です |
 | `GET /api/v2/job/{id}/node/{nodeId}` | ワークフローのジョブの 1 つのノード。 `{ "node", "job", "extravars", "artifacts" }` を返します。 `job` はノード自身のジョブの ID で、ノードが実行されなかった場合は `null` です。 |
+| `GET /api/v2/job/{id}/relaunch-options` | 7.8.0 以降、完全な再起動以外に可能な再起動: `{ "failedHosts", "fromFailedNode" }` (下記参照)。ジョブを再起動できないユーザーには `403` |
 
 ---
 
@@ -163,3 +164,31 @@ extravars と出力を見るには、ジョブ自体を読み取ってくださ�
 
 再起動に `?verbose=true` を追加すると、ロールのオプション `allowVerboseMode` がある場合、新しいジョブを詳細モードで実行します。操作に対して
 ジョブの状態が正しくない場合、たとえばすでに終了したジョブを中止しようとした場合は、 `409` が返されます。
+
+### ジョブの一部を再起動する
+
+7.8.0 以降、再起動の本文で、2 つのフラグのどちらか一方 (両方は不可) を使ってジョブの一部だけを要求できます。
+
+| 本文 | 新しいジョブ |
+|---|---|
+| `{ "failedHostsOnly": true }` | **失敗したホストで** と同じく、ジョブが失敗したホストだけで実行します ( [失敗したホストで再起動する](../jobs/actions.html#relaunch-on-the-failed-hosts) を参照) |
+| `{ "fromFailedNode": true }` | 失敗したワークフロージョブを、失敗したノードから再起動します ( [失敗したノードから再起動する](../workflows/running.html#relaunch-from-the-failed-node) を参照) |
+
+どちらのフラグも `values` の有無にかかわらず使えます。失敗したホストでの再実行は、ホストも返します。
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+再実行する失敗したホストのないジョブや、失敗したノードから再起動できないジョブは、理由とともに `400` を返します。2 つのフラグを
+同時に指定した場合も `400` を返します。
+
+ジョブがどのフラグを受け付けるかを事前に知るには、 `GET /api/v2/job/{id}/relaunch-options` が、ジョブのページが読むのと同じ形で答えます。
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+ジョブが失敗したホストでの再実行を提供しない場合 (すべてのホストで失敗した場合も含む)、 `failedHosts` は `null` です。 `fromFailedNode` は、
+失敗したノードからもう一度実行できる失敗したワークフロージョブで `true` になります。 `GET /api/v2/job/{id}` は、終了したジョブについて同じ答えを
+`relaunchOptions` として含み、ジョブを再起動できないユーザーには `null` です。

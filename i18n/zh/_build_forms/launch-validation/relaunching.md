@@ -3,7 +3,7 @@ layout: default
 title: 重新运行
 parent: 运行验证
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # 重新运行
@@ -51,6 +51,10 @@ curl -X POST https://af.example.com/api/v2/job/42/relaunch \
 会为管理员或拥有 `allowScheduledJobs` 角色选项的用户重放该调度已保存的 extravars。
 
 经过检查的重新运行（参见[记录与强制](log-and-enforce.html)）会以调用方的名义启动一个新作业。
+
+从 7.8.0 起，[在失败的主机上](../jobs/actions.html#relaunch-on-the-failed-hosts)或
+[从失败的节点](../jobs/actions.html#relaunch-from-the-failed-node)的重新运行，按其本身的类型（按原样或带修改）进行检查。
+服务器在检查之后再加入这些主机，或要沿用的节点。
 
 ---
 

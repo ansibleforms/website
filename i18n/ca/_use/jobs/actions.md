@@ -3,7 +3,7 @@ layout: default
 title: Accions sobre les tasques
 parent: Tasques
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Accions sobre les tasques
@@ -124,6 +124,10 @@ usuari veure les tasques d'altres usuaris, no avortar-les.
 **Rellança** al menú de la fila (⋮) de la llista, o **Rellança la tasca** a la pàgina de la tasca, inicia una tasca nova a partir d'una d'acabada. S'ofereix en qualsevol
 tasca que no estigui en `running` ni esperant aprovació, als usuaris el rol dels quals defineix l'opció de rol `allowJobRelaunch`.
 
+A la pàgina de la tasca, **Rellança la tasca** és un botó simple, o un botó dividit amb un desplegable, com l'**Envia** del formulari,
+quan la tasca ofereix una segona opció: [en els seus hosts fallits](#relaunch-on-the-failed-hosts) o [des del seu node fallit](#relaunch-from-the-failed-node).
+La seva part principal és sempre el rellançament complet, i el menú de la fila de la llista només ofereix el rellançament complet.
+
 El diàleg ofereix:
 
 * **Rellança**: torna a executar la tasca amb els valors amb què es va executar, com una tasca nova al teu nom.
@@ -134,6 +138,52 @@ El diàleg ofereix:
 Un rellançament també requereix que el formulari ho permeti (`allowRelaunch`, true per defecte) i que la tasca sigui **teva**, tret que
 siguis administrador o, a partir de la 7.3.0, tinguis `manageAllJobs`; `showAllJobLogs`, que fins a la 7.2 permetia rellançar qualsevol tasca, ja no ho permet. Com es comprova un rellançament amb les regles del formulari, i per què un formulari amb un
 camp de contrasenya el pot rebutjar, es descriu a [Rellançament](../launch-validation/relaunching.html).
+
+### Rellançar en els hosts fallits
+
+A partir de la 7.8.0 una tasca que ha fallat en alguns dels seus hosts es pot tornar a executar només en aquests hosts, sense tocar els altres.
+
+El desplegable de **Rellança la tasca** ofereix llavors **En tots els hosts**, el rellançament complet, i **En els hosts fallits (N)**, amb N
+els hosts on ha fallat una tasca o que no s'han pogut assolir. S'ofereix en una tasca acabada d'aquests tipus:
+
+| Tasca | D'on surten els seus hosts fallits | La nova execució |
+|---|---|---|
+| Un playbook en un RTE | El resum dels seus [esdeveniments](following.html#hosts-and-tasks), si no el `PLAY RECAP` de la seva sortida | Una tasca nova, limitada a aquests hosts |
+| Una plantilla de tasca a AWX, AAP o Ascender | Els resums de hosts de la tasca en aquell runner | El rellançament en hosts fallits propi del producte, al runner on es va executar |
+
+Una tasca que s'ha executat en un sol host, o que ha fallat en tots els seus hosts, conserva el botó simple: tornar a executar els seus hosts
+fallits seria el rellançament complet. Un error que `ignore_errors` ha deixat passar, o que un `rescue` ha gestionat, no compta. Les tasques de
+Jenkins, Semaphore i Rundeck, les tasques de workflow i multistep, i les tasques de node d'un workflow no es tornen a executar en els seus hosts fallits.
+
+La nova execució és una tasca nova amb els mateixos valors que la tasca d'on ve:
+
+* **Hosts**: només els hosts fallits, dins del límit propi de la tasca; un rellançament d'un rellançament es queda en els hosts de l'anterior.
+* **Comprovacions**: la mateixa aprovació, validació de llançament i permisos que el rellançament complet.
+* **Diàleg**: llista els hosts abans que confirmis, sense **Edita els valors abans de rellançar**.
+* **Pàgina de la tasca**: **rellançament de #N**, amb *hosts fallits* al costat, enllaça a la tasca; la dada **hosts** d'un playbook els llista.
+* **Sortida**: comença amb una línia com `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Un host fallit el nom del qual Ansible llegiria com un patró, amb un `*`, un `~` o un `[` per exemple, queda fora de la nova execució, i la
+sortida ho diu en una línia `[WARNING]`. A l'RTE els hosts arriben a `ansible-playbook` com un fitxer de límit, un host per línia, de manera
+que un nom de host amb una coma o dos punts continua sent un sol host.
+
+### Rellançar des del node fallit
+
+A partir de la 7.8.0 una tasca de workflow fallida es pot tornar a executar des del node que ha fallat, conservant el que han fet els nodes anteriors.
+
+El desplegable de **Rellança la tasca** ofereix llavors **Des del primer node**, el rellançament complet, i **Des del node fallit**. Quines
+tasques de workflow ho ofereixen:
+
+| Tasca de workflow | Des del node fallit |
+|---|---|
+| Un [workflow](../workflows/) d'AnsibleForms | Els nodes que han acabat bé es conserven, i l'execució comença al node o nodes fallits |
+| Una tasca de workflow d'Ascender | El rellançament dels nodes fallits propi d'Ascender, al runner on es va executar la tasca |
+| Una tasca de workflow d'AWX o AAP | No s'ofereix: només el rellançament complet |
+| Una tasca [multistep](../forms/multistep.html) (obsoleta) | No s'ofereix: només el rellançament complet |
+
+La tasca nova passa per la mateixa aprovació, validació de llançament i permisos que el rellançament complet, i la seva pàgina mostra
+**rellançament de #N** amb *node fallit* al costat. Quan ho ofereix un workflow d'AnsibleForms, i què es conserva, es descriu a
+[Executar un workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Rellançar amb dades emplenades
 

@@ -3,7 +3,7 @@ layout: default
 title: Executar um workflow
 parent: Workflows
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Executar um workflow
@@ -101,3 +101,31 @@ Um formulário de workflow sem `approval` também retém a tarefa num nó de apr
 
 **Interromper** numa tarefa de workflow em execução para-a: as tarefas dos nós em execução são interrompidas, não arranca mais nada, e uma aprovação de que
 esteja à espera é cancelada. Uma tarefa de workflow à espera de uma aprovação também pode ser interrompida.
+
+---
+
+## Relançar a partir do nó com falha
+
+A partir da 7.8.0, uma tarefa de workflow que falhou pode ser relançada a partir do seu nó com falha, mantendo os nós que tiveram sucesso.
+
+**Relançar tarefa** na página da tarefa tem então uma seta com **A partir do primeiro nó**, o relançamento completo, e **A partir do nó com falha**.
+A nova tarefa passa pela mesma aprovação, validação no lançamento e permissões que qualquer [relançamento](../jobs/actions.html#relaunch-a-job):
+
+- **Os nós que tiveram sucesso** não executam nada. O grafo mostra-os a cinzento, *da execução anterior*, e o resultado tem um banner
+  `WORKFLOW NODE [identifier] (successful) #n carried over` para cada um, sem resultado de nó para abrir.
+- **O que passaram** continua a chegar aos nós seguintes: os seus artefactos de `set_stats` são guardados com a tarefa e passados adiante.
+- **A execução começa** no(s) nó(s) com falha, e continua pelas ligações do workflow como numa primeira execução.
+- **A página da tarefa** mostra **relançamento de #N**, com *nó com falha* ao lado, e o seu resultado começa com
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Uma tarefa de workflow do AnsibleForms só oferece **A partir do nó com falha** quando todas estas condições se cumprem; caso contrário, **Relançar tarefa** é o botão simples:
+
+| Condição | Porquê |
+|---|---|
+| A tarefa falhou, com um nó que falhou e outro que teve sucesso | Sem um nó a manter, é o relançamento completo |
+| A tarefa correu na 7.8.0 ou posterior | A partir da 7.8.0 uma tarefa de workflow guarda cada nó como terminou, com o que passou adiante |
+| O workflow é o mesmo de quando a tarefa correu | A tarefa guarda um hash dele: um nó, ligação, extra var ou nome alterado oferece só o relançamento completo |
+
+Uma tarefa de workflow que correu no Ascender usa o relançamento dos nós com falha do próprio Ascender, que mantém da mesma forma os nós que
+tiveram sucesso. O AWX e o AAP não têm esse relançamento, por isso as suas tarefas de workflow oferecem só o relançamento completo, tal como as tarefas multistep.
+

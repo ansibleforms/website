@@ -3,7 +3,7 @@ layout: default
 title: Eseguire un workflow
 parent: Workflow
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Eseguire un workflow
@@ -101,3 +101,30 @@ Un modulo workflow senza `approval` trattiene comunque il job su un nodo di appr
 
 **Interrompi** su un job di workflow in esecuzione lo ferma: i job dei nodi in esecuzione vengono interrotti, non parte più nulla, e un'approvazione
 in attesa viene annullata. Si può interrompere anche un job di workflow in attesa di un'approvazione.
+
+---
+
+## Rilanciare dal nodo fallito
+
+Dalla 7.8.0 un job di workflow fallito può essere rilanciato dal suo nodo fallito, con i nodi riusciti ripresi.
+
+**Rilancia job** nella pagina del job ha allora un caret con **Dal primo nodo**, il rilancio completo, e **Dal nodo fallito**. Il nuovo
+job passa per la stessa approvazione, la stessa validazione al lancio e gli stessi permessi di qualsiasi [rilancio](../jobs/actions.html#relaunch-a-job):
+
+- **I nodi riusciti** non eseguono nulla. Il grafo li mostra in grigio, *dall'esecuzione precedente*, e l'output ha un banner
+  `WORKFLOW NODE [identifier] (successful) #n carried over` per ciascuno, senza output del nodo da aprire.
+- **Ciò che hanno passato** raggiunge ancora i nodi successivi: i loro artefatti `set_stats` sono conservati con il job e passati avanti.
+- **L'esecuzione parte** dal nodo o dai nodi falliti, e prosegue lungo i collegamenti del workflow come farebbe una prima esecuzione.
+- **La pagina del job** mostra **rilancio di #N**, con *nodo fallito* accanto, e il suo output inizia con
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Un job di workflow di AnsibleForms offre **Dal nodo fallito** solo quando vale ciascuna di queste condizioni; altrimenti **Rilancia job** è il pulsante semplice:
+
+| Condizione | Perché |
+|---|---|
+| Il job è fallito, con un nodo fallito e uno riuscito | Senza un nodo da riprendere, è il rilancio completo |
+| Il job è stato eseguito sulla 7.8.0 o successiva | Dalla 7.8.0 un job di workflow conserva ogni nodo come è terminato, con ciò che ha passato |
+| Il workflow è lo stesso di quando il job è stato eseguito | Il job ne conserva un hash: un nodo, un collegamento, una extra var o un nome modificato offre solo il rilancio completo |
+
+Un job di workflow eseguito su Ascender usa il rilancio dei nodi falliti di Ascender stesso, che riprende i nodi riusciti allo stesso modo.
+AWX e AAP non hanno un rilancio simile, quindi i loro job di workflow offrono solo il rilancio completo, come i job multistep.

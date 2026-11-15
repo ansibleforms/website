@@ -3,7 +3,7 @@ layout: default
 title: Tasques
 parent: API REST
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Tasques
@@ -139,6 +139,7 @@ Aquests endpoints llegeixen més dades d'una tasca:
 | `GET /api/v2/job/{id}/events` | Els esdeveniments estructurats d'una tasca de playbook (des de la 7.3.0, per a un playbook en un RTE de la 7.3.0 o posterior): cada play, tasca, resultat per host i el resum, amb els seus `order`, `type`, `play`, `task`, `host`, `duration` i `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Un d'aquests esdeveniments amb tot el seu `result`, tal com el mostra el diàleg **Resultat de la tasca**; `400` quan `order` no és un nombre enter, `404` quan la tasca no té aquest esdeveniment |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un node d'una tasca de workflow: `{ "node", "job", "extravars", "artifacts" }`, on `job` és l'ID de la tasca pròpia del node, o `null` quan el node no s'ha executat. |
+| `GET /api/v2/job/{id}/relaunch-options` | A partir de la 7.8.0, el que pot ser un rellançament a més del complet: `{ "failedHosts", "fromFailedNode" }` (vegeu més avall); `403` per a un usuari que no pot rellançar la tasca |
 
 ---
 
@@ -163,3 +164,31 @@ Avortar, aprovar, rebutjar i suprimir responen amb un missatge, i un rellançame
 
 Afegeix `?verbose=true` a un rellançament per executar la tasca nova en mode detallat, amb l'opció de rol `allowVerboseMode`. Una tasca que
 és en un estat que no correspon a l'acció, per exemple avortar una tasca que ja ha acabat, respon `409`.
+
+### Rellançar part d'una tasca
+
+A partir de la 7.8.0 el cos d'un rellançament pot demanar només una part de la tasca, amb un de dos indicadors, mai tots dos:
+
+| Cos | La tasca nova |
+|---|---|
+| `{ "failedHostsOnly": true }` | S'executa només en els hosts on ha fallat la tasca, com fa **En els hosts fallits** (vegeu [Rellançar en els hosts fallits](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Rellança una tasca de workflow fallida des del seu node fallit (vegeu [Rellançar des del node fallit](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Qualsevol dels dos va amb `values` o sense. Una nova execució en els hosts fallits també respon amb els hosts:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Una tasca sense hosts fallits per tornar a executar, o una que no es pot rellançar des del seu node fallit, respon `400` amb el motiu. Els
+dos indicadors junts també responen `400`.
+
+Per saber per endavant quin indicador accepta una tasca, `GET /api/v2/job/{id}/relaunch-options` respon tal com ho llegeix la pàgina de la tasca:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` és `null` quan la tasca no ofereix una nova execució en els seus hosts fallits, també quan ha fallat en tots els hosts, i
+`fromFailedNode` és `true` per a una tasca de workflow fallida que es pot tornar a executar des del seu node fallit. `GET /api/v2/job/{id}`
+inclou la mateixa resposta com a `relaunchOptions` per a una tasca acabada, `null` per a un usuari que no la pot rellançar.

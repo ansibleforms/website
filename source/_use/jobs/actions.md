@@ -123,6 +123,10 @@ user see other users' jobs, not abort them.
 **Relaunch** in the row's menu (⋮) of the list, or **Relaunch job** on the job's page, starts a new job from a finished one. It is offered on any
 job that is neither `running` nor waiting for approval, to users whose role sets the `allowJobRelaunch` role option.
 
+On the job's page, **Relaunch job** is a plain button, or a split button with a caret, like the form's **Submit**, when the job offers
+a second choice: [on its failed hosts](#relaunch-on-the-failed-hosts) or [from its failed node](#relaunch-from-the-failed-node). Its main
+part is always the full relaunch, and the list's row menu offers the full relaunch only.
+
 The dialog offers:
 
 * **Relaunch**: runs the job again with the values it ran with, as a new job under your name.
@@ -133,6 +137,52 @@ The dialog offers:
 A relaunch also requires the form to allow it (`allowRelaunch`, true by default) and the job to be **your own**, unless
 you are an admin or, from 7.3.0, have `manageAllJobs`; `showAllJobLogs`, which relaunched any job up to 7.2, no longer does. How a relaunch is checked against the form's rules, and why a form with a
 password field may refuse it, is described in [Relaunching](../launch-validation/relaunching.html).
+
+### Relaunch on the failed hosts
+
+From 7.8.0 a job that failed on some of its hosts can run again on those hosts only, leaving the others alone.
+
+The caret of **Relaunch job** then offers **On all hosts**, the full relaunch, and **On failed hosts (N)**, with N the hosts that failed a
+task or could not be reached. It is offered on an ended job of these kinds:
+
+| Job | Its failed hosts come from | The re-run |
+|---|---|---|
+| A playbook on an RTE | The recap of its [events](following.html#hosts-and-tasks), else the `PLAY RECAP` of its output | A new job, limited to those hosts |
+| A job template on AWX, AAP or Ascender | The job's host summaries on that runner | The product's own relaunch on failed hosts, on the runner the job ran on |
+
+A job that ran on one host, or failed on every host, keeps the plain button: a re-run of its failed hosts would be the full relaunch. A
+failure that `ignore_errors` let pass, or that a `rescue` handled, does not count. Jenkins, Semaphore and Rundeck jobs, workflow and
+multistep jobs, and the node jobs of a workflow are not re-run on their failed hosts.
+
+The re-run is a new job with the same values as the job it comes from:
+
+* **Hosts**: the failed hosts only, within the job's own limit; a re-run of a re-run stays within the hosts of the one before.
+* **Checks**: the same approval, launch validation and permissions as the full relaunch.
+* **Dialog**: it lists the hosts before you confirm, without **Edit values before relaunching**.
+* **Job page**: **re-run of #N**, with *failed hosts* beside it, links to the job; a playbook's **Hosts** fact lists the hosts.
+* **Output**: it starts with a line such as `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+A failed host whose name Ansible would read as a pattern, with a `*`, a `~` or a `[` for example, is left out of the re-run, and the
+output says so in a `[WARNING]` line. On the RTE the hosts reach `ansible-playbook` as a limit file, one host per line, so a host name
+with a comma or a colon stays one host.
+
+### Relaunch from the failed node
+
+From 7.8.0 a failed workflow job can run again from the node that failed, keeping what the nodes before it did.
+
+The caret of **Relaunch job** then offers **From the first node**, the full relaunch, and **From the failed node**. Which workflow jobs
+offer it:
+
+| Workflow job | From the failed node |
+|---|---|
+| An AnsibleForms [workflow](../workflows/) | The nodes that succeeded are carried over, and the run starts at the failed node(s) |
+| An Ascender workflow job | Ascender's own relaunch of the failed nodes, on the runner the job ran on |
+| An AWX or AAP workflow job | Not offered: the full relaunch only |
+| A [multistep](../forms/multistep.html) job (deprecated) | Not offered: the full relaunch only |
+
+The new job goes through the same approval, launch validation and permissions as the full relaunch, and its page shows **re-run of #N**
+with *failed node* beside it. When an AnsibleForms workflow offers it, and what is carried over, is described in
+[Running a workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Relaunch with pre-filled data
 

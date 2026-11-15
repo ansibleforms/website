@@ -3,7 +3,7 @@ layout: default
 title: Jobacties
 parent: Jobs
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Jobacties
@@ -124,6 +124,10 @@ gebruiker de jobs van andere gebruikers zien, niet afbreken.
 **Herstarten** in het menu van de rij (⋮) in de lijst, of **Job herstarten** op de pagina van de job, start een nieuwe job vanuit een afgeronde job. Het wordt aangeboden bij elke
 job die niet `running` is en niet op goedkeuring wacht, aan gebruikers van wie de rol de roloptie `allowJobRelaunch` instelt.
 
+Op de pagina van de job is **Job herstarten** een gewone knop, of een gesplitste knop met een pijltje zoals **Verzenden** van het formulier, als de job
+een tweede keuze biedt: [op zijn mislukte hosts](#relaunch-on-the-failed-hosts) of [vanaf zijn mislukte knooppunt](#relaunch-from-the-failed-node).
+Het hoofddeel is altijd de volledige herstart, en het menu van de rij in de lijst biedt alleen de volledige herstart.
+
 De dialoog biedt:
 
 * **Herstarten**: voert de job opnieuw uit met de waarden waarmee hij draaide, als een nieuwe job op jouw naam.
@@ -134,6 +138,52 @@ De dialoog biedt:
 Een herstart vereist ook dat het formulier het toestaat (`allowRelaunch`, standaard true) en dat de job **van jou** is, tenzij
 je admin bent of, vanaf 7.3.0, `manageAllJobs` hebt; `showAllJobLogs`, waarmee je tot en met 7.2 elke job kon herstarten, kan dat niet meer. Hoe een herstart tegen de regels van het formulier wordt gecontroleerd, en waarom een formulier met een
 wachtwoordveld hem kan weigeren, staat beschreven in [Opnieuw starten](../launch-validation/relaunching.html).
+
+### Herstarten op de mislukte hosts
+
+Vanaf 7.8.0 kan een job die op een deel van zijn hosts mislukte, alleen op die hosts opnieuw draaien, zonder de andere aan te raken.
+
+Het pijltje van **Job herstarten** biedt dan **Op alle hosts**, de volledige herstart, en **Op mislukte hosts (N)**, met N de hosts waarop een taak
+mislukte of die onbereikbaar waren. Het wordt aangeboden bij een afgeronde job van deze soorten:
+
+| Job | Zijn mislukte hosts komen uit | De herstart |
+|---|---|---|
+| Een playbook op een RTE | De recap van zijn [gebeurtenissen](following.html#hosts-and-tasks), anders de `PLAY RECAP` van zijn uitvoer | Een nieuwe job, beperkt tot die hosts |
+| Een jobtemplate op AWX, AAP of Ascender | De hostsamenvattingen van de job op die runner | De eigen herstart op mislukte hosts van het product, op de runner waarop de job draaide |
+
+Een job die op één host draaide, of op elke host mislukte, houdt de gewone knop: een herstart van zijn mislukte hosts zou de volledige herstart zijn. Een
+fout die `ignore_errors` liet passeren, of die een `rescue` afhandelde, telt niet mee. Jenkins-, Semaphore- en Rundeck-jobs, workflow- en multistep-jobs,
+en de jobs van de knooppunten van een workflow worden niet op hun mislukte hosts herstart.
+
+De herstart is een nieuwe job met dezelfde waarden als de job waar hij vandaan komt:
+
+* **Hosts**: alleen de mislukte hosts, binnen de eigen limit van de job; een herstart van een herstart blijft binnen de hosts van de vorige.
+* **Controles**: dezelfde goedkeuring, launch-validatie en rechten als de volledige herstart.
+* **Dialoog**: hij toont de hosts voordat je bevestigt, zonder **Waarden bewerken voor herstarten**.
+* **Pagina van de job**: **herstart van #N**, met *mislukte hosts* ernaast, linkt naar de job; het gegeven **hosts** van een playbook toont de hosts.
+* **Uitvoer**: die begint met een regel zoals `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Een mislukte host waarvan Ansible de naam als patroon zou lezen, met bijvoorbeeld een `*`, een `~` of een `[`, blijft buiten de herstart, en de uitvoer
+meldt dat in een `[WARNING]`-regel. Op het RTE bereiken de hosts `ansible-playbook` als limitbestand, één host per regel, zodat een hostnaam met een
+komma of een dubbele punt één host blijft.
+
+### Herstarten vanaf het mislukte knooppunt
+
+Vanaf 7.8.0 kan een mislukte workflowjob opnieuw draaien vanaf het knooppunt dat mislukte, en houdt hij wat de knooppunten ervoor deden.
+
+Het pijltje van **Job herstarten** biedt dan **Vanaf het eerste knooppunt**, de volledige herstart, en **Vanaf het mislukte knooppunt**. Welke
+workflowjobs het aanbieden:
+
+| Workflowjob | Vanaf het mislukte knooppunt |
+|---|---|
+| Een AnsibleForms-[workflow](../workflows/) | De geslaagde knooppunten worden overgenomen, en de run begint bij het mislukte knooppunt (of de mislukte knooppunten) |
+| Een Ascender-workflowjob | De eigen herstart van de mislukte knooppunten van Ascender, op de runner waarop de job draaide |
+| Een AWX- of AAP-workflowjob | Niet aangeboden: alleen de volledige herstart |
+| Een [multistep](../forms/multistep.html)-job (verouderd) | Niet aangeboden: alleen de volledige herstart |
+
+De nieuwe job doorloopt dezelfde goedkeuring, launch-validatie en rechten als de volledige herstart, en zijn pagina toont **herstart van #N**
+met *mislukt knooppunt* ernaast. Wanneer een AnsibleForms-workflow het aanbiedt, en wat wordt overgenomen, staat beschreven in
+[Een workflow uitvoeren](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Herstarten met vooraf ingevulde gegevens
 

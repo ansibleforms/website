@@ -3,7 +3,7 @@ layout: default
 title: Job-Aktionen
 parent: Jobs
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Job-Aktionen
@@ -124,6 +124,10 @@ Benutzer die Jobs anderer Benutzer sehen, aber nicht abbrechen.
 **Neu starten** im Zeilenmenü (⋮) der Liste oder **Job neu starten** auf der Seite des Jobs startet einen neuen Job aus einem beendeten. Es wird bei jedem
 Job angeboten, der weder `running` ist noch auf eine Genehmigung wartet, für Benutzer, deren Rolle die Rollenoption `allowJobRelaunch` setzt.
 
+Auf der Seite des Jobs ist **Job neu starten** eine einfache Schaltfläche, oder eine geteilte Schaltfläche mit Pfeil wie **Senden** des Formulars, wenn der Job
+eine zweite Wahl bietet: [auf seinen fehlgeschlagenen Hosts](#relaunch-on-the-failed-hosts) oder [ab seinem fehlgeschlagenen Knoten](#relaunch-from-the-failed-node).
+Ihr Hauptteil ist immer der vollständige Neustart, und das Zeilenmenü der Liste bietet nur den vollständigen Neustart.
+
 Der Dialog bietet:
 
 * **Neu starten**: Führt den Job erneut mit den Werten aus, mit denen er lief, als neuen Job unter Ihrem Namen.
@@ -134,6 +138,52 @@ Der Dialog bietet:
 Ein Neustart setzt außerdem voraus, dass das Formular ihn erlaubt (`allowRelaunch`, standardmäßig true) und dass der Job **Ihr eigener** ist, es sei denn,
 Sie sind Admin oder haben ab 7.3.0 `manageAllJobs`; `showAllJobLogs`, womit sich bis 7.2 jeder Job neu starten ließ, reicht dafür nicht mehr. Wie ein Neustart gegen die Regeln des Formulars geprüft wird und warum ein Formular mit einem
 Passwortfeld ihn ablehnen kann, ist unter [Neustarten](../launch-validation/relaunching.html) beschrieben.
+
+### Auf den fehlgeschlagenen Hosts neu starten
+
+Ab 7.8.0 kann ein Job, der auf einigen seiner Hosts fehlschlug, nur auf diesen Hosts erneut laufen, ohne die anderen anzurühren.
+
+Der Pfeil von **Job neu starten** bietet dann **Auf allen Hosts**, den vollständigen Neustart, und **Auf fehlgeschlagenen Hosts (N)**, mit N den Hosts,
+bei denen ein Task fehlschlug oder die nicht erreichbar waren. Es wird bei einem beendeten Job dieser Arten angeboten:
+
+| Job | Seine fehlgeschlagenen Hosts stammen aus | Der Neustart |
+|---|---|---|
+| Ein Playbook auf einem RTE | Dem Recap seiner [Ereignisse](following.html#hosts-and-tasks), sonst dem `PLAY RECAP` seiner Ausgabe | Ein neuer Job, auf diese Hosts begrenzt |
+| Eine Job-Vorlage auf AWX, AAP oder Ascender | Den Host-Zusammenfassungen des Jobs auf diesem Runner | Der eigene Neustart des Produkts auf fehlgeschlagenen Hosts, auf dem Runner, auf dem der Job lief |
+
+Ein Job, der auf einem Host lief oder auf jedem Host fehlschlug, behält die einfache Schaltfläche: Ein Neustart seiner fehlgeschlagenen Hosts wäre der
+vollständige Neustart. Ein Fehler, den `ignore_errors` durchgehen ließ oder den ein `rescue` behandelte, zählt nicht. Jenkins-, Semaphore- und Rundeck-Jobs,
+Workflow- und Multistep-Jobs sowie die Knoten-Jobs eines Workflows werden nicht auf ihren fehlgeschlagenen Hosts neu gestartet.
+
+Der Neustart ist ein neuer Job mit denselben Werten wie der Job, aus dem er stammt:
+
+* **Hosts**: nur die fehlgeschlagenen Hosts, innerhalb des eigenen Limits des Jobs; ein Neustart eines Neustarts bleibt innerhalb der Hosts des vorigen.
+* **Prüfungen**: dieselbe Genehmigung, Start-Validierung und dieselben Berechtigungen wie der vollständige Neustart.
+* **Dialog**: Er listet die Hosts vor Ihrer Bestätigung auf, ohne **Werte vor dem Neustart bearbeiten**.
+* **Seite des Jobs**: **Neustart von #N**, mit *fehlgeschlagene Hosts* daneben, verlinkt den Job; die Angabe **Hosts** eines Playbooks listet die Hosts.
+* **Ausgabe**: Sie beginnt mit einer Zeile wie `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Ein fehlgeschlagener Host, dessen Namen Ansible als Muster lesen würde, etwa mit einem `*`, einem `~` oder einem `[`, wird beim Neustart ausgelassen,
+und die Ausgabe sagt es in einer `[WARNING]`-Zeile. Auf dem RTE erreichen die Hosts `ansible-playbook` als Limit-Datei, ein Host pro Zeile, sodass ein
+Hostname mit einem Komma oder einem Doppelpunkt ein einziger Host bleibt.
+
+### Ab dem fehlgeschlagenen Knoten neu starten
+
+Ab 7.8.0 kann ein fehlgeschlagener Workflow-Job ab dem Knoten, der fehlschlug, erneut laufen und behält, was die Knoten davor taten.
+
+Der Pfeil von **Job neu starten** bietet dann **Ab dem ersten Knoten**, den vollständigen Neustart, und **Ab dem fehlgeschlagenen Knoten**. Welche
+Workflow-Jobs es anbieten:
+
+| Workflow-Job | Ab dem fehlgeschlagenen Knoten |
+|---|---|
+| Ein AnsibleForms-[Workflow](../workflows/) | Die erfolgreichen Knoten werden übernommen, und der Lauf beginnt beim fehlgeschlagenen Knoten (oder den fehlgeschlagenen Knoten) |
+| Ein Ascender-Workflow-Job | Der eigene Neustart der fehlgeschlagenen Knoten von Ascender, auf dem Runner, auf dem der Job lief |
+| Ein AWX- oder AAP-Workflow-Job | Nicht angeboten: nur der vollständige Neustart |
+| Ein [Multistep](../forms/multistep.html)-Job (veraltet) | Nicht angeboten: nur der vollständige Neustart |
+
+Der neue Job durchläuft dieselbe Genehmigung, Start-Validierung und dieselben Berechtigungen wie der vollständige Neustart, und seine Seite zeigt
+**Neustart von #N** mit *fehlgeschlagener Knoten* daneben. Wann ein AnsibleForms-Workflow es anbietet und was übernommen wird, ist unter
+[Einen Workflow ausführen](../workflows/running.html#relaunch-from-the-failed-node) beschrieben.
 
 ### Mit vorausgefüllten Daten neu starten
 

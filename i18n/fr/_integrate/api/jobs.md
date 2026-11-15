@@ -3,7 +3,7 @@ layout: default
 title: Jobs
 parent: API REST
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Jobs
@@ -139,6 +139,7 @@ Ces endpoints lisent davantage d'informations sur un job :
 | `GET /api/v2/job/{id}/events` | Les événements structurés d'un job de playbook (depuis la 7.3.0, pour un playbook sur un RTE 7.3.0 ou ultérieur) : chaque play, tâche, résultat d'hôte et le récapitulatif, avec leurs `order`, `type`, `play`, `task`, `host`, `duration` et `time` |
 | `GET /api/v2/job/{id}/events/{order}` | L'un de ces événements avec son `result` complet, tel que l'affiche la boîte de dialogue **Résultat de la tâche** ; `400` quand `order` n'est pas un nombre entier, `404` quand le job n'a pas cet événement |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un nœud d'un job de workflow : `{ "node", "job", "extravars", "artifacts" }`, où `job` est l'ID du job propre au nœud, ou `null` quand le nœud ne s'est pas exécuté. |
+| `GET /api/v2/job/{id}/relaunch-options` | Depuis la 7.8.0, ce qu'une relance peut être en plus de la complète : `{ "failedHosts", "fromFailedNode" }` (voir ci-dessous) ; `403` pour un utilisateur qui ne peut pas relancer le job |
 
 ---
 
@@ -163,3 +164,31 @@ L'interruption, l'approbation, le rejet et la suppression répondent par un mess
 
 Ajoutez `?verbose=true` à une relance pour exécuter le nouveau job en mode verbeux, avec l'option de rôle `allowVerboseMode`. Un job qui
 n'est pas dans le bon état pour l'action, par exemple l'interruption d'un job déjà terminé, répond `409`.
+
+### Relancer une partie d'un job
+
+Depuis la 7.8.0, le corps d'une relance peut ne demander qu'une partie du job, avec l'un de deux indicateurs, jamais les deux :
+
+| Corps | Le nouveau job |
+|---|---|
+| `{ "failedHostsOnly": true }` | S'exécute sur les hôtes où le job a échoué seulement, comme **Sur les hôtes en échec** (voir [Relancer sur les hôtes en échec](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Relance un job de workflow en échec depuis son nœud en échec (voir [Relancer depuis le nœud en échec](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Chaque indicateur s'utilise avec ou sans `values`. Une réexécution sur les hôtes en échec répond aussi avec les hôtes :
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Un job sans hôtes en échec à réexécuter, ou qui ne peut pas être relancé depuis son nœud en échec, répond `400` avec la raison. Les deux
+indicateurs ensemble répondent `400` aussi.
+
+Pour savoir à l'avance quel indicateur un job accepte, `GET /api/v2/job/{id}/relaunch-options` répond comme la page du job le lit :
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` vaut `null` quand le job ne propose pas de réexécution sur ses hôtes en échec, aussi quand il a échoué sur tous ses hôtes, et
+`fromFailedNode` vaut `true` pour un job de workflow en échec qui peut s'exécuter de nouveau depuis son nœud en échec. `GET /api/v2/job/{id}`
+contient la même réponse sous `relaunchOptions` pour un job terminé, `null` pour un utilisateur qui ne peut pas le relancer.

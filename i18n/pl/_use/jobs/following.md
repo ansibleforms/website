@@ -3,7 +3,7 @@ layout: default
 title: Śledzenie zadania
 parent: Zadania
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Śledzenie zadania
@@ -132,6 +132,19 @@ Od wersji 7.3.0 graf działającego workflow przesuwa się tak, aby działający
 Jeśli przewiniesz graf w inne miejsce, zostanie tam, gdzie go zostawiłeś, z przyciskiem **Śledź działający węzeł**, aby znów go śledzić. Najechanie na węzeł
 pokazuje jego kartę z pełną nazwą i wyróżnia węzeł oraz jego połączenia, a reszta grafu jest przygaszona. Graf ma przyciski **Dopasuj do
 ekranu** i **Pełny ekran**, a pod formularzem po **Wyślij** kliknięcie węzła otwiera jego wynik tak jak na stronie zadania.
+
+Węzeł przeniesiony przez [ponowne uruchomienie od nieudanego węzła](../workflows/running.html#relaunch-from-the-failed-node) jest wyszarzony, ze stanem
+*z poprzedniego uruchomienia*: w tym przebiegu nie uruchomił żadnego zadania, więc nie ma wyniku do otwarcia.
+
+Od wersji 7.8.0 zadanie workflow Ascender pokazuje też to, co Ascender dodaje do swoich węzłów
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Węzeł Ascender | Na grafie | W wyniku |
+|---|---|---|
+| Węzeł z ponowieniami | `↻ 1/3` po stanie: wykonane ponowienia z tych, które może wykonać | Jeden blok na próbę, każdy z `próba 2 z 3` w nagłówku |
+| Nieudana próba z ponowieniem w drodze | **retrying**, nie nieudany, dopóki ponowienie czeka | Blok nieudanej próby |
+| Węzeł przeniesiony przez ponowne uruchomienie | Wyszarzony, *z poprzedniego uruchomienia* | Baner `carried over`, z *z poprzedniego uruchomienia* w nagłówku |
+| Węzeł wymuszony jako udany | *wymuszony sukces* oraz `Wymuszono: <powód>` na jego karcie po najechaniu | |
 
 ---
 

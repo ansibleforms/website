@@ -3,7 +3,7 @@ layout: default
 title: Uruchamianie workflow
 parent: Workflowy
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Uruchamianie workflow
@@ -101,3 +101,31 @@ Formularz workflow bez `approval` również wstrzymuje zadanie na węźle zatwie
 
 **Przerwij** w działającym zadaniu workflow zatrzymuje je: działające zadania węzłów są przerywane, nic więcej nie startuje, a zatwierdzenie,
 na które czeka, jest anulowane. Zadanie workflow czekające na zatwierdzenie także można przerwać.
+
+---
+
+## Ponowne uruchomienie od nieudanego węzła
+
+Od wersji 7.8.0 zadanie workflow, które się nie powiodło, można uruchomić ponownie od nieudanego węzła, z przeniesieniem węzłów zakończonych sukcesem.
+
+**Uruchom zadanie ponownie** na stronie zadania ma wtedy strzałkę z **Od pierwszego węzła**, pełnym ponownym uruchomieniem, i **Od nieudanego węzła**.
+Nowe zadanie przechodzi to samo zatwierdzenie, weryfikację uruchomienia i uprawnienia co każde [ponowne uruchomienie](../jobs/actions.html#relaunch-a-job):
+
+- **Węzły zakończone sukcesem** niczego nie uruchamiają. Graf pokazuje je wyszarzone, *z poprzedniego uruchomienia*, a wynik ma dla każdego baner
+  `WORKFLOW NODE [identifier] (successful) #n carried over`, bez wyniku węzła do otwarcia.
+- **To, co przekazały**, nadal trafia do węzłów po nich: ich artefakty z `set_stats` są zapisane z zadaniem i przekazywane dalej.
+- **Przebieg zaczyna się** od nieudanego węzła (lub węzłów) i idzie dalej połączeniami workflow, jak przy pierwszym uruchomieniu.
+- **Strona zadania** pokazuje **ponowienie #N**, z *nieudany węzeł* obok, a jej wynik zaczyna się od
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Zadanie workflow AnsibleForms oferuje **Od nieudanego węzła** tylko wtedy, gdy spełnione są wszystkie te warunki; w przeciwnym razie **Uruchom zadanie ponownie** jest zwykłym przyciskiem:
+
+| Warunek | Dlaczego |
+|---|---|
+| Zadanie nie powiodło się, z węzłem nieudanym i węzłem zakończonym sukcesem | Bez węzła do przeniesienia jest to pełne ponowne uruchomienie |
+| Zadanie działało w wersji 7.8.0 lub nowszej | Od wersji 7.8.0 zadanie workflow zapisuje każdy węzeł tak, jak się zakończył, z tym, co przekazał dalej |
+| Workflow jest taki sam jak wtedy, gdy zadanie działało | Zadanie zapisuje jego hash: zmieniony węzeł, połączenie, extra var lub nazwa daje tylko pełne ponowne uruchomienie |
+
+Zadanie workflow, które działało na Ascender, używa własnego ponownego uruchomienia nieudanych węzłów przez Ascender, które tak samo przenosi
+węzły zakończone sukcesem. AWX i AAP nie mają takiego ponownego uruchomienia, więc ich zadania workflow oferują tylko pełne ponowne uruchomienie, tak jak zadania wieloetapowe.
+

@@ -3,7 +3,7 @@ layout: default
 title: Zadania
 parent: API REST
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Zadania
@@ -139,6 +139,7 @@ Te endpointy odczytują więcej informacji o jednym zadaniu:
 | `GET /api/v2/job/{id}/events` | Ustrukturyzowane zdarzenia zadania playbooka (od wersji 7.3.0, dla playbooka na RTE w wersji 7.3.0 lub nowszej): każdy play, task, wynik hosta i podsumowanie (recap), z ich `order`, `type`, `play`, `task`, `host`, `duration` i `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Jedno z tych zdarzeń z całym jego `result`, tak jak pokazuje je okno **Wynik zadania**; `400`, gdy `order` nie jest liczbą całkowitą, `404`, gdy zadanie nie ma takiego zdarzenia |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Jeden węzeł zadania workflow: `{ "node", "job", "extravars", "artifacts" }`, gdzie `job` to ID własnego zadania węzła albo `null`, gdy węzeł się nie uruchomił. |
+| `GET /api/v2/job/{id}/relaunch-options` | Od wersji 7.8.0: czym może być ponowne uruchomienie poza pełnym: `{ "failedHosts", "fromFailedNode" }` (zobacz niżej); `403` dla użytkownika, który nie może ponownie uruchomić zadania |
 
 ---
 
@@ -163,3 +164,31 @@ Przerwanie, zatwierdzenie, odrzucenie i usunięcie odpowiadają komunikatem, a p
 
 Dodaj `?verbose=true` do ponownego uruchomienia, aby nowe zadanie działało w trybie szczegółowym, z opcją roli `allowVerboseMode`. Zadanie, które
 jest w niewłaściwym stanie dla danej akcji, na przykład przerwanie zadania, które już się zakończyło, odpowiada `409`.
+
+### Ponowne uruchomienie części zadania
+
+Od wersji 7.8.0 treść ponownego uruchomienia może prosić tylko o część zadania, jedną z dwóch flag, nigdy obiema:
+
+| Treść | Nowe zadanie |
+|---|---|
+| `{ "failedHostsOnly": true }` | Działa tylko na hostach, na których zadanie się nie powiodło, jak **Na nieudanych hostach** (zobacz [Ponowne uruchomienie na nieudanych hostach](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Uruchamia ponownie nieudane zadanie workflow od nieudanego węzła (zobacz [Ponowne uruchomienie od nieudanego węzła](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Każda z flag działa z `values` lub bez. Ponowienie na nieudanych hostach odpowiada też listą hostów:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Zadanie bez nieudanych hostów do ponowienia albo takie, którego nie można uruchomić ponownie od nieudanego węzła, odpowiada `400` z powodem.
+Obie flagi naraz także odpowiadają `400`.
+
+Aby wcześniej wiedzieć, którą flagę zadanie przyjmie, `GET /api/v2/job/{id}/relaunch-options` odpowiada tak, jak czyta to strona zadania:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` to `null`, gdy zadanie nie oferuje ponowienia na nieudanych hostach, także gdy nie powiodło się na każdym hoście, a
+`fromFailedNode` to `true` dla nieudanego zadania workflow, które można uruchomić ponownie od nieudanego węzła. `GET /api/v2/job/{id}`
+zawiera tę samą odpowiedź jako `relaunchOptions` dla zakończonego zadania, `null` dla użytkownika, który nie może go ponownie uruchomić.

@@ -3,7 +3,7 @@ layout: default
 title: Tarefas
 parent: API REST
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Tarefas
@@ -139,6 +139,7 @@ Estes endpoints leem mais informação de uma tarefa:
 | `GET /api/v2/job/{id}/events` | Os eventos estruturados de uma tarefa de playbook (a partir da 7.3.0, para um playbook num RTE da 7.3.0 ou posterior): cada play, tarefa, resultado por host e o recap, com o seu `order`, `type`, `play`, `task`, `host`, `duration` e `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Um desses eventos com o seu `result` completo, tal como a janela **Resultado da tarefa** o mostra; `400` quando `order` não é um número inteiro, `404` quando a tarefa não tem esse evento |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Um nó de uma tarefa de workflow: `{ "node", "job", "extravars", "artifacts" }`, em que `job` é o ID da tarefa própria do nó, ou `null` quando o nó não foi executado. |
+| `GET /api/v2/job/{id}/relaunch-options` | A partir da 7.8.0, o que um relançamento pode ser além do completo: `{ "failedHosts", "fromFailedNode" }` (ver abaixo); `403` para um utilizador que não pode relançar a tarefa |
 
 ---
 
@@ -163,3 +164,31 @@ Abortar, aprovar, rejeitar e eliminar respondem com uma mensagem, e um relançam
 
 Adicione `?verbose=true` a um relançamento para executar a nova tarefa em modo detalhado, com a opção de função `allowVerboseMode`. Uma tarefa que
 esteja no estado errado para a ação, por exemplo abortar uma tarefa que já terminou, responde `409`.
+
+### Relançar parte de uma tarefa
+
+A partir da 7.8.0, o corpo de um relançamento pode pedir só parte da tarefa, com uma de duas flags, nunca as duas:
+
+| Corpo | A nova tarefa |
+|---|---|
+| `{ "failedHostsOnly": true }` | Corre só nos hosts em que a tarefa falhou, como faz **Nos hosts com falha** (ver [Relançar nos hosts com falha](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Relança uma tarefa de workflow que falhou a partir do seu nó com falha (ver [Relançar a partir do nó com falha](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Qualquer das flags vai com ou sem `values`. Uma nova execução nos hosts com falha responde também com os hosts:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Uma tarefa sem hosts com falha para voltar a correr, ou que não pode ser relançada a partir do seu nó com falha, responde `400` com o motivo.
+As duas flags juntas também respondem `400`.
+
+Para saber de antemão que flag uma tarefa aceita, `GET /api/v2/job/{id}/relaunch-options` responde como a página da tarefa o lê:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` é `null` quando a tarefa não oferece nova execução nos hosts com falha, também quando falhou em todos os hosts, e
+`fromFailedNode` é `true` para uma tarefa de workflow que falhou e pode correr de novo a partir do seu nó com falha. `GET /api/v2/job/{id}`
+contém a mesma resposta como `relaunchOptions` para uma tarefa que terminou, `null` para um utilizador que não a pode relançar.

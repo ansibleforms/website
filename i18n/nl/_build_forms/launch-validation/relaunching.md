@@ -3,7 +3,7 @@ layout: default
 title: Opnieuw starten
 parent: Launch-validatie
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Opnieuw starten
@@ -51,6 +51,10 @@ Eén uitzondering onder `enforce`: een job die door een planning op adminniveau 
 speelt de opgeslagen extravars van de planning opnieuw af, voor een admin of een gebruiker met de roloptie `allowScheduledJobs`.
 
 Een gecontroleerde herstart (zie [Log en enforce](log-and-enforce.html)) start een nieuwe job op naam van de aanroeper.
+
+Vanaf 7.8.0 wordt een herstart [op de mislukte hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) of
+[vanaf het mislukte knooppunt](../jobs/actions.html#relaunch-from-the-failed-node) gecontroleerd als de soort die hij is, zoals hij draaide of met
+wijzigingen. De server voegt de hosts, of de over te nemen knooppunten, na de controle toe.
 
 ---
 

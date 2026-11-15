@@ -51,6 +51,10 @@ replays the schedule's stored extravars, for an admin or a user with the `allowS
 
 A checked relaunch (see [Log and enforce](log-and-enforce.html)) starts a new job under the caller's name.
 
+From 7.8.0 a relaunch [on the failed hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) or
+[from the failed node](../jobs/actions.html#relaunch-from-the-failed-node) is checked as the kind it is, as it ran or with changes. The
+server adds the hosts, or the nodes to carry over, after the check.
+
 ---
 
 ## Password fields

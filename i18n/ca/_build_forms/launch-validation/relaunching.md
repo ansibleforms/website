@@ -3,7 +3,7 @@ layout: default
 title: Rellançament
 parent: Validació del llançament
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Rellançament
@@ -51,6 +51,10 @@ Una excepció amb `enforce`: una tasca llançada per una programació de nivell 
 reprodueix les extravars desades de la programació, per a un administrador o per a un usuari amb l'opció de rol `allowScheduledJobs`.
 
 Un rellançament comprovat (vegeu [Registrar i aplicar](log-and-enforce.html)) inicia una tasca nova a nom de qui fa la crida.
+
+A partir de la 7.8.0 un rellançament [en els hosts fallits](../jobs/actions.html#relaunch-on-the-failed-hosts) o
+[des del node fallit](../jobs/actions.html#relaunch-from-the-failed-node) es comprova segons el seu tipus, tal com es va executar o amb canvis. El
+servidor afegeix els hosts, o els nodes per conservar, després de la comprovació.
 
 ---
 

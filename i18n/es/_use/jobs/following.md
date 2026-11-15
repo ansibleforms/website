@@ -3,7 +3,7 @@ layout: default
 title: Seguir un trabajo
 parent: Trabajos
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Seguir un trabajo
@@ -132,6 +132,19 @@ Desde 7.3.0 el grafo de un workflow en ejecución se desplaza para mantener a la
 Si desplazas el grafo, se queda donde lo dejas, con un botón **Seguir el nodo en curso** para volver a seguirlo. Al pasar el ratón sobre un nodo
 se muestra su tarjeta con el nombre completo y se resaltan el nodo y sus enlaces, con el resto del grafo atenuado. El grafo tiene los botones **Ajustar a la
 pantalla** y **Pantalla completa**, y bajo un formulario tras **Enviar** un clic en un nodo abre su salida como en la página del trabajo.
+
+Un nodo conservado por un [relanzamiento desde el nodo fallido](../workflows/running.html#relaunch-from-the-failed-node) aparece atenuado, con
+*de la ejecución anterior* como estado: no ejecutó ningún trabajo en esta ejecución, así que no tiene salida que abrir.
+
+Desde 7.8.0 un trabajo de workflow de Ascender también muestra lo que Ascender añade a sus nodos
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Nodo de Ascender | En el grafo | En la salida |
+|---|---|---|
+| Un nodo con reintentos | `↻ 1/3` tras su estado: los reintentos que hizo, de los que puede hacer | Un bloque por intento, cada uno con `intento 2 de 3` en su encabezado |
+| Un intento fallido con un reintento pendiente | **retrying**, no fallido, mientras el reintento está pendiente | El bloque del intento fallido |
+| Un nodo conservado por un relanzamiento | Atenuado, *de la ejecución anterior* | Un encabezado `carried over`, con *de la ejecución anterior* en su cabecera |
+| Un nodo forzado como correcto | *éxito forzado*, y `Forzado: <reason>` en su tarjeta al pasar el ratón | |
 
 ---
 

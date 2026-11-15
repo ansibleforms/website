@@ -3,7 +3,7 @@ layout: default
 title: Seguir una tasca
 parent: Tasques
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Seguir una tasca
@@ -132,6 +132,19 @@ A partir de la 7.3.0, el graf d'un workflow en execució es desplaça per manten
 Si allunyes el graf, es queda on l'has deixat, amb un botó **Segueix el node en curs** per tornar-lo a seguir. En passar el ratolí per sobre d'un node
 es mostra la seva targeta amb el nom sencer i es destaquen el node i els seus enllaços, amb la resta del graf atenuada. El graf té els botons **Ajusta a la
 pantalla** i **Pantalla completa**, i sota un formulari després d'**Envia**, un clic en un node n'obre la sortida com a la pàgina de la tasca.
+
+Un node conservat per un [rellançament des del node fallit](../workflows/running.html#relaunch-from-the-failed-node) apareix atenuat, amb
+*de l'execució anterior* com a estat: no ha executat cap tasca en aquesta execució, de manera que no té sortida per obrir.
+
+A partir de la 7.8.0 una tasca de workflow d'Ascender també mostra el que Ascender afegeix als seus nodes
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Node d'Ascender | Al graf | A la sortida |
+|---|---|---|
+| Un node amb reintents | `↻ 1/3` després del seu estat: els reintents que ha fet, dels que pot fer | Un bloc per intent, cadascun amb `intent 2 de 3` a l'encapçalament |
+| Un intent fallit amb un reintent pendent | **retrying**, no fallit, mentre el reintent està pendent | El bloc de l'intent fallit |
+| Un node conservat per un rellançament | Atenuat, *de l'execució anterior* | Un encapçalament `carried over`, amb *de l'execució anterior* a la capçalera |
+| Un node forçat com a correcte | *èxit forçat*, i `Forçat: <reason>` a la seva targeta en passar-hi el ratolí | |
 
 ---
 

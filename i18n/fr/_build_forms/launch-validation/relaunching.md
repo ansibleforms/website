@@ -3,7 +3,7 @@ layout: default
 title: Relancer
 parent: Validation au lancement
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Relancer
@@ -51,6 +51,10 @@ Une exception avec `enforce` : un job lancé par une planification de niveau adm
 rejoue donc les extravars stockées de la planification, pour un admin ou un utilisateur disposant de l'option de rôle `allowScheduledJobs`.
 
 Une relance vérifiée (voir [Log et enforce](log-and-enforce.html)) démarre un nouveau job au nom de l'appelant.
+
+Depuis la 7.8.0, une relance [sur les hôtes en échec](../jobs/actions.html#relaunch-on-the-failed-hosts) ou
+[depuis le nœud en échec](../jobs/actions.html#relaunch-from-the-failed-node) est vérifiée selon son type, à l'identique ou avec des
+modifications. Le serveur ajoute les hôtes, ou les nœuds à reprendre, après la vérification.
 
 ---
 

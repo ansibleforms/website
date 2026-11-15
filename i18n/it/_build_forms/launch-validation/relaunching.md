@@ -3,7 +3,7 @@ layout: default
 title: Rilancio
 parent: Validazione all'avvio
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Rilancio
@@ -51,6 +51,10 @@ Un'eccezione con `enforce`: un job avviato da una pianificazione di livello admi
 riproduce le extravars salvate della pianificazione, per un amministratore o per un utente con l'opzione di ruolo `allowScheduledJobs`.
 
 Un rilancio controllato (vedi [Log ed enforce](log-and-enforce.html)) avvia un nuovo job a nome del chiamante.
+
+Dalla 7.8.0 un rilancio [sugli host falliti](../jobs/actions.html#relaunch-on-the-failed-hosts) o
+[dal nodo fallito](../jobs/actions.html#relaunch-from-the-failed-node) viene controllato secondo il suo tipo, così com'era stato eseguito o
+con modifiche. Il server aggiunge gli host, o i nodi da riprendere, dopo il controllo.
 
 ---
 

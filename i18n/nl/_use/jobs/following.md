@@ -3,7 +3,7 @@ layout: default
 title: Een job volgen
 parent: Jobs
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Een job volgen
@@ -132,6 +132,19 @@ Vanaf 7.3.0 schuift de graaf van een lopende workflow mee om het lopende knooppu
 Scrol je de graaf weg, dan blijft hij waar je hem neerzet, met een knop **Lopende node volgen** om weer te volgen. Beweeg je over een knooppunt,
 dan verschijnt zijn kaart met de volledige naam en komen het knooppunt en zijn koppelingen op de voorgrond, met de rest van de graaf vervaagd. De graaf heeft de knoppen **Aanpassen
 aan scherm** en **Volledig scherm**, en onder een formulier na **Verzenden** opent een klik op een knooppunt de uitvoer ervan, net als op de pagina van de job.
+
+Een knooppunt dat een [herstart vanaf het mislukte knooppunt](../workflows/running.html#relaunch-from-the-failed-node) heeft overgenomen, is grijs, met
+*uit de vorige run* als status: het voerde in deze run geen job uit, dus het heeft geen uitvoer om te openen.
+
+Vanaf 7.8.0 toont een Ascender-workflowjob ook wat Ascender aan zijn knooppunten toevoegt
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Ascender-knooppunt | In de graaf | In de uitvoer |
+|---|---|---|
+| Een knooppunt met herhalingen | `↻ 1/3` na zijn status: de herhalingen die het deed, van de herhalingen die het mag doen | Een blok per poging, elk met `poging 2 van 3` in de kop |
+| Een mislukte poging met nog een herhaling te gaan | **retrying**, niet mislukt, zolang de herhaling openstaat | Het blok van de mislukte poging |
+| Een knooppunt overgenomen door een herstart | Grijs, *uit de vorige run* | Een banner `carried over`, met *uit de vorige run* in de kop |
+| Een knooppunt dat als geslaagd is geforceerd | *geforceerd geslaagd*, en `Geforceerd: <reason>` op zijn kaart bij hover | |
 
 ---
 

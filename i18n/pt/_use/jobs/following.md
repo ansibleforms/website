@@ -3,7 +3,7 @@ layout: default
 title: Acompanhar uma tarefa
 parent: Tarefas
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Acompanhar uma tarefa
@@ -132,6 +132,19 @@ A partir da 7.3.0, o grafo de um workflow em execução desliza para manter à v
 Desloque o grafo para outro lado e ele fica onde o deixou, com um botão **Seguir o nó em execução** para o voltar a seguir. Passar o rato sobre um nó
 mostra o seu cartão com o nome completo e coloca em foco o nó e as suas ligações, com o resto do grafo esbatido. O grafo tem os botões **Ajustar ao
 ecrã** e **Ecrã inteiro**, e por baixo de um formulário depois de **Submeter** um clique num nó abre o seu resultado tal como na página da tarefa.
+
+Um nó mantido por um [relançamento a partir do nó com falha](../workflows/running.html#relaunch-from-the-failed-node) aparece a cinzento, com
+*da execução anterior* como estado: não correu nenhuma tarefa nesta execução, por isso não tem resultado para abrir.
+
+A partir da 7.8.0, uma tarefa de workflow do Ascender mostra também o que o Ascender acrescenta aos seus nós
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Nó do Ascender | No grafo | No resultado |
+|---|---|---|
+| Um nó com novas tentativas | `↻ 1/3` depois do estado: as novas tentativas feitas, das que pode fazer | Um bloco por tentativa, cada um com `tentativa 2 de 3` no cabeçalho |
+| Uma tentativa falhada com nova tentativa por vir | **retrying**, não falhado, enquanto a nova tentativa está pendente | O bloco da tentativa falhada |
+| Um nó mantido por um relançamento | A cinzento, *da execução anterior* | Um banner `carried over`, com *da execução anterior* no cabeçalho |
+| Um nó forçado como bem-sucedido | *sucesso forçado*, e `Forçado: <motivo>` no seu cartão ao passar o rato | |
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Jobs
 parent: REST API
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Jobs
@@ -139,6 +139,7 @@ Deze endpoints lezen meer van één job:
 | `GET /api/v2/job/{id}/events` | De gestructureerde events van een playbookjob (vanaf 7.3.0, voor een playbook op een RTE van 7.3.0 of later): elke play, taak, hostresultaat en de recap, met hun `order`, `type`, `play`, `task`, `host`, `duration` en `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Een van die events met zijn volledige `result`, zoals het venster **Resultaat van de taak** het toont; `400` als `order` geen geheel getal is, `404` als de job zo'n event niet heeft |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Eén node van een workflowjob: `{ "node", "job", "extravars", "artifacts" }`, waarbij `job` het ID is van de eigen job van de node, of `null` als de node niet is uitgevoerd. |
+| `GET /api/v2/job/{id}/relaunch-options` | Vanaf 7.8.0, wat een herstart naast de volledige kan zijn: `{ "failedHosts", "fromFailedNode" }` (zie hieronder); `403` voor een gebruiker die de job niet mag herstarten |
 
 ---
 
@@ -163,3 +164,31 @@ Afbreken, goedkeuren, afwijzen en verwijderen antwoorden met een bericht, en opn
 
 Voeg `?verbose=true` toe aan het opnieuw starten om de nieuwe job in verbose-modus te draaien, met de rol-optie `allowVerboseMode`. Een job die
 in de verkeerde toestand is voor de actie, bijvoorbeeld bij het afbreken van een job die al is geëindigd, antwoordt `409`.
+
+### Een deel van een job herstarten
+
+Vanaf 7.8.0 kan de body van een herstart om een deel van de job vragen, met een van twee flags, nooit beide:
+
+| Body | De nieuwe job |
+|---|---|
+| `{ "failedHostsOnly": true }` | Draait alleen op de hosts waarop de job mislukte, zoals **Op mislukte hosts** (zie [Herstarten op de mislukte hosts](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Herstart een mislukte workflowjob vanaf zijn mislukte node (zie [Herstarten vanaf het mislukte knooppunt](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Elke flag werkt met of zonder `values`. Een herstart op de mislukte hosts antwoordt ook met de hosts:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Een job zonder mislukte hosts om te herstarten, of een die niet vanaf zijn mislukte node kan worden herstart, antwoordt `400` met de reden. Beide flags
+samen antwoorden ook `400`.
+
+Om vooraf te weten welke flag een job aanneemt, antwoordt `GET /api/v2/job/{id}/relaunch-options` zoals de pagina van de job het leest:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` is `null` als de job geen herstart op zijn mislukte hosts biedt, ook als hij op elke host mislukte, en `fromFailedNode` is `true` voor
+een mislukte workflowjob die opnieuw kan draaien vanaf zijn mislukte node. `GET /api/v2/job/{id}` bevat hetzelfde antwoord als `relaunchOptions` voor
+een geëindigde job, `null` voor een gebruiker die hem niet mag herstarten.

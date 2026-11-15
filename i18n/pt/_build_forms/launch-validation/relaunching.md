@@ -3,7 +3,7 @@ layout: default
 title: Relançar
 parent: Validação no lançamento
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Relançar
@@ -51,6 +51,10 @@ Uma exceção com `enforce`: uma tarefa lançada por um agendamento de nível de
 repete as extravars guardadas do agendamento, para um administrador ou para um utilizador com a opção de função `allowScheduledJobs`.
 
 Um relançamento verificado (ver [Registar e impor](log-and-enforce.html)) inicia uma nova tarefa em nome de quem chama.
+
+A partir da 7.8.0, um relançamento [nos hosts com falha](../jobs/actions.html#relaunch-on-the-failed-hosts) ou
+[a partir do nó com falha](../jobs/actions.html#relaunch-from-the-failed-node) é verificado como o tipo que é, tal como correu ou com
+alterações. O servidor acrescenta os hosts, ou os nós a manter, depois da verificação.
 
 ---
 

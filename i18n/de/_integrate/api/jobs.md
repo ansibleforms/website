@@ -3,7 +3,7 @@ layout: default
 title: Jobs
 parent: REST-API
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # Jobs
@@ -139,6 +139,7 @@ Diese Endpunkte lesen mehr von einem Job:
 | `GET /api/v2/job/{id}/events` | Die strukturierten Ereignisse eines Playbook-Jobs (ab 7.3.0, für ein Playbook auf einer RTE ab 7.3.0): jedes Play, jeder Task, jedes Host-Ergebnis und die Zusammenfassung, mit ihren `order`, `type`, `play`, `task`, `host`, `duration` und `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Eines dieser Ereignisse mit seinem ganzen `result`, wie der Dialog **Ergebnis der Aufgabe** es zeigt; `400`, wenn `order` keine ganze Zahl ist, `404`, wenn der Job kein solches Ereignis hat |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Ein Knoten eines Workflow-Jobs: `{ "node", "job", "extravars", "artifacts" }`, wobei `job` die ID des eigenen Jobs des Knotens ist, oder `null`, wenn der Knoten nicht lief. |
+| `GET /api/v2/job/{id}/relaunch-options` | Ab 7.8.0, was ein Neustart neben dem vollständigen sein kann: `{ "failedHosts", "fromFailedNode" }` (siehe unten); `403` für einen Benutzer, der den Job nicht neu starten darf |
 
 ---
 
@@ -163,3 +164,31 @@ Abbrechen, Genehmigen, Ablehnen und Löschen antworten mit einer Meldung, ein er
 
 Fügen Sie einem erneuten Start `?verbose=true` hinzu, um den neuen Job im ausführlichen Modus laufen zu lassen, mit der Rollenoption `allowVerboseMode`. Ein Job, der
 sich im falschen Zustand für die Aktion befindet, zum Beispiel beim Abbrechen eines bereits beendeten Jobs, antwortet `409`.
+
+### Einen Teil eines Jobs neu starten
+
+Ab 7.8.0 kann der Body eines Neustarts nur einen Teil des Jobs verlangen, mit einem von zwei Flags, nie beiden:
+
+| Body | Der neue Job |
+|---|---|
+| `{ "failedHostsOnly": true }` | Läuft nur auf den Hosts, auf denen der Job fehlschlug, wie **Auf fehlgeschlagenen Hosts** (siehe [Auf den fehlgeschlagenen Hosts neu starten](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Startet einen fehlgeschlagenen Workflow-Job ab seinem fehlgeschlagenen Knoten neu (siehe [Ab dem fehlgeschlagenen Knoten neu starten](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Jedes Flag geht mit oder ohne `values`. Ein Neustart auf den fehlgeschlagenen Hosts antwortet auch mit den Hosts:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+Ein Job ohne fehlgeschlagene Hosts zum Neustarten, oder einer, der nicht ab seinem fehlgeschlagenen Knoten neu gestartet werden kann, antwortet `400` mit dem
+Grund. Beide Flags zusammen antworten ebenfalls `400`.
+
+Um vorher zu wissen, welches Flag ein Job annimmt, antwortet `GET /api/v2/job/{id}/relaunch-options` so, wie die Seite des Jobs es liest:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` ist `null`, wenn der Job keinen Neustart auf seinen fehlgeschlagenen Hosts bietet, auch wenn er auf jedem Host fehlschlug, und `fromFailedNode`
+ist `true` für einen fehlgeschlagenen Workflow-Job, der ab seinem fehlgeschlagenen Knoten erneut laufen kann. `GET /api/v2/job/{id}` enthält dieselbe Antwort
+als `relaunchOptions` für einen beendeten Job, `null` für einen Benutzer, der ihn nicht neu starten darf.
