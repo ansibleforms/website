@@ -136,7 +136,7 @@ pantalla** y **Pantalla completa**, y bajo un formulario tras **Enviar** un clic
 Un nodo conservado por un [relanzamiento desde el nodo fallido](../workflows/running.html#relaunch-from-the-failed-node) aparece atenuado, con
 *de la ejecución anterior* como estado: no ejecutó ningún trabajo en esta ejecución, así que no tiene salida que abrir.
 
-Desde 7.8.0 un trabajo de workflow de Ascender también muestra lo que Ascender añade a sus nodos
+Desde 7.7.0 un trabajo de workflow de Ascender también muestra lo que Ascender añade a sus nodos
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Nodo de Ascender | En el grafo | En la salida |

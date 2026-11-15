@@ -136,7 +136,7 @@ Bildschirm anpassen** und **Vollbild**, und unter einem Formular nach **Senden**
 Ein Knoten, den ein [Neustart ab dem fehlgeschlagenen Knoten](../workflows/running.html#relaunch-from-the-failed-node) übernommen hat, ist ausgegraut, mit
 *aus dem vorherigen Lauf* als Status: Er hat in diesem Lauf keinen Job ausgeführt und daher keine Ausgabe zum Öffnen.
 
-Ab 7.8.0 zeigt ein Ascender-Workflow-Job auch, was Ascender seinen Knoten hinzufügt
+Ab 7.7.0 zeigt ein Ascender-Workflow-Job auch, was Ascender seinen Knoten hinzufügt
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Ascender-Knoten | Im Graph | In der Ausgabe |

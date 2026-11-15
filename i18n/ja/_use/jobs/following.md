@@ -136,7 +136,7 @@ Jenkins のジョブにはアーティファクトがないため、表示され
 [失敗したノードからの再起動](../workflows/running.html#relaunch-from-the-failed-node) で引き継がれたノードは、ステータスが *前回の実行から* となり、
 グレー表示されます。この実行ではジョブを実行していないので、開く出力はありません。
 
-7.8.0 以降、Ascender のワークフロージョブには、Ascender がノードに加える情報も表示されます
+7.7.0 以降、Ascender のワークフロージョブには、Ascender がノードに加える情報も表示されます
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082))。
 
 | Ascender のノード | グラフ上 | 出力内 |

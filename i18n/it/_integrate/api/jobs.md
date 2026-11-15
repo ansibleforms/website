@@ -139,7 +139,7 @@ Questi endpoint leggono altre informazioni su un job:
 | `GET /api/v2/job/{id}/events` | Gli eventi strutturati di un job playbook (dalla 7.3.0, per un playbook su un RTE 7.3.0 o successivo): ogni play, task, risultato per host e il recap, con il loro `order`, `type`, `play`, `task`, `host`, `duration` e `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Uno di questi eventi con il suo `result` completo, come lo mostra la finestra **Risultato del task**; `400` quando `order` non è un numero intero, `404` quando il job non ha un evento del genere |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un nodo di un job workflow: `{ "node", "job", "extravars", "artifacts" }`, dove `job` è l'ID del job del nodo, o `null` quando il nodo non è stato eseguito. |
-| `GET /api/v2/job/{id}/relaunch-options` | Dalla 7.8.0, ciò che un rilancio può essere oltre a quello completo: `{ "failedHosts", "fromFailedNode" }` (vedi sotto); `403` per un utente che non può rilanciare il job |
+| `GET /api/v2/job/{id}/relaunch-options` | Dalla 7.7.0, ciò che un rilancio può essere oltre a quello completo: `{ "failedHosts", "fromFailedNode" }` (vedi sotto); `403` per un utente che non può rilanciare il job |
 
 ---
 
@@ -167,7 +167,7 @@ Aggiungi `?verbose=true` a un rilancio per eseguire il nuovo job in modalità ve
 
 ### Rilanciare una parte di un job
 
-Dalla 7.8.0 il body di un rilancio può chiedere solo una parte del job, con uno di due flag, mai entrambi:
+Dalla 7.7.0 il body di un rilancio può chiedere solo una parte del job, con uno di due flag, mai entrambi:
 
 | Body | Il nuovo job |
 |---|---|

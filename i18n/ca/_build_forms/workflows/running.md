@@ -106,7 +106,7 @@ estigui esperant es cancel·la. Una tasca de workflow que espera una aprovació 
 
 ## Rellançar des del node fallit
 
-A partir de la 7.8.0 una tasca de workflow fallida es pot rellançar des del seu node fallit, conservant els nodes que han acabat bé.
+A partir de la 7.7.0 una tasca de workflow fallida es pot rellançar des del seu node fallit, conservant els nodes que han acabat bé.
 
 **Rellança la tasca** a la pàgina de la tasca té llavors un desplegable amb **Des del primer node**, el rellançament complet, i **Des del
 node fallit**. La tasca nova passa per la mateixa aprovació, validació de llançament i permisos que qualsevol [rellançament](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Una tasca de workflow d'AnsibleForms ofereix **Des del node fallit** només quan
 | Condició | Per què |
 |---|---|
 | La tasca ha fallat, amb un node que ha fallat i un altre que ha acabat bé | Sense cap node per conservar, és el rellançament complet |
-| La tasca s'ha executat a la 7.8.0 o posterior | A partir de la 7.8.0 una tasca de workflow desa cada node tal com ha acabat, amb el que ha passat |
+| La tasca s'ha executat a la 7.7.0 o posterior | A partir de la 7.7.0 una tasca de workflow desa cada node tal com ha acabat, amb el que ha passat |
 | El workflow és el mateix que quan es va executar la tasca | La tasca en desa un hash: un node, enllaç, extra var o nom canviat ofereix només el rellançament complet |
 
 Una tasca de workflow que s'ha executat a Ascender fa servir el rellançament dels nodes fallits propi d'Ascender, que conserva igualment els nodes

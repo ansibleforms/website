@@ -139,7 +139,7 @@ Estes endpoints leem mais informação de uma tarefa:
 | `GET /api/v2/job/{id}/events` | Os eventos estruturados de uma tarefa de playbook (a partir da 7.3.0, para um playbook num RTE da 7.3.0 ou posterior): cada play, tarefa, resultado por host e o recap, com o seu `order`, `type`, `play`, `task`, `host`, `duration` e `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Um desses eventos com o seu `result` completo, tal como a janela **Resultado da tarefa** o mostra; `400` quando `order` não é um número inteiro, `404` quando a tarefa não tem esse evento |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Um nó de uma tarefa de workflow: `{ "node", "job", "extravars", "artifacts" }`, em que `job` é o ID da tarefa própria do nó, ou `null` quando o nó não foi executado. |
-| `GET /api/v2/job/{id}/relaunch-options` | A partir da 7.8.0, o que um relançamento pode ser além do completo: `{ "failedHosts", "fromFailedNode" }` (ver abaixo); `403` para um utilizador que não pode relançar a tarefa |
+| `GET /api/v2/job/{id}/relaunch-options` | A partir da 7.7.0, o que um relançamento pode ser além do completo: `{ "failedHosts", "fromFailedNode" }` (ver abaixo); `403` para um utilizador que não pode relançar a tarefa |
 
 ---
 
@@ -167,7 +167,7 @@ esteja no estado errado para a ação, por exemplo abortar uma tarefa que já te
 
 ### Relançar parte de uma tarefa
 
-A partir da 7.8.0, o corpo de um relançamento pode pedir só parte da tarefa, com uma de duas flags, nunca as duas:
+A partir da 7.7.0, o corpo de um relançamento pode pedir só parte da tarefa, com uma de duas flags, nunca as duas:
 
 | Corpo | A nova tarefa |
 |---|---|

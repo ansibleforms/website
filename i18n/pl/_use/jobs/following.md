@@ -136,7 +136,7 @@ ekranu** i **Pełny ekran**, a pod formularzem po **Wyślij** kliknięcie węzł
 Węzeł przeniesiony przez [ponowne uruchomienie od nieudanego węzła](../workflows/running.html#relaunch-from-the-failed-node) jest wyszarzony, ze stanem
 *z poprzedniego uruchomienia*: w tym przebiegu nie uruchomił żadnego zadania, więc nie ma wyniku do otwarcia.
 
-Od wersji 7.8.0 zadanie workflow Ascender pokazuje też to, co Ascender dodaje do swoich węzłów
+Od wersji 7.7.0 zadanie workflow Ascender pokazuje też to, co Ascender dodaje do swoich węzłów
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Węzeł Ascender | Na grafie | W wyniku |

@@ -139,7 +139,7 @@ Ces endpoints lisent davantage d'informations sur un job :
 | `GET /api/v2/job/{id}/events` | Les événements structurés d'un job de playbook (depuis la 7.3.0, pour un playbook sur un RTE 7.3.0 ou ultérieur) : chaque play, tâche, résultat d'hôte et le récapitulatif, avec leurs `order`, `type`, `play`, `task`, `host`, `duration` et `time` |
 | `GET /api/v2/job/{id}/events/{order}` | L'un de ces événements avec son `result` complet, tel que l'affiche la boîte de dialogue **Résultat de la tâche** ; `400` quand `order` n'est pas un nombre entier, `404` quand le job n'a pas cet événement |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un nœud d'un job de workflow : `{ "node", "job", "extravars", "artifacts" }`, où `job` est l'ID du job propre au nœud, ou `null` quand le nœud ne s'est pas exécuté. |
-| `GET /api/v2/job/{id}/relaunch-options` | Depuis la 7.8.0, ce qu'une relance peut être en plus de la complète : `{ "failedHosts", "fromFailedNode" }` (voir ci-dessous) ; `403` pour un utilisateur qui ne peut pas relancer le job |
+| `GET /api/v2/job/{id}/relaunch-options` | Depuis la 7.7.0, ce qu'une relance peut être en plus de la complète : `{ "failedHosts", "fromFailedNode" }` (voir ci-dessous) ; `403` pour un utilisateur qui ne peut pas relancer le job |
 
 ---
 
@@ -167,7 +167,7 @@ n'est pas dans le bon état pour l'action, par exemple l'interruption d'un job d
 
 ### Relancer une partie d'un job
 
-Depuis la 7.8.0, le corps d'une relance peut ne demander qu'une partie du job, avec l'un de deux indicateurs, jamais les deux :
+Depuis la 7.7.0, le corps d'une relance peut ne demander qu'une partie du job, avec l'un de deux indicateurs, jamais les deux :
 
 | Corps | Le nouveau job |
 |---|---|

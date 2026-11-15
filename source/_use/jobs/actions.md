@@ -140,7 +140,7 @@ password field may refuse it, is described in [Relaunching](../launch-validation
 
 ### Relaunch on the failed hosts
 
-From 7.8.0 a job that failed on some of its hosts can run again on those hosts only, leaving the others alone.
+From 7.7.0 a job that failed on some of its hosts can run again on those hosts only, leaving the others alone.
 
 The caret of **Relaunch job** then offers **On all hosts**, the full relaunch, and **On failed hosts (N)**, with N the hosts that failed a
 task or could not be reached. It is offered on an ended job of these kinds:
@@ -168,7 +168,7 @@ with a comma or a colon stays one host.
 
 ### Relaunch from the failed node
 
-From 7.8.0 a failed workflow job can run again from the node that failed, keeping what the nodes before it did.
+From 7.7.0 a failed workflow job can run again from the node that failed, keeping what the nodes before it did.
 
 The caret of **Relaunch job** then offers **From the first node**, the full relaunch, and **From the failed node**. Which workflow jobs
 offer it:

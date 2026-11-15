@@ -105,7 +105,7 @@ waits on is canceled. A workflow job waiting on an approval can be aborted too.
 
 ## Relaunch from the failed node
 
-From 7.8.0 a failed workflow job can be relaunched from its failed node, with the nodes that succeeded carried over.
+From 7.7.0 a failed workflow job can be relaunched from its failed node, with the nodes that succeeded carried over.
 
 **Relaunch job** on the job's page then has a caret with **From the first node**, the full relaunch, and **From the failed node**. The
 new job goes through the same approval, launch validation and permissions as any [relaunch](../jobs/actions.html#relaunch-a-job):
@@ -122,7 +122,7 @@ An AnsibleForms workflow job offers **From the failed node** only when each of t
 | Condition | Why |
 |---|---|
 | The job failed, with a node that failed and one that succeeded | Without a node to carry over, it is the full relaunch |
-| The job ran on 7.8.0 or later | From 7.8.0 a workflow job keeps each node as it ended, with what it passed on |
+| The job ran on 7.7.0 or later | From 7.7.0 a workflow job keeps each node as it ended, with what it passed on |
 | The workflow is the same as when the job ran | The job keeps a hash of it: a changed node, link, extra var or name offers the full relaunch only |
 
 A workflow job that ran on Ascender uses Ascender's own relaunch of its failed nodes, which carries the nodes that succeeded over in the same

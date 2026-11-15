@@ -106,7 +106,7 @@ esteja à espera é cancelada. Uma tarefa de workflow à espera de uma aprovaç�
 
 ## Relançar a partir do nó com falha
 
-A partir da 7.8.0, uma tarefa de workflow que falhou pode ser relançada a partir do seu nó com falha, mantendo os nós que tiveram sucesso.
+A partir da 7.7.0, uma tarefa de workflow que falhou pode ser relançada a partir do seu nó com falha, mantendo os nós que tiveram sucesso.
 
 **Relançar tarefa** na página da tarefa tem então uma seta com **A partir do primeiro nó**, o relançamento completo, e **A partir do nó com falha**.
 A nova tarefa passa pela mesma aprovação, validação no lançamento e permissões que qualquer [relançamento](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Uma tarefa de workflow do AnsibleForms só oferece **A partir do nó com falha**
 | Condição | Porquê |
 |---|---|
 | A tarefa falhou, com um nó que falhou e outro que teve sucesso | Sem um nó a manter, é o relançamento completo |
-| A tarefa correu na 7.8.0 ou posterior | A partir da 7.8.0 uma tarefa de workflow guarda cada nó como terminou, com o que passou adiante |
+| A tarefa correu na 7.7.0 ou posterior | A partir da 7.7.0 uma tarefa de workflow guarda cada nó como terminou, com o que passou adiante |
 | O workflow é o mesmo de quando a tarefa correu | A tarefa guarda um hash dele: um nó, ligação, extra var ou nome alterado oferece só o relançamento completo |
 
 Uma tarefa de workflow que correu no Ascender usa o relançamento dos nós com falha do próprio Ascender, que mantém da mesma forma os nós que

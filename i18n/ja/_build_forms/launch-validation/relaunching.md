@@ -52,7 +52,7 @@ curl -X POST https://af.example.com/api/v2/job/42/relaunch \
 
 チェックされた再起動 ( [log と enforce](log-and-enforce.html) を参照) は、呼び出し元の名前で新しいジョブを開始します。
 
-7.8.0 以降、 [失敗したホストで](../jobs/actions.html#relaunch-on-the-failed-hosts) または
+7.7.0 以降、 [失敗したホストで](../jobs/actions.html#relaunch-on-the-failed-hosts) または
 [失敗したノードから](../jobs/actions.html#relaunch-from-the-failed-node) の再起動は、その種類 (実行時のまま、または変更あり) としてチェックされます。
 サーバーは、チェックの後にホスト、または引き継ぐノードを追加します。
 

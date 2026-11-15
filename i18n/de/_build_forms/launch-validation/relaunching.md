@@ -52,7 +52,7 @@ die gespeicherten Extravars des Zeitplans, für einen Admin oder einen Benutzer 
 
 Ein geprüfter Neustart (siehe [Log und Enforce](log-and-enforce.html)) startet einen neuen Job unter dem Namen des Aufrufers.
 
-Ab 7.8.0 wird ein Neustart [auf den fehlgeschlagenen Hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) oder
+Ab 7.7.0 wird ein Neustart [auf den fehlgeschlagenen Hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) oder
 [ab dem fehlgeschlagenen Knoten](../jobs/actions.html#relaunch-from-the-failed-node) als die Art geprüft, die er ist, wie gelaufen oder mit Änderungen. Der
 Server fügt die Hosts oder die zu übernehmenden Knoten nach der Prüfung hinzu.
 

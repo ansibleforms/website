@@ -139,7 +139,7 @@ Te endpointy odczytują więcej informacji o jednym zadaniu:
 | `GET /api/v2/job/{id}/events` | Ustrukturyzowane zdarzenia zadania playbooka (od wersji 7.3.0, dla playbooka na RTE w wersji 7.3.0 lub nowszej): każdy play, task, wynik hosta i podsumowanie (recap), z ich `order`, `type`, `play`, `task`, `host`, `duration` i `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Jedno z tych zdarzeń z całym jego `result`, tak jak pokazuje je okno **Wynik zadania**; `400`, gdy `order` nie jest liczbą całkowitą, `404`, gdy zadanie nie ma takiego zdarzenia |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Jeden węzeł zadania workflow: `{ "node", "job", "extravars", "artifacts" }`, gdzie `job` to ID własnego zadania węzła albo `null`, gdy węzeł się nie uruchomił. |
-| `GET /api/v2/job/{id}/relaunch-options` | Od wersji 7.8.0: czym może być ponowne uruchomienie poza pełnym: `{ "failedHosts", "fromFailedNode" }` (zobacz niżej); `403` dla użytkownika, który nie może ponownie uruchomić zadania |
+| `GET /api/v2/job/{id}/relaunch-options` | Od wersji 7.7.0: czym może być ponowne uruchomienie poza pełnym: `{ "failedHosts", "fromFailedNode" }` (zobacz niżej); `403` dla użytkownika, który nie może ponownie uruchomić zadania |
 
 ---
 
@@ -167,7 +167,7 @@ jest w niewłaściwym stanie dla danej akcji, na przykład przerwanie zadania, k
 
 ### Ponowne uruchomienie części zadania
 
-Od wersji 7.8.0 treść ponownego uruchomienia może prosić tylko o część zadania, jedną z dwóch flag, nigdy obiema:
+Od wersji 7.7.0 treść ponownego uruchomienia może prosić tylko o część zadania, jedną z dwóch flag, nigdy obiema:
 
 | Treść | Nowe zadanie |
 |---|---|

@@ -106,7 +106,7 @@ la aprobación que esté esperando. Un trabajo de workflow que espera una aproba
 
 ## Relanzar desde el nodo fallido
 
-Desde 7.8.0 un trabajo de workflow fallido se puede relanzar desde su nodo fallido, conservando los nodos que terminaron bien.
+Desde 7.7.0 un trabajo de workflow fallido se puede relanzar desde su nodo fallido, conservando los nodos que terminaron bien.
 
 **Relanzar trabajo** en la página del trabajo tiene entonces un desplegable con **Desde el primer nodo**, el relanzamiento completo, y **Desde el
 nodo fallido**. El trabajo nuevo pasa por la misma aprobación, validación de lanzamiento y permisos que cualquier [relanzamiento](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Un trabajo de workflow de AnsibleForms ofrece **Desde el nodo fallido** solo cua
 | Condición | Por qué |
 |---|---|
 | El trabajo falló, con un nodo que falló y otro que terminó bien | Sin un nodo que conservar, es el relanzamiento completo |
-| El trabajo se ejecutó en 7.8.0 o posterior | Desde 7.8.0 un trabajo de workflow guarda cada nodo tal como terminó, con lo que pasó |
+| El trabajo se ejecutó en 7.7.0 o posterior | Desde 7.7.0 un trabajo de workflow guarda cada nodo tal como terminó, con lo que pasó |
 | El workflow es el mismo que cuando se ejecutó el trabajo | El trabajo guarda un hash de él: un nodo, enlace, extra var o nombre cambiado ofrece solo el relanzamiento completo |
 
 Un trabajo de workflow que se ejecutó en Ascender usa el propio relanzamiento de los nodos fallidos de Ascender, que conserva igual los nodos que

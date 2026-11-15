@@ -139,7 +139,7 @@ curl "https://af.example.com/api/v2/job?records=20&user=automation" -H "Authoriz
 | `GET /api/v2/job/{id}/events` | playbook 作业的结构化事件（从 7.3.0 起，适用于在 7.3.0 或更高版本 RTE 上运行的 playbook）：每个 play、任务、主机结果和汇总，带有其 `order`、`type`、`play`、`task`、`host`、`duration` 和 `time` |
 | `GET /api/v2/job/{id}/events/{order}` | 其中一个事件及其完整的 `result`，与 **任务结果** 对话框中显示的一致；`order` 不是整数时返回 `400`，作业没有该事件时返回 `404` |
 | `GET /api/v2/job/{id}/node/{nodeId}` | 工作流作业的一个节点：`{ "node", "job", "extravars", "artifacts" }`，其中 `job` 是该节点自身作业的 ID，节点未运行时为 `null`。 |
-| `GET /api/v2/job/{id}/relaunch-options` | 从 7.8.0 起，除完整重新运行外还可以进行的重新运行：`{ "failedHosts", "fromFailedNode" }`（见下文）；对不能重新运行该作业的用户返回 `403` |
+| `GET /api/v2/job/{id}/relaunch-options` | 从 7.7.0 起，除完整重新运行外还可以进行的重新运行：`{ "failedHosts", "fromFailedNode" }`（见下文）；对不能重新运行该作业的用户返回 `403` |
 
 ---
 
@@ -167,7 +167,7 @@ curl "https://af.example.com/api/v2/job?records=20&user=automation" -H "Authoriz
 
 ### 重新运行作业的一部分
 
-从 7.8.0 起，重新运行的请求体可以用两个标志之一只请求作业的一部分，两者不能同时使用：
+从 7.7.0 起，重新运行的请求体可以用两个标志之一只请求作业的一部分，两者不能同时使用：
 
 | 请求体 | 新作业 |
 |---|---|

@@ -138,7 +138,7 @@ These endpoints read more of one job:
 | `GET /api/v2/job/{id}/events` | A playbook job's structured events (from 7.3.0, for a playbook on an RTE of 7.3.0 or later): each play, task, host result and the recap, with their `order`, `type`, `play`, `task`, `host`, `duration` and `time` |
 | `GET /api/v2/job/{id}/events/{order}` | One of those events with its whole `result`, as the **Task result** dialog shows it; `400` when `order` is not a whole number, `404` when the job has no such event |
 | `GET /api/v2/job/{id}/node/{nodeId}` | One node of a workflow job: `{ "node", "job", "extravars", "artifacts" }`, where `job` is the ID of the node's own job, or `null` when the node did not run. |
-| `GET /api/v2/job/{id}/relaunch-options` | From 7.8.0, what a relaunch can be besides the full one: `{ "failedHosts", "fromFailedNode" }` (see below); `403` for a user who may not relaunch the job |
+| `GET /api/v2/job/{id}/relaunch-options` | From 7.7.0, what a relaunch can be besides the full one: `{ "failedHosts", "fromFailedNode" }` (see below); `403` for a user who may not relaunch the job |
 
 ---
 
@@ -166,7 +166,7 @@ is in the wrong state for the action, for example an abort of a job that already
 
 ### Relaunch part of a job
 
-From 7.8.0 the body of a relaunch can ask for part of the job only, with one of two flags, never both:
+From 7.7.0 the body of a relaunch can ask for part of the job only, with one of two flags, never both:
 
 | Body | The new job |
 |---|---|

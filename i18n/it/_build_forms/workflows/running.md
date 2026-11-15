@@ -106,7 +106,7 @@ in attesa viene annullata. Si può interrompere anche un job di workflow in atte
 
 ## Rilanciare dal nodo fallito
 
-Dalla 7.8.0 un job di workflow fallito può essere rilanciato dal suo nodo fallito, con i nodi riusciti ripresi.
+Dalla 7.7.0 un job di workflow fallito può essere rilanciato dal suo nodo fallito, con i nodi riusciti ripresi.
 
 **Rilancia job** nella pagina del job ha allora un caret con **Dal primo nodo**, il rilancio completo, e **Dal nodo fallito**. Il nuovo
 job passa per la stessa approvazione, la stessa validazione al lancio e gli stessi permessi di qualsiasi [rilancio](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Un job di workflow di AnsibleForms offre **Dal nodo fallito** solo quando vale c
 | Condizione | Perché |
 |---|---|
 | Il job è fallito, con un nodo fallito e uno riuscito | Senza un nodo da riprendere, è il rilancio completo |
-| Il job è stato eseguito sulla 7.8.0 o successiva | Dalla 7.8.0 un job di workflow conserva ogni nodo come è terminato, con ciò che ha passato |
+| Il job è stato eseguito sulla 7.7.0 o successiva | Dalla 7.7.0 un job di workflow conserva ogni nodo come è terminato, con ciò che ha passato |
 | Il workflow è lo stesso di quando il job è stato eseguito | Il job ne conserva un hash: un nodo, un collegamento, una extra var o un nome modificato offre solo il rilancio completo |
 
 Un job di workflow eseguito su Ascender usa il rilancio dei nodi falliti di Ascender stesso, che riprende i nodi riusciti allo stesso modo.

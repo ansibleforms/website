@@ -106,7 +106,7 @@ na które czeka, jest anulowane. Zadanie workflow czekające na zatwierdzenie ta
 
 ## Ponowne uruchomienie od nieudanego węzła
 
-Od wersji 7.8.0 zadanie workflow, które się nie powiodło, można uruchomić ponownie od nieudanego węzła, z przeniesieniem węzłów zakończonych sukcesem.
+Od wersji 7.7.0 zadanie workflow, które się nie powiodło, można uruchomić ponownie od nieudanego węzła, z przeniesieniem węzłów zakończonych sukcesem.
 
 **Uruchom zadanie ponownie** na stronie zadania ma wtedy strzałkę z **Od pierwszego węzła**, pełnym ponownym uruchomieniem, i **Od nieudanego węzła**.
 Nowe zadanie przechodzi to samo zatwierdzenie, weryfikację uruchomienia i uprawnienia co każde [ponowne uruchomienie](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Zadanie workflow AnsibleForms oferuje **Od nieudanego węzła** tylko wtedy, gdy
 | Warunek | Dlaczego |
 |---|---|
 | Zadanie nie powiodło się, z węzłem nieudanym i węzłem zakończonym sukcesem | Bez węzła do przeniesienia jest to pełne ponowne uruchomienie |
-| Zadanie działało w wersji 7.8.0 lub nowszej | Od wersji 7.8.0 zadanie workflow zapisuje każdy węzeł tak, jak się zakończył, z tym, co przekazał dalej |
+| Zadanie działało w wersji 7.7.0 lub nowszej | Od wersji 7.7.0 zadanie workflow zapisuje każdy węzeł tak, jak się zakończył, z tym, co przekazał dalej |
 | Workflow jest taki sam jak wtedy, gdy zadanie działało | Zadanie zapisuje jego hash: zmieniony węzeł, połączenie, extra var lub nazwa daje tylko pełne ponowne uruchomienie |
 
 Zadanie workflow, które działało na Ascender, używa własnego ponownego uruchomienia nieudanych węzłów przez Ascender, które tak samo przenosi

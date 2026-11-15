@@ -136,7 +136,7 @@ schermo** e **Schermo intero**, e sotto un modulo dopo **Invia** un clic su un n
 Un nodo ripreso da un [rilancio dal nodo fallito](../workflows/running.html#relaunch-from-the-failed-node) è in grigio, con
 *dall'esecuzione precedente* come stato: in questa esecuzione non ha eseguito alcun job, quindi non ha output da aprire.
 
-Dalla 7.8.0 un job di workflow Ascender mostra anche ciò che Ascender aggiunge ai suoi nodi
+Dalla 7.7.0 un job di workflow Ascender mostra anche ciò che Ascender aggiunge ai suoi nodi
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Nodo Ascender | Sul grafo | Nell'output |

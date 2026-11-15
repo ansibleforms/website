@@ -52,7 +52,7 @@ reproduce las extravars guardadas de la programación, para un administrador o u
 
 Un relanzamiento comprobado (consulta [Registrar e imponer](log-and-enforce.html)) inicia un trabajo nuevo a nombre de quien llama.
 
-Desde 7.8.0 un relanzamiento [en los hosts fallidos](../jobs/actions.html#relaunch-on-the-failed-hosts) o
+Desde 7.7.0 un relanzamiento [en los hosts fallidos](../jobs/actions.html#relaunch-on-the-failed-hosts) o
 [desde el nodo fallido](../jobs/actions.html#relaunch-from-the-failed-node) se comprueba según su tipo, tal como se ejecutó o con cambios. El
 servidor añade los hosts, o los nodos que conservar, después de la comprobación.
 

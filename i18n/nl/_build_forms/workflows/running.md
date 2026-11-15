@@ -106,7 +106,7 @@ wacht wordt geannuleerd. Ook een workflowjob die op een goedkeuring wacht, kun j
 
 ## Herstarten vanaf het mislukte knooppunt
 
-Vanaf 7.8.0 kan een mislukte workflowjob worden herstart vanaf zijn mislukte knooppunt, met de geslaagde knooppunten overgenomen.
+Vanaf 7.7.0 kan een mislukte workflowjob worden herstart vanaf zijn mislukte knooppunt, met de geslaagde knooppunten overgenomen.
 
 **Job herstarten** op de pagina van de job heeft dan een pijltje met **Vanaf het eerste knooppunt**, de volledige herstart, en
 **Vanaf het mislukte knooppunt**. De nieuwe job doorloopt dezelfde goedkeuring, launch-validatie en rechten als elke [herstart](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Een AnsibleForms-workflowjob biedt **Vanaf het mislukte knooppunt** alleen aan a
 | Voorwaarde | Waarom |
 |---|---|
 | De job mislukte, met een knooppunt dat mislukte en een dat slaagde | Zonder knooppunt om over te nemen is het de volledige herstart |
-| De job draaide op 7.8.0 of later | Vanaf 7.8.0 bewaart een workflowjob elk knooppunt zoals het eindigde, met wat het doorgaf |
+| De job draaide op 7.7.0 of later | Vanaf 7.7.0 bewaart een workflowjob elk knooppunt zoals het eindigde, met wat het doorgaf |
 | De workflow is dezelfde als toen de job draaide | De job bewaart er een hash van: een gewijzigd knooppunt, link, extra var of naam biedt alleen de volledige herstart |
 
 Een workflowjob die op Ascender draaide, gebruikt de eigen herstart van de mislukte knooppunten van Ascender, die de geslaagde knooppunten op dezelfde manier

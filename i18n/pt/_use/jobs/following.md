@@ -136,7 +136,7 @@ ecrã** e **Ecrã inteiro**, e por baixo de um formulário depois de **Submeter*
 Um nó mantido por um [relançamento a partir do nó com falha](../workflows/running.html#relaunch-from-the-failed-node) aparece a cinzento, com
 *da execução anterior* como estado: não correu nenhuma tarefa nesta execução, por isso não tem resultado para abrir.
 
-A partir da 7.8.0, uma tarefa de workflow do Ascender mostra também o que o Ascender acrescenta aos seus nós
+A partir da 7.7.0, uma tarefa de workflow do Ascender mostra também o que o Ascender acrescenta aos seus nós
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Nó do Ascender | No grafo | No resultado |

@@ -52,7 +52,7 @@ odtwarza zapisane extravars harmonogramu, dla administratora lub użytkownika z 
 
 Sprawdzone ponowne uruchomienie (zobacz [Log i enforce](log-and-enforce.html)) rozpoczyna nowe zadanie w imieniu wywołującego.
 
-Od wersji 7.8.0 ponowne uruchomienie [na nieudanych hostach](../jobs/actions.html#relaunch-on-the-failed-hosts) lub
+Od wersji 7.7.0 ponowne uruchomienie [na nieudanych hostach](../jobs/actions.html#relaunch-on-the-failed-hosts) lub
 [od nieudanego węzła](../jobs/actions.html#relaunch-from-the-failed-node) jest sprawdzane jak rodzaj, którym jest: tak, jak działało, lub
 ze zmianami. Serwer dodaje hosty albo węzły do przeniesienia po sprawdzeniu.
 

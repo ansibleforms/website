@@ -141,7 +141,7 @@ campo de contraseña puede rechazarlo, se describe en [Relanzar](../launch-valid
 
 ### Relanzar en los hosts fallidos
 
-Desde 7.8.0 un trabajo que falló en algunos de sus hosts puede volver a ejecutarse solo en esos hosts, sin tocar los demás.
+Desde 7.7.0 un trabajo que falló en algunos de sus hosts puede volver a ejecutarse solo en esos hosts, sin tocar los demás.
 
 El desplegable de **Relanzar trabajo** ofrece entonces **En todos los hosts**, el relanzamiento completo, y **En los hosts fallidos (N)**, con N
 los hosts en los que falló una tarea o que no se pudieron alcanzar. Se ofrece en un trabajo terminado de estos tipos:
@@ -169,7 +169,7 @@ un nombre de host con una coma o dos puntos sigue siendo un solo host.
 
 ### Relanzar desde el nodo fallido
 
-Desde 7.8.0 un trabajo de workflow fallido puede volver a ejecutarse desde el nodo que falló, conservando lo que hicieron los nodos anteriores.
+Desde 7.7.0 un trabajo de workflow fallido puede volver a ejecutarse desde el nodo que falló, conservando lo que hicieron los nodos anteriores.
 
 El desplegable de **Relanzar trabajo** ofrece entonces **Desde el primer nodo**, el relanzamiento completo, y **Desde el nodo fallido**. Qué
 trabajos de workflow lo ofrecen:

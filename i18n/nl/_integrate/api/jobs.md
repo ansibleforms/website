@@ -139,7 +139,7 @@ Deze endpoints lezen meer van één job:
 | `GET /api/v2/job/{id}/events` | De gestructureerde events van een playbookjob (vanaf 7.3.0, voor een playbook op een RTE van 7.3.0 of later): elke play, taak, hostresultaat en de recap, met hun `order`, `type`, `play`, `task`, `host`, `duration` en `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Een van die events met zijn volledige `result`, zoals het venster **Resultaat van de taak** het toont; `400` als `order` geen geheel getal is, `404` als de job zo'n event niet heeft |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Eén node van een workflowjob: `{ "node", "job", "extravars", "artifacts" }`, waarbij `job` het ID is van de eigen job van de node, of `null` als de node niet is uitgevoerd. |
-| `GET /api/v2/job/{id}/relaunch-options` | Vanaf 7.8.0, wat een herstart naast de volledige kan zijn: `{ "failedHosts", "fromFailedNode" }` (zie hieronder); `403` voor een gebruiker die de job niet mag herstarten |
+| `GET /api/v2/job/{id}/relaunch-options` | Vanaf 7.7.0, wat een herstart naast de volledige kan zijn: `{ "failedHosts", "fromFailedNode" }` (zie hieronder); `403` voor een gebruiker die de job niet mag herstarten |
 
 ---
 
@@ -167,7 +167,7 @@ in de verkeerde toestand is voor de actie, bijvoorbeeld bij het afbreken van een
 
 ### Een deel van een job herstarten
 
-Vanaf 7.8.0 kan de body van een herstart om een deel van de job vragen, met een van twee flags, nooit beide:
+Vanaf 7.7.0 kan de body van een herstart om een deel van de job vragen, met een van twee flags, nooit beide:
 
 | Body | De nieuwe job |
 |---|---|

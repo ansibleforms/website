@@ -141,7 +141,7 @@ camp de contrasenya el pot rebutjar, es descriu a [Rellançament](../launch-vali
 
 ### Rellançar en els hosts fallits
 
-A partir de la 7.8.0 una tasca que ha fallat en alguns dels seus hosts es pot tornar a executar només en aquests hosts, sense tocar els altres.
+A partir de la 7.7.0 una tasca que ha fallat en alguns dels seus hosts es pot tornar a executar només en aquests hosts, sense tocar els altres.
 
 El desplegable de **Rellança la tasca** ofereix llavors **En tots els hosts**, el rellançament complet, i **En els hosts fallits (N)**, amb N
 els hosts on ha fallat una tasca o que no s'han pogut assolir. S'ofereix en una tasca acabada d'aquests tipus:
@@ -169,7 +169,7 @@ que un nom de host amb una coma o dos punts continua sent un sol host.
 
 ### Rellançar des del node fallit
 
-A partir de la 7.8.0 una tasca de workflow fallida es pot tornar a executar des del node que ha fallat, conservant el que han fet els nodes anteriors.
+A partir de la 7.7.0 una tasca de workflow fallida es pot tornar a executar des del node que ha fallat, conservant el que han fet els nodes anteriors.
 
 El desplegable de **Rellança la tasca** ofereix llavors **Des del primer node**, el rellançament complet, i **Des del node fallit**. Quines
 tasques de workflow ho ofereixen:

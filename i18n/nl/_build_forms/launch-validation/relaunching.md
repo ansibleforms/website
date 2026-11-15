@@ -52,7 +52,7 @@ speelt de opgeslagen extravars van de planning opnieuw af, voor een admin of een
 
 Een gecontroleerde herstart (zie [Log en enforce](log-and-enforce.html)) start een nieuwe job op naam van de aanroeper.
 
-Vanaf 7.8.0 wordt een herstart [op de mislukte hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) of
+Vanaf 7.7.0 wordt een herstart [op de mislukte hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) of
 [vanaf het mislukte knooppunt](../jobs/actions.html#relaunch-from-the-failed-node) gecontroleerd als de soort die hij is, zoals hij draaide of met
 wijzigingen. De server voegt de hosts, of de over te nemen knooppunten, na de controle toe.
 

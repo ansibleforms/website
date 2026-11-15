@@ -141,7 +141,7 @@ campo de palavra-passe o pode recusar, está descrita em [Relançar](../launch-v
 
 ### Relançar nos hosts com falha
 
-A partir da 7.8.0, uma tarefa que falhou em alguns dos seus hosts pode correr de novo só nesses hosts, sem tocar nos outros.
+A partir da 7.7.0, uma tarefa que falhou em alguns dos seus hosts pode correr de novo só nesses hosts, sem tocar nos outros.
 
 A seta de **Relançar tarefa** oferece então **Em todos os hosts**, o relançamento completo, e **Nos hosts com falha (N)**, com N os hosts em que
 uma tarefa falhou ou que não foi possível alcançar. É oferecido numa tarefa terminada destes tipos:
@@ -169,7 +169,7 @@ nome de host com uma vírgula ou dois pontos continua a ser um só host.
 
 ### Relançar a partir do nó com falha
 
-A partir da 7.8.0, uma tarefa de workflow que falhou pode correr de novo a partir do nó que falhou, mantendo o que os nós anteriores fizeram.
+A partir da 7.7.0, uma tarefa de workflow que falhou pode correr de novo a partir do nó que falhou, mantendo o que os nós anteriores fizeram.
 
 A seta de **Relançar tarefa** oferece então **A partir do primeiro nó**, o relançamento completo, e **A partir do nó com falha**. As tarefas de
 workflow que o oferecem:

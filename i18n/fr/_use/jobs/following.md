@@ -136,7 +136,7 @@ l'écran** et **Plein écran**, et sous un formulaire après **Soumettre**, un c
 Un nœud repris par une [relance depuis le nœud en échec](../workflows/running.html#relaunch-from-the-failed-node) est grisé, avec
 *de l'exécution précédente* comme statut : il n'a exécuté aucun job dans cette exécution, il n'a donc pas de sortie à ouvrir.
 
-Depuis la 7.8.0, un job de workflow Ascender montre aussi ce qu'Ascender ajoute à ses nœuds
+Depuis la 7.7.0, un job de workflow Ascender montre aussi ce qu'Ascender ajoute à ses nœuds
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)) :
 
 | Nœud Ascender | Sur le graphe | Dans la sortie |

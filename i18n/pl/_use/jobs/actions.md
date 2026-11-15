@@ -141,7 +141,7 @@ polem hasła może je odrzucić, opisano w [Ponowne uruchamianie](../launch-vali
 
 ### Ponowne uruchomienie na nieudanych hostach
 
-Od wersji 7.8.0 zadanie, które nie powiodło się na części swoich hostów, może zostać uruchomione ponownie tylko na tych hostach, bez ruszania pozostałych.
+Od wersji 7.7.0 zadanie, które nie powiodło się na części swoich hostów, może zostać uruchomione ponownie tylko na tych hostach, bez ruszania pozostałych.
 
 Strzałka **Uruchom zadanie ponownie** oferuje wtedy **Na wszystkich hostach**, pełne ponowne uruchomienie, oraz **Na nieudanych hostach (N)**, gdzie N
 to hosty, na których zadanie nie powiodło się lub których nie dało się osiągnąć. Jest dostępne dla zakończonego zadania tych rodzajów:
@@ -169,7 +169,7 @@ z przecinkiem lub dwukropkiem pozostaje jednym hostem.
 
 ### Ponowne uruchomienie od nieudanego węzła
 
-Od wersji 7.8.0 zadanie workflow, które się nie powiodło, może zostać uruchomione ponownie od nieudanego węzła, z zachowaniem tego, co zrobiły węzły przed nim.
+Od wersji 7.7.0 zadanie workflow, które się nie powiodło, może zostać uruchomione ponownie od nieudanego węzła, z zachowaniem tego, co zrobiły węzły przed nim.
 
 Strzałka **Uruchom zadanie ponownie** oferuje wtedy **Od pierwszego węzła**, pełne ponowne uruchomienie, oraz **Od nieudanego węzła**. Zadania
 workflow, które to oferują:

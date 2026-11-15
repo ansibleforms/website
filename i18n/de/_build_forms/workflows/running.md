@@ -106,7 +106,7 @@ er wartet, wird storniert. Auch ein Workflow-Job, der auf eine Genehmigung warte
 
 ## Ab dem fehlgeschlagenen Knoten neu starten
 
-Ab 7.8.0 kann ein fehlgeschlagener Workflow-Job ab seinem fehlgeschlagenen Knoten neu gestartet werden, die erfolgreichen Knoten übernommen.
+Ab 7.7.0 kann ein fehlgeschlagener Workflow-Job ab seinem fehlgeschlagenen Knoten neu gestartet werden, die erfolgreichen Knoten übernommen.
 
 **Job neu starten** auf der Seite des Jobs hat dann einen Pfeil mit **Ab dem ersten Knoten**, dem vollständigen Neustart, und
 **Ab dem fehlgeschlagenen Knoten**. Der neue Job durchläuft dieselbe Genehmigung, Start-Validierung und dieselben Berechtigungen wie jeder [Neustart](../jobs/actions.html#relaunch-a-job):
@@ -123,7 +123,7 @@ Ein AnsibleForms-Workflow-Job bietet **Ab dem fehlgeschlagenen Knoten** nur an, 
 | Bedingung | Warum |
 |---|---|
 | Der Job schlug fehl, mit einem fehlgeschlagenen und einem erfolgreichen Knoten | Ohne Knoten zum Übernehmen ist es der vollständige Neustart |
-| Der Job lief auf 7.8.0 oder später | Ab 7.8.0 speichert ein Workflow-Job jeden Knoten, wie er endete, mit dem, was er weitergab |
+| Der Job lief auf 7.7.0 oder später | Ab 7.7.0 speichert ein Workflow-Job jeden Knoten, wie er endete, mit dem, was er weitergab |
 | Der Workflow ist derselbe wie beim Lauf des Jobs | Der Job speichert einen Hash davon: Ein geänderter Knoten, Link, Extra-Var oder Name bietet nur den vollständigen Neustart |
 
 Ein Workflow-Job, der auf Ascender lief, nutzt den eigenen Neustart der fehlgeschlagenen Knoten von Ascender, der die erfolgreichen Knoten auf dieselbe Weise

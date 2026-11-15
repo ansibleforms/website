@@ -52,7 +52,7 @@ reprodueix les extravars desades de la programació, per a un administrador o pe
 
 Un rellançament comprovat (vegeu [Registrar i aplicar](log-and-enforce.html)) inicia una tasca nova a nom de qui fa la crida.
 
-A partir de la 7.8.0 un rellançament [en els hosts fallits](../jobs/actions.html#relaunch-on-the-failed-hosts) o
+A partir de la 7.7.0 un rellançament [en els hosts fallits](../jobs/actions.html#relaunch-on-the-failed-hosts) o
 [des del node fallit](../jobs/actions.html#relaunch-from-the-failed-node) es comprova segons el seu tipus, tal com es va executar o amb canvis. El
 servidor afegeix els hosts, o els nodes per conservar, després de la comprovació.
 

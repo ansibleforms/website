@@ -136,7 +136,7 @@ aan scherm** en **Volledig scherm**, en onder een formulier na **Verzenden** ope
 Een knooppunt dat een [herstart vanaf het mislukte knooppunt](../workflows/running.html#relaunch-from-the-failed-node) heeft overgenomen, is grijs, met
 *uit de vorige run* als status: het voerde in deze run geen job uit, dus het heeft geen uitvoer om te openen.
 
-Vanaf 7.8.0 toont een Ascender-workflowjob ook wat Ascender aan zijn knooppunten toevoegt
+Vanaf 7.7.0 toont een Ascender-workflowjob ook wat Ascender aan zijn knooppunten toevoegt
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Ascender-knooppunt | In de graaf | In de uitvoer |

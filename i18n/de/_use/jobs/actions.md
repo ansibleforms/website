@@ -141,7 +141,7 @@ Passwortfeld ihn ablehnen kann, ist unter [Neustarten](../launch-validation/rela
 
 ### Auf den fehlgeschlagenen Hosts neu starten
 
-Ab 7.8.0 kann ein Job, der auf einigen seiner Hosts fehlschlug, nur auf diesen Hosts erneut laufen, ohne die anderen anzurühren.
+Ab 7.7.0 kann ein Job, der auf einigen seiner Hosts fehlschlug, nur auf diesen Hosts erneut laufen, ohne die anderen anzurühren.
 
 Der Pfeil von **Job neu starten** bietet dann **Auf allen Hosts**, den vollständigen Neustart, und **Auf fehlgeschlagenen Hosts (N)**, mit N den Hosts,
 bei denen ein Task fehlschlug oder die nicht erreichbar waren. Es wird bei einem beendeten Job dieser Arten angeboten:
@@ -169,7 +169,7 @@ Hostname mit einem Komma oder einem Doppelpunkt ein einziger Host bleibt.
 
 ### Ab dem fehlgeschlagenen Knoten neu starten
 
-Ab 7.8.0 kann ein fehlgeschlagener Workflow-Job ab dem Knoten, der fehlschlug, erneut laufen und behält, was die Knoten davor taten.
+Ab 7.7.0 kann ein fehlgeschlagener Workflow-Job ab dem Knoten, der fehlschlug, erneut laufen und behält, was die Knoten davor taten.
 
 Der Pfeil von **Job neu starten** bietet dann **Ab dem ersten Knoten**, den vollständigen Neustart, und **Ab dem fehlgeschlagenen Knoten**. Welche
 Workflow-Jobs es anbieten:

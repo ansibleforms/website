@@ -136,7 +136,7 @@ pantalla** i **Pantalla completa**, i sota un formulari després d'**Envia**, un
 Un node conservat per un [rellançament des del node fallit](../workflows/running.html#relaunch-from-the-failed-node) apareix atenuat, amb
 *de l'execució anterior* com a estat: no ha executat cap tasca en aquesta execució, de manera que no té sortida per obrir.
 
-A partir de la 7.8.0 una tasca de workflow d'Ascender també mostra el que Ascender afegeix als seus nodes
+A partir de la 7.7.0 una tasca de workflow d'Ascender també mostra el que Ascender afegeix als seus nodes
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Node d'Ascender | Al graf | A la sortida |

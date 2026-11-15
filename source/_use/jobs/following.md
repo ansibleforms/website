@@ -135,7 +135,7 @@ screen** and **Full screen** buttons, and under a form after **Submit** a click 
 A node carried over by a [relaunch from the failed node](../workflows/running.html#relaunch-from-the-failed-node) is greyed, with
 *from the previous run* as its status: it ran no job in this run, so it has no output to open.
 
-From 7.8.0 an Ascender workflow job also shows what Ascender adds to its nodes
+From 7.7.0 an Ascender workflow job also shows what Ascender adds to its nodes
 ([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
 
 | Ascender node | On the graph | In the output |

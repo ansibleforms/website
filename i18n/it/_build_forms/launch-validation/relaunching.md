@@ -52,7 +52,7 @@ riproduce le extravars salvate della pianificazione, per un amministratore o per
 
 Un rilancio controllato (vedi [Log ed enforce](log-and-enforce.html)) avvia un nuovo job a nome del chiamante.
 
-Dalla 7.8.0 un rilancio [sugli host falliti](../jobs/actions.html#relaunch-on-the-failed-hosts) o
+Dalla 7.7.0 un rilancio [sugli host falliti](../jobs/actions.html#relaunch-on-the-failed-hosts) o
 [dal nodo fallito](../jobs/actions.html#relaunch-from-the-failed-node) viene controllato secondo il suo tipo, così com'era stato eseguito o
 con modifiche. Il server aggiunge gli host, o i nodi da riprendere, dopo il controllo.
 

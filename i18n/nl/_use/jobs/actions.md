@@ -141,7 +141,7 @@ wachtwoordveld hem kan weigeren, staat beschreven in [Opnieuw starten](../launch
 
 ### Herstarten op de mislukte hosts
 
-Vanaf 7.8.0 kan een job die op een deel van zijn hosts mislukte, alleen op die hosts opnieuw draaien, zonder de andere aan te raken.
+Vanaf 7.7.0 kan een job die op een deel van zijn hosts mislukte, alleen op die hosts opnieuw draaien, zonder de andere aan te raken.
 
 Het pijltje van **Job herstarten** biedt dan **Op alle hosts**, de volledige herstart, en **Op mislukte hosts (N)**, met N de hosts waarop een taak
 mislukte of die onbereikbaar waren. Het wordt aangeboden bij een afgeronde job van deze soorten:
@@ -169,7 +169,7 @@ komma of een dubbele punt één host blijft.
 
 ### Herstarten vanaf het mislukte knooppunt
 
-Vanaf 7.8.0 kan een mislukte workflowjob opnieuw draaien vanaf het knooppunt dat mislukte, en houdt hij wat de knooppunten ervoor deden.
+Vanaf 7.7.0 kan een mislukte workflowjob opnieuw draaien vanaf het knooppunt dat mislukte, en houdt hij wat de knooppunten ervoor deden.
 
 Het pijltje van **Job herstarten** biedt dan **Vanaf het eerste knooppunt**, de volledige herstart, en **Vanaf het mislukte knooppunt**. Welke
 workflowjobs het aanbieden:

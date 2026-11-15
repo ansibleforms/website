@@ -139,7 +139,7 @@ Estos endpoints leen más datos de un trabajo:
 | `GET /api/v2/job/{id}/events` | Los eventos estructurados de un trabajo de playbook (desde la 7.3.0, para un playbook en un RTE de la 7.3.0 o posterior): cada play, tarea, resultado de host y el resumen final, con su `order`, `type`, `play`, `task`, `host`, `duration` y `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Uno de esos eventos con todo su `result`, tal como lo muestra el diálogo **Resultado de la tarea**; `400` si `order` no es un número entero, `404` si el trabajo no tiene ese evento |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un nodo de un trabajo de workflow: `{ "node", "job", "extravars", "artifacts" }`, donde `job` es el ID del propio trabajo del nodo, o `null` si el nodo no se ejecutó. |
-| `GET /api/v2/job/{id}/relaunch-options` | Desde 7.8.0, lo que puede ser un relanzamiento además del completo: `{ "failedHosts", "fromFailedNode" }` (ver abajo); `403` para un usuario que no puede relanzar el trabajo |
+| `GET /api/v2/job/{id}/relaunch-options` | Desde 7.7.0, lo que puede ser un relanzamiento además del completo: `{ "failedHosts", "fromFailedNode" }` (ver abajo); `403` para un usuario que no puede relanzar el trabajo |
 
 ---
 
@@ -167,7 +167,7 @@ está en un estado que no admite la acción, por ejemplo abortar un trabajo que 
 
 ### Relanzar parte de un trabajo
 
-Desde 7.8.0 el cuerpo de un relanzamiento puede pedir solo una parte del trabajo, con uno de dos indicadores, nunca ambos:
+Desde 7.7.0 el cuerpo de un relanzamiento puede pedir solo una parte del trabajo, con uno de dos indicadores, nunca ambos:
 
 | Cuerpo | El trabajo nuevo |
 |---|---|

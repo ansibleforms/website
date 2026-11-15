@@ -106,7 +106,7 @@ attend est annulée. Un job de workflow qui attend une approbation peut lui auss
 
 ## Relancer depuis le nœud en échec
 
-Depuis la 7.8.0, un job de workflow en échec peut être relancé depuis son nœud en échec, les nœuds réussis étant repris.
+Depuis la 7.7.0, un job de workflow en échec peut être relancé depuis son nœud en échec, les nœuds réussis étant repris.
 
 **Relancer le job** sur la page du job a alors un caret avec **Depuis le premier nœud**, la relance complète, et **Depuis le nœud en échec**.
 Le nouveau job passe par la même approbation, la même validation au lancement et les mêmes permissions que toute [relance](../jobs/actions.html#relaunch-a-job) :
@@ -123,7 +123,7 @@ Un job de workflow AnsibleForms ne propose **Depuis le nœud en échec** que lor
 | Condition | Pourquoi |
 |---|---|
 | Le job a échoué, avec un nœud en échec et un nœud réussi | Sans nœud à reprendre, c'est la relance complète |
-| Le job s'est exécuté sur la 7.8.0 ou ultérieure | Depuis la 7.8.0, un job de workflow garde chaque nœud tel qu'il s'est terminé, avec ce qu'il a transmis |
+| Le job s'est exécuté sur la 7.7.0 ou ultérieure | Depuis la 7.7.0, un job de workflow garde chaque nœud tel qu'il s'est terminé, avec ce qu'il a transmis |
 | Le workflow est le même que lors de l'exécution du job | Le job en garde un hash : un nœud, un lien, une extra var ou un nom modifié ne propose que la relance complète |
 
 Un job de workflow exécuté sur Ascender utilise la relance des nœuds en échec d'Ascender lui-même, qui reprend les nœuds réussis de la même

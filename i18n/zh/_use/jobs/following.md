@@ -135,7 +135,7 @@ Ansible 自身的 `_ansible*` 键会被排除，看起来像机密的键的值�
 由[从失败的节点重新运行](../workflows/running.html#relaunch-from-the-failed-node)沿用的节点显示为灰色，状态为*来自上一次运行*：
 它在这次运行中没有运行作业，因此没有可打开的输出。
 
-从 7.8.0 起，Ascender 工作流作业还会显示 Ascender 为其节点添加的信息
+从 7.7.0 起，Ascender 工作流作业还会显示 Ascender 为其节点添加的信息
 （[#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)）：
 
 | Ascender 节点 | 图中 | 输出中 |

@@ -52,7 +52,7 @@ rejoue donc les extravars stockées de la planification, pour un admin ou un uti
 
 Une relance vérifiée (voir [Log et enforce](log-and-enforce.html)) démarre un nouveau job au nom de l'appelant.
 
-Depuis la 7.8.0, une relance [sur les hôtes en échec](../jobs/actions.html#relaunch-on-the-failed-hosts) ou
+Depuis la 7.7.0, une relance [sur les hôtes en échec](../jobs/actions.html#relaunch-on-the-failed-hosts) ou
 [depuis le nœud en échec](../jobs/actions.html#relaunch-from-the-failed-node) est vérifiée selon son type, à l'identique ou avec des
 modifications. Le serveur ajoute les hôtes, ou les nœuds à reprendre, après la vérification.
 

@@ -139,7 +139,7 @@ Diese Endpunkte lesen mehr von einem Job:
 | `GET /api/v2/job/{id}/events` | Die strukturierten Ereignisse eines Playbook-Jobs (ab 7.3.0, für ein Playbook auf einer RTE ab 7.3.0): jedes Play, jeder Task, jedes Host-Ergebnis und die Zusammenfassung, mit ihren `order`, `type`, `play`, `task`, `host`, `duration` und `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Eines dieser Ereignisse mit seinem ganzen `result`, wie der Dialog **Ergebnis der Aufgabe** es zeigt; `400`, wenn `order` keine ganze Zahl ist, `404`, wenn der Job kein solches Ereignis hat |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Ein Knoten eines Workflow-Jobs: `{ "node", "job", "extravars", "artifacts" }`, wobei `job` die ID des eigenen Jobs des Knotens ist, oder `null`, wenn der Knoten nicht lief. |
-| `GET /api/v2/job/{id}/relaunch-options` | Ab 7.8.0, was ein Neustart neben dem vollständigen sein kann: `{ "failedHosts", "fromFailedNode" }` (siehe unten); `403` für einen Benutzer, der den Job nicht neu starten darf |
+| `GET /api/v2/job/{id}/relaunch-options` | Ab 7.7.0, was ein Neustart neben dem vollständigen sein kann: `{ "failedHosts", "fromFailedNode" }` (siehe unten); `403` für einen Benutzer, der den Job nicht neu starten darf |
 
 ---
 
@@ -167,7 +167,7 @@ sich im falschen Zustand für die Aktion befindet, zum Beispiel beim Abbrechen e
 
 ### Einen Teil eines Jobs neu starten
 
-Ab 7.8.0 kann der Body eines Neustarts nur einen Teil des Jobs verlangen, mit einem von zwei Flags, nie beiden:
+Ab 7.7.0 kann der Body eines Neustarts nur einen Teil des Jobs verlangen, mit einem von zwei Flags, nie beiden:
 
 | Body | Der neue Job |
 |---|---|

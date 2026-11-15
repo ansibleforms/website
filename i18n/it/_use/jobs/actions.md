@@ -141,7 +141,7 @@ campo password può rifiutarlo, è descritto in [Rilancio](../launch-validation/
 
 ### Rilanciare sugli host falliti
 
-Dalla 7.8.0 un job fallito su alcuni dei suoi host può essere eseguito di nuovo solo su quegli host, senza toccare gli altri.
+Dalla 7.7.0 un job fallito su alcuni dei suoi host può essere eseguito di nuovo solo su quegli host, senza toccare gli altri.
 
 Il caret di **Rilancia job** offre allora **Su tutti gli host**, il rilancio completo, e **Sugli host falliti (N)**, dove N sono gli host
 in cui un task è fallito o che non erano raggiungibili. È proposto su un job terminato di questi tipi:
@@ -169,7 +169,7 @@ host con una virgola o due punti resta un solo host.
 
 ### Rilanciare dal nodo fallito
 
-Dalla 7.8.0 un job di workflow fallito può essere eseguito di nuovo dal nodo che è fallito, mantenendo ciò che hanno fatto i nodi precedenti.
+Dalla 7.7.0 un job di workflow fallito può essere eseguito di nuovo dal nodo che è fallito, mantenendo ciò che hanno fatto i nodi precedenti.
 
 Il caret di **Rilancia job** offre allora **Dal primo nodo**, il rilancio completo, e **Dal nodo fallito**. I job di workflow che lo
 offrono:

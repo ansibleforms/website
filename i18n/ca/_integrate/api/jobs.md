@@ -139,7 +139,7 @@ Aquests endpoints llegeixen més dades d'una tasca:
 | `GET /api/v2/job/{id}/events` | Els esdeveniments estructurats d'una tasca de playbook (des de la 7.3.0, per a un playbook en un RTE de la 7.3.0 o posterior): cada play, tasca, resultat per host i el resum, amb els seus `order`, `type`, `play`, `task`, `host`, `duration` i `time` |
 | `GET /api/v2/job/{id}/events/{order}` | Un d'aquests esdeveniments amb tot el seu `result`, tal com el mostra el diàleg **Resultat de la tasca**; `400` quan `order` no és un nombre enter, `404` quan la tasca no té aquest esdeveniment |
 | `GET /api/v2/job/{id}/node/{nodeId}` | Un node d'una tasca de workflow: `{ "node", "job", "extravars", "artifacts" }`, on `job` és l'ID de la tasca pròpia del node, o `null` quan el node no s'ha executat. |
-| `GET /api/v2/job/{id}/relaunch-options` | A partir de la 7.8.0, el que pot ser un rellançament a més del complet: `{ "failedHosts", "fromFailedNode" }` (vegeu més avall); `403` per a un usuari que no pot rellançar la tasca |
+| `GET /api/v2/job/{id}/relaunch-options` | A partir de la 7.7.0, el que pot ser un rellançament a més del complet: `{ "failedHosts", "fromFailedNode" }` (vegeu més avall); `403` per a un usuari que no pot rellançar la tasca |
 
 ---
 
@@ -167,7 +167,7 @@ Afegeix `?verbose=true` a un rellançament per executar la tasca nova en mode de
 
 ### Rellançar part d'una tasca
 
-A partir de la 7.8.0 el cos d'un rellançament pot demanar només una part de la tasca, amb un de dos indicadors, mai tots dos:
+A partir de la 7.7.0 el cos d'un rellançament pot demanar només una part de la tasca, amb un de dos indicadors, mai tots dos:
 
 | Cos | La tasca nova |
 |---|---|

@@ -141,7 +141,7 @@ champ mot de passe peut la refuser, est décrite dans [Relancer](../launch-valid
 
 ### Relancer sur les hôtes en échec
 
-Depuis la 7.8.0, un job qui a échoué sur certains de ses hôtes peut s'exécuter de nouveau sur ces hôtes seulement, sans toucher aux autres.
+Depuis la 7.7.0, un job qui a échoué sur certains de ses hôtes peut s'exécuter de nouveau sur ces hôtes seulement, sans toucher aux autres.
 
 Le caret de **Relancer le job** propose alors **Sur tous les hôtes**, la relance complète, et **Sur les hôtes en échec (N)**, N étant les hôtes
 dont une tâche a échoué ou qui étaient injoignables. C'est proposé sur un job terminé de ces types :
@@ -169,7 +169,7 @@ par ligne, de sorte qu'un nom d'hôte avec une virgule ou un deux-points reste u
 
 ### Relancer depuis le nœud en échec
 
-Depuis la 7.8.0, un job de workflow en échec peut s'exécuter de nouveau depuis le nœud qui a échoué, en gardant ce qu'ont fait les nœuds d'avant.
+Depuis la 7.7.0, un job de workflow en échec peut s'exécuter de nouveau depuis le nœud qui a échoué, en gardant ce qu'ont fait les nœuds d'avant.
 
 Le caret de **Relancer le job** propose alors **Depuis le premier nœud**, la relance complète, et **Depuis le nœud en échec**. Les jobs de
 workflow qui le proposent :
