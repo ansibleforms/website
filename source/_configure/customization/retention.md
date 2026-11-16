@@ -27,10 +27,13 @@ Keep finished jobs for 90 days and the audit trail for two years. In the compose
 ```bash
 JOB_RETENTION_DAYS=90
 AUDIT_RETENTION_DAYS=730
+STORED_JOB_UNUSED_DAYS=180
 ```
 
 A daily task removes finished jobs older than this at 2:30 AM and audit entries at 3:30 AM. A running job, or one that waits for
-approval, is never removed. Both variables apply without a restart when they are changed on the settings page.
+approval, is never removed. From 7.7.0 `STORED_JOB_UNUSED_DAYS` also removes, at 4:00 AM, the [stored
+jobs](../jobs/stored-jobs.html#when-it-is-removed) no job was launched from for that many days. These variables
+apply without a restart when they are changed on the settings page.
 
 ---
 
