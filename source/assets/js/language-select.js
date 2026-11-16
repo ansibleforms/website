@@ -13,9 +13,24 @@
     const menu = item.querySelector('.af-lang-menu');
 
     // Open or close the menu, keeping aria-expanded in step for screen readers
+    // Where the page was scrolled before the menu opened, to scroll back there on close
+    let scrollBefore = null;
+
     function setOpen(open) {
+      const wasOpen = !menu.hidden;
       menu.hidden = !open;
       button.setAttribute('aria-expanded', open ? 'true' : 'false');
+
+      // On a phone the header opens below the navigation, near the bottom of the
+      // screen, so the list of languages would run past it : scroll it into view,
+      // and back to where the page was once it closes
+      if (open && !wasOpen) {
+        scrollBefore = window.scrollY;
+        menu.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } else if (!open && wasOpen && scrollBefore !== null) {
+        window.scrollTo({ top: scrollBefore, behavior: 'smooth' });
+        scrollBefore = null;
+      }
     }
 
     button.addEventListener('click', function(e) {
