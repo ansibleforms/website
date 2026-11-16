@@ -88,7 +88,7 @@ runner_rte:
     registry:
       name: ghcr
       path: af/rte-netapp
-    tag: app
+      tag: app
     sbom: true
     sign:
       name: cosign-key
@@ -104,12 +104,11 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out |
 | `python_packages` | Python packages, as lines of a `requirements.txt` |
 | `os_packages` | Debian 13 (trixie) packages |
-| `registry` | `name`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out |
-| `tag` | `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade; or a tag of your own |
+| `registry` | `name`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade, or a tag of your own |
 | `sbom` | `true` attaches a software bill of materials to the image |
 | `sign` | `name`: a **Signing key** credential, with which the builder signs the image with cosign |
 
-Every image is built from `ansibleforms-rte-base` of the app's release, so an image with `tag: app` built for an older release
+Every image is built from `ansibleforms-rte-base` of the app's release, so an image tagged `app` built for an older release
 is shown as such on the **RTE images** page, with **Rebuild all**.
 
 ---
