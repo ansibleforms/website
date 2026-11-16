@@ -91,7 +91,7 @@ runner_rte:
       tag: app
     sbom: true
     sign:
-      name: cosign-key
+      key: cosign-key
 ```
 
 Every key but the name can be left out; the **YAML** tab's toolbar sets each part in a dialog.
@@ -106,7 +106,7 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | `os_packages` | Debian 13 (trixie) packages |
 | `registry` | `name`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade, or a tag of your own |
 | `sbom` | `true` attaches a software bill of materials to the image |
-| `sign` | `name`: a **Signing key** credential, with which the builder signs the image with cosign |
+| `sign` | `key`: a **Signing key** credential, with which the builder signs the image with cosign |
 
 Every image is built from `ansibleforms-rte-base` of the app's release, so an image tagged `app` built for an older release
 is shown as such on the **RTE images** page, with **Rebuild all**.
