@@ -20,7 +20,7 @@ Run the builder that builds and pushes the RTE images the Designer defines
 
 The RTE builder is a small product of its own, [ansibleforms/builder](https://github.com/ansibleforms/builder), released with every AnsibleForms release at the same version.
 
-It joins the controller as a runner does, with a join token or an admin's approval, and is listed under **Settings > Connections > Builders**.
+It is added as a runner is, under **Settings > Connections > Builders**, and dials the controller with its name and token.
 When someone builds an RTE image, the controller writes its Dockerfile and hands the build to a builder that is online,
 with the registry login and the signing key sealed for that builder. The builder builds it with BuildKit, pushes it, signs it when asked,
 and streams the build's log back as a job on the **Jobs** page.
@@ -33,8 +33,12 @@ A builder needs a controller with RTE images, AnsibleForms 7.8.0 or later. It ne
 
 A builder dials the controller and the registries it pushes to; nothing needs to reach it.
 
-1. Open **Settings > Connections > Builders** and click **New builder**: it makes a join token and shows the command below with it.
-2. Choose the builder's own token, `RTE_TOKEN`: at least 16 characters, kept by the controller once it joins.
+1. Open **Settings > Connections > Builders** and click **New**: give the builder a name, then choose its **Credential**, an RTE
+   token credential (**New credential** under the list makes one, with a token of at least 16 characters).
+2. Start the builder with that name as `RTE_NAME` and that credential's token as `RTE_TOKEN`: it connects at once.
+
+A builder started without one asks to join instead: an admin approves it in the notice above the list, or a join token
+(`RTE_JOIN_TOKEN`) approves it the first time.
 
 ---
 
@@ -46,8 +50,8 @@ The builder runs its own rootless BuildKit, which needs two security options to 
 docker run -d --name af-builder --restart unless-stopped \
   --security-opt seccomp=unconfined --security-opt apparmor=unconfined \
   -e CONTROLLER_URL=https://forms.example.com \
-  -e RTE_TOKEN=<at least 16 characters> -e RTE_JOIN_TOKEN=<the join token> \
-  -e RTE_NAME=builder-1 -v af-builder:/home/node/work \
+  -e RTE_NAME=builder-1 -e RTE_TOKEN=<its credential's token> \
+  -v af-builder:/home/node/work \
   ghcr.io/ansibleforms/ansibleforms-rte-builder:7
 ```
 
@@ -65,9 +69,8 @@ services:
     security_opt: [seccomp=unconfined, apparmor=unconfined]
     environment:
       CONTROLLER_URL: https://forms.example.com
-      RTE_TOKEN: ${RTE_TOKEN}
-      RTE_JOIN_TOKEN: ${RTE_JOIN_TOKEN}
       RTE_NAME: builder-1
+      RTE_TOKEN: ${RTE_TOKEN}
     volumes:
       - builder:/home/node/work
 volumes:
@@ -87,14 +90,14 @@ and point the builder at it with `BUILDKIT_HOST=tcp://buildkitd:1234`: the build
 
 ## Settings
 
-Each setting is an environment variable of the builder's container; only the first two are required.
+Each setting is an environment variable of the builder's container; only the first three are required.
 
 | Variable | What it sets |
 |---|---|
 | `CONTROLLER_URL` | The controller's address, as people open it |
-| `RTE_TOKEN` | Its own token, at least 16 characters |
-| `RTE_JOIN_TOKEN` | A join token that approves it at once, the first time |
-| `RTE_NAME` | Its name in RTE builders (default `builder-<hostname>-<port>`) |
+| `RTE_NAME` | Its name under **Builders** (default `builder-<hostname>-<port>`) |
+| `RTE_TOKEN` | The token of its credential, at least 16 characters |
+| `RTE_JOIN_TOKEN` | Only for a builder not added in **New**: a join token that approves it the first time |
 | `CONTROLLER_TLS_VERIFY` | `0` accepts the controller's self-signed certificate, in one trusted network only |
 | `BUILDKIT_HOST` | Another BuildKit to build with; empty, its own rootless one |
 | `BUILDER_WORK_PATH` | Its spool, its builds' files and BuildKit's cache (`/home/node/work`) |
@@ -111,7 +114,7 @@ The builder's log says why it cannot start or join; a build's own errors are in 
 | What you see | What to check |
 |---|---|
 | `buildkitd stopped`, `failed to setup UID/GID map` | Run it with the two security options, or set `BUILDKIT_HOST` |
-| A dial refused with 401 | Its `RTE_TOKEN` is not the one the controller keeps, or the join token is used up, expired or revoked |
+| A dial refused with 401 | Its `RTE_NAME` or `RTE_TOKEN` is not the builder's name and its credential's token, or the join token is used up, expired or revoked |
 | A dial refused with 409 | A runner, not a builder, has its name: set another `RTE_NAME` |
 | `waiting for an admin to approve it` | Approve it in **Settings > Connections > Builders** |
 | A push says `unauthorized` | The registry credential's user, password or token |
