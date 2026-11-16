@@ -54,6 +54,66 @@ python libraries always go into the image. Baking everything in is reproducible 
 
 ---
 
+## Build it in the Designer
+
+From 7.8.0 you describe an RTE in the Designer and a [builder](builder.html) builds it, pushes it to your registry and signs it.
+
+1. Give a repository the **RTE images** usage (Settings > Repositories); it holds the definitions.
+2. In the Designer, open **RTE images** and click **New**: fill in the image on the **Visual** tab, or write it on the **YAML** tab.
+3. **Save**, then **Push** to commit it to the repository, and **Build**: the build is a job on the **Jobs** page, its log live.
+
+Each image is a folder of its own in the repository, named after it, that holds only its definition:
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+The Dockerfile, `ansible.cfg` and the requirements files are written again for every build, from the definition and the app's
+release, so they never go stale in the repository. The **Files** tab shows them as the builder gets them.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    python: "3.14"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      name: ghcr
+      path: af/rte-netapp
+    tag: app
+    sbom: true
+    sign:
+      name: cosign-key
+```
+
+Every key but the name can be left out; the **YAML** tab's toolbar sets each part in a dialog.
+
+| Key | What it is |
+|---|---|
+| `name` | The image's name and its folder's: lower case letters, digits, dots, dashes and underscores |
+| `python` | The python the image runs, from 3.11 to 3.15; 3.14 when left out |
+| `ansible_core` | An ansible-core release (`2.22`) or version (`2.22.0`) that runs on that python; the newest one that does when left out |
+| `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out |
+| `python_packages` | Python packages, as lines of a `requirements.txt` |
+| `os_packages` | Debian 13 (trixie) packages |
+| `registry` | `name`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out |
+| `tag` | `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade; or a tag of your own |
+| `sbom` | `true` attaches a software bill of materials to the image |
+| `sign` | `name`: a **Signing key** credential, with which the builder signs the image with cosign |
+
+Every image is built from `ansibleforms-rte-base` of the app's release, so an image with `tag: app` built for an older release
+is shown as such on the **RTE images** page, with **Rebuild all**.
+
+---
+
 ## The contract
 
 What the app and an RTE must share is their contract, a number both report. An RTE of an older release keeps working with a newer

@@ -20,7 +20,7 @@ Run the builder that builds and pushes the RTE images the Designer defines
 
 The RTE builder is a small product of its own, [ansibleforms/builder](https://github.com/ansibleforms/builder), released with every AnsibleForms release at the same version.
 
-It joins the controller as a runner does, with a join token or an admin's approval, and is listed in the Designer's **RTE builders**.
+It joins the controller as a runner does, with a join token or an admin's approval, and is listed under **Settings > Connections > Builders**.
 When someone builds an RTE image, the controller writes its Dockerfile and hands the build to a builder that is online,
 with the registry login and the signing key sealed for that builder. The builder builds it with BuildKit, pushes it, signs it when asked,
 and streams the build's log back as a job on the **Jobs** page.
@@ -33,7 +33,7 @@ A builder needs a controller with RTE images, AnsibleForms 7.8.0 or later. It ne
 
 A builder dials the controller and the registries it pushes to; nothing needs to reach it.
 
-1. In the Designer, open **RTE builders** and click **+**: it makes a join token and shows the command below with it.
+1. Open **Settings > Connections > Builders** and click **New builder**: it makes a join token and shows the command below with it.
 2. Choose the builder's own token, `RTE_TOKEN`: at least 16 characters, kept by the controller once it joins.
 
 ---
@@ -113,7 +113,7 @@ The builder's log says why it cannot start or join; a build's own errors are in 
 | `buildkitd stopped`, `failed to setup UID/GID map` | Run it with the two security options, or set `BUILDKIT_HOST` |
 | A dial refused with 401 | Its `RTE_TOKEN` is not the one the controller keeps, or the join token is used up, expired or revoked |
 | A dial refused with 409 | A runner, not a builder, has its name: set another `RTE_NAME` |
-| `waiting for an admin to approve it` | Approve it in the Designer's **RTE builders** |
+| `waiting for an admin to approve it` | Approve it in **Settings > Connections > Builders** |
 | A push says `unauthorized` | The registry credential's user, password or token |
 | `server gave HTTP response to HTTPS client` | The registry is plain http: give its credential an `http://` address |
 | Signing fails with `decrypt` | The signing key credential's password is not the key's; the image is pushed, unsigned |
