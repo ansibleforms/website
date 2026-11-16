@@ -3,7 +3,7 @@ layout: default
 title: 拉取更改
 parent: Git 仓库
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # 拉取更改
@@ -25,7 +25,7 @@ translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
 |---|---|
 | 计划 | **启用定时拉取**并设置**拉取计划**，例如 `0 * * * *` 表示每小时一次 |
 | 启动 | **应用启动时拉取**会克隆仓库，如果已经克隆则拉取它 |
-| 设置页面 | 行菜单中的**拉取**，或列表上方的**全部拉取** |
+| 设置页面 | 行菜单中的**拉取**，或列表上方的**全部拉取**（从 7.7.0 起，旁边的**全部推送**会推送每个有尚未推送更改的仓库） |
 | 设计器 | **加载（仓库）**，它会拉取表单仓库并重新加载设计器；获取设计器锁时也会先拉取所有表单仓库 |
 | API | `POST /api/v2/repository/<name>/pull` （ `showSettings` 或 `showConnectionsSettings` ）或 `POST /api/v2/forms-repos/pull/<name>` （见下文） |
 

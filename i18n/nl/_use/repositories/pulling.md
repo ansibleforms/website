@@ -3,7 +3,7 @@ layout: default
 title: Wijzigingen pullen
 parent: Git-repositories
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Wijzigingen pullen
@@ -25,7 +25,7 @@ Een repository wordt gepulld volgens haar schema, bij het starten, vanaf de pagi
 |---|---|
 | Schema | **Geplande pull inschakelen** en een **Pull-schema**, bijvoorbeeld `0 * * * *` voor elk uur |
 | Start | **Pullen bij het starten van de app** kloont de repository, of pullt haar als ze al gekloond is |
-| Instellingenpagina | **Pull** in het menu van de rij, of **Alles pullen** boven de lijst |
+| Instellingenpagina | **Pull** in het menu van de rij, of **Alles pullen** boven de lijst (ernaast pusht **Alles pushen**, vanaf 7.7.0, elke repository met wijzigingen die nog niet gepusht zijn) |
 | Ontwerper | **Laden (repository)**, dat de formulierenrepositories pullt en de ontwerper opnieuw laadt; het nemen van de vergrendeling van de ontwerper pullt ook eerst elke formulierenrepository |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` of `showConnectionsSettings`) of `POST /api/v2/forms-repos/pull/<name>` (zie hieronder) |
 

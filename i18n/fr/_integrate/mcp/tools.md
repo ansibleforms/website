@@ -3,7 +3,7 @@ layout: default
 title: Outils
 parent: Serveur MCP
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Outils
@@ -85,14 +85,16 @@ que l'utilisateur, utilisez `plan_job`. Les noms de planification sont uniques.
 Un job enregistré est l'ensemble des valeurs d'un formulaire enregistré sous un nom ; les outils travaillent sur les mêmes jobs enregistrés que le navigateur.
 
 `list_stored_jobs` liste les jobs enregistrés de l'utilisateur, ou ceux de tout le monde pour un utilisateur avec `showSettings`, avec leur nom, leur description,
-leur formulaire, leur création et leur expiration. Un job marqué `usable` (appartenant à l'utilisateur, d'un formulaire qu'il peut lancer) peut être passé comme `storedJob`
+leur formulaire, leur création et leur expiration, et depuis la 7.7.0 leur dernière utilisation (`lastUsedAt`) et leurs jours sans utilisation avant suppression. Un job marqué `usable` (appartenant à l'utilisateur, d'un formulaire qu'il peut lancer) peut être passé comme `storedJob`
 (`{ "id": 7 }`, ou `{ "name": "..." }` parmi ceux de l'utilisateur pour ce formulaire) à `resolve_field`, `launch_job` ou `plan_job` : ses
 valeurs servent de point de départ et `values` s'y superposent. Les champs mot de passe ne sont pas enregistrés, fournissez-les donc dans `values`.
 `launch_job` et `plan_job` à partir d'un job enregistré ont besoin du `expectedPayloadHash` que `resolve_field` a renvoyé pour lui, et
 `resolve_field` refuse `storedJob` combiné à `subform`.
 
 `store_job` accepte le `form`, un `name` unique parmi les jobs enregistrés de l'utilisateur pour ce formulaire, les `values`, et éventuellement une
-`description` et un `expires_at` (ISO 8601 avec son décalage ou `Z`). Sa réponse indique quels champs mot de passe ont été laissés de côté.
+`description`, un `expires_at` (ISO 8601 avec son décalage ou `Z`) et, depuis la 7.7.0, `unused_days` (au plus
+`STORED_JOB_UNUSED_DAYS` quand il est défini). Sa réponse indique quels champs mot de passe ont été laissés de côté. Un `launch_job` ou `plan_job`
+avec un job enregistré compte comme une [utilisation](../jobs/stored-jobs.html#last-used-and-runs) de celui-ci.
 
 ---
 

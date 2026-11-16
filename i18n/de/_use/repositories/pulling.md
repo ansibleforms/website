@@ -3,7 +3,7 @@ layout: default
 title: Änderungen pullen
 parent: Git-Repositories
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Änderungen pullen
@@ -25,7 +25,7 @@ Ein Repository wird nach seinem Zeitplan, beim Start, von der Seite aus oder üb
 |---|---|
 | Zeitplan | **Geplanten Pull aktivieren** und ein **Pull-Zeitplan**, zum Beispiel `0 * * * *` für jede Stunde |
 | Start | **Beim Start der App pullen** klont das Repository oder pullt es, wenn es schon geklont ist |
-| Einstellungsseite | **Pull** im Zeilenmenü oder **Alle pullen** über der Liste |
+| Einstellungsseite | **Pull** im Zeilenmenü oder **Alle pullen** über der Liste (daneben pusht ab 7.7.0 **Alle pushen** jedes Repository mit noch nicht gepushten Änderungen) |
 | Designer | **Laden (Repository)**, das die Formular-Repositories pullt und den Designer neu lädt; auch das Übernehmen der Designer-Sperre pullt zuerst jedes Formular-Repository |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` oder `showConnectionsSettings`) oder `POST /api/v2/forms-repos/pull/<name>` (siehe unten) |
 

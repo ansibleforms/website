@@ -3,7 +3,7 @@ layout: default
 title: Còpies de seguretat i retenció
 parent: Variables d'entorn
 nav_order: 3
-translated_from: 76f81cfa15eaa98199a3d5963f7adc9a6f8b01dc
+translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
 ---
 
 # Còpies de seguretat i retenció
@@ -28,10 +28,13 @@ Conserva les tasques acabades durant 90 dies i el rastre d'auditoria durant dos 
 ```bash
 JOB_RETENTION_DAYS=90
 AUDIT_RETENTION_DAYS=730
+STORED_JOB_UNUSED_DAYS=180
 ```
 
 Una tasca diària elimina les tasques acabades més antigues que això a les 2:30 de la matinada i les entrades d'auditoria a les 3:30. Una tasca en execució, o una que espera
-aprovació, no s'elimina mai. Totes dues variables s'apliquen sense reiniciar quan es canvien a la pàgina de configuració.
+aprovació, no s'elimina mai. Des de la 7.7.0 `STORED_JOB_UNUSED_DAYS` també elimina, a les 4:00, les [tasques
+desades](../jobs/stored-jobs.html#when-it-is-removed) des de les quals no s'ha llançat cap tasca durant aquests dies. Aquestes variables
+s'apliquen sense reiniciar quan es canvien a la pàgina de configuració.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Strumenti
 parent: Server MCP
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Strumenti
@@ -85,14 +85,16 @@ l'utente, usa `plan_job`. I nomi delle pianificazioni sono univoci.
 Un job salvato sono i valori di un modulo salvati con un nome; gli strumenti lavorano sugli stessi job salvati del browser.
 
 `list_stored_jobs` elenca i job salvati dell'utente, o quelli di tutti per un utente con `showSettings`, con il loro nome, descrizione,
-modulo, creazione e scadenza. Uno contrassegnato come `usable` (dell'utente stesso, di un modulo che può avviare) si può passare come `storedJob`
+modulo, creazione e scadenza, e dalla 7.7.0 il loro ultimo uso (`lastUsedAt`) e i giorni senza uso prima della rimozione. Uno contrassegnato come `usable` (dell'utente stesso, di un modulo che può avviare) si può passare come `storedJob`
 (`{ "id": 7 }`, o `{ "name": "..." }` tra quelli dell'utente per quel modulo) a `resolve_field`, `launch_job` o `plan_job`: i suoi
 valori sono il punto di partenza e `values` vi si sovrappongono. I campi password non vengono salvati, quindi forniscili in `values`.
 `launch_job` e `plan_job` da un job salvato richiedono l'`expectedPayloadHash` che `resolve_field` ha restituito per esso, e
 `resolve_field` rifiuta `storedJob` insieme a `subform`.
 
 `store_job` accetta il `form`, un `name` univoco tra i job salvati dell'utente per quel modulo, i `values`, e facoltativamente una
-`description` e `expires_at` (ISO 8601 con il suo offset o `Z`). La sua risposta dice quali campi password sono stati esclusi.
+`description`, un `expires_at` (ISO 8601 con il suo offset o `Z`) e, dalla 7.7.0, `unused_days` (al massimo
+`STORED_JOB_UNUSED_DAYS` quando è impostata). La sua risposta dice quali campi password sono stati esclusi. Un `launch_job` o `plan_job`
+con un job salvato conta come un [uso](../jobs/stored-jobs.html#last-used-and-runs) di esso.
 
 ---
 

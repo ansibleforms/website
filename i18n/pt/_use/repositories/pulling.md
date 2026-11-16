@@ -3,7 +3,7 @@ layout: default
 title: Fazer pull das alterações
 parent: Repositórios git
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Fazer pull das alterações
@@ -25,7 +25,7 @@ Faz-se pull de um repositório segundo o seu agendamento, no arranque, a partir 
 |---|---|
 | Agendamento | **Ativar o pull agendado** e um **Agendamento do pull**, por exemplo `0 * * * *` para cada hora |
 | Arranque | **Fazer pull ao iniciar a aplicação** clona o repositório, ou faz pull quando já está clonado |
-| Página de definições | **Pull** no menu da linha, ou **Pull de todos** por cima da lista |
+| Página de definições | **Pull** no menu da linha, ou **Pull de todos** por cima da lista (ao lado, a partir da 7.7.0, **Push de todos** faz push de cada repositório com alterações ainda não enviadas) |
 | Designer | **Carregar (repositório)**, que faz pull dos repositórios de formulários e recarrega o designer; obter o bloqueio do designer também faz primeiro pull de todos os repositórios de formulários |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` ou `showConnectionsSettings`) ou `POST /api/v2/forms-repos/pull/<name>` (ver abaixo) |
 

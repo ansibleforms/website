@@ -3,7 +3,7 @@ layout: default
 title: Pobieranie zmian
 parent: Repozytoria git
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Pobieranie zmian
@@ -25,7 +25,7 @@ Pull repozytorium jest wykonywany według jego harmonogramu, przy starcie, ze st
 |---|---|
 | Harmonogram | **Włącz zaplanowany pull** i **Harmonogram pull**, na przykład `0 * * * *` co godzinę |
 | Start | **Pull przy starcie aplikacji** klonuje repozytorium lub wykonuje jego pull, gdy jest już sklonowane |
-| Strona ustawień | **Pull** w menu wiersza lub **Pull wszystkich** nad listą |
+| Strona ustawień | **Pull** w menu wiersza lub **Pull wszystkich** nad listą (obok, od wersji 7.7.0, **Push wszystkich** wykonuje push każdego repozytorium ze zmianami, które nie zostały jeszcze wypchnięte) |
 | Projektant | **Wczytaj (repozytorium)**, które wykonuje pull repozytoriów formularzy i przeładowuje projektant; przejęcie blokady projektanta również najpierw wykonuje pull każdego repozytorium formularzy |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` lub `showConnectionsSettings`) lub `POST /api/v2/forms-repos/pull/<name>` (zobacz niżej) |
 

@@ -3,7 +3,7 @@ layout: default
 title: Traer cambios
 parent: Repositorios git
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Traer cambios
@@ -25,7 +25,7 @@ Se hace pull de un repositorio según su programación, al iniciar, desde la pá
 |---|---|
 | Programación | **Activar el pull programado** y una **Programación del pull**, por ejemplo `0 * * * *` para cada hora |
 | Inicio | **Hacer pull al iniciar la aplicación** clona el repositorio, o hace pull cuando ya está clonado |
-| Página de configuración | **Pull** en el menú de la fila, o **Pull de todos** encima de la lista |
+| Página de configuración | **Pull** en el menú de la fila, o **Pull de todos** encima de la lista (a su lado, desde la 7.7.0, **Push de todos** hace push de cada repositorio con cambios aún sin enviar) |
 | Diseñador | **Cargar (repositorio)**, que hace pull de los repositorios de formularios y recarga el diseñador; tomar el bloqueo del diseñador también hace antes pull de todos los repositorios de formularios |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` o `showConnectionsSettings`) o `POST /api/v2/forms-repos/pull/<name>` (ver abajo) |
 

@@ -3,7 +3,7 @@ layout: default
 title: ツール
 parent: MCP サーバー
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # ツール
@@ -85,14 +85,14 @@ MCP サーバーは最大 15 個のツールを提供します。6 個はすべ�
 保存済みジョブは、フォームの値を名前を付けて保存したものです。ツールはブラウザーと同じ保存済みジョブを扱います。
 
 `list_stored_jobs` は、ユーザー自身の保存済みジョブを、 `showSettings` を持つユーザーにはすべての人の保存済みジョブを、名前、説明、
-フォーム、作成日時、有効期限とともに一覧表示します。 `usable` と表示されたもの（ユーザー自身のもので、起動できるフォームのもの）は、
+フォーム、作成日時、有効期限、そして 7.7.0 からは最終使用日時 ( `lastUsedAt` ) と削除までの未使用日数とともに一覧表示します。 `usable` と表示されたもの（ユーザー自身のもので、起動できるフォームのもの）は、
 `storedJob` （ `{ "id": 7 }` 、またはそのフォームのユーザー自身のものの中から `{ "name": "..." }` ）として `resolve_field` 、 `launch_job` 、 `plan_job` に渡せます。
 その値が出発点になり、 `values` がその上に重ねられます。パスワードフィールドは保存されないため、 `values` で指定してください。
 保存済みジョブからの `launch_job` と `plan_job` には、 `resolve_field` がそれに対して返した `expectedPayloadHash` が必要です。また、
 `resolve_field` は `storedJob` と `subform` を一緒に指定すると拒否します。
 
 `store_job` は `form` 、そのフォームのユーザーの保存済みジョブの中で一意な `name` 、 `values` 、そして省略可能な
-`description` と `expires_at` （オフセットまたは `Z` 付きの ISO 8601）を受け取ります。応答では、どのパスワードフィールドが除外されたかを示します。
+`description` 、 `expires_at` （オフセットまたは `Z` 付きの ISO 8601）、そして 7.7.0 からは `unused_days` （ `STORED_JOB_UNUSED_DAYS` が設定されている場合はその値以下）を受け取ります。応答では、どのパスワードフィールドが除外されたかを示します。保存済みジョブを指定した `launch_job` や `plan_job` は、その保存済みジョブの [使用](../jobs/stored-jobs.html#last-used-and-runs) として数えられます。
 
 ---
 

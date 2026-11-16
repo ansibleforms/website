@@ -3,7 +3,7 @@ layout: default
 title: Fare il pull delle modifiche
 parent: Repository Git
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Fare il pull delle modifiche
@@ -25,7 +25,7 @@ Il pull di un repository avviene secondo la sua pianificazione, all'avvio, dalla
 |---|---|
 | Pianificazione | **Attiva il pull pianificato** e una **Pianificazione del pull**, per esempio `0 * * * *` per ogni ora |
 | Avvio | **Pull all'avvio dell'app** clona il repository, o ne fa il pull se è già clonato |
-| Pagina delle impostazioni | **Pull** nel menu della riga, o **Pull di tutti** sopra l'elenco |
+| Pagina delle impostazioni | **Pull** nel menu della riga, o **Pull di tutti** sopra l'elenco (accanto, dalla 7.7.0, **Push di tutti** fa il push di ogni repository con modifiche non ancora inviate) |
 | Designer | **Carica (repository)**, che fa il pull dei repository dei moduli e ricarica il designer; anche prendere il blocco del designer fa prima il pull di ogni repository di moduli |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` o `showConnectionsSettings`) oppure `POST /api/v2/forms-repos/pull/<name>` (vedi sotto) |
 

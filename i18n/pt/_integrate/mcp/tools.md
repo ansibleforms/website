@@ -3,7 +3,7 @@ layout: default
 title: Ferramentas
 parent: Servidor MCP
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Ferramentas
@@ -85,14 +85,16 @@ o utilizador, use `plan_job`. Os nomes dos agendamentos são únicos.
 Uma tarefa guardada são os valores de um formulário guardados com um nome; as ferramentas trabalham sobre as mesmas tarefas guardadas que o navegador.
 
 `list_stored_jobs` lista as tarefas guardadas do próprio utilizador, ou as de toda a gente para um utilizador com `showSettings`, com o seu nome, descrição,
-formulário, criação e expiração. Uma marcada como `usable` (do próprio utilizador, de um formulário que pode lançar) pode ser passada como `storedJob`
+formulário, criação e expiração, e a partir da 7.7.0 a sua última utilização (`lastUsedAt`) e os seus dias sem uso antes de ser removida. Uma marcada como `usable` (do próprio utilizador, de um formulário que pode lançar) pode ser passada como `storedJob`
 (`{ "id": 7 }`, ou `{ "name": "..." }` entre as do próprio utilizador desse formulário) a `resolve_field`, `launch_job` ou `plan_job`: os seus
 valores são o ponto de partida e os `values` são sobrepostos. Os campos de palavra-passe não são guardados, por isso forneça-os em `values`.
 `launch_job` e `plan_job` a partir de uma tarefa guardada precisam do `expectedPayloadHash` que `resolve_field` devolveu para ela, e
 `resolve_field` recusa `storedJob` em conjunto com `subform`.
 
 `store_job` aceita o `form`, um `name` único entre as tarefas guardadas do utilizador para esse formulário, os `values` e, opcionalmente, uma
-`description` e `expires_at` (ISO 8601 com o seu desvio ou `Z`). A sua resposta indica que campos de palavra-passe ficaram de fora.
+`description`, um `expires_at` (ISO 8601 com o seu desvio ou `Z`) e, a partir da 7.7.0, `unused_days` (no máximo
+`STORED_JOB_UNUSED_DAYS` quando está definida). A sua resposta indica que campos de palavra-passe ficaram de fora. Um `launch_job` ou `plan_job`
+com uma tarefa guardada conta como uma [utilização](../jobs/stored-jobs.html#last-used-and-runs) dela.
 
 ---
 
