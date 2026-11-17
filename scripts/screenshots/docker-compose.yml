@@ -10,7 +10,7 @@ x-database: &database
   ENCRYPTION_SECRET: Screenshots!Encryption!Secret!1
 services:
   db:
-    image: mysql:8.4
+    image: mysql:9.7
     environment:
       MYSQL_ROOT_PASSWORD: Screenshots!123
     healthcheck:
