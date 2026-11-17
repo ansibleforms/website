@@ -54,6 +54,67 @@ python libraries always go into the image. Baking everything in is reproducible 
 
 ---
 
+## Build it in the Designer
+
+From 7.8.0 you describe a runtime environment in the Designer; a [builder](builder.html) builds its image, pushes and signs it.
+
+1. Give a repository the **Runtime environments** usage (Settings > Repositories); it holds the definitions.
+2. In the Designer, open **Runtime environments** and click **New**: fill it in on the **Visual** tab, or write it on the **YAML** tab.
+3. **Save**, then **Push** to commit it to the repository, and **Build**: the build is a job on the **Jobs** page, its log live.
+
+Each runtime environment is a folder of its own in the repository, named after it, that holds only its definition:
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+The Dockerfile, `ansible.cfg` and the requirements files are written again for every build, from the definition and the app's
+release, so they never go stale in the repository. The **Files** tab shows them as the builder gets them.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+Every key but the name can be left out; the **YAML** tab's toolbar sets each part in a dialog.
+
+| Key | What it is |
+|---|---|
+| `name` | The runtime environment's name, its folder's and its image's: lower case letters, digits, dots, dashes and underscores |
+| `arch` | `all`, one image for amd64 and arm64 as the published ones, or `amd64` or `arm64` alone; `all` when left out. An architecture other than the builder host's needs [QEMU on that host](builder.html#amd64-and-arm64) |
+| `python` | The python the image runs, from 3.11 to 3.15; 3.15 when left out |
+| `ansible_core` | An ansible-core release (`2.22`) or version (`2.22.0`) that runs on that python; the newest one that does when left out |
+| `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out. What each collection needs itself, its `requirements.txt` and `bindep.txt` (or its `meta/execution-environment.yml`), is installed with it, as ansible-builder does |
+| `python_packages` | Python packages, as lines of a `requirements.txt` |
+| `os_packages` | Debian 13 (trixie) packages |
+| `registry` | `credential`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade, or a tag of your own |
+| `sbom` | `true` attaches a software bill of materials to the image |
+| `sign` | `credential`: a **Signing key** credential, with which the builder signs the image with cosign 3; check it with cosign 3's `cosign verify --key <public key>` (cosign 2 does not read its signatures) |
+
+Every runtime environment is built from `ansibleforms-rte-base` of the app's release, so one tagged `app` whose image was built
+for an older release is shown as such on the **Runtime environments** page, with **Rebuild them**.
+
+---
+
 ## The contract
 
 What the app and an RTE must share is their contract, a number both report. An RTE of an older release keeps working with a newer
