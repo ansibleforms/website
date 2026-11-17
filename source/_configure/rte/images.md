@@ -103,7 +103,7 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | `arch` | `all`, one image for amd64 and arm64 as the published ones, or `amd64` or `arm64` alone; `all` when left out. An architecture other than the builder host's needs [QEMU on that host](builder.html#amd64-and-arm64) |
 | `python` | The python the image runs, from 3.11 to 3.15; 3.15 when left out |
 | `ansible_core` | An ansible-core release (`2.22`) or version (`2.22.0`) that runs on that python; the newest one that does when left out |
-| `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out |
+| `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out. What each collection needs itself, its `requirements.txt` and `bindep.txt` (or its `meta/execution-environment.yml`), is installed with it, as ansible-builder does |
 | `python_packages` | Python packages, as lines of a `requirements.txt` |
 | `os_packages` | Debian 13 (trixie) packages |
 | `registry` | `credential`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade, or a tag of your own |
