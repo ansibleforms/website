@@ -8,7 +8,7 @@ nav_order: 6
 # The RTE builder
 {: .no_toc }
 
-Run the builder that builds and pushes the RTE images the Designer defines
+Run the builder that builds the Designer's runtime environments
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -21,11 +21,11 @@ Run the builder that builds and pushes the RTE images the Designer defines
 The RTE builder is a small product of its own, [ansibleforms/builder](https://github.com/ansibleforms/builder), released with every AnsibleForms release at the same version.
 
 It is added as a runner is, under **Settings > Connections > Builders**, and dials the controller with its name and token.
-When someone builds an RTE image, the controller writes its Dockerfile and hands the build to a builder that is online,
-with the registry login and the signing key sealed for that builder. The builder builds it with BuildKit, pushes it, signs it when asked,
+When someone builds a runtime environment, the controller writes its Dockerfile and hands the build to a builder that is online,
+with the registry login and the signing key sealed for that builder. The builder builds its image with BuildKit, pushes it, signs it when asked,
 and streams the build's log back as a job on the **Jobs** page.
 
-A builder needs a controller with RTE images, AnsibleForms 7.8.0 or later. It never reads the controller's database nor its repositories, and runs no playbook.
+A builder needs a controller with runtime environments, AnsibleForms 7.8.0 or later. It never reads the controller's database nor its repositories, and runs no playbook.
 
 ---
 

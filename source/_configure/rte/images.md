@@ -56,13 +56,13 @@ python libraries always go into the image. Baking everything in is reproducible 
 
 ## Build it in the Designer
 
-From 7.8.0 you describe an RTE in the Designer and a [builder](builder.html) builds it, pushes it to your registry and signs it.
+From 7.8.0 you describe a runtime environment in the Designer; a [builder](builder.html) builds its image, pushes and signs it.
 
-1. Give a repository the **RTE images** usage (Settings > Repositories); it holds the definitions.
-2. In the Designer, open **RTE images** and click **New**: fill in the image on the **Visual** tab, or write it on the **YAML** tab.
+1. Give a repository the **Runtime environments** usage (Settings > Repositories); it holds the definitions.
+2. In the Designer, open **Runtime environments** and click **New**: fill it in on the **Visual** tab, or write it on the **YAML** tab.
 3. **Save**, then **Push** to commit it to the repository, and **Build**: the build is a job on the **Jobs** page, its log live.
 
-Each image is a folder of its own in the repository, named after it, that holds only its definition:
+Each runtime environment is a folder of its own in the repository, named after it, that holds only its definition:
 
 ```text
 rte-netapp/
@@ -98,7 +98,7 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 
 | Key | What it is |
 |---|---|
-| `name` | The image's name and its folder's: lower case letters, digits, dots, dashes and underscores |
+| `name` | The runtime environment's name, its folder's and its image's: lower case letters, digits, dots, dashes and underscores |
 | `python` | The python the image runs, from 3.11 to 3.15; 3.14 when left out |
 | `ansible_core` | An ansible-core release (`2.22`) or version (`2.22.0`) that runs on that python; the newest one that does when left out |
 | `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out |
@@ -108,8 +108,8 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | `sbom` | `true` attaches a software bill of materials to the image |
 | `sign` | `credential`: a **Signing key** credential, with which the builder signs the image with cosign |
 
-Every image is built from `ansibleforms-rte-base` of the app's release, so an image tagged `app` built for an older release
-is shown as such on the **RTE images** page, with **Rebuild all**.
+Every runtime environment is built from `ansibleforms-rte-base` of the app's release, so one tagged `app` whose image was built
+for an older release is shown as such on the **Runtime environments** page, with **Rebuild them**.
 
 ---
 
