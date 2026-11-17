@@ -106,7 +106,7 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | `os_packages` | Debian 13 (trixie) packages |
 | `registry` | `credential`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade, or a tag of your own |
 | `sbom` | `true` attaches a software bill of materials to the image |
-| `sign` | `credential`: a **Signing key** credential, with which the builder signs the image with cosign |
+| `sign` | `credential`: a **Signing key** credential, with which the builder signs the image with cosign 3; check it with cosign 3's `cosign verify --key <public key>` (cosign 2 does not read its signatures) |
 
 Every runtime environment is built from `ansibleforms-rte-base` of the app's release, so one tagged `app` whose image was built
 for an older release is shown as such on the **Runtime environments** page, with **Rebuild them**.
