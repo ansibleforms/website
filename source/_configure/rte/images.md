@@ -76,7 +76,8 @@ release, so they never go stale in the repository. The **Files** tab shows them 
 runner_rte:
   - name: rte-netapp
     description: NetApp playbooks of the storage team
-    python: "3.14"
+    arch: all
+    python: "3.15"
     ansible_core: "2.22"
     ansible_collections:
       - name: netapp.ontap
@@ -99,7 +100,8 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | Key | What it is |
 |---|---|
 | `name` | The runtime environment's name, its folder's and its image's: lower case letters, digits, dots, dashes and underscores |
-| `python` | The python the image runs, from 3.11 to 3.15; 3.14 when left out |
+| `arch` | `all`, one image for amd64 and arm64 as the published ones, or `amd64` or `arm64` alone; `all` when left out. An architecture other than the builder host's needs [QEMU on that host](builder.html#amd64-and-arm64) |
+| `python` | The python the image runs, from 3.11 to 3.15; 3.15 when left out |
 | `ansible_core` | An ansible-core release (`2.22`) or version (`2.22.0`) that runs on that python; the newest one that does when left out |
 | `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out |
 | `python_packages` | Python packages, as lines of a `requirements.txt` |

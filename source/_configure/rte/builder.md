@@ -79,6 +79,21 @@ volumes:
 
 ---
 
+## amd64 and arm64
+
+A runtime environment's `arch` says what it is built for: `all` (the default) makes one image for amd64 and arm64.
+The builder builds its host's own architecture natively; the other one is emulated with QEMU, which the host needs registered once:
+
+```bash
+docker run --privileged --rm tonistiigi/binfmt --install all
+```
+
+Run it again after the host restarts, or start it with the host. Emulated builds are slower, often several times, when pip compiles
+a package that has no wheel for that architecture. Without QEMU, a build that needs it stops and says so: set the runtime environment's
+`arch` to the host's own, or register QEMU. On Kubernetes, register it on the nodes the builder runs on.
+
+---
+
 ## Kubernetes
 
 A Deployment with one replica per builder, in a pod whose security context allows its user namespaces.
