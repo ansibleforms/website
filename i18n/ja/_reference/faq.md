@@ -587,7 +587,7 @@ wizard:
 * `__credentials__` という extravar を使う
 
 ```yaml
-# assume you have 2 credentials created in Ansible Forms
+# assume you have 2 credentials created in AnsibleForms
 # 1: vcenter
 # 2: ad
 
