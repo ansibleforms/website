@@ -587,7 +587,7 @@ Les identifiants peuvent être transmis de plusieurs façons :
 * avec une extravar appelée `__credentials__`
 
 ```yaml
-# assume you have 2 credentials created in Ansible Forms
+# assume you have 2 credentials created in AnsibleForms
 # 1: vcenter
 # 2: ad
 

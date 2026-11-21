@@ -587,7 +587,7 @@ Anmeldedaten lassen sich auf mehrere Arten übergeben:
 * mit einer Extravar namens `__credentials__`
 
 ```yaml
-# assume you have 2 credentials created in Ansible Forms
+# assume you have 2 credentials created in AnsibleForms
 # 1: vcenter
 # 2: ad
 
