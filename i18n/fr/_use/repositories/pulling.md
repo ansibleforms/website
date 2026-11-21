@@ -3,7 +3,7 @@ layout: default
 title: Récupérer les modifications
 parent: Dépôts git
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Récupérer les modifications
@@ -25,7 +25,7 @@ Un pull d'un dépôt se fait selon sa planification, au démarrage, depuis la pa
 |---|---|
 | Planification | **Activer le pull planifié** et une **Planification du pull**, par exemple `0 * * * *` pour toutes les heures |
 | Démarrage | **Pull au démarrage de l'application** clone le dépôt, ou fait un pull s'il est déjà cloné |
-| Page des paramètres | **Pull** dans le menu de la ligne, ou **Tout puller** au-dessus de la liste |
+| Page des paramètres | **Pull** dans le menu de la ligne, ou **Tout puller** au-dessus de la liste (à côté, depuis la 7.7.0, **Tout pousser** pousse chaque dépôt ayant des modifications pas encore poussées) |
 | Concepteur | **Charger (dépôt)**, qui fait un pull des dépôts de formulaires et recharge le concepteur ; prendre le verrou du concepteur fait aussi d'abord un pull de tous les dépôts de formulaires |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` ou `showConnectionsSettings`) ou `POST /api/v2/forms-repos/pull/<name>` (voir ci-dessous) |
 

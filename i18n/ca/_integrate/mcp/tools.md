@@ -3,7 +3,7 @@ layout: default
 title: Eines
 parent: Servidor MCP
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Eines
@@ -85,14 +85,16 @@ l'usuari, fes servir `plan_job`. Els noms de les programacions són únics.
 Una tasca desada són els valors d'un formulari guardats amb un nom; les eines treballen amb les mateixes tasques desades que el navegador.
 
 `list_stored_jobs` llista les tasques desades de l'usuari, o les de tothom per a un usuari amb `showSettings`, amb el nom, la descripció,
-el formulari, la creació i la caducitat. Una de marcada com a `usable` (de l'usuari mateix, d'un formulari que pot llançar) es pot passar com a `storedJob`
+el formulari, la creació i la caducitat, i des de la 7.7.0 el seu últim ús (`lastUsedAt`) i els seus dies sense ús abans que s'elimini. Una de marcada com a `usable` (de l'usuari mateix, d'un formulari que pot llançar) es pot passar com a `storedJob`
 (`{ "id": 7 }`, o `{ "name": "..." }` entre les de l'usuari d'aquell formulari) a `resolve_field`, `launch_job` o `plan_job`: els seus
 valors són el punt de partida i `values` s'hi superposa. Els camps de contrasenya no es desen, així que proporciona'ls a `values`.
 `launch_job` i `plan_job` a partir d'una tasca desada necessiten l'`expectedPayloadHash` que `resolve_field` hi ha retornat, i
 `resolve_field` rebutja `storedJob` juntament amb `subform`.
 
 `store_job` accepta el `form`, un `name` únic entre les tasques desades de l'usuari d'aquell formulari, els `values` i, opcionalment, una
-`description` i `expires_at` (ISO 8601 amb el seu desplaçament o `Z`). La resposta indica quins camps de contrasenya s'han deixat fora.
+`description`, un `expires_at` (ISO 8601 amb el seu desplaçament o `Z`) i, des de la 7.7.0, `unused_days` (com a màxim
+`STORED_JOB_UNUSED_DAYS` quan està definida). La resposta indica quins camps de contrasenya s'han deixat fora. Un `launch_job` o `plan_job`
+amb una tasca desada compta com un [ús](../jobs/stored-jobs.html#last-used-and-runs) d'aquesta.
 
 ---
 

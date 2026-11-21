@@ -3,7 +3,7 @@ layout: default
 title: Fer pull dels canvis
 parent: Repositoris Git
 nav_order: 3
-translated_from: 1246850e9b868af155c96ce8f3f5d55f0464fb6e
+translated_from: 76e0278523049a24fef4c509a02082c3405cfa5b
 ---
 
 # Fer pull dels canvis
@@ -25,7 +25,7 @@ Es fa pull d'un repositori segons la seva programació, en arrencar, des de la p
 |---|---|
 | Programació | **Activa el pull programat** i una **Programació del pull**, per exemple `0 * * * *` per a cada hora |
 | Arrencada | **Fes pull en iniciar l'aplicació** clona el repositori, o en fa pull quan ja està clonat |
-| Pàgina de configuració | **Pull** al menú de la fila, o **Pull de tots** a sobre de la llista |
+| Pàgina de configuració | **Pull** al menú de la fila, o **Pull de tots** a sobre de la llista (al costat, des de la 7.7.0, **Push de tots** fa push de cada repositori amb canvis encara sense enviar) |
 | Dissenyador | **Carrega (repositori)**, que fa pull dels repositoris de formularis i recarrega el dissenyador; obtenir el bloqueig del dissenyador també fa primer pull de tots els repositoris de formularis |
 | API | `POST /api/v2/repository/<name>/pull` (`showSettings` o `showConnectionsSettings`) o `POST /api/v2/forms-repos/pull/<name>` (vegeu més avall) |
 

@@ -3,7 +3,7 @@ layout: default
 title: Narzędzia
 parent: Serwer MCP
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Narzędzia
@@ -85,14 +85,16 @@ użytkownik, użyj `plan_job`. Nazwy harmonogramów są unikalne.
 Zapisane zadanie to wartości formularza zapisane pod nazwą; narzędzia działają na tych samych zapisanych zadaniach co przeglądarka.
 
 `list_stored_jobs` wyświetla własne zapisane zadania użytkownika albo zadania wszystkich dla użytkownika z `showSettings`, z ich nazwą, opisem,
-formularzem, datą utworzenia i wygaśnięcia. Zadanie oznaczone jako `usable` (własne zadanie użytkownika, z formularza, który może on uruchomić) można przekazać jako `storedJob`
+formularzem, datą utworzenia i wygaśnięcia, a od wersji 7.7.0 także ostatnim użyciem (`lastUsedAt`) i liczbą dni bez użycia przed usunięciem. Zadanie oznaczone jako `usable` (własne zadanie użytkownika, z formularza, który może on uruchomić) można przekazać jako `storedJob`
 (`{ "id": 7 }` lub `{ "name": "..." }` spośród własnych zadań użytkownika z tego formularza) do `resolve_field`, `launch_job` lub `plan_job`: jego
 wartości są punktem wyjścia, a `values` są nakładane na nie. Pola haseł nie są zapisywane, więc podaj je w `values`.
 `launch_job` i `plan_job` z zapisanego zadania wymagają `expectedPayloadHash`, który zwróciło dla niego `resolve_field`, a
 `resolve_field` odrzuca `storedJob` razem z `subform`.
 
 `store_job` przyjmuje `form`, `name` unikalną wśród zapisanych zadań użytkownika z tego formularza, `values` oraz opcjonalnie
-`description` i `expires_at` (ISO 8601 z przesunięciem lub `Z`). Odpowiedź mówi, które pola haseł zostały pominięte.
+`description`, `expires_at` (ISO 8601 z przesunięciem lub `Z`) i, od wersji 7.7.0, `unused_days` (najwyżej
+`STORED_JOB_UNUSED_DAYS`, gdy jest ustawiona). Odpowiedź mówi, które pola haseł zostały pominięte. `launch_job` lub `plan_job`
+z zapisanym zadaniem liczy się jako jego [użycie](../jobs/stored-jobs.html#last-used-and-runs).
 
 ---
 

@@ -19,7 +19,8 @@
   title: Backups and retention
   lead: the backup commands, the backup before an upgrade, and how long backups, jobs and audit records are kept
   vars: [MYSQLDUMP_COMMAND, MYSQL_COMMAND, BACKUP_COMMAND_TIMEOUT_SECONDS, UPGRADE_BACKUP, OLD_BACKUP_DAYS,
-         NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
+         NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS,
+         STORED_JOB_UNUSED_DAYS]
 - slug: features
   title: Features
   lead: the designer, MCP, chat, launch validation, the jobs list, metrics, the AWX API and query logging

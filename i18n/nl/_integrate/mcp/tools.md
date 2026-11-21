@@ -3,7 +3,7 @@ layout: default
 title: Tools
 parent: MCP-server
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Tools
@@ -85,14 +85,16 @@ de gebruiker uit te voeren, gebruik je `plan_job`. Namen van planningen zijn uni
 Een opgeslagen job is een set waarden van een formulier, opgeslagen onder een naam; de tools werken op dezelfde opgeslagen jobs als de browser.
 
 `list_stored_jobs` toont de eigen opgeslagen jobs van de gebruiker, of die van iedereen voor een gebruiker met `showSettings`, met hun naam, beschrijving,
-formulier, aanmaakdatum en vervaldatum. Een job gemarkeerd als `usable` (van de gebruiker zelf, van een formulier dat hij mag starten) kan worden meegegeven als `storedJob`
+formulier, aanmaakdatum en vervaldatum, en vanaf 7.7.0 hun laatste gebruik (`lastUsedAt`) en hun dagen ongebruikt voordat ze verwijderd worden. Een job gemarkeerd als `usable` (van de gebruiker zelf, van een formulier dat hij mag starten) kan worden meegegeven als `storedJob`
 (`{ "id": 7 }`, of `{ "name": "..." }` onder de eigen jobs van de gebruiker voor dat formulier) aan `resolve_field`, `launch_job` of `plan_job`: de
 waarden ervan zijn het startpunt en `values` worden eroverheen gelegd. Wachtwoordvelden worden niet opgeslagen, dus geef ze mee in `values`.
 `launch_job` en `plan_job` vanuit een opgeslagen job hebben de `expectedPayloadHash` nodig die `resolve_field` ervoor teruggaf, en
 `resolve_field` weigert `storedJob` samen met `subform`.
 
 `store_job` neemt het `form`, een `name` die uniek is onder de opgeslagen jobs van de gebruiker voor dat formulier, de `values`, en eventueel een
-`description` en `expires_at` (ISO 8601 met de offset of `Z`). Het antwoord zegt welke wachtwoordvelden zijn weggelaten.
+`description`, een `expires_at` (ISO 8601 met de offset of `Z`) en, vanaf 7.7.0, `unused_days` (hoogstens
+`STORED_JOB_UNUSED_DAYS` als die is ingesteld). Het antwoord zegt welke wachtwoordvelden zijn weggelaten. Een `launch_job` of `plan_job`
+met een opgeslagen job telt als [gebruik](../jobs/stored-jobs.html#last-used-and-runs) van die opgeslagen job.
 
 ---
 

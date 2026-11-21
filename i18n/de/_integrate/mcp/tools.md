@@ -3,7 +3,7 @@ layout: default
 title: Tools
 parent: MCP-Server
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Tools
@@ -85,14 +85,16 @@ der Benutzer auszuführen, verwenden Sie `plan_job`. Zeitplannamen sind eindeuti
 Ein gespeicherter Job sind die unter einem Namen gespeicherten Werte eines Formulars; die Tools arbeiten auf denselben gespeicherten Jobs wie der Browser.
 
 `list_stored_jobs` listet die eigenen gespeicherten Jobs des Benutzers auf, oder die aller für einen Benutzer mit `showSettings`, mit ihrem Namen, ihrer Beschreibung,
-ihrem Formular, ihrer Erstellung und ihrem Ablauf. Einer, der als `usable` markiert ist (ein eigener des Benutzers, zu einem Formular, das er starten darf), lässt sich als `storedJob`
+ihrem Formular, ihrer Erstellung und ihrem Ablauf, und ab 7.7.0 mit ihrer letzten Verwendung (`lastUsedAt`) und ihren Tagen ohne Nutzung bis zur Entfernung. Einer, der als `usable` markiert ist (ein eigener des Benutzers, zu einem Formular, das er starten darf), lässt sich als `storedJob`
 (`{ "id": 7 }` oder `{ "name": "..." }` unter den eigenen des Benutzers für dieses Formular) an `resolve_field`, `launch_job` oder `plan_job` übergeben: seine
 Werte sind der Ausgangspunkt, und `values` werden darübergelegt. Passwortfelder werden nicht gespeichert, geben Sie sie daher in `values` an.
 `launch_job` und `plan_job` aus einem gespeicherten Job brauchen den `expectedPayloadHash`, den `resolve_field` dafür zurückgegeben hat, und
 `resolve_field` lehnt `storedJob` zusammen mit `subform` ab.
 
 `store_job` nimmt das `form`, einen `name`, der unter den gespeicherten Jobs des Benutzers für dieses Formular eindeutig ist, die `values` und optional eine
-`description` und `expires_at` (ISO 8601 mit seinem Offset oder `Z`). Seine Antwort sagt, welche Passwortfelder weggelassen wurden.
+`description`, ein `expires_at` (ISO 8601 mit seinem Offset oder `Z`) und ab 7.7.0 `unused_days` (höchstens
+`STORED_JOB_UNUSED_DAYS`, wenn es gesetzt ist). Seine Antwort sagt, welche Passwortfelder weggelassen wurden. Ein `launch_job` oder `plan_job`
+mit einem gespeicherten Job zählt als [Verwendung](../jobs/stored-jobs.html#last-used-and-runs) davon.
 
 ---
 

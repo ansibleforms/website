@@ -3,7 +3,7 @@ layout: default
 title: 工具
 parent: MCP 服务器
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # 工具
@@ -85,14 +85,14 @@ MCP 服务器最多提供 15 个工具。其中 6 个提供给每个用户；其
 保存的作业是以某个名称保存的表单值；这些工具操作的是与浏览器中相同的保存的作业。
 
 `list_stored_jobs` 列出用户自己的保存的作业，对于拥有 `showSettings` 的用户则列出所有人的，包括其名称、描述、
-表单、创建时间和过期时间。标记为 `usable` 的作业（用户自己的、属于其可启动表单的）可以作为 `storedJob`
+表单、创建时间和过期时间，以及从 7.7.0 起的最后使用时间（`lastUsedAt`）和删除前的未使用天数。标记为 `usable` 的作业（用户自己的、属于其可启动表单的）可以作为 `storedJob`
 （`{ "id": 7 }`，或在该表单中用户自己的作业里用 `{ "name": "..." }`）传给 `resolve_field`、`launch_job` 或 `plan_job`：其
 值作为起点，`values` 覆盖在其上。密码字段不会被保存，因此请在 `values` 中提供它们。
 从保存的作业执行 `launch_job` 和 `plan_job` 时，需要 `resolve_field` 为其返回的 `expectedPayloadHash`，并且
 `resolve_field` 会拒绝同时带有 `storedJob` 和 `subform` 的请求。
 
 `store_job` 接受 `form`、在该表单的用户保存的作业中唯一的 `name`、`values`，以及可选的
-`description` 和 `expires_at`（带有时区偏移或 `Z` 的 ISO 8601）。其响应会说明哪些密码字段被略去了。
+`description`、`expires_at`（带有时区偏移或 `Z` 的 ISO 8601），以及从 7.7.0 起的 `unused_days`（设置了 `STORED_JOB_UNUSED_DAYS` 时最多为该值）。其响应会说明哪些密码字段被略去了。带有保存的作业的 `launch_job` 或 `plan_job` 算作对它的一次[使用](../jobs/stored-jobs.html#last-used-and-runs)。
 
 ---
 

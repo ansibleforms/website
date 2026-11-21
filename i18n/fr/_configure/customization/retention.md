@@ -3,7 +3,7 @@ layout: default
 title: Sauvegardes et conservation
 parent: Variables d'environnement
 nav_order: 3
-translated_from: 76f81cfa15eaa98199a3d5963f7adc9a6f8b01dc
+translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
 ---
 
 # Sauvegardes et conservation
@@ -28,10 +28,13 @@ Conserver les jobs terminés pendant 90 jours et la piste d'audit pendant deux a
 ```bash
 JOB_RETENTION_DAYS=90
 AUDIT_RETENTION_DAYS=730
+STORED_JOB_UNUSED_DAYS=180
 ```
 
 Une tâche quotidienne supprime les jobs terminés plus anciens que cela à 2 h 30 et les entrées d'audit à 3 h 30. Un job en cours, ou un job qui attend une
-approbation, n'est jamais supprimé. Les deux variables s'appliquent sans redémarrage quand elles sont modifiées sur la page de paramètres.
+approbation, n'est jamais supprimé. Depuis la 7.7.0, `STORED_JOB_UNUSED_DAYS` supprime aussi, à 4 h 00, les [jobs
+enregistrés](../jobs/stored-jobs.html#when-it-is-removed) depuis lesquels aucun job n'a été lancé pendant ce nombre de jours. Ces variables
+s'appliquent sans redémarrage quand elles sont modifiées sur la page de paramètres.
 
 ---
 

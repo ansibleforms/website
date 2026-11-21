@@ -3,7 +3,7 @@ layout: default
 title: Copias de seguridad y retención
 parent: Variables de entorno
 nav_order: 3
-translated_from: 76f81cfa15eaa98199a3d5963f7adc9a6f8b01dc
+translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
 ---
 
 # Copias de seguridad y retención
@@ -28,10 +28,13 @@ Conserva los trabajos terminados durante 90 días y el registro de auditoría du
 ```bash
 JOB_RETENTION_DAYS=90
 AUDIT_RETENTION_DAYS=730
+STORED_JOB_UNUSED_DAYS=180
 ```
 
 Una tarea diaria elimina los trabajos terminados más antiguos que esto a las 2:30 y las entradas de auditoría a las 3:30. Un trabajo en ejecución, o uno que espera
-aprobación, nunca se elimina. Ambas variables se aplican sin reiniciar cuando se cambian en la página de configuración.
+aprobación, nunca se elimina. Desde la 7.7.0 `STORED_JOB_UNUSED_DAYS` también elimina, a las 4:00, los [trabajos
+guardados](../jobs/stored-jobs.html#when-it-is-removed) desde los que no se ha lanzado ningún trabajo durante esos días. Estas variables
+se aplican sin reiniciar cuando se cambian en la página de configuración.
 
 ---
 

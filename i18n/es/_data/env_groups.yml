@@ -19,7 +19,8 @@
   title: Copias de seguridad y retención
   lead: los comandos de copia de seguridad, la copia antes de una actualización y cuánto tiempo se conservan las copias, los trabajos y los registros de auditoría
   vars: [MYSQLDUMP_COMMAND, MYSQL_COMMAND, BACKUP_COMMAND_TIMEOUT_SECONDS, UPGRADE_BACKUP, OLD_BACKUP_DAYS,
-         NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS]
+         NIGHTLY_BACKUP_RETENTION, AUDIT_RETENTION_DAYS, JOB_RETENTION_DAYS,
+         STORED_JOB_UNUSED_DAYS]
 - slug: features
   title: Funciones
   lead: el diseñador, MCP, el chat, la validación del lanzamiento, la lista de trabajos, las métricas, la API de AWX y el registro de consultas

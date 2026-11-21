@@ -84,14 +84,16 @@ the user, use `plan_job`. Schedule names are unique.
 A stored job is a form's values saved under a name; the tools work on the same stored jobs as the browser.
 
 `list_stored_jobs` lists the user's own stored jobs, or everyone's for a user with `showSettings`, with their name, description,
-form, creation and expiry. One marked `usable` (the user's own, of a form they may launch) can be passed as `storedJob`
+form, creation and expiry, and from 7.7.0 its last use (`lastUsedAt`) and its days unused before it is removed. One marked `usable` (the user's own, of a form they may launch) can be passed as `storedJob`
 (`{ "id": 7 }`, or `{ "name": "..." }` among the user's own of that form) to `resolve_field`, `launch_job` or `plan_job`: its
 values are the starting point and `values` are laid over them. Password fields are not stored, so supply them in `values`.
 `launch_job` and `plan_job` from a stored job need the `expectedPayloadHash` that `resolve_field` returned for it, and
 `resolve_field` refuses `storedJob` together with `subform`.
 
 `store_job` takes the `form`, a `name` unique among the user's stored jobs of that form, the `values`, and optionally a
-`description` and `expires_at` (ISO 8601 with its offset or `Z`). Its answer says which password fields were left out.
+`description`, an `expires_at` (ISO 8601 with its offset or `Z`) and, from 7.7.0, `unused_days` (at most
+`STORED_JOB_UNUSED_DAYS` when it is set). Its answer says which password fields were left out. A `launch_job` or `plan_job`
+with a stored job counts as a [use](../jobs/stored-jobs.html#last-used-and-runs) of it.
 
 ---
 

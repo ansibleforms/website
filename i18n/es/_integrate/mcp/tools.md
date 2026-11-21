@@ -3,7 +3,7 @@ layout: default
 title: Herramientas
 parent: Servidor MCP
 nav_order: 2
-translated_from: a8c4d7ff425720a098c720cc1ade3629094bdb40
+translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
 ---
 
 # Herramientas
@@ -84,14 +84,16 @@ el usuario, usa `plan_job`. Los nombres de las programaciones son únicos.
 Un trabajo guardado son los valores de un formulario guardados con un nombre; las herramientas actúan sobre los mismos trabajos guardados que el navegador.
 
 `list_stored_jobs` lista los trabajos guardados del propio usuario, o los de todos para un usuario con `showSettings`, con su nombre, descripción,
-formulario, creación y caducidad. Uno marcado como `usable` (del propio usuario, de un formulario que puede lanzar) se puede pasar como `storedJob`
+formulario, creación y caducidad, y desde la 7.7.0 su último uso (`lastUsedAt`) y sus días sin uso antes de eliminarse. Uno marcado como `usable` (del propio usuario, de un formulario que puede lanzar) se puede pasar como `storedJob`
 (`{ "id": 7 }`, o `{ "name": "..." }` entre los del propio usuario para ese formulario) a `resolve_field`, `launch_job` o `plan_job`: sus
 valores son el punto de partida y `values` se aplican encima. Los campos Password no se guardan, así que proporciónalos en `values`.
 `launch_job` y `plan_job` a partir de un trabajo guardado necesitan el `expectedPayloadHash` que devolvió `resolve_field` para él, y
 `resolve_field` rechaza `storedJob` junto con `subform`.
 
 `store_job` acepta el `form`, un `name` único entre los trabajos guardados del usuario para ese formulario, los `values` y, opcionalmente, una
-`description` y `expires_at` (ISO 8601 con su desfase o `Z`). Su respuesta indica qué campos Password se han dejado fuera.
+`description`, un `expires_at` (ISO 8601 con su desfase o `Z`) y, desde la 7.7.0, `unused_days` (como mucho
+`STORED_JOB_UNUSED_DAYS` cuando está definido). Su respuesta indica qué campos Password se han dejado fuera. Un `launch_job` o `plan_job`
+con un trabajo guardado cuenta como un [uso](../jobs/stored-jobs.html#last-used-and-runs) de ese trabajo guardado.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Back-ups en bewaartermijn
 parent: Omgevingsvariabelen
 nav_order: 3
-translated_from: 76f81cfa15eaa98199a3d5963f7adc9a6f8b01dc
+translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
 ---
 
 # Back-ups en bewaartermijn
@@ -28,10 +28,13 @@ Bewaar voltooide jobs 90 dagen en het audittrail twee jaar. In de `.env` van het
 ```bash
 JOB_RETENTION_DAYS=90
 AUDIT_RETENTION_DAYS=730
+STORED_JOB_UNUSED_DAYS=180
 ```
 
 Een dagelijkse taak verwijdert om 2:30 uur voltooide jobs die ouder zijn dan dit en om 3:30 uur auditregels. Een lopende job, of een die op
-goedkeuring wacht, wordt nooit verwijderd. Beide variabelen gelden zonder herstart als ze op de instellingenpagina worden gewijzigd.
+goedkeuring wacht, wordt nooit verwijderd. Vanaf 7.7.0 verwijdert `STORED_JOB_UNUSED_DAYS` ook, om 4:00 uur, de [opgeslagen
+jobs](../jobs/stored-jobs.html#when-it-is-removed) waarmee zoveel dagen geen job gestart is. Deze variabelen
+gelden zonder herstart als ze op de instellingenpagina worden gewijzigd.
 
 ---
 
