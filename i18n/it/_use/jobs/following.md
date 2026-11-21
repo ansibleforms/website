@@ -3,7 +3,7 @@ layout: default
 title: Seguire un job
 parent: Job
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Seguire un job
@@ -132,6 +132,19 @@ Dalla 7.3.0 il grafo di un workflow in esecuzione scorre per tenere in vista il 
 Se sposti il grafo, resta dove l'hai messo, con un pulsante **Segui il nodo in esecuzione** per seguirlo di nuovo. Passando il mouse su un nodo
 compare la sua scheda con il nome completo e il nodo e i suoi collegamenti vengono messi in risalto, con il resto del grafo sfumato. Il grafo ha i pulsanti **Adatta allo
 schermo** e **Schermo intero**, e sotto un modulo dopo **Invia** un clic su un nodo ne apre l'output come nella pagina del job.
+
+Un nodo ripreso da un [rilancio dal nodo fallito](../workflows/running.html#relaunch-from-the-failed-node) è in grigio, con
+*dall'esecuzione precedente* come stato: in questa esecuzione non ha eseguito alcun job, quindi non ha output da aprire.
+
+Dalla 7.7.0 un job di workflow Ascender mostra anche ciò che Ascender aggiunge ai suoi nodi
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Nodo Ascender | Sul grafo | Nell'output |
+|---|---|---|
+| Un nodo con tentativi | `↻ 1/3` dopo il suo stato: i nuovi tentativi fatti, su quelli che può fare | Un blocco per tentativo, ciascuno con `tentativo 2 di 3` nell'intestazione |
+| Un tentativo fallito con un nuovo tentativo in arrivo | **retrying**, non fallito, finché il nuovo tentativo è in attesa | Il blocco del tentativo fallito |
+| Un nodo ripreso da un rilancio | In grigio, *dall'esecuzione precedente* | Un banner `carried over`, con *dall'esecuzione precedente* nell'intestazione |
+| Un nodo forzato come riuscito | *successo forzato*, e `Forzato: <motivo>` sulla sua scheda al passaggio del mouse | |
 
 ---
 

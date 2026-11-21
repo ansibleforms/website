@@ -3,7 +3,7 @@ layout: default
 title: 再起動
 parent: 起動時の検証
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # 再起動
@@ -51,6 +51,10 @@ curl -X POST https://af.example.com/api/v2/job/42/relaunch \
 管理者または `allowScheduledJobs` ロールオプションを持つユーザーの場合、スケジュールに保存された extravars が再生されます。
 
 チェックされた再起動 ( [log と enforce](log-and-enforce.html) を参照) は、呼び出し元の名前で新しいジョブを開始します。
+
+7.7.0 以降、 [失敗したホストで](../jobs/actions.html#relaunch-on-the-failed-hosts) または
+[失敗したノードから](../jobs/actions.html#relaunch-from-the-failed-node) の再起動は、その種類 (実行時のまま、または変更あり) としてチェックされます。
+サーバーは、チェックの後にホスト、または引き継ぐノードを追加します。
 
 ---
 

@@ -100,3 +100,30 @@ A workflow form without an `approval` still holds the job at an approval node, b
 
 **Abort** on a running workflow job stops it: the running node jobs are aborted, nothing more starts, and an approval it
 waits on is canceled. A workflow job waiting on an approval can be aborted too.
+
+---
+
+## Relaunch from the failed node
+
+From 7.7.0 a failed workflow job can be relaunched from its failed node, with the nodes that succeeded carried over.
+
+**Relaunch job** on the job's page then has a caret with **From the first node**, the full relaunch, and **From the failed node**. The
+new job goes through the same approval, launch validation and permissions as any [relaunch](../jobs/actions.html#relaunch-a-job):
+
+- **The nodes that succeeded** run nothing. The graph shows them greyed, *from the previous run*, and the output has a
+  `WORKFLOW NODE [identifier] (successful) #n carried over` banner for each, with no node output to open.
+- **What they passed on** still reaches the nodes after them: their `set_stats` artifacts are kept with the job and handed on.
+- **The run starts** at the failed node(s), and goes on along the workflow's links as a first run would.
+- **The job's page** shows **re-run of #N**, with *failed node* beside it, and its output starts with
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+An AnsibleForms workflow job offers **From the failed node** only when each of these holds; otherwise **Relaunch job** is the plain button:
+
+| Condition | Why |
+|---|---|
+| The job failed, with a node that failed and one that succeeded | Without a node to carry over, it is the full relaunch |
+| The job ran on 7.7.0 or later | From 7.7.0 a workflow job keeps each node as it ended, with what it passed on |
+| The workflow is the same as when the job ran | The job keeps a hash of it: a changed node, link, extra var or name offers the full relaunch only |
+
+A workflow job that ran on Ascender uses Ascender's own relaunch of its failed nodes, which carries the nodes that succeeded over in the same
+way. AWX and AAP have no such relaunch, so their workflow jobs offer the full relaunch only, as do multistep jobs.

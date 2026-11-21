@@ -3,7 +3,7 @@ layout: default
 title: Einen Workflow ausführen
 parent: Workflows
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Einen Workflow ausführen
@@ -101,3 +101,30 @@ Ein Workflow-Formular ohne `approval` hält den Job an einem Genehmigungsknoten 
 
 **Abbrechen** bei einem laufenden Workflow-Job stoppt ihn: Die laufenden Knoten-Jobs werden abgebrochen, es startet nichts mehr, und eine Genehmigung, auf die
 er wartet, wird storniert. Auch ein Workflow-Job, der auf eine Genehmigung wartet, kann abgebrochen werden.
+
+---
+
+## Ab dem fehlgeschlagenen Knoten neu starten
+
+Ab 7.7.0 kann ein fehlgeschlagener Workflow-Job ab seinem fehlgeschlagenen Knoten neu gestartet werden, die erfolgreichen Knoten übernommen.
+
+**Job neu starten** auf der Seite des Jobs hat dann einen Pfeil mit **Ab dem ersten Knoten**, dem vollständigen Neustart, und
+**Ab dem fehlgeschlagenen Knoten**. Der neue Job durchläuft dieselbe Genehmigung, Start-Validierung und dieselben Berechtigungen wie jeder [Neustart](../jobs/actions.html#relaunch-a-job):
+
+- **Die erfolgreichen Knoten** führen nichts aus. Der Graph zeigt sie ausgegraut, *aus dem vorherigen Lauf*, und die Ausgabe hat für jeden ein Banner
+  `WORKFLOW NODE [identifier] (successful) #n carried over`, ohne Knotenausgabe zum Öffnen.
+- **Was sie weitergaben**, erreicht weiterhin die Knoten danach: Ihre `set_stats`-Artefakte werden mit dem Job gespeichert und weitergereicht.
+- **Der Lauf beginnt** beim fehlgeschlagenen Knoten (oder den fehlgeschlagenen Knoten) und folgt den Links des Workflows wie ein erster Lauf.
+- **Die Seite des Jobs** zeigt **Neustart von #N** mit *fehlgeschlagener Knoten* daneben, und ihre Ausgabe beginnt mit
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Ein AnsibleForms-Workflow-Job bietet **Ab dem fehlgeschlagenen Knoten** nur an, wenn alle diese Bedingungen gelten; sonst ist **Job neu starten** die einfache Schaltfläche:
+
+| Bedingung | Warum |
+|---|---|
+| Der Job schlug fehl, mit einem fehlgeschlagenen und einem erfolgreichen Knoten | Ohne Knoten zum Übernehmen ist es der vollständige Neustart |
+| Der Job lief auf 7.7.0 oder später | Ab 7.7.0 speichert ein Workflow-Job jeden Knoten, wie er endete, mit dem, was er weitergab |
+| Der Workflow ist derselbe wie beim Lauf des Jobs | Der Job speichert einen Hash davon: Ein geänderter Knoten, Link, Extra-Var oder Name bietet nur den vollständigen Neustart |
+
+Ein Workflow-Job, der auf Ascender lief, nutzt den eigenen Neustart der fehlgeschlagenen Knoten von Ascender, der die erfolgreichen Knoten auf dieselbe Weise
+übernimmt. AWX und AAP haben keinen solchen Neustart, daher bieten ihre Workflow-Jobs nur den vollständigen Neustart, ebenso Multistep-Jobs.

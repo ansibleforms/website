@@ -3,7 +3,7 @@ layout: default
 title: Acciones de trabajo
 parent: Trabajos
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Acciones de trabajo
@@ -124,6 +124,10 @@ usuario ver los trabajos de otros usuarios, no abortarlos.
 **Relanzar** en el menú de la fila (⋮) de la lista, o **Relanzar trabajo** en la página del trabajo, inicia un nuevo trabajo a partir de uno terminado. Se ofrece en cualquier
 trabajo que no esté en `running` ni esperando aprobación, a los usuarios cuyo rol activa la opción de rol `allowJobRelaunch`.
 
+En la página del trabajo, **Relanzar trabajo** es un botón simple, o un botón dividido con un desplegable, como el **Enviar** del formulario,
+cuando el trabajo ofrece una segunda opción: [en sus hosts fallidos](#relaunch-on-the-failed-hosts) o [desde su nodo fallido](#relaunch-from-the-failed-node).
+Su parte principal es siempre el relanzamiento completo, y el menú de la fila de la lista solo ofrece el relanzamiento completo.
+
 El diálogo ofrece:
 
 * **Relanzar**: vuelve a ejecutar el trabajo con los valores con los que se ejecutó, como un trabajo nuevo a tu nombre.
@@ -134,6 +138,52 @@ El diálogo ofrece:
 Un relanzamiento también requiere que el formulario lo permita (`allowRelaunch`, true por defecto) y que el trabajo sea **tuyo**, salvo que
 seas administrador o, desde 7.3.0, tengas `manageAllJobs`; `showAllJobLogs`, que hasta 7.2 relanzaba cualquier trabajo, ya no lo hace. Cómo se comprueba un relanzamiento frente a las reglas del formulario, y por qué un formulario con un
 campo de contraseña puede rechazarlo, se describe en [Relanzar](../launch-validation/relaunching.html).
+
+### Relanzar en los hosts fallidos
+
+Desde 7.7.0 un trabajo que falló en algunos de sus hosts puede volver a ejecutarse solo en esos hosts, sin tocar los demás.
+
+El desplegable de **Relanzar trabajo** ofrece entonces **En todos los hosts**, el relanzamiento completo, y **En los hosts fallidos (N)**, con N
+los hosts en los que falló una tarea o que no se pudieron alcanzar. Se ofrece en un trabajo terminado de estos tipos:
+
+| Trabajo | De dónde salen sus hosts fallidos | La nueva ejecución |
+|---|---|---|
+| Un playbook en un RTE | El resumen de sus [eventos](following.html#hosts-and-tasks), si no el `PLAY RECAP` de su salida | Un trabajo nuevo, limitado a esos hosts |
+| Una plantilla de trabajo en AWX, AAP o Ascender | Los resúmenes de hosts del trabajo en ese runner | El propio relanzamiento en hosts fallidos del producto, en el runner donde se ejecutó |
+
+Un trabajo que se ejecutó en un solo host, o que falló en todos sus hosts, conserva el botón simple: volver a ejecutar sus hosts fallidos
+sería el relanzamiento completo. Un fallo que `ignore_errors` dejó pasar, o que un `rescue` gestionó, no cuenta. Los trabajos de Jenkins,
+Semaphore y Rundeck, los trabajos de workflow y multistep, y los trabajos de nodo de un workflow no se vuelven a ejecutar en sus hosts fallidos.
+
+La nueva ejecución es un trabajo nuevo con los mismos valores que el trabajo del que viene:
+
+* **Hosts**: solo los hosts fallidos, dentro del propio límite del trabajo; un relanzamiento de un relanzamiento se queda en los hosts del anterior.
+* **Comprobaciones**: la misma aprobación, validación de lanzamiento y permisos que el relanzamiento completo.
+* **Diálogo**: lista los hosts antes de que confirmes, sin **Editar valores antes de relanzar**.
+* **Página del trabajo**: **relanzamiento de #N**, con *hosts fallidos* al lado, enlaza al trabajo; el dato **hosts** de un playbook los lista.
+* **Salida**: empieza con una línea como `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Un host fallido cuyo nombre Ansible leería como un patrón, con un `*`, un `~` o un `[` por ejemplo, queda fuera de la nueva ejecución, y la
+salida lo dice en una línea `[WARNING]`. En el RTE los hosts llegan a `ansible-playbook` como un archivo de límite, un host por línea, así que
+un nombre de host con una coma o dos puntos sigue siendo un solo host.
+
+### Relanzar desde el nodo fallido
+
+Desde 7.7.0 un trabajo de workflow fallido puede volver a ejecutarse desde el nodo que falló, conservando lo que hicieron los nodos anteriores.
+
+El desplegable de **Relanzar trabajo** ofrece entonces **Desde el primer nodo**, el relanzamiento completo, y **Desde el nodo fallido**. Qué
+trabajos de workflow lo ofrecen:
+
+| Trabajo de workflow | Desde el nodo fallido |
+|---|---|
+| Un [workflow](../workflows/) de AnsibleForms | Los nodos que terminaron bien se conservan, y la ejecución empieza en el nodo o nodos fallidos |
+| Un trabajo de workflow de Ascender | El propio relanzamiento de los nodos fallidos de Ascender, en el runner donde se ejecutó el trabajo |
+| Un trabajo de workflow de AWX o AAP | No se ofrece: solo el relanzamiento completo |
+| Un trabajo [multistep](../forms/multistep.html) (obsoleto) | No se ofrece: solo el relanzamiento completo |
+
+El trabajo nuevo pasa por la misma aprobación, validación de lanzamiento y permisos que el relanzamiento completo, y su página muestra
+**relanzamiento de #N** con *nodo fallido* al lado. Cuándo lo ofrece un workflow de AnsibleForms, y qué se conserva, se describe en
+[Ejecutar un workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Relanzar con datos rellenados
 

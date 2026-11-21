@@ -3,7 +3,7 @@ layout: default
 title: Ponowne uruchamianie
 parent: Weryfikacja uruchomienia
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Ponowne uruchamianie
@@ -51,6 +51,10 @@ Jeden wyjątek w trybie `enforce`: zadanie uruchomione przez harmonogram na pozi
 odtwarza zapisane extravars harmonogramu, dla administratora lub użytkownika z opcją roli `allowScheduledJobs`.
 
 Sprawdzone ponowne uruchomienie (zobacz [Log i enforce](log-and-enforce.html)) rozpoczyna nowe zadanie w imieniu wywołującego.
+
+Od wersji 7.7.0 ponowne uruchomienie [na nieudanych hostach](../jobs/actions.html#relaunch-on-the-failed-hosts) lub
+[od nieudanego węzła](../jobs/actions.html#relaunch-from-the-failed-node) jest sprawdzane jak rodzaj, którym jest: tak, jak działało, lub
+ze zmianami. Serwer dodaje hosty albo węzły do przeniesienia po sprawdzeniu.
 
 ---
 

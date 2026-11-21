@@ -3,7 +3,7 @@ layout: default
 title: Neustarten
 parent: Start-Validierung
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Neustarten
@@ -51,6 +51,10 @@ Eine Ausnahme unter `enforce`: Ein Job, den ein Zeitplan auf Admin-Ebene gestart
 die gespeicherten Extravars des Zeitplans, für einen Admin oder einen Benutzer mit der Rollenoption `allowScheduledJobs`.
 
 Ein geprüfter Neustart (siehe [Log und Enforce](log-and-enforce.html)) startet einen neuen Job unter dem Namen des Aufrufers.
+
+Ab 7.7.0 wird ein Neustart [auf den fehlgeschlagenen Hosts](../jobs/actions.html#relaunch-on-the-failed-hosts) oder
+[ab dem fehlgeschlagenen Knoten](../jobs/actions.html#relaunch-from-the-failed-node) als die Art geprüft, die er ist, wie gelaufen oder mit Änderungen. Der
+Server fügt die Hosts oder die zu übernehmenden Knoten nach der Prüfung hinzu.
 
 ---
 

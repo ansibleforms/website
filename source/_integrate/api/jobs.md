@@ -138,6 +138,7 @@ These endpoints read more of one job:
 | `GET /api/v2/job/{id}/events` | A playbook job's structured events (from 7.3.0, for a playbook on an RTE of 7.3.0 or later): each play, task, host result and the recap, with their `order`, `type`, `play`, `task`, `host`, `duration` and `time` |
 | `GET /api/v2/job/{id}/events/{order}` | One of those events with its whole `result`, as the **Task result** dialog shows it; `400` when `order` is not a whole number, `404` when the job has no such event |
 | `GET /api/v2/job/{id}/node/{nodeId}` | One node of a workflow job: `{ "node", "job", "extravars", "artifacts" }`, where `job` is the ID of the node's own job, or `null` when the node did not run. |
+| `GET /api/v2/job/{id}/relaunch-options` | From 7.7.0, what a relaunch can be besides the full one: `{ "failedHosts", "fromFailedNode" }` (see below); `403` for a user who may not relaunch the job |
 
 ---
 
@@ -162,3 +163,31 @@ Abort, approve, reject and delete answer with a message, and a relaunch also wit
 
 Add `?verbose=true` to a relaunch to run the new job in verbose mode, with the `allowVerboseMode` role option. A job that
 is in the wrong state for the action, for example an abort of a job that already ended, answers `409`.
+
+### Relaunch part of a job
+
+From 7.7.0 the body of a relaunch can ask for part of the job only, with one of two flags, never both:
+
+| Body | The new job |
+|---|---|
+| `{ "failedHostsOnly": true }` | Runs on the hosts the job failed on only, as **On failed hosts** does (see [Relaunch on the failed hosts](../jobs/actions.html#relaunch-on-the-failed-hosts)) |
+| `{ "fromFailedNode": true }` | Relaunches a failed workflow job from its failed node (see [Relaunch from the failed node](../workflows/running.html#relaunch-from-the-failed-node)) |
+
+Either flag goes with or without `values`. A re-run on the failed hosts also answers with the hosts:
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+A job without failed hosts to re-run, or one that cannot be relaunched from its failed node, answers `400` with the reason. Both flags
+together answer `400` too.
+
+To know beforehand which flag a job accepts, `GET /api/v2/job/{id}/relaunch-options` answers as the job page reads it:
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+`failedHosts` is `null` when the job offers no re-run on its failed hosts, also when it failed on every host, and `fromFailedNode` is
+`true` for a failed workflow job that can run again from its failed node. `GET /api/v2/job/{id}` holds the same answer as
+`relaunchOptions` for a job that has ended, `null` for a user who may not relaunch it.

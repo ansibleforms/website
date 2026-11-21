@@ -3,7 +3,7 @@ layout: default
 title: Relanzar
 parent: Validación del lanzamiento
 nav_order: 6
-translated_from: 9f52ec39fd40e3d617d9537c5f7d356033bc9d49
+translated_from: 6f166e0990776006b4835e37b8ba058f5629c0b0
 ---
 
 # Relanzar
@@ -51,6 +51,10 @@ Una excepción con `enforce`: un trabajo lanzado por una programación de nivel 
 reproduce las extravars guardadas de la programación, para un administrador o un usuario con la opción de rol `allowScheduledJobs`.
 
 Un relanzamiento comprobado (consulta [Registrar e imponer](log-and-enforce.html)) inicia un trabajo nuevo a nombre de quien llama.
+
+Desde 7.7.0 un relanzamiento [en los hosts fallidos](../jobs/actions.html#relaunch-on-the-failed-hosts) o
+[desde el nodo fallido](../jobs/actions.html#relaunch-from-the-failed-node) se comprueba según su tipo, tal como se ejecutó o con cambios. El
+servidor añade los hosts, o los nodos que conservar, después de la comprobación.
 
 ---
 

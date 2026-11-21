@@ -3,7 +3,7 @@ layout: default
 title: Azioni sui job
 parent: Job
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Azioni sui job
@@ -124,6 +124,10 @@ utente di vedere i job degli altri utenti, non di interromperli.
 **Rilancia** nel menu della riga (⋮) dell'elenco, o **Rilancia job** nella pagina del job, avvia un nuovo job a partire da uno terminato. È proposto su qualsiasi
 job che non sia né `running` né in attesa di approvazione, agli utenti il cui ruolo imposta l'opzione di ruolo `allowJobRelaunch`.
 
+Nella pagina del job, **Rilancia job** è un pulsante semplice, o un pulsante diviso con un caret, come l'**Invia** del modulo, quando il job
+offre una seconda scelta: [sui suoi host falliti](#relaunch-on-the-failed-hosts) o [dal suo nodo fallito](#relaunch-from-the-failed-node).
+La sua parte principale è sempre il rilancio completo, e il menu della riga dell'elenco offre solo il rilancio completo.
+
 La finestra di dialogo offre:
 
 * **Rilancia**: esegue di nuovo il job con i valori con cui era girato, come nuovo job a tuo nome.
@@ -134,6 +138,52 @@ La finestra di dialogo offre:
 Un rilancio richiede inoltre che il modulo lo consenta (`allowRelaunch`, true per impostazione predefinita) e che il job sia **tuo**, a meno che
 tu non sia un amministratore o, dalla 7.3.0, abbia `manageAllJobs`; `showAllJobLogs`, che fino alla 7.2 permetteva di rilanciare qualsiasi job, ora non lo fa più. Come un rilancio viene controllato rispetto alle regole del modulo, e perché un modulo con un
 campo password può rifiutarlo, è descritto in [Rilancio](../launch-validation/relaunching.html).
+
+### Rilanciare sugli host falliti
+
+Dalla 7.7.0 un job fallito su alcuni dei suoi host può essere eseguito di nuovo solo su quegli host, senza toccare gli altri.
+
+Il caret di **Rilancia job** offre allora **Su tutti gli host**, il rilancio completo, e **Sugli host falliti (N)**, dove N sono gli host
+in cui un task è fallito o che non erano raggiungibili. È proposto su un job terminato di questi tipi:
+
+| Job | I suoi host falliti vengono da | La riesecuzione |
+|---|---|---|
+| Un playbook su un RTE | Il riepilogo dei suoi [eventi](following.html#hosts-and-tasks), altrimenti il `PLAY RECAP` del suo output | Un nuovo job, limitato a quegli host |
+| Un job template su AWX, AAP o Ascender | I riepiloghi degli host del job su quel runner | Il rilancio sugli host falliti del prodotto stesso, sul runner su cui il job era girato |
+
+Un job eseguito su un solo host, o fallito su tutti gli host, mantiene il pulsante semplice: rieseguire i suoi host falliti sarebbe il
+rilancio completo. Un errore lasciato passare da `ignore_errors`, o gestito da un `rescue`, non conta. I job Jenkins, Semaphore e Rundeck,
+i job workflow e multistep, e i job dei nodi di un workflow non vengono rieseguiti sui loro host falliti.
+
+La riesecuzione è un nuovo job con gli stessi valori del job da cui proviene:
+
+* **Host**: solo gli host falliti, entro il limit del job stesso; una riesecuzione di una riesecuzione resta entro gli host della precedente.
+* **Controlli**: la stessa approvazione, la stessa validazione al lancio e gli stessi permessi del rilancio completo.
+* **Finestra di dialogo**: elenca gli host prima che tu confermi, senza **Modifica i valori prima di rilanciare**.
+* **Pagina del job**: **rilancio di #N**, con *host falliti* accanto, rimanda al job; il dato **host** di un playbook elenca gli host.
+* **Output**: inizia con una riga come `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Un host fallito il cui nome Ansible leggerebbe come un pattern, con un `*`, un `~` o un `[` per esempio, resta fuori dalla riesecuzione, e
+l'output lo dice in una riga `[WARNING]`. Sull'RTE gli host arrivano ad `ansible-playbook` come file di limit, un host per riga, così un nome
+host con una virgola o due punti resta un solo host.
+
+### Rilanciare dal nodo fallito
+
+Dalla 7.7.0 un job di workflow fallito può essere eseguito di nuovo dal nodo che è fallito, mantenendo ciò che hanno fatto i nodi precedenti.
+
+Il caret di **Rilancia job** offre allora **Dal primo nodo**, il rilancio completo, e **Dal nodo fallito**. I job di workflow che lo
+offrono:
+
+| Job di workflow | Dal nodo fallito |
+|---|---|
+| Un [workflow](../workflows/) di AnsibleForms | I nodi riusciti vengono ripresi, e l'esecuzione parte dal nodo o dai nodi falliti |
+| Un job di workflow Ascender | Il rilancio dei nodi falliti di Ascender stesso, sul runner su cui il job era girato |
+| Un job di workflow AWX o AAP | Non proposto: solo il rilancio completo |
+| Un job [multistep](../forms/multistep.html) (deprecato) | Non proposto: solo il rilancio completo |
+
+Il nuovo job passa per la stessa approvazione, la stessa validazione al lancio e gli stessi permessi del rilancio completo, e la sua pagina
+mostra **rilancio di #N** con *nodo fallito* accanto. Quando un workflow di AnsibleForms lo offre, e cosa viene ripreso, è descritto in
+[Eseguire un workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Rilanciare con dati precompilati
 

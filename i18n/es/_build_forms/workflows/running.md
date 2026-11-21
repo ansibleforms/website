@@ -3,7 +3,7 @@ layout: default
 title: Ejecutar un workflow
 parent: Workflows
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Ejecutar un workflow
@@ -101,3 +101,30 @@ Un formulario de workflow sin `approval` también retiene el trabajo en un nodo 
 
 **Abortar** en un trabajo de workflow en ejecución lo detiene: los trabajos de nodo en ejecución se abortan, no arranca nada más y se cancela
 la aprobación que esté esperando. Un trabajo de workflow que espera una aprobación también se puede abortar.
+
+---
+
+## Relanzar desde el nodo fallido
+
+Desde 7.7.0 un trabajo de workflow fallido se puede relanzar desde su nodo fallido, conservando los nodos que terminaron bien.
+
+**Relanzar trabajo** en la página del trabajo tiene entonces un desplegable con **Desde el primer nodo**, el relanzamiento completo, y **Desde el
+nodo fallido**. El trabajo nuevo pasa por la misma aprobación, validación de lanzamiento y permisos que cualquier [relanzamiento](../jobs/actions.html#relaunch-a-job):
+
+- **Los nodos que terminaron bien** no ejecutan nada. El grafo los muestra atenuados, *de la ejecución anterior*, y la salida tiene un
+  encabezado `WORKFLOW NODE [identifier] (successful) #n carried over` para cada uno, sin salida de nodo que abrir.
+- **Lo que pasaron** sigue llegando a los nodos de después: sus artefactos de `set_stats` se guardan con el trabajo y se transmiten.
+- **La ejecución empieza** en el nodo o nodos fallidos, y sigue por los enlaces del workflow como lo haría una primera ejecución.
+- **La página del trabajo** muestra **relanzamiento de #N**, con *nodo fallido* al lado, y su salida empieza con
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Un trabajo de workflow de AnsibleForms ofrece **Desde el nodo fallido** solo cuando se cumple cada una de estas condiciones; si no, **Relanzar trabajo** es el botón simple:
+
+| Condición | Por qué |
+|---|---|
+| El trabajo falló, con un nodo que falló y otro que terminó bien | Sin un nodo que conservar, es el relanzamiento completo |
+| El trabajo se ejecutó en 7.7.0 o posterior | Desde 7.7.0 un trabajo de workflow guarda cada nodo tal como terminó, con lo que pasó |
+| El workflow es el mismo que cuando se ejecutó el trabajo | El trabajo guarda un hash de él: un nodo, enlace, extra var o nombre cambiado ofrece solo el relanzamiento completo |
+
+Un trabajo de workflow que se ejecutó en Ascender usa el propio relanzamiento de los nodos fallidos de Ascender, que conserva igual los nodos que
+terminaron bien. AWX y AAP no tienen ese relanzamiento, así que sus trabajos de workflow solo ofrecen el relanzamiento completo, como los trabajos multistep.

@@ -3,7 +3,7 @@ layout: default
 title: 作业
 parent: REST API
 nav_order: 2
-translated_from: ceba9eb4f9c2acb23646bd60c48cc579fe8ce202
+translated_from: 456fc5cc76acba8dff6c3595adb2e060cf839250
 ---
 
 # 作业
@@ -139,6 +139,7 @@ curl "https://af.example.com/api/v2/job?records=20&user=automation" -H "Authoriz
 | `GET /api/v2/job/{id}/events` | playbook 作业的结构化事件（从 7.3.0 起，适用于在 7.3.0 或更高版本 RTE 上运行的 playbook）：每个 play、任务、主机结果和汇总，带有其 `order`、`type`、`play`、`task`、`host`、`duration` 和 `time` |
 | `GET /api/v2/job/{id}/events/{order}` | 其中一个事件及其完整的 `result`，与 **任务结果** 对话框中显示的一致；`order` 不是整数时返回 `400`，作业没有该事件时返回 `404` |
 | `GET /api/v2/job/{id}/node/{nodeId}` | 工作流作业的一个节点：`{ "node", "job", "extravars", "artifacts" }`，其中 `job` 是该节点自身作业的 ID，节点未运行时为 `null`。 |
+| `GET /api/v2/job/{id}/relaunch-options` | 从 7.7.0 起，除完整重新运行外还可以进行的重新运行：`{ "failedHosts", "fromFailedNode" }`（见下文）；对不能重新运行该作业的用户返回 `403` |
 
 ---
 
@@ -163,3 +164,31 @@ curl "https://af.example.com/api/v2/job?records=20&user=automation" -H "Authoriz
 
 在重新运行时添加 `?verbose=true` 可让新作业以详细模式运行，这需要 `allowVerboseMode` 角色选项。如果作业
 处于不适合该操作的状态，例如中止一个已经结束的作业，会返回 `409`。
+
+### 重新运行作业的一部分
+
+从 7.7.0 起，重新运行的请求体可以用两个标志之一只请求作业的一部分，两者不能同时使用：
+
+| 请求体 | 新作业 |
+|---|---|
+| `{ "failedHostsOnly": true }` | 像**在失败的主机上**一样，只在作业失败的主机上运行（参见[在失败的主机上重新运行](../jobs/actions.html#relaunch-on-the-failed-hosts)） |
+| `{ "fromFailedNode": true }` | 从失败的节点重新运行失败的工作流作业（参见[从失败的节点重新运行](../workflows/running.html#relaunch-from-the-failed-node)） |
+
+两个标志都可以带或不带 `values` 使用。在失败的主机上重新运行时，响应还会给出这些主机：
+
+```json
+{ "message": "Job 44 re-runs the 2 failed host(s)", "id": 44, "failedHosts": ["web07", "web19"] }
+```
+
+没有可重新运行的失败主机的作业，或无法从失败的节点重新运行的作业，会返回 `400` 并附带原因。同时使用两个标志
+也会返回 `400`。
+
+要事先知道某个作业接受哪个标志，`GET /api/v2/job/{id}/relaunch-options` 会按作业页面读取的方式回答：
+
+```json
+{ "failedHosts": ["web07", "web19"], "fromFailedNode": false }
+```
+
+当作业不提供在失败主机上重新运行时（包括在所有主机上都失败的情况），`failedHosts` 为 `null`；对于可以从失败的节点再次运行的
+失败工作流作业，`fromFailedNode` 为 `true`。对于已结束的作业，`GET /api/v2/job/{id}` 以 `relaunchOptions` 包含同样的回答，
+对不能重新运行该作业的用户则为 `null`。

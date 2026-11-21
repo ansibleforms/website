@@ -3,7 +3,7 @@ layout: default
 title: Akcje na zadaniach
 parent: Zadania
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Akcje na zadaniach
@@ -124,6 +124,10 @@ użytkownikowi widzieć zadania innych użytkowników, ale nie przerywać ich.
 **Uruchom ponownie** w menu wiersza (⋮) listy lub **Uruchom zadanie ponownie** na stronie zadania uruchamia nowe zadanie na podstawie zakończonego. Jest dostępne dla każdego
 zadania, które nie ma stanu `running` ani nie czeka na zatwierdzenie, dla użytkowników, których rola ustawia opcję roli `allowJobRelaunch`.
 
+Na stronie zadania **Uruchom zadanie ponownie** jest zwykłym przyciskiem albo przyciskiem dzielonym ze strzałką, jak **Wyślij** formularza, gdy
+zadanie oferuje drugi wybór: [na jego nieudanych hostach](#relaunch-on-the-failed-hosts) lub [od jego nieudanego węzła](#relaunch-from-the-failed-node).
+Jego główna część to zawsze pełne ponowne uruchomienie, a menu wiersza listy oferuje tylko pełne ponowne uruchomienie.
+
 Okno dialogowe oferuje:
 
 * **Uruchom ponownie**: uruchamia zadanie ponownie z wartościami, z którymi działało, jako nowe zadanie w twoim imieniu.
@@ -134,6 +138,52 @@ Okno dialogowe oferuje:
 Ponowne uruchomienie wymaga też, aby formularz na nie pozwalał (`allowRelaunch`, domyślnie true), a zadanie było **twoje własne**, chyba że
 jesteś administratorem lub, od wersji 7.3.0, masz `manageAllJobs`; `showAllJobLogs`, które do wersji 7.2 pozwalało ponownie uruchamiać dowolne zadanie, już tego nie robi. Jak ponowne uruchomienie jest sprawdzane względem reguł formularza i dlaczego formularz z
 polem hasła może je odrzucić, opisano w [Ponowne uruchamianie](../launch-validation/relaunching.html).
+
+### Ponowne uruchomienie na nieudanych hostach
+
+Od wersji 7.7.0 zadanie, które nie powiodło się na części swoich hostów, może zostać uruchomione ponownie tylko na tych hostach, bez ruszania pozostałych.
+
+Strzałka **Uruchom zadanie ponownie** oferuje wtedy **Na wszystkich hostach**, pełne ponowne uruchomienie, oraz **Na nieudanych hostach (N)**, gdzie N
+to hosty, na których zadanie nie powiodło się lub których nie dało się osiągnąć. Jest dostępne dla zakończonego zadania tych rodzajów:
+
+| Zadanie | Jego nieudane hosty pochodzą z | Ponowienie |
+|---|---|---|
+| Playbook na RTE | Podsumowania jego [zdarzeń](following.html#hosts-and-tasks), w przeciwnym razie `PLAY RECAP` jego wyniku | Nowe zadanie, ograniczone do tych hostów |
+| Szablon zadania na AWX, AAP lub Ascender | Podsumowania hostów zadania na tym runnerze | Własne ponowne uruchomienie produktu na nieudanych hostach, na runnerze, na którym działało zadanie |
+
+Zadanie, które działało na jednym hoście albo nie powiodło się na każdym hoście, zachowuje zwykły przycisk: ponowienie jego nieudanych hostów
+byłoby pełnym ponownym uruchomieniem. Błąd przepuszczony przez `ignore_errors` lub obsłużony przez `rescue` się nie liczy. Zadania Jenkins,
+Semaphore i Rundeck, zadania workflow i wieloetapowe oraz zadania węzłów workflow nie są ponawiane na nieudanych hostach.
+
+Ponowienie to nowe zadanie z tymi samymi wartościami co zadanie, z którego pochodzi:
+
+* **Hosty**: tylko nieudane hosty, w obrębie własnego limitu zadania; ponowienie ponowienia zostaje w obrębie hostów poprzedniego.
+* **Sprawdzenia**: to samo zatwierdzenie, weryfikacja uruchomienia i uprawnienia co pełne ponowne uruchomienie.
+* **Okno dialogowe**: wymienia hosty przed potwierdzeniem, bez **Edytuj wartości przed ponownym uruchomieniem**.
+* **Strona zadania**: **ponowienie #N**, z *nieudane hosty* obok, prowadzi do zadania; fakt **hosty** playbooka wymienia hosty.
+* **Wynik**: zaczyna się od wiersza takiego jak `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Nieudany host, którego nazwę Ansible odczytałby jako wzorzec, na przykład z `*`, `~` lub `[`, zostaje pominięty w ponowieniu, a wynik
+informuje o tym w wierszu `[WARNING]`. Na RTE hosty trafiają do `ansible-playbook` jako plik limitu, jeden host w wierszu, więc nazwa hosta
+z przecinkiem lub dwukropkiem pozostaje jednym hostem.
+
+### Ponowne uruchomienie od nieudanego węzła
+
+Od wersji 7.7.0 zadanie workflow, które się nie powiodło, może zostać uruchomione ponownie od nieudanego węzła, z zachowaniem tego, co zrobiły węzły przed nim.
+
+Strzałka **Uruchom zadanie ponownie** oferuje wtedy **Od pierwszego węzła**, pełne ponowne uruchomienie, oraz **Od nieudanego węzła**. Zadania
+workflow, które to oferują:
+
+| Zadanie workflow | Od nieudanego węzła |
+|---|---|
+| [Workflow](../workflows/) AnsibleForms | Węzły zakończone sukcesem są przenoszone, a przebieg zaczyna się od nieudanego węzła (lub węzłów) |
+| Zadanie workflow Ascender | Własne ponowne uruchomienie nieudanych węzłów przez Ascender, na runnerze, na którym działało zadanie |
+| Zadanie workflow AWX lub AAP | Niedostępne: tylko pełne ponowne uruchomienie |
+| Zadanie [wieloetapowe](../forms/multistep.html) (przestarzałe) | Niedostępne: tylko pełne ponowne uruchomienie |
+
+Nowe zadanie przechodzi to samo zatwierdzenie, weryfikację uruchomienia i uprawnienia co pełne ponowne uruchomienie, a jego strona pokazuje
+**ponowienie #N** z *nieudany węzeł* obok. Kiedy workflow AnsibleForms to oferuje i co jest przenoszone, opisano w
+[Uruchamianie workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Ponowne uruchomienie ze wstępnie wypełnionymi danymi
 

@@ -3,7 +3,7 @@ layout: default
 title: Actions sur les jobs
 parent: Jobs
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Actions sur les jobs
@@ -124,6 +124,10 @@ utilisateur de voir les jobs des autres utilisateurs, pas de les arrêter.
 **Relancer** dans le menu de la ligne (⋮) de la liste, ou **Relancer le job** sur la page du job, démarre un nouveau job à partir d'un job terminé. C'est proposé sur tout
 job qui n'est ni `running` ni en attente d'approbation, aux utilisateurs dont le rôle définit l'option de rôle `allowJobRelaunch`.
 
+Sur la page du job, **Relancer le job** est un bouton simple, ou un bouton divisé avec un caret, comme le **Soumettre** du formulaire, quand le
+job offre un second choix : [sur ses hôtes en échec](#relaunch-on-the-failed-hosts) ou [depuis son nœud en échec](#relaunch-from-the-failed-node).
+Sa partie principale est toujours la relance complète, et le menu de la ligne de la liste ne propose que la relance complète.
+
 La boîte de dialogue propose :
 
 * **Relancer** : exécute de nouveau le job avec les valeurs avec lesquelles il s'est exécuté, comme nouveau job à votre nom.
@@ -134,6 +138,52 @@ La boîte de dialogue propose :
 Une relance exige aussi que le formulaire l'autorise (`allowRelaunch`, true par défaut) et que le job soit **le vôtre**, sauf
 si vous êtes admin ou, depuis la 7.3.0, disposez de `manageAllJobs` ; `showAllJobLogs`, qui permettait de relancer n'importe quel job jusqu'à la 7.2, ne le permet plus. La façon dont une relance est vérifiée au regard des règles du formulaire, et pourquoi un formulaire avec un
 champ mot de passe peut la refuser, est décrite dans [Relancer](../launch-validation/relaunching.html).
+
+### Relancer sur les hôtes en échec
+
+Depuis la 7.7.0, un job qui a échoué sur certains de ses hôtes peut s'exécuter de nouveau sur ces hôtes seulement, sans toucher aux autres.
+
+Le caret de **Relancer le job** propose alors **Sur tous les hôtes**, la relance complète, et **Sur les hôtes en échec (N)**, N étant les hôtes
+dont une tâche a échoué ou qui étaient injoignables. C'est proposé sur un job terminé de ces types :
+
+| Job | Ses hôtes en échec viennent de | La réexécution |
+|---|---|---|
+| Un playbook sur un RTE | Le récapitulatif de ses [événements](following.html#hosts-and-tasks), sinon le `PLAY RECAP` de sa sortie | Un nouveau job, limité à ces hôtes |
+| Un modèle de job sur AWX, AAP ou Ascender | Les résumés d'hôtes du job sur ce runner | La relance sur les hôtes en échec du produit lui-même, sur le runner où le job s'est exécuté |
+
+Un job exécuté sur un seul hôte, ou en échec sur tous ses hôtes, garde le bouton simple : réexécuter ses hôtes en échec serait la relance
+complète. Un échec qu'`ignore_errors` a laissé passer, ou qu'un `rescue` a traité, ne compte pas. Les jobs Jenkins, Semaphore et Rundeck,
+les jobs de workflow et multistep, et les jobs des nœuds d'un workflow ne sont pas réexécutés sur leurs hôtes en échec.
+
+La réexécution est un nouveau job avec les mêmes valeurs que le job dont elle vient :
+
+* **Hôtes** : les hôtes en échec seulement, dans la limite du job lui-même ; une réexécution d'une réexécution reste dans les hôtes de la précédente.
+* **Contrôles** : la même approbation, la même validation au lancement et les mêmes permissions que la relance complète.
+* **Boîte de dialogue** : elle liste les hôtes avant que vous confirmiez, sans **Modifier les valeurs avant de relancer**.
+* **Page du job** : **relance de #N**, avec *hôtes en échec* à côté, renvoie au job ; le fait **hôtes** d'un playbook liste les hôtes.
+* **Sortie** : elle commence par une ligne comme `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Un hôte en échec dont Ansible lirait le nom comme un motif, avec un `*`, un `~` ou un `[` par exemple, est laissé hors de la réexécution, et
+la sortie le dit dans une ligne `[WARNING]`. Sur le RTE, les hôtes parviennent à `ansible-playbook` sous forme de fichier de limite, un hôte
+par ligne, de sorte qu'un nom d'hôte avec une virgule ou un deux-points reste un seul hôte.
+
+### Relancer depuis le nœud en échec
+
+Depuis la 7.7.0, un job de workflow en échec peut s'exécuter de nouveau depuis le nœud qui a échoué, en gardant ce qu'ont fait les nœuds d'avant.
+
+Le caret de **Relancer le job** propose alors **Depuis le premier nœud**, la relance complète, et **Depuis le nœud en échec**. Les jobs de
+workflow qui le proposent :
+
+| Job de workflow | Depuis le nœud en échec |
+|---|---|
+| Un [workflow](../workflows/) AnsibleForms | Les nœuds réussis sont repris, et l'exécution commence au(x) nœud(s) en échec |
+| Un job de workflow Ascender | La relance des nœuds en échec d'Ascender lui-même, sur le runner où le job s'est exécuté |
+| Un job de workflow AWX ou AAP | Non proposé : la relance complète seulement |
+| Un job [multistep](../forms/multistep.html) (déprécié) | Non proposé : la relance complète seulement |
+
+Le nouveau job passe par la même approbation, la même validation au lancement et les mêmes permissions que la relance complète, et sa page
+affiche **relance de #N** avec *nœud en échec* à côté. Quand un workflow AnsibleForms le propose, et ce qui est repris, est décrit dans
+[Exécuter un workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Relancer avec des données pré-remplies
 

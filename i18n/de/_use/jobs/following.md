@@ -3,7 +3,7 @@ layout: default
 title: Einen Job verfolgen
 parent: Jobs
 nav_order: 2
-translated_from: 31962d9845c3241caca78025476d82f772e9d7a5
+translated_from: e09bc105634114a93b8cbb9d0799b33a32d398e3
 ---
 
 # Einen Job verfolgen
@@ -132,6 +132,19 @@ Ab 7.3.0 verschiebt sich der Graph eines laufenden Workflows, um den laufenden K
 Scrollen Sie den Graph weg, bleibt er, wo Sie ihn hingesetzt haben, mit einer Schaltfläche **Dem laufenden Knoten folgen**, um ihm wieder zu folgen. Das Darüberfahren über einen Knoten
 zeigt seine Karte mit dem vollständigen Namen und rückt den Knoten und seine Verbindungen in den Fokus, der Rest des Graphs wird abgeblendet. Der Graph hat die Schaltflächen **An
 Bildschirm anpassen** und **Vollbild**, und unter einem Formular nach **Senden** öffnet ein Klick auf einen Knoten seine Ausgabe wie auf der Seite des Jobs.
+
+Ein Knoten, den ein [Neustart ab dem fehlgeschlagenen Knoten](../workflows/running.html#relaunch-from-the-failed-node) übernommen hat, ist ausgegraut, mit
+*aus dem vorherigen Lauf* als Status: Er hat in diesem Lauf keinen Job ausgeführt und daher keine Ausgabe zum Öffnen.
+
+Ab 7.7.0 zeigt ein Ascender-Workflow-Job auch, was Ascender seinen Knoten hinzufügt
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Ascender-Knoten | Im Graph | In der Ausgabe |
+|---|---|---|
+| Ein Knoten mit Wiederholungen | `↻ 1/3` nach seinem Status: die gemachten Wiederholungen, von denen, die er machen darf | Ein Block pro Versuch, jeder mit `Versuch 2 von 3` in seinem Kopf |
+| Ein fehlgeschlagener Versuch mit noch ausstehender Wiederholung | **retrying**, nicht fehlgeschlagen, solange die Wiederholung aussteht | Der Block des fehlgeschlagenen Versuchs |
+| Ein von einem Neustart übernommener Knoten | Ausgegraut, *aus dem vorherigen Lauf* | Ein Banner `carried over`, mit *aus dem vorherigen Lauf* in seinem Kopf |
+| Ein als erfolgreich erzwungener Knoten | *erzwungener Erfolg*, und `Erzwungen: <reason>` auf seiner Karte beim Überfahren | |
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Exécuter un workflow
 parent: Workflows
 nav_order: 3
-translated_from: 1883c268cde716170bdb84c7f2df49e9122dc55d
+translated_from: 536c898264f954c5239764f9d4f7a2f61ea40f9d
 ---
 
 # Exécuter un workflow
@@ -101,3 +101,30 @@ Un formulaire workflow sans `approval` retient tout de même le job à un nœud 
 
 **Arrêter** sur un job de workflow en cours l'arrête : les jobs des nœuds en cours sont interrompus, plus rien ne démarre, et une approbation qu'il
 attend est annulée. Un job de workflow qui attend une approbation peut lui aussi être arrêté.
+
+---
+
+## Relancer depuis le nœud en échec
+
+Depuis la 7.7.0, un job de workflow en échec peut être relancé depuis son nœud en échec, les nœuds réussis étant repris.
+
+**Relancer le job** sur la page du job a alors un caret avec **Depuis le premier nœud**, la relance complète, et **Depuis le nœud en échec**.
+Le nouveau job passe par la même approbation, la même validation au lancement et les mêmes permissions que toute [relance](../jobs/actions.html#relaunch-a-job) :
+
+- **Les nœuds réussis** n'exécutent rien. Le graphe les montre grisés, *de l'exécution précédente*, et la sortie a une bannière
+  `WORKFLOW NODE [identifier] (successful) #n carried over` pour chacun, sans sortie de nœud à ouvrir.
+- **Ce qu'ils ont transmis** atteint toujours les nœuds suivants : leurs artefacts `set_stats` sont gardés avec le job et transmis.
+- **L'exécution commence** au(x) nœud(s) en échec, et continue le long des liens du workflow comme le ferait une première exécution.
+- **La page du job** affiche **relance de #N**, avec *nœud en échec* à côté, et sa sortie commence par
+  `ok: [Relaunch of job N from its failed node: 2 node(s) carried over]`.
+
+Un job de workflow AnsibleForms ne propose **Depuis le nœud en échec** que lorsque chacune de ces conditions est remplie ; sinon **Relancer le job** est le bouton simple :
+
+| Condition | Pourquoi |
+|---|---|
+| Le job a échoué, avec un nœud en échec et un nœud réussi | Sans nœud à reprendre, c'est la relance complète |
+| Le job s'est exécuté sur la 7.7.0 ou ultérieure | Depuis la 7.7.0, un job de workflow garde chaque nœud tel qu'il s'est terminé, avec ce qu'il a transmis |
+| Le workflow est le même que lors de l'exécution du job | Le job en garde un hash : un nœud, un lien, une extra var ou un nom modifié ne propose que la relance complète |
+
+Un job de workflow exécuté sur Ascender utilise la relance des nœuds en échec d'Ascender lui-même, qui reprend les nœuds réussis de la même
+façon. AWX et AAP n'ont pas de telle relance, leurs jobs de workflow ne proposent donc que la relance complète, comme les jobs multistep.

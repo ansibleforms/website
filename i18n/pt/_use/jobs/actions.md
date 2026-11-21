@@ -3,7 +3,7 @@ layout: default
 title: Ações sobre tarefas
 parent: Tarefas
 nav_order: 3
-translated_from: 6014f8e14db84fca0d144f1d64232e50aa6cbec9
+translated_from: 6842b5564e9f629eed007085fa356df2e22cd031
 ---
 
 # Ações sobre tarefas
@@ -124,6 +124,10 @@ utilizador ver as tarefas de outros utilizadores, não interrompê-las.
 **Relançar** no menu da linha (⋮) da lista, ou **Relançar tarefa** na página da tarefa, inicia uma nova tarefa a partir de uma terminada. É oferecido em qualquer
 tarefa que não esteja `running` nem à espera de aprovação, aos utilizadores cuja função defina a opção de função `allowJobRelaunch`.
 
+Na página da tarefa, **Relançar tarefa** é um botão simples, ou um botão dividido com uma seta, como o **Submeter** do formulário, quando a tarefa
+oferece uma segunda escolha: [nos seus hosts com falha](#relaunch-on-the-failed-hosts) ou [a partir do seu nó com falha](#relaunch-from-the-failed-node).
+A sua parte principal é sempre o relançamento completo, e o menu da linha da lista oferece apenas o relançamento completo.
+
 O diálogo oferece:
 
 * **Relançar**: executa a tarefa de novo com os valores com que foi executada, como uma nova tarefa em seu nome.
@@ -134,6 +138,52 @@ O diálogo oferece:
 Um relançamento exige também que o formulário o permita (`allowRelaunch`, verdadeiro por predefinição) e que a tarefa seja **sua**, a menos que
 seja administrador ou, a partir da 7.3.0, tenha `manageAllJobs`; `showAllJobLogs`, que até à 7.2 relançava qualquer tarefa, já não o faz. A forma como um relançamento é verificado com as regras do formulário, e porque é que um formulário com um
 campo de palavra-passe o pode recusar, está descrita em [Relançar](../launch-validation/relaunching.html).
+
+### Relançar nos hosts com falha
+
+A partir da 7.7.0, uma tarefa que falhou em alguns dos seus hosts pode correr de novo só nesses hosts, sem tocar nos outros.
+
+A seta de **Relançar tarefa** oferece então **Em todos os hosts**, o relançamento completo, e **Nos hosts com falha (N)**, com N os hosts em que
+uma tarefa falhou ou que não foi possível alcançar. É oferecido numa tarefa terminada destes tipos:
+
+| Tarefa | Os seus hosts com falha vêm de | A nova execução |
+|---|---|---|
+| Um playbook num RTE | O resumo dos seus [eventos](following.html#hosts-and-tasks), senão o `PLAY RECAP` do seu resultado | Uma nova tarefa, limitada a esses hosts |
+| Um modelo de job em AWX, AAP ou Ascender | Os resumos de hosts do job nesse runner | O relançamento do próprio produto nos hosts com falha, no runner onde a tarefa correu |
+
+Uma tarefa que correu num só host, ou que falhou em todos os hosts, mantém o botão simples: voltar a correr os seus hosts com falha seria o
+relançamento completo. Uma falha que `ignore_errors` deixou passar, ou que um `rescue` tratou, não conta. As tarefas Jenkins, Semaphore e
+Rundeck, as tarefas de workflow e multistep, e as tarefas dos nós de um workflow não voltam a correr nos seus hosts com falha.
+
+A nova execução é uma nova tarefa com os mesmos valores da tarefa de onde vem:
+
+* **Hosts**: só os hosts com falha, dentro do limite da própria tarefa; uma nova execução de outra fica dentro dos hosts da anterior.
+* **Verificações**: a mesma aprovação, validação no lançamento e permissões que o relançamento completo.
+* **Diálogo**: lista os hosts antes de confirmar, sem **Editar os valores antes de relançar**.
+* **Página da tarefa**: **relançamento de #N**, com *hosts com falha* ao lado, liga à tarefa; o facto **hosts** de um playbook lista os hosts.
+* **Resultado**: começa com uma linha como `ok: [Re-run of job 42 on its 2 failed host(s): web07, web19]`.
+
+Um host com falha cujo nome o Ansible leria como um padrão, com um `*`, um `~` ou um `[` por exemplo, fica fora da nova execução, e a
+resultado di-lo numa linha `[WARNING]`. No RTE os hosts chegam ao `ansible-playbook` como um ficheiro de limite, um host por linha, por isso um
+nome de host com uma vírgula ou dois pontos continua a ser um só host.
+
+### Relançar a partir do nó com falha
+
+A partir da 7.7.0, uma tarefa de workflow que falhou pode correr de novo a partir do nó que falhou, mantendo o que os nós anteriores fizeram.
+
+A seta de **Relançar tarefa** oferece então **A partir do primeiro nó**, o relançamento completo, e **A partir do nó com falha**. As tarefas de
+workflow que o oferecem:
+
+| Tarefa de workflow | A partir do nó com falha |
+|---|---|
+| Um [workflow](../workflows/) do AnsibleForms | Os nós que tiveram sucesso são mantidos, e a execução começa no(s) nó(s) com falha |
+| Uma tarefa de workflow do Ascender | O relançamento dos nós com falha do próprio Ascender, no runner onde a tarefa correu |
+| Uma tarefa de workflow do AWX ou AAP | Não oferecido: só o relançamento completo |
+| Uma tarefa [multistep](../forms/multistep.html) (obsoleta) | Não oferecido: só o relançamento completo |
+
+A nova tarefa passa pela mesma aprovação, validação no lançamento e permissões que o relançamento completo, e a sua página mostra
+**relançamento de #N** com *nó com falha* ao lado. Quando um workflow do AnsibleForms o oferece, e o que é mantido, está descrito em
+[Executar um workflow](../workflows/running.html#relaunch-from-the-failed-node).
 
 ### Relançar com dados preenchidos
 

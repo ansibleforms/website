@@ -132,6 +132,19 @@ Scroll the graph away and it stays where you put it, with a **Follow the running
 shows its card with the whole name and brings the node and its links into focus, the rest of the graph faded. The graph has **Fit to
 screen** and **Full screen** buttons, and under a form after **Submit** a click on a node opens its output as on the job's page.
 
+A node carried over by a [relaunch from the failed node](../workflows/running.html#relaunch-from-the-failed-node) is greyed, with
+*from the previous run* as its status: it ran no job in this run, so it has no output to open.
+
+From 7.7.0 an Ascender workflow job also shows what Ascender adds to its nodes
+([#1082](https://github.com/ansibleforms/ansibleforms/issues/1082)):
+
+| Ascender node | On the graph | In the output |
+|---|---|---|
+| A node with retries | `↻ 1/3` after its status: the retries it made, of the ones it may make | One block per attempt, each with `attempt 2 of 3` on its header |
+| A failed attempt with a retry to come | **retrying**, not failed, while the retry is pending | The failed attempt's block |
+| A node carried over by a relaunch | Greyed, *from the previous run* | A `carried over` banner, with *from the previous run* on its header |
+| A node forced as successful | *forced success*, and `Forced: <reason>` on its card when hovered | |
+
 ---
 
 ## Hosts and tasks
