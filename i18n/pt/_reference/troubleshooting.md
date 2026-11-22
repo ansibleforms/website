@@ -2,7 +2,7 @@
 layout: default
 title: Resolução de problemas
 nav_order: 4
-translated_from: b8e652ae65cc97df52153b8d9acc960bd1bc71ea
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Resolução de problemas
@@ -218,8 +218,8 @@ A configuração base (`config.yaml`) não pôde ser lida ou não é válida. O 
 
 **Como corrigir**
 
-Corrija o ficheiro indicado por [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), ou o ficheiro que dá a chave no
-repositório com o tipo de utilização **Funções**, **Categorias** ou **Constantes**. Quando faltam ficheiros, faça com que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) e
+Corrija o ficheiro indicado por [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), ou o `config.yaml` no
+repositório usado para a configuração. Quando faltam ficheiros, faça com que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) e
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) apontem para um local persistente com permissão de escrita. Consulte
 [config.yaml](config/) para a estrutura.
 

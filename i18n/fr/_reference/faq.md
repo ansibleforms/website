@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: e9b6f09a90aed0d97e45caaec7881a9786b3bac8
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Questions fréquentes
@@ -38,14 +38,13 @@ chaque nœud garde son propre journal. Voir [Mise à l'échelle](production/scal
 
 ### Gestion des formulaires sur plusieurs dépôts
 
-Les formulaires de chaque dépôt Git ayant le type d'usage **Formulaires** sont fusionnés automatiquement ; en cas de noms de formulaires en double, le premier
-l'emporte et un avertissement est journalisé. Les rôles, les catégories et les constantes viennent chacun d'un seul dépôt, celui qui a ce
-type d'usage. Voir [Dépôts git](repositories/).
+Les formulaires de chaque dépôt Git qui a **Utiliser pour les formulaires ?** activé sont fusionnés automatiquement ; en cas de noms de formulaires en double, le premier
+l'emporte et un avertissement est journalisé. Ne gardez `config.yaml` que dans un seul dépôt. Voir [Dépôts git](repositories/).
 
 ### À propos des dépôts
 
 AnsibleForms clone et met à jour les dépôts Git sous le chemin des dépôts (`REPO_PATH`), gérés sous **Paramètres > Dépôts**.
-Ses types d'usage définissent ce qu'il contient : formulaires, playbooks, rôles, identifiants et tout autre paramètre conservé dans git. Voir [Dépôts git](repositories/).
+Des interrupteurs sur chaque dépôt définissent ce qu'il contient : configuration, formulaires, playbooks ou fichiers de variables. Voir [Dépôts git](repositories/).
 
 ### Validation VS Code des fichiers de formulaires
 

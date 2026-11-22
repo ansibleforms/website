@@ -2,7 +2,7 @@
 layout: default
 title: トラブルシューティング
 nav_order: 4
-translated_from: b8e652ae65cc97df52153b8d9acc960bd1bc71ea
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # トラブルシューティング
@@ -218,8 +218,8 @@ Failed to get forms list
 
 **解決方法**
 
-[`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) が指すファイル、または用途の種類 **ロール** 、 **カテゴリ** 、
-**定数** を持つリポジトリでそのキーを持つファイルを修正します。ファイルがない場合は、 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) と
+[`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) が指すファイル、または設定に使っているリポジトリの
+`config.yaml` を修正します。ファイルがない場合は、 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) と
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) が書き込み可能な永続的な場所を指すようにします。構造については
 [config.yaml](config/) を参照してください。
 

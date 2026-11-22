@@ -37,14 +37,13 @@ each node keeps its own log. See [Scaling](production/scaling.html) and the
 
 ### Multi-Repository Form Management
 
-Forms from every Git repository with the **Forms** usage type are merged automatically; on duplicate form names the first one
-wins and a warning is logged. The roles, the categories and the constants each come from one repository, the one with that
-usage type. See [Git repositories](repositories/).
+Forms from every Git repository with **use for forms** enabled are merged automatically; on duplicate form names the first one
+wins and a warning is logged. Keep `config.yaml` in only one repository. See [Git repositories](repositories/).
 
 ### About Repositories
 
 AnsibleForms clones and pulls Git repositories under the repositories path (`REPO_PATH`), managed under **Settings > Repositories**.
-Its usage types set what it holds: forms, playbooks, roles, credentials and every other setting kept in git. See [Git repositories](repositories/).
+Switches on each repository set what it holds: config, forms, playbooks or vars files. See [Git repositories](repositories/).
 
 ### VS Code Validation for Form Files
 

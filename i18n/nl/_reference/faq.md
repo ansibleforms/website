@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: e9b6f09a90aed0d97e45caaec7881a9786b3bac8
+translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
 ---
 
 # Veelgestelde vragen
@@ -38,14 +38,13 @@ elke node houdt zijn eigen log bij. Zie [Schalen](production/scaling.html) en de
 
 ### Formulieren beheren over meerdere repositories
 
-Formulieren uit elke Git-repository met het gebruikstype **Formulieren** worden automatisch samengevoegd; bij dubbele formuliernamen wint
-de eerste en wordt een waarschuwing gelogd. De rollen, de categorieën en de constanten komen elk uit één repository, die met dat
-gebruikstype. Zie [Git-repositories](repositories/).
+Formulieren uit elke Git-repository waarbij **Gebruiken voor formulieren** aan staat, worden automatisch samengevoegd; bij dubbele formuliernamen wint
+de eerste en wordt een waarschuwing gelogd. Bewaar `config.yaml` in slechts één repository. Zie [Git-repositories](repositories/).
 
 ### Over repositories
 
 AnsibleForms clonet en pullt Git-repositories onder het pad voor repositories (`REPO_PATH`), beheerd onder **Instellingen > Repositories**.
-De gebruikstypen van een repository bepalen wat hij bevat: formulieren, playbooks, rollen, inloggegevens en elke andere instelling die in git wordt bewaard. Zie [Git-repositories](repositories/).
+Schakelaars op elke repository bepalen wat hij bevat: configuratie, formulieren, playbooks of vars-bestanden. Zie [Git-repositories](repositories/).
 
 ### VS Code-validatie voor formulierbestanden
 

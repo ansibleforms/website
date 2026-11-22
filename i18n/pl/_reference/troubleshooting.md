@@ -2,7 +2,7 @@
 layout: default
 title: Rozwiązywanie problemów
 nav_order: 4
-translated_from: b8e652ae65cc97df52153b8d9acc960bd1bc71ea
+translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
 ---
 
 # Rozwiązywanie problemów
@@ -218,8 +218,8 @@ Konfiguracji bazowej (`config.yaml`) nie dało się odczytać lub jest nieprawid
 
 **Jak to naprawić**
 
-Popraw plik wskazany przez [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) lub plik podający klucz w
-repozytorium z typem zastosowania **Role**, **Kategorie** lub **Stałe**. Gdy brakuje plików, skieruj [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) i
+Popraw plik wskazany przez [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) lub `config.yaml` w
+repozytorium używanym do konfiguracji. Gdy brakuje plików, skieruj [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) i
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) na zapisywalne, trwałe miejsce. Strukturę opisuje
 [config.yaml](config/).
 
