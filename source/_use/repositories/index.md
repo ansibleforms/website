@@ -40,8 +40,9 @@ Every other type keeps settings, users or connections of the app in YAML files, 
 the General settings, the Appearance pages, the users, groups and roles, the sign-ins, the credentials, the runners and the
 other connections. They are described in [Configuration in git](config-as-code.html).
 
-**Forms**, **Workflows** and **Inventories** may be ticked on several repositories; **Playbooks** come from the first one,
-and every other type from one repository at most. Every repository is cloned into a subfolder named after it, under
+**Forms**, **Playbooks**, **Workflows** and **Inventories** may be ticked on several repositories, and every other type on
+one repository at most. A form runs the playbooks of the first **Playbooks** repository, unless it names its own with
+`playbookRepository`. Every repository is cloned into a subfolder named after it, under
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 The **Use for config ?** switch of before 7.8.0 is replaced by **Roles**, **Categories** and **Constants**, each read from the

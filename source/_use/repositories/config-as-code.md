@@ -37,8 +37,8 @@ that heading that can be ticked.
 | **Access** | **Disclaimer** (`use_for_disclaimer`), **Users** (`use_for_users`), **Groups** (`use_for_groups`), **Roles** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Connections** | **Repositories** (`use_for_repositories`), **Credentials** (`use_for_credentials`), **Secret stores** (`use_for_secret_stores`), **Databases** (`use_for_databases`), **Runners** (`use_for_runners`), **SSH** (`use_for_ssh`), **Notifications** (`use_for_notifications`), **Chat assistant** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Forms**, **Inventories** and **Workflows** may be ticked on several repositories. **Playbooks** come from one: the Usage step
-greys it on the others, and the server takes the first one with a warning. Every other type belongs to one repository at
+**Forms**, **Inventories**, **Playbooks** and **Workflows** may be ticked on several repositories. A form runs the playbooks
+of the first **Playbooks** repository, unless it names its own with `playbookRepository`. Every other type belongs to one repository at
 most, and a second one is refused by the API and by the config seed. A type another repository holds shows ticked in grey and
 disabled, its tooltip naming that repository: `Already managed by the "platform" repository`.
 
