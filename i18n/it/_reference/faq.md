@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: d52d2b59f52a3cbc57b84d24de62f0bc5a345c89
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Domande frequenti
