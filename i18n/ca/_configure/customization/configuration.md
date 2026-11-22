@@ -3,7 +3,7 @@ layout: default
 title: Configuració
 parent: Variables d'entorn
 nav_order: 5
-translated_from: c9a671f461916975daeaea7f637658b569946f76
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Configuració
@@ -47,11 +47,8 @@ Les categories, els rols i les constants surten de `config.yaml` al disc o de la
    pestanya **Configuració** de la pàgina de configuració: `1` llegeix la base de dades, `0` llegeix el fitxer.
 2. Si no, l'origen de configuració desat a la base de dades (`file` o `database`), que les instàncies configurades
    abans de la 6.3.0 van triar a la pàgina de configuració.
-3. Si no, el fitxer de [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
-
-Des de la 7.8.0 una clau que conté un repositori se superposa a aquesta base: el repositori amb el tipus d'ús **Rols**, **Categories** o
-**Constants** dona aquesta clau des del seu fitxer que dona `controller_roles:`, `controller_categories:` o `controller_constants:`, i si no
-des del seu `config.yaml` (obsolet). Vegeu [Configuració a git](../repositories/config-as-code.html#roles-categories-and-constants).
+3. Si no, el fitxer: el `config.yaml` del repositori amb **Utilitzar per a la configuració ?** activat, si no el d'un repositori amb
+   **Utilitzar per als formularis ?** activat, i si no el de [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
 
 Un `ENABLE_CONFIG_IN_DATABASE` definit explícitament sempre guanya, fins i tot `0` davant d'un `database` desat. Es llegeix cada vegada que
 es carrega la configuració, així que un canvi s'aplica sense reiniciar. La pàgina **Estat** mostra l'origen en ús a la seva pestanya **Informació**.

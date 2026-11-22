@@ -46,11 +46,8 @@ The categories, roles and constants come from `config.yaml` on disk or from its 
    **Configuration** tab of the settings page: `1` reads the database, `0` reads the file.
 2. Otherwise, the configuration source stored in the database (`file` or `database`), which instances set up
    before 6.3.0 chose on the settings page.
-3. Otherwise, the file at [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
-
-Since 7.8.0 a key that a repository holds is laid over this base: the repository with the **Roles**, **Categories** or
-**Constants** usage type gives that key from its file giving `controller_roles:`, `controller_categories:` or
-`controller_constants:`, else from its `config.yaml` (deprecated). See [Configuration in git](../repositories/config-as-code.html#roles-categories-and-constants).
+3. Otherwise, the file: the `config.yaml` of the repository with **Use for config** enabled, else of a repository with
+   **Use for forms** enabled, else the one at [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
 
 An explicitly set `ENABLE_CONFIG_IN_DATABASE` always wins, even `0` over a stored `database`. It is read each time the
 configuration loads, so a change applies without a restart. The **Status** page shows the source in use on its **Information** tab.

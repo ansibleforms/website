@@ -3,7 +3,7 @@ layout: default
 title: Konfiguration
 parent: Umgebungsvariablen
 nav_order: 5
-translated_from: c9a671f461916975daeaea7f637658b569946f76
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Konfiguration
@@ -47,11 +47,8 @@ Die Kategorien, Rollen und Konstanten kommen aus `config.yaml` auf der Festplatt
    Tab **Konfiguration** der Einstellungsseite: `1` liest die Datenbank, `0` liest die Datei.
 2. Andernfalls die in der Datenbank gespeicherte Konfigurationsquelle (`file` oder `database`), die vor 6.3.0 eingerichtete
    Instanzen auf der Einstellungsseite gewählt haben.
-3. Andernfalls die Datei unter [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
-
-Seit 7.8.0 wird ein Schlüssel, den ein Repository enthält, über diese Basis gelegt: Das Repository mit dem Verwendungstyp **Rollen**, **Kategorien** oder
-**Konstanten** liefert diesen Schlüssel aus seiner Datei mit `controller_roles:`, `controller_categories:` oder
-`controller_constants:`, sonst aus seiner `config.yaml` (veraltet). Siehe [Konfiguration in git](../repositories/config-as-code.html#roles-categories-and-constants).
+3. Andernfalls die Datei: die `config.yaml` des Repositorys mit eingeschaltetem **Für Konfiguration verwenden**, sonst eines Repositorys mit
+   eingeschaltetem **Für Formulare verwenden**, sonst die unter [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
 
 Ein explizit gesetztes `ENABLE_CONFIG_IN_DATABASE` gewinnt immer, sogar `0` gegenüber einem gespeicherten `database`. Es wird bei jedem Laden der
 Konfiguration gelesen, daher gilt eine Änderung ohne Neustart. Die Seite **Status** zeigt die verwendete Quelle im Tab **Informationen**.

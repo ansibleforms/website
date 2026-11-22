@@ -133,7 +133,7 @@ Git never holds a plain secret: a secret field of an entry is only an `${ENV}` r
 
 Passwords, tokens, client secrets and keys are written as `${SEED_RTE_TOKEN}`, as in the [config seed](../seed/). An entry with
 a plain secret, or naming a variable that is not set, is refused and named in the pull output; so is a variable of the server
-itself (`DB_*`, `ACCESS_TOKEN_*`, `ENCRYPTION_*`, `ADMIN_*` ...). A secret left out of an entry keeps the one in the app's
+itself (`DB_*`, `ACCESS_TOKEN_*`, `ENCRYPTION_*`, `ADMIN_*` …). A secret left out of an entry keeps the one in the app's
 database, and the app writes its own objects to git without their secrets.
 
 A secret typed in the app for an object whose entry gives it as an `${ENV}` reference is refused: change the variable, or the

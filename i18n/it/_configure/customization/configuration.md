@@ -3,7 +3,7 @@ layout: default
 title: Configurazione
 parent: Variabili d'ambiente
 nav_order: 5
-translated_from: c9a671f461916975daeaea7f637658b569946f76
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Configurazione
@@ -47,11 +47,8 @@ Le categorie, i ruoli e le costanti arrivano da `config.yaml` su disco o dalla s
    **Configurazione** della pagina delle impostazioni: `1` legge il database, `0` legge il file.
 2. Altrimenti, l'origine della configurazione salvata nel database (`file` o `database`), che le istanze configurate
    prima della 6.3.0 sceglievano nella pagina delle impostazioni.
-3. Altrimenti, il file in [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
-
-Dalla 7.8.0 una chiave contenuta in un repository si sovrappone a questa base: il repository con il tipo di utilizzo **Ruoli**, **Categorie** o
-**Costanti** dà quella chiave dal suo file che dà `controller_roles:`, `controller_categories:` o `controller_constants:`, altrimenti dal suo
-`config.yaml` (deprecato). Vedi [Configurazione in git](../repositories/config-as-code.html#roles-categories-and-constants).
+3. Altrimenti, il file: il `config.yaml` del repository con **Usare per configurazione** attivo, altrimenti di un repository con
+   **Usare per moduli** attivo, altrimenti quello in [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
 
 Una `ENABLE_CONFIG_IN_DATABASE` impostata esplicitamente vince sempre, anche `0` su un `database` salvato. Viene letta ogni volta che
 la configurazione si carica, quindi una modifica si applica senza riavvio. La pagina **Stato** mostra l'origine in uso nella sua scheda **Informazioni**.

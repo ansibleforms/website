@@ -89,9 +89,7 @@ repositories:
       uri: https://git.example.com/forms.git
       branch: main
       use_for_forms: true
-      use_for_roles: true        # use_for_config, before 7.8.0: deprecated
-      use_for_categories: true
-      use_for_constants: true
+      use_for_config: true
       rebase_on_start: true
 
 syslog_servers:

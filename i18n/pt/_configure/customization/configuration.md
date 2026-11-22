@@ -3,7 +3,7 @@ layout: default
 title: Configuração
 parent: Variáveis de ambiente
 nav_order: 5
-translated_from: c9a671f461916975daeaea7f637658b569946f76
+translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
 ---
 
 # Configuração
@@ -47,11 +47,8 @@ As categorias, funções e constantes vêm do `config.yaml` em disco ou da sua c
    separador **Configuração** da página de definições: `1` lê a base de dados, `0` lê o ficheiro.
 2. Caso contrário, a origem da configuração guardada na base de dados (`file` ou `database`), que as instâncias configuradas
    antes da 6.3.0 escolheram na página de definições.
-3. Caso contrário, o ficheiro em [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
-
-Desde a 7.8.0, uma chave que um repositório contém sobrepõe-se a esta base: o repositório com o tipo de utilização **Funções**, **Categorias** ou
-**Constantes** dá essa chave a partir do seu ficheiro que dá `controller_roles:`, `controller_categories:` ou
-`controller_constants:`, senão do seu `config.yaml` (obsoleto). Ver [Configuração em git](../repositories/config-as-code.html#roles-categories-and-constants).
+3. Caso contrário, o ficheiro: o `config.yaml` do repositório com **Usar para a configuração** ativado, senão o de um repositório com
+   **Usar para formulários** ativado, senão o que está em [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
 
 Uma `ENABLE_CONFIG_IN_DATABASE` definida explicitamente ganha sempre, até `0` sobre um `database` guardado. É lida cada vez que a
 configuração é carregada, por isso uma alteração aplica-se sem reiniciar. A página **Estado** mostra a origem em uso no seu separador **Informação**.
