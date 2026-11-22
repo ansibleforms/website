@@ -3,7 +3,7 @@ layout: default
 title: Configuració
 parent: Variables d'entorn
 nav_order: 5
-translated_from: 71a26c1bda0006fdb0e0c0b3325e8a53a5c3a125
+translated_from: c15df1be69f79cf42094233023cb5766d2f56452
 ---
 
 # Configuració
