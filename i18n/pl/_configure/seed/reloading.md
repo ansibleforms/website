@@ -3,7 +3,7 @@ layout: default
 title: Przeładowanie i start
 parent: Config seed
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
 ---
 
 # Przeładowanie i start
@@ -19,14 +19,18 @@ Zmiana pliku bez restartu i co się dzieje przy starcie
 
 ## Zmiana pliku bez restartu
 
-Seed jest ponownie odczytywany co `CONFIG_SEED_RELOAD_SECONDS` (domyślnie 60, `0` to wyłącza)
-i ponownie stosowany, gdy jego zawartość się zmieniła. Zmiana zatwierdzona w gicie trafia więc
+Proces systemowy **Ponowne wczytanie config seed** odczytuje seed co minutę i stosuje go ponownie, gdy jego zawartość się zmieniła. Zmiana zatwierdzona w gicie trafia więc
 automatycznie do działającej instancji: na Kubernetes `ConfigMap` jest ponownie montowany w podzie w ciągu
 około minuty, a następne sprawdzenie go wychwytuje. Nie ma rolloutu ani restartu i żaden
 hook nie musi niczego wywoływać.
 
 Dla niezmienionego pliku odpytanie oblicza jeden hash i kończy, więc nigdy nie przepisuje wiersza, który już
 zastosowało.
+
+Od wersji 7.8.0 sprawdzanie działa według crona, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
+(domyślnie `* * * * *`), który administrator zmienia też na stronie procesu w **Zadania > System** (zobacz
+[Procesy systemowe](../jobs/system-tasks.html)). Zastępuje `CONFIG_SEED_RELOAD_SECONDS`, przestarzałą i nadal odczytywaną, dopóki cron
+nie jest ustawiony: jej `0` nadal wyłącza ponowne wczytywanie.
 
 Aby zastosować plik od razu, zamiast czekać na następne sprawdzenie, użyj jednego z tych sposobów:
 

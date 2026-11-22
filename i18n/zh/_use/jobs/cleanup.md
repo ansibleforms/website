@@ -3,7 +3,7 @@ layout: default
 title: 清理
 parent: 作业
 nav_order: 6
-translated_from: 48c1ec6d3d2ac80c86dd71d6799fbb1b59c5cb2f
+translated_from: 3ccd056f3993f5aea914db2765e62d0d8f89d366
 ---
 
 # 清理
@@ -25,9 +25,10 @@ translated_from: 48c1ec6d3d2ac80c86dd71d6799fbb1b59c5cb2f
 * **启动时**，该进程在重启前跟踪的作业，以及 7 之前没有任何进程
   跟踪的作业，如果仍处于 `running` 或正在中止，就会被标记为已放弃；日志会显示 `Abandoned <n> jobs` 。在 RTE 上
   运行的作业不受影响：即使没有启动它的进程，它也会继续运行。
-* **每分钟**，由另一个已停止响应 2 分钟的 AnsibleForms 进程（或 RTE）跟踪的作业会被
-  标记为已放弃；日志会显示 `Abandoned <n> jobs followed by a node that stopped answering` 。
-* **每小时**，开始于一天多以前、仍处于 `running` 且一天内没有写入任何输出的作业会被标记为已放弃。
+* **每分钟**，[系统任务](system-tasks.html)**已停止的节点**会把由另一个已停止响应 2 分钟的 AnsibleForms 进程
+  （或 RTE）跟踪的作业标记为已放弃；日志会显示 `Abandoned <n> jobs followed by a node that stopped answering` 。
+* **每小时**，系统任务**被放弃的作业**会把开始于一天多以前、仍处于 `running` 且一天内没有写入任何输出的作业
+  标记为已放弃。
   在 RTE 上运行的作业在这里同样不受影响：RTE 重启时会自行清理其作业。
 
 从 7.3.0 起，因重启或节点停止而被放弃的 AWX、AAP 或 Ascender 模板作业，如果是在过去 24 小时内
@@ -41,9 +42,11 @@ translated_from: 48c1ec6d3d2ac80c86dd71d6799fbb1b59c5cb2f
 
 ## 作业保留
 
-作业会一直保留，直到被删除，除非管理员设置了保留期限。
+已结束的作业会保留管理员在 [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) 中设置的天数。
 
-设置了 [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) 后，每晚的一个任务（在 2:30）会删除
-结束时间早于该天数的已结束作业，连同其输出和步骤一起删除。它只删除状态为
+每晚的系统任务**作业清理**（在 2:30）会删除结束时间早于该天数的已结束作业，连同其输出和步骤一起删除。它只删除状态为
 `success` 、 `failed` 、 `warning` 、 `aborted` 、 `rejected` 或 `abandoned` 的作业，因此正在运行的作业和等待
-审批的作业无论多旧都会保留。默认值 `0` 会保留所有作业。
+审批的作业无论多旧都会保留。自 7.6.0 起默认值为 `90`（之前为 `0`），`0` 会保留所有作业。
+
+这些时间是默认值：从 7.8.0 起，管理员可以在**作业 > 系统**下该任务的页面中修改它们，并在那里查看它的每次运行
+（参见[系统任务](system-tasks.html)）。

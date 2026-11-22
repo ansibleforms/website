@@ -5,7 +5,7 @@ parent: Betrieb in Produktion
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # Backups
@@ -22,7 +22,8 @@ Nächtliche Backups, was sie enthalten, Wiederherstellungen und was sonst noch z
 ## Nächtliche Backups
 
 AnsibleForms sichert sich jede Nacht um Mitternacht selbst, in der Zeitzone von [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(standardmäßig UTC). Diese Einstellungen steuern das:
+(standardmäßig UTC). Seit 7.8.0 ist das die Systemaufgabe **Nächtliche Sicherung**, deren Zeit ein Administrator unter **Jobs > System** ändert
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)); siehe [Systemaufgaben](../jobs/system-tasks.html). Diese Einstellungen steuern das:
 
 | Variable | Standard | Bedeutung |
 |----------|---------|---------|

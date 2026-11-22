@@ -3,7 +3,7 @@ layout: default
 title: Logs
 parent: Draaien in productie
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Logs
@@ -115,11 +115,14 @@ Twee dagelijkse taken met een instelling voorkomen dat de database onbeperkt gro
 | Variabele | Standaard | Draait om | Verwijdert |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Auditregels die ouder zijn dan dit |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (alles bewaren) | 2:30 | Voltooide jobs die ouder zijn dan dit, met hun uitvoer |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | Voltooide jobs die ouder zijn dan dit, met hun uitvoer |
 
 `0` bewaart bij beide alles. Nog twee dagelijkse taken hebben geen instelling: om 3:00 worden de opgeslagen refresh tokens die ouder zijn dan 30 dagen en
 de verlopen tokenintrekkingen verwijderd, en om 4:00 de [opgeslagen jobs](../jobs/stored-jobs.html) waarvan de vervaldatum voorbij is.
 De tijden zijn in de tijdzone van [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), en de worker voert ze uit.
+
+Dit zijn de standaardtijden. Sinds 7.8.0 is elk van deze taken een [systeemtaak](../jobs/system-tasks.html) onder **Jobs > Systeem**,
+waar een beheerder wijzigt wanneer ze draait en elke run met haar resultaat ziet.
 
 De joboutput is meestal de snelst groeiende tabel: de pagina **Status** meldt de grootte ervan
 en waarschuwt als die 1 GB overschrijdt zonder ingestelde bewaartermijn. Lopende jobs en jobs die op goedkeuring wachten, worden nooit verwijderd.

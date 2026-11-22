@@ -3,7 +3,7 @@ layout: default
 title: Cópias de segurança e retenção
 parent: Variáveis de ambiente
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Cópias de segurança e retenção
@@ -35,6 +35,10 @@ Uma tarefa diária remove as tarefas terminadas mais antigas do que isto às 2:3
 aprovação, nunca é removida. A partir da 7.7.0, `STORED_JOB_UNUSED_DAYS` também remove, às 4:00, as [tarefas
 guardadas](../jobs/stored-jobs.html#when-it-is-removed) a partir das quais nenhuma tarefa foi lançada durante esses dias. Estas variáveis
 aplicam-se sem reiniciar quando são alteradas na página de definições.
+
+Estas horas são as predefinidas. Desde a 7.8.0 cada limpeza, e a cópia noturna, é um [processo do sistema](../jobs/system-tasks.html) em
+**Tarefas > Sistema**, onde um administrador altera quando corre e vê as suas execuções; as variáveis das suas horas estão em
+[Processos do sistema](system-tasks.html).
 
 ---
 

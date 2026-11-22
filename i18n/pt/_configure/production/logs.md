@@ -3,7 +3,7 @@ layout: default
 title: Registos
 parent: Em produção
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Registos
@@ -115,11 +115,14 @@ Duas tarefas diárias com uma definição impedem a base de dados de crescer sem
 | Variável | Predefinição | Corre às | Remove |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | As entradas de auditoria mais antigas do que isto |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (manter tudo) | 2:30 | As tarefas terminadas mais antigas do que isto, com a sua saída |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | As tarefas terminadas mais antigas do que isto, com a sua saída |
 
 `0` mantém tudo em ambos. Mais duas tarefas diárias não têm definição: às 3:00 são removidos os refresh tokens guardados com mais de 30 dias e
 as revogações de tokens expiradas, e às 4:00 as [tarefas guardadas](../jobs/stored-jobs.html) cuja validade já passou.
 As horas estão no fuso horário de [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), e é o worker que as executa.
+
+Estas são as horas predefinidas. Desde a 7.8.0 cada uma destas tarefas é um [processo do sistema](../jobs/system-tasks.html) em **Tarefas > Sistema**,
+onde um administrador altera quando corre e vê cada execução com o seu resultado.
 
 A saída das tarefas é normalmente a tabela que mais cresce: a página **Estado** indica o seu tamanho
 e avisa quando passa de 1 GB sem retenção definida. As tarefas em execução e as que aguardam aprovação nunca são removidas.

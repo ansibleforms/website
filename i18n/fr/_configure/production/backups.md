@@ -5,7 +5,7 @@ parent: Exploitation en production
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # Sauvegardes
@@ -22,7 +22,8 @@ Les sauvegardes nocturnes, leur contenu, les restaurations, et ce qu'il faut con
 ## Sauvegardes nocturnes
 
 AnsibleForms se sauvegarde chaque nuit à minuit, dans le fuseau horaire de [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(UTC par défaut). Ces paramètres la pilotent :
+(UTC par défaut). Depuis la 7.8.0, c'est la tâche système **Sauvegarde nocturne**, dont un admin modifie l'heure sous **Jobs > Système**
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)) ; voir [Tâches système](../jobs/system-tasks.html). Ces paramètres la pilotent :
 
 | Variable | Défaut | Signification |
 |----------|---------|---------|

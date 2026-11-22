@@ -3,7 +3,7 @@ layout: default
 title: Neuladen und Start
 parent: Config-Seed
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
 ---
 
 # Neuladen und Start
@@ -19,14 +19,18 @@ Die Datei ohne Neustart ändern, und was beim Start passiert
 
 ## Die Datei ohne Neustart ändern
 
-Der Seed wird alle `CONFIG_SEED_RELOAD_SECONDS` neu gelesen (standardmäßig 60, `0` schaltet es ab)
-und erneut angewendet, wenn sich sein Inhalt geändert hat. Eine in Git committete Änderung erreicht daher
+Die Systemaufgabe **Config-Seed neu laden** liest den Seed jede Minute neu und wendet ihn erneut an, wenn sich sein Inhalt geändert hat. Eine in Git committete Änderung erreicht daher
 eine laufende Instanz automatisch: Auf Kubernetes wird eine `ConfigMap` innerhalb von etwa einer Minute unter dem Pod neu
 eingehängt, und die nächste Prüfung übernimmt sie. Es gibt keinen Rollout und keinen Neustart, und kein
 Hook muss etwas aufrufen.
 
 Bei einer unveränderten Datei berechnet die Abfrage einen Hash und hört auf, sodass sie nie eine bereits
 angewendete Zeile neu schreibt.
+
+Seit 7.8.0 läuft die Prüfung nach einem Cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
+(standardmäßig `* * * * *`), den ein Administrator auch auf der Seite der Aufgabe unter **Jobs > System** ändert (siehe
+[Systemaufgaben](../jobs/system-tasks.html)). Er ersetzt `CONFIG_SEED_RELOAD_SECONDS`, das veraltet ist und weiter gelesen wird, solange
+der Cron nicht gesetzt ist: Sein `0` schaltet das Neuladen weiterhin ab.
 
 Um die Datei sofort anzuwenden, statt auf die nächste Prüfung zu warten, verwenden Sie eine dieser Möglichkeiten:
 

@@ -3,7 +3,7 @@ layout: default
 title: Log
 parent: In produzione
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Log
@@ -115,11 +115,14 @@ Due attività giornaliere con un'impostazione evitano che il database cresca sen
 | Variabile | Predefinito | Esecuzione | Rimuove |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Le voci di audit più vecchie di così |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (conserva tutto) | 2:30 | I job terminati più vecchi di così, con il loro output |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | I job terminati più vecchi di così, con il loro output |
 
 `0` conserva tutto per entrambe. Altre due attività giornaliere non hanno un'impostazione: alle 3:00 vengono rimossi i refresh token salvati più vecchi di 30 giorni e
 le revoche di token scadute, e alle 4:00 i [job salvati](../jobs/stored-jobs.html) la cui scadenza è passata.
 Gli orari sono nel fuso orario di [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), e le esegue il worker.
+
+Questi sono gli orari predefiniti. Dalla 7.8.0 ognuna di queste attività è un'[attività di sistema](../jobs/system-tasks.html) sotto **Job > Sistema**,
+dove un admin cambia quando gira e vede ogni esecuzione con il suo risultato.
 
 L'output dei job è di solito la tabella che cresce più in fretta: la pagina **Stato** ne riporta la dimensione
 e avvisa quando supera 1 GB senza una conservazione impostata. I job in esecuzione e quelli in attesa di approvazione non vengono mai rimossi.

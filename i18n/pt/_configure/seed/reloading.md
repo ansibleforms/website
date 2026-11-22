@@ -3,7 +3,7 @@ layout: default
 title: Recarregamento e arranque
 parent: Config seed
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
 ---
 
 # Recarregamento e arranque
@@ -19,14 +19,18 @@ Alterar o ficheiro sem reiniciar, e o que acontece no arranque
 
 ## Alterar o ficheiro sem reiniciar
 
-O seed é lido de novo a cada `CONFIG_SEED_RELOAD_SECONDS` (60 por predefinição, `0` desliga-o)
-e aplicado de novo quando o seu conteúdo mudou. Uma alteração enviada para o git chega assim
+O processo do sistema **Recarga do config seed** lê o seed de novo a cada minuto, e aplica-o de novo quando o seu conteúdo mudou. Uma alteração enviada para o git chega assim
 automaticamente a uma instância em execução: no Kubernetes, um `ConfigMap` é montado de novo no pod em
 cerca de um minuto, e a verificação seguinte apanha-o. Não há rollout nem reinício, e nenhum
 hook precisa de chamar nada.
 
 Para um ficheiro inalterado, a verificação calcula um hash e para, por isso nunca reescreve uma linha que já
 aplicou.
+
+Desde a 7.8.0 a verificação corre num cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
+(`* * * * *` por predefinição), que um administrador também altera na página do processo em **Tarefas > Sistema** (ver
+[Processos do sistema](../jobs/system-tasks.html)). Substitui `CONFIG_SEED_RELOAD_SECONDS`, obsoleta e ainda lida enquanto o cron não
+estiver definido: o seu `0` continua a desativar a recarga.
 
 Para aplicar o ficheiro de imediato em vez de esperar pela verificação seguinte, use uma destas formas:
 

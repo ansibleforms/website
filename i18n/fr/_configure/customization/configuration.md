@@ -3,7 +3,7 @@ layout: default
 title: Configuration
 parent: Variables d'environnement
 nav_order: 5
-translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
+translated_from: 71a26c1bda0006fdb0e0c0b3325e8a53a5c3a125
 ---
 
 # Configuration
@@ -28,7 +28,7 @@ Appliquer un seed de configuration monté, le vérifier toutes les cinq minutes,
 ```yaml
     environment:
       - CONFIG_SEED_PATH=/seed/seed.yaml
-      - CONFIG_SEED_RELOAD_SECONDS=300
+      - "CONFIG_SEED_RELOAD_CRON=*/5 * * * *"
       - ENABLE_CONFIG_IN_DATABASE=1
       - ALLOW_ENV_EDIT=0              # the environment is declared here, not on the settings pages
     volumes:

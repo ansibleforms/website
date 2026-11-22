@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 311c12f73b9bb608eda0b588667b50bc986eb91e
 ---
 
 # Jobs
@@ -58,6 +58,7 @@ Le menu de gauche classe les jobs dans le temps, avec le nombre de jobs de chaqu
 | | **En attente d'approbation** | Les jobs au statut `approve` ; le compteur passe à l'orange quand un job attend |
 | **Futur** | **Planifiés** | La page [Planifications](schedules.html) (option de rôle `allowScheduledJobs`) |
 | | **Enregistrés** | La page [Jobs enregistrés](stored-jobs.html) (option de rôle `allowStoredJobs`) |
+| | **Système** | La page [Tâches système](system-tasks.html), depuis la 7.8.0 (option de rôle `showSettings`, admins) |
 
 Le menu n'a pas d'entrée pour tous les jobs : le lien **Jobs** de l'en-tête les affiche tous, jobs `warning` compris.
 
@@ -112,3 +113,4 @@ Chaque sujet a sa propre page :
 | [Planifications](schedules.html) | Exécuter un formulaire plus tard ou selon une planification cron, et gérer toutes les planifications |
 | [Jobs enregistrés](stored-jobs.html) | Conserver les données d'un formulaire pour les recharger plus tard |
 | [Nettoyage](cleanup.html) | Les jobs interrompus par un redémarrage, et la durée de conservation des jobs terminés |
+| [Tâches système](system-tasks.html) | Les tâches de maintenance qu'AnsibleForms exécute seul, et quand elles s'exécutent |

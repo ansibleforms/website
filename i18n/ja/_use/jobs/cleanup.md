@@ -3,7 +3,7 @@ layout: default
 title: クリーンアップ
 parent: ジョブ
 nav_order: 6
-translated_from: 48c1ec6d3d2ac80c86dd71d6799fbb1b59c5cb2f
+translated_from: 3ccd056f3993f5aea914db2765e62d0d8f89d366
 ---
 
 # クリーンアップ
@@ -25,9 +25,10 @@ translated_from: 48c1ec6d3d2ac80c86dd71d6799fbb1b59c5cb2f
 * **起動時**: このプロセスが再起動前に追跡していたジョブと、どのプロセスも追跡していないバージョン 7 より前のジョブは、
   まだ `running` または中止処理中であれば放棄としてマークされます。ログには `Abandoned <n> jobs` と表示されます。RTE で
   実行されるジョブは対象外で、開始したプロセスがなくても実行を続けます。
-* **1 分ごと**: 2 分間応答しなくなった別の AnsibleForms プロセス (または RTE) が追跡していたジョブは、放棄として
-  マークされます。ログには `Abandoned <n> jobs followed by a node that stopped answering` と表示されます。
-* **1 時間ごと**: 1 日以上前に開始され、まだ `running` で、1 日間出力がないジョブは放棄としてマークされます。
+* **1 分ごと**: [システム処理](system-tasks.html) **停止したノード** が、2 分間応答しなくなった別の AnsibleForms プロセス
+  (または RTE) が追跡していたジョブを放棄としてマークします。ログには `Abandoned <n> jobs followed by a node that stopped answering` と表示されます。
+* **1 時間ごと**: システム処理 **放棄されたジョブ** が、1 日以上前に開始され、まだ `running` で、1 日間出力がないジョブを
+  放棄としてマークします。
   ここでも RTE で実行されるジョブは対象外です。RTE は再起動時に自分のジョブをクリーンアップします。
 
 7.3.0 以降、再起動や停止したノードによって放棄された AWX、AAP、Ascender のテンプレートジョブは、過去 24 時間以内に開始されたものであれば
@@ -41,9 +42,12 @@ translated_from: 48c1ec6d3d2ac80c86dd71d6799fbb1b59c5cb2f
 
 ## ジョブの保持
 
-管理者が保持期間を設定しない限り、ジョブは削除されるまで保持されます。
+終了したジョブは、管理者が [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) に設定した日数だけ保持されます。
 
-[`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) を設定すると、毎晩 (2:30) 実行されるタスクが、
-指定した日数より前に終了したジョブを、その出力とステップとともに削除します。削除されるのはステータスが
-`success`、 `failed`、 `warning`、 `aborted`、 `rejected`、 `abandoned` のジョブだけなので、実行中のジョブと承認待ちの
-ジョブは、どれだけ古くても保持されます。既定値の `0` では、すべてのジョブが保持されます。
+毎晩 (2:30) 実行されるシステム処理 **ジョブの整理** が、指定した日数より前に終了したジョブを、その出力とステップとともに
+削除します。削除されるのはステータスが `success`、 `failed`、 `warning`、 `aborted`、 `rejected`、 `abandoned` のジョブだけなので、
+実行中のジョブと承認待ちのジョブは、どれだけ古くても保持されます。既定値は 7.6.0 から `90` （それ以前は `0` ）で、 `0` では
+すべてのジョブが保持されます。
+
+これらの時刻は既定値です。7.8.0 からは、管理者が **ジョブ > システム** の処理のページで変更でき、そこで各実行を確認できます
+（ [システム処理](system-tasks.html) を参照）。

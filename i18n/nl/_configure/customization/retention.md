@@ -3,7 +3,7 @@ layout: default
 title: Back-ups en bewaartermijn
 parent: Omgevingsvariabelen
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Back-ups en bewaartermijn
@@ -35,6 +35,10 @@ Een dagelijkse taak verwijdert om 2:30 uur voltooide jobs die ouder zijn dan dit
 goedkeuring wacht, wordt nooit verwijderd. Vanaf 7.7.0 verwijdert `STORED_JOB_UNUSED_DAYS` ook, om 4:00 uur, de [opgeslagen
 jobs](../jobs/stored-jobs.html#when-it-is-removed) waarmee zoveel dagen geen job gestart is. Deze variabelen
 gelden zonder herstart als ze op de instellingenpagina worden gewijzigd.
+
+Deze tijden zijn de standaard. Sinds 7.8.0 is elke opschoontaak, en de nachtelijke back-up, een [systeemtaak](../jobs/system-tasks.html) onder
+**Jobs > Systeem**, waar een beheerder wijzigt wanneer ze draait en haar runs ziet; de variabelen van hun tijden staan in
+[Systeemtaken](system-tasks.html).
 
 ---
 

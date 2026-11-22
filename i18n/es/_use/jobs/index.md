@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 311c12f73b9bb608eda0b588667b50bc986eb91e
 ---
 
 # Trabajos
@@ -58,6 +58,7 @@ El menú de la izquierda ordena los trabajos en el tiempo, con el número de tra
 | | **Esperando aprobación** | Trabajos con estado `approve`; el contador se vuelve naranja cuando uno está esperando |
 | **Futuro** | **Programados** | La página de [Programaciones](schedules.html) (opción de rol `allowScheduledJobs`) |
 | | **Guardados** | La página de [Trabajos almacenados](stored-jobs.html) (opción de rol `allowStoredJobs`) |
+| | **Sistema** | La página de [Tareas del sistema](system-tasks.html), desde la 7.8.0 (opción de rol `showSettings`, administradores) |
 
 El menú no tiene una entrada para todos los trabajos: el enlace **Trabajos** de la cabecera los muestra todos, incluidos los trabajos `warning`.
 
@@ -112,3 +113,4 @@ Cada tema tiene su propia página:
 | [Programaciones](schedules.html) | Ejecutar un formulario más tarde o según una programación cron, y gestionar todas las programaciones |
 | [Trabajos almacenados](stored-jobs.html) | Guardar los datos de un formulario para volver a cargarlos más tarde |
 | [Limpieza](cleanup.html) | Trabajos cortados por un reinicio, y cuánto tiempo se conservan los trabajos terminados |
+| [Tareas del sistema](system-tasks.html) | Las tareas de mantenimiento que AnsibleForms ejecuta por sí solo, y cuándo |

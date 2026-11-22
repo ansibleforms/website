@@ -5,7 +5,7 @@ parent: 本番環境での運用
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # バックアップ
@@ -22,7 +22,8 @@ translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
 ## 夜間バックアップ
 
 AnsibleForms は毎晩午前 0 時に、 [`LOG_TZ`](../customization/logging.html#env_LOG_TZ) のタイムゾーン（既定は UTC）で
-自分自身をバックアップします。次の設定で制御します。
+自分自身をバックアップします。7.8.0 からはシステム処理 **夜間バックアップ** で、管理者が **ジョブ > システム** でその時刻を変更します
+（ [`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON) ）。 [システム処理](../jobs/system-tasks.html) を参照してください。次の設定で制御します。
 
 | 変数 | 既定値 | 意味 |
 |----------|---------|---------|

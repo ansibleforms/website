@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 311c12f73b9bb608eda0b588667b50bc986eb91e
 ---
 
 # ジョブ
@@ -58,6 +58,7 @@ translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 | | **承認待ち** | ステータスが `approve` のジョブ。待機中のジョブがあると件数がオレンジ色になります |
 | **未来** | **スケジュール済み** | [スケジュール](schedules.html) ページ (ロールオプション `allowScheduledJobs` ) |
 | | **保存済み** | [保存済みジョブ](stored-jobs.html) ページ (ロールオプション `allowStoredJobs` ) |
+| | **システム** | [システム処理](system-tasks.html) ページ、7.8.0 から (ロールオプション `showSettings` 、管理者) |
 
 メニューにはすべてのジョブを表示する項目はありません。ヘッダーの **ジョブ** リンクで、 `warning` のジョブも含めてすべてが表示されます。
 
@@ -112,3 +113,4 @@ translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 | [スケジュール](schedules.html) | フォームを後で、または cron スケジュールで実行し、すべてのスケジュールを管理する |
 | [保存済みジョブ](stored-jobs.html) | フォームのデータを保存して後で再び読み込む |
 | [クリーンアップ](cleanup.html) | 再起動で中断されたジョブと、終了したジョブの保持期間 |
+| [システム処理](system-tasks.html) | AnsibleForms が自動で実行するメンテナンス処理と、その実行タイミング |

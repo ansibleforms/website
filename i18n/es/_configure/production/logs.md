@@ -3,7 +3,7 @@ layout: default
 title: Logs
 parent: En producción
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Logs
@@ -115,11 +115,14 @@ Dos tareas diarias con un ajuste evitan que la base de datos crezca sin límite:
 | Variable | Valor predeterminado | Se ejecuta a las | Elimina |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Las entradas de auditoría más antiguas que esto |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (conservar todo) | 2:30 | Los trabajos terminados más antiguos que esto, con su salida |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | Los trabajos terminados más antiguos que esto, con su salida |
 
 `0` lo conserva todo en ambos casos. Otras dos tareas diarias no tienen ajuste: a las 3:00 se eliminan los refresh tokens guardados de más de 30 días y
 las revocaciones de tokens caducadas, y a las 4:00 los [trabajos almacenados](../jobs/stored-jobs.html) cuya caducidad ha pasado.
 Las horas están en la zona horaria de [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), y las ejecuta el worker.
+
+Estas son las horas predeterminadas. Desde la 7.8.0 cada una de estas tareas es una [tarea del sistema](../jobs/system-tasks.html) en
+**Trabajos > Sistema**, donde un administrador cambia cuándo se ejecuta y ve cada ejecución con su resultado.
 
 La salida de los trabajos suele ser la tabla que más rápido crece: la página **Estado** informa de su tamaño
 y avisa cuando supera 1 GB sin retención definida. Los trabajos en ejecución y los que esperan aprobación nunca se eliminan.

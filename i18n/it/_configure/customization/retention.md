@@ -3,7 +3,7 @@ layout: default
 title: Backup e conservazione
 parent: Variabili d'ambiente
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Backup e conservazione
@@ -35,6 +35,10 @@ Un'attività giornaliera rimuove i job terminati più vecchi di così alle 2:30 
 approvazione, non viene mai rimosso. Dalla 7.7.0 `STORED_JOB_UNUSED_DAYS` rimuove anche, alle 4:00, i [job
 salvati](../jobs/stored-jobs.html#when-it-is-removed) da cui nessun job è stato avviato per quel numero di giorni. Queste variabili
 si applicano senza riavvio quando vengono modificate nella pagina delle impostazioni.
+
+Questi orari sono quelli predefiniti. Dalla 7.8.0 ogni pulizia, e il backup notturno, è un'[attività di sistema](../jobs/system-tasks.html) sotto
+**Job > Sistema**, dove un admin cambia quando gira e ne vede le esecuzioni; le variabili dei loro orari sono in
+[Attività di sistema](system-tasks.html).
 
 ---
 
