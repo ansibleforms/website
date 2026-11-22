@@ -28,7 +28,7 @@ without an option is not offered its tools at all:
 | `relaunch_job` | Launches a job again with some fields changed. See below. | always |
 | `get_job` | Status and output of a job (`tail` limits the output to the last lines). | always |
 | `plan_job` | Runs the form once, later, as the user: what **Run later (one-time)** does on the form. | `allowPlannedJobs` |
-| `create_schedule` | Creates a schedule, recurring (`cron`) or one-time (`run_at`), as on the **Schedules** page. | `allowScheduledJobs` |
+| `create_schedule` | Creates a schedule, recurring (`cron` or `rrule`) or one-time (`one_time_run`), as under **Jobs > Scheduled**. | `allowScheduledJobs` |
 | `list_schedules` | The schedules the user may see: all of them with `allowScheduledJobs`, else the runs they planned. | `allowPlannedJobs` or `allowScheduledJobs` |
 | `get_schedule` | One schedule, with its extra vars (secret-looking ones masked) and the output of its last run. | `allowPlannedJobs` or `allowScheduledJobs` |
 | `delete_schedule` | Cancels a planned run or deletes a schedule the user may see. | `allowPlannedJobs` or `allowScheduledJobs` |
@@ -73,8 +73,12 @@ ISO 8601 time with its offset or `Z` (`2026-10-15T22:00:00+02:00`); a time witho
 and validated now, and checked again when the run fires, as for a [planned run](../jobs/schedules.html#planned-runs) in the
 browser. The answer gives the run time in UTC and on the app's clock.
 
-`create_schedule` takes a `form`, a `name`, either `cron` (five fields, such as `0 22 * * 1-5`) or `run_at`, and the
-`extraVars` the job gets. Such a schedule runs as the `Schedule Service`, without the form's validation; to run a form once as
+`create_schedule` takes a `form`, a `name`, exactly one timing, and the `extraVars` the job gets. The timing is `cron` (five
+fields, such as `0 22 * * 1-5`), `rrule` (a [recurrence rule](../jobs/schedules.html#recurrence-rules) on one line) or
+`one_time_run` (the moment of its one run, an ISO 8601 time with its offset or `Z`); `run_at`, its name before 7.8.0, is
+deprecated and removed in 8. Since 7.8.0 it also takes the schedule's [end](../jobs/schedules.html#the-end-of-a-schedule):
+`ends` (`never`, `date` or `count`), `end_at`, `end_count` and `end_action` (`disable` or `remove`), or `remove_after_run`
+for a one-time schedule. Such a schedule runs as the `Schedule Service`, without the form's validation; to run a form once as
 the user, use `plan_job`. Schedule names are unique.
 
 ---
