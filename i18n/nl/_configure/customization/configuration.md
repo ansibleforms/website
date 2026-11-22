@@ -49,7 +49,7 @@ De categorieën, rollen en constanten komen uit `config.yaml` op schijf of uit d
    vóór 6.3.0 zijn opgezet op de instellingenpagina kozen.
 3. Anders het bestand op [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
 
-Sinds 7.8.0 wordt een sleutel die een repository bevat over deze basis gelegd: de repository met het gebruikstype **Rollen**, **Categorieen** of
+Sinds 7.8.0 wordt een sleutel die een repository bevat over deze basis gelegd: de repository met het gebruikstype **Rollen**, **Categorieën** of
 **Constanten** levert die sleutel uit haar bestand met `controller_roles:`, `controller_categories:` of
 `controller_constants:`, anders uit haar `config.yaml` (verouderd). Zie [Configuratie in git](../repositories/config-as-code.html#roles-categories-and-constants).
 
