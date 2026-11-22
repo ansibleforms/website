@@ -22,6 +22,9 @@ Lock the settings pages, and what the audit log records
 the value in force and the reason it cannot be changed, and the save endpoint responds with
 403.
 
+Since 7.8.0 the seed's own `mcp` section, and the language and the Designer's link of its `defaults` and `links` sections, are still
+applied with `ALLOW_ENV_EDIT=0`, although they are environment variables: the seed is the declaration this setting stands for.
+
 Use it whenever the environment is declared elsewhere. Otherwise the settings page writes
 `persistent/.env`, which on an ephemeral volume is silently lost at the next restart, and on
 a durable one drifts away from the manifest that is meant to be authoritative.
