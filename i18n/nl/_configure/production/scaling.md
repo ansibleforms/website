@@ -3,13 +3,13 @@ layout: default
 title: Schalen
 parent: Draaien in productie
 nav_order: 4
-translated_from: 5b76f1bfb7520ff2b072919d714d2ab72b1e5d5e
+translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
 ---
 
 # Schalen
 {: .no_toc }
 
-AnsibleForms verdeeld over meerdere app-nodes en een worker, naast een of meer RTE's
+AnsibleForms verdeeld over meerdere controller-nodes en een worker, naast een of meer RTE's
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -23,13 +23,16 @@ Elke AnsibleForms-container draait dezelfde servercode, en [`AF_ROLE`](../custom
 
 | `AF_ROLE` | Image | Draait | Hoeveel |
 |---|---|---|---|
-| `all` (niet ingesteld) | `ansibleforms` | De webapp en de worker in één proces: de standaard | 1 |
-| `app` | `ansibleforms` | De webinterface en de API | Zoveel als je wilt, achter een load balancer |
+| `all` (niet ingesteld) | `ansibleforms` | De webinterface en de API van de controller, en de worker, in één proces: de standaard | 1 |
+| `controller` | `ansibleforms` | De webinterface en de API | Zoveel als je wilt, achter een load balancer |
 | `worker` | `ansibleforms` | Het achtergrondwerk: het databaseschema en de upgrades ervan, de configuratie-seed, de planningen, de nachtelijke back-up, de synchronisaties van repositories en de opschoningen | Eén aan het werk; meer wachten en nemen het over |
 | `rte` | `ansibleforms-rte-full` (of `-rte-core`, `-rte-base`) | De playbooks | Zoveel als je wilt |
 
 De kleinste installatie is één container zonder `AF_ROLE` naast één RTE: dat is wat het [Docker Compose-project](../installation/docker-compose.html)
 en de [Helm-chart](../installation/kubernetes.html) draaien. Elke andere waarde van `AF_ROLE` stopt het proces bij de start.
+
+Tot en met 7.7 heette de rol `controller` nog `app`. Sinds 7.8.0 is `AF_ROLE=app` verouderd en verdwijnt het in 8.0: het draait nog als
+`controller`, met een waarschuwing in het log bij de start, en de node houdt zijn naam `app-`, zodat hij na de upgrade zijn eigen jobs terugvindt.
 
 ---
 
@@ -41,24 +44,24 @@ replica's, en [een RTE in een ander datacenter](../rte/another-datacenter.html).
 
 ---
 
-## Meerdere app-nodes
+## Meerdere controller-nodes
 
-Om meer gebruikers te bedienen, of het verlies van één node te overleven, splits je de app op in `app`-nodes achter een load balancer en een `worker`.
+Om meer gebruikers te bedienen, of het verlies van één node te overleven, splits je het op in `controller`-nodes achter een load balancer en een `worker`.
 
 ### Wat de nodes delen
 {: .no_toc }
 
 De nodes stemmen met elkaar af via de database en een gedeeld volume:
 
-* **De database** : de jobs, de workervergrendeling, de designer-vergrendeling, de lijst met nodes, de runnerleases (welke app-node de
+* **De database** : de jobs, de workervergrendeling, de designer-vergrendeling, de lijst met nodes, de runnerleases (welke controller-node de
   socket van elke RTE vasthoudt) en de wijzigingsberichten die de caches van elke node actueel houden. Een referentie, een runner of een planning die
   op één node is bewerkt, geldt binnen 5 seconden op alle nodes
 * **Het persistente volume** (`/app/dist/persistent`) : formulieren, de configuratie, repositories, uploads, back-ups en de beheerde `.env`.
-  Elke app-node en de worker koppelen hetzelfde volume, met lees- en schrijfrechten
+  Elke controller-node en de worker koppelen hetzelfde volume, met lees- en schrijfrechten
 * **De ssh-map** (`/home/node/.ssh`) : de sleutel en de known hosts voor git over ssh; de worker maakt de sleutel bij zijn eerste start aan
-* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : hetzelfde op elke app-node, anders wordt een token dat door
-  de ene node is ondertekend door de volgende geweigerd. Een app-node weigert zonder dit geheim te starten
-* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : hetzelfde op elke app-node en worker, anders kan een
+* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : hetzelfde op elke controller-node, anders wordt een token dat door
+  de ene node is ondertekend door de volgende geweigerd. Een controller-node weigert zonder dit geheim te starten
+* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : hetzelfde op elke controller-node en worker, anders kan een
   referentie die door de ene is opgeslagen door de andere niet worden gelezen. Een RTE in socketmodus leest het nooit; alleen een verouderde RTE in databasemodus
   die zichzelf registreert, heeft het nodig
 
@@ -81,17 +84,17 @@ worker naar dezelfde databasenode wijzen.
 Elke container noemt zichzelf `<role>-<hostname>-<port>`, zonder dat je iets hoeft in te stellen, en de pagina **Status** toont ze allemaal met hun rol
 en versie, welke de worker is, en een waarschuwing als ze verschillende versies draaien.
 
-Een job die op een RTE draait, hoort bij die RTE, en loopt door als de app-node die hem startte wegvalt. Elke andere job (een templatejob
-op AWX of een andere runner, een workflowjob, of de stappen van een verouderd multistep-formulier) hoort bij de app-node die hem startte. Een container die herstart, beëindigt zijn eigen onvoltooide jobs, en de
+Een job die op een RTE draait, hoort bij die RTE, en loopt door als de controller-node die hem startte wegvalt. Elke andere job (een templatejob
+op AWX of een andere runner, een workflowjob, of de stappen van een verouderd multistep-formulier) hoort bij de controller-node die hem startte. Een container die herstart, beëindigt zijn eigen onvoltooide jobs, en de
 worker beëindigt de jobs van een container die twee minuten lang niet antwoordde, zoals een vervangen pod.
 
-Een `SIGHUP` die naar een willekeurige node wordt gestuurd, past de [configuratie-seed](../seed/) opnieuw toe: een app-node vraagt de worker dat te doen.
+Een `SIGHUP` die naar een willekeurige node wordt gestuurd, past de [configuratie-seed](../seed/) opnieuw toe: een controller-node vraagt de worker dat te doen.
 
 ### Upgraden
 {: .no_toc }
 
-Upgrade **eerst de worker**, daarna de app-nodes. De worker patcht het schema, en een app-node van de nieuwe versie wacht tot het
-schema is gepatcht en logt waarop hij wacht. App-nodes die eerst zijn geüpgraded, blijven niet gereed totdat de worker volgt, terwijl de oude blijven
+Upgrade **eerst de worker**, daarna de controller-nodes. De worker patcht het schema, en een controller-node van de nieuwe versie wacht tot het
+schema is gepatcht en logt waarop hij wacht. Controller-nodes die eerst zijn geüpgraded, blijven niet gereed totdat de worker volgt, terwijl de oude blijven
 bedienen. RTE's kunnen op elk moment volgen, zolang ze hetzelfde contract spreken.
 
 ### Beperkingen
@@ -99,8 +102,8 @@ bedienen. RTE's kunnen op elk moment volgen, zolang ze hetzelfde contract spreke
 
 Een paar dingen blijven bij één node:
 
-* **De chat-assistent** bewaart zijn gesprekken in het geheugen van één app-node: gebruik sticky sessions op de load balancer (nginx
-  `ip_hash`), of één enkele app-node
+* **De chat-assistent** bewaart zijn gesprekken in het geheugen van één controller-node: gebruik sticky sessions op de load balancer (nginx
+  `ip_hash`), of één enkele controller-node
 * **Logs** blijven in elke container. Zet [`LOG_PATH`](../customization/logging.html#env_LOG_PATH) buiten het gedeelde volume, omdat meerdere
   processen die één bestand roteren regels verliezen. De logviewer toont het log van de node die antwoordt, dus verzamel de logs centraal
 * **Instellingen** die op de instellingenpagina's worden gewijzigd, worden naar de beheerde `.env` op het gedeelde volume geschreven en gelden op elke node; de instellingen
@@ -115,17 +118,17 @@ De app-repository heeft een compleet startpunt in [examples/scale](https://githu
 | Service | Image | Rol |
 |---|---|---|
 | `db` | `mariadb:11` | De database, met een gebruiker die alleen rechten heeft op het schema `AnsibleForms` |
-| `app1`, `app2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=app`, achter de load balancer |
+| `controller1`, `controller2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=controller`, achter de load balancer |
 | `worker1`, `worker2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=worker`: de tweede wacht en neemt het over |
-| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Draait de playbooks met `RTE_MODE=inbound` en `RTE_FILES=local`: de app belt haar |
-| `lb` | `nginx:stable` | Handelt HTTPS af op poort 8443 en verdeelt de browsers over de app-nodes met `ip_hash` |
+| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Draait de playbooks met `RTE_MODE=inbound` en `RTE_FILES=local`: de controller belt haar |
+| `lb` | `nginx:stable` | Handelt HTTPS af op poort 8443 en verdeelt de browsers over de controller-nodes met `ip_hash` |
 
 De runner `rte` van de RTE en de referentie waarmee hij zich aanmeldt (zijn adres `http://rte:8000` en `RTE_TOKEN`) worden gedeclareerd in de
 [configuratie-seed](../seed/) `seed.yaml`, die de worker bij elke start toepast; de RTE stelt geen `RTE_URL` in en wordt niet op de host gepubliceerd.
 
-De app-nodes en de workers delen één `.env`, met de databasegebruiker, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
+De controller-nodes en de workers delen één `.env`, met de databasegebruiker, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
 `CONFIG_SEED_PATH`, `HTTPS=0` achter de load balancer en een `LOG_PATH` buiten het gedeelde volume. De RTE heeft geen `env_file`: hij krijgt
-alleen `RTE_TOKEN` uit `compose.yaml`, dus hij bevat geen databasewachtwoord. De app-nodes, de workers en de RTE koppelen dezelfde
+alleen `RTE_TOKEN` uit `compose.yaml`, dus hij bevat geen databasewachtwoord. De controller-nodes, de workers en de RTE koppelen dezelfde
 persistente en ssh-volumes:
 
 ```bash

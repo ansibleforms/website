@@ -3,7 +3,7 @@ layout: default
 title: Roles
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Roles
@@ -22,6 +22,23 @@ Asigna usuarios y grupos a roles, y define qué puede hacer cada rol.
 La lista `roles` de nivel superior de config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Añadir un rol
+
+En **Configuración > Acceso > Roles**, **Agregar rol** abre el asistente **Nuevo rol**, en cuatro pasos desde la 7.8.0:
+
+| Paso | Qué pide |
+|---|---|
+| **Detalles** | El nombre, único entre los roles, y la descripción. **Siguiente** espera un nombre que no tenga ningún otro rol |
+| **Permisos** | Las [opciones de rol](#role-options), en sus cuatro grupos, partiendo de los valores predeterminados de todos |
+| **Usuarios** | Los usuarios que nombra el rol, cada uno elegido con **Agregar usuario** |
+| **Grupos** | Los grupos que nombra el rol, cada uno elegido con **Agregar grupo** |
+
+**Guardar**, en el último paso, añade el rol y guarda los roles; cuando se rechaza el guardado, el asistente sigue abierto y no se añade nada.
+El rol tiene luego su propia página, donde se pueden cambiar sus permisos, usuarios y grupos. **Agregar rol** está desactivado mientras los roles
+no se pueden guardar desde la página, por ejemplo cuando vienen de una plantilla ytt.
 
 ---
 

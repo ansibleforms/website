@@ -3,7 +3,7 @@ layout: default
 title: Inne centrum danych
 parent: RTE
 nav_order: 5
-translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
+translated_from: 09b494da97232b189de77db8b533a76ea9e0d8d2
 ---
 
 # RTE w innym centrum danych
@@ -28,18 +28,18 @@ Dla administratorów: gdy do zarządzanych hostów drugiego centrum danych trzeb
 
 ## Co otrzymasz na końcu
 
-Aplikacja, jej worker i jej baza danych zostają tam, gdzie są, w centrum danych 1. Centrum danych 2 dostaje host, na którym działa jeden kontener RTE w
-trybie wychodzącym ([`RTE_MODE=outbound`](../customization/server.html#env_RTE_MODE), zobacz [Tryby](modes.html#outbound)): łączy się z aplikacją przez
+Kontroler, jego worker i jego baza danych zostają tam, gdzie są, w centrum danych 1. Centrum danych 2 dostaje host, na którym działa jeden kontener RTE w
+trybie wychodzącym ([`RTE_MODE=outbound`](../customization/server.html#env_RTE_MODE), zobacz [Tryby](modes.html#outbound)): łączy się z kontrolerem przez
 HTTPS i utrzymuje jeden otwarty WebSocket, dołącza jako osobny runner i uruchamia playbooki formularzy, które go wskazują, na zarządzanych
 hostach centrum danych 2.
 
 | Gdzie | Co tam działa | Z czym się komunikuje |
 |---|---|---|
-| Centrum danych 1 | Węzły aplikacji, worker, baza danych (jak dziś) | Nic nowego: przyjmuje gniazdo RTE pod swoim zwykłym adresem HTTPS |
-| Centrum danych 2, host RTE | Docker lub Podman i kontener RTE | Z aplikacją pod `APP_URL` przez HTTPS i z zarządzanymi hostami centrum danych 2 |
+| Centrum danych 1 | Węzły kontrolera, worker, baza danych (jak dziś) | Nic nowego: przyjmuje gniazdo RTE pod swoim zwykłym adresem HTTPS |
+| Centrum danych 2, host RTE | Docker lub Podman i kontener RTE | Z kontrolerem pod `CONTROLLER_URL` przez HTTPS i z zarządzanymi hostami centrum danych 2 |
 
 RTE nie ma poświadczeń do bazy danych ani `ENCRYPTION_SECRET`, tylko własny token. Nic się z nim nie łączy, więc nie potrzebuje otwartego
-portu, nazwy DNS ani certyfikatu. Aplikacja wysyła playbooki i inwentarze z każdym zadaniem (`RTE_FILES=transfer`,
+portu, nazwy DNS ani certyfikatu. Kontroler wysyła playbooki i inwentarze z każdym zadaniem (`RTE_FILES=transfer`,
 domyślnie), więc RTE nie potrzebuje ich kopii ani współdzielonego dysku.
 
 Każde poniższe polecenie uruchamiasz w terminalu na hoście RTE, jako użytkownik z `sudo`, chyba że napisano inaczej. Zajmuje to około 20 minut,
@@ -53,14 +53,14 @@ Zbierz te informacje:
 
 | Co | Skąd pochodzi |
 |---|---|
-| Adres aplikacji | `APP_URL`: adres, który ludzie otwierają w przeglądarce, np. `https://forms.example.com`, ze ścieżką bazową, jeśli ją ma |
-| Certyfikat aplikacji | Podpisany przez publiczne CA, prywatne CA (potrzebujesz jego certyfikatu, krok 6) lub samopodpisany |
+| Adres kontrolera | `CONTROLLER_URL`: adres, który ludzie otwierają w przeglądarce, np. `https://forms.example.com`, ze ścieżką bazową, jeśli ją ma |
+| Certyfikat kontrolera | Podpisany przez publiczne CA, prywatne CA (potrzebujesz jego certyfikatu, krok 6) lub samopodpisany |
 | Proxy | `HTTPS_PROXY`, którego to centrum danych używa, żeby dotrzeć do centrum danych 1, jeśli jest |
 | Nazwa RTE | Nazwa jego runnera w **Połączenia > Runnery**, którą formularze wskazują przez `runner:`, np. `rte-dc2`: litery, cyfry i `_ . : @ -` |
 | Token dołączenia | Opcjonalnie: [token dołączenia](../runners/registration.html#join-tokens) (`afj_...`) zatwierdza RTE od razu. Bez niego zatwierdza je admin (krok 8) |
 | Klucz ssh | Klucz prywatny, którym playbooki docierają do zarządzanych hostów, albo uprawnienie do utworzenia go |
 
-Aplikacja musi działać w wersji 7.3.0 lub nowszej. Aby utworzyć token dołączenia dla tego jednego RTE, admin raz wywołuje API (zobacz
+Kontroler musi działać w wersji 7.3.0 lub nowszej. Aby utworzyć token dołączenia dla tego jednego RTE, admin raz wywołuje API (zobacz
 [Tokeny dołączenia](../runners/registration.html#join-tokens)):
 
 ```bash
@@ -79,9 +79,9 @@ RTE to kontener, więc host potrzebuje silnika kontenerów i niczego więcej: No
 |---|---|
 | Linux na **x86_64** (amd64) lub **aarch64** (arm64) | Obrazy RTE są publikowane dla obu od wersji 7.6.0, wcześniej tylko dla amd64 |
 | 2 CPU i 4 GB pamięci lub więcej | Jedno RTE uruchamia naraz do [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooków (10), każdy z jego forkami: dobierz rozmiar pod nie |
-| 20 GB wolnego miejsca na dysku | Obraz `-rte-full` ma około 3,3 GB, do tego obraz w trakcie aktualizacji, pliki zadań wysyłane przez aplikację i pliki tymczasowe zadań |
+| 20 GB wolnego miejsca na dysku | Obraz `-rte-full` ma około 3,3 GB, do tego obraz w trakcie aktualizacji, pliki zadań wysyłane przez kontroler i pliki tymczasowe zadań |
 | Docker lub Podman z podman-compose | Do pobrania i uruchomienia obrazu |
-| Czas ustawiany przez NTP | Czasy zadań są porównywane z czasem aplikacji |
+| Czas ustawiany przez NTP | Czasy zadań są porównywane z czasem kontrolera |
 
 **Docker**, na Ubuntu lub Debian (inne dystrybucje: [docs.docker.com/engine/install](https://docs.docker.com/engine/install/)):
 
@@ -112,14 +112,14 @@ RTE samo otwiera każde połączenie. Nic nie dociera do niego z zewnątrz:
 
 | Skąd | Dokąd | Port | Dlaczego |
 |---|---|---|---|
-| Host RTE | Aplikacja, pod `APP_URL` (przez `HTTPS_PROXY`, jeśli ustawione) | Port aplikacji, `443` za większością proxy | Gniazdo, którym przechodzą zadania, ich pliki i ich wynik |
+| Host RTE | Kontroler, pod `CONTROLLER_URL` (przez `HTTPS_PROXY`, jeśli ustawione) | Port kontrolera, `443` za większością proxy | Gniazdo, którym przechodzą zadania, ich pliki i ich wynik |
 | Host RTE | Zarządzane hosty centrum danych 2 | ssh (`22`), WinRM, ich API | Playbooki działają stąd |
 | Host RTE | `ghcr.io` | `443` | Do pobrania obrazu, chyba że pochodzi z własnego rejestru lub z pliku (krok 4) |
 
 Nie otwieraj żadnego portu przychodzącego dla RTE. Jego `PORT` (`8000`) udostępnia tylko `/live`, `/ready` i `/metrics`, dla sond na tym hoście.
 
-RTE łączy się z `APP_URL` z dopisanym `/api/v2/rte/socket`, jako WebSocket. Reverse proxy przed aplikacją musi przekazywać upgrade
-dla tej ścieżki (zobacz [WebSockety runnerów](../production/reverse-proxy.html#runner-websockets)). Sprawdź stąd, czy aplikacja odpowiada:
+RTE łączy się z `CONTROLLER_URL` z dopisanym `/api/v2/rte/socket`, jako WebSocket. Reverse proxy przed kontrolerem musi przekazywać upgrade
+dla tej ścieżki (zobacz [WebSockety runnerów](../production/reverse-proxy.html#runner-websockets)). Sprawdź stąd, czy kontroler odpowiada:
 
 ```bash
 curl -sS https://forms.example.com/api/v2/version
@@ -138,11 +138,11 @@ sudo touch /opt/af-rte/data/ansible/ansible.cfg /opt/af-rte/data/git/.gitconfig
 
 | Folder | W kontenerze | Zawiera |
 |---|---|---|
-| `data/` | `/app/dist/persistent` | Spool (`rte-spool`: wynik i zakończenie każdego zadania, dopóki aplikacja ich nie zapisze), pliki zadań wysłane przez aplikację (`rte-files`), prywatne CA, biblioteki pythona instalowane przez playbook |
+| `data/` | `/app/dist/persistent` | Spool (`rte-spool`: wynik i zakończenie każdego zadania, dopóki kontroler ich nie zapisze), pliki zadań wysłane przez kontroler (`rte-files`), prywatne CA, biblioteki pythona instalowane przez playbook |
 | `data/ssh/` | `/home/node/.ssh` | Klucz ssh i `known_hosts` playbooków |
 | `data/ansible/` | `/etc/ansible/...` | `ansible.cfg`, własne role i kolekcje, montowane zamiast wbudowanych |
 
-Trzymaj `data/` na hoście: zrestartowane RTE nadal wysyła to, czego aplikacja nie zapisała, i zachowuje swoją pamięć podręczną plików zadań.
+Trzymaj `data/` na hoście: zrestartowane RTE nadal wysyła to, czego kontroler nie zapisał, i zachowuje swoją pamięć podręczną plików zadań.
 
 **Klucz ssh.** Skopiuj klucz, którego playbooki używają w centrum danych 1, albo utwórz nowy dla tego centrum danych i przekaż jego publiczną część zarządzanym hostom:
 
@@ -169,7 +169,7 @@ Wybierz jedną z dwóch opcji.
 {: .no_toc }
 
 Publikowane obrazy są w GitHub Container Registry, publiczne, bez logowania (trzy warstwy opisuje strona [Obrazy](images.html)).
-Weź tę samą warstwę co w centrum danych 1. `:7` podąża za najnowszym wydaniem 7, tak jak `:7` aplikacji:
+Weź tę samą warstwę co w centrum danych 1. `:7` podąża za najnowszym wydaniem 7, tak jak `:7` kontrolera:
 
 ```bash
 docker pull ghcr.io/ansibleforms/ansibleforms-rte-full:7
@@ -204,14 +204,14 @@ EOF
 docker build --pull -t af-rte-dc2 /opt/af-rte/build
 ```
 
-Przebudowuj go przy każdym nowym wydaniu aplikacji (zobacz [Zbuduj własne RTE](images.html#build-your-own-rte)). Przy kilku hostach RTE zbuduj
+Przebudowuj go przy każdym nowym wydaniu kontrolera (zobacz [Zbuduj własne RTE](images.html#build-your-own-rte)). Przy kilku hostach RTE zbuduj
 raz i wypchnij do własnego rejestru. Offline użyj `docker save` i `docker load` dla zbudowanego obrazu, jak w opcji A.
 
 ---
 
 ## 5. Ustawienia
 
-Nowy, własny [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN), co najmniej 16 znaków. To hasło tego RTE: aplikacja
+Nowy, własny [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN), co najmniej 16 znaków. To hasło tego RTE: kontroler
 przechowuje je w poświadczeniu RTE runnera i pieczętuje nim sekrety każdego zadania.
 
 ```bash
@@ -221,7 +221,7 @@ openssl rand -base64 24
 ```bash
 sudo tee /opt/af-rte/rte.env >/dev/null <<'EOF'
 RTE_MODE=outbound
-APP_URL=https://forms.example.com
+CONTROLLER_URL=https://forms.example.com
 RTE_NAME=rte-dc2
 RTE_TOKEN=<the new token>
 # optional, the first time only : approved at once instead of waiting for an admin
@@ -234,19 +234,21 @@ sudo chmod 600 /opt/af-rte/rte.env
 
 | Zmienna | Znaczenie |
 |---|---|
-| [`RTE_MODE`](../customization/server.html#env_RTE_MODE) | `outbound`: RTE łączy się z aplikacją. Bez niej RTE startuje w przestarzałym trybie bazy danych |
-| [`APP_URL`](../customization/server.html#env_APP_URL) | Adres aplikacji, `http://` lub `https://`, ze ścieżką bazową, jeśli jest |
+| [`RTE_MODE`](../customization/server.html#env_RTE_MODE) | `outbound`: RTE łączy się z kontrolerem. Bez niej RTE startuje w przestarzałym trybie bazy danych |
+| [`CONTROLLER_URL`](../customization/server.html#env_CONTROLLER_URL) | Adres kontrolera, `http://` lub `https://`, ze ścieżką bazową, jeśli jest |
 | [`RTE_NAME`](../customization/server.html#env_RTE_NAME) | Nazwa jego runnera. Nieustawiona: jego id węzła, `rte-<hostname>-<port>`, które zmienia się z kontenerem |
 | [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN) | Jego własny token, co najmniej 16 znaków. Zachowaj go: od tej pory runner loguje się nim |
 | [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN) | Opcjonalnie: token dołączenia, używany tylko wtedy, gdy jego runner jeszcze nie istnieje lub czeka na zatwierdzenie |
+
+RTE starsze niż 7.8.0 odczytuje `APP_URL` zamiast `CONTROLLER_URL` i `APP_TLS_VERIFY` zamiast `CONTROLLER_TLS_VERIFY`.
 
 Dodaj te zmienne, gdy wymaga tego sieć:
 
 | Zmienna | Kiedy |
 |---|---|
-| `HTTPS_PROXY`, `NO_PROXY` | RTE dociera do aplikacji przez proxy: `HTTPS_PROXY=http://proxy.dc2.example.com:3128`. Z hostem wymienionym w `NO_PROXY` (oddzielane przecinkami, `.example.com` dla domeny) łączy się bezpośrednio |
-| `NODE_EXTRA_CA_CERTS` | Certyfikat aplikacji pochodzi z prywatnego CA: umieść certyfikat CA w `/opt/af-rte/data/certificates/ca.pem` i ustaw `NODE_EXTRA_CA_CERTS=/app/dist/persistent/certificates/ca.pem` |
-| [`APP_TLS_VERIFY`](../customization/server.html#env_APP_TLS_VERIFY) | `0` akceptuje każdy certyfikat aplikacji, także samopodpisany. Tylko wewnątrz jednej zaufanej sieci: lepiej użyj `NODE_EXTRA_CA_CERTS` |
+| `HTTPS_PROXY`, `NO_PROXY` | RTE dociera do kontrolera przez proxy: `HTTPS_PROXY=http://proxy.dc2.example.com:3128`. Z hostem wymienionym w `NO_PROXY` (oddzielane przecinkami, `.example.com` dla domeny) łączy się bezpośrednio |
+| `NODE_EXTRA_CA_CERTS` | Certyfikat kontrolera pochodzi z prywatnego CA: umieść certyfikat CA w `/opt/af-rte/data/certificates/ca.pem` i ustaw `NODE_EXTRA_CA_CERTS=/app/dist/persistent/certificates/ca.pem` |
+| [`CONTROLLER_TLS_VERIFY`](../customization/server.html#env_CONTROLLER_TLS_VERIFY) | `0` akceptuje każdy certyfikat kontrolera, także samopodpisany. Tylko wewnątrz jednej zaufanej sieci: lepiej użyj `NODE_EXTRA_CA_CERTS` |
 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | `transfer` (domyślnie) dostaje playbooki i inwentarze z każdym zadaniem. Zostaw tak, chyba że sam montujesz je na RTE (`local`) |
 
 Pozostałe ustawienia odczytywane przez RTE opisuje strona [Uruchamianie RTE](run.html#settings). `RTE_MAX_JOBS`, `RTE_CACHE_MB`, `RTE_FILES` i
@@ -314,21 +316,21 @@ docker run -d --name af_rte_dc2 --restart unless-stopped --stop-timeout 40 \
 ```bash
 docker ps --filter name=af_rte_dc2        # STATUS ends in (healthy): the process listens
 docker logs -f af_rte_dc2                 # Ctrl+C to stop following
-curl -s http://127.0.0.1:8000/ready       # {"status":"ready"} once the socket to the app is open
+curl -s http://127.0.0.1:8000/ready       # {"status":"ready"} once the socket to the controller is open
 ```
 
-Dziennik pokazuje, jak RTE startuje, łączy się z aplikacją i nawiązuje połączenie:
+Dziennik pokazuje, jak RTE startuje, łączy się z kontrolerem i nawiązuje połączenie:
 
 ```
 RTE 'rte-dc2' 7.3.0 (outbound, files transfer) listening on http port 8000, token fingerprint abcd-ef12
-RTE 'rte-dc2': dialing the app at wss://forms.example.com/api/v2/rte/socket
-RTE 'rte-dc2': connected to the app (node af-app1-8000)
+RTE 'rte-dc2': dialing the controller at wss://forms.example.com/api/v2/rte/socket
+RTE 'rte-dc2': connected to the controller (node af-app1-8000)
 ```
 
 Bez tokenu dołączenia jeszcze jeden wiersz mówi, że czeka:
 `RTE 'rte-dc2': waiting for an admin to approve it under Connections > Runners (fingerprint abcd-ef12)`. Zanotuj odcisk.
 
-`/ready` odpowiada `503` z `not connected to the app`, dopóki gniazdo nie jest otwarte. Healthcheck mówi tylko, że proces nasłuchuje.
+`/ready` odpowiada `503` z `not connected to the controller`, dopóki gniazdo nie jest otwarte. Healthcheck mówi tylko, że proces nasłuchuje.
 
 ---
 
@@ -337,9 +339,9 @@ Bez tokenu dołączenia jeszcze jeden wiersz mówi, że czeka:
 Bez tokenu dołączenia RTE poprosiło o dołączenie: **Połączenia > Runnery** pokazuje nad listą pomarańczowe powiadomienie,
 **1 Runner czeka na zatwierdzenie**. Otwórz je, sprawdź, czy **Odcisk** jest tym z dziennika RTE, a **Tryb** mówi
 Wychodzący, a potem **Zatwierdź** (zobacz [Zatwierdzanie RTE](../runners/registration.html#approving-an-rte)). Zatwierdza tylko admin. Prośba,
-której nikt nie obsłuży w ciągu 24 godzin, jest usuwana, a RTE prosi ponownie przy następnym połączeniu z aplikacją.
+której nikt nie obsłuży w ciągu 24 godzin, jest usuwana, a RTE prosi ponownie przy następnym połączeniu z kontrolerem.
 
-Z tokenem dołączenia runner jest zatwierdzany od razu, a jego opis wskazuje token dołączenia. W obu przypadkach aplikacja przechowuje token RTE
+Z tokenem dołączenia runner jest zatwierdzany od razu, a jego opis wskazuje token dołączenia. W obu przypadkach kontroler przechowuje token RTE
 w nowym poświadczeniu RTE, `rte-dc2-rte`, a RTE od tej pory loguje się własnym `RTE_TOKEN`: `RTE_JOIN_TOKEN` nie jest już
 używany i możesz go usunąć z `rte.env`.
 
@@ -348,9 +350,9 @@ używany i możesz go usunąć z `rte.env`.
 ## 9. Sprawdź je w AnsibleForms
 
 1. **Połączenia > Runnery** wyświetla runner `rte-dc2`, typ RTE. Włącz **Kolumny > Połączenie**, aby zobaczyć na liście **Połączony**
-2. Otwórz go. Jego karta **RTE** pokazuje **Tryb** Wychodzący i plakietkę **Połączenie** z **Połączony**; po najechaniu pokazuje węzeł aplikacji, który
+2. Otwórz go. Jego karta **RTE** pokazuje **Tryb** Wychodzący i plakietkę **Połączenie** z **Połączony**; po najechaniu pokazuje węzeł kontrolera, który
    trzyma gniazdo, wydanie RTE i ile jego zadań działa
-3. Kliknij **Testuj połączenie**: pokazuje **Runner connection is OK**. Niczego nie wywołuje: odczytuje, który węzeł aplikacji trzyma gniazdo RTE
+3. Kliknij **Testuj połączenie**: pokazuje **Runner connection is OK**. Niczego nie wywołuje: odczytuje, który węzeł kontrolera trzyma gniazdo RTE
    (`runner_leases`), i sprawdza kontrakt, którym RTE mówiło przy połączeniu
 4. Nadaj mu opis, np. *Centrum danych 2*
 5. Zostaw **Domyślne** na runnerze centrum danych 1, chyba że każdy formularz playbooka bez `runner:` ma działać w centrum danych 2
@@ -361,7 +363,7 @@ Strona **Stan** wyświetla nowe RTE z jego wersją, obok pozostałych.
 
 ## 10. Pierwsze zadanie
 
-Sprawdź całą ścieżkę playbookiem, który niczego nie zmienia. W playbookach aplikacji (jej folderze playbooków lub repozytorium, jak w
+Sprawdź całą ścieżkę playbookiem, który niczego nie zmienia. W playbookach kontrolera (jego folderze playbooków lub repozytorium, jak w
 centrum danych 1) dodaj `ping-dc2.yaml`:
 
 ```yaml
@@ -388,7 +390,7 @@ categories:
 fields: []
 ```
 
-Uruchom go. Aplikacja wysyła folder playbooków i inwentarz z zadaniem, a RTE przechowuje je według hasha, więc niezmieniony
+Uruchom go. Kontroler wysyła folder playbooków i inwentarz z zadaniem, a RTE przechowuje je według hasha, więc niezmieniony
 folder nigdy nie jest wysyłany dwa razy. Wynik zaczyna się od `Running on RTE rte-dc2 (outbound)`, pokazuje `pong` dla każdego hosta, a zadanie
 kończy się sukcesem. Folder większy niż [`RTE_FILES_MAX_MB`](../customization/server.html#env_RTE_FILES_MAX_MB) (domyślnie 512) nie jest
 wysyłany: zadanie kończy się błędem i o tym informuje.
@@ -410,36 +412,36 @@ Domyślny runner i pozostałe typy runnerów opisuje strona [Runnery](../runners
 ## Gdy coś zawiedzie
 
 RTE zapisuje do `docker logs` od poziomu `notice` w górę. Połączenie, które zawodzi, zanim gniazdo się otworzy (nazwa DNS, odrzucony port,
-certyfikat), widać tylko jako `RTE: dialing the app again in <n> seconds`, na poziomie `info`: ustaw
+certyfikat), widać tylko jako `RTE: dialing the controller again in <n> seconds`, na poziomie `info`: ustaw
 [`LOG_CONSOLE_LEVEL=debug`](../customization/logging.html#env_LOG_CONSOLE_LEVEL) w `rte.env` i zrestartuj je, aby zobaczyć
 `RTE: socket to wss://...: <the error>`.
 
 | Co widzisz | Gdzie | Co zrobić |
 |---|---|---|
 | `RTE: set RTE_TOKEN (at least 16 characters) ; refusing to start` | `docker logs` | Brakuje `RTE_TOKEN` w `rte.env` lub jest za krótki |
-| `RTE: RTE_MODE=outbound needs APP_URL, the app's address (https://forms.example.com) ; refusing to start` | `docker logs` | Ustaw `APP_URL` w `rte.env` |
-| `RTE: APP_URL must be an http or https address, not ... ; refusing to start` | `docker logs` | `APP_URL` musi zaczynać się od `https://` (lub `http://`) |
+| `RTE: RTE_MODE=outbound needs CONTROLLER_URL, the controller's address (https://forms.example.com) ; refusing to start` | `docker logs` | Ustaw `CONTROLLER_URL` w `rte.env` |
+| `RTE: CONTROLLER_URL must be an http or https address, not ... ; refusing to start` | `docker logs` | `CONTROLLER_URL` musi zaczynać się od `https://` (lub `http://`) |
 | `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set)` | `docker logs` | Brakuje `RTE_MODE=outbound` w `rte.env` |
-| Brak wiersza `connected to the app`, `/ready` pozostaje `503` | `docker logs`, `/ready` | Sieć z kroku 2: `curl` do aplikacji z tego hosta, proxy (`HTTPS_PROXY`, `NO_PROXY`), certyfikat aplikacji (`NODE_EXTRA_CA_CERTS`, krok 5). Ustaw `LOG_CONSOLE_LEVEL=debug`, aby zobaczyć błąd |
-| `the app refused the socket (404)` lub inny status niż 401, 403 i 409 | `docker logs` | Reverse proxy nie przepuszcza WebSocketu na `/api/v2/rte/socket` albo w `APP_URL` brakuje ścieżki bazowej aplikacji |
-| `the app refused the socket (401): ... the token of RTE 'rte-dc2' is not the one stored for its runner: check its RTE_TOKEN` | `docker logs` | Istnieje runner `rte-dc2` z innym tokenem. Daj RTE ten token (hasło z poświadczenia runnera) albo usuń runner, żeby RTE poprosiło o dołączenie |
-| `the app refused the socket (401): ... the join token (RTE_JOIN_TOKEN) is unknown, revoked, expired or used up` | `docker logs` | Utwórz nowy token dołączenia albo usuń `RTE_JOIN_TOKEN` i zatwierdź RTE (krok 8) |
-| `the app refused the socket (409): ... runner 'rte-dc2' exists and is approved: a join token cannot give it a new token ...` | `docker logs` | RTE zostało zainstalowane ponownie z nowym tokenem: użyj tokenu z poświadczenia jego runnera albo poproś admina o jego zmianę |
-| `the app refused this RTE (401): dialing again in 10 minutes, or restart it once an admin acted` | `docker logs` | Następuje po odmowie. Usuń jej przyczynę, a potem `docker restart af_rte_dc2` zamiast czekać |
+| Brak wiersza `connected to the controller`, `/ready` pozostaje `503` | `docker logs`, `/ready` | Sieć z kroku 2: `curl` do kontrolera z tego hosta, proxy (`HTTPS_PROXY`, `NO_PROXY`), certyfikat kontrolera (`NODE_EXTRA_CA_CERTS`, krok 5). Ustaw `LOG_CONSOLE_LEVEL=debug`, aby zobaczyć błąd |
+| `no RTE socket at this address (HTTP 404 ...)` lub `the app refused the socket` z innym statusem niż 401, 403 i 409 | `docker logs` | Reverse proxy nie przepuszcza WebSocketu na `/api/v2/rte/socket` albo w `CONTROLLER_URL` brakuje ścieżki bazowej kontrolera |
+| `the controller refused this RTE's token (HTTP 401: the token of RTE 'rte-dc2' is not the one stored for its runner: check its RTE_TOKEN)` | `docker logs` | Istnieje runner `rte-dc2` z innym tokenem. Daj RTE ten token (hasło z poświadczenia runnera) albo usuń runner, żeby RTE poprosiło o dołączenie |
+| `the controller refused this RTE's token (HTTP 401: the join token (RTE_JOIN_TOKEN) is unknown, revoked, expired or used up)` | `docker logs` | Utwórz nowy token dołączenia albo usuń `RTE_JOIN_TOKEN` i zatwierdź RTE (krok 8) |
+| `the controller refused this RTE (HTTP 409: runner 'rte-dc2' exists and is approved: a join token cannot give it a new token ...)` | `docker logs` | RTE zostało zainstalowane ponownie z nowym tokenem: użyj tokenu z poświadczenia jego runnera albo poproś admina o jego zmianę |
+| `the controller refused this RTE (401): dialing again in 10 minutes, or restart it once an admin acted` | `docker logs` | Następuje po odmowie. Usuń jej przyczynę, a potem `docker restart af_rte_dc2` zamiast czekać |
 | `waiting for an admin to approve it under Connections > Runners` | `docker logs` | Zatwierdź je (krok 8). Jest połączone, ale do tego czasu nie przyjmuje zadań |
-| `the app speaks another contract (an upgrade in progress?): dialing again in 60 seconds` | `docker logs` | Aplikacja i RTE działają w wydaniach z innym [kontraktem](images.html#the-contract): zaktualizuj RTE do wydania aplikacji (zobacz Aktualizacja) |
-| **Niepołączony** albo **Testuj połączenie** mówi *the RTE 'rte-dc2' (outbound) is not connected: it has not dialed the app* | Aplikacja | Żaden węzeł aplikacji nie trzyma jego gniazda: RTE jest zatrzymane lub nie może dotrzeć do aplikacji. Przeczytaj jego `docker logs` |
-| Zadanie czeka, a potem kończy się błędem *no app node holds a socket to RTE 'rte-dc2' and it took no job for 60 minutes (RTE_QUEUE_MINUTES): is it connected?* | Wynik zadania | RTE nie było połączone, gdy zadanie czekało |
+| `the controller speaks another contract (an upgrade in progress?): dialing again in 60 seconds` | `docker logs` | Kontroler i RTE działają w wydaniach z innym [kontraktem](images.html#the-contract): zaktualizuj RTE do wydania kontrolera (zobacz Aktualizacja) |
+| **Niepołączony** albo **Testuj połączenie** mówi *the RTE 'rte-dc2' (outbound) is not connected: it has not dialed the controller* | Kontroler | Żaden węzeł kontrolera nie trzyma jego gniazda: RTE jest zatrzymane lub nie może dotrzeć do kontrolera. Przeczytaj jego `docker logs` |
+| Zadanie czeka, a potem kończy się błędem *no controller node holds a socket to RTE 'rte-dc2' and it took no job for 60 minutes (RTE_QUEUE_MINUTES): is it connected?* | Wynik zadania | RTE nie było połączone, gdy zadanie czekało |
 | `Permission denied` przy kluczu ssh | Wynik zadania | Pliki w `data/` muszą należeć do uid 1000 (krok 3) |
 | `UNREACHABLE` dla zarządzanych hostów | Wynik zadania | ssh z tego hosta: klucz, `known_hosts` i zapora w stronę hostów |
 
-Po stronie aplikacji odrzucone RTE widać w dzienniku aplikacji jako `Refused an RTE socket from <address>: <why>`.
+Po stronie kontrolera odrzucone RTE widać w dzienniku kontrolera jako `Refused an RTE socket from <address>: <why>`.
 
 ---
 
 ## Aktualizacja
 
-Gdy aplikacja przechodzi na nowe wydanie, zaktualizuj też ten host. RTE z tym samym kontraktem w międzyczasie działa dalej; gdy wydanie
+Gdy kontroler przechodzi na nowe wydanie, zaktualizuj też ten host. RTE z tym samym kontraktem w międzyczasie działa dalej; gdy wydanie
 zmienia kontrakt, mówią o tym jego informacje o wydaniu (zobacz [Kontrakt](images.html#the-contract)). Z `:7` w `compose.yml` lub w
 `FROM` Twojego pliku Dockerfile:
 
@@ -462,8 +464,8 @@ nowego obrazu (krok 4) przed `docker compose up -d`.
 cd /opt/af-rte && docker compose down     # or: docker rm -f af_rte_dc2
 ```
 
-Gniazdo się zamyka, a runner od razu pokazuje **Niepołączony**: żaden węzeł aplikacji nie trzyma już jego gniazda (`runner_leases`). Host,
-który znika, nie zamykając go, pokazuje **Niepołączony** w ciągu około minuty, gdy węzeł aplikacji przestanie cokolwiek słyszeć na gnieździe.
+Gniazdo się zamyka, a runner od razu pokazuje **Niepołączony**: żaden węzeł kontrolera nie trzyma już jego gniazda (`runner_leases`). Host,
+który znika, nie zamykając go, pokazuje **Niepołączony** w ciągu około minuty, gdy węzeł kontrolera przestanie cokolwiek słyszeć na gnieździe.
 Runner zostaje: runner, który dołączył przez gniazdo, nigdy nie jest usuwany samoczynnie. Usuń go w **Połączenia > Runnery**, a jego
 poświadczenie `rte-dc2-rte` w **Połączenia > Poświadczenia**. Najpierw usuń wiersz `runner:` z formularzy, które go wskazywały: do tego czasu
 ich zadania czekają na RTE, do `RTE_QUEUE_MINUTES`, i kończą się błędem.
@@ -482,7 +484,7 @@ osobny runner i przyjmuje do [`RTE_MAX_JOBS`](../customization/server.html#env_R
 ## RTE w trybie bazy danych
 
 Przed wersją 7.3.0 ten runbook konfigurował RTE w trybie bazy danych: miało poświadczenia bazy danych (`DB_*`, `ENCRYPTION_SECRET`), łączyło się
-z bazą danych centrum danych 1 przez port `3306`, a aplikacja wywoływała je na jego porcie `8000`. Ten tryb jest przestarzały od wersji 7.3.0 i
-zostanie usunięty w 8.0.0. Aby przenieść takie RTE do trybu wychodzącego bez nowego runnera, ustaw na nim `RTE_MODE=outbound`, `APP_URL` i `RTE_NAME` (nazwę
+z bazą danych centrum danych 1 przez port `3306`, a kontroler wywoływał je na jego porcie `8000`. Ten tryb jest przestarzały od wersji 7.3.0 i
+zostanie usunięty w 8.0.0. Aby przenieść takie RTE do trybu wychodzącego bez nowego runnera, ustaw na nim `RTE_MODE=outbound`, `CONTROLLER_URL` i `RTE_NAME` (nazwę
 jego runnera), zachowaj jego `RTE_TOKEN` i usuń `DB_*`, `ENCRYPTION_SECRET` oraz `RTE_REGISTER`: zobacz
 [Baza danych (przestarzały)](modes.html#database-deprecated). Następnie zamknij port `8000` i port bazy danych, których już nie potrzebuje.

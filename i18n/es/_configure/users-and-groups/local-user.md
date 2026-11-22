@@ -3,7 +3,7 @@ layout: default
 title: Un usuario local
 parent: Usuarios y grupos
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Un usuario local
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Añadir un usuario local, y las pestañas de su página
 {: .fs-6 .fw-300 }
 
-**Agregar usuario** abre un asistente de tres pasos: **Usuario** (nombre de usuario, descripción, correo), **Contraseña** y **Grupo**.
+**Agregar usuario** abre el asistente **Nuevo usuario** en cuatro pasos:
+
+| Paso | Qué pide |
+|---|---|
+| **Usuario** | El nombre de usuario, la descripción y el correo; solo el nombre de usuario es obligatorio |
+| **Contraseña** | La contraseña, escrita dos veces: **Siguiente** espera a que las dos coincidan |
+| **Grupo** | El grupo local al que pertenece el usuario, y que le da los roles del grupo |
+| **Roles** | Los roles que se dan al propio usuario, cada uno elegido con **Agregar rol**; no hace falta ninguno |
+
+El paso **Roles** y la contraseña escrita dos veces son nuevos en la 7.8.0. **Guardar**, en el último paso, crea el usuario y luego le da los
+roles elegidos: un rol que no se le pudo dar se nombra en un mensaje, y el usuario se crea igualmente.
 
 La página de un usuario, `/settings/users/<id>`, tiene estas pestañas:
 

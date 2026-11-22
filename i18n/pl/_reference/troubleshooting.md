@@ -2,7 +2,7 @@
 layout: default
 title: Rozwiązywanie problemów
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: f8f839092e99ab96eb57dd504e136deb4a590e62
 ---
 
 # Rozwiązywanie problemów
@@ -611,7 +611,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 **Dlaczego tak się dzieje**
 
 Zadanie należy do kontenera, który je uruchamia lub śledzi: playbook do swojego RTE, każde inne zadanie (zadanie AWX, kroki formularza
-wieloetapowego) do węzła aplikacji, który je uruchomił. Gdy ten kontener się restartuje, kończy swoje niedokończone zadania. Gdy znika, na przykład zastąpiony
+wieloetapowego) do węzła kontrolera, który je uruchomił. Gdy ten kontener się restartuje, kończy swoje niedokończone zadania. Gdy znika, na przykład zastąpiony
 pod, worker kończy jego zadania, gdy ten nie odpowiada przez dwie minuty. Jeśli RTE w trybie gniazda wraca bez
 zadania, które uruchamiało, na przykład nowy kontener bez swojego spoola, to zadanie kończy się jako abandoned. Zatrzymywane RTE najpierw czeka
 [`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) na swoje playbooki. Co godzinę zadania działające dłużej
@@ -622,7 +622,7 @@ jeśli rozpoczęło się w ciągu ostatnich 24 godzin, i kończy się tym, co fa
 
 **Jak to naprawić**
 
-Uruchom ponownie zadanie playbooka. Restartuj lub aktualizuj RTE i węzły aplikacji, gdy żadne zadanie nie działa, i dawaj zatrzymywanemu RTE wystarczająco dużo czasu
+Uruchom ponownie zadanie playbooka. Restartuj lub aktualizuj RTE i węzły kontrolera, gdy żadne zadanie nie działa, i dawaj zatrzymywanemu RTE wystarczająco dużo czasu
 (zobacz [Skalowanie](rte/run.html)). Przed ponownym uruchomieniem sprawdź, czy playbook naprawdę zakończył się na zarządzanych hostach,
 ponieważ mógł wykonać się częściowo.
 
@@ -633,26 +633,26 @@ ponieważ mógł wykonać się częściowo.
 **Testuj połączenie** na runnerze RTE (**Połączenia > Runnery**) kończy się błędem:
 
 ```
-the RTE '<name>' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app
-the RTE '<name>' (inbound) is not connected: no app node could dial it at <address>: check its RTE_URL, its token and the network from the app to the RTE
+the RTE '<name>' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller
+the RTE '<name>' (inbound) is not connected: no controller node could dial it at <address>: check its RTE_URL, its token and the network from the controller to the RTE
 ```
 
 **Dlaczego tak się dzieje**
 
-RTE w trybie gniazda komunikuje się z aplikacją przez jeden WebSocket: w trybie wychodzącym łączy się z aplikacją, w przychodzącym aplikacja łączy się z nim (zobacz
-[Tryby](rte/modes.html)). Dzienniki aplikacji i RTE mówią, dlaczego gniazdo nie jest otwarte:
+RTE w trybie gniazda komunikuje się z kontrolerem przez jeden WebSocket: w trybie wychodzącym łączy się z kontrolerem, w przychodzącym kontroler łączy się z nim (zobacz
+[Tryby](rte/modes.html)). Dzienniki kontrolera i RTE mówią, dlaczego gniazdo nie jest otwarte:
 
 | Komunikat | Gdzie | Co oznacza |
 |---|---|---|
 | `RTE: refused a socket without the right token from <address>` | RTE (przychodzące) | Token poświadczenia RTE runnera nie jest `RTE_TOKEN` tego RTE |
-| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | Aplikacja (przychodzące) | To samo, z perspektywy aplikacji |
-| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | Aplikacja oraz odrzucone RTE (`401`) | RTE loguje się innym tokenem niż ten, który aplikacja przechowuje dla jego runnera |
+| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | Kontroler (przychodzące) | To samo, z perspektywy kontrolera |
+| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | Kontroler oraz odrzucone RTE (`401`) | RTE loguje się innym tokenem niż ten, który kontroler przechowuje dla jego runnera |
 | `RTE '<name>': waiting for an admin to approve it under Connections > Runners (fingerprint <fingerprint>)` | RTE (wychodzące) | Poprosiło o dołączenie i czeka na zatwierdzenie |
-| `RTE '<name>': asked to join as inbound runner '<name>': the app dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | RTE (przychodzące, z `APP_URL`) | To samo, dla przychodzącego RTE |
-| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | Aplikacja oraz odrzucone RTE (`409`) | Config seed deklaruje runner bez `rte_mode`, czyli w trybie bazy danych, a o jego trybie decyduje seed. Przychodzące RTE dostaje `rte_mode: inbound` i `(and its credential with the address the app dials, RTE_URL)` |
-| `RTE: RTE_MODE=inbound with APP_URL registers with the app, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | RTE | Przychodzące RTE, które samo się rejestruje, potrzebuje adresu, pod którym łączy się z nim aplikacja |
-| `Runner '<name>': dialing <address>: <reason>` | Aplikacja, na poziomie `debug` | Aplikacja nie może otworzyć gniazda, na przykład dlatego, że certyfikat RTE nie jest tym przypiętym dla jego runnera |
-| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the app, APP_URL) or RTE_MODE=inbound (the app dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | RTE | Działa w trybie bazy danych i w ogóle nie otwiera gniazda |
+| `RTE '<name>': asked to join as inbound runner '<name>': the controller dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | RTE (przychodzące, z `CONTROLLER_URL`) | To samo, dla przychodzącego RTE |
+| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | Kontroler oraz odrzucone RTE (`409`) | Config seed deklaruje runner bez `rte_mode`, czyli w trybie bazy danych, a o jego trybie decyduje seed. Przychodzące RTE dostaje `rte_mode: inbound` i `(and its credential with the address the controller dials, RTE_URL)` |
+| `RTE: RTE_MODE=inbound with CONTROLLER_URL registers with the controller, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | RTE | Przychodzące RTE, które samo się rejestruje, potrzebuje adresu, pod którym łączy się z nim kontroler |
+| `Runner '<name>': dialing <address>: <reason>` | Kontroler, na poziomie `debug` | Kontroler nie może otworzyć gniazda, na przykład dlatego, że certyfikat RTE nie jest tym przypiętym dla jego runnera |
+| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the controller, CONTROLLER_URL) or RTE_MODE=inbound (the controller dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | RTE | Działa w trybie bazy danych i w ogóle nie otwiera gniazda |
 
 **Jak to naprawić**
 
@@ -661,11 +661,11 @@ RTE w trybie gniazda komunikuje się z aplikacją przez jeden WebSocket: w trybi
   dziennika (zobacz [Zatwierdzanie RTE](runners/registration.html#approving-an-rte))
 * **Zarządzane przez config seed w trybie bazy danych** : ustaw `rte_mode` dla runnera w seedzie, z poświadczeniem RTE (dla przychodzącego z jego
   adresem), a potem uruchom ponownie RTE
-* **Przychodzące bez `RTE_URL`** : ustaw `RTE_URL` na adres, pod którym aplikacja sięga do RTE, albo pomiń `APP_URL` i zadeklaruj
+* **Przychodzące bez `RTE_URL`** : ustaw `RTE_URL` na adres, pod którym kontroler sięga do RTE, albo pomiń `CONTROLLER_URL` i zadeklaruj
   runner w seedzie lub w **Połączenia > Runnery**
-* **Certyfikat, który nie jest przypięty** : przychodzące RTE przez HTTPS wysyła swój certyfikat przy rejestracji, a aplikacja łączy się
+* **Certyfikat, który nie jest przypięty** : przychodzące RTE przez HTTPS wysyła swój certyfikat przy rejestracji, a kontroler łączy się
   z nim tylko z tym certyfikatem. Po zmianie certyfikatu RTE wysyła go ponownie przy rejestracji; gdy pakiet CA poświadczenia został ustawiony
-  ręcznie, aplikacja go zachowuje i zapisuje w dzienniku
+  ręcznie, kontroler go zachowuje i zapisuje w dzienniku
   `Runner '<name>': its ca_bundle was set by hand: the certificate its RTE sent (fingerprint <fingerprint>) is not stored. Empty the ca_bundle to have the RTE's certificate pinned again`
 * **Ostrzeżenie [DEPRECATED]** : ustaw `RTE_MODE` na RTE, usuń `DB_*` z jego środowiska i ustaw jego runner w tym trybie (zobacz
   [Tryby](rte/modes.html))

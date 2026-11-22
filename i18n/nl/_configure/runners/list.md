@@ -3,7 +3,7 @@ layout: default
 title: De pagina Runners
 parent: Runners
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # De pagina Runners
@@ -29,7 +29,7 @@ De pagina onder **Verbindingen > Runners** toont elke runner met deze kolommen:
 | Beschrijving | Waarvoor hij dient. |
 
 **Kolommen** voegt er nog twee toe, standaard uit: **Modus**, de modus van een RTE (Uitgaand, Inkomend of Database (verouderd), zie
-[Modi](../rte/modes.html)), en **Verbinding**, of een app-node een socket naar een RTE in een socketmodus vasthoudt: **Verbonden** of
+[Modi](../rte/modes.html)), en **Verbinding**, of een controller-node een socket naar een RTE in een socketmodus vasthoudt: **Verbonden** of
 **Niet verbonden**.
 
 Vanaf 7.3.0 staan de runners die op goedkeuring wachten niet in de lijst maar in een melding erboven, zie [Een RTE goedkeuren](registration.html#approving-an-rte).

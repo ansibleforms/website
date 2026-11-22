@@ -3,7 +3,7 @@ layout: default
 title: Immagini
 parent: RTE
 nav_order: 1
-translated_from: b7c988670ef538a3cc814b0dd66fd7e647d9a150
+translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
 ---
 
 # Immagini RTE
@@ -19,7 +19,7 @@ Le tre immagini RTE pubblicate, e un RTE tuo con le collection e le librerie usa
 
 ## Le immagini RTE
 
-L'RTE è pubblicato in tre livelli, ognuno costruito su quello precedente, con gli stessi tag dell'app (vedi [Tag delle immagini](../installation/#image-tags)):
+L'RTE è pubblicato in tre livelli, ognuno costruito su quello precedente, con gli stessi tag del controller (vedi [Tag delle immagini](../installation/#image-tags)):
 
 | Immagine | Cosa contiene | Quando usarla |
 |---|---|---|
@@ -27,7 +27,7 @@ L'RTE è pubblicato in tre livelli, ognuno costruito su quello precedente, con g
 | `ghcr.io/ansibleforms/ansibleforms-rte-core` | La base, più python 3.14, ansible-core e alcune librerie comuni (`jmespath`, `netaddr`, `requests`, `paramiko`). Nessuna collection | Per costruire un RTE più piccolo con solo le collection e le librerie usate dai tuoi playbook |
 | `ghcr.io/ansibleforms/ansibleforms-rte-full` | Il core, più il pacchetto `ansible` sullo stesso ansible-core, e ciò che aveva l'immagine di AnsibleForms 6.5: le collection NetApp, AWS e community, `pandas`, `pyvmomi`, `boto3`, il client mariadb, ytt e alcuni strumenti di sistema | **Il predefinito.** Eseguila così com'è: i playbook della 6.5 trovano ciò che usavano |
 
-Come l'immagine dell'app, ogni livello gira come utente `node` (uid 1000), e anche i playbook girano come quell'utente.
+Come l'immagine del controller, ogni livello gira come utente `node` (uid 1000), e anche i playbook girano come quell'utente.
 
 Dalla 7.6.0 ogni livello è pubblicato per `linux/amd64` e `linux/arm64` con lo stesso tag. Un RTE che costruisci tu ha
 l'architettura della macchina che lo costruisce: per gli host arm64, costruiscilo su uno di essi, o con `docker buildx build --platform linux/arm64`.
@@ -49,7 +49,7 @@ L'ambiente python e la cartella delle collection appartengono a `node`, quindi q
 di sistema passa a `USER root` per farlo e torna a `USER node` alla fine. Per portare il tuo python e il tuo ansible, parti da
 `ansibleforms-rte-base` (`Dockerfile.own-ansible` nella stessa cartella).
 
-Tieni l'immagine allineata alla versione dell'app: `:7` segue il `:7` dell'app. Collection e ruoli si possono anche montare invece di integrarli nell'immagine, in
+Tieni l'immagine allineata alla versione del controller: `:7` segue il `:7` del controller. Collection e ruoli si possono anche montare invece di integrarli nell'immagine, in
 `/etc/ansible/collections` e `/etc/ansible/roles`. Così non serve ricostruire a ogni modifica, ma ciò che gira dipende da quel volume;
 le librerie python vanno sempre nell'immagine. Integrare tutto è riproducibile e parte in fretta, ed è quindi la strada per la produzione.
 
@@ -57,14 +57,14 @@ le librerie python vanno sempre nell'immagine. Integrare tutto è riproducibile 
 
 ## Il contratto
 
-Ciò che l'app e un RTE devono condividere è il loro contratto, un numero che entrambi riportano. Un RTE di una versione più vecchia continua a funzionare con un'app
+Ciò che il controller e un RTE devono condividere è il loro contratto, un numero che entrambi riportano. Un RTE di una versione più vecchia continua a funzionare con un controller
 più recente finché entrambi parlano lo stesso contratto; quando una versione lo cambia, le sue note di rilascio dicono che gli RTE vanno aggiornati. Ogni modalità
 ha il suo:
 
 | Modalità | Contratto | In caso di discrepanza |
 |---|---|---|
-| In uscita, In entrata | 3, novità della 7.3.0 | L'app chiude il socket dell'RTE con il codice `4409` e registra *RTE '&lt;name&gt;' speaks contract &lt;n&gt;, this app (&lt;release&gt;) contract 3: refused*. Un RTE in uscita registra *the app speaks another contract (an upgrade in progress?): dialing again in 60 seconds*. Un job inviato con un altro contratto viene rifiutato |
-| Database (deprecata) | 2, dalla 7.0.0 | L'RTE rifiuta i job dell'app |
+| In uscita, In entrata | 3, novità della 7.3.0 | Il controller chiude il socket dell'RTE con il codice `4409` e registra *RTE '&lt;name&gt;' speaks contract &lt;n&gt;, this app (&lt;release&gt;) contract 3: refused*. Un RTE in uscita registra *the controller speaks another contract (an upgrade in progress?): dialing again in 60 seconds*. Un job inviato con un altro contratto viene rifiutato |
+| Database (deprecata) | 2, dalla 7.0.0 | L'RTE rifiuta i job del controller |
 
-**Testa connessione** sul runner dice quale contratto parla l'RTE e quale richiede l'app (vedi
+**Testa connessione** sul runner dice quale contratto parla l'RTE e quale richiede il controller (vedi
 [Testa connessione](../runners/runner-page.html#test-connection)), e la riga **Runner** della pagina **Stato** esegue lo stesso controllo.

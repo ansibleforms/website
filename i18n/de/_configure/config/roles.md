@@ -3,7 +3,7 @@ layout: default
 title: Rollen
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Rollen
@@ -22,6 +22,23 @@ Ordnen Sie Benutzer und Gruppen Rollen zu, und legen Sie fest, was jede Rolle da
 Die Liste `roles` auf oberster Ebene von config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Eine Rolle hinzufügen
+
+Unter **Einstellungen > Zugriff > Rollen** öffnet **Rolle hinzufügen** den Assistenten **Neue Rolle**, ab 7.8.0 in vier Schritten:
+
+| Schritt | Was er abfragt |
+|---|---|
+| **Details** | Den Namen, eindeutig unter den Rollen, und die Beschreibung. **Weiter** wartet auf einen Namen, den keine andere Rolle hat |
+| **Berechtigungen** | Die [Rollenoptionen](#role-options) in ihren vier Gruppen, ausgehend von den Standardwerten für alle |
+| **Benutzer** | Die Benutzer, die die Rolle nennt, jeder mit **Benutzer hinzufügen** ausgewählt |
+| **Gruppen** | Die Gruppen, die die Rolle nennt, jede mit **Gruppe hinzufügen** ausgewählt |
+
+**Speichern** im letzten Schritt fügt die Rolle hinzu und speichert die Rollen; wird das Speichern abgelehnt, bleibt der Assistent offen und
+nichts wird hinzugefügt. Die Rolle hat dann ihre eigene Seite, auf der ihre Berechtigungen, Benutzer und Gruppen geändert werden können.
+**Rolle hinzufügen** ist deaktiviert, solange die Rollen nicht von der Seite gespeichert werden können, etwa wenn sie aus einer ytt-Vorlage stammen.
 
 ---
 

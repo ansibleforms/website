@@ -3,7 +3,7 @@ layout: default
 title: Strona runnerów
 parent: Runnery
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # Strona runnerów
@@ -29,7 +29,7 @@ Strona w **Połączenia > Runnery** wyświetla każdy runner z tymi kolumnami:
 | Opis | Do czego służy. |
 
 **Kolumny** dodaje dwie kolejne, domyślnie wyłączone: **Tryb**, czyli tryb RTE (Wychodzący, Przychodzący lub Baza danych (przestarzały), zobacz
-[Tryby](../rte/modes.html)), oraz **Połączenie**, czyli czy węzeł aplikacji trzyma gniazdo do RTE w trybie gniazda: **Połączony** lub
+[Tryby](../rte/modes.html)), oraz **Połączenie**, czyli czy węzeł kontrolera trzyma gniazdo do RTE w trybie gniazda: **Połączony** lub
 **Niepołączony**.
 
 Od wersji 7.3.0 runnery czekające na zatwierdzenie nie są na liście, tylko w powiadomieniu nad nią, zobacz [Zatwierdzanie RTE](registration.html#approving-an-rte).

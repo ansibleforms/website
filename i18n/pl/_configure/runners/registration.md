@@ -3,7 +3,7 @@ layout: default
 title: Rejestracja
 parent: Runnery
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Rejestracja
@@ -19,25 +19,25 @@ Jak RTE prosi o dołączenie i jest zatwierdzane, tokeny dołączenia dla instal
 
 ## Prośba o dołączenie
 
-Od wersji 7.3.0 RTE w trybie gniazda (`outbound` lub `inbound`), którego aplikacja jeszcze nie zna, prosi o dołączenie, a admin je zatwierdza.
-Zgłasza się z własnym `RTE_TOKEN` i swoim `RTE_NAME`: RTE w trybie wychodzącym przy pierwszym połączeniu z aplikacją, w trybie przychodzącym w swoim jednym
-wywołaniu rejestracji. Bez tokenu dołączenia aplikacja wtedy:
+Od wersji 7.3.0 RTE w trybie gniazda (`outbound` lub `inbound`), którego kontroler jeszcze nie zna, prosi o dołączenie, a admin je zatwierdza.
+Zgłasza się z własnym `RTE_TOKEN` i swoim `RTE_NAME`: RTE w trybie wychodzącym przy pierwszym połączeniu z kontrolerem, w trybie przychodzącym w swoim jednym
+wywołaniu rejestracji. Bez tokenu dołączenia kontroler wtedy:
 
 1. Zapisuje `RTE_TOKEN` tego RTE w nowym poświadczeniu typu RTE o nazwie `<name>-rte` (z dodaną liczbą, gdy ta nazwa jest zajęta), a
    dla RTE w trybie przychodzącym także jego adres, `RTE_URL`
 2. Dodaje runner nazwany według `RTE_NAME`, typu RTE, w trybie tego RTE, logujący się tym poświadczeniem, oznaczony jako **Czeka na zatwierdzenie**
    i wyłączony. Jego opis podaje host, z którego przyszła prośba
 
-RTE w trybie wychodzącym pozostaje połączone, gdy czeka, ale nie dostaje żadnych zadań. Aplikacja nie łączy się z RTE w trybie przychodzącym, dopóki nie zostanie ono zatwierdzone. Oba zapisują
+RTE w trybie wychodzącym pozostaje połączone, gdy czeka, ale nie dostaje żadnych zadań. Kontroler nie łączy się z RTE w trybie przychodzącym, dopóki nie zostanie ono zatwierdzone. Oba zapisują
 w dzienniku, że czekają na zatwierdzenie przez admina w **Połączenia > Runnery**, z odciskiem swojego tokenu.
 
-RTE w trybie przychodzącym z `RTE_URL` w postaci `https://` wysyła też swój certyfikat, gdy prosi o dołączenie, a aplikacja go przypina: od tej pory
-aplikacja łączy się z tym RTE tylko wtedy, gdy przedstawia ono ten sam certyfikat, więc samopodpisany działa bez CA (zobacz [Przychodzący](../rte/modes.html#inbound)).
+RTE w trybie przychodzącym z `RTE_URL` w postaci `https://` wysyła też swój certyfikat, gdy prosi o dołączenie, a kontroler go przypina: od tej pory
+kontroler łączy się z tym RTE tylko wtedy, gdy przedstawia ono ten sam certyfikat, więc samopodpisany działa bez CA (zobacz [Przychodzący](../rte/modes.html#inbound)).
 
 Naraz na zatwierdzenie może czekać najwyżej 20 RTE: kolejne są odrzucane, dopóki część nie zostanie zatwierdzona lub odrzucona. Prośbę, której nikt nie obsłuży w ciągu
 24 godzin, worker usuwa razem z jej poświadczeniem.
 
-RTE nazwane tak jak runner, który aplikacja już zna, ale z innym tokenem, jest odrzucane i nie prosi o dołączenie. Daj mu token tego runnera
+RTE nazwane tak jak runner, który kontroler już zna, ale z innym tokenem, jest odrzucane i nie prosi o dołączenie. Daj mu token tego runnera
 albo usuń runner, żeby RTE poprosiło o dołączenie. [Token dołączenia](#join-tokens) pomaga tylko wtedy, gdy ten runner nadal czeka na zatwierdzenie.
 
 ---
@@ -54,11 +54,11 @@ Jego strona pokazuje te same informacje w żółtym polu, **Ten RTE poprosił o 
 | Pole | Co pokazuje |
 |---|---|
 | Odcisk | Pierwsze 8 cyfr szesnastkowych SHA-256 jego `RTE_TOKEN`, jako `abcd-ef12`. RTE zapisuje go przy starcie, a [instalator](../installation/installer.html#a-runner) wypisuje go na końcu. Musi być taki sam |
-| Odcisk certyfikatu | W oknie, dla RTE w trybie przychodzącym przez HTTPS: pierwsze 8 cyfr szesnastkowych SHA-256 certyfikatu, który przypina aplikacja (jego bajtów DER), jako `abcd-ef12`. RTE zapisuje go przy starcie, a [instalator](../installation/installer.html#a-runner) wypisuje go na końcu. Musi być taki sam |
+| Odcisk certyfikatu | W oknie, dla RTE w trybie przychodzącym przez HTTPS: pierwsze 8 cyfr szesnastkowych SHA-256 certyfikatu, który przypina kontroler (jego bajtów DER), jako `abcd-ef12`. RTE zapisuje go przy starcie, a [instalator](../installation/installer.html#a-runner) wypisuje go na końcu. Musi być taki sam |
 | Host | Host, na którym działa |
-| Adres IP | Adres, z którego wywołało aplikację |
+| Adres IP | Adres, z którego wywołało kontroler |
 | Tryb | Wychodzący lub Przychodzący |
-| Uri | Adres RTE w trybie przychodzącym, pod który łączy się aplikacja |
+| Uri | Adres RTE w trybie przychodzącym, pod który łączy się kontroler |
 | Wersja | Jego wydanie |
 | Poproszono | Kiedy poprosiło o dołączenie |
 

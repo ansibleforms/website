@@ -3,7 +3,7 @@ layout: default
 title: Registratie
 parent: Runners
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Registratie
@@ -19,25 +19,25 @@ Hoe een RTE vraagt om lid te worden en wordt goedgekeurd, jointokens voor onbehe
 
 ## Vragen om lid te worden
 
-Sinds 7.3.0 vraagt een RTE in een socketmodus (`outbound` of `inbound`) die de app nog niet kent om lid te worden, en keurt een admin hem goed.
-Hij meldt zich met zijn eigen `RTE_TOKEN` en zijn `RTE_NAME`: een uitgaande RTE wanneer hij de app voor het eerst belt, een inkomende in zijn ene
-registratieaanroep. Zonder jointoken doet de app dan het volgende:
+Sinds 7.3.0 vraagt een RTE in een socketmodus (`outbound` of `inbound`) die de controller nog niet kent om lid te worden, en keurt een admin hem goed.
+Hij meldt zich met zijn eigen `RTE_TOKEN` en zijn `RTE_NAME`: een uitgaande RTE wanneer hij de controller voor het eerst belt, een inkomende in zijn ene
+registratieaanroep. Zonder jointoken doet de controller dan het volgende:
 
 1. Ze slaat het `RTE_TOKEN` van de RTE op in een nieuwe referentie van het type RTE met de naam `<name>-rte` (met een nummer erbij als die naam bezet is), en
    voor een inkomende RTE ook zijn adres, `RTE_URL`
 2. Ze voegt een runner toe met de naam uit `RTE_NAME`, type RTE, in de modus van de RTE, die zich met die referentie aanmeldt, gemarkeerd als **Wacht op goedkeuring**
    en uitgeschakeld. De beschrijving noemt de host waarvandaan hij het vroeg
 
-Een uitgaande RTE blijft verbonden terwijl hij wacht, maar krijgt geen job. De app belt een inkomende RTE pas als hij is goedgekeurd. Beide loggen
+Een uitgaande RTE blijft verbonden terwijl hij wacht, maar krijgt geen job. De controller belt een inkomende RTE pas als hij is goedgekeurd. Beide loggen
 dat ze wachten tot een admin ze goedkeurt onder **Verbindingen > Runners**, met de vingerafdruk van hun token.
 
-Een inkomende RTE met een `RTE_URL` die met `https://` begint, stuurt bij het vragen om lid te worden ook zijn certificaat mee, en de app pint het: vanaf dan
-belt de app die RTE alleen als hij hetzelfde certificaat presenteert, zodat een zelfondertekend certificaat werkt zonder CA (zie [Inkomend](../rte/modes.html#inbound)).
+Een inkomende RTE met een `RTE_URL` die met `https://` begint, stuurt bij het vragen om lid te worden ook zijn certificaat mee, en de controller pint het: vanaf dan
+belt de controller die RTE alleen als hij hetzelfde certificaat presenteert, zodat een zelfondertekend certificaat werkt zonder CA (zie [Inkomend](../rte/modes.html#inbound)).
 
 Er wachten maximaal 20 RTE's tegelijk op goedkeuring: meer worden geweigerd totdat er enkele zijn goedgekeurd of afgewezen. Een aanvraag die niemand binnen
 24 uur afhandelt, wordt door de worker verwijderd, met haar referentie.
 
-Een RTE met de naam van een runner die de app al kent, maar met een ander token, wordt geweigerd en vraagt niet om lid te worden. Geef hem het token van die runner,
+Een RTE met de naam van een runner die de controller al kent, maar met een ander token, wordt geweigerd en vraagt niet om lid te worden. Geef hem het token van die runner,
 of verwijder de runner zodat hij vraagt om lid te worden. Een [jointoken](#join-tokens) helpt alleen zolang die runner nog op goedkeuring wacht.
 
 ---
@@ -54,11 +54,11 @@ Zijn pagina toont dezelfde gegevens in een geel vak, **Deze RTE vraagt om lid te
 | Veld | Wat het toont |
 |---|---|
 | Vingerafdruk | De eerste 8 hexadecimale cijfers van de SHA-256 van zijn `RTE_TOKEN`, als `abcd-ef12`. De RTE logt hem bij het starten, en het [installatieprogramma](../installation/installer.html#a-runner) drukt hem aan het einde af. Hij moet gelijk zijn |
-| Vingerafdruk van het certificaat | In het dialoogvenster, voor een inkomende RTE via HTTPS: de eerste 8 hexadecimale cijfers van de SHA-256 van het certificaat dat de app pint (de DER-bytes), als `abcd-ef12`. De RTE logt hem bij het starten en het [installatieprogramma](../installation/installer.html#a-runner) drukt hem aan het einde af. Hij moet gelijk zijn |
+| Vingerafdruk van het certificaat | In het dialoogvenster, voor een inkomende RTE via HTTPS: de eerste 8 hexadecimale cijfers van de SHA-256 van het certificaat dat de controller pint (de DER-bytes), als `abcd-ef12`. De RTE logt hem bij het starten en het [installatieprogramma](../installation/installer.html#a-runner) drukt hem aan het einde af. Hij moet gelijk zijn |
 | Host | De host waarop hij draait |
-| IP-adres | Het adres van waaruit hij de app aanriep |
+| IP-adres | Het adres van waaruit hij de controller aanriep |
 | Modus | Uitgaand of Inkomend |
-| Uri | Het adres van een inkomende RTE, waar de app hem belt |
+| Uri | Het adres van een inkomende RTE, waar de controller hem belt |
 | Versie | Zijn release |
 | Aangevraagd op | Wanneer hij vroeg om lid te worden |
 

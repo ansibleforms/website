@@ -3,7 +3,7 @@ layout: default
 title: Un usuari local
 parent: Usuaris i grups
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Un usuari local
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Afegir un usuari local, i les pestanyes de la seva pàgina
 {: .fs-6 .fw-300 }
 
-**Afegeix un usuari** obre un assistent de tres passos: **Usuari** (nom d'usuari, descripció, correu), **Contrasenya** i **Grup**.
+**Afegeix un usuari** obre l'assistent **Nou element: usuari** en quatre passos:
+
+| Pas | Què demana |
+|---|---|
+| **Usuari** | El nom d'usuari, la descripció i el correu; només el nom d'usuari és obligatori |
+| **Contrasenya** | La contrasenya, escrita dues vegades: **Següent** espera que totes dues coincideixin |
+| **Grup** | El grup local al qual pertany l'usuari, i que li dona els rols del grup |
+| **Rols** | Els rols que es donen al mateix usuari, cadascun triat amb **Afegeix un rol**; no cal cap |
+
+El pas **Rols** i la contrasenya escrita dues vegades són nous a la 7.8.0. **Desa**, a l'últim pas, crea l'usuari i després li dona els
+rols triats: un rol que no se li ha pogut donar s'anomena en un missatge, i l'usuari es crea igualment.
 
 La pàgina d'un usuari, `/settings/users/<id>`, té aquestes pestanyes:
 

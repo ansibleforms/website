@@ -3,7 +3,7 @@ layout: default
 title: Die Seite Runner
 parent: Runner
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # Die Seite Runner
@@ -29,7 +29,7 @@ Die Seite unter **Verbindungen > Runner** listet jeden Runner mit diesen Spalten
 | Beschreibung | Wofür er ist. |
 
 **Spalten** fügt zwei weitere hinzu, standardmäßig aus: **Modus**, der Modus einer RTE (Ausgehend, Eingehend oder Datenbank (veraltet), siehe
-[Modi](../rte/modes.html)), und **Verbindung**, ob ein App-Knoten einen Socket zu einer RTE in einem Socket-Modus hält: **Verbunden** oder
+[Modi](../rte/modes.html)), und **Verbindung**, ob ein Controller-Knoten einen Socket zu einer RTE in einem Socket-Modus hält: **Verbunden** oder
 **Nicht verbunden**.
 
 Ab 7.3.0 stehen die auf Freigabe wartenden Runner nicht in der Liste, sondern in einem Hinweis darüber, siehe [Eine RTE freigeben](registration.html#approving-an-rte).

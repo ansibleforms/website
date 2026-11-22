@@ -2,7 +2,7 @@
 layout: default
 title: Prerequisiti
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Prerequisiti
@@ -120,9 +120,9 @@ I browser più vecchi non sono supportati.
 
 ## Scalabilità
 
-Per impostazione predefinita un solo container di AnsibleForms esegue insieme l'app web e il lavoro in background, accanto a un RTE.
+Per impostazione predefinita un solo container di AnsibleForms esegue insieme l'interfaccia web del controller e il lavoro in background, accanto a un RTE.
 
-Per servire più utenti, esegui più nodi dell'app dietro un load balancer (`AF_ROLE=app`) accanto a un worker (`AF_ROLE=worker`), che esegue le
+Per servire più utenti, esegui più nodi del controller dietro un load balancer (`AF_ROLE=controller`, `app` prima della 7.8.0) accanto a un worker (`AF_ROLE=worker`), che esegue le
 pianificazioni, i backup e l'altro lavoro in background; lavora un solo worker alla volta, e un secondo aspetta di subentrare. Condividono
 il database, la cartella persistente, `ACCESS_TOKEN_SECRET` e `ENCRYPTION_SECRET`. Vedi [Scalabilità](production/scaling.html). Esegui più
 RTE per eseguire più playbook contemporaneamente: vedi [Più RTE](rte/several.html).

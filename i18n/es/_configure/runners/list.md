@@ -3,7 +3,7 @@ layout: default
 title: La página de runners
 parent: Runners
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # La página de runners
@@ -29,7 +29,7 @@ La página de **Conexiones > Runners** lista cada runner con estas columnas:
 | Descripción | Para qué sirve. |
 
 **Columnas** añade dos más, ocultas por defecto: **Modo**, el modo de un RTE (Saliente, Entrante o Base de datos (obsoleto), consulta
-[Modos](../rte/modes.html)), y **Conexión**, si un nodo de la aplicación tiene un socket con un RTE en modo de socket: **Conectado** o
+[Modos](../rte/modes.html)), y **Conexión**, si un nodo del controlador tiene un socket con un RTE en modo de socket: **Conectado** o
 **No conectado**.
 
 Desde 7.3.0 los runners pendientes de aprobación no aparecen en la lista sino en un aviso encima de ella, consulta [Aprobar un RTE](registration.html#approving-an-rte).

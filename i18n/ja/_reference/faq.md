@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: d52d2b59f52a3cbc57b84d24de62f0bc5a345c89
 ---
 
 # よくある質問
@@ -26,12 +26,12 @@ AnsibleForms についてよくある質問と回答
 
 ロードバランサーの背後で複数のレプリカを動かすには、 `AF_ROLE` でプロセスを分割します。
 
-- `app` ノードは Web インターフェースと API を提供します。いくつでも動かせますが、それぞれに同じ `ACCESS_TOKEN_SECRET` が必要です
+- `controller` ノード（7.8.0 より前は `app` 。8.0 まではまだ読み込まれます）は Web インターフェースと API を提供します。いくつでも動かせますが、それぞれに同じ `ACCESS_TOKEN_SECRET` が必要です
 - `worker` はバックグラウンド処理を実行します。スキーマとそのアップグレード、設定シード、スケジュール、夜間のバックアップ、リポジトリの
   同期、クリーンアップです。データベースのロックを保持して同時に動くワーカーは 1 つだけで、2 つ目は待機し、1 つ目が停止すると引き継ぎます
 - `rte` コンテナーはプレイブックを実行します。より多くのプレイブックを同時に実行するには、これを増やします
 
-アプリノードとワーカーは、データベース、永続ボリューム、 `ENCRYPTION_SECRET` を共有します。ソケットモード（アウトバウンドまたは
+コントローラーノードとワーカーは、データベース、永続ボリューム、 `ENCRYPTION_SECRET` を共有します。ソケットモード（アウトバウンドまたは
 インバウンド、 [モード](rte/modes.html) を参照）の RTE には、データベースも `ENCRYPTION_SECRET` も必要ありません。チャットアシスタントにはスティッキーセッションが必要で、
 各ノードはそれぞれのログを持ちます。 [スケーリング](production/scaling.html) と
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) の構成を参照してください。

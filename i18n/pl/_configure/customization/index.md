@@ -5,7 +5,7 @@ nav_order: 9
 has_children: true
 has_toc: false
 permalink: /customization/
-translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
+translated_from: 5b17f8a7d6426c911d68d3b832f3dd2368f49aa8
 ---
 
 # Zmienne środowiskowe
@@ -39,8 +39,8 @@ działa od razu po zapisaniu; pozostałe są zapisywane, ale wymagają restartu,
 środowisku procesu nie można tam zmienić: strona pokazuje ją jako *Ustawione w środowisku, więc nie można tego tutaj zmienić.*
 Kilku zmiennych, takich jak `ENCRYPTION_SECRET` i `ACCESS_TOKEN_SECRET`, nigdy nie można zmienić ze strony.
 
-Zmiennych odczytywanych przez RTE, takich jak `AF_ROLE`, `RTE_MODE`, `APP_URL` czy `RTE_MAX_JOBS`, w ogóle nie ma na stronach ustawień:
-aplikacja ich nie używa, więc ustaw je w środowisku, w którym działa RTE. Wyjątkiem są zmienne `RTE_*` odczytywane przez samą aplikację,
+Zmiennych odczytywanych przez RTE, takich jak `AF_ROLE`, `RTE_MODE`, `CONTROLLER_URL` czy `RTE_MAX_JOBS`, w ogóle nie ma na stronach ustawień:
+kontroler ich nie używa, więc ustaw je w środowisku, w którym działa RTE. Wyjątkiem są zmienne `RTE_*` odczytywane przez sam kontroler,
 `RTE_QUEUE_MINUTES` i `RTE_FILES_MAX_MB`, które zostają na stronach. Cztery zmienne RTE, `RTE_MAX_JOBS`,
 `RTE_CACHE_MB`, `RTE_FILES` i `RTE_DRAIN_SECONDS`, można zamiast tego ustawić dla każdego RTE na jego stronie runnera, gdzie wartość wygrywa ze
 zmienną (zobacz [Ustawienia RTE](../runners/runner-page.html#an-rtes-settings)).

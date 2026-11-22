@@ -3,7 +3,7 @@ layout: default
 title: Een lokale groep
 parent: Gebruikers en groepen
 nav_order: 3
-translated_from: 21a406f84bc977e2006ab3bc6f201bf202a39330
+translated_from: 41f71dbf24df7e6a6f6a619a7d5147f28e80d466
 ---
 
 # Een lokale groep
@@ -11,6 +11,11 @@ translated_from: 21a406f84bc977e2006ab3bc6f201bf202a39330
 
 De pagina van een lokale groep en haar tabbladen
 {: .fs-6 .fw-300 }
+
+Sinds 7.8.0 opent **Groep toevoegen** de wizard **Nieuwe groep** in drie stappen: **Details** (de naam en de beschrijving), **Gebruikers**
+(de lokale gebruikers die in de groep komen) en **Rollen** (de rollen die ze krijgt, zodat haar gebruikers ze hebben). Alleen de naam is verplicht.
+**Opslaan**, op de laatste stap, maakt de groep aan, voegt daarna de gebruikers toe en geeft de rollen: wat mislukt, wordt in een melding
+genoemd, en de groep blijft bestaan.
 
 De pagina van een groep, `/settings/groups/<id>`, heeft deze tabbladen:
 

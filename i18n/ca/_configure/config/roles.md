@@ -3,7 +3,7 @@ layout: default
 title: Rols
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Rols
@@ -22,6 +22,23 @@ Assigna usuaris i grups a rols, i defineix què pot fer cada rol.
 La llista `roles` de primer nivell de config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Afegir un rol
+
+A **Configuració > Accés > Rols**, **Afegeix un rol** obre l'assistent **Rol nou**, en quatre passos des de la 7.8.0:
+
+| Pas | Què demana |
+|---|---|
+| **Detalls** | El nom, únic entre els rols, i la descripció. **Següent** espera un nom que no tingui cap altre rol |
+| **Permisos** | Les [opcions de rol](#role-options), en els seus quatre grups, partint dels valors predeterminats de tothom |
+| **Usuaris** | Els usuaris que anomena el rol, cadascun triat amb **Afegeix un usuari** |
+| **Grups** | Els grups que anomena el rol, cadascun triat amb **Afegeix un grup** |
+
+**Desa**, a l'últim pas, afegeix el rol i desa els rols; quan es rebutja el desament, l'assistent continua obert i no s'afegeix res.
+El rol té després la seva pròpia pàgina, on es poden canviar els seus permisos, usuaris i grups. **Afegeix un rol** està desactivat mentre els rols
+no es poden desar des de la pàgina, per exemple quan provenen d'una plantilla ytt.
 
 ---
 

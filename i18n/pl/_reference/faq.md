@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: d52d2b59f52a3cbc57b84d24de62f0bc5a345c89
 ---
 
 # Najczęściej zadawane pytania
@@ -26,12 +26,12 @@ wolumenu trwałego.
 
 Aby uruchomić kilka replik za load balancerem, podziel proces za pomocą `AF_ROLE`:
 
-- węzły `app` obsługują interfejs webowy i API: uruchom ich tyle, ile chcesz, każdy z tym samym `ACCESS_TOKEN_SECRET`
+- węzły `controller` (`app` przed wersją 7.8.0, nadal odczytywane do wersji 8.0) obsługują interfejs webowy i API: uruchom ich tyle, ile chcesz, każdy z tym samym `ACCESS_TOKEN_SECRET`
 - `worker` wykonuje pracę w tle: schemat i jego aktualizacje, config seed, harmonogramy, nocną kopię zapasową, synchronizację
   repozytoriów i porządki. Naraz pracuje jeden worker, trzymając blokadę w bazie danych; drugi czeka i przejmuje pracę, gdy pierwszy się zatrzyma
 - kontenery `rte` uruchamiają playbooki: uruchom ich więcej, aby uruchamiać więcej playbooków jednocześnie
 
-Węzły aplikacji i worker współdzielą bazę danych, wolumen trwały i `ENCRYPTION_SECRET`. RTE w trybie gniazda (wychodzącym lub
+Węzły kontrolera i worker współdzielą bazę danych, wolumen trwały i `ENCRYPTION_SECRET`. RTE w trybie gniazda (wychodzącym lub
 przychodzącym, zobacz [Tryby](rte/modes.html)) nie potrzebuje ani bazy danych, ani `ENCRYPTION_SECRET`. Asystent czatu wymaga sesji sticky, a
 każdy węzeł prowadzi własny dziennik. Zobacz [Skalowanie](production/scaling.html) i konfigurację
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).

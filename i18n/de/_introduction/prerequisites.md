@@ -2,7 +2,7 @@
 layout: default
 title: Voraussetzungen
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Voraussetzungen
@@ -120,9 +120,9 @@ Die Webanwendung ist für aktuelle Browser gebaut: Chrome oder Edge 111, Firefox
 
 ## Skalierung
 
-Standardmäßig betreibt ein AnsibleForms-Container die Web-App und die Hintergrundarbeit gemeinsam, neben einer RTE.
+Standardmäßig betreibt ein AnsibleForms-Container die Weboberfläche des Controllers und die Hintergrundarbeit gemeinsam, neben einer RTE.
 
-Um mehr Benutzer zu bedienen, betreiben Sie mehrere App-Knoten hinter einem Load Balancer (`AF_ROLE=app`) neben einem Worker (`AF_ROLE=worker`), der die
+Um mehr Benutzer zu bedienen, betreiben Sie mehrere Controller-Knoten hinter einem Load Balancer (`AF_ROLE=controller`, vor 7.8.0 `app`) neben einem Worker (`AF_ROLE=worker`), der die
 Zeitpläne, die Backups und die andere Hintergrundarbeit ausführt; nur ein Worker arbeitet gleichzeitig, und ein zweiter wartet darauf, zu übernehmen. Sie teilen
 die Datenbank, den persistenten Ordner, `ACCESS_TOKEN_SECRET` und `ENCRYPTION_SECRET`. Siehe [Skalierung](production/scaling.html). Betreiben Sie mehr
 RTEs, um mehr Playbooks gleichzeitig auszuführen: siehe [Mehrere RTEs](rte/several.html).

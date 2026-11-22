@@ -3,7 +3,7 @@ layout: default
 title: ランナーのページ
 parent: ランナー
 nav_order: 4
-translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
+translated_from: b7be7b15d86552e32ee2c296d4d14f2f49d39846
 ---
 
 # ランナーのページ
@@ -45,26 +45,26 @@ translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
 
 ## RTE の設定
 
-RTE タブでは、RTE が動作するマシン上の環境を編集せずに、アプリから RTE を管理します。
+RTE タブでは、RTE が動作するマシン上の環境を編集せずに、コントローラーから RTE を管理します。
 
 **接続。** ソケットモードの RTE にはバッジが表示されます： **接続済み** または **未接続** 。ポインターを重ねると、 **接続済み** ではソケットを持つ
-アプリノード、RTE のリリース、実行中のジョブの数が表示されます。 **未接続** は、どのアプリノードもその RTE へのソケットを持っていないことを意味します。
-RTE が動作しているか、そのアドレスまたは `APP_URL` 、そしてトークンを確認してください。
+コントローラーノード、RTE のリリース、実行中のジョブの数が表示されます。 **未接続** は、どのコントローラーノードもその RTE へのソケットを持っていないことを意味します。
+RTE が動作しているか、そのアドレスまたは `CONTROLLER_URL` 、そしてトークンを確認してください。
 
 **設定。** アウトバウンドまたはインバウンドモードの RTE には四つの設定があり、どれも既定では空です。
 
 | 設定 | 対応する変数 | 動作 |
 |---|---|---|
 | 最大同時ジョブ数 | [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | 同時に実行するプレイブックの数。既定は `10` 。 `0` で無制限 |
-| ジョブファイルのキャッシュ | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | アプリが送ったジョブのファイルを保持する量（MB）。既定は `1024` 。 `0` では何も保持しません |
+| ジョブファイルのキャッシュ | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | コントローラーが送ったジョブのファイルを保持する量（MB）。既定は `1024` 。 `0` では何も保持しません |
 | 停止時の待機時間 | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | 停止中の RTE が実行中のプレイブックを待つ時間。既定は `25` 秒 |
-| ジョブファイル | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **転送** ：アプリがジョブのファイルをジョブとともに送ります。 **ローカル** ：マウントした自分のフォルダーから実行します |
+| ジョブファイル | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **転送** ：コントローラーがジョブのファイルをジョブとともに送ります。 **ローカル** ：マウントした自分のフォルダーから実行します |
 
 **どちらの値が優先されるか。** ページ上の値は、RTE で設定された同じ変数より優先されます。空のままのフィールドは RTE 自身の変数を、
 なければ既定値を使います。各フィールドの下には、どちらかが表示されます： **RTE で設定された RTE_MAX_JOBS (3) を上書きします。** 、または **空欄: RTE は自身の
 RTE_MAX_JOBS (3) を使います。** 。プレースホルダーには、空のフィールドが表す値が表示されます。
 
-**RTE への届き方。** 設定はランナーとともにアプリのデータベースに保存されます。アプリは RTE が接続したときと保存のたびに、
+**RTE への届き方。** 設定はランナーとともにコントローラーのデータベースに保存されます。コントローラーは RTE が接続したときと保存のたびに、
 RTE のソケットでそれらを送り、RTE はすぐに適用します。キャッシュを小さくすると切り詰められ、新しい上限は次の
 ジョブから数えられます。RTE はそれらをメモリにだけ保持し、ファイルには書き込みません。再起動後は、最初のジョブの前、接続時に再び受け取ります。
 
@@ -85,7 +85,7 @@ OK** 、または失敗した理由です。ジョブは実行しません。RTE
 
 | RTE | テストが読み取るもの | 失敗する場合 |
 |---|---|---|
-| アウトバウンドまたはインバウンド | すべてのアプリノードが記録している、誰がそのソケットを持っているか、そして RTE が接続時に伝えた内容。何も呼び出しません | どのアプリノードもその RTE へのソケットを持っていない場合： *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app* 、インバウンドの場合は *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE* 。または RTE が 3 以外の契約で通信している場合 |
+| アウトバウンドまたはインバウンド | すべてのコントローラーノードが記録している、誰がそのソケットを持っているか、そして RTE が接続時に伝えた内容。何も呼び出しません | どのコントローラーノードもその RTE へのソケットを持っていない場合： *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller* 、インバウンドの場合は *no controller node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the controller to the RTE* 。または RTE が 3 以外の契約で通信している場合 |
 | データベース（非推奨） | トークンを付けて呼び出した RTE の `/rte/v1/health` | RTE がそのアドレスで応答しない、トークンを拒否する、または 2 以外の契約で通信している場合 |
 
 RTE タブの **接続** バッジには、テストしなくても同じソケットの状態が表示されます。

@@ -3,7 +3,7 @@ layout: default
 title: La pagina dei runner
 parent: Runner
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # La pagina dei runner
@@ -29,7 +29,7 @@ La pagina in **Connessioni > Runner** elenca ogni runner con queste colonne:
 | Descrizione | A cosa serve. |
 
 **Colonne** ne aggiunge altre due, disattivate per impostazione predefinita: **Modalità**, la modalità di un RTE (In uscita, In entrata o Database (deprecato), vedi
-[Modalità](../rte/modes.html)), e **Connessione**, se un nodo dell'app detiene un socket verso un RTE in una modalità socket: **Connesso** o
+[Modalità](../rte/modes.html)), e **Connessione**, se un nodo del controller detiene un socket verso un RTE in una modalità socket: **Connesso** o
 **Non connesso**.
 
 Dalla 7.3.0 i runner in attesa di approvazione non sono nella lista ma in un avviso sopra di essa, vedi [Approvare un RTE](registration.html#approving-an-rte).

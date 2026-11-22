@@ -5,7 +5,7 @@ nav_order: 9
 has_children: true
 has_toc: false
 permalink: /customization/
-translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
+translated_from: 5b17f8a7d6426c911d68d3b832f3dd2368f49aa8
 ---
 
 # 環境変数
@@ -39,8 +39,8 @@ AnsibleForms は、Docker Compose、Kubernetes、ソースのいずれで実行�
 設定された変数はそこでは変更できず、ページには *環境で設定されているため、ここでは変更できません。* と表示されます。
 `ENCRYPTION_SECRET` や `ACCESS_TOKEN_SECRET` など、ページから決して変更できない変数もいくつかあります。
 
-`AF_ROLE` 、 `RTE_MODE` 、 `APP_URL` 、 `RTE_MAX_JOBS` など、RTE が読み込む変数は設定ページにはまったくありません。
-アプリはそれらを使わないので、RTE を実行する環境で設定してください。アプリ自身が読み込む `RTE_*` 変数、
+`AF_ROLE` 、 `RTE_MODE` 、 `CONTROLLER_URL` 、 `RTE_MAX_JOBS` など、RTE が読み込む変数は設定ページにはまったくありません。
+コントローラーはそれらを使わないので、RTE を実行する環境で設定してください。コントローラー自身が読み込む `RTE_*` 変数、
 `RTE_QUEUE_MINUTES` と `RTE_FILES_MAX_MB` は例外で、ページに残っています。RTE の四つの変数 `RTE_MAX_JOBS` 、
 `RTE_CACHE_MB` 、 `RTE_FILES` 、 `RTE_DRAIN_SECONDS` は、代わりに RTE ごとにランナーのページで設定することもでき、そこでの値が
 変数より優先されます（ [RTE の設定](../runners/runner-page.html#an-rtes-settings) を参照）。

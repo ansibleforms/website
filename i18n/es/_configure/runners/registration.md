@@ -3,7 +3,7 @@ layout: default
 title: Registro de runners
 parent: Runners
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Registro de runners
@@ -19,25 +19,25 @@ Cómo un RTE pide unirse y se aprueba, los tokens de unión para instalaciones d
 
 ## Pedir unirse
 
-Desde 7.3.0, un RTE en un modo de socket (`outbound` o `inbound`) que la aplicación aún no conoce pide unirse, y un admin lo aprueba.
-Se presenta con su propio `RTE_TOKEN` y su `RTE_NAME`: un RTE saliente cuando llama por primera vez a la aplicación, uno entrante en su única
-llamada de registro. Sin token de unión, la aplicación entonces:
+Desde 7.3.0, un RTE en un modo de socket (`outbound` o `inbound`) que el controlador aún no conoce pide unirse, y un admin lo aprueba.
+Se presenta con su propio `RTE_TOKEN` y su `RTE_NAME`: un RTE saliente cuando llama por primera vez al controlador, uno entrante en su única
+llamada de registro. Sin token de unión, el controlador entonces:
 
 1. Guarda el `RTE_TOKEN` del RTE en una nueva credencial de tipo RTE llamada `<name>-rte` (con un número añadido si ese nombre está ocupado), y
    para un RTE entrante su dirección, `RTE_URL`
 2. Añade un runner con el nombre de `RTE_NAME`, tipo RTE, en el modo del RTE, que inicia sesión con esa credencial, marcado como **Pendiente de aprobación**
    y desactivado. Su descripción indica el host desde el que lo pidió
 
-Un RTE saliente sigue conectado mientras espera, pero no recibe ningún trabajo. La aplicación no llama a uno entrante hasta que está aprobado. Ambos escriben en el log
+Un RTE saliente sigue conectado mientras espera, pero no recibe ningún trabajo. El controlador no llama a uno entrante hasta que está aprobado. Ambos escriben en el log
 que esperan a que un admin los apruebe en **Conexiones > Runners**, con la huella de su token.
 
-Un RTE entrante con un `RTE_URL` `https://` envía además su certificado cuando pide unirse, y la aplicación lo fija: a partir de ahí la
-aplicación solo llama a ese RTE cuando presenta el mismo certificado, así que uno autofirmado funciona sin CA (consulta [Entrante](../rte/modes.html#inbound)).
+Un RTE entrante con un `RTE_URL` `https://` envía además su certificado cuando pide unirse, y el controlador lo fija: a partir de ahí el
+controlador solo llama a ese RTE cuando presenta el mismo certificado, así que uno autofirmado funciona sin CA (consulta [Entrante](../rte/modes.html#inbound)).
 
 Como mucho 20 RTE pueden esperar aprobación a la vez: los siguientes se rechazan hasta que se aprueben o rechacen algunos. Una solicitud que nadie atiende en
 24 horas la elimina el worker, junto con su credencial.
 
-Un RTE con el nombre de un runner que la aplicación ya conoce, pero con otro token, se rechaza y no pide unirse. Dale el token de ese
+Un RTE con el nombre de un runner que el controlador ya conoce, pero con otro token, se rechaza y no pide unirse. Dale el token de ese
 runner, o elimina el runner para que pida unirse. Un [token de unión](#join-tokens) solo sirve mientras ese runner sigue pendiente de aprobación.
 
 ---
@@ -54,11 +54,11 @@ Su página muestra los mismos datos en un recuadro amarillo, **Este RTE ha pedid
 | Campo | Qué muestra |
 |---|---|
 | Huella | Los primeros 8 dígitos hexadecimales del SHA-256 de su `RTE_TOKEN`, como `abcd-ef12`. El RTE la escribe en el log al arrancar, y el [instalador](../installation/installer.html#a-runner) la muestra al final. Debe ser la misma |
-| Huella del certificado | En el diálogo, para un RTE entrante sobre HTTPS: los primeros 8 dígitos hexadecimales del SHA-256 del certificado que fija la aplicación (sus bytes DER), como `abcd-ef12`. El RTE la escribe en el log al arrancar y el [instalador](../installation/installer.html#a-runner) la muestra al final. Debe ser la misma |
+| Huella del certificado | En el diálogo, para un RTE entrante sobre HTTPS: los primeros 8 dígitos hexadecimales del SHA-256 del certificado que fija el controlador (sus bytes DER), como `abcd-ef12`. El RTE la escribe en el log al arrancar y el [instalador](../installation/installer.html#a-runner) la muestra al final. Debe ser la misma |
 | Host | El host en el que se ejecuta |
-| Dirección IP | La dirección desde la que llamó a la aplicación |
+| Dirección IP | La dirección desde la que llamó al controlador |
 | Modo | Saliente o Entrante |
-| Uri | La dirección de un RTE entrante, donde la aplicación le llama |
+| Uri | La dirección de un RTE entrante, donde el controlador le llama |
 | Versión | Su versión |
 | Solicitado el | Cuándo pidió unirse |
 

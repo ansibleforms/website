@@ -3,7 +3,7 @@ layout: default
 title: Registo
 parent: Runners
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Registo
@@ -19,25 +19,25 @@ Como um RTE pede para aderir e é aprovado, join tokens para instalações sem i
 
 ## Pedir para aderir
 
-Desde a 7.3.0, um RTE num modo socket (`outbound` ou `inbound`) que a aplicação ainda não conhece pede para aderir, e um admin aprova-o.
-Contacta a aplicação com o seu próprio `RTE_TOKEN` e o seu `RTE_NAME`: um RTE de saída quando se liga à aplicação pela primeira vez, um de entrada na sua única
-chamada de registo. Sem join token, a aplicação então:
+Desde a 7.3.0, um RTE num modo socket (`outbound` ou `inbound`) que o controlador ainda não conhece pede para aderir, e um admin aprova-o.
+Contacta o controlador com o seu próprio `RTE_TOKEN` e o seu `RTE_NAME`: um RTE de saída quando se liga ao controlador pela primeira vez, um de entrada na sua única
+chamada de registo. Sem join token, o controlador então:
 
 1. Guarda o `RTE_TOKEN` do RTE numa nova credencial do tipo RTE chamada `<name>-rte` (com um número acrescentado quando esse nome está ocupado), e
    para um RTE de entrada o seu endereço, `RTE_URL`
 2. Adiciona um runner com o nome de `RTE_NAME`, tipo RTE, no modo do RTE, que inicia sessão com essa credencial, marcado como **A aguardar aprovação**
    e desativado. A sua descrição indica o host de onde fez o pedido
 
-Um RTE de saída fica ligado enquanto espera, mas não recebe nenhuma tarefa. A aplicação não se liga a um de entrada até ele ser aprovado. Ambos registam
+Um RTE de saída fica ligado enquanto espera, mas não recebe nenhuma tarefa. O controlador não se liga a um de entrada até ele ser aprovado. Ambos registam
 que esperam que um admin os aprove em **Ligações > Runners**, com a impressão digital do seu token.
 
-Um RTE de entrada com um `RTE_URL` `https://` envia também o seu certificado quando pede para aderir, e a aplicação fixa-o: a partir daí a
-aplicação só se liga a esse RTE quando ele apresenta o mesmo certificado, por isso um autoassinado funciona sem CA (consulte [Entrada](../rte/modes.html#inbound)).
+Um RTE de entrada com um `RTE_URL` `https://` envia também o seu certificado quando pede para aderir, e o controlador fixa-o: a partir daí o
+controlador só se liga a esse RTE quando ele apresenta o mesmo certificado, por isso um autoassinado funciona sem CA (consulte [Entrada](../rte/modes.html#inbound)).
 
 No máximo 20 RTE aguardam aprovação ao mesmo tempo: os seguintes são recusados até alguns serem aprovados ou rejeitados. Um pedido que ninguém trate em
 24 horas é removido pelo worker, com a sua credencial.
 
-Um RTE com o nome de um runner que a aplicação já conhece, mas com outro token, é recusado e não pede para aderir. Dê-lhe o token desse runner,
+Um RTE com o nome de um runner que o controlador já conhece, mas com outro token, é recusado e não pede para aderir. Dê-lhe o token desse runner,
 ou elimine o runner para que ele peça para aderir. Um [join token](#join-tokens) só ajuda enquanto esse runner ainda aguarda aprovação.
 
 ---
@@ -54,11 +54,11 @@ A sua página mostra os mesmos factos numa caixa amarela, **Este RTE pediu para 
 | Campo | O que mostra |
 |---|---|
 | Impressão digital | Os primeiros 8 dígitos hexadecimais do SHA-256 do seu `RTE_TOKEN`, como `abcd-ef12`. O RTE regista-a no seu arranque, e o [instalador](../installation/installer.html#a-runner) mostra-a no fim. Tem de ser a mesma |
-| Impressão digital do certificado | Na caixa de diálogo, para um RTE de entrada por HTTPS: os primeiros 8 dígitos hexadecimais do SHA-256 do certificado que a aplicação fixa (os seus bytes DER), como `abcd-ef12`. O RTE regista-a no seu arranque e o [instalador](../installation/installer.html#a-runner) mostra-a no fim. Tem de ser a mesma |
+| Impressão digital do certificado | Na caixa de diálogo, para um RTE de entrada por HTTPS: os primeiros 8 dígitos hexadecimais do SHA-256 do certificado que o controlador fixa (os seus bytes DER), como `abcd-ef12`. O RTE regista-a no seu arranque e o [instalador](../installation/installer.html#a-runner) mostra-a no fim. Tem de ser a mesma |
 | Host | O host onde corre |
-| Endereço IP | O endereço a partir do qual contactou a aplicação |
+| Endereço IP | O endereço a partir do qual contactou o controlador |
 | Modo | Saída ou Entrada |
-| Uri | O endereço de um RTE de entrada, onde a aplicação se liga a ele |
+| Uri | O endereço de um RTE de entrada, onde o controlador se liga a ele |
 | Versão | A sua versão |
 | Pedido em | Quando pediu para aderir |
 

@@ -3,7 +3,7 @@ layout: default
 title: 运行器页面
 parent: 运行器
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # 运行器页面
@@ -29,7 +29,7 @@ translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
 | 描述 | 它的用途。 |
 
 **列** 可以再添加两列，默认关闭：**模式**，即 RTE 的模式（出站、入站或数据库（已弃用），参见
-[模式](../rte/modes.html)）；以及 **连接**，即是否有应用节点持有到套接字模式 RTE 的套接字：**已连接** 或
+[模式](../rte/modes.html)）；以及 **连接**，即是否有控制器节点持有到套接字模式 RTE 的套接字：**已连接** 或
 **未连接**。
 
 从 7.3.0 起，等待批准的运行器不在列表中，而是显示在列表上方的提示中，参见 [批准 RTE](registration.html#approving-an-rte)。

@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: d52d2b59f52a3cbc57b84d24de62f0bc5a345c89
 ---
 
 # Domande frequenti
@@ -26,12 +26,12 @@ del volume persistente.
 
 Per eseguire più repliche dietro un load balancer, dividi il processo con `AF_ROLE`:
 
-- i nodi `app` servono l'interfaccia web e l'API: eseguine quanti vuoi, ognuno con lo stesso `ACCESS_TOKEN_SECRET`
+- i nodi `controller` (`app` prima della 7.8.0, ancora letto fino alla 8.0) servono l'interfaccia web e l'API: eseguine quanti vuoi, ognuno con lo stesso `ACCESS_TOKEN_SECRET`
 - un `worker` esegue il lavoro in background: lo schema e i suoi aggiornamenti, il config seed, le pianificazioni, il backup notturno, le sincronizzazioni
   dei repository e le pulizie. Lavora un solo worker alla volta, tenendo un lock sul database; un secondo aspetta e subentra quando il primo si ferma
 - i container `rte` eseguono i playbook: eseguine di più per eseguire più playbook contemporaneamente
 
-I nodi dell'app e il worker condividono il database, il volume persistente e `ENCRYPTION_SECRET`. Un RTE in modalità socket (in uscita o
+I nodi del controller e il worker condividono il database, il volume persistente e `ENCRYPTION_SECRET`. Un RTE in modalità socket (in uscita o
 in entrata, vedi [Modalità](rte/modes.html)) non ha bisogno né del database né di `ENCRYPTION_SECRET`. L'assistente chat ha bisogno di sessioni sticky, e
 ogni nodo tiene il proprio log. Vedi [Scalabilità](production/scaling.html) e la configurazione
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).

@@ -3,7 +3,7 @@ layout: default
 title: Un grup local
 parent: Usuaris i grups
 nav_order: 3
-translated_from: 21a406f84bc977e2006ab3bc6f201bf202a39330
+translated_from: 41f71dbf24df7e6a6f6a619a7d5147f28e80d466
 ---
 
 # Un grup local
@@ -11,6 +11,10 @@ translated_from: 21a406f84bc977e2006ab3bc6f201bf202a39330
 
 La pàgina d'un grup local i les seves pestanyes
 {: .fs-6 .fw-300 }
+
+Des de la 7.8.0, **Afegeix un grup** obre l'assistent **Nou element: grup** en tres passos: **Detalls** (el nom i la descripció), **Usuaris** (els
+usuaris locals que es posen al grup) i **Rols** (els rols que se li donen, perquè els seus usuaris els tinguin). Només el nom és obligatori. **Desa**, a
+l'últim pas, crea el grup, després hi afegeix els usuaris i li dona els rols: el que falla s'anomena en un missatge, i el grup es queda.
 
 La pàgina d'un grup, `/settings/groups/<id>`, té aquestes pestanyes:
 

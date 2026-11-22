@@ -3,7 +3,7 @@ layout: default
 title: Um utilizador local
 parent: Utilizadores e grupos
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Um utilizador local
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Adicionar um utilizador local, e os separadores da sua página
 {: .fs-6 .fw-300 }
 
-**Adicionar utilizador** abre um assistente em três passos: **Utilizador** (nome de utilizador, descrição, email), **Palavra-passe** e **Grupo**.
+**Adicionar utilizador** abre o assistente **Novo utilizador** em quatro passos:
+
+| Passo | O que pede |
+|---|---|
+| **Utilizador** | O nome de utilizador, a descrição e o email; só o nome de utilizador é obrigatório |
+| **Palavra-passe** | A palavra-passe, escrita duas vezes: **Seguinte** espera até que ambas sejam iguais |
+| **Grupo** | O grupo local a que o utilizador pertence, e que lhe dá as funções do grupo |
+| **Funções** | As funções dadas ao próprio utilizador, cada uma escolhida com **Adicionar função**; nenhuma é necessária |
+
+O passo **Funções** e a palavra-passe escrita duas vezes são novos na 7.8.0. **Guardar**, no último passo, cria o utilizador e depois
+dá-lhe as funções escolhidas: uma função que não lhe pôde ser dada é indicada numa mensagem, e o utilizador é criado na mesma.
 
 A página de um utilizador, `/settings/users/<id>`, tem estes separadores:
 

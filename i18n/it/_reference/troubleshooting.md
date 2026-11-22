@@ -2,7 +2,7 @@
 layout: default
 title: Risoluzione dei problemi
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: f8f839092e99ab96eb57dd504e136deb4a590e62
 ---
 
 # Risoluzione dei problemi
@@ -611,7 +611,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 **Perché succede**
 
 Un job appartiene al container che lo esegue o lo segue: un playbook al suo RTE, qualsiasi altro job (un job AWX, i passi di un modulo
-multistep) al nodo dell'app che l'ha avviato. Quando quel container si riavvia, termina i propri job non finiti. Quando scompare, per esempio un pod
+multistep) al nodo del controller che l'ha avviato. Quando quel container si riavvia, termina i propri job non finiti. Quando scompare, per esempio un pod
 sostituito, il worker termina i suoi job dopo che non ha risposto per due minuti. Un RTE in modalità socket che torna senza
 un job che stava eseguendo, per esempio un nuovo container senza il suo spool, fa terminare quel job come abandoned. Un RTE che si ferma aspetta
 prima [`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) per i suoi playbook. Ogni ora, anche i job in esecuzione da più
@@ -622,7 +622,7 @@ se è partito nelle ultime 24 ore, e termina con ciò che è successo davvero l�
 
 **Come risolverlo**
 
-Rilancia un job playbook. Riavvia o aggiorna RTE e nodi dell'app mentre nessun job è in esecuzione, e dai a un RTE che si ferma abbastanza tempo
+Rilancia un job playbook. Riavvia o aggiorna RTE e nodi del controller mentre nessun job è in esecuzione, e dai a un RTE che si ferma abbastanza tempo
 (vedi [Scalabilità](rte/run.html)). Controlla se il playbook è davvero terminato sugli host gestiti prima di
 rilanciarlo, perché potrebbe essere stato eseguito solo in parte.
 
@@ -633,26 +633,26 @@ rilanciarlo, perché potrebbe essere stato eseguito solo in parte.
 **Testa connessione** su un runner RTE (**Connessioni > Runner**) non riesce con:
 
 ```
-the RTE '<name>' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app
-the RTE '<name>' (inbound) is not connected: no app node could dial it at <address>: check its RTE_URL, its token and the network from the app to the RTE
+the RTE '<name>' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller
+the RTE '<name>' (inbound) is not connected: no controller node could dial it at <address>: check its RTE_URL, its token and the network from the controller to the RTE
 ```
 
 **Perché succede**
 
-Un RTE in modalità socket parla con l'app tramite un WebSocket: in uscita contatta l'app, in entrata è l'app a contattarlo (vedi
-[Modalità](rte/modes.html)). I log dell'app e dell'RTE dicono perché il socket non è aperto:
+Un RTE in modalità socket parla con il controller tramite un WebSocket: in uscita contatta il controller, in entrata è il controller a contattarlo (vedi
+[Modalità](rte/modes.html)). I log del controller e dell'RTE dicono perché il socket non è aperto:
 
 | Messaggio | Dove | Cosa significa |
 |---|---|---|
 | `RTE: refused a socket without the right token from <address>` | L'RTE (in entrata) | Il token della credenziale RTE del runner non è l'`RTE_TOKEN` dell'RTE |
-| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | L'app (in entrata) | Lo stesso, visto dall'app |
-| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | L'app, e l'RTE che viene rifiutato (`401`) | L'RTE accede con un token diverso da quello che l'app conserva per il suo runner |
+| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | Il controller (in entrata) | Lo stesso, visto dal controller |
+| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | Il controller, e l'RTE che viene rifiutato (`401`) | L'RTE accede con un token diverso da quello che il controller conserva per il suo runner |
 | `RTE '<name>': waiting for an admin to approve it under Connections > Runners (fingerprint <fingerprint>)` | L'RTE (in uscita) | Ha chiesto di unirsi e aspetta un'approvazione |
-| `RTE '<name>': asked to join as inbound runner '<name>': the app dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | L'RTE (in entrata, con `APP_URL`) | Lo stesso, per un RTE in entrata |
-| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | L'app, e l'RTE che viene rifiutato (`409`) | Il config seed dichiara il runner senza `rte_mode`, quindi in modalità database, ed è il seed a decidere la sua modalità. Un RTE in entrata riceve `rte_mode: inbound` e `(and its credential with the address the app dials, RTE_URL)` |
-| `RTE: RTE_MODE=inbound with APP_URL registers with the app, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | L'RTE | Un RTE in entrata che si registra da solo ha bisogno dell'indirizzo su cui l'app lo contatta |
-| `Runner '<name>': dialing <address>: <reason>` | L'app, a livello `debug` | L'app non riesce ad aprire il socket, per esempio perché il certificato dell'RTE non è quello fissato per il suo runner |
-| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the app, APP_URL) or RTE_MODE=inbound (the app dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | L'RTE | Gira in modalità database, e non apre affatto un socket |
+| `RTE '<name>': asked to join as inbound runner '<name>': the controller dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | L'RTE (in entrata, con `CONTROLLER_URL`) | Lo stesso, per un RTE in entrata |
+| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | Il controller, e l'RTE che viene rifiutato (`409`) | Il config seed dichiara il runner senza `rte_mode`, quindi in modalità database, ed è il seed a decidere la sua modalità. Un RTE in entrata riceve `rte_mode: inbound` e `(and its credential with the address the controller dials, RTE_URL)` |
+| `RTE: RTE_MODE=inbound with CONTROLLER_URL registers with the controller, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | L'RTE | Un RTE in entrata che si registra da solo ha bisogno dell'indirizzo su cui il controller lo contatta |
+| `Runner '<name>': dialing <address>: <reason>` | Il controller, a livello `debug` | Il controller non riesce ad aprire il socket, per esempio perché il certificato dell'RTE non è quello fissato per il suo runner |
+| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the controller, CONTROLLER_URL) or RTE_MODE=inbound (the controller dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | L'RTE | Gira in modalità database, e non apre affatto un socket |
 
 **Come risolverlo**
 
@@ -661,11 +661,11 @@ Un RTE in modalità socket parla con l'app tramite un WebSocket: in uscita conta
   log (vedi [Approvare un RTE](runners/registration.html#approving-an-rte))
 * **Gestito dal config seed in modalità database** : imposta `rte_mode` sul runner nel seed, con una credenziale RTE (per l'entrata, il suo
   indirizzo), poi riavvia l'RTE
-* **In entrata senza `RTE_URL`** : imposta `RTE_URL` sull'indirizzo su cui l'app raggiunge l'RTE, oppure ometti `APP_URL` e dichiara il
+* **In entrata senza `RTE_URL`** : imposta `RTE_URL` sull'indirizzo su cui il controller raggiunge l'RTE, oppure ometti `CONTROLLER_URL` e dichiara il
   runner nel seed o in **Connessioni > Runner**
-* **Un certificato che non è quello fissato** : un RTE in entrata su HTTPS invia il suo certificato quando si registra, e l'app lo contatta
+* **Un certificato che non è quello fissato** : un RTE in entrata su HTTPS invia il suo certificato quando si registra, e il controller lo contatta
   solo con quello. Dopo un nuovo certificato, l'RTE lo invia di nuovo quando si registra; quando il bundle CA della credenziale è stato impostato
-  a mano, l'app lo mantiene e registra
+  a mano, il controller lo mantiene e registra
   `Runner '<name>': its ca_bundle was set by hand: the certificate its RTE sent (fingerprint <fingerprint>) is not stored. Empty the ca_bundle to have the RTE's certificate pinned again`
 * **L'avviso [DEPRECATED]** : imposta `RTE_MODE` sull'RTE, rimuovi `DB_*` dal suo ambiente, e imposta il suo runner su quella modalità (vedi
   [Modalità](rte/modes.html))

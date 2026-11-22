@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: d52d2b59f52a3cbc57b84d24de62f0bc5a345c89
 ---
 
 # Häufig gestellte Fragen
@@ -26,12 +26,12 @@ das persistente Volume.
 
 Um mehrere Replikas hinter einem Load Balancer zu betreiben, teilen Sie den Prozess mit `AF_ROLE` auf:
 
-- `app`-Knoten stellen die Weboberfläche und die API bereit: betreiben Sie so viele, wie Sie möchten, jeden mit demselben `ACCESS_TOKEN_SECRET`
+- `controller`-Knoten (vor 7.8.0 `app`, bis 8.0 weiterhin gelesen) stellen die Weboberfläche und die API bereit: betreiben Sie so viele, wie Sie möchten, jeden mit demselben `ACCESS_TOKEN_SECRET`
 - ein `worker` erledigt die Hintergrundarbeit: das Schema und seine Aktualisierungen, den Konfigurations-Seed, die Zeitpläne, das nächtliche Backup, die Repository-
   Synchronisierungen und die Aufräumarbeiten. Ein Worker arbeitet gleichzeitig und hält dabei eine Datenbanksperre; ein zweiter wartet und übernimmt, wenn der erste stoppt
 - `rte`-Container führen die Playbooks aus: betreiben Sie mehr davon, um mehr Playbooks gleichzeitig auszuführen
 
-Die App-Knoten und der Worker teilen sich die Datenbank, das persistente Volume und `ENCRYPTION_SECRET`. Eine RTE in einem Socket-Modus (ausgehend oder
+Die Controller-Knoten und der Worker teilen sich die Datenbank, das persistente Volume und `ENCRYPTION_SECRET`. Eine RTE in einem Socket-Modus (ausgehend oder
 eingehend, siehe [Modi](rte/modes.html)) braucht weder die Datenbank noch `ENCRYPTION_SECRET`. Der Chat-Assistent braucht Sticky Sessions, und
 jeder Knoten führt sein eigenes Protokoll. Siehe [Skalierung](production/scaling.html) und das Setup
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).

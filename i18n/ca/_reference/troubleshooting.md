@@ -2,7 +2,7 @@
 layout: default
 title: Resolució de problemes
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: f8f839092e99ab96eb57dd504e136deb4a590e62
 ---
 
 # Resolució de problemes
@@ -611,7 +611,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 **Per què passa**
 
 Una tasca pertany al contenidor que l'executa o la segueix: un playbook al seu RTE, qualsevol altra tasca (una tasca d'AWX, els passos d'un formulari de
-diversos passos) al node d'aplicació que la va iniciar. Quan aquest contenidor es reinicia, acaba les seves pròpies tasques no acabades. Quan desapareix, un
+diversos passos) al node del controlador que la va iniciar. Quan aquest contenidor es reinicia, acaba les seves pròpies tasques no acabades. Quan desapareix, un
 pod substituït per exemple, el worker acaba les seves tasques un cop fa dos minuts que no respon. Un RTE en un mode de socket que torna sense
 una tasca que estava executant, un contenidor nou sense el seu spool per exemple, fa que aquesta tasca acabi com a abandonada. Un RTE que s'atura espera primer
 [`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) els seus playbooks. Cada hora, les tasques que fa més
@@ -622,7 +622,7 @@ si s'ha iniciat en les darreres 24 hores, i acaba amb el que realment hi ha pass
 
 **Com corregir-ho**
 
-Rellança una tasca de playbook. Reinicia o actualitza els RTE i els nodes d'aplicació mentre no s'executi cap tasca, i dona prou temps a un RTE que s'atura
+Rellança una tasca de playbook. Reinicia o actualitza els RTE i els nodes del controlador mentre no s'executi cap tasca, i dona prou temps a un RTE que s'atura
 (consulta [Escalat](rte/run.html)). Comprova si el playbook realment ha acabat als hosts gestionats abans de
 rellançar, perquè pot haver-se executat en part.
 
@@ -633,26 +633,26 @@ rellançar, perquè pot haver-se executat en part.
 **Prova la connexió** en un runner RTE (**Connexions > Runners**) falla amb:
 
 ```
-the RTE '<name>' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app
-the RTE '<name>' (inbound) is not connected: no app node could dial it at <address>: check its RTE_URL, its token and the network from the app to the RTE
+the RTE '<name>' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller
+the RTE '<name>' (inbound) is not connected: no controller node could dial it at <address>: check its RTE_URL, its token and the network from the controller to the RTE
 ```
 
 **Per què passa**
 
-Un RTE en un mode de socket parla amb l'aplicació a través d'un WebSocket: en outbound truca a l'aplicació, en inbound l'aplicació el truca (consulta
-[Modes](rte/modes.html)). Els registres de l'aplicació i de l'RTE diuen per què el socket no està obert:
+Un RTE en un mode de socket parla amb el controlador a través d'un WebSocket: en outbound truca al controlador, en inbound el controlador el truca (consulta
+[Modes](rte/modes.html)). Els registres del controlador i de l'RTE diuen per què el socket no està obert:
 
 | Missatge | On | Què vol dir |
 |---|---|---|
 | `RTE: refused a socket without the right token from <address>` | L'RTE (inbound) | El token de la credencial d'RTE del runner no és el `RTE_TOKEN` de l'RTE |
-| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | L'aplicació (inbound) | El mateix, vist des de l'aplicació |
-| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | L'aplicació, i l'RTE rebutjat (`401`) | L'RTE s'autentica amb un token diferent del que l'aplicació guarda per al seu runner |
+| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | El controlador (inbound) | El mateix, vist des del controlador |
+| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | El controlador, i l'RTE rebutjat (`401`) | L'RTE s'autentica amb un token diferent del que el controlador guarda per al seu runner |
 | `RTE '<name>': waiting for an admin to approve it under Connections > Runners (fingerprint <fingerprint>)` | L'RTE (outbound) | Ha demanat unir-se i espera una aprovació |
-| `RTE '<name>': asked to join as inbound runner '<name>': the app dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | L'RTE (inbound, amb `APP_URL`) | El mateix, per a un RTE inbound |
-| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | L'aplicació, i l'RTE rebutjat (`409`) | El config seed declara el runner sense `rte_mode`, per tant en mode database, i és el seed qui en decideix el mode. Un RTE inbound rep `rte_mode: inbound` i `(and its credential with the address the app dials, RTE_URL)` |
-| `RTE: RTE_MODE=inbound with APP_URL registers with the app, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | L'RTE | Un RTE inbound que es registra ell mateix necessita l'adreça on el truca l'aplicació |
-| `Runner '<name>': dialing <address>: <reason>` | L'aplicació, al nivell `debug` | L'aplicació no pot obrir el socket, per exemple perquè el certificat de l'RTE no és el fixat per al seu runner |
-| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the app, APP_URL) or RTE_MODE=inbound (the app dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | L'RTE | S'executa en mode database, i no obre cap socket |
+| `RTE '<name>': asked to join as inbound runner '<name>': the controller dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | L'RTE (inbound, amb `CONTROLLER_URL`) | El mateix, per a un RTE inbound |
+| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | El controlador, i l'RTE rebutjat (`409`) | El config seed declara el runner sense `rte_mode`, per tant en mode database, i és el seed qui en decideix el mode. Un RTE inbound rep `rte_mode: inbound` i `(and its credential with the address the controller dials, RTE_URL)` |
+| `RTE: RTE_MODE=inbound with CONTROLLER_URL registers with the controller, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | L'RTE | Un RTE inbound que es registra ell mateix necessita l'adreça on el truca el controlador |
+| `Runner '<name>': dialing <address>: <reason>` | El controlador, al nivell `debug` | El controlador no pot obrir el socket, per exemple perquè el certificat de l'RTE no és el fixat per al seu runner |
+| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the controller, CONTROLLER_URL) or RTE_MODE=inbound (the controller dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | L'RTE | S'executa en mode database, i no obre cap socket |
 
 **Com corregir-ho**
 
@@ -661,11 +661,11 @@ Un RTE en un mode de socket parla amb l'aplicació a través d'un WebSocket: en 
   registre (consulta [Aprovar un RTE](runners/registration.html#approving-an-rte))
 * **Gestionat pel config seed en mode database** : defineix `rte_mode` al runner al seed, amb una credencial d'RTE (per a inbound, la seva
   adreça), i després reinicia l'RTE
-* **Inbound sense `RTE_URL`** : defineix `RTE_URL` amb l'adreça per on l'aplicació arriba a l'RTE, o deixa fora `APP_URL` i declara el
+* **Inbound sense `RTE_URL`** : defineix `RTE_URL` amb l'adreça per on el controlador arriba a l'RTE, o deixa fora `CONTROLLER_URL` i declara el
   runner al seed o a **Connexions > Runners**
-* **Un certificat que no és el fixat** : un RTE inbound per HTTPS envia el seu certificat quan es registra, i l'aplicació només el truca
+* **Un certificat que no és el fixat** : un RTE inbound per HTTPS envia el seu certificat quan es registra, i el controlador només el truca
   amb aquell. Després d'un certificat nou, l'RTE el torna a enviar quan es registra; quan el paquet de CA de la credencial s'ha definit
-  a mà, l'aplicació el conserva i registra
+  a mà, el controlador el conserva i registra
   `Runner '<name>': its ca_bundle was set by hand: the certificate its RTE sent (fingerprint <fingerprint>) is not stored. Empty the ca_bundle to have the RTE's certificate pinned again`
 * **L'avís [DEPRECATED]** : defineix `RTE_MODE` a l'RTE, treu `DB_*` del seu entorn, i posa el seu runner en aquest mode (consulta
   [Modes](rte/modes.html))

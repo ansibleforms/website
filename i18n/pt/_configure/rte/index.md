@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 75a4facc8ad51d9d74b8fccfd2bbfd7ba48b17f9
+translated_from: 0c09db801924ebe41185f973548566d2a1829802
 ---
 
 # Ambientes de execução (RTE)
@@ -33,13 +33,13 @@ Para administradores: perceba o RTE antes de correr um, de o dimensionar, ou de 
 
 ## O que é um RTE
 
-O AnsibleForms 7 não corre nenhum playbook no contentor da aplicação. A tarefa de um formulário `ansible` é entregue a um [runner](../runners.html) do tipo
+O AnsibleForms 7 não corre nenhum playbook no contentor do controlador. A tarefa de um formulário `ansible` é entregue a um [runner](../runners.html) do tipo
 `rte`, um ambiente de execução: o servidor do AnsibleForms arrancado com `AF_ROLE=rte`, ao lado de python e ansible, sem
-interface web. Fala com a aplicação por um WebSocket e não tem credenciais da base de dados
-([`RTE_MODE`](../customization/server.html#env_RTE_MODE) `outbound` ou `inbound`, consulte [Modos](modes.html)): a aplicação envia-lhe a tarefa,
-o RTE corre `ansible-playbook`, e a aplicação guarda a saída e o estado final que ele devolve, onde o navegador os lê.
+interface web. Fala com o controlador por um WebSocket e não tem credenciais da base de dados
+([`RTE_MODE`](../customization/server.html#env_RTE_MODE) `outbound` ou `inbound`, consulte [Modos](modes.html)): o controlador envia-lhe a tarefa,
+o RTE corre `ansible-playbook`, e o controlador guarda a saída e o estado final que ele devolve, onde o navegador os lê.
 
-A aplicação resolve as credenciais da tarefa e entrega-as ao RTE seladas só para esse RTE e essa tarefa. O RTE nunca lê a
+O controlador resolve as credenciais da tarefa e entrega-as ao RTE seladas só para esse RTE e essa tarefa. O RTE nunca lê a
 tabela de credenciais nem um cofre de segredos, e um playbook não herda as variáveis de ambiente do próprio AnsibleForms
 (`ENCRYPTION_SECRET`, `DB_*`, `RTE_TOKEN` e as outras): passe um valor desses como extravar ou como credencial. O RTE da 7.0 à 7.2,
 que lia e escrevia ele próprio na base de dados, continua a correr na 7.x como o modo base de dados obsoleto (consulte [Modo base de dados](#database-mode-deprecated)).
@@ -48,14 +48,14 @@ que lia e escrevia ele próprio na base de dados, continua a correr na 7.x como 
 
 ## Como o RTE corre
 
-O RTE é um contentor que corre você mesmo, ao lado da aplicação ou noutra rede: o AnsibleForms nunca cria nenhum. Isto percorre
-onde corre, o que partilha com a aplicação, e o que acontece dentro dele desde o momento em que um formulário é lançado até o processo do playbook
+O RTE é um contentor que corre você mesmo, ao lado do controlador ou noutra rede: o AnsibleForms nunca cria nenhum. Isto percorre
+onde corre, o que partilha com o controlador, e o que acontece dentro dele desde o momento em que um formulário é lançado até o processo do playbook
 desaparecer:
 
 <div class="af-diagram" markdown="0">
 <svg viewBox="0 0 760 500" role="img" aria-labelledby="afr-title afr-desc" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:100%;height:auto;color:var(--body-text-color);font-family:inherit">
 <title id="afr-title">Como o RTE corre um playbook</title>
-<desc id="afr-desc">Num host de contentores ou num cluster Kubernetes, ambos geridos pelo operador, o contentor da aplicação e um ou mais contentores RTE mantêm cada um um WebSocket entre eles, aberto pela aplicação (entrada) ou pelo RTE (saída). Só a aplicação fala com a base de dados. 1: o navegador lança um formulário na aplicação. 2: a aplicação guarda a tarefa na base de dados, escolhe o runner e sela para ele os segredos da tarefa. 3: a aplicação envia a tarefa pelo socket. 4: o RTE reclama-a e obtém os ficheiros da tarefa, da sua cache ou da aplicação. 5: o RTE arranca o ansible-playbook como processo filho, um por tarefa, até RTE_MAX_JOBS. 6: o playbook chega aos hosts geridos. 7: o RTE escreve a saída, os eventos e o fim no seu spool e envia-os pelo socket; a aplicação guarda-os na base de dados e confirma a sua receção. 8: o navegador acompanha a tarefa através da aplicação. O volume da aplicação só é montado no RTE com RTE_FILES=local.</desc>
+<desc id="afr-desc">Num host de contentores ou num cluster Kubernetes, ambos geridos pelo operador, o contentor do controlador e um ou mais contentores RTE mantêm cada um um WebSocket entre eles, aberto pelo controlador (entrada) ou pelo RTE (saída). Só o controlador fala com a base de dados. 1: o navegador lança um formulário no controlador. 2: o controlador guarda a tarefa na base de dados, escolhe o runner e sela para ele os segredos da tarefa. 3: o controlador envia a tarefa pelo socket. 4: o RTE reclama-a e obtém os ficheiros da tarefa, da sua cache ou do controlador. 5: o RTE arranca o ansible-playbook como processo filho, um por tarefa, até RTE_MAX_JOBS. 6: o playbook chega aos hosts geridos. 7: o RTE escreve a saída, os eventos e o fim no seu spool e envia-os pelo socket; o controlador guarda-os na base de dados e confirma a sua receção. 8: o navegador acompanha a tarefa através do controlador. O volume do controlador só é montado no RTE com RTE_FILES=local.</desc>
 <style>
 .afr-box{fill:var(--af-accent-soft);stroke:currentColor;stroke-opacity:.45;stroke-width:1.2}
 .afr-main{fill:none;stroke:var(--link-color);stroke-width:1.8}
@@ -121,7 +121,7 @@ desaparecer:
 <text class="afr-s" x="684" y="334" text-anchor="middle">só RTE_FILES=local</text>
 <rect class="afr-box" x="190" y="430" width="140" height="60" rx="10"/>
 <text class="afr-t" x="260" y="455" text-anchor="middle">MySQL / MariaDB</text>
-<text class="afr-s" x="260" y="473" text-anchor="middle">só da app</text>
+<text class="afr-s" x="260" y="473" text-anchor="middle">só do controlador</text>
 <line class="afr-line" x1="130" y1="124" x2="188" y2="124" marker-end="url(#afr-arrow)"/>
 <line class="afr-line" x1="188" y1="152" x2="132" y2="152" marker-end="url(#afr-arrow)"/>
 <line class="afr-ws" x1="330" y1="161" x2="393" y2="161" marker-end="url(#afr-arrow)"/>
@@ -143,88 +143,88 @@ desaparecer:
 </svg>
 </div>
 
-O diagrama mostra um socket por RTE, seja qual for o lado que o abriu: a aplicação liga-se a um RTE de entrada, um RTE de saída liga-se à aplicação (consulte
-[Modos](modes.html)). As mesmas mensagens circulam nos dois sentidos depois de aberto, e só a aplicação lê e escreve na base de dados.
+O diagrama mostra um socket por RTE, seja qual for o lado que o abriu: o controlador liga-se a um RTE de entrada, um RTE de saída liga-se ao controlador (consulte
+[Modos](modes.html)). As mesmas mensagens circulam nos dois sentidos depois de aberto, e só o controlador lê e escreve na base de dados.
 
 **Quem o arranca.** Um RTE é um contentor de longa duração, arrancado pelo que quer que corra os seus outros contentores. Espera por tarefas e continua
 a correr entre elas:
 
 | Como corre o AnsibleForms | Quem arranca o RTE |
 |---|---|
-| `docker run` ou `podman run` | Você, com um comando como o de [Correr um RTE](run.html), em qualquer host que chegue à aplicação, ou a que a aplicação chegue |
+| `docker run` ou `podman run` | Você, com um comando como o de [Correr um RTE](run.html), em qualquer host que chegue ao controlador, ou a que o controlador chegue |
 | [Docker Compose](../installation/docker-compose.html) | O serviço `rte` do `docker-compose.yml`, ao lado de `app` e `mysqldb`. O seu config seed declara-o como o runner predefinido `rte`, de entrada, em `http://rte:8000` |
-| [Helm chart](../installation/kubernetes.html) | O Kubernetes, como um segundo contentor chamado `rte` no pod da aplicação (`containers.rte`). A aplicação liga-se a ele em `127.0.0.1`, de entrada, e o seed do chart declara-o como o runner predefinido |
+| [Helm chart](../installation/kubernetes.html) | O Kubernetes, como um segundo contentor chamado `rte` no pod do controlador (`containers.rte`). O controlador liga-se a ele em `127.0.0.1`, de entrada, e o seed do chart declara-o como o runner predefinido |
 | [O instalador](../installation/installer.html) | O Docker Compose ou o Helm chart como acima, ou um serviço systemd [sem contentores](../installation/native.html); um Runner próprio, que pede para aderir e espera pela aprovação de um admin |
 
 O motor de contentores é seu: Docker ou Podman no host, ou o runtime de contentores do seu cluster Kubernetes, instalado e mantido
-atualizado por si. O AnsibleForms nunca fala com ele. Nem a aplicação nem o RTE chamam o Docker ou o Podman, montam o seu socket, ou arrancam um
-contentor: a aplicação só fala com o RTE pelo socket dele.
+atualizado por si. O AnsibleForms nunca fala com ele. Nem o controlador nem o RTE chamam o Docker ou o Podman, montam o seu socket, ou arrancam um
+contentor: o controlador só fala com o RTE pelo socket dele.
 
 **O que tem dentro.** Um contentor, com o necessário para correr um playbook e nada mais:
 
-* **O servidor** : o mesmo servidor Node.js que a aplicação, arrancado com `AF_ROLE=rte` (definido na imagem) sob `tini`
+* **O servidor** : o mesmo servidor Node.js que o controlador, arrancado com `AF_ROLE=rte` (definido na imagem) sob `tini`
 * **O que fica de fora** : a interface web, o início de sessão, o agendador, o worker e todos os módulos de base de dados, que esta função não carrega
 * **Onde está à escuta** : a sua `PORT` (`8000`): `/live` e `/ready` para as sondas e `/metrics` para o Prometheus, e, em modo de entrada, o socket
-  a que a aplicação se liga, `/rte/v1/socket`. Um RTE de saída não aceita nenhuma ligação da aplicação
+  a que o controlador se liga, `/rte/v1/socket`. Um RTE de saída não aceita nenhuma ligação do controlador
 * **Python e ansible** : trazidos pela camada de imagem que escolher (consulte [As imagens do RTE](images.html))
 * **O utilizador** : o servidor e todos os playbooks correm como `node` (uid 1000), nunca como root
 
-**O que partilha com a aplicação.** O seu token, e com `RTE_FILES=local` os ficheiros da aplicação. Com `RTE_FILES=transfer`, a predefinição, os
+**O que partilha com o controlador.** O seu token, e com `RTE_FILES=local` os ficheiros do controlador. Com `RTE_FILES=transfer`, a predefinição, os
 playbooks e os inventários chegam com cada tarefa, e o RTE não precisa de disco partilhado:
 
-| Partilhado com a aplicação | O que o RTE faz com isso |
+| Partilhado com o controlador | O que o RTE faz com isso |
 |---|---|
-| `RTE_TOKEN` | Apresenta-o quando se liga à aplicação (saída), ou verifica-o quando a aplicação se liga a ele (entrada). A aplicação tem o mesmo valor na credencial RTE do runner, e os segredos da tarefa são selados com ele |
+| `RTE_TOKEN` | Apresenta-o quando se liga ao controlador (saída), ou verifica-o quando o controlador se liga a ele (entrada). O controlador tem o mesmo valor na credencial RTE do runner, e os segredos da tarefa são selados com ele |
 | O volume persistente, `/app/dist/persistent`, só com `RTE_FILES=local` | A pasta dos playbooks ([`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH)), ou o repositório de playbooks que o worker clonou em [`REPO_PATH`](../customization/paths.html#env_REPO_PATH), os inventários ([`INVENTORY_PATH`](../customization/paths.html#env_INVENTORY_PATH) e os repositórios de inventário) e os ficheiros carregados. O RTE escreve os ficheiros de extravars da tarefa na pasta do playbook, por isso monte-a em leitura e escrita |
-| A pasta ssh, `/home/node/.ssh` | A chave privada e o `known_hosts` que as ligações ssh do playbook usam: monte a da aplicação, gerida nas suas páginas de definições, ou dê ao RTE a sua própria |
+| A pasta ssh, `/home/node/.ssh` | A chave privada e o `known_hosts` que as ligações ssh do playbook usam: monte a do controlador, gerida nas suas páginas de definições, ou dê ao RTE a sua própria |
 
-O RTE não clona nada: um repositório chega-lhe nos ficheiros de uma tarefa, ou no volume que partilha com a aplicação. As collections, os roles e o
+O RTE não clona nada: um repositório chega-lhe nos ficheiros de uma tarefa, ou no volume que partilha com o controlador. As collections, os roles e o
 `ansible.cfg` vêm da imagem, das pastas `/etc/ansible/collections`, `/etc/ansible/roles` e `/etc/ansible/ansible.cfg` quando
 os monta aí (o projeto Docker Compose fá-lo), ou de um `ansible.cfg` ao lado dos playbooks.
 
 **A vida de uma tarefa.** Os números abaixo são os números do diagrama, para um formulário de playbook lançado a partir do navegador ou da API:
 
-1. **Lançamento** : a aplicação verifica o formulário e os seus valores, constrói os extravars e guarda a tarefa com o estado `running`. Um formulário com uma
+1. **Lançamento** : o controlador verifica o formulário e os seus valores, constrói os extravars e guarda a tarefa com o estado `running`. Um formulário com uma
    [aprovação](../forms/approval.html) para aqui até um aprovador a aceitar, e não chega a nenhum RTE antes disso
-2. **Escolher o runner** : a aplicação fica com o RTE que o formulário nomeia com `runner: <name>`, senão com o runner predefinido do tipo RTE, e guarda o seu
+2. **Escolher o runner** : o controlador fica com o RTE que o formulário nomeia com `runner: <name>`, senão com o runner predefinido do tipo RTE, e guarda o seu
    nome na tarefa. Resolve as credenciais da tarefa a partir da base de dados ou de um [cofre de segredos](../secret-stores/), o seu acesso ansible e a sua
    palavra-passe de vault, e sela-os com AES-256-GCM sob uma chave derivada do token desse runner e do id da tarefa
-3. **Entrega** : o nó da aplicação que tem o socket do RTE envia-lhe a tarefa: os extravars, as opções do formulário, os segredos selados e
-   os hashes dos ficheiros da tarefa. Qualquer nó da aplicação pode lançar a tarefa; o que tem o socket envia-a em dois segundos. Um RTE cheio,
+3. **Entrega** : o nó do controlador que tem o socket do RTE envia-lhe a tarefa: os extravars, as opções do formulário, os segredos selados e
+   os hashes dos ficheiros da tarefa. Qualquer nó do controlador pode lançar a tarefa; o que tem o socket envia-a em dois segundos. Um RTE cheio,
    ou um que não está ligado, faz a tarefa esperar, até [`RTE_QUEUE_MINUTES`](../customization/server.html#env_RTE_QUEUE_MINUTES)
 4. **Reclamação** : o RTE responde `claimed`, ou `refused` quando está cheio, a parar, não consegue abrir os segredos, ou a tarefa chega com outro
    [contrato](images.html#the-contract) que não o seu. Com `RTE_FILES=transfer` vai buscar os playbooks e os inventários à sua
-   cache pelo seu hash, pede à aplicação um hash que não tem, e desempacota-os numa pasta própria da tarefa
+   cache pelo seu hash, pede ao controlador um hash que não tem, e desempacota-os numa pasta própria da tarefa
 5. **Arranque** : na pasta do playbook (mais o `playbookSubPath` do formulário, que tem de existir) escreve dois ficheiros: `extravars_<id>.json`
    com os valores do formulário e as credenciais, e um oculto com o acesso ansible. Depois arranca `ansible-playbook` como seu próprio processo
    filho, sem shell, num grupo de processos próprio, com `-e @` esses ficheiros, um `-i` por inventário, e as tags, o limit, o check,
    o diff e a verbosidade do formulário. A palavra-passe de vault entra por stdin, nunca num ficheiro nem na linha de comandos, e o processo corre como
    `node` com um ambiente filtrado (ver abaixo)
 6. **Execução** : o playbook liga-se aos hosts geridos a partir do contentor do RTE, por ssh com a chave e o `known_hosts` de
-   `/home/node/.ssh`, com `sshpass` para um acesso por palavra-passe, ou pelas APIs que os seus módulos chamam. É o RTE, não a aplicação, que precisa de chegar a eles
+   `/home/node/.ssh`, com `sshpass` para um acesso por palavra-passe, ou pelas APIs que os seus módulos chamam. É o RTE, não o controlador, que precisa de chegar a eles
 7. **Saída e fim** : o RTE agrupa o stdout e o stderr a cada meio segundo ou 64 KB, com as credenciais mascaradas, e numera cada
    lote. Escreve cada item no spool da tarefa no seu disco antes de o enviar: a saída, os eventos, o registo da tarefa de
-   `.joblogs/job_log_<id>.log` (a cada 2 segundos), o início e o fim com o estado final (`success`, `failed` ou `aborted`). A aplicação
+   `.joblogs/job_log_<id>.log` (a cada 2 segundos), o início e o fim com o estado final (`success`, `failed` ou `aborted`). O controlador
    guarda cada item uma vez e confirma a sua receção, e o RTE descarta o spool quando o fim fica guardado. Para além de
    [`PROCESS_MAX_BUFFER`](../customization/server.html#env_PROCESS_MAX_BUFFER) bytes num fluxo (50 MB por predefinição) não envia mais, e
-   o playbook continua. A aplicação envia depois as [notificações](../forms/notifications.html) do formulário
-8. **Acompanhamento** : o navegador nunca fala com o RTE: a página do formulário volta a ler a tarefa através da aplicação a cada 2 segundos, e a página Tarefas
-   acompanha-a em direto à medida que a aplicação guarda cada item
+   o playbook continua. O controlador envia depois as [notificações](../forms/notifications.html) do formulário
+8. **Acompanhamento** : o navegador nunca fala com o RTE: a página do formulário volta a ler a tarefa através do controlador a cada 2 segundos, e a página Tarefas
+   acompanha-a em direto à medida que o controlador guarda cada item
 
-**Um socket que cai.** O playbook continua. O RTE volta a ligar-se (saída), ou um nó da aplicação liga-se de novo a ele (entrada), e reenvia o que
-a aplicação ainda não tinha confirmado: a aplicação salta o que já guardou, por isso nenhuma linha se perde nem é guardada duas vezes. Isto vale enquanto o socket
-voltar em dois minutos: a aplicação só escreve o heartbeat do RTE enquanto o seu socket está aberto, e quando esse heartbeat tem dois minutos
+**Um socket que cai.** O playbook continua. O RTE volta a ligar-se (saída), ou um nó do controlador liga-se de novo a ele (entrada), e reenvia o que
+o controlador ainda não tinha confirmado: o controlador salta o que já guardou, por isso nenhuma linha se perde nem é guardada duas vezes. Isto vale enquanto o socket
+voltar em dois minutos: o controlador só escreve o heartbeat do RTE enquanto o seu socket está aberto, e quando esse heartbeat tem dois minutos
 o worker termina as tarefas em execução do RTE como abandonadas, mesmo que os seus playbooks continuem a correr. Mantenha o spool
 ([`RTE_SPOOL_PATH`](../customization/server.html#env_RTE_SPOOL_PATH)) num volume, para que um RTE reiniciado continue a enviar o que tinha guardado. Um
-playbook que estava a correr quando o seu RTE reiniciou não pode continuar: a aplicação termina a sua tarefa como abandonada quando o RTE volta sem ela.
+playbook que estava a correr quando o seu RTE reiniciou não pode continuar: o controlador termina a sua tarefa como abandonada quando o RTE volta sem ela.
 
-**Abortar.** Abortar marca a tarefa como abortada, e o nó da aplicação que tem o socket do RTE envia `cancel` em dois segundos. O RTE
+**Abortar.** Abortar marca a tarefa como abortada, e o nó do controlador que tem o socket do RTE envia `cancel` em dois segundos. O RTE
 envia `SIGTERM` ao grupo de processos do playbook, por isso o `ansible-playbook` e todos os forks que arrancou param juntos, e a tarefa termina
 `aborted`. Um cancel que chega antes da sua tarefa é guardado durante um minuto, e a tarefa arranca então já abortada.
 
 **Limpeza.** Assim que o processo termina, seja qual for o resultado, o RTE remove os dois ficheiros de extravars (um formulário com `keepExtravars`
 mantém o visível, nunca o oculto), o ficheiro de artefactos em `/tmp`, o ficheiro de registo da tarefa e a pasta de ficheiros da própria tarefa. O
-fim é guardado uma vez: um segundo escritor, como a aplicação a falhar uma tarefa que o RTE já terminou, não altera nada.
+fim é guardado uma vez: um segundo escritor, como o controlador a falhar uma tarefa que o RTE já terminou, não altera nada.
 
 **Um processo por tarefa, não um contentor por tarefa.** O AWX e o AAP arrancam um pod ou contentor novo a partir de uma imagem de execution environment para
 cada tarefa. O AnsibleForms não arranca nada: o contentor do RTE já está a correr, e cada tarefa é um processo filho dentro dele. Uma tarefa arranca
@@ -238,13 +238,13 @@ playbooks que correm num RTE partilham o seu CPU, a sua memória, `/tmp`, a past
 
 O RTE corre código escrito pelos autores dos formulários, por isso foi construído para conter o mínimo possível:
 
-* **Só o seu token** : o RTE não tem credenciais da base de dados nem `ENCRYPTION_SECRET`. Não aceita nenhuma chamada além do socket da aplicação, com
-  o seu token, e não tem utilizadores, nem início de sessão, nem páginas web. Pelo socket só pode correr as tarefas que a aplicação lhe envia, informar sobre elas e
+* **Só o seu token** : o RTE não tem credenciais da base de dados nem `ENCRYPTION_SECRET`. Não aceita nenhuma chamada além do socket do controlador, com
+  o seu token, e não tem utilizadores, nem início de sessão, nem páginas web. Pelo socket só pode correr as tarefas que o controlador lhe envia, informar sobre elas e
   pedir os seus ficheiros: não pode criar uma tarefa, ler outra tarefa nem distribuir credenciais
 * **Segredos selados** : para correr uma tarefa, o RTE nunca lê a tabela de credenciais nem um cofre de segredos. Recebe os segredos das tarefas que
   corre, selados só para o seu token e para esse id de tarefa, por isso um pacote destinado a outro RTE ou a outra tarefa não abre, e um byte alterado
   é recusado
-* **Uma ligação verificada** : em modo de saída, o RTE verifica o certificado da aplicação. Em modo de entrada por HTTPS, a aplicação fixa o próprio certificado do RTE
+* **Uma ligação verificada** : em modo de saída, o RTE verifica o certificado do controlador. Em modo de entrada por HTTPS, o controlador fixa o próprio certificado do RTE
   quando este adere, e só se liga a ele quando apresenta esse certificado (consulte [Modos](modes.html#inbound)). Um RTE de entrada por HTTP simples deve estar
   numa rede privada, como a do projeto Docker Compose
 * **Nenhum ambiente herdado** : `ansible-playbook` recebe o ambiente do RTE sem nenhuma das variáveis que o próprio AnsibleForms lê
@@ -255,7 +255,7 @@ O RTE corre código escrito pelos autores dos formulários, por isso foi constru
 * **Não é root** : o RTE e os seus playbooks correm como `node` (uid 1000), por isso um playbook pode fazer o que esse utilizador pode no contentor, como
   ler os seus ficheiros e a chave ssh, e nada mais
 
-Trate o seu contentor, a sua imagem e o seu ambiente com o mesmo cuidado que os da aplicação.
+Trate o seu contentor, a sua imagem e o seu ambiente com o mesmo cuidado que os do controlador.
 
 ---
 
@@ -265,11 +265,11 @@ O RTE da 7.0 à 7.2, sem `RTE_MODE`, corre durante toda a 7.x e é removido na 8
 
 * **Tem acesso à base de dados** : as suas definições `DB_*`, e `ENCRYPTION_SECRET` quando se regista a si próprio
   ([`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER))
-* **A entrega é uma chamada HTTP** : a aplicação chama `POST <address>/rte/v1/jobs` com o token e os segredos selados, e o RTE reclama
+* **A entrega é uma chamada HTTP** : o controlador chama `POST <address>/rte/v1/jobs` com o token e os segredos selados, e o RTE reclama
   a tarefa escrevendo nela o seu nome na base de dados (passos 3 e 4)
 * **Escreve ele próprio a saída** : na base de dados, em lotes, sem spool (passo 7). Um abortar chega-lhe pela marca de abortar da tarefa,
   que lê a cada 2 segundos, e por uma chamada `/cancel`
-* **Lê os ficheiros do volume da aplicação** : precisa do mesmo disco que a aplicação, como com `RTE_FILES=local`
+* **Lê os ficheiros do volume do controlador** : precisa do mesmo disco que o controlador, como com `RTE_FILES=local`
 
 A sua página de runner não tem nenhuma das [definições do RTE](../runners/runner-page.html#an-rtes-settings): lê as suas próprias variáveis. Para o passar para um
 modo socket, consulte [Modos](modes.html#database-deprecated).

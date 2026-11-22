@@ -2,7 +2,7 @@
 layout: default
 title: Pré-requisitos
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Pré-requisitos
@@ -120,9 +120,9 @@ Os navegadores mais antigos não são suportados.
 
 ## Escalar
 
-Por predefinição, um contentor AnsibleForms executa a aplicação web e o trabalho em segundo plano em conjunto, ao lado de um RTE.
+Por predefinição, um contentor AnsibleForms executa a interface web do controlador e o trabalho em segundo plano em conjunto, ao lado de um RTE.
 
-Para servir mais utilizadores, execute vários nós da aplicação por trás de um balanceador de carga (`AF_ROLE=app`) ao lado de um worker (`AF_ROLE=worker`), que executa os
+Para servir mais utilizadores, execute vários nós do controlador por trás de um balanceador de carga (`AF_ROLE=controller`, `app` antes da 7.8.0) ao lado de um worker (`AF_ROLE=worker`), que executa os
 agendamentos, as cópias de segurança e o restante trabalho em segundo plano; só um worker trabalha de cada vez, e um segundo espera para assumir. Partilham
 a base de dados, a pasta persistente, `ACCESS_TOKEN_SECRET` e `ENCRYPTION_SECRET`. Consulte [Escalar](production/scaling.html). Execute mais
 RTEs para executar mais playbooks em simultâneo: consulte [Vários RTEs](rte/several.html).
