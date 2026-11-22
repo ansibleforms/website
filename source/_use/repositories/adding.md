@@ -38,7 +38,7 @@ pull brings in. The menu of each row holds these actions:
 |---|---|
 | **Edit** | Change the fields below |
 | **Pull** | Clone the repository, or pull it when the working tree already exists |
-| **Push** | Commit and push the working tree; only on repositories used for forms, config, playbooks, workflows or inventories, and enabled only while there are changes not pushed yet |
+| **Push** | Commit and push the working tree; only on repositories with a usage type ticked, and enabled only while there are changes not pushed yet |
 | **Reset** | Delete the working tree and clone it again, which discards local changes |
 | **Change credentials** | Open the repository's **Credentials** tab, to pick the credential git uses |
 | **Show last pull output** | Show git's output of the last clone, pull or reset, with the password masked |
@@ -68,7 +68,7 @@ schedule**), and AnsibleForms starts the clone in the background as soon as you 
 | **Enable scheduled pull** | no | Pull the repository on a schedule |
 | **Pull schedule** | no | When to pull, as a cron expression; shown once the scheduled pull is enabled |
 | **Description** | yes | A free text description |
-| **Use for config ?** ... **Use for inventories ?** | no | What the repository holds, see [above](./#what-a-repository-is-for) |
+| **Usage** | no | The usage types, what the repository holds: a checkbox each, under six headings, see [Configuration in git](config-as-code.html#the-usage-types) |
 | **Pull on app start** | no | Clone the repository, or pull it, every time AnsibleForms starts |
 
 Renaming a repository moves its working tree to the new folder and moves its pull schedule with it. A repository from
@@ -82,7 +82,7 @@ A repository's content becomes what AnsibleForms loads and runs, so from 7.3.0 a
 
 - add or delete a repository;
 - change its **Uri** or its **Branch**;
-- switch any of its **Use for** flags on or off.
+- tick or untick any of its usage types.
 
 They can still change its description, pull schedule and credential, and pull, push or reset it. A credential that a runner,
 a connection or a sign-in uses cannot be picked by them; the refusal names it, and says nothing of what it holds.
@@ -102,7 +102,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -111,3 +113,6 @@ The fields are those of the page: `credential` (a credential of the seed or of t
 start**) and `cron` (the pull schedule) included; `user` and `password` are still accepted in place of a credential. A
 seeded repository is read-only in the interface, and is cloned again at start when its working tree is missing; see
 [Managed objects](../seed/managed-objects.html).
+
+Each usage type is a `use_for_<type>` flag, such as `use_for_credentials`. Since 7.8.0 `use_for_config` is a deprecated alias of
+`use_for_roles`, `use_for_categories` and `use_for_constants`, still read with a warning and removed in 8.0.
