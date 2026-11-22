@@ -118,10 +118,10 @@ Two daily tasks with a setting keep the database from growing without limit:
 
 `0` keeps everything for both. Two more daily tasks have no setting: at 3:00 the stored refresh tokens older than 30 days and
 the expired token revocations are removed, and at 4:00 the [stored jobs](../jobs/stored-jobs.html) whose expiry has passed.
-
-The times are the defaults. Since 7.8.0 each of these is a [system task](../jobs/system-tasks.html) under **Jobs > System**, where
-an admin changes when it runs and sees every run with its result.
 The times are in the timezone of [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), and the worker runs them.
+
+These are the default times. Since 7.8.0 each of these tasks is a [system task](../jobs/system-tasks.html) under **Jobs > System**,
+where an admin changes when it runs and sees every run with its result.
 
 Job output is usually the fastest growing table: the **Status** page reports its size
 and warns when it passes 1 GB with no retention set. Running jobs and jobs awaiting approval are never removed.
