@@ -3,7 +3,7 @@ layout: default
 title: Konfiguration in git
 parent: Git-Repositories
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Konfiguration in git
@@ -38,8 +38,8 @@ eigenes Kontrollkästchen und eine kurze Zeile, die sagt, was das Repository daf
 | **Zugriff** | **Haftungsausschluss** (`use_for_disclaimer`), **Benutzer** (`use_for_users`), **Gruppen** (`use_for_groups`), **Rollen** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Verbindungen** | **Repositories** (`use_for_repositories`), **Anmeldedaten** (`use_for_credentials`), **Secret Stores** (`use_for_secret_stores`), **Datenbanken** (`use_for_databases`), **Runner** (`use_for_runners`), **SSH** (`use_for_ssh`), **Benachrichtigungen** (`use_for_notifications`), **Chat-Assistent** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Formulare**, **Inventare** und **Workflows** dürfen bei mehreren Repositories angehakt sein. **Playbooks** kommen aus einem: Der Schritt
-Verwendung graut sie bei den anderen aus, und der Server nimmt das erste mit einer Warnung. Jeder andere Typ gehört höchstens einem Repository, und
+**Formulare**, **Inventare**, **Playbooks** und **Workflows** dürfen bei mehreren Repositories angehakt sein. Ein Formular führt die
+Playbooks des ersten **Playbooks**-Repositorys aus, außer es nennt mit `playbookRepository` sein eigenes. Jeder andere Typ gehört höchstens einem Repository, und
 ein zweites wird von der API und vom Config-Seed abgelehnt. Ein Typ, den ein anderes Repository hält, erscheint grau angehakt und deaktiviert,
 mit einem Tooltip, der dieses Repository nennt: `Bereits vom Repository „platform“ verwaltet`.
 

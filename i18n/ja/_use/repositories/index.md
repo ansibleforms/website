@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Git リポジトリ
@@ -41,8 +41,9 @@ translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 全般の設定、外観のページ、ユーザー、グループ、ロール、サインイン、認証情報、ランナー、そのほかの接続です。
 詳しくは [git での設定](config-as-code.html) で説明しています。
 
-**フォーム**、 **ワークフロー**、 **インベントリ** は複数のリポジトリでチェックできます。 **Playbook** は最初のリポジトリから取得し、
-ほかの種類はそれぞれ最大 1 つのリポジトリから取得します。各リポジトリは、
+**フォーム**、 **Playbook**、 **ワークフロー**、 **インベントリ** は複数のリポジトリでチェックでき、ほかの種類はそれぞれ最大 1 つの
+リポジトリでチェックできます。フォームは最初の **Playbook** リポジトリの playbook を実行しますが、 `playbookRepository` で
+自分のリポジトリを指定した場合はそちらを使います。各リポジトリは、
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH) の下にあるリポジトリ名のサブフォルダーにクローンされます。
 
 7.8.0 より前の **設定に使用しますか?** スイッチは、 **ロール**、 **カテゴリ**、 **定数** に置き換えられ、それぞれのキーを持つファイルから

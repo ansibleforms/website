@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Dépôts git
@@ -41,8 +41,9 @@ Chaque autre type conserve des paramètres, des utilisateurs ou des connexions d
 les planifications, les paramètres Général, les pages Apparence, les utilisateurs, groupes et rôles, les méthodes de connexion, les identifiants, les runners et
 les autres connexions. Ils sont décrits dans [Configuration dans git](config-as-code.html).
 
-**Formulaires**, **Workflows** et **Inventaires** peuvent être cochés sur plusieurs dépôts ; les **Playbooks** viennent du premier,
-et chaque autre type d'un seul dépôt au plus. Chaque dépôt est cloné dans un sous-dossier qui porte son nom, sous
+**Formulaires**, **Playbooks**, **Workflows** et **Inventaires** peuvent être cochés sur plusieurs dépôts, et chaque autre type sur
+un seul dépôt au plus. Un formulaire exécute les playbooks du premier dépôt **Playbooks**, sauf s'il nomme le sien avec
+`playbookRepository`. Chaque dépôt est cloné dans un sous-dossier qui porte son nom, sous
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 L'interrupteur **Utiliser pour la configuration ?** d'avant la 7.8.0 est remplacé par **Rôles**, **Catégories** et **Constantes**, chacun lu depuis le

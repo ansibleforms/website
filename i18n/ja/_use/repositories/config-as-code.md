@@ -3,7 +3,7 @@ layout: default
 title: git での設定
 parent: Git リポジトリ
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # git での設定
@@ -38,8 +38,8 @@ translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
 | **アクセス** | **免責事項** ( `use_for_disclaimer` )、 **ユーザー** ( `use_for_users` )、 **グループ** ( `use_for_groups` )、 **ロール** ( `use_for_roles` )、 **LDAP** ( `use_for_ldap` )、 **SSO** ( `use_for_sso` ) |
 | **接続** | **リポジトリ** ( `use_for_repositories` )、 **認証情報** ( `use_for_credentials` )、 **シークレットストア** ( `use_for_secret_stores` )、 **データベース** ( `use_for_databases` )、 **ランナー** ( `use_for_runners` )、 **SSH** ( `use_for_ssh` )、 **通知** ( `use_for_notifications` )、 **チャットアシスタント** ( `use_for_chat_assistant` )、 **MCP** ( `use_for_mcp` )、 **Syslog** ( `use_for_syslog` ) |
 
-**フォーム**、 **インベントリ**、 **ワークフロー** は複数のリポジトリでチェックできます。 **Playbook** は 1 つのリポジトリから取得します。
-用途ステップではほかのリポジトリでグレー表示になり、サーバーは警告を出して最初のリポジトリを使います。ほかの種類はすべて
+**フォーム**、 **インベントリ**、 **Playbook**、 **ワークフロー** は複数のリポジトリでチェックできます。フォームは最初の **Playbook**
+リポジトリの playbook を実行しますが、 `playbookRepository` で自分のリポジトリを指定した場合はそちらを使います。ほかの種類はすべて
 最大 1 つのリポジトリにしか属さず、2 つ目は API でも設定シードでも拒否されます。別のリポジトリが保持している種類は、
 チェック済みのグレーで無効として表示され、ツールチップにそのリポジトリの名前が示されます: `リポジトリ「platform」で管理済み`。
 

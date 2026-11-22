@@ -3,7 +3,7 @@ layout: default
 title: Configuratie in git
 parent: Git-repositories
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Configuratie in git
@@ -38,8 +38,8 @@ aangevinkt kan worden.
 | **Toegang** | **Disclaimer** (`use_for_disclaimer`), **Gebruikers** (`use_for_users`), **Groepen** (`use_for_groups`), **Rollen** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Verbindingen** | **Repositories** (`use_for_repositories`), **Inloggegevens** (`use_for_credentials`), **Secret stores** (`use_for_secret_stores`), **Databases** (`use_for_databases`), **Runners** (`use_for_runners`), **SSH** (`use_for_ssh`), **Meldingen** (`use_for_notifications`), **Chat-assistent** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Formulieren**, **Inventarissen** en **Workflows** mogen op meerdere repositories aangevinkt zijn. **Playbooks** komen uit één: de stap Gebruik
-maakt het grijs op de andere, en de server neemt de eerste met een waarschuwing. Elk ander type hoort bij hoogstens één repository, en een tweede
+**Formulieren**, **Inventarissen**, **Playbooks** en **Workflows** mogen op meerdere repositories aangevinkt zijn. Een formulier voert
+de playbooks van de eerste **Playbooks**-repository uit, tenzij het met `playbookRepository` zijn eigen noemt. Elk ander type hoort bij hoogstens één repository, en een tweede
 wordt geweigerd door de API en door de config seed. Een type dat een andere repository heeft, staat grijs aangevinkt en uitgeschakeld, met een
 tooltip die die repository noemt: `Al beheerd door de repository "platform"`.
 

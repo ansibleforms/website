@@ -3,7 +3,7 @@ layout: default
 title: Configuració a git
 parent: Repositoris Git
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Configuració a git
@@ -38,8 +38,8 @@ tipus d'aquest encapçalament que es poden marcar.
 | **Accés** | **Avís legal** (`use_for_disclaimer`), **Usuaris** (`use_for_users`), **Grups** (`use_for_groups`), **Rols** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Connexions** | **Repositoris** (`use_for_repositories`), **Credencials** (`use_for_credentials`), **Magatzems de secrets** (`use_for_secret_stores`), **Bases de dades** (`use_for_databases`), **Runners** (`use_for_runners`), **SSH** (`use_for_ssh`), **Notificacions** (`use_for_notifications`), **Assistent de xat** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Formularis**, **Inventaris** i **Workflows** es poden marcar en diversos repositoris. Els **Playbooks** venen d'un de sol: el pas Ús
-el posa en gris als altres, i el servidor agafa el primer amb un avís. Cadascun dels altres tipus pertany a un repositori com a màxim, i
+**Formularis**, **Inventaris**, **Playbooks** i **Workflows** es poden marcar en diversos repositoris. Un formulari executa els
+playbooks del primer repositori de **Playbooks**, tret que n'anomeni un de propi amb `playbookRepository`. Cadascun dels altres tipus pertany a un repositori com a màxim, i
 l'API i el config seed en rebutgen un segon. Un tipus que té un altre repositori es mostra marcat en gris i desactivat, amb un tooltip que
 anomena aquest repositori: `Ja el gestiona el repositori "platform"`.
 

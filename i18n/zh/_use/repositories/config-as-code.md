@@ -3,7 +3,7 @@ layout: default
 title: git 中的配置
 parent: Git 仓库
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # git 中的配置
@@ -38,8 +38,8 @@ translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
 | **访问** | **免责声明**（`use_for_disclaimer`）、**用户**（`use_for_users`）、**组**（`use_for_groups`）、**角色**（`use_for_roles`）、**LDAP**（`use_for_ldap`）、**SSO**（`use_for_sso`） |
 | **连接** | **仓库**（`use_for_repositories`）、**凭据**（`use_for_credentials`）、**密钥库**（`use_for_secret_stores`）、**数据库**（`use_for_databases`）、**运行器**（`use_for_runners`）、**SSH**（`use_for_ssh`）、**通知**（`use_for_notifications`）、**聊天助手**（`use_for_chat_assistant`）、**MCP**（`use_for_mcp`）、**Syslog**（`use_for_syslog`） |
 
-**表单**、**清单**和**工作流**可以在多个仓库上勾选。**Playbook** 只来自一个仓库：用途步骤
-在其他仓库上将其置灰，服务器取第一个仓库并给出警告。其他每种类型最多属于一个仓库，
+**表单**、**清单**、**Playbook** 和**工作流**可以在多个仓库上勾选。表单运行第一个 **Playbook** 仓库中的
+playbook，除非它用 `playbookRepository` 指定自己的仓库。其他每种类型最多属于一个仓库，
 第二个仓库会被 API 和配置种子拒绝。由另一个仓库持有的类型显示为灰色的已勾选状态且不可用，
 其工具提示会指出该仓库：`已由仓库“platform”管理`。
 

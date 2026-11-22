@@ -3,7 +3,7 @@ layout: default
 title: Configuration dans git
 parent: Dépôts git
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Configuration dans git
@@ -38,8 +38,8 @@ de cette rubrique qui peut être coché.
 | **Accès** | **Avertissement** (`use_for_disclaimer`), **Utilisateurs** (`use_for_users`), **Groupes** (`use_for_groups`), **Rôles** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Connexions** | **Dépôts** (`use_for_repositories`), **Identifiants** (`use_for_credentials`), **Coffres de secrets** (`use_for_secret_stores`), **Bases de données** (`use_for_databases`), **Runners** (`use_for_runners`), **SSH** (`use_for_ssh`), **Notifications** (`use_for_notifications`), **Assistant de chat** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Formulaires**, **Inventaires** et **Workflows** peuvent être cochés sur plusieurs dépôts. Les **Playbooks** viennent d'un seul : l'étape
-Utilisation les grise sur les autres, et le serveur prend le premier avec un avertissement. Chaque autre type appartient à un dépôt au plus,
+**Formulaires**, **Inventaires**, **Playbooks** et **Workflows** peuvent être cochés sur plusieurs dépôts. Un formulaire exécute les
+playbooks du premier dépôt **Playbooks**, sauf s'il nomme le sien avec `playbookRepository`. Chaque autre type appartient à un dépôt au plus,
 et un deuxième est refusé par l'API et par le config seed. Un type qu'un autre dépôt détient apparaît coché en gris et désactivé, son
 infobulle nommant ce dépôt : `Déjà géré par le dépôt « platform »`.
 

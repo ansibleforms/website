@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Git-repositories
@@ -41,8 +41,9 @@ Elk ander type bewaart instellingen, gebruikers of verbindingen van de app in YA
 de instellingen van Algemeen, de pagina's van Uiterlijk, de gebruikers, groepen en rollen, de aanmeldingen, de inloggegevens, de runners en de
 andere verbindingen. Ze worden beschreven in [Configuratie in git](config-as-code.html).
 
-**Formulieren**, **Workflows** en **Inventarissen** mogen op meerdere repositories aangevinkt zijn; **Playbooks** komen uit de eerste,
-en elk ander type uit hoogstens één repository. Elke repository wordt gekloond in een submap met haar naam, onder
+**Formulieren**, **Playbooks**, **Workflows** en **Inventarissen** mogen op meerdere repositories aangevinkt zijn, elk ander type
+op hoogstens één repository. Een formulier voert de playbooks van de eerste **Playbooks**-repository uit, tenzij het met
+`playbookRepository` zijn eigen noemt. Elke repository wordt gekloond in een submap met haar naam, onder
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 De schakelaar **Gebruiken voor configuratie?** van vóór 7.8.0 is vervangen door **Rollen**, **Categorieën** en **Constanten**, elk gelezen uit het

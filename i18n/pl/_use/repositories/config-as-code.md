@@ -3,7 +3,7 @@ layout: default
 title: Konfiguracja w git
 parent: Repozytoria git
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Konfiguracja w git
@@ -38,8 +38,8 @@ tego nagłówka, które można zaznaczyć.
 | **Dostęp** | **Zastrzeżenie** (`use_for_disclaimer`), **Użytkownicy** (`use_for_users`), **Grupy** (`use_for_groups`), **Role** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Połączenia** | **Repozytoria** (`use_for_repositories`), **Poświadczenia** (`use_for_credentials`), **Magazyny sekretów** (`use_for_secret_stores`), **Bazy danych** (`use_for_databases`), **Runnery** (`use_for_runners`), **SSH** (`use_for_ssh`), **Powiadomienia** (`use_for_notifications`), **Asystent czatu** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Formularze**, **Inwentarze** i **Workflowy** można zaznaczyć w kilku repozytoriach. **Playbooki** pochodzą z jednego: krok Zastosowanie
-wyszarza je w pozostałych, a serwer bierze pierwsze z ostrzeżeniem. Każdy inny typ należy najwyżej do jednego repozytorium, a drugie
+**Formularze**, **Inwentarze**, **Playbooki** i **Workflowy** można zaznaczyć w kilku repozytoriach. Formularz uruchamia playbooki
+pierwszego repozytorium **Playbooki**, chyba że wskaże własne przez `playbookRepository`. Każdy inny typ należy najwyżej do jednego repozytorium, a drugie
 jest odrzucane przez API i przez config seed. Typ, który ma inne repozytorium, jest pokazany jako zaznaczony na szaro i
 wyłączony, z podpowiedzią wskazującą to repozytorium: `Już zarządzane przez repozytorium „platform”`.
 

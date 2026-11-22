@@ -3,7 +3,7 @@ layout: default
 title: Configuração em git
 parent: Repositórios git
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Configuração em git
@@ -38,8 +38,8 @@ todos os tipos desse título que podem ser marcados.
 | **Acesso** | **Aviso legal** (`use_for_disclaimer`), **Utilizadores** (`use_for_users`), **Grupos** (`use_for_groups`), **Funções** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Ligações** | **Repositórios** (`use_for_repositories`), **Credenciais** (`use_for_credentials`), **Cofres de segredos** (`use_for_secret_stores`), **Bases de dados** (`use_for_databases`), **Runners** (`use_for_runners`), **SSH** (`use_for_ssh`), **Notificações** (`use_for_notifications`), **Assistente de chat** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Formulários**, **Inventários** e **Workflows** podem ser marcados em vários repositórios. **Playbooks** vêm de um só: o passo Utilização
-desativa-o a cinzento nos outros, e o servidor fica com o primeiro, com um aviso. Cada um dos outros tipos pertence a um repositório no
+**Formulários**, **Inventários**, **Playbooks** e **Workflows** podem ser marcados em vários repositórios. Um formulário executa os
+playbooks do primeiro repositório de **Playbooks**, a menos que indique o seu com `playbookRepository`. Cada um dos outros tipos pertence a um repositório no
 máximo, e um segundo é recusado pela API e pelo config seed. Um tipo que outro repositório já tem aparece marcado a cinzento e
 desativado, com uma dica que indica esse repositório: `Já gerido pelo repositório "platform"`.
 

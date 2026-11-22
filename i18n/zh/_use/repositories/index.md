@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Git 仓库
@@ -41,8 +41,8 @@ translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 常规设置、外观页面、用户、组和角色、登录方式、凭据、运行器以及
 其他连接。它们在 [git 中的配置](config-as-code.html) 中说明。
 
-**表单**、**工作流**和**清单**可以在多个仓库上勾选；**Playbook** 来自第一个仓库，
-其他每种类型最多来自一个仓库。每个仓库都会被克隆到
+**表单**、**Playbook**、**工作流**和**清单**可以在多个仓库上勾选，其他每种类型最多在一个仓库上勾选。
+表单运行第一个 **Playbook** 仓库中的 playbook，除非它用 `playbookRepository` 指定自己的仓库。每个仓库都会被克隆到
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH) 下以其名称命名的子文件夹中。
 
 7.8.0 之前的**用于配置？**开关已被**角色**、**类别**和**常量**取代，每一项都从

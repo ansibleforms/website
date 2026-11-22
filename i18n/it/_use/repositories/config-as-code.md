@@ -3,7 +3,7 @@ layout: default
 title: Configurazione in git
 parent: Repository Git
 nav_order: 5
-translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
+translated_from: 80e30306a069294520da314840328f669e2a2019
 ---
 
 # Configurazione in git
@@ -38,8 +38,8 @@ la spunta a ogni tipo di quell'intestazione che si può spuntare.
 | **Accesso** | **Disclaimer** (`use_for_disclaimer`), **Utenti** (`use_for_users`), **Gruppi** (`use_for_groups`), **Ruoli** (`use_for_roles`), **LDAP** (`use_for_ldap`), **SSO** (`use_for_sso`) |
 | **Connessioni** | **Repository** (`use_for_repositories`), **Credenziali** (`use_for_credentials`), **Archivi di segreti** (`use_for_secret_stores`), **Database** (`use_for_databases`), **Runner** (`use_for_runners`), **SSH** (`use_for_ssh`), **Notifiche** (`use_for_notifications`), **Assistente chat** (`use_for_chat_assistant`), **MCP** (`use_for_mcp`), **Syslog** (`use_for_syslog`) |
 
-**Moduli**, **Inventari** e **Workflow** possono essere spuntati su più repository. I **Playbook** provengono da uno solo: il passo Utilizzo
-li mostra in grigio sugli altri, e il server prende il primo con un avviso. Ogni altro tipo appartiene a un repository al massimo, e un
+**Moduli**, **Inventari**, **Playbook** e **Workflow** possono essere spuntati su più repository. Un modulo esegue i playbook del
+primo repository **Playbook**, a meno che non nomini il proprio con `playbookRepository`. Ogni altro tipo appartiene a un repository al massimo, e un
 secondo viene rifiutato dall'API e dal config seed. Un tipo che un altro repository detiene appare spuntato in grigio e disattivato, con
 un tooltip che nomina quel repository: `Già gestito dal repository "platform"`.
 

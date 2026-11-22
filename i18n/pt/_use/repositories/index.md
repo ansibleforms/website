@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Repositórios git
@@ -41,8 +41,9 @@ Todos os outros tipos guardam definições, utilizadores ou ligações da aplica
 as definições Geral, as páginas de Aparência, os utilizadores, grupos e funções, os inícios de sessão, as credenciais, os runners e as
 outras ligações. Estão descritos em [Configuração em git](config-as-code.html).
 
-**Formulários**, **Workflows** e **Inventários** podem ser marcados em vários repositórios; **Playbooks** vêm do primeiro,
-e cada um dos outros tipos de um repositório no máximo. Cada repositório é clonado numa subpasta com o seu nome, dentro de
+**Formulários**, **Playbooks**, **Workflows** e **Inventários** podem ser marcados em vários repositórios, e cada um dos outros
+tipos num repositório no máximo. Um formulário executa os playbooks do primeiro repositório de **Playbooks**, a menos que indique o
+seu com `playbookRepository`. Cada repositório é clonado numa subpasta com o seu nome, dentro de
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 O interruptor **Usar para a configuração ?** de antes da 7.8.0 é substituído por **Funções**, **Categorias** e **Constantes**, cada um lido do

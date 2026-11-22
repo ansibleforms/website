@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Repositoris Git
@@ -41,8 +41,9 @@ Tots els altres tipus guarden ajustos, usuaris o connexions de l'aplicació en f
 programacions, els ajustos de General, les pàgines d'Aparença, els usuaris, grups i rols, els inicis de sessió, les credencials, els runners i
 les altres connexions. Es descriuen a [Configuració a git](config-as-code.html).
 
-**Formularis**, **Workflows** i **Inventaris** es poden marcar en diversos repositoris; els **Playbooks** venen del primer, i cadascun dels
-altres tipus d'un repositori com a màxim. Cada repositori es clona en una subcarpeta amb el seu nom, dins de
+**Formularis**, **Playbooks**, **Workflows** i **Inventaris** es poden marcar en diversos repositoris, i cadascun dels altres tipus
+en un repositori com a màxim. Un formulari executa els playbooks del primer repositori de **Playbooks**, tret que n'anomeni un de
+propi amb `playbookRepository`. Cada repositori es clona en una subcarpeta amb el seu nom, dins de
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 L'interruptor **Utilitzar per a la configuració ?** d'abans de la 7.8.0 se substitueix per **Rols**, **Categories** i **Constants**, cadascun

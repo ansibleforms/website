@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Repository Git
@@ -41,8 +41,9 @@ Ogni altro tipo tiene impostazioni, utenti o connessioni dell'app in file YAML, 
 le impostazioni Generale, le pagine Aspetto, gli utenti, i gruppi e i ruoli, i metodi di accesso, le credenziali, i runner e le
 altre connessioni. Sono descritti in [Configurazione in git](config-as-code.html).
 
-**Moduli**, **Workflow** e **Inventari** possono essere spuntati su più repository; i **Playbook** provengono dal primo,
-e ogni altro tipo da un repository al massimo. Ogni repository viene clonato in una sottocartella con il suo nome, sotto
+**Moduli**, **Playbook**, **Workflow** e **Inventari** possono essere spuntati su più repository, e ogni altro tipo su un
+repository al massimo. Un modulo esegue i playbook del primo repository **Playbook**, a meno che non nomini il proprio con
+`playbookRepository`. Ogni repository viene clonato in una sottocartella con il suo nome, sotto
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 L'interruttore **Usare per configurazione?** di prima della 7.8.0 è sostituito da **Ruoli**, **Categorie** e **Costanti**, ciascuno letto dal

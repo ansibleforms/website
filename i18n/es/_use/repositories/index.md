@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Repositorios git
@@ -41,8 +41,9 @@ Todos los demás tipos guardan ajustes, usuarios o conexiones de la aplicación 
 programaciones, los ajustes de General, las páginas de Apariencia, los usuarios, grupos y roles, los inicios de sesión, las credenciales, los
 runners y las demás conexiones. Se describen en [Configuración en git](config-as-code.html).
 
-**Formularios**, **Workflows** e **Inventarios** pueden marcarse en varios repositorios; los **Playbooks** vienen del primero, y cada uno
-de los demás tipos de un repositorio como máximo. Cada repositorio se clona en una subcarpeta con su nombre, bajo
+**Formularios**, **Playbooks**, **Workflows** e **Inventarios** pueden marcarse en varios repositorios, y cada uno de los demás
+tipos en un repositorio como máximo. Un formulario ejecuta los playbooks del primer repositorio de **Playbooks**, salvo que nombre
+el suyo con `playbookRepository`. Cada repositorio se clona en una subcarpeta con su nombre, bajo
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 El interruptor **¿Usar para configuración?** de antes de 7.8.0 se sustituye por **Roles**, **Categorías** y **Constantes**, cada uno leído

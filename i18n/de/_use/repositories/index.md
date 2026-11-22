@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Git-Repositories
@@ -41,8 +41,9 @@ Jeder andere Typ hält Einstellungen, Benutzer oder Verbindungen der App in YAML
 die Einstellungen unter Allgemein, die Seiten des Erscheinungsbilds, die Benutzer, Gruppen und Rollen, die Anmeldungen, die Anmeldedaten, die Runner und
 die anderen Verbindungen. Sie sind in [Konfiguration in git](config-as-code.html) beschrieben.
 
-**Formulare**, **Workflows** und **Inventare** dürfen bei mehreren Repositories angehakt sein; **Playbooks** kommen aus dem ersten,
-und jeder andere Typ aus höchstens einem Repository. Jedes Repository wird in einen nach ihm benannten Unterordner unter
+**Formulare**, **Playbooks**, **Workflows** und **Inventare** dürfen bei mehreren Repositories angehakt sein, jeder andere Typ
+bei höchstens einem Repository. Ein Formular führt die Playbooks des ersten **Playbooks**-Repositorys aus, außer es nennt mit
+`playbookRepository` sein eigenes. Jedes Repository wird in einen nach ihm benannten Unterordner unter
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH) geklont.
 
 Der Schalter **Für Konfiguration verwenden?** von vor 7.8.0 ist durch **Rollen**, **Kategorien** und **Konstanten** ersetzt, jeweils aus der

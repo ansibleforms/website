@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Repozytoria git
@@ -41,8 +41,9 @@ Każdy inny typ przechowuje ustawienia, użytkowników lub połączenia aplikacj
 ustawienia Ogólne, strony Wyglądu, użytkowników, grupy i role, logowania, poświadczenia, runnery i
 pozostałe połączenia. Opisuje je strona [Konfiguracja w git](config-as-code.html).
 
-**Formularze**, **Workflowy** i **Inwentarze** można zaznaczyć w kilku repozytoriach; **Playbooki** pochodzą z pierwszego,
-a każdy inny typ najwyżej z jednego repozytorium. Każde repozytorium jest klonowane do podfolderu nazwanego tak jak ono, w
+**Formularze**, **Playbooki**, **Workflowy** i **Inwentarze** można zaznaczyć w kilku repozytoriach, a każdy inny typ najwyżej w
+jednym repozytorium. Formularz uruchamia playbooki pierwszego repozytorium **Playbooki**, chyba że wskaże własne przez
+`playbookRepository`. Każde repozytorium jest klonowane do podfolderu nazwanego tak jak ono, w
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
 Przełącznik **Używać do konfiguracji?** sprzed wersji 7.8.0 zastępują **Role**, **Kategorie** i **Stałe**, każdy odczytywany z
