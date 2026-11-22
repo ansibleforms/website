@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 311c12f73b9bb608eda0b588667b50bc986eb91e
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Jobs
