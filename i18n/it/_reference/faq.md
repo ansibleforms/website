@@ -38,13 +38,14 @@ ogni nodo tiene il proprio log. Vedi [Scalabilità](production/scaling.html) e l
 
 ### Gestione dei moduli su più repository
 
-I moduli di ogni repository Git con **Usare per moduli?** attivo vengono uniti automaticamente; in caso di nomi di modulo duplicati vince il primo
-e viene registrato un avviso. Tieni `config.yaml` in un solo repository. Vedi [Repository Git](repositories/).
+I moduli di ogni repository Git con il tipo di utilizzo **Moduli** vengono uniti automaticamente; in caso di nomi di modulo duplicati vince il primo
+e viene registrato un avviso. I ruoli, le categorie e le costanti provengono ciascuno da un solo repository, quello con quel tipo
+di utilizzo. Vedi [Repository Git](repositories/).
 
 ### Sui repository
 
 AnsibleForms clona e aggiorna i repository Git nel percorso dei repository (`REPO_PATH`), gestiti in **Impostazioni > Repository**.
-Gli interruttori su ogni repository stabiliscono cosa contiene: configurazione, moduli, playbook o file di variabili. Vedi [Repository Git](repositories/).
+I suoi tipi di utilizzo stabiliscono cosa contiene: moduli, playbook, ruoli, credenziali e ogni altra impostazione tenuta in git. Vedi [Repository Git](repositories/).
 
 ### Validazione in VS Code dei file dei moduli
 

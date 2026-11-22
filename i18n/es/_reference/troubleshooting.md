@@ -218,8 +218,8 @@ La configuración base (`config.yaml`) no se pudo leer o no es válida. El `<rea
 
 **Cómo corregirlo**
 
-Corrige el archivo que indica [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), o el `config.yaml` del
-repositorio usado para la configuración. Cuando faltan archivos, haz que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) y
+Corrige el archivo que indica [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), o el archivo que da la clave en el
+repositorio con el tipo de uso **Roles**, **Categorías** o **Constantes**. Cuando faltan archivos, haz que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) y
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) apunten a una ubicación persistente y con permiso de escritura. Consulta
 [config.yaml](config/) para ver la estructura.
 

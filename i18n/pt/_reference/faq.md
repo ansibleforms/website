@@ -38,13 +38,14 @@ cada nó mantém o seu próprio registo. Consulte [Escalar](production/scaling.h
 
 ### Gestão de formulários em vários repositórios
 
-Os formulários de todos os repositórios Git com **Usar para formulários ?** ativado são juntados automaticamente; em caso de nomes de formulários duplicados, o primeiro
-ganha e é registado um aviso. Mantenha o `config.yaml` num único repositório. Consulte [Repositórios git](repositories/).
+Os formulários de todos os repositórios Git com o tipo de utilização **Formulários** são juntados automaticamente; em caso de nomes de formulários duplicados, o primeiro
+ganha e é registado um aviso. As funções, as categorias e as constantes vêm cada uma de um só repositório, o que tem esse
+tipo de utilização. Consulte [Repositórios git](repositories/).
 
 ### Sobre os repositórios
 
 O AnsibleForms clona e atualiza repositórios Git no caminho dos repositórios (`REPO_PATH`), geridos em **Definições > Repositórios**.
-Os interruptores de cada repositório definem o que ele contém: configuração, formulários, playbooks ou ficheiros de variáveis. Consulte [Repositórios git](repositories/).
+Os seus tipos de utilização definem o que ele contém: formulários, playbooks, funções, credenciais e todas as outras definições guardadas em git. Consulte [Repositórios git](repositories/).
 
 ### Validação no VS Code para ficheiros de formulários
 

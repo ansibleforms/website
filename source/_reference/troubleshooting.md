@@ -217,8 +217,8 @@ The base configuration (`config.yaml`) could not be read or is not valid. The `<
 
 **How to fix it**
 
-Correct the file named by [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), or the `config.yaml` in the
-repository used for config. When files are missing, make [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) and
+Correct the file named by [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), or the file giving the key in the
+repository with the **Roles**, **Categories** or **Constants** usage type. When files are missing, make [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) and
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) point at a writable, persistent location. See
 [config.yaml](config/) for the structure.
 

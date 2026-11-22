@@ -218,8 +218,8 @@ Failed to get forms list
 
 **解决方法**
 
-修正 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 所指的文件，或用于配置的仓库中的
-`config.yaml`。如果缺少文件，请让 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 和
+修正 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 所指的文件，或具有 **角色**、**类别** 或 **常量**
+用途类型的仓库中给出该键的文件。如果缺少文件，请让 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 和
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) 指向一个可写的持久化位置。结构
 参见 [config.yaml](config/)。
 

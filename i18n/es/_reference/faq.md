@@ -38,13 +38,14 @@ cada nodo mantiene su propio log. Consulta [Escalado](production/scaling.html) y
 
 ### Gestión de formularios en varios repositorios
 
-Los formularios de todos los repositorios git con **usar para formularios** activado se combinan automáticamente; si hay nombres de formulario duplicados, gana el
-primero y se registra un aviso. Mantén `config.yaml` en un solo repositorio. Consulta [Repositorios git](repositories/).
+Los formularios de todos los repositorios git con el tipo de uso **Formularios** se combinan automáticamente; si hay nombres de formulario duplicados, gana el
+primero y se registra un aviso. Los roles, las categorías y las constantes vienen cada uno de un solo repositorio, el que tiene ese
+tipo de uso. Consulta [Repositorios git](repositories/).
 
 ### Sobre los repositorios
 
 AnsibleForms clona repositorios git y trae sus cambios en la ruta de repositorios (`REPO_PATH`), y se gestionan en **Configuración > Repositorios**.
-Los interruptores de cada repositorio definen lo que contiene: configuración, formularios, playbooks o archivos de variables. Consulta [Repositorios git](repositories/).
+Sus tipos de uso definen lo que contiene: formularios, playbooks, roles, credenciales y cualquier otro ajuste guardado en git. Consulta [Repositorios git](repositories/).
 
 ### Validación en VS Code de los archivos de formularios
 

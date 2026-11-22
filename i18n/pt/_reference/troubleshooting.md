@@ -218,8 +218,8 @@ A configuração base (`config.yaml`) não pôde ser lida ou não é válida. O 
 
 **Como corrigir**
 
-Corrija o ficheiro indicado por [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), ou o `config.yaml` no
-repositório usado para a configuração. Quando faltam ficheiros, faça com que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) e
+Corrija o ficheiro indicado por [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), ou o ficheiro que dá a chave no
+repositório com o tipo de utilização **Funções**, **Categorias** ou **Constantes**. Quando faltam ficheiros, faça com que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) e
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) apontem para um local persistente com permissão de escrita. Consulte
 [config.yaml](config/) para a estrutura.
 

@@ -218,8 +218,8 @@ Die Basiskonfiguration (`config.yaml`) ließ sich nicht lesen oder ist nicht gü
 
 **Wie Sie es beheben**
 
-Korrigieren Sie die Datei, die [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) nennt, oder die `config.yaml` im
-Repository, das für die Konfiguration verwendet wird. Wenn Dateien fehlen, lassen Sie [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) und
+Korrigieren Sie die Datei, die [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) nennt, oder die Datei mit dem Schlüssel im
+Repository mit dem Verwendungstyp **Rollen**, **Kategorien** oder **Konstanten**. Wenn Dateien fehlen, lassen Sie [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) und
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) auf einen beschreibbaren, persistenten Ort zeigen. Siehe
 [config.yaml](config/) für die Struktur.
 

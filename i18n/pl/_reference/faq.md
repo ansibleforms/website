@@ -38,13 +38,14 @@ każdy węzeł prowadzi własny dziennik. Zobacz [Skalowanie](production/scaling
 
 ### Zarządzanie formularzami z wielu repozytoriów
 
-Formularze z każdego repozytorium Git z włączoną opcją **Używać do formularzy?** są scalane automatycznie; przy powtarzających się nazwach formularzy wygrywa
-pierwszy, a w dzienniku zapisywane jest ostrzeżenie. Trzymaj `config.yaml` tylko w jednym repozytorium. Zobacz [Repozytoria git](repositories/).
+Formularze z każdego repozytorium Git z typem zastosowania **Formularze** są scalane automatycznie; przy powtarzających się nazwach formularzy wygrywa
+pierwszy, a w dzienniku zapisywane jest ostrzeżenie. Role, kategorie i stałe pochodzą każde z jednego repozytorium, tego z tym
+typem zastosowania. Zobacz [Repozytoria git](repositories/).
 
 ### O repozytoriach
 
 AnsibleForms klonuje i pobiera repozytoria Git w ścieżce repozytoriów (`REPO_PATH`), zarządzane w **Ustawienia > Repozytoria**.
-Przełączniki w każdym repozytorium określają, co ono zawiera: konfigurację, formularze, playbooki lub pliki zmiennych. Zobacz [Repozytoria git](repositories/).
+Jego typy zastosowania określają, co ono zawiera: formularze, playbooki, role, poświadczenia i wszystkie inne ustawienia przechowywane w git. Zobacz [Repozytoria git](repositories/).
 
 ### Walidacja plików formularzy w VS Code
 

@@ -38,13 +38,14 @@ cada node manté el seu propi registre. Consulta [Escalat](production/scaling.ht
 
 ### Gestió de formularis en diversos repositoris
 
-Els formularis de tots els repositoris git amb **Utilitzar per als formularis ?** activat es fusionen automàticament; si hi ha noms de formulari duplicats, guanya
-el primer i es registra un avís. Mantén `config.yaml` en un sol repositori. Consulta [Repositoris git](repositories/).
+Els formularis de tots els repositoris git amb el tipus d'ús **Formularis** es fusionen automàticament; si hi ha noms de formulari duplicats, guanya
+el primer i es registra un avís. Els rols, les categories i les constants venen cadascun d'un sol repositori, el que té aquest
+tipus d'ús. Consulta [Repositoris git](repositories/).
 
 ### Sobre els repositoris
 
 AnsibleForms clona i fa pull dels repositoris git sota la ruta de repositoris (`REPO_PATH`), que es gestionen a **Configuració > Repositoris**.
-Els interruptors de cada repositori defineixen què conté: configuració, formularis, playbooks o fitxers de variables. Consulta [Repositoris git](repositories/).
+Els seus tipus d'ús defineixen què conté: formularis, playbooks, rols, credencials i qualsevol altre ajust guardat a git. Consulta [Repositoris git](repositories/).
 
 ### Validació a VS Code dels fitxers de formulari
 

@@ -218,8 +218,8 @@ La configuració base (`config.yaml`) no s'ha pogut llegir o no és vàlida. El 
 
 **Com corregir-ho**
 
-Corregeix el fitxer que indica [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), o el `config.yaml` del
-repositori que es fa servir per a la configuració. Quan falten fitxers, fes que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) i
+Corregeix el fitxer que indica [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), o el fitxer que dona la clau al
+repositori amb el tipus d'ús **Rols**, **Categories** o **Constants**. Quan falten fitxers, fes que [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) i
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) apuntin a una ubicació persistent amb permisos d'escriptura. Consulta
 [config.yaml](config/) per a l'estructura.
 
