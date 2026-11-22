@@ -3,7 +3,7 @@ layout: default
 title: Tools
 parent: MCP-Server
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Tools
@@ -29,7 +29,7 @@ ohne eine Option deren Tools gar nicht erst angeboten werden:
 | `relaunch_job` | Startet einen Job erneut, mit einigen geänderten Feldern. Siehe unten. | immer |
 | `get_job` | Status und Ausgabe eines Jobs (`tail` begrenzt die Ausgabe auf die letzten Zeilen). | immer |
 | `plan_job` | Führt das Formular einmal später aus, als der Benutzer: was **Später ausführen (einmalig)** im Formular tut. | `allowPlannedJobs` |
-| `create_schedule` | Legt einen Zeitplan an, wiederkehrend (`cron`) oder einmalig (`run_at`), wie auf der Seite **Zeitpläne**. | `allowScheduledJobs` |
+| `create_schedule` | Legt einen Zeitplan an, wiederkehrend (`cron` oder `rrule`) oder einmalig (`one_time_run`), wie unter **Jobs > Geplant**. | `allowScheduledJobs` |
 | `list_schedules` | Die Zeitpläne, die der Benutzer sehen darf: alle mit `allowScheduledJobs`, sonst die Läufe, die er geplant hat. | `allowPlannedJobs` oder `allowScheduledJobs` |
 | `get_schedule` | Ein Zeitplan, mit seinen Extra-Variablen (geheim aussehende maskiert) und der Ausgabe seines letzten Laufs. | `allowPlannedJobs` oder `allowScheduledJobs` |
 | `delete_schedule` | Bricht einen geplanten Lauf ab oder löscht einen Zeitplan, den der Benutzer sehen darf. | `allowPlannedJobs` oder `allowScheduledJobs` |
@@ -74,8 +74,12 @@ ISO-8601-Zeit mit ihrem Offset oder `Z` (`2026-10-15T22:00:00+02:00`); eine Zeit
 und validiert und beim Auslösen des Laufs erneut geprüft, wie bei einem [geplanten Lauf](../jobs/schedules.html#planned-runs) im
 Browser. Die Antwort gibt die Laufzeit in UTC und nach der Uhr der App an.
 
-`create_schedule` nimmt ein `form`, einen `name`, entweder `cron` (fünf Felder, etwa `0 22 * * 1-5`) oder `run_at`, und die
-`extraVars`, die der Job bekommt. Ein solcher Zeitplan läuft als `Schedule Service`, ohne die Validierung des Formulars; um ein Formular einmal als
+`create_schedule` nimmt ein `form`, einen `name`, genau eine Zeitsteuerung und die `extraVars`, die der Job bekommt. Die Zeitsteuerung ist `cron`
+(fünf Felder, etwa `0 22 * * 1-5`), `rrule` (eine [Wiederholungsregel](../jobs/schedules.html#recurrence-rules) in einer Zeile) oder
+`one_time_run` (der Zeitpunkt seines einzigen Laufs, eine ISO-8601-Zeit mit Offset oder `Z`); `run_at`, sein Name vor 7.8.0, ist
+veraltet und wird in 8 entfernt. Ab 7.8.0 nimmt es auch das [Ende](../jobs/schedules.html#the-end-of-a-schedule) des Zeitplans:
+`ends` (`never`, `date` oder `count`), `end_at`, `end_count` und `end_action` (`disable` oder `remove`), oder `remove_after_run`
+für einen einmaligen Zeitplan. Ein solcher Zeitplan läuft als `Schedule Service`, ohne die Validierung des Formulars; um ein Formular einmal als
 der Benutzer auszuführen, verwenden Sie `plan_job`. Zeitplannamen sind eindeutig.
 
 ---

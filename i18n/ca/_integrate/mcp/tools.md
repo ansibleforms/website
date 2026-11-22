@@ -3,7 +3,7 @@ layout: default
 title: Eines
 parent: Servidor MCP
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Eines
@@ -29,7 +29,7 @@ sense una opció no se li ofereixen les seves eines en absolut:
 | `relaunch_job` | Torna a llançar una tasca amb alguns camps canviats. Vegeu més avall. | sempre |
 | `get_job` | Estat i sortida d'una tasca (`tail` limita la sortida a les darreres línies). | sempre |
 | `plan_job` | Executa el formulari una vegada, més tard, com l'usuari: el que fa **Executa més tard (una vegada)** al formulari. | `allowPlannedJobs` |
-| `create_schedule` | Crea una programació, recurrent (`cron`) o d'una sola vegada (`run_at`), com a la pàgina **Programacions**. | `allowScheduledJobs` |
+| `create_schedule` | Crea una programació, recurrent (`cron` o `rrule`) o d'una sola vegada (`one_time_run`), com a **Tasques > Programats**. | `allowScheduledJobs` |
 | `list_schedules` | Les programacions que l'usuari pot veure: totes amb `allowScheduledJobs`, i si no, les execucions que ha planificat. | `allowPlannedJobs` o `allowScheduledJobs` |
 | `get_schedule` | Una programació, amb les seves extra vars (les que semblen secrets, emmascarades) i la sortida de la seva darrera execució. | `allowPlannedJobs` o `allowScheduledJobs` |
 | `delete_schedule` | Cancel·la una execució planificada o suprimeix una programació que l'usuari pot veure. | `allowPlannedJobs` o `allowScheduledJobs` |
@@ -74,8 +74,12 @@ hora ISO 8601 amb el seu desplaçament o `Z` (`2026-10-15T22:00:00+02:00`); es r
 i es validen ara, i es tornen a comprovar quan arriba l'execució, com en una [execució planificada](../jobs/schedules.html#planned-runs) al
 navegador. La resposta dona l'hora de l'execució en UTC i segons el rellotge de l'aplicació.
 
-`create_schedule` accepta un `form`, un `name`, o bé `cron` (cinc camps, com ara `0 22 * * 1-5`) o bé `run_at`, i les
-`extraVars` que rep la tasca. Una programació així s'executa com a `Schedule Service`, sense la validació del formulari; per executar un formulari una vegada com
+`create_schedule` accepta un `form`, un `name`, exactament una temporització i les `extraVars` que rep la tasca. La temporització és
+`cron` (cinc camps, com ara `0 22 * * 1-5`), `rrule` (una [regla de recurrència](../jobs/schedules.html#recurrence-rules) en una sola
+línia) o `one_time_run` (el moment de la seva única execució, una hora ISO 8601 amb el seu desplaçament o `Z`); `run_at`, el seu nom
+d'abans de la 7.8.0, està obsolet i s'elimina a la 8. A partir de la 7.8.0 també accepta el [final](../jobs/schedules.html#the-end-of-a-schedule)
+de la programació: `ends` (`never`, `date` o `count`), `end_at`, `end_count` i `end_action` (`disable` o `remove`), o bé
+`remove_after_run` per a una programació d'una sola vegada. Una programació així s'executa com a `Schedule Service`, sense la validació del formulari; per executar un formulari una vegada com
 l'usuari, fes servir `plan_job`. Els noms de les programacions són únics.
 
 ---

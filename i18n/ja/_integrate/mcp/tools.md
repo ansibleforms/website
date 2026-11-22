@@ -3,7 +3,7 @@ layout: default
 title: ツール
 parent: MCP サーバー
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # ツール
@@ -29,7 +29,7 @@ MCP サーバーは最大 15 個のツールを提供します。6 個はすべ�
 | `relaunch_job` | 一部のフィールドを変更してジョブをもう一度起動します。下記を参照してください。 | 常に |
 | `get_job` | ジョブのステータスと出力（ `tail` で出力を最後の数行に制限できます）。 | 常に |
 | `plan_job` | フォームを後で 1 回、ユーザーとして実行します。フォームの **後で実行 (1 回限り)** と同じです。 | `allowPlannedJobs` |
-| `create_schedule` | **スケジュール** ページと同じく、繰り返し（ `cron` ）または 1 回限り（ `run_at` ）のスケジュールを作成します。 | `allowScheduledJobs` |
+| `create_schedule` | **ジョブ > スケジュール済み** と同じく、繰り返し（ `cron` または `rrule` ）または 1 回限り（ `one_time_run` ）のスケジュールを作成します。 | `allowScheduledJobs` |
 | `list_schedules` | ユーザーが見られるスケジュール。 `allowScheduledJobs` があればすべて、なければ自分が計画した実行です。 | `allowPlannedJobs` または `allowScheduledJobs` |
 | `get_schedule` | 1 つのスケジュールを、その追加変数（シークレットらしきものはマスク）と最後の実行の出力とともに返します。 | `allowPlannedJobs` または `allowScheduledJobs` |
 | `delete_schedule` | ユーザーが見られる計画済みの実行を取り消すか、スケジュールを削除します。 | `allowPlannedJobs` または `allowScheduledJobs` |
@@ -74,8 +74,11 @@ MCP サーバーは最大 15 個のツールを提供します。6 個はすべ�
 検証され、ブラウザーでの [計画済みの実行](../jobs/schedules.html#planned-runs) と同じく、実行時にもう一度チェックされます。
 応答では、実行時刻を UTC とアプリの時計の両方で示します。
 
-`create_schedule` は `form` 、 `name` 、 `cron` （ `0 22 * * 1-5` のような 5 つのフィールド）または `run_at` のどちらか、そしてジョブが受け取る
-`extraVars` を受け取ります。このようなスケジュールは、フォームの検証なしで `Schedule Service` として実行されます。フォームをユーザーとして 1 回実行するには、
+`create_schedule` は `form` 、 `name` 、ちょうど 1 つのタイミング、そしてジョブが受け取る `extraVars` を受け取ります。タイミングは `cron`
+（ `0 22 * * 1-5` のような 5 つのフィールド）、 `rrule` （1 行の [繰り返しルール](../jobs/schedules.html#recurrence-rules) ）、または `one_time_run`
+（1 回の実行の時刻。オフセットまたは `Z` 付きの ISO 8601 の時刻）です。7.8.0 より前の名前である `run_at` は非推奨で、8 で削除されます。
+7.8.0 以降はスケジュールの [終了](../jobs/schedules.html#the-end-of-a-schedule) も受け取ります: `ends` （ `never` 、 `date` 、 `count` ）、 `end_at` 、
+`end_count` 、 `end_action` （ `disable` または `remove` ）、または 1 回限りのスケジュールの場合は `remove_after_run` です。このようなスケジュールは、フォームの検証なしで `Schedule Service` として実行されます。フォームをユーザーとして 1 回実行するには、
 `plan_job` を使ってください。スケジュール名は一意です。
 
 ---

@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
 ---
 
 # Jobs
@@ -109,6 +109,6 @@ Chaque sujet a sa propre page :
 | [Statuts et types](statuses.html) | Chaque statut qu'un job peut avoir, et les types de job |
 | [Suivre un job](following.html) | Sortie en direct, extravars, filtres et téléchargements |
 | [Actions sur les jobs](actions.html) | Lancer, arrêter, relancer, approuver ou rejeter, et supprimer un job |
-| [Planifications](schedules.html) | Exécuter un formulaire plus tard ou selon une planification cron, et gérer toutes les planifications |
+| [Planifications](schedules.html) | Exécuter un formulaire plus tard, selon un cron ou une rrule, et gérer toutes les planifications |
 | [Jobs enregistrés](stored-jobs.html) | Conserver les données d'un formulaire pour les recharger plus tard |
 | [Nettoyage](cleanup.html) | Les jobs interrompus par un redémarrage, et la durée de conservation des jobs terminés |

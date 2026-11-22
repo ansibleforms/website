@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
 ---
 
 # Tasques
@@ -109,6 +109,6 @@ Cada tema té la seva pròpia pàgina:
 | [Estats i tipus](statuses.html) | Tots els estats que pot tenir una tasca, i els tipus de tasca |
 | [Seguir una tasca](following.html) | Sortida en directe, extravars, filtres i baixades |
 | [Accions sobre les tasques](actions.html) | Llançar, avortar, rellançar, aprovar o rebutjar, i suprimir una tasca |
-| [Programacions](schedules.html) | Executar un formulari més tard o segons una programació cron, i gestionar totes les programacions |
+| [Programacions](schedules.html) | Executar un formulari més tard, segons un cron o una rrule, i gestionar totes les programacions |
 | [Tasques desades](stored-jobs.html) | Guardar les dades d'un formulari per tornar-les a carregar més tard |
 | [Neteja](cleanup.html) | Tasques interrompudes per un reinici, i quant de temps es conserven les tasques acabades |

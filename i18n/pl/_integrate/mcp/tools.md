@@ -3,7 +3,7 @@ layout: default
 title: Narzędzia
 parent: Serwer MCP
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Narzędzia
@@ -29,7 +29,7 @@ bez danej opcji w ogóle nie dostaje jej narzędzi:
 | `relaunch_job` | Uruchamia zadanie ponownie ze zmienionymi niektórymi polami. Zobacz niżej. | zawsze |
 | `get_job` | Stan i wynik zadania (`tail` ogranicza wynik do ostatnich wierszy). | zawsze |
 | `plan_job` | Uruchamia formularz raz, później, jako użytkownik: to, co robi **Uruchom później (jednorazowo)** w formularzu. | `allowPlannedJobs` |
-| `create_schedule` | Tworzy harmonogram, cykliczny (`cron`) lub jednorazowy (`run_at`), jak na stronie **Harmonogramy**. | `allowScheduledJobs` |
+| `create_schedule` | Tworzy harmonogram, cykliczny (`cron` lub `rrule`) albo jednorazowy (`one_time_run`), jak w **Zadania > Zaplanowane**. | `allowScheduledJobs` |
 | `list_schedules` | Harmonogramy, które użytkownik może widzieć: wszystkie przy `allowScheduledJobs`, w przeciwnym razie zaplanowane przez niego uruchomienia. | `allowPlannedJobs` lub `allowScheduledJobs` |
 | `get_schedule` | Jeden harmonogram, z jego extra vars (te wyglądające na sekrety są maskowane) i wynikiem ostatniego uruchomienia. | `allowPlannedJobs` lub `allowScheduledJobs` |
 | `delete_schedule` | Anuluje zaplanowane uruchomienie lub usuwa harmonogram, który użytkownik może widzieć. | `allowPlannedJobs` lub `allowScheduledJobs` |
@@ -74,8 +74,12 @@ czasem ISO 8601 z przesunięciem lub `Z` (`2026-10-15T22:00:00+02:00`); czas bez
 i walidowane od razu, a następnie sprawdzane ponownie w chwili uruchomienia, tak jak w przypadku [zaplanowanego uruchomienia](../jobs/schedules.html#planned-runs) w
 przeglądarce. Odpowiedź podaje czas uruchomienia w UTC i według zegara aplikacji.
 
-`create_schedule` przyjmuje `form`, `name`, albo `cron` (pięć pól, na przykład `0 22 * * 1-5`), albo `run_at`, oraz
-`extraVars`, które otrzyma zadanie. Taki harmonogram działa jako `Schedule Service`, bez walidacji formularza; aby uruchomić formularz raz jako
+`create_schedule` przyjmuje `form`, `name`, dokładnie jeden sposób planowania oraz `extraVars`, które otrzyma zadanie. Sposób planowania to `cron` (pięć
+pól, na przykład `0 22 * * 1-5`), `rrule` ([reguła powtarzania](../jobs/schedules.html#recurrence-rules) w jednym wierszu) albo
+`one_time_run` (chwila jedynego uruchomienia, czas ISO 8601 z przesunięciem lub `Z`); `run_at`, jego nazwa sprzed wersji 7.8.0, jest
+przestarzałe i zostanie usunięte w wersji 8. Od wersji 7.8.0 przyjmuje też [koniec](../jobs/schedules.html#the-end-of-a-schedule) harmonogramu:
+`ends` (`never`, `date` lub `count`), `end_at`, `end_count` i `end_action` (`disable` lub `remove`) albo `remove_after_run`
+dla harmonogramu jednorazowego. Taki harmonogram działa jako `Schedule Service`, bez walidacji formularza; aby uruchomić formularz raz jako
 użytkownik, użyj `plan_job`. Nazwy harmonogramów są unikalne.
 
 ---

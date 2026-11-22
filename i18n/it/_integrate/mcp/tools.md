@@ -3,7 +3,7 @@ layout: default
 title: Strumenti
 parent: Server MCP
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Strumenti
@@ -29,7 +29,7 @@ senza un'opzione i relativi strumenti non vengono proprio offerti:
 | `relaunch_job` | Avvia di nuovo un job con alcuni campi modificati. Vedi sotto. | sempre |
 | `get_job` | Stato e output di un job (`tail` limita l'output alle ultime righe). | sempre |
 | `plan_job` | Esegue il modulo una volta, più tardi, come l'utente: ciò che fa **Esegui più tardi (una volta)** sul modulo. | `allowPlannedJobs` |
-| `create_schedule` | Crea una pianificazione, ricorrente (`cron`) o singola (`run_at`), come nella pagina **Pianificazioni**. | `allowScheduledJobs` |
+| `create_schedule` | Crea una pianificazione, ricorrente (`cron` o `rrule`) o singola (`one_time_run`), come in **Job > Pianificati**. | `allowScheduledJobs` |
 | `list_schedules` | Le pianificazioni che l'utente può vedere: tutte con `allowScheduledJobs`, altrimenti le esecuzioni che ha pianificato. | `allowPlannedJobs` o `allowScheduledJobs` |
 | `get_schedule` | Una pianificazione, con le sue extra vars (quelle che sembrano segreti mascherate) e l'output della sua ultima esecuzione. | `allowPlannedJobs` o `allowScheduledJobs` |
 | `delete_schedule` | Annulla un'esecuzione pianificata o elimina una pianificazione che l'utente può vedere. | `allowPlannedJobs` o `allowScheduledJobs` |
@@ -74,8 +74,12 @@ orario ISO 8601 con il suo offset o `Z` (`2026-10-15T22:00:00+02:00`); un orario
 e validati subito, e controllati di nuovo quando l'esecuzione parte, come per un'[esecuzione pianificata](../jobs/schedules.html#planned-runs) nel
 browser. La risposta indica l'orario dell'esecuzione in UTC e sull'orologio dell'app.
 
-`create_schedule` accetta un `form`, un `name`, o `cron` (cinque campi, come `0 22 * * 1-5`) o `run_at`, e le
-`extraVars` che riceve il job. Una pianificazione del genere gira come `Schedule Service`, senza la validazione del modulo; per eseguire un modulo una volta come
+`create_schedule` accetta un `form`, un `name`, esattamente una tempistica, e le `extraVars` che riceve il job. La tempistica è `cron`
+(cinque campi, come `0 22 * * 1-5`), `rrule` (una [regola di ricorrenza](../jobs/schedules.html#recurrence-rules) su una riga) o
+`one_time_run` (il momento della sua unica esecuzione, un orario ISO 8601 con il suo offset o `Z`); `run_at`, il suo nome prima della 7.8.0, è
+deprecato e rimosso nella 8. Dalla 7.8.0 accetta anche la [fine](../jobs/schedules.html#the-end-of-a-schedule) della pianificazione:
+`ends` (`never`, `date` o `count`), `end_at`, `end_count` e `end_action` (`disable` o `remove`), oppure `remove_after_run`
+per una pianificazione singola. Una pianificazione del genere gira come `Schedule Service`, senza la validazione del modulo; per eseguire un modulo una volta come
 l'utente, usa `plan_job`. I nomi delle pianificazioni sono univoci.
 
 ---
