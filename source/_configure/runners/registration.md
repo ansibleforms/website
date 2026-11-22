@@ -18,25 +18,25 @@ How an RTE asks to join and is approved, join tokens for unattended installs, an
 
 ## Asking to join
 
-Since 7.3.0, an RTE in a socket mode (`outbound` or `inbound`) that the app does not know yet asks to join, and an admin approves it.
-It calls in with its own `RTE_TOKEN` and its `RTE_NAME`: an outbound RTE when it first dials the app, an inbound one in its one
-registration call. Without a join token, the app then:
+Since 7.3.0, an RTE in a socket mode (`outbound` or `inbound`) that the controller does not know yet asks to join, and an admin approves it.
+It calls in with its own `RTE_TOKEN` and its `RTE_NAME`: an outbound RTE when it first dials the controller, an inbound one in its one
+registration call. Without a join token, the controller then:
 
 1. Stores the RTE's `RTE_TOKEN` in a new credential of type RTE named `<name>-rte` (with a number added when that name is taken), and
    for an inbound RTE its address, `RTE_URL`
 2. Adds a runner named after `RTE_NAME`, type RTE, in the RTE's mode, signing in with that credential, marked **Waiting for approval**
    and turned off. Its description says the host it asked from
 
-An outbound RTE stays connected while it waits, but gets no job. The app does not dial an inbound one until it is approved. Both log
+An outbound RTE stays connected while it waits, but gets no job. The controller does not dial an inbound one until it is approved. Both log
 that they wait for an admin to approve them under **Connections > Runners**, with the fingerprint of their token.
 
-An inbound RTE with an `https://` `RTE_URL` also sends its certificate when it asks to join, and the app pins it: from then on the
+An inbound RTE with an `https://` `RTE_URL` also sends its certificate when it asks to join, and the controller pins it: from then on the
 app dials that RTE only when it presents the same certificate, so a self-signed one works without a CA (see [Inbound](../rte/modes.html#inbound)).
 
 At most 20 RTEs wait for approval at once: more are refused until some are approved or rejected. A request nobody handles within
 24 hours is removed by the worker, with its credential.
 
-An RTE named after a runner the app knows already, but with another token, is refused and does not ask to join. Give it that runner's
+An RTE named after a runner the controller knows already, but with another token, is refused and does not ask to join. Give it that runner's
 token, or delete the runner so that it asks to join. A [join token](#join-tokens) helps only while that runner still waits for approval.
 
 ---
@@ -53,11 +53,11 @@ Its page shows the same facts in a yellow box, **This RTE asked to join**. Check
 | Field | What it shows |
 |---|---|
 | Fingerprint | The first 8 hexadecimal digits of the SHA-256 of its `RTE_TOKEN`, as `abcd-ef12`. The RTE logs it at its start, and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
-| Certificate fingerprint | In the dialog, for an inbound RTE over HTTPS: the first 8 hexadecimal digits of the SHA-256 of the certificate the app pins (its DER bytes), as `abcd-ef12`. The RTE logs it at its start and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
+| Certificate fingerprint | In the dialog, for an inbound RTE over HTTPS: the first 8 hexadecimal digits of the SHA-256 of the certificate the controller pins (its DER bytes), as `abcd-ef12`. The RTE logs it at its start and the [installer](../installation/installer.html#a-runner) prints it at the end. It must be the same |
 | Host | The host it runs on |
-| IP address | The address it called the app from |
+| IP address | The address it called the controller from |
 | Mode | Outbound or Inbound |
-| Uri | An inbound RTE's address, where the app dials it |
+| Uri | An inbound RTE's address, where the controller dials it |
 | Version | Its release |
 | Asked on | When it asked to join |
 

@@ -24,6 +24,23 @@ The top-level `roles` list of config.yaml:
 
 ---
 
+## Adding a role
+
+Under **Settings > Access > Roles**, **Add role** opens the **New role** wizard, in four steps since 7.8.0:
+
+| Step | What it asks |
+|---|---|
+| **Details** | The name, unique among the roles, and the description. **Next** waits for a name no other role has |
+| **Permissions** | The [role options](#role-options), in their four groups, starting from everyone's defaults |
+| **Users** | The users the role names, each picked with **Add user** |
+| **Groups** | The groups the role names, each picked with **Add group** |
+
+**Save**, on the last step, adds the role and saves the roles; when the save is refused, the wizard stays open and nothing is added.
+The role then has its own page, where its permissions, users and groups can be changed. **Add role** is disabled while the roles
+cannot be saved from the page, for example when they come from a ytt template.
+
+---
+
 ## The default role
 
 Every signed-in user has the `default` role, so a form with `roles: [default]` is open to everyone who can sign in. There

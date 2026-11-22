@@ -8,7 +8,7 @@ nav_order: 4
 # Scaling
 {: .no_toc }
 
-AnsibleForms split over several app nodes and a worker, next to one or more RTEs
+AnsibleForms split over several controller nodes and a worker, next to one or more RTEs
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -22,13 +22,16 @@ Every AnsibleForms container runs the same server code, and [`AF_ROLE`](../custo
 
 | `AF_ROLE` | Image | Runs | How many |
 |---|---|---|---|
-| `all` (unset) | `ansibleforms` | The web app and the worker in one process: the default | 1 |
-| `app` | `ansibleforms` | The web interface and the API | As many as you like, behind a load balancer |
+| `all` (unset) | `ansibleforms` | The controller's web interface and API, and the worker, in one process: the default | 1 |
+| `controller` | `ansibleforms` | The web interface and the API | As many as you like, behind a load balancer |
 | `worker` | `ansibleforms` | The background work: the database schema and its upgrades, the config seed, the schedules, the nightly backup, the repository syncs and the cleanups | One at work; more wait and take over |
 | `rte` | `ansibleforms-rte-full` (or `-rte-core`, `-rte-base`) | The playbooks | As many as you like |
 
 The smallest installation is one container without `AF_ROLE` next to one RTE: this is what the [Docker Compose project](../installation/docker-compose.html)
 and the [Helm chart](../installation/kubernetes.html) run. Any other value of `AF_ROLE` stops the process at its start.
+
+Up to 7.7, the `controller` role was called `app`. Since 7.8.0 `AF_ROLE=app` is deprecated and removed in 8.0: it still runs as
+`controller`, with a warning in the log at start, and the node keeps its `app-` name, so it finds its own jobs again after the upgrade.
 
 ---
 
@@ -40,24 +43,24 @@ replicas, and [an RTE in another datacenter](../rte/another-datacenter.html).
 
 ---
 
-## Several app nodes
+## Several controller nodes
 
-To serve more users, or to survive the loss of one node, split the app into `app` nodes behind a load balancer and a `worker`.
+To serve more users, or to survive the loss of one node, split it into `controller` nodes behind a load balancer and a `worker`.
 
 ### What the nodes share
 {: .no_toc }
 
 The nodes agree with each other through the database and a shared volume:
 
-* **The database** : the jobs, the worker lock, the designer lock, the list of nodes, the runner leases (which app node holds the
+* **The database** : the jobs, the worker lock, the designer lock, the list of nodes, the runner leases (which controller node holds the
   socket of each RTE) and the change notices that keep every node's caches current. A credential, a runner or a schedule edited
   on one node is in force on all of them within 5 seconds
 * **The persistent volume** (`/app/dist/persistent`) : forms, the config, repositories, uploads, backups and the managed `.env`.
-  Every app node and the worker mount the same one, read-write
+  Every controller node and the worker mount the same one, read-write
 * **The ssh folder** (`/home/node/.ssh`) : the key and the known hosts for git over ssh; the worker creates the key at its first start
-* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : the same on every app node, or a token signed
-  by one node is refused by the next. An app node refuses to start without it
-* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : the same on every app node and worker, or a
+* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : the same on every controller node, or a token signed
+  by one node is refused by the next. A controller node refuses to start without it
+* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : the same on every controller node and worker, or a
   credential stored by one cannot be read by another. An RTE in socket mode never reads it; only a deprecated database-mode RTE
   that registers itself needs it
 
@@ -80,17 +83,17 @@ worker at the same database node.
 Every container names itself `<role>-<hostname>-<port>`, with nothing to set, and the **Status** page lists them all with their role
 and version, which one is the worker, and a warning when they run different versions.
 
-A job running on an RTE belongs to that RTE, and carries on when the app node that started it goes. Any other job (a template job
-on AWX or another runner, a workflow job, or the steps of a deprecated multistep form) belongs to the app node that started it. A container that restarts ends its own unfinished jobs, and the
+A job running on an RTE belongs to that RTE, and carries on when the controller node that started it goes. Any other job (a template job
+on AWX or another runner, a workflow job, or the steps of a deprecated multistep form) belongs to the controller node that started it. A container that restarts ends its own unfinished jobs, and the
 worker ends the jobs of a container that stopped answering for two minutes, such as a replaced pod.
 
-A `SIGHUP` sent to any node re-applies the [config seed](../seed/): an app node asks the worker to do it.
+A `SIGHUP` sent to any node re-applies the [config seed](../seed/): a controller node asks the worker to do it.
 
 ### Upgrading
 {: .no_toc }
 
-Upgrade the **worker first**, then the app nodes. The worker patches the schema, and an app node of the new version waits until the
-schema is patched and logs what it waits for. App nodes upgraded first stay unready until the worker follows, while the old ones keep
+Upgrade the **worker first**, then the controller nodes. The worker patches the schema, and a controller node of the new version waits until the
+schema is patched and logs what it waits for. Controller nodes upgraded first stay unready until the worker follows, while the old ones keep
 serving. RTEs can follow at any time, as long as they speak the same contract.
 
 ### Limits
@@ -98,8 +101,8 @@ serving. RTEs can follow at any time, as long as they speak the same contract.
 
 A few things stay with one node:
 
-* **The chat assistant** keeps its conversations in the memory of one app node: use sticky sessions on the load balancer (nginx
-  `ip_hash`), or a single app node
+* **The chat assistant** keeps its conversations in the memory of one controller node: use sticky sessions on the load balancer (nginx
+  `ip_hash`), or a single controller node
 * **Logs** stay in each container. Set [`LOG_PATH`](../customization/logging.html#env_LOG_PATH) off the shared volume, because several
   processes rotating one file lose lines. The log viewer shows the log of the node that answers, so collect the logs centrally
 * **Settings** changed on the settings pages are written to the managed `.env` on the shared volume and apply on every node; the ones
@@ -114,17 +117,17 @@ The app repository has a complete starting point in [examples/scale](https://git
 | Service | Image | Role |
 |---|---|---|
 | `db` | `mariadb:11` | The database, with a user that has rights on the `AnsibleForms` schema only |
-| `app1`, `app2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=app`, behind the load balancer |
+| `controller1`, `controller2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=controller`, behind the load balancer |
 | `worker1`, `worker2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=worker`: the second one waits and takes over |
-| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Runs the playbooks with `RTE_MODE=inbound` and `RTE_FILES=local`: the app dials it |
-| `lb` | `nginx:stable` | Terminates HTTPS on port 8443 and spreads the browsers over the app nodes with `ip_hash` |
+| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Runs the playbooks with `RTE_MODE=inbound` and `RTE_FILES=local`: the controller dials it |
+| `lb` | `nginx:stable` | Terminates HTTPS on port 8443 and spreads the browsers over the controller nodes with `ip_hash` |
 
 The RTE's runner `rte` and the credential it signs in with (its address `http://rte:8000` and `RTE_TOKEN`) are declared in the
 [config seed](../seed/) `seed.yaml`, which the worker applies at every start; the RTE sets no `RTE_URL` and is not published on the host.
 
-The app nodes and the workers share one `.env`, with the database user, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
+The controller nodes and the workers share one `.env`, with the database user, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
 `CONFIG_SEED_PATH`, `HTTPS=0` behind the load balancer and a `LOG_PATH` off the shared volume. The RTE has no `env_file`: it gets
-only `RTE_TOKEN` from `compose.yaml`, so it holds no database password. The app nodes, the workers and the RTE mount the same
+only `RTE_TOKEN` from `compose.yaml`, so it holds no database password. The controller nodes, the workers and the RTE mount the same
 persistent and ssh volumes:
 
 ```bash

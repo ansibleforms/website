@@ -38,8 +38,8 @@ apply as soon as they are saved; the others are saved but need a restart, and th
 the process environment cannot be changed there: the page shows it as *Set in the environment, so it cannot be changed here.*
 A few variables, such as `ENCRYPTION_SECRET` and `ACCESS_TOKEN_SECRET`, can never be changed from the page.
 
-The variables an RTE reads, such as `AF_ROLE`, `RTE_MODE`, `APP_URL` or `RTE_MAX_JOBS`, are not on the settings pages at all: the
-app does not use them, so set them in the environment where the RTE runs. The `RTE_*` variables the app itself reads,
+The variables an RTE reads, such as `AF_ROLE`, `RTE_MODE`, `CONTROLLER_URL` or `RTE_MAX_JOBS`, are not on the settings pages at all: the
+controller does not use them, so set them in the environment where the RTE runs. The `RTE_*` variables the controller itself reads,
 `RTE_QUEUE_MINUTES` and `RTE_FILES_MAX_MB`, are the exception and stay on the pages. Four RTE variables, `RTE_MAX_JOBS`,
 `RTE_CACHE_MB`, `RTE_FILES` and `RTE_DRAIN_SECONDS`, can be set per RTE on its runner page instead, where a value wins over the
 variable (see [An RTE's settings](../runners/runner-page.html#an-rtes-settings)).

@@ -44,26 +44,26 @@ so at the top of its page, and is read only.
 
 ## An RTE's settings
 
-The RTE tab manages an RTE from the app, without editing its environment on the machine it runs on.
+The RTE tab manages an RTE from the controller, without editing its environment on the machine it runs on.
 
-**Connection.** An RTE in a socket mode shows a badge: **Connected** or **Not connected**. On hover, **Connected** shows the app node
-that holds its socket, the RTE's release, and how many of its jobs run. **Not connected** means no app node holds a socket to it:
-check that the RTE runs, its address or `APP_URL`, and its token.
+**Connection.** An RTE in a socket mode shows a badge: **Connected** or **Not connected**. On hover, **Connected** shows the controller node
+that holds its socket, the RTE's release, and how many of its jobs run. **Not connected** means no controller node holds a socket to it:
+check that the RTE runs, its address or `CONTROLLER_URL`, and its token.
 
 **Settings.** An RTE in outbound or inbound mode has four settings, each empty by default:
 
 | Setting | The same as | What it does |
 |---|---|---|
 | Max concurrent jobs | [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | How many playbooks it runs at once, `10` by default; `0` sets no limit |
-| Job files cache | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | How much of the job files the app sent it keeps, in MB, `1024` by default; `0` keeps none |
+| Job files cache | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | How much of the job files the controller sent it keeps, in MB, `1024` by default; `0` keeps none |
 | Drain time on stop | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | How long a stopping RTE waits for its running playbooks, `25` seconds by default |
-| Job files | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Transfer**: the app sends a job's files with the job. **Local**: it runs from its own mounted folders |
+| Job files | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Transfer**: the controller sends a job's files with the job. **Local**: it runs from its own mounted folders |
 
 **Which value wins.** A value on the page wins over the same variable set on the RTE. A field left empty uses the RTE's own variable,
 else the default. Under each field the page says which: **Overrides RTE_MAX_JOBS set on the RTE (3)**, or **Empty: the RTE uses its
 own RTE_MAX_JOBS, 3**; the placeholder shows the value an empty field stands for.
 
-**How they reach the RTE.** The settings are stored with the runner in the app's database. The app sends them over the RTE's socket
+**How they reach the RTE.** The settings are stored with the runner in the controller's database. The controller sends them over the RTE's socket
 when it connects and whenever they are saved, and the RTE applies them at once: a smaller cache is trimmed, a new limit counts from the
 next job. The RTE keeps them in memory only and writes no file: after a restart it gets them again as it connects, before its first job.
 
@@ -84,7 +84,7 @@ OK**, or why it failed. It runs no job. For an RTE it also checks the contract t
 
 | RTE | What the test reads | When it fails |
 |---|---|---|
-| Outbound or Inbound | Who holds its socket, as every app node records it, and what the RTE said when it connected. It calls nothing | No app node holds a socket to it: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app*, or for an inbound one, *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE*. Or the RTE speaks another contract than 3 |
+| Outbound or Inbound | Who holds its socket, as every controller node records it, and what the RTE said when it connected. It calls nothing | No controller node holds a socket to it: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller*, or for an inbound one, *no controller node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the controller to the RTE*. Or the RTE speaks another contract than 3 |
 | Database (deprecated) | The RTE's `/rte/v1/health`, called with its token | The RTE does not answer at its address, refuses the token, or speaks another contract than 2 |
 
 The **Connection** badge of the RTE tab shows the same socket state without a test.
