@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
 
 面向管理员：config.yaml 文件保存所有表单共用的类别、角色和常量。
 
-AnsibleForms 使用 config.yaml 文件来配置类别、角色和常量。如果没有提供该文件，会生成一个包含最小配置的文件。也可以将配置导入数据库，这样就不再需要 config.yaml 文件。
+AnsibleForms 使用 config.yaml 文件来配置类别、角色和常量。如果没有提供该文件，会生成一个包含最小配置的文件。也可以将配置导入数据库，这样就不再需要 config.yaml 文件；这三项中的每一项也都可以保存在 git 仓库中。
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## 配置加载优先级
 
-AnsibleForms 按以下顺序加载 config.yaml 文件（先匹配者优先）：
+从 7.8.0 起，类别、角色和常量各自单独读取，来自下面第一个包含它的来源。
 
-1. **来自数据库**：导入到数据库中的配置，仅当 `ENABLE_CONFIG_IN_DATABASE=1` 时，或该
+1. **来自仓库**：具有**类别**、**角色**或**常量**用途类型的仓库中，给出 `controller_categories:` 、
+   `controller_roles:` 或 `controller_constants:` 的文件，名称和文件夹任意（参见
+   [git 中的配置](../repositories/config-as-code.html#roles-categories-and-constants)）
+2. **来自仓库的 config.yaml**：该仓库 `config.yaml` 中的普通键，自 7.8.0 起已弃用，8.0 中将不再
+   读取；服务器日志、拉取输出和仓库页面都会说明这一点
+3. **来自数据库**：导入到数据库中的配置，仅当 `ENABLE_CONFIG_IN_DATABASE=1` 时，或该
    变量未设置且数据库中保存的配置来源为 `database` 时使用（空副本会回退到文件）
-2. **来自仓库（use_for_config）**：启用了“用于配置”开关的仓库（6.1.0 新增）
-3. **来自仓库（use_for_forms）**：启用了“用于表单”开关的仓库（为向后兼容而保留的回退）
 4. **来自本地文件**：本地 `config.yaml` 文件（CONFIG_PATH 环境变量）
 
 {: .warning }
-> **注意：** 只在一个仓库上启用“用于配置”。如果有多个仓库启用了它，会记录一条警告，并使用第一个。
+> **注意：** 从 7.8.0 起，**用于配置？**开关已不复存在。升级时会把**角色**、**类别**和**常量**交给
+> 原先启用它的仓库；配置种子或 API 中的 `use_for_config` 是这三项的已弃用别名。
 
 ---
 

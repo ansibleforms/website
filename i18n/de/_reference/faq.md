@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: e9b6f09a90aed0d97e45caaec7881a9786b3bac8
 ---
 
 # Häufig gestellte Fragen
@@ -38,13 +38,14 @@ jeder Knoten führt sein eigenes Protokoll. Siehe [Skalierung](production/scalin
 
 ### Formulare aus mehreren Repositories verwalten
 
-Formulare aus jedem Git-Repository mit eingeschaltetem **Für Formulare verwenden?** werden automatisch zusammengeführt; bei doppelten Formularnamen gewinnt das erste,
-und eine Warnung wird protokolliert. Behalten Sie `config.yaml` in nur einem Repository. Siehe [Git-Repositories](repositories/).
+Formulare aus jedem Git-Repository mit dem Verwendungstyp **Formulare** werden automatisch zusammengeführt; bei doppelten Formularnamen gewinnt das erste,
+und eine Warnung wird protokolliert. Die Rollen, die Kategorien und die Konstanten kommen jeweils aus einem Repository, dem mit diesem
+Verwendungstyp. Siehe [Git-Repositories](repositories/).
 
 ### Über Repositories
 
 AnsibleForms klont und pullt Git-Repositories unter dem Repository-Pfad (`REPO_PATH`), verwaltet unter **Einstellungen > Repositories**.
-Schalter an jedem Repository legen fest, was es enthält: Konfiguration, Formulare, Playbooks oder Vars-Dateien. Siehe [Git-Repositories](repositories/).
+Die Verwendungstypen eines Repositorys legen fest, was es enthält: Formulare, Playbooks, Rollen, Anmeldedaten und jede andere in git aufbewahrte Einstellung. Siehe [Git-Repositories](repositories/).
 
 ### VS-Code-Validierung für Formulardateien
 

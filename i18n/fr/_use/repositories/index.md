@@ -7,46 +7,55 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 ---
 
 # Dépôts git
 {: .no_toc }
 
-Conserver les formulaires, les fichiers de variables, la configuration et les playbooks dans git
+Conserver les formulaires, les playbooks, les paramètres et les connexions dans git
 {: .fs-6 .fw-300 }
 
 ---
 
-Pour les admins qui conservent formulaires, configuration et playbooks dans git : ce qu'un dépôt peut contenir et quelle source l'emporte.
+Pour les admins qui conservent formulaires, playbooks et configuration de l'application dans git : ce qu'un dépôt peut contenir et quelle source l'emporte.
 
 ---
 
 ## À quoi sert un dépôt
 
-Un dépôt est un dépôt git distant qu'AnsibleForms clone et tient à jour, et chacun a des interrupteurs qui indiquent ce qu'il contient :
+Un dépôt est un dépôt git distant qu'AnsibleForms clone et tient à jour, et ses types d'usage disent ce que l'application en tire.
 
-| Interrupteur | Ce qu'AnsibleForms y lit | Dossier dans le dépôt |
+Depuis la 7.8.0, l'étape **Utilisation** d'un dépôt liste les types d'usage sous six rubriques : **Designer**, **Jobs**, **Système**,
+**Apparence**, **Accès** et **Connexions**. Les types de **Designer** sont les fichiers que l'application lit tels quels :
+
+| Type d'usage | Ce qu'AnsibleForms y lit | Où dans le dépôt |
 |---|---|---|
-| **Utiliser pour la configuration ?** | `config.yaml` avec les catégories, les rôles et les constantes | la racine |
-| **Utiliser pour les formulaires ?** | Les fichiers de formulaires, que le concepteur y enregistre aussi, et leurs fichiers de variables | `forms`, ou la racine ; fichiers de variables dans `vars` |
-| **Utiliser pour les playbooks ?** | Les playbooks Ansible qu'exécutent les jobs | `playbooks`, ou la racine |
-| **Utiliser pour les workflows ?** | Les fichiers de [workflow](../workflows/), que le concepteur y enregistre aussi | n'importe quel dossier |
-| **Utiliser pour les inventaires ?** | Un inventaire, nommé d'après le dépôt, qu'un formulaire désigne avec `inventory:` | la racine : `inventory.yaml`, `group_vars`, `host_vars` |
+| **Formulaires** | Les fichiers de formulaires, que le concepteur y enregistre aussi, et leurs fichiers de variables | `forms`, ou la racine ; fichiers de variables dans `vars` |
+| **Playbooks** | Les playbooks Ansible qu'exécutent les jobs | `playbooks`, ou la racine |
+| **Workflows** | Les fichiers de [workflow](../workflows/), que le concepteur y enregistre aussi | n'importe quel dossier |
+| **Inventaires** | Un inventaire, nommé d'après le dépôt, qu'un formulaire désigne avec `inventory:` | la racine : `inventory.yaml`, `group_vars`, `host_vars` |
+| **Catégories**, **Constantes** | Les catégories et les constantes, que le concepteur enregistre aussi dans leur fichier | le fichier qui donne `controller_categories:` ou `controller_constants:` |
 
-Sans le sous-dossier, la racine du dépôt est utilisée. Un seul dépôt peut tout contenir ; si vous les séparez, seuls **Utiliser pour les
-formulaires**, **Utiliser pour les workflows** et **Utiliser pour les inventaires** peuvent être activés sur plusieurs : les autres interrupteurs prennent le premier dépôt
-et journalisent un avertissement.
+Chaque autre type conserve des paramètres, des utilisateurs ou des connexions de l'application dans des fichiers YAML, lus et écrits dans les deux sens :
+les planifications, les paramètres Général, les pages Apparence, les utilisateurs, groupes et rôles, les méthodes de connexion, les identifiants, les runners et
+les autres connexions. Ils sont décrits dans [Configuration dans git](config-as-code.html).
 
-Chaque dépôt est cloné dans un sous-dossier qui porte son nom, sous [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+**Formulaires**, **Workflows** et **Inventaires** peuvent être cochés sur plusieurs dépôts ; les **Playbooks** viennent du premier,
+et chaque autre type d'un seul dépôt au plus. Chaque dépôt est cloné dans un sous-dossier qui porte son nom, sous
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+
+L'interrupteur **Utiliser pour la configuration ?** d'avant la 7.8.0 est remplacé par **Rôles**, **Catégories** et **Constantes**, chacun lu depuis le
+fichier qui donne sa clé ; le `config.yaml` d'un dépôt est encore lu, mais déprécié (voir
+[Rôles, catégories et constantes](config-as-code.html#roles-categories-and-constants)).
 
 ### Un seul dépôt pour tout
 
-Un seul dépôt peut contenir les formulaires, les fichiers de variables, la configuration et les playbooks, avec les interrupteurs activés et un sous-dossier par type.
+Un seul dépôt peut contenir les formulaires, les fichiers de variables, la configuration et les playbooks, avec les types d'usage cochés et un sous-dossier par type.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +63,15 @@ forms-repo/
 
 ### Un dépôt par usage
 
-Des dépôts séparés permettent aux équipes de posséder leur partie, avec un interrupteur chacun et les fichiers directement à la racine.
+Des dépôts séparés permettent aux équipes de posséder leur partie, chacun avec ses propres types d'usage et les fichiers directement à la racine.
 
-| Dépôt | Interrupteur | Contenu à la racine |
+| Dépôt | Types d'usage | Contenu à la racine |
 |---|---|---|
-| `af-config` | **Utiliser pour la configuration ?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Utiliser pour les formulaires ?** | Les fichiers de formulaires de chaque équipe, fusionnés en une seule liste |
-| `af-playbooks` | **Utiliser pour les playbooks ?** | Les playbooks et les rôles |
+| `af-platform` | **Rôles**, **Catégories**, **Constantes**, **Identifiants**, **Runners** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Formulaires** | Les fichiers de formulaires de chaque équipe, fusionnés en une seule liste |
+| `af-playbooks` | **Playbooks** | Les playbooks et les rôles |
 
-Seuls les formulaires peuvent venir de plusieurs dépôts ; la configuration et les playbooks viennent chacun d'un seul. Les fichiers de variables viennent du dossier `vars`
-du premier dépôt de formulaires qui en a un.
+Les fichiers de variables viennent du dossier `vars` du premier dépôt de formulaires qui en a un.
 
 ---
 
@@ -73,14 +81,14 @@ Le contenu d'un dépôt remplace le dossier local correspondant ; ce tableau ré
 
 | Contenu | Lu depuis, la première correspondance l'emporte |
 |---|---|
-| Configuration | 1. la base de données, quand la configuration y est conservée ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. le `config.yaml` du dépôt **Utiliser pour la configuration** <br> 3. le `config.yaml` d'un dépôt **Utiliser pour les formulaires**, quand aucun dépôt n'est utilisé pour la configuration <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Formulaires | Chaque dépôt **Utiliser pour les formulaires** plus `FORMS_STAGING_PATH` ; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) uniquement s'il n'y en a aucun |
-| Playbooks | Le dépôt **Utiliser pour les playbooks**, sinon [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Fichiers de variables | Le dossier `vars` du premier dépôt **Utiliser pour les formulaires** qui en a un, sinon [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflows | Chaque dépôt **Utiliser pour les workflows** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), ensemble |
+| Rôles, catégories, constantes | Chaque clé séparément : 1. le fichier qui donne `controller_roles:`, `controller_categories:` ou `controller_constants:` dans le dépôt ayant ce type d'usage <br> 2. le `config.yaml` de ce dépôt (déprécié) <br> 3. la configuration de base : la base de données, quand la configuration y est conservée ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), sinon [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Formulaires | Chaque dépôt **Formulaires** plus `FORMS_STAGING_PATH` ; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) uniquement s'il n'y en a aucun |
+| Playbooks | Le dépôt **Playbooks**, sinon [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| Fichiers de variables | Le dossier `vars` du premier dépôt **Formulaires** qui en a un, sinon [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflows | Chaque dépôt **Workflows** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), ensemble |
 
-Les formulaires de plusieurs dépôts sont fusionnés en une seule liste. Quand deux d'entre eux contiennent un formulaire portant le même nom, le premier
-chargé est conservé et l'avertissement `skipping duplicate form <name>` est journalisé : gardez donc des noms de formulaire uniques entre les dépôts.
+Les formulaires de plusieurs dépôts sont lus dans l'ordre où les dépôts ont été ajoutés. Quand deux d'entre eux contiennent un formulaire portant le même
+nom, la copie du dépôt ajouté en premier est utilisée, et un avertissement nomme les deux copies : gardez donc des noms de formulaire uniques entre les dépôts.
 
 ---
 
@@ -108,3 +116,4 @@ Chaque sujet a sa propre page :
 | [Authentification](authentication.html) | HTTPS avec un jeton, SSH avec la clé générée, et commandes git personnalisées |
 | [Récupérer les modifications](pulling.html) | Pulls planifiés, manuels et via l'API, et modifications locales |
 | [Concepteur et push](designer.html) | Modifier des formulaires dans le concepteur et les pousser vers le dépôt |
+| [Configuration dans git](config-as-code.html) | Chaque paramètre conservé dans un dépôt git, lu et écrit dans les deux sens |

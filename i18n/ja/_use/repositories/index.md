@@ -7,46 +7,55 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 ---
 
 # Git リポジトリ
 {: .no_toc }
 
-フォーム、変数ファイル、設定、playbook を git で管理する
+フォーム、playbook、設定、接続を git で管理する
 {: .fs-6 .fw-300 }
 
 ---
 
-フォーム、設定、playbook を git で管理する管理者向け: リポジトリに置けるものと、どのソースが優先されるかを説明します。
+フォーム、playbook、アプリの設定を git で管理する管理者向け: リポジトリに置けるものと、どのソースが優先されるかを説明します。
 
 ---
 
 ## リポジトリの用途
 
-リポジトリとは、AnsibleForms がクローンして最新の状態に保つ git リモートです。リポジトリごとに、何を保持しているかを示すスイッチがあります。
+リポジトリとは、AnsibleForms がクローンして最新の状態に保つ git リモートです。その用途の種類が、アプリがそこから何を取り込むかを示します。
 
-| スイッチ | AnsibleForms が読み取るもの | リポジトリ内のフォルダー |
+7.8.0 以降、リポジトリの **用途** ステップでは、用途の種類が 6 つの見出しの下に並びます: **デザイナー**、 **ジョブ**、 **システム**、
+**外観**、 **アクセス**、 **接続** です。 **デザイナー** の種類は、アプリがそのまま読み取るファイルです。
+
+| 用途の種類 | AnsibleForms が読み取るもの | リポジトリ内の場所 |
 |---|---|---|
-| **設定に使用しますか?** | カテゴリ、ロール、定数を含む `config.yaml` | ルート |
-| **フォームに使用しますか?** | フォームファイル (デザイナーもここに保存します) と、その変数ファイル | `forms` またはルート。変数ファイルは `vars` |
-| **playbook に使用しますか?** | ジョブが実行する Ansible の playbook | `playbooks` またはルート |
-| **ワークフローに使用しますか?** | [ワークフロー](../workflows/) ファイル (デザイナーもここに保存します) | 任意のフォルダー |
-| **インベントリに使用しますか?** | リポジトリ名を名前とする 1 つのインベントリ。フォームは `inventory:` でこれを指定します | ルート: `inventory.yaml`、 `group_vars`、 `host_vars` |
+| **フォーム** | フォームファイル (デザイナーもここに保存します) と、その変数ファイル | `forms` またはルート。変数ファイルは `vars` |
+| **Playbook** | ジョブが実行する Ansible の playbook | `playbooks` またはルート |
+| **ワークフロー** | [ワークフロー](../workflows/) ファイル (デザイナーもここに保存します) | 任意のフォルダー |
+| **インベントリ** | リポジトリ名を名前とする 1 つのインベントリ。フォームは `inventory:` でこれを指定します | ルート: `inventory.yaml`、 `group_vars`、 `host_vars` |
+| **カテゴリ**、 **定数** | カテゴリと定数 (デザイナーもそのファイルに保存します) | `controller_categories:` または `controller_constants:` を持つファイル |
 
-サブフォルダーがない場合は、リポジトリのルートが使われます。1 つのリポジトリにすべてを入れることもできます。分ける場合、複数のリポジトリで有効にできるのは **フォームに使用しますか?**、
-**ワークフローに使用しますか?**、 **インベントリに使用しますか?** だけです。ほかのスイッチは最初のリポジトリが使われ、
-警告がログに記録されます。
+ほかの種類はすべて、アプリの設定、ユーザー、接続を YAML ファイルに保持し、双方向に読み書きします。対象はスケジュール、
+全般の設定、外観のページ、ユーザー、グループ、ロール、サインイン、認証情報、ランナー、そのほかの接続です。
+詳しくは [git での設定](config-as-code.html) で説明しています。
 
-各リポジトリは、 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH) の下にあるリポジトリ名のサブフォルダーにクローンされます。
+**フォーム**、 **ワークフロー**、 **インベントリ** は複数のリポジトリでチェックできます。 **Playbook** は最初のリポジトリから取得し、
+ほかの種類はそれぞれ最大 1 つのリポジトリから取得します。各リポジトリは、
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH) の下にあるリポジトリ名のサブフォルダーにクローンされます。
+
+7.8.0 より前の **設定に使用しますか?** スイッチは、 **ロール**、 **カテゴリ**、 **定数** に置き換えられ、それぞれのキーを持つファイルから
+読み取られます。リポジトリの `config.yaml` も非推奨として引き続き読み取られます。詳しくは
+[ロール、カテゴリ、定数](config-as-code.html#roles-categories-and-constants) を参照してください。
 
 ### すべてを 1 つのリポジトリに
 
-1 つのリポジトリに、フォーム、変数ファイル、設定、playbook を入れることができます。その場合はスイッチを有効にし、種類ごとにサブフォルダーを 1 つずつ設けます。
+1 つのリポジトリに、フォーム、変数ファイル、設定、playbook を入れることができます。その場合は用途の種類にチェックを入れ、種類ごとにサブフォルダーを 1 つずつ設けます。
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +63,15 @@ forms-repo/
 
 ### 用途ごとに 1 つのリポジトリ
 
-リポジトリを分けると、チームがそれぞれの担当部分を管理できます。各リポジトリでスイッチを 1 つだけ有効にし、ファイルはルートに直接置きます。
+リポジトリを分けると、チームがそれぞれの担当部分を管理できます。各リポジトリに独自の用途の種類を設定し、ファイルはルートに直接置きます。
 
-| リポジトリ | スイッチ | ルートの内容 |
+| リポジトリ | 用途の種類 | ルートの内容 |
 |---|---|---|
-| `af-config` | **設定に使用しますか?** | `config.yaml` |
-| `af-forms-network`、 `af-forms-storage` | **フォームに使用しますか?** | 各チームのフォームファイル。1 つの一覧にまとめられます |
-| `af-playbooks` | **playbook に使用しますか?** | playbook とロール |
+| `af-platform` | **ロール**、 **カテゴリ**、 **定数**、 **認証情報**、 **ランナー** | `roles.yaml`、 `categories.yaml`、 `constants.yaml`、 `connections.yaml` |
+| `af-forms-network`、 `af-forms-storage` | **フォーム** | 各チームのフォームファイル。1 つの一覧にまとめられます |
+| `af-playbooks` | **Playbook** | playbook とロール |
 
-複数のリポジトリから取得できるのはフォームだけで、設定と playbook はそれぞれ 1 つのリポジトリから取得します。変数ファイルは、 `vars`
-フォルダーを持つ最初のフォームリポジトリから取得します。
+変数ファイルは、 `vars` フォルダーを持つ最初のフォームリポジトリから取得します。
 
 ---
 
@@ -73,14 +81,14 @@ forms-repo/
 
 | 内容 | 読み取り元 (最初に一致したものが優先) |
 |---|---|
-| 設定 | 1. 設定をデータベースに保存している場合はデータベース ( [`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE) ) <br> 2. **設定に使用** するリポジトリの `config.yaml` <br> 3. 設定用のリポジトリがない場合は、 **フォームに使用** するリポジトリの `config.yaml` <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| フォーム | **フォームに使用** するすべてのリポジトリと `FORMS_STAGING_PATH`。 [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) はそれらがない場合のみ |
-| Playbook | **playbook に使用** するリポジトリ。ない場合は [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| 変数ファイル | `vars` フォルダーを持つ最初の **フォームに使用** するリポジトリのそのフォルダー。ない場合は [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| ワークフロー | **ワークフローに使用** するすべてのリポジトリと [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH) の両方 |
+| ロール、カテゴリ、定数 | キーごとに個別に: 1. その用途の種類を持つリポジトリで `controller_roles:`、 `controller_categories:`、 `controller_constants:` を持つファイル <br> 2. そのリポジトリの `config.yaml` (非推奨) <br> 3. 基本設定: 設定をデータベースに保存している場合はデータベース ( [`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE) )、それ以外は [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| フォーム | **フォーム** のすべてのリポジトリと `FORMS_STAGING_PATH`。 [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) はそれらがない場合のみ |
+| Playbook | **Playbook** のリポジトリ。ない場合は [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| 変数ファイル | `vars` フォルダーを持つ最初の **フォーム** のリポジトリのそのフォルダー。ない場合は [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| ワークフロー | **ワークフロー** のすべてのリポジトリと [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH) の両方 |
 
-複数のリポジトリのフォームは 1 つの一覧にまとめられます。2 つのリポジトリに同じ名前のフォームがある場合は、最初に読み込まれたものが
-残り、警告 `skipping duplicate form <name>` がログに記録されます。そのため、フォーム名はリポジトリ間で重複しないようにしてください。
+複数のリポジトリのフォームは、リポジトリが追加された順に読み取られます。2 つのリポジトリに同じ名前のフォームがある場合は、
+先に追加されたリポジトリのものが使われ、警告に両方のコピーが示されます。そのため、フォーム名はリポジトリ間で重複しないようにしてください。
 
 ---
 
@@ -108,3 +116,4 @@ forms-repo/
 | [認証](authentication.html) | トークンを使った HTTPS、生成された鍵を使った SSH、カスタム git コマンド |
 | [変更のプル](pulling.html) | スケジュール、手動、API によるプルと、ローカルの変更 |
 | [デザイナーとプッシュ](designer.html) | デザイナーでフォームを編集し、リポジトリにプッシュする |
+| [git での設定](config-as-code.html) | すべての設定を git リポジトリで管理し、双方向に読み書きする |

@@ -7,46 +7,55 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 ---
 
 # Repozytoria git
 {: .no_toc }
 
-Przechowywanie formularzy, plików zmiennych, konfiguracji i playbooków w git
+Przechowywanie formularzy, playbooków, ustawień i połączeń w git
 {: .fs-6 .fw-300 }
 
 ---
 
-Dla administratorów, którzy przechowują formularze, konfigurację i playbooki w git: co może zawierać repozytorium i które źródło wygrywa.
+Dla administratorów, którzy przechowują formularze, playbooki i konfigurację aplikacji w git: co może zawierać repozytorium i które źródło wygrywa.
 
 ---
 
 ## Do czego służy repozytorium
 
-Repozytorium to zdalne repozytorium git, które AnsibleForms klonuje i aktualizuje, a każde z nich ma przełączniki określające, co zawiera:
+Repozytorium to zdalne repozytorium git, które AnsibleForms klonuje i aktualizuje, a jego typy zastosowania określają, co aplikacja z niego bierze.
 
-| Przełącznik | Co AnsibleForms z niego odczytuje | Folder w repozytorium |
+Od wersji 7.8.0 krok **Zastosowanie** repozytorium wymienia typy zastosowania pod sześcioma nagłówkami: **Projektant**, **Zadania**, **System**,
+**Wygląd**, **Dostęp** i **Połączenia**. Typy z grupy **Projektant** to pliki, które aplikacja odczytuje w niezmienionej postaci:
+
+| Typ zastosowania | Co AnsibleForms z niego odczytuje | Gdzie w repozytorium |
 |---|---|---|
-| **Używać do konfiguracji?** | `config.yaml` z kategoriami, rolami i stałymi | katalog główny |
-| **Używać do formularzy?** | Pliki formularzy, które projektant również do niego zapisuje, i ich pliki zmiennych | `forms` lub katalog główny; pliki zmiennych w `vars` |
-| **Używać do playbooków?** | Playbooki Ansible uruchamiane przez zadania | `playbooks` lub katalog główny |
-| **Używać do workflowów?** | Pliki [workflow](../workflows/), które projektant również do niego zapisuje | dowolny folder |
-| **Używać do inwentarzy?** | Jeden inwentarz nazwany tak jak repozytorium, który formularz wskazuje przez `inventory:` | katalog główny: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Formularze** | Pliki formularzy, które projektant również do niego zapisuje, i ich pliki zmiennych | `forms` lub katalog główny; pliki zmiennych w `vars` |
+| **Playbooki** | Playbooki Ansible uruchamiane przez zadania | `playbooks` lub katalog główny |
+| **Workflowy** | Pliki [workflow](../workflows/), które projektant również do niego zapisuje | dowolny folder |
+| **Inwentarze** | Jeden inwentarz nazwany tak jak repozytorium, który formularz wskazuje przez `inventory:` | katalog główny: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Kategorie**, **Stałe** | Kategorie i stałe, które projektant również zapisuje z powrotem do ich pliku | plik podający `controller_categories:` lub `controller_constants:` |
 
-Bez podfolderu używany jest katalog główny repozytorium. Jedno repozytorium może zawierać wszystko; jeśli je rozdzielisz, tylko **Używać do
-formularzy**, **Używać do workflowów** i **Używać do inwentarzy** mogą być włączone w kilku: pozostałe przełączniki biorą pierwsze repozytorium
-i zapisują ostrzeżenie w logu.
+Każdy inny typ przechowuje ustawienia, użytkowników lub połączenia aplikacji w plikach YAML, odczytywanych i zapisywanych w obu kierunkach: harmonogramy,
+ustawienia Ogólne, strony Wyglądu, użytkowników, grupy i role, logowania, poświadczenia, runnery i
+pozostałe połączenia. Opisuje je strona [Konfiguracja w git](config-as-code.html).
 
-Każde repozytorium jest klonowane do podfolderu nazwanego tak jak ono, w [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+**Formularze**, **Workflowy** i **Inwentarze** można zaznaczyć w kilku repozytoriach; **Playbooki** pochodzą z pierwszego,
+a każdy inny typ najwyżej z jednego repozytorium. Każde repozytorium jest klonowane do podfolderu nazwanego tak jak ono, w
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+
+Przełącznik **Używać do konfiguracji?** sprzed wersji 7.8.0 zastępują **Role**, **Kategorie** i **Stałe**, każdy odczytywany z
+pliku podającego jego klucz; `config.yaml` repozytorium jest nadal odczytywany, jako przestarzały (zobacz
+[Role, kategorie i stałe](config-as-code.html#roles-categories-and-constants)).
 
 ### Jedno repozytorium na wszystko
 
-Jedno repozytorium może zawierać formularze, pliki zmiennych, konfigurację i playbooki, z włączonymi przełącznikami i jednym podfolderem na każdy rodzaj.
+Jedno repozytorium może zawierać formularze, pliki zmiennych, konfigurację i playbooki, z zaznaczonymi typami zastosowania i jednym podfolderem na każdy rodzaj.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +63,15 @@ forms-repo/
 
 ### Jedno repozytorium na każde przeznaczenie
 
-Osobne repozytoria pozwalają zespołom zarządzać własną częścią, z jednym przełącznikiem w każdym i plikami bezpośrednio w katalogu głównym.
+Osobne repozytoria pozwalają zespołom zarządzać własną częścią, każde z własnymi typami zastosowania i plikami bezpośrednio w katalogu głównym.
 
-| Repozytorium | Przełącznik | Zawartość w katalogu głównym |
+| Repozytorium | Typy zastosowania | Zawartość w katalogu głównym |
 |---|---|---|
-| `af-config` | **Używać do konfiguracji?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Używać do formularzy?** | Pliki formularzy każdego zespołu, scalone w jedną listę |
-| `af-playbooks` | **Używać do playbooków?** | Playbooki i role |
+| `af-platform` | **Role**, **Kategorie**, **Stałe**, **Poświadczenia**, **Runnery** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Formularze** | Pliki formularzy każdego zespołu, scalone w jedną listę |
+| `af-playbooks` | **Playbooki** | Playbooki i role |
 
-Tylko formularze mogą pochodzić z kilku repozytoriów; konfiguracja i playbooki pochodzą każde z jednego. Pliki zmiennych pochodzą z folderu `vars`
-pierwszego repozytorium formularzy, które go ma.
+Pliki zmiennych pochodzą z folderu `vars` pierwszego repozytorium formularzy, które go ma.
 
 ---
 
@@ -73,14 +81,14 @@ Zawartość repozytorium zastępuje odpowiedni folder lokalny; ta tabela podsumo
 
 | Zawartość | Odczytywana z, wygrywa pierwsze dopasowanie |
 |---|---|
-| Konfiguracja | 1. bazy danych, gdy konfiguracja jest tam przechowywana ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. `config.yaml` repozytorium **Używać do konfiguracji** <br> 3. `config.yaml` repozytorium **Używać do formularzy**, gdy żadne repozytorium nie jest używane do konfiguracji <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Formularze | Każde repozytorium **Używać do formularzy** plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) tylko wtedy, gdy nie ma żadnego |
-| Playbooki | Repozytorium **Używać do playbooków**, w przeciwnym razie [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Pliki zmiennych | Folder `vars` pierwszego repozytorium **Używać do formularzy**, które go ma, w przeciwnym razie [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflowy | Każde repozytorium **Używać do workflowów** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), razem |
+| Role, kategorie, stałe | Każdy klucz osobno: 1. plik podający `controller_roles:`, `controller_categories:` lub `controller_constants:` w repozytorium z tym typem zastosowania <br> 2. `config.yaml` tego repozytorium (przestarzałe) <br> 3. konfiguracja bazowa: baza danych, gdy konfiguracja jest tam przechowywana ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), w przeciwnym razie [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Formularze | Każde repozytorium **Formularze** plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) tylko wtedy, gdy nie ma żadnego |
+| Playbooki | Repozytorium **Playbooki**, w przeciwnym razie [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| Pliki zmiennych | Folder `vars` pierwszego repozytorium **Formularze**, które go ma, w przeciwnym razie [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflowy | Każde repozytorium **Workflowy** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), razem |
 
-Formularze z kilku repozytoriów są scalane w jedną listę. Gdy dwa z nich zawierają formularz o tej samej nazwie, zachowywany jest ten
-załadowany jako pierwszy, a w logu pojawia się ostrzeżenie `skipping duplicate form <name>`, więc nazwy formularzy muszą być unikalne we wszystkich repozytoriach.
+Formularze z kilku repozytoriów są odczytywane w kolejności, w jakiej repozytoria zostały dodane. Gdy dwa z nich zawierają formularz o tej samej
+nazwie, używana jest kopia z repozytorium dodanego jako pierwsze, a ostrzeżenie wskazuje obie kopie, więc nazwy formularzy muszą być unikalne we wszystkich repozytoriach.
 
 ---
 
@@ -108,3 +116,4 @@ Każdy temat ma własną stronę:
 | [Uwierzytelnianie](authentication.html) | HTTPS z tokenem, SSH z wygenerowanym kluczem i własne polecenia git |
 | [Pobieranie zmian](pulling.html) | Pull zaplanowany, ręczny i przez API oraz zmiany lokalne |
 | [Projektant i push](designer.html) | Edycja formularzy w projektancie i wypychanie ich do repozytorium |
+| [Konfiguracja w git](config-as-code.html) | Wszystkie ustawienia przechowywane w repozytorium git, odczytywane i zapisywane w obu kierunkach |

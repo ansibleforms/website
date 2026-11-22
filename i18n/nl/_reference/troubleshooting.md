@@ -2,7 +2,7 @@
 layout: default
 title: Probleemoplossing
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: b8e652ae65cc97df52153b8d9acc960bd1bc71ea
 ---
 
 # Probleemoplossing
@@ -218,8 +218,8 @@ De basisconfiguratie (`config.yaml`) kon niet worden gelezen of is niet geldig. 
 
 **Hoe je het oplost**
 
-Corrigeer het bestand dat [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) noemt, of de `config.yaml` in de
-repository die voor de configuratie wordt gebruikt. Als er bestanden ontbreken, laat je [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) en
+Corrigeer het bestand dat [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) noemt, of het bestand met de sleutel in de
+repository met het gebruikstype **Rollen**, **Categorieen** of **Constanten**. Als er bestanden ontbreken, laat je [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) en
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) naar een beschrijfbare, persistente locatie wijzen. Zie
 [config.yaml](config/) voor de structuur.
 

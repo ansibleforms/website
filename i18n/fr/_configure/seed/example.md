@@ -3,7 +3,7 @@ layout: default
 title: Exemple
 parent: Seed de configuration
 nav_order: 1
-translated_from: 3b80574712dfc8f514f0ff20403fc53f1d521279
+translated_from: cb4dc1f41e31640a9b27ce29a4328dd9fe594033
 ---
 
 # Exemple
@@ -90,7 +90,9 @@ repositories:
       uri: https://git.example.com/forms.git
       branch: main
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true        # use_for_config, before 7.8.0: deprecated
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
 
 syslog_servers:

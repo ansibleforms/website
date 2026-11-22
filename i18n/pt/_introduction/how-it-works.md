@@ -2,7 +2,7 @@
 layout: default
 title: Como funciona
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Como funciona
@@ -132,7 +132,7 @@ Os componentes do diagrama têm cada um a sua função:
 | **Pasta persistente** | Contém o `config.yaml`, os ficheiros de formulários, os playbooks, os registos e as cópias de segurança |
 | **Fontes de dados** | Preenchem os campos: [consultas a bases de dados](formfields/enum.html), [APIs REST](expressions/rest-apis.html), ficheiros e [outras funções](expressions/remote.html) |
 | **Cofres de segredos** | Fornecem o utilizador e a palavra-passe de uma credencial no momento da utilização, consulte [Cofres de segredos](secret-stores/) |
-| **Repositórios git** | Mantêm os formulários, os playbooks e o `config.yaml` sob controlo de versões |
+| **Repositórios git** | Mantêm os formulários, os playbooks e as definições da aplicação sob controlo de versões |
 | **Fornecedores de login** | Iniciam a sessão dos utilizadores: [LDAP, Entra ID e OIDC](authentication/), ao lado dos utilizadores locais |
 | **Canais de notificação** | Transportam as [notificações](forms/notifications.html) e os pedidos de aprovação: [email, Slack, Microsoft Teams, Telegram ou um webhook](notification-channels.html) |
 | **Servidores syslog** | Recebem o registo e o registo de auditoria à medida que são escritos, consulte [Syslog](production/logs.html#syslog) |

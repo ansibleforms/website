@@ -3,7 +3,7 @@ layout: default
 title: 設定
 parent: 環境変数
 nav_order: 5
-translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
+translated_from: c9a671f461916975daeaea7f637658b569946f76
 ---
 
 # 設定
@@ -47,8 +47,11 @@ translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
    設定されている場合はそれに従います。 `1` はデータベースを、 `0` はファイルを読み込みます。
 2. そうでない場合は、データベースに保存されている設定の取得元（ `file` または `database` ）。6.3.0 より前に構築したインスタンスが
    設定ページで選んだものです。
-3. そうでない場合はファイルです。 **設定に使用しますか?** が有効なリポジトリの `config.yaml` 、なければ
-   **フォームに使用しますか?** が有効なリポジトリのもの、それもなければ [`CONFIG_PATH`](paths.html#env_CONFIG_PATH) にあるものです。
+3. そうでない場合は、 [`CONFIG_PATH`](paths.html#env_CONFIG_PATH) にあるファイルです。
+
+7.8.0 以降、リポジトリが保持するキーはこの基本設定の上に重ねられます。用途の種類 **ロール** 、 **カテゴリ** 、 **定数** を持つ
+リポジトリが、 `controller_roles:` 、 `controller_categories:` 、 `controller_constants:` を持つファイルからそのキーを提供し、
+なければその `config.yaml` （非推奨）から提供します。 [git での設定](../repositories/config-as-code.html#roles-categories-and-constants) を参照してください。
 
 明示的に設定された `ENABLE_CONFIG_IN_DATABASE` は常に優先され、保存されている `database` よりも `0` が優先されます。設定を
 読み込むたびに読まれるので、変更は再起動なしで反映されます。 **ステータス** ページの **情報** タブに、使われている取得元が表示されます。

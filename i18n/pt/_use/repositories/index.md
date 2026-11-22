@@ -7,46 +7,55 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 ---
 
 # Repositórios git
 {: .no_toc }
 
-Manter formulários, ficheiros de variáveis, configuração e playbooks em git
+Manter formulários, playbooks, definições e ligações em git
 {: .fs-6 .fw-300 }
 
 ---
 
-Para administradores que mantêm formulários, configuração e playbooks em git: o que um repositório pode conter e que origem prevalece.
+Para administradores que mantêm formulários, playbooks e a configuração da aplicação em git: o que um repositório pode conter e que origem prevalece.
 
 ---
 
 ## Para que serve um repositório
 
-Um repositório é um remoto git que o AnsibleForms clona e mantém atualizado, e cada um tem interruptores que dizem o que contém:
+Um repositório é um remoto git que o AnsibleForms clona e mantém atualizado, e os seus tipos de utilização dizem o que a aplicação tira dele.
 
-| Interruptor | O que o AnsibleForms lê dele | Pasta no repositório |
+Desde a 7.8.0, o passo **Utilização** de um repositório lista os tipos de utilização sob seis títulos: **Designer**, **Tarefas**, **Sistema**,
+**Aparência**, **Acesso** e **Ligações**. Os tipos de **Designer** são os ficheiros que a aplicação lê tal como estão:
+
+| Tipo de utilização | O que o AnsibleForms lê dele | Onde no repositório |
 |---|---|---|
-| **Usar para a configuração ?** | `config.yaml` com as categorias, funções e constantes | a raiz |
-| **Usar para formulários ?** | Os ficheiros de formulários, que o designer também guarda de volta nele, e os seus ficheiros de variáveis | `forms`, ou a raiz; ficheiros de variáveis em `vars` |
-| **Usar para playbooks ?** | Os playbooks Ansible que as tarefas executam | `playbooks`, ou a raiz |
-| **Usar para workflows?** | Os ficheiros de [workflow](../workflows/), que o designer também guarda de volta nele | qualquer pasta |
-| **Usar para inventários?** | Um inventário, com o nome do repositório, que um formulário indica com `inventory:` | a raiz: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Formulários** | Os ficheiros de formulários, que o designer também guarda de volta nele, e os seus ficheiros de variáveis | `forms`, ou a raiz; ficheiros de variáveis em `vars` |
+| **Playbooks** | Os playbooks Ansible que as tarefas executam | `playbooks`, ou a raiz |
+| **Workflows** | Os ficheiros de [workflow](../workflows/), que o designer também guarda de volta nele | qualquer pasta |
+| **Inventários** | Um inventário, com o nome do repositório, que um formulário indica com `inventory:` | a raiz: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Categorias**, **Constantes** | As categorias e as constantes, que o designer também guarda de volta no seu ficheiro | o ficheiro que dá `controller_categories:` ou `controller_constants:` |
 
-Sem a subpasta, usa-se a raiz do repositório. Um só repositório pode conter tudo; se os separar, só **Usar para
-formulários**, **Usar para workflows** e **Usar para inventários** podem estar ligados em vários: os outros interruptores ficam com o primeiro repositório
-e registam um aviso.
+Todos os outros tipos guardam definições, utilizadores ou ligações da aplicação em ficheiros YAML, lidos e escritos nos dois sentidos: os agendamentos,
+as definições Geral, as páginas de Aparência, os utilizadores, grupos e funções, os inícios de sessão, as credenciais, os runners e as
+outras ligações. Estão descritos em [Configuração em git](config-as-code.html).
 
-Cada repositório é clonado numa subpasta com o seu nome, dentro de [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+**Formulários**, **Workflows** e **Inventários** podem ser marcados em vários repositórios; **Playbooks** vêm do primeiro,
+e cada um dos outros tipos de um repositório no máximo. Cada repositório é clonado numa subpasta com o seu nome, dentro de
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+
+O interruptor **Usar para a configuração ?** de antes da 7.8.0 é substituído por **Funções**, **Categorias** e **Constantes**, cada um lido do
+ficheiro que dá a sua chave; o `config.yaml` de um repositório continua a ser lido, como obsoleto (ver
+[Funções, categorias e constantes](config-as-code.html#roles-categories-and-constants)).
 
 ### Um repositório para tudo
 
-Um único repositório pode conter formulários, ficheiros de variáveis, configuração e playbooks, com os interruptores ligados e uma subpasta por tipo.
+Um único repositório pode conter formulários, ficheiros de variáveis, configuração e playbooks, com os tipos de utilização marcados e uma subpasta por tipo.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +63,15 @@ forms-repo/
 
 ### Um repositório por finalidade
 
-Repositórios separados permitem que cada equipa seja dona da sua parte, com um interruptor cada e os ficheiros diretamente na raiz.
+Repositórios separados permitem que cada equipa seja dona da sua parte, cada um com os seus tipos de utilização e os ficheiros diretamente na raiz.
 
-| Repositório | Interruptor | Conteúdo na raiz |
+| Repositório | Tipos de utilização | Conteúdo na raiz |
 |---|---|---|
-| `af-config` | **Usar para a configuração ?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Usar para formulários ?** | Os ficheiros de formulários de cada equipa, juntados numa só lista |
-| `af-playbooks` | **Usar para playbooks ?** | Os playbooks e as roles |
+| `af-platform` | **Funções**, **Categorias**, **Constantes**, **Credenciais**, **Runners** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Formulários** | Os ficheiros de formulários de cada equipa, juntados numa só lista |
+| `af-playbooks` | **Playbooks** | Os playbooks e as roles |
 
-Só os formulários podem vir de vários repositórios; a configuração e os playbooks vêm cada um de um só. Os ficheiros de variáveis vêm da pasta `vars`
-do primeiro repositório de formulários que tenha uma.
+Os ficheiros de variáveis vêm da pasta `vars` do primeiro repositório de formulários que tenha uma.
 
 ---
 
@@ -73,14 +81,14 @@ O conteúdo de um repositório substitui a pasta local correspondente; esta tabe
 
 | Conteúdo | Lido de, prevalece a primeira correspondência |
 |---|---|
-| Configuração | 1. a base de dados, quando a configuração é guardada lá ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. o `config.yaml` do repositório **Usar para a configuração** <br> 3. o `config.yaml` de um repositório **Usar para formulários**, quando nenhum repositório é usado para a configuração <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Formulários | Todos os repositórios **Usar para formulários** mais `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) só quando não há nenhum |
-| Playbooks | O repositório **Usar para playbooks**, caso contrário [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Ficheiros de variáveis | A pasta `vars` do primeiro repositório **Usar para formulários** que tenha uma, caso contrário [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflows | Todos os repositórios **Usar para workflows** mais [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), em conjunto |
+| Funções, categorias, constantes | Cada chave por si: 1. o ficheiro que dá `controller_roles:`, `controller_categories:` ou `controller_constants:` no repositório com esse tipo de utilização <br> 2. o `config.yaml` desse repositório (obsoleto) <br> 3. a configuração de base: a base de dados, quando a configuração é guardada lá ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), senão [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Formulários | Todos os repositórios **Formulários** mais `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) só quando não há nenhum |
+| Playbooks | O repositório **Playbooks**, caso contrário [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| Ficheiros de variáveis | A pasta `vars` do primeiro repositório **Formulários** que tenha uma, caso contrário [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflows | Todos os repositórios **Workflows** mais [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), em conjunto |
 
-Os formulários de vários repositórios são juntados numa só lista. Quando dois deles contêm um formulário com o mesmo nome, fica o primeiro
-carregado e é registado o aviso `skipping duplicate form <name>`, por isso mantenha os nomes dos formulários únicos entre repositórios.
+Os formulários de vários repositórios são lidos pela ordem em que os repositórios foram adicionados. Quando dois deles contêm um formulário com o mesmo
+nome, usa-se a cópia do repositório adicionado primeiro, e um aviso indica as duas cópias, por isso mantenha os nomes dos formulários únicos entre repositórios.
 
 ---
 
@@ -108,3 +116,4 @@ Cada tema tem a sua própria página:
 | [Autenticação](authentication.html) | HTTPS com um token, SSH com a chave gerada, e comandos git personalizados |
 | [Fazer pull das alterações](pulling.html) | Pulls agendados, manuais e pela API, e alterações locais |
 | [Designer e push](designer.html) | Editar formulários no designer e enviá-los (push) para o repositório |
+| [Configuração em git](config-as-code.html) | Todas as definições guardadas num repositório git, lidas e escritas nos dois sentidos |

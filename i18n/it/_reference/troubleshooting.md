@@ -2,7 +2,7 @@
 layout: default
 title: Risoluzione dei problemi
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: b8e652ae65cc97df52153b8d9acc960bd1bc71ea
 ---
 
 # Risoluzione dei problemi
@@ -218,8 +218,8 @@ La configurazione di base (`config.yaml`) non si è potuta leggere o non è vali
 
 **Come risolverlo**
 
-Correggi il file indicato da [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), o il `config.yaml` nel
-repository usato per la configurazione. Quando mancano dei file, fai puntare [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) e
+Correggi il file indicato da [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH), o il file che dà la chiave nel
+repository con il tipo di utilizzo **Ruoli**, **Categorie** o **Costanti**. Quando mancano dei file, fai puntare [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) e
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) a una posizione scrivibile e persistente. Vedi
 [config.yaml](config/) per la struttura.
 

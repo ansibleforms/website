@@ -2,7 +2,7 @@
 layout: default
 title: Come funziona
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Come funziona
@@ -130,7 +130,7 @@ I componenti del diagramma hanno ognuno un ruolo proprio:
 | **Cartella persistente** | Contiene `config.yaml`, i file dei moduli, i playbook, i log e i backup |
 | **Origini dati** | Riempiono i campi: [query su database](formfields/enum.html), [API REST](expressions/rest-apis.html), file e [altre funzioni](expressions/remote.html) |
 | **Archivi di segreti** | Forniscono l'utente e la password di una credenziale al momento dell'uso, vedi [Archivi di segreti](secret-stores/) |
-| **Repository git** | Tengono i moduli, i playbook e `config.yaml` sotto controllo di versione |
+| **Repository git** | Tengono i moduli, i playbook e le impostazioni dell'app sotto controllo di versione |
 | **Provider di accesso** | Fanno accedere gli utenti: [LDAP, Entra ID e OIDC](authentication/), accanto agli utenti locali |
 | **Canali di notifica** | Portano le [notifiche](forms/notifications.html) e le richieste di approvazione: [mail, Slack, Microsoft Teams, Telegram o un webhook](notification-channels.html) |
 | **Server syslog** | Ricevono il log e la traccia di audit man mano che vengono scritti, vedi [Syslog](production/logs.html#syslog) |

@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ Categories, rols i constants per a tots els formularis
 
 Per a administradors: el fitxer config.yaml que conté les categories, els rols i les constants que comparteixen tots els formularis.
 
-AnsibleForms utilitza un fitxer config.yaml per configurar categories, rols i constants. Si no se n'hi proporciona cap, se'n genera un amb una configuració mínima. La configuració també es pot importar a la base de dades, i llavors ja no cal cap fitxer config.yaml.
+AnsibleForms utilitza un fitxer config.yaml per configurar categories, rols i constants. Si no se n'hi proporciona cap, se'n genera un amb una configuració mínima. La configuració també es pot importar a la base de dades, i llavors ja no cal cap fitxer config.yaml, i cadascuna de les tres parts es pot guardar en un repositori git.
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Prioritat de càrrega de la configuració
 
-AnsibleForms carrega el fitxer config.yaml en l'ordre següent (guanya la primera coincidència):
+Des de la 7.8.0 les categories, els rols i les constants es llegeixen cadascun per separat, de la primera font de la llista que el contingui.
 
-1. **DES DE LA BASE DE DADES** : la configuració importada a la base de dades, només quan `ENABLE_CONFIG_IN_DATABASE=1`, o quan aquesta
+1. **DES D'UN REPOSITORI** : el repositori amb el tipus d'ús **Categories**, **Rols** o **Constants**, del fitxer que dona
+   `controller_categories:`, `controller_roles:` o `controller_constants:`, amb qualsevol nom i a qualsevol carpeta (vegeu
+   [Configuració a git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **DES DEL config.yaml DEL REPOSITORI** : la clau simple al `config.yaml` d'aquest repositori, obsoleta des de la 7.8.0 i que ja no
+   es llegeix a la 8.0; el log del servidor, la sortida del pull i la pàgina del repositori ho indiquen
+3. **DES DE LA BASE DE DADES** : la configuració importada a la base de dades, només quan `ENABLE_CONFIG_IN_DATABASE=1`, o quan aquesta
    variable no està definida i l'origen de configuració desat a la base de dades és `database` (una còpia buida recorre al fitxer)
-2. **DES D'UN REPOSITORI (use_for_config)** : el repositori amb l'interruptor "utilitzar per a la configuració" activat (nou a la 6.1.0)
-3. **DES D'UN REPOSITORI (use_for_forms)** : el repositori amb l'interruptor "utilitzar per als formularis" activat (alternativa per compatibilitat amb versions anteriors)
 4. **DES D'UN FITXER LOCAL** : el fitxer local `config.yaml` (variable d'entorn CONFIG_PATH)
 
 {: .warning }
-> **Nota:** Activa "utilitzar per a la configuració" en un sol repositori. Si n'hi ha diversos que el tenen activat, es registra un avís i s'utilitza el primer.
+> **Nota:** L'interruptor **Utilitzar per a la configuració ?** ha desaparegut des de la 7.8.0. Una actualització dona **Rols**, **Categories**
+> i **Constants** al repositori que el tenia, i `use_for_config` al config seed o a l'API és un àlies obsolet dels tres.
 
 ---
 

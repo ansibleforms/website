@@ -7,46 +7,55 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 ---
 
 # Repository Git
 {: .no_toc }
 
-Tenere moduli, file di variabili, configurazione e playbook in git
+Tenere moduli, playbook, impostazioni e connessioni in git
 {: .fs-6 .fw-300 }
 
 ---
 
-Per gli amministratori che tengono moduli, configurazione e playbook in git: cosa può contenere un repository e quale sorgente prevale.
+Per gli amministratori che tengono moduli, playbook e la configurazione dell'app in git: cosa può contenere un repository e quale sorgente prevale.
 
 ---
 
 ## A cosa serve un repository
 
-Un repository è un remote git che AnsibleForms clona e mantiene aggiornato, e ognuno ha degli interruttori che dicono cosa contiene:
+Un repository è un remote git che AnsibleForms clona e mantiene aggiornato, e i suoi tipi di utilizzo dicono cosa l'app ne prende.
 
-| Interruttore | Cosa ne legge AnsibleForms | Cartella nel repository |
+Dalla 7.8.0 il passo **Utilizzo** di un repository elenca i tipi di utilizzo sotto sei intestazioni: **Designer**, **Job**, **Sistema**,
+**Aspetto**, **Accesso** e **Connessioni**. I tipi di **Designer** sono i file che l'app legge così come sono:
+
+| Tipo di utilizzo | Cosa ne legge AnsibleForms | Dove nel repository |
 |---|---|---|
-| **Usare per configurazione?** | `config.yaml` con le categorie, i ruoli e le costanti | la radice |
-| **Usare per moduli?** | I file dei moduli, che il designer vi salva anche di nuovo, e i loro file di variabili | `forms`, o la radice; i file di variabili in `vars` |
-| **Usare per playbook?** | I playbook Ansible eseguiti dai job | `playbooks`, o la radice |
-| **Usare per i workflow?** | I file di [workflow](../workflows/), che il designer vi salva anche di nuovo | qualsiasi cartella |
-| **Usare per gli inventari?** | Un inventario, con il nome del repository, che un modulo indica con `inventory:` | la radice: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Moduli** | I file dei moduli, che il designer vi salva anche di nuovo, e i loro file di variabili | `forms`, o la radice; i file di variabili in `vars` |
+| **Playbook** | I playbook Ansible eseguiti dai job | `playbooks`, o la radice |
+| **Workflow** | I file di [workflow](../workflows/), che il designer vi salva anche di nuovo | qualsiasi cartella |
+| **Inventari** | Un inventario, con il nome del repository, che un modulo indica con `inventory:` | la radice: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Categorie**, **Costanti** | Le categorie e le costanti, che il designer salva anche di nuovo nel loro file | il file che dà `controller_categories:` o `controller_constants:` |
 
-Senza la sottocartella, si usa la radice del repository. Un solo repository può contenere tutto; se li separi, solo **Usare per
-moduli**, **Usare per i workflow** e **Usare per gli inventari** possono essere attivi su più repository: gli altri interruttori prendono il primo repository
-e registrano un avviso nel log.
+Ogni altro tipo tiene impostazioni, utenti o connessioni dell'app in file YAML, letti e scritti in entrambi i sensi: le pianificazioni,
+le impostazioni Generale, le pagine Aspetto, gli utenti, i gruppi e i ruoli, i metodi di accesso, le credenziali, i runner e le
+altre connessioni. Sono descritti in [Configurazione in git](config-as-code.html).
 
-Ogni repository viene clonato in una sottocartella con il suo nome, sotto [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+**Moduli**, **Workflow** e **Inventari** possono essere spuntati su più repository; i **Playbook** provengono dal primo,
+e ogni altro tipo da un repository al massimo. Ogni repository viene clonato in una sottocartella con il suo nome, sotto
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+
+L'interruttore **Usare per configurazione?** di prima della 7.8.0 è sostituito da **Ruoli**, **Categorie** e **Costanti**, ciascuno letto dal
+file che dà la sua chiave; il `config.yaml` di un repository viene ancora letto, deprecato (vedi
+[Ruoli, categorie e costanti](config-as-code.html#roles-categories-and-constants)).
 
 ### Un repository per tutto
 
-Un unico repository può contenere moduli, file di variabili, configurazione e playbook, con gli interruttori attivi e una sottocartella per ogni tipo.
+Un unico repository può contenere moduli, file di variabili, configurazione e playbook, con i tipi di utilizzo spuntati e una sottocartella per ogni tipo.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +63,15 @@ forms-repo/
 
 ### Un repository per ogni scopo
 
-Repository separati permettono ai team di gestire la propria parte, con un interruttore ciascuno e i file direttamente nella radice.
+Repository separati permettono ai team di gestire la propria parte, ciascuno con i propri tipi di utilizzo e i file direttamente nella radice.
 
-| Repository | Interruttore | Contenuto nella radice |
+| Repository | Tipi di utilizzo | Contenuto nella radice |
 |---|---|---|
-| `af-config` | **Usare per configurazione?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Usare per moduli?** | I file dei moduli di ogni team, uniti in un unico elenco |
-| `af-playbooks` | **Usare per playbook?** | I playbook e i ruoli |
+| `af-platform` | **Ruoli**, **Categorie**, **Costanti**, **Credenziali**, **Runner** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Moduli** | I file dei moduli di ogni team, uniti in un unico elenco |
+| `af-playbooks` | **Playbook** | I playbook e i ruoli |
 
-Solo i moduli possono provenire da più repository; configurazione e playbook provengono ciascuno da uno solo. I file di variabili provengono dalla cartella `vars`
-del primo repository di moduli che ne ha una.
+I file di variabili provengono dalla cartella `vars` del primo repository di moduli che ne ha una.
 
 ---
 
@@ -73,14 +81,14 @@ Il contenuto dei repository sostituisce la cartella locale corrispondente; quest
 
 | Contenuto | Letto da, vince la prima corrispondenza |
 |---|---|
-| Configurazione | 1. il database, quando la configurazione è conservata lì ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. `config.yaml` del repository **Usare per configurazione** <br> 3. `config.yaml` di un repository **Usare per moduli**, quando nessun repository è usato per la configurazione <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Moduli | Ogni repository **Usare per moduli** più `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) solo quando non ce n'è nessuno |
-| Playbook | Il repository **Usare per playbook**, altrimenti [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| File di variabili | La cartella `vars` del primo repository **Usare per moduli** che ne ha una, altrimenti [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflow | Ogni repository **Usare per i workflow** più [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), insieme |
+| Ruoli, categorie, costanti | Ogni chiave per conto suo: 1. il file che dà `controller_roles:`, `controller_categories:` o `controller_constants:` nel repository con quel tipo di utilizzo <br> 2. il `config.yaml` di quel repository (deprecato) <br> 3. la configurazione di base: il database, quando la configurazione è conservata lì ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), altrimenti [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Moduli | Ogni repository **Moduli** più `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) solo quando non ce n'è nessuno |
+| Playbook | Il repository **Playbook**, altrimenti [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| File di variabili | La cartella `vars` del primo repository **Moduli** che ne ha una, altrimenti [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflow | Ogni repository **Workflow** più [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), insieme |
 
-I moduli di più repository vengono uniti in un unico elenco. Quando due di essi contengono un modulo con lo stesso nome, viene mantenuto il primo
-caricato e viene registrato l'avviso `skipping duplicate form <name>`, quindi mantieni i nomi dei moduli univoci tra i repository.
+I moduli di più repository vengono letti nell'ordine in cui i repository sono stati aggiunti. Quando due di essi contengono un modulo con lo stesso
+nome, si usa la copia del repository aggiunto per primo, e un avviso nomina entrambe le copie, quindi mantieni i nomi dei moduli univoci tra i repository.
 
 ---
 
@@ -108,3 +116,4 @@ Ogni argomento ha una pagina dedicata:
 | [Autenticazione](authentication.html) | HTTPS con un token, SSH con la chiave generata, e comandi git personalizzati |
 | [Fare il pull delle modifiche](pulling.html) | Pull pianificati, manuali e via API, e modifiche locali |
 | [Designer e push](designer.html) | Modificare i moduli nel designer e inviarli al repository con push |
+| [Configurazione in git](config-as-code.html) | Ogni impostazione tenuta in un repository git, letta e scritta in entrambi i sensi |

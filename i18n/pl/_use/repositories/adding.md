@@ -3,7 +3,7 @@ layout: default
 title: Dodawanie repozytorium
 parent: Repozytoria git
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # Dodawanie repozytorium
@@ -39,7 +39,7 @@ przyniesie pull. Menu każdego wiersza zawiera następujące akcje:
 |---|---|
 | **Edytuj** | Zmiana poniższych pól |
 | **Pull** | Klonuje repozytorium lub wykonuje pull, gdy kopia robocza już istnieje |
-| **Push** | Commituje i wypycha kopię roboczą; tylko w repozytoriach używanych do formularzy, konfiguracji, playbooków, workflowów lub inwentarzy i aktywne tylko wtedy, gdy są jeszcze niewypchnięte zmiany |
+| **Push** | Commituje i wypycha kopię roboczą; tylko w repozytoriach z zaznaczonym typem zastosowania i aktywne tylko wtedy, gdy są jeszcze niewypchnięte zmiany |
 | **Resetuj** | Usuwa kopię roboczą i klonuje ją ponownie, co odrzuca lokalne zmiany |
 | **Zmień poświadczenia** | Otwiera kartę **Poświadczenia** repozytorium, aby wybrać poświadczenie używane przez git |
 | **Pokaż wynik ostatniego pull** | Pokazuje wynik git z ostatniego klonowania, pull lub resetu, z zamaskowanym hasłem |
@@ -69,7 +69,7 @@ pull**), a AnsibleForms rozpoczyna klonowanie w tle, gdy tylko zapiszesz.
 | **Włącz zaplanowany pull** | nie | Wykonuje pull repozytorium według harmonogramu |
 | **Harmonogram pull** | nie | Kiedy wykonywać pull, jako wyrażenie cron; widoczne po włączeniu zaplanowanego pull |
 | **Opis** | tak | Dowolny opis tekstowy |
-| **Używać do konfiguracji?** ... **Używać do inwentarzy?** | nie | Co zawiera repozytorium, zobacz [wyżej](./#what-a-repository-is-for) |
+| **Zastosowanie** | nie | Typy zastosowania, czyli co zawiera repozytorium: po jednym polu wyboru, pod sześcioma nagłówkami, zobacz [Konfiguracja w git](config-as-code.html#the-usage-types) |
 | **Pull przy starcie aplikacji** | nie | Klonuje repozytorium lub wykonuje jego pull przy każdym starcie AnsibleForms |
 
 Zmiana nazwy repozytorium przenosi jego kopię roboczą do nowego folderu, a razem z nią jego harmonogram pull. Repozytorium sprzed
@@ -83,7 +83,7 @@ Zawartość repozytorium staje się tym, co AnsibleForms ładuje i uruchamia, wi
 
 - dodawać ani usuwać repozytorium;
 - zmieniać jego **Uri** ani **Gałąź**;
-- włączać ani wyłączać żadnego z jego przełączników **Używać do**.
+- zaznaczać ani odznaczać żadnego z jego typów zastosowania.
 
 Nadal może zmieniać jego opis, harmonogram pull i poświadczenie oraz wykonywać jego pull, push lub reset. Poświadczenia używanego przez runner,
 połączenie lub logowanie nie może wybrać; odmowa wskazuje je z nazwy i nie mówi nic o jego zawartości.
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ Pola są takie same jak na stronie, łącznie z `credential` (poświadczenie z s
 aplikacji**) i `cron` (harmonogram pull); `user` i `password` są nadal akceptowane zamiast poświadczenia.
 Repozytorium z seed jest w interfejsie tylko do odczytu i jest ponownie klonowane przy starcie, gdy brakuje jego kopii roboczej; zobacz
 [Obiekty zarządzane](../seed/managed-objects.html).
+
+Każdy typ zastosowania to flaga `use_for_<type>`, na przykład `use_for_credentials`. Od wersji 7.8.0 `use_for_config` jest przestarzałym aliasem
+`use_for_roles`, `use_for_categories` i `use_for_constants`, nadal odczytywanym z ostrzeżeniem i usuniętym w 8.0.

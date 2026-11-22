@@ -3,7 +3,7 @@ layout: default
 title: Configuration
 parent: Variables d'environnement
 nav_order: 5
-translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
+translated_from: c9a671f461916975daeaea7f637658b569946f76
 ---
 
 # Configuration
@@ -47,8 +47,11 @@ Les catégories, les rôles et les constantes proviennent de `config.yaml` sur l
    l'onglet **Configuration** de la page de paramètres : `1` lit la base de données, `0` lit le fichier.
 2. Sinon, la source de configuration stockée dans la base de données (`file` ou `database`), que les instances mises en place
    avant la 6.3.0 choisissaient sur la page de paramètres.
-3. Sinon, le fichier : le `config.yaml` du dépôt avec **Utiliser pour la configuration** activé, à défaut celui d'un dépôt avec
-   **Utiliser pour les formulaires** activé, à défaut celui de [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+3. Sinon, le fichier de [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+
+Depuis la 7.8.0, une clé que contient un dépôt se superpose à cette base : le dépôt ayant le type d'usage **Rôles**, **Catégories** ou
+**Constantes** donne cette clé depuis son fichier qui donne `controller_roles:`, `controller_categories:` ou `controller_constants:`,
+à défaut depuis son `config.yaml` (déprécié). Voir [Configuration dans git](../repositories/config-as-code.html#roles-categories-and-constants).
 
 Une `ENABLE_CONFIG_IN_DATABASE` définie explicitement l'emporte toujours, même `0` sur un `database` stocké. Elle est lue à chaque chargement de la
 configuration, si bien qu'une modification s'applique sans redémarrage. La page **Statut** montre la source utilisée dans son onglet **Informations**.

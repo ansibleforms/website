@@ -7,46 +7,55 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 04bcefa07810f2c0318286071624cd4a6d05e7e3
 ---
 
 # Repositoris Git
 {: .no_toc }
 
-Guarda formularis, fitxers de variables, configuració i playbooks a git
+Guarda formularis, playbooks, ajustos i connexions a git
 {: .fs-6 .fw-300 }
 
 ---
 
-Per als administradors que guarden formularis, configuració i playbooks a git: què pot contenir un repositori i quina font té prioritat.
+Per als administradors que guarden formularis, playbooks i la configuració de l'aplicació a git: què pot contenir un repositori i quina font té prioritat.
 
 ---
 
 ## Per a què serveix un repositori
 
-Un repositori és un remot git que AnsibleForms clona i manté al dia, i cadascun té interruptors que indiquen què conté:
+Un repositori és un remot git que AnsibleForms clona i manté al dia, i els seus tipus d'ús indiquen què n'agafa l'aplicació.
 
-| Interruptor | Què en llegeix AnsibleForms | Carpeta del repositori |
+Des de la 7.8.0 el pas **Ús** d'un repositori llista els tipus d'ús sota sis encapçalaments: **Dissenyador**, **Tasques**, **Sistema**,
+**Aparença**, **Accés** i **Connexions**. Els tipus de **Dissenyador** són els fitxers que l'aplicació llegeix tal com són:
+
+| Tipus d'ús | Què en llegeix AnsibleForms | On és al repositori |
 |---|---|---|
-| **Utilitzar per a la configuració ?** | `config.yaml` amb les categories, els rols i les constants | l'arrel |
-| **Utilitzar per als formularis ?** | Els fitxers de formulari, que el dissenyador també hi torna a desar, i els seus fitxers de variables | `forms`, o l'arrel; els fitxers de variables a `vars` |
-| **Utilitzar per als playbooks ?** | Els playbooks d'Ansible que executen les tasques | `playbooks`, o l'arrel |
-| **Fer servir per a workflows?** | Els fitxers de [workflow](../workflows/), que el dissenyador també hi torna a desar | qualsevol carpeta |
-| **Fer servir per a inventaris?** | Un inventari, amb el nom del repositori, que un formulari indica amb `inventory:` | l'arrel: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Formularis** | Els fitxers de formulari, que el dissenyador també hi torna a desar, i els seus fitxers de variables | `forms`, o l'arrel; els fitxers de variables a `vars` |
+| **Playbooks** | Els playbooks d'Ansible que executen les tasques | `playbooks`, o l'arrel |
+| **Workflows** | Els fitxers de [workflow](../workflows/), que el dissenyador també hi torna a desar | qualsevol carpeta |
+| **Inventaris** | Un inventari, amb el nom del repositori, que un formulari indica amb `inventory:` | l'arrel: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Categories**, **Constants** | Les categories i les constants, que el dissenyador també torna a desar al seu fitxer | el fitxer que dona `controller_categories:` o `controller_constants:` |
 
-Sense la subcarpeta, es fa servir l'arrel del repositori. Un repositori ho pot contenir tot; si els separes, només **Utilitzar per als
-formularis**, **Fer servir per a workflows** i **Fer servir per a inventaris** poden estar activats en diversos: els altres interruptors agafen el primer repositori
-i registren un avís.
+Tots els altres tipus guarden ajustos, usuaris o connexions de l'aplicació en fitxers YAML, llegits i escrits en tots dos sentits: les
+programacions, els ajustos de General, les pàgines d'Aparença, els usuaris, grups i rols, els inicis de sessió, les credencials, els runners i
+les altres connexions. Es descriuen a [Configuració a git](config-as-code.html).
 
-Cada repositori es clona en una subcarpeta amb el seu nom, dins de [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+**Formularis**, **Workflows** i **Inventaris** es poden marcar en diversos repositoris; els **Playbooks** venen del primer, i cadascun dels
+altres tipus d'un repositori com a màxim. Cada repositori es clona en una subcarpeta amb el seu nom, dins de
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+
+L'interruptor **Utilitzar per a la configuració ?** d'abans de la 7.8.0 se substitueix per **Rols**, **Categories** i **Constants**, cadascun
+llegit del fitxer que dona la seva clau; el `config.yaml` d'un repositori encara es llegeix, obsolet (vegeu
+[Rols, categories i constants](config-as-code.html#roles-categories-and-constants)).
 
 ### Un repositori per a tot
 
-Un sol repositori pot contenir formularis, fitxers de variables, configuració i playbooks, amb els interruptors activats i una subcarpeta per a cada tipus.
+Un sol repositori pot contenir formularis, fitxers de variables, configuració i playbooks, amb els tipus d'ús marcats i una subcarpeta per a cada tipus.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +63,15 @@ forms-repo/
 
 ### Un repositori per a cada finalitat
 
-Els repositoris separats permeten que cada equip sigui propietari de la seva part, amb un interruptor cadascun i els fitxers directament a l'arrel.
+Els repositoris separats permeten que cada equip sigui propietari de la seva part, cadascun amb els seus tipus d'ús i els fitxers directament a l'arrel.
 
-| Repositori | Interruptor | Contingut a l'arrel |
+| Repositori | Tipus d'ús | Contingut a l'arrel |
 |---|---|---|
-| `af-config` | **Utilitzar per a la configuració ?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Utilitzar per als formularis ?** | Els fitxers de formulari de cada equip, fusionats en una sola llista |
-| `af-playbooks` | **Utilitzar per als playbooks ?** | Els playbooks i els rols |
+| `af-platform` | **Rols**, **Categories**, **Constants**, **Credencials**, **Runners** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Formularis** | Els fitxers de formulari de cada equip, fusionats en una sola llista |
+| `af-playbooks` | **Playbooks** | Els playbooks i els rols |
 
-Només els formularis poden venir de diversos repositoris; la configuració i els playbooks venen cadascun d'un de sol. Els fitxers de variables venen de la carpeta `vars`
-del primer repositori de formularis que en tingui una.
+Els fitxers de variables venen de la carpeta `vars` del primer repositori de formularis que en tingui una.
 
 ---
 
@@ -73,14 +81,14 @@ El contingut dels repositoris substitueix la carpeta local corresponent; aquesta
 
 | Contingut | Es llegeix de, guanya la primera coincidència |
 |---|---|
-| Configuració | 1. la base de dades, quan la configuració s'hi desa ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. el `config.yaml` del repositori **Utilitzar per a la configuració** <br> 3. el `config.yaml` d'un repositori **Utilitzar per als formularis**, quan cap repositori no es fa servir per a la configuració <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Formularis | Tots els repositoris **Utilitzar per als formularis** més `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) només quan no n'hi ha cap |
-| Playbooks | El repositori **Utilitzar per als playbooks**, o si no [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Fitxers de variables | La carpeta `vars` del primer repositori **Utilitzar per als formularis** que en tingui una, o si no [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflows | Tots els repositoris **Fer servir per a workflows** més [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), conjuntament |
+| Rols, categories, constants | Cada clau per separat: 1. el fitxer que dona `controller_roles:`, `controller_categories:` o `controller_constants:` al repositori amb aquest tipus d'ús <br> 2. el `config.yaml` d'aquest repositori (obsolet) <br> 3. la configuració base: la base de dades, quan la configuració s'hi desa ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), o si no [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Formularis | Tots els repositoris **Formularis** més `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) només quan no n'hi ha cap |
+| Playbooks | El repositori **Playbooks**, o si no [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| Fitxers de variables | La carpeta `vars` del primer repositori **Formularis** que en tingui una, o si no [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflows | Tots els repositoris **Workflows** més [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), conjuntament |
 
-Els formularis de diversos repositoris es fusionen en una sola llista. Quan dos d'ells contenen un formulari amb el mateix nom, es conserva el primer
-que es carrega i es registra l'avís `skipping duplicate form <name>`, així que mantén els noms dels formularis únics entre repositoris.
+Els formularis de diversos repositoris es llegeixen en l'ordre en què es van afegir els repositoris. Quan dos d'ells contenen un formulari amb el
+mateix nom, es fa servir la còpia del repositori afegit primer i un avís anomena totes dues còpies, així que mantén els noms dels formularis únics entre repositoris.
 
 ---
 
@@ -108,3 +116,4 @@ Cada tema té la seva pròpia pàgina:
 | [Autenticació](authentication.html) | HTTPS amb un token, SSH amb la clau generada i ordres git personalitzades |
 | [Fer pull dels canvis](pulling.html) | Pulls programats, manuals i per API, i els canvis locals |
 | [Dissenyador i push](designer.html) | Editar formularis al dissenyador i fer-ne push al repositori |
+| [Configuració a git](config-as-code.html) | Cada ajust guardat en un repositori git, llegit i escrit en tots dos sentits |

@@ -3,7 +3,7 @@ layout: default
 title: Ein Repository hinzufügen
 parent: Git-Repositories
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # Ein Repository hinzufügen
@@ -39,7 +39,7 @@ Pull holt. Das Menü jeder Zeile enthält folgende Aktionen:
 |---|---|
 | **Bearbeiten** | Die Felder unten ändern |
 | **Pull** | Das Repository klonen oder pullen, wenn die Arbeitskopie schon existiert |
-| **Push** | Die Arbeitskopie committen und pushen; nur bei Repositories, die für Formulare, Konfiguration, Playbooks, Workflows oder Inventare verwendet werden, und nur aktiv, solange es noch nicht gepushte Änderungen gibt |
+| **Push** | Die Arbeitskopie committen und pushen; nur bei Repositories mit einem angehakten Verwendungstyp, und nur aktiv, solange es noch nicht gepushte Änderungen gibt |
 | **Zurücksetzen** | Die Arbeitskopie löschen und neu klonen, wodurch lokale Änderungen verworfen werden |
 | **Anmeldeinformationen ändern** | Den Tab **Anmeldedaten** des Repositorys öffnen, um die Anmeldedaten zu wählen, die git verwendet |
 | **Ausgabe des letzten Pulls anzeigen** | Die Ausgabe von git beim letzten Clone, Pull oder Reset anzeigen, mit maskiertem Passwort |
@@ -69,7 +69,7 @@ und AnsibleForms startet den Clone im Hintergrund, sobald Sie speichern.
 | **Geplanten Pull aktivieren** | nein | Das Repository nach Zeitplan pullen |
 | **Pull-Zeitplan** | nein | Wann gepullt wird, als Cron-Ausdruck; erscheint, sobald der geplante Pull aktiviert ist |
 | **Beschreibung** | ja | Eine frei wählbare Beschreibung |
-| **Für Konfiguration verwenden?** ... **Für Inventare verwenden?** | nein | Was das Repository enthält, siehe [oben](./#what-a-repository-is-for) |
+| **Verwendung** | nein | Die Verwendungstypen, was das Repository enthält: je ein Kontrollkästchen, unter sechs Überschriften, siehe [Konfiguration in git](config-as-code.html#the-usage-types) |
 | **Beim Start der App pullen** | nein | Das Repository bei jedem Start von AnsibleForms klonen oder pullen |
 
 Das Umbenennen eines Repositorys verschiebt seine Arbeitskopie in den neuen Ordner und seinen Pull-Zeitplan mit. Ein Repository aus der Zeit
@@ -83,7 +83,7 @@ Der Inhalt eines Repositorys wird zu dem, was AnsibleForms lädt und ausführt, 
 
 - ein Repository hinzufügen oder löschen;
 - seine **URI** oder seinen **Branch** ändern;
-- eines seiner **Verwenden**-Flags ein- oder ausschalten.
+- einen seiner Verwendungstypen an- oder abhaken.
 
 Er kann weiterhin Beschreibung, Pull-Zeitplan und Anmeldedaten ändern sowie es pullen, pushen oder zurücksetzen. Anmeldedaten, die ein Runner,
 eine Verbindung oder eine Anmeldemethode verwendet, kann er nicht auswählen; die Ablehnung nennt sie und sagt nichts darüber, was sie enthalten.
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ Die Felder sind die der Seite, einschließlich `credential` (Anmeldedaten aus de
 pullen**) und `cron` (der Pull-Zeitplan); `user` und `password` werden statt Anmeldedaten weiterhin akzeptiert. Ein
 per Seed angelegtes Repository ist in der Oberfläche schreibgeschützt und wird beim Start neu geklont, wenn seine Arbeitskopie fehlt; siehe
 [Verwaltete Objekte](../seed/managed-objects.html).
+
+Jeder Verwendungstyp ist ein Flag `use_for_<type>`, etwa `use_for_credentials`. Seit 7.8.0 ist `use_for_config` ein veralteter Alias von
+`use_for_roles`, `use_for_categories` und `use_for_constants`, der noch mit einer Warnung gelesen und in 8.0 entfernt wird.

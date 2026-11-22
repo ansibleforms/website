@@ -2,7 +2,7 @@
 layout: default
 title: Jak to działa
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Jak to działa
@@ -132,7 +132,7 @@ Każdy z elementów na diagramie ma własną rolę:
 | **Folder trwały** | Przechowuje `config.yaml`, pliki formularzy, playbooki, dzienniki i kopie zapasowe |
 | **Źródła danych** | Wypełniają pola: [zapytania do bazy danych](formfields/enum.html), [API REST](expressions/rest-apis.html), pliki i [inne funkcje](expressions/remote.html) |
 | **Magazyny sekretów** | Dostarczają użytkownika i hasło poświadczenia w chwili użycia, zobacz [Magazyny sekretów](secret-stores/) |
-| **Repozytoria git** | Utrzymują formularze, playbooki i `config.yaml` pod kontrolą wersji |
+| **Repozytoria git** | Utrzymują formularze, playbooki i ustawienia aplikacji pod kontrolą wersji |
 | **Dostawcy logowania** | Logują użytkowników: [LDAP, Entra ID i OIDC](authentication/), obok użytkowników lokalnych |
 | **Kanały powiadomień** | Przenoszą [powiadomienia](forms/notifications.html) i prośby o zatwierdzenie: [poczta, Slack, Microsoft Teams, Telegram lub webhook](notification-channels.html) |
 | **Serwery syslog** | Odbierają dziennik i ślad audytu na bieżąco, w miarę zapisywania, zobacz [Syslog](production/logs.html#syslog) |

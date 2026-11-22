@@ -3,7 +3,7 @@ layout: default
 title: Configuratie
 parent: Omgevingsvariabelen
 nav_order: 5
-translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
+translated_from: c9a671f461916975daeaea7f637658b569946f76
 ---
 
 # Configuratie
@@ -47,8 +47,11 @@ De categorieën, rollen en constanten komen uit `config.yaml` op schijf of uit d
    tabblad **Configuratie** van de instellingenpagina: `1` leest de database, `0` leest het bestand.
 2. Anders de configuratiebron die in de database is opgeslagen (`file` of `database`), die instanties die
    vóór 6.3.0 zijn opgezet op de instellingenpagina kozen.
-3. Anders het bestand: de `config.yaml` van de repository met **Gebruiken voor configuratie?** ingeschakeld, anders van een repository met
-   **Gebruiken voor formulieren?** ingeschakeld, anders die op [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+3. Anders het bestand op [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+
+Sinds 7.8.0 wordt een sleutel die een repository bevat over deze basis gelegd: de repository met het gebruikstype **Rollen**, **Categorieen** of
+**Constanten** levert die sleutel uit haar bestand met `controller_roles:`, `controller_categories:` of
+`controller_constants:`, anders uit haar `config.yaml` (verouderd). Zie [Configuratie in git](../repositories/config-as-code.html#roles-categories-and-constants).
 
 Een expliciet ingestelde `ENABLE_CONFIG_IN_DATABASE` wint altijd, zelfs `0` boven een opgeslagen `database`. Ze wordt gelezen elke keer dat de
 configuratie laadt, dus een wijziging geldt zonder herstart. De pagina **Status** toont de gebruikte bron op het tabblad **Informatie**.

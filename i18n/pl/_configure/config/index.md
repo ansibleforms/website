@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ Kategorie, role i stałe dla wszystkich formularzy
 
 Dla administratorów: plik config.yaml, który przechowuje kategorie, role i stałe wspólne dla wszystkich formularzy.
 
-AnsibleForms używa pliku config.yaml do konfiguracji kategorii, ról i stałych. Jeśli nie podano żadnego pliku, generowany jest plik z minimalną konfiguracją. Konfigurację można też zaimportować do bazy danych, dzięki czemu plik config.yaml nie jest już potrzebny.
+AnsibleForms używa pliku config.yaml do konfiguracji kategorii, ról i stałych. Jeśli nie podano żadnego pliku, generowany jest plik z minimalną konfiguracją. Konfigurację można też zaimportować do bazy danych, dzięki czemu plik config.yaml nie jest już potrzebny, a każdy z tych trzech elementów można przechowywać w repozytorium git.
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Priorytet wczytywania konfiguracji
 
-AnsibleForms wczytuje plik config.yaml w następującej kolejności (wygrywa pierwsze dopasowanie):
+Od wersji 7.8.0 kategorie, role i stałe są wczytywane każde osobno, z pierwszego z poniższych źródeł, które je zawiera.
 
-1. **Z BAZY DANYCH** : konfiguracja zaimportowana do bazy danych, tylko gdy `ENABLE_CONFIG_IN_DATABASE=1` albo gdy ta
+1. **Z REPOZYTORIUM** : repozytorium z typem zastosowania **Kategorie**, **Role** lub **Stałe**, z jego pliku podającego
+   `controller_categories:`, `controller_roles:` lub `controller_constants:`, o dowolnej nazwie i w dowolnym folderze (zobacz
+   [Konfiguracja w git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **Z config.yaml REPOZYTORIUM** : zwykły klucz w `config.yaml` tego repozytorium, przestarzały od wersji 7.8.0 i
+   nieodczytywany w 8.0; informują o tym dziennik serwera, wynik pull i strona repozytorium
+3. **Z BAZY DANYCH** : konfiguracja zaimportowana do bazy danych, tylko gdy `ENABLE_CONFIG_IN_DATABASE=1` albo gdy ta
    zmienna nie jest ustawiona, a źródło konfiguracji zapisane w bazie danych to `database` (pusta kopia przechodzi z powrotem na plik)
-2. **Z REPOZYTORIUM (use_for_config)** : repozytorium z włączonym przełącznikiem "Używać do konfiguracji?" (nowość w 6.1.0)
-3. **Z REPOZYTORIUM (use_for_forms)** : repozytorium z włączonym przełącznikiem "Używać do formularzy?" (rozwiązanie zapasowe dla zgodności wstecznej)
 4. **Z PLIKU LOKALNEGO** : lokalny plik `config.yaml` (zmienna środowiskowa CONFIG_PATH)
 
 {: .warning }
-> **Uwaga:** Włącz "Używać do konfiguracji?" tylko w jednym repozytorium. Jeśli ma go włączone kilka, w dzienniku pojawia się ostrzeżenie i używane jest pierwsze.
+> **Uwaga:** Przełącznika **Używać do konfiguracji?** nie ma od wersji 7.8.0. Aktualizacja nadaje **Role**, **Kategorie** i **Stałe**
+> repozytorium, które go miało, a `use_for_config` w config seed lub w API jest przestarzałym aliasem tych trzech.
 
 ---
 

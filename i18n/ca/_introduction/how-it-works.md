@@ -2,7 +2,7 @@
 layout: default
 title: Com funciona
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Com funciona
@@ -132,7 +132,7 @@ Cada component del diagrama té el seu propi paper:
 | **Carpeta persistent** | Conté `config.yaml`, els fitxers de formularis, els playbooks, els registres i les còpies de seguretat |
 | **Fonts de dades** | Emplenen els camps: [consultes a bases de dades](formfields/enum.html), [API REST](expressions/rest-apis.html), fitxers i [altres funcions](expressions/remote.html) |
 | **Magatzems de secrets** | Proporcionen l'usuari i la contrasenya d'una credencial en el moment d'usar-la, consulta [Magatzems de secrets](secret-stores/) |
-| **Repositoris git** | Mantenen els formularis, els playbooks i `config.yaml` sota control de versions |
+| **Repositoris git** | Mantenen els formularis, els playbooks i els ajustos de l'aplicació sota control de versions |
 | **Proveïdors d'inici de sessió** | Inicien la sessió dels usuaris: [LDAP, Entra ID i OIDC](authentication/), a més dels usuaris locals |
 | **Canals de notificació** | Porten les [notificacions](forms/notifications.html) i les sol·licituds d'aprovació: [correu, Slack, Microsoft Teams, Telegram o un webhook](notification-channels.html) |
 | **Servidors syslog** | Reben el registre i la traça d'auditoria a mesura que s'escriuen, consulta [Syslog](production/logs.html#syslog) |
