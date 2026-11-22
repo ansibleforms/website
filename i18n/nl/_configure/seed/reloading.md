@@ -3,7 +3,7 @@ layout: default
 title: Herladen en opstarten
 parent: Configuratie-seed
 nav_order: 3
-translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
+translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
 ---
 
 # Herladen en opstarten
@@ -19,18 +19,14 @@ Het bestand wijzigen zonder herstart, en wat er bij het opstarten gebeurt
 
 ## Het bestand wijzigen zonder herstart
 
-De systeemtaak **Config seed herladen** leest de seed elke minuut opnieuw, en past hem opnieuw toe als de inhoud is gewijzigd. Een wijziging die in git is gecommit, bereikt daardoor automatisch een
+De seed wordt elke `CONFIG_SEED_RELOAD_SECONDS` opnieuw gelezen (standaard 60, `0` schakelt het uit)
+en opnieuw toegepast als de inhoud is gewijzigd. Een wijziging die in git is gecommit, bereikt daardoor automatisch een
 draaiende instantie: op Kubernetes wordt een `ConfigMap` binnen ongeveer een minuut opnieuw onder de pod gekoppeld,
 en de volgende controle pikt hem op. Er is geen rollout en geen herstart, en geen
 hook hoeft iets aan te roepen.
 
 Voor een ongewijzigd bestand berekent de controle één hash en stopt, dus ze herschrijft nooit een rij die ze al
 heeft toegepast.
-
-Sinds 7.8.0 draait de controle op een cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
-(standaard `* * * * *`), die een beheerder ook wijzigt op de pagina van de taak onder **Jobs > Systeem** (zie
-[Systeemtaken](../jobs/system-tasks.html)). Hij vervangt `CONFIG_SEED_RELOAD_SECONDS`, verouderd en nog gelezen zolang de cron niet
-is ingesteld: de `0` daarvan schakelt het herladen nog steeds uit.
 
 Om het bestand meteen toe te passen in plaats van op de volgende controle te wachten, gebruik je een van deze:
 

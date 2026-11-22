@@ -40,8 +40,8 @@ spec:
               value: /seed/seed.yaml
             # a ConfigMap edited in git is remounted here within about a minute and
             # applied from there, so changing the seed does not roll the pod
-            - name: CONFIG_SEED_RELOAD_CRON
-              value: "* * * * *"
+            - name: CONFIG_SEED_RELOAD_SECONDS
+              value: "60"
             # the environment is declared here, so the settings pages must not
             # write persistent/.env behind this manifest's back
             - name: ALLOW_ENV_EDIT

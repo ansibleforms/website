@@ -110,7 +110,7 @@ Ogni argomento ha una pagina dedicata:
 | [Stati e tipi](statuses.html) | Tutti gli stati che un job può avere, e i tipi di job |
 | [Seguire un job](following.html) | Output in diretta, extravars, filtri e download |
 | [Azioni sui job](actions.html) | Avviare, interrompere, rilanciare, approvare o rifiutare, ed eliminare un job |
-| [Pianificazioni](schedules.html) | Eseguire un modulo più tardi o secondo una pianificazione cron, e gestire tutte le pianificazioni |
+| [Pianificazioni](schedules.html) | Eseguire un modulo più tardi, secondo un cron o una rrule, e gestire tutte le pianificazioni |
 | [Job salvati](stored-jobs.html) | Conservare i dati di un modulo per ricaricarli più tardi |
 | [Pulizia](cleanup.html) | I job interrotti da un riavvio, e per quanto tempo vengono conservati i job terminati |
 | [Attività di sistema](system-tasks.html) | Le attività di manutenzione che AnsibleForms esegue da solo, e quando girano |

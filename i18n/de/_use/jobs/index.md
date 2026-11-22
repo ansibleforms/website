@@ -110,7 +110,7 @@ Jedes Thema hat eine eigene Seite:
 | [Status und Typen](statuses.html) | Jeder Status, den ein Job haben kann, und die Arten von Jobs |
 | [Einen Job verfolgen](following.html) | Live-Ausgabe, Extravars, Filter und Downloads |
 | [Job-Aktionen](actions.html) | Einen Job starten, abbrechen, neu starten, genehmigen oder ablehnen und löschen |
-| [Zeitpläne](schedules.html) | Ein Formular später oder nach einem Cron-Zeitplan ausführen, und alle Zeitpläne verwalten |
+| [Zeitpläne](schedules.html) | Ein Formular später, nach einem Cron oder einer rrule ausführen, und alle Zeitpläne verwalten |
 | [Gespeicherte Jobs](stored-jobs.html) | Die Daten eines Formulars aufbewahren, um sie später wieder zu laden |
 | [Bereinigung](cleanup.html) | Durch einen Neustart abgeschnittene Jobs, und wie lange beendete Jobs aufbewahrt werden |
 | [Systemaufgaben](system-tasks.html) | Die Wartungsaufgaben, die AnsibleForms selbst ausführt, und wann sie laufen |

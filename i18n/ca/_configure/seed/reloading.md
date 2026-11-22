@@ -3,7 +3,7 @@ layout: default
 title: Recàrrega i arrencada
 parent: Llavor de configuració
 nav_order: 3
-translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
+translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
 ---
 
 # Recàrrega i arrencada
@@ -19,18 +19,14 @@ Canviar el fitxer sense reiniciar, i què passa en arrencar
 
 ## Canviar el fitxer sense reiniciar
 
-El procés del sistema **Recàrrega del config seed** torna a llegir la llavor cada minut, i la torna a aplicar quan el seu contingut ha canviat. Per tant, un canvi confirmat a git arriba
+La llavor es torna a llegir cada `CONFIG_SEED_RELOAD_SECONDS` (60 per defecte, `0` ho desactiva)
+i es torna a aplicar quan el seu contingut ha canviat. Per tant, un canvi confirmat a git arriba
 automàticament a una instància en funcionament: a Kubernetes, un `ConfigMap` es torna a muntar sota el pod en
 aproximadament un minut, i la comprovació següent el detecta. No hi ha cap desplegament ni cap reinici, i cap
 hook no ha de cridar res.
 
 Per a un fitxer sense canvis, la comprovació calcula un hash i s'atura, de manera que mai no reescriu una fila que ja
 ha aplicat.
-
-Des de la 7.8.0 la comprovació s'executa amb un cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
-(`* * * * *` per defecte), que un administrador també canvia a la pàgina del procés a **Tasques > Sistema** (vegeu
-[Processos del sistema](../jobs/system-tasks.html)). Substitueix `CONFIG_SEED_RELOAD_SECONDS`, obsoleta i encara llegida mentre el cron
-no estigui definit: el seu `0` encara desactiva la recàrrega.
 
 Per aplicar el fitxer immediatament en lloc d'esperar la comprovació següent, fes servir qualsevol d'aquests:
 

@@ -110,7 +110,7 @@ Elk onderwerp heeft een eigen pagina:
 | [Statussen en typen](statuses.html) | Elke status die een job kan hebben, en de soorten jobs |
 | [Een job volgen](following.html) | Live uitvoer, extravars, filters en downloads |
 | [Jobacties](actions.html) | Een job starten, afbreken, herstarten, goedkeuren of afwijzen, en verwijderen |
-| [Planningen](schedules.html) | Een formulier later of volgens een cron-schema uitvoeren, en elke planning beheren |
+| [Planningen](schedules.html) | Een formulier later, volgens een cron of een rrule, uitvoeren, en elke planning beheren |
 | [Opgeslagen jobs](stored-jobs.html) | De gegevens van een formulier bewaren om ze later weer te laden |
 | [Opruimen](cleanup.html) | Jobs die door een herstart zijn afgebroken, en hoe lang afgeronde jobs bewaard blijven |
 | [Systeemtaken](system-tasks.html) | De onderhoudstaken die AnsibleForms zelf uitvoert, en wanneer ze draaien |

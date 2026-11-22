@@ -18,18 +18,14 @@ Change the file without a restart, and what happens at startup
 
 ## Changing the file without restarting
 
-The system task **Config seed reload** re-reads the seed every minute, and re-applies it when its content has changed. A change committed to git therefore reaches a
+The seed is re-read every `CONFIG_SEED_RELOAD_SECONDS` (60 by default, `0` turns it off)
+and re-applied when its content has changed. A change committed to git therefore reaches a
 running instance automatically: on Kubernetes, a `ConfigMap` is remounted under the pod within
 about a minute, and the next check picks it up. There is no rollout and no restart, and no
 hook needs to call anything.
 
 For an unchanged file, the poll computes one hash and stops, so it never rewrites a row it has
 already applied.
-
-Since 7.8.0 the check runs on a cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
-(`* * * * *` by default), which an admin also changes on the task's page under **Jobs > System** (see
-[System tasks](../jobs/system-tasks.html)). It replaces `CONFIG_SEED_RELOAD_SECONDS`, deprecated and still read while the cron is
-not set: its `0` still turns the reload off.
 
 To apply the file immediately instead of waiting for the next check, use either of these:
 

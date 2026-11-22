@@ -3,7 +3,7 @@ layout: default
 title: Ricaricamento e avvio
 parent: Config seed
 nav_order: 3
-translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
+translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
 ---
 
 # Ricaricamento e avvio
@@ -19,18 +19,14 @@ Modificare il file senza riavvio, e cosa succede all'avvio
 
 ## Modificare il file senza riavviare
 
-L'attività di sistema **Ricarica del config seed** rilegge il seed ogni minuto, e lo riapplica quando il suo contenuto è cambiato. Una modifica di cui si fa commit in git raggiunge quindi
+Il seed viene riletto ogni `CONFIG_SEED_RELOAD_SECONDS` (60 per impostazione predefinita, `0` lo disattiva)
+e riapplicato quando il suo contenuto è cambiato. Una modifica di cui si fa commit in git raggiunge quindi
 automaticamente un'istanza in esecuzione: su Kubernetes, una `ConfigMap` viene rimontata nel pod entro
 circa un minuto, e il controllo successivo la rileva. Non c'è nessun rollout né riavvio, e nessun
 hook deve chiamare nulla.
 
 Per un file invariato, il controllo calcola un hash e si ferma, quindi non riscrive mai una riga che ha
 già applicato.
-
-Dalla 7.8.0 il controllo gira su un cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
-(`* * * * *` per impostazione predefinita), che un admin cambia anche nella pagina dell'attività sotto **Job > Sistema** (vedi
-[Attività di sistema](../jobs/system-tasks.html)). Sostituisce `CONFIG_SEED_RELOAD_SECONDS`, deprecata e ancora letta finché il cron non
-è impostato: il suo `0` disattiva ancora la ricarica.
 
 Per applicare subito il file invece di attendere il controllo successivo, usa uno di questi:
 

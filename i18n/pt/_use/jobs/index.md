@@ -110,7 +110,7 @@ Cada tema tem a sua própria página:
 | [Estados e tipos](statuses.html) | Todos os estados que uma tarefa pode ter, e os tipos de tarefa |
 | [Acompanhar uma tarefa](following.html) | Resultado em direto, extravars, filtros e transferências |
 | [Ações sobre tarefas](actions.html) | Lançar, interromper, relançar, aprovar ou rejeitar, e eliminar uma tarefa |
-| [Agendamentos](schedules.html) | Executar um formulário mais tarde ou segundo um agendamento cron, e gerir todos os agendamentos |
+| [Agendamentos](schedules.html) | Executar um formulário mais tarde, segundo um cron ou uma rrule, e gerir todos os agendamentos |
 | [Tarefas guardadas](stored-jobs.html) | Guardar os dados de um formulário para os carregar de novo mais tarde |
 | [Limpeza](cleanup.html) | Tarefas interrompidas por um reinício, e durante quanto tempo se guardam as tarefas terminadas |
 | [Processos do sistema](system-tasks.html) | Os processos de manutenção que o AnsibleForms executa sozinho, e quando correm |

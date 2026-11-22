@@ -3,7 +3,7 @@ layout: default
 title: 重新加载与启动
 parent: 配置种子
 nav_order: 3
-translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
+translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
 ---
 
 # 重新加载与启动
@@ -19,18 +19,14 @@ translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
 
 ## 无需重启即可修改文件
 
-系统任务**配置种子重新加载**每分钟重新读取一次种子，在其内容发生变化时重新应用。因此，提交到 git 的更改会自动到达
+种子每隔 `CONFIG_SEED_RELOAD_SECONDS`（默认 60，`0` 表示关闭）重新读取一次，
+在其内容发生变化时重新应用。因此，提交到 git 的更改会自动到达
 正在运行的实例：在 Kubernetes 上，`ConfigMap` 会在大约一分钟内重新挂载到 pod 下，
 下一次检查就会读取到它。无需滚动发布，无需重启，也不需要
 任何钩子去调用什么。
 
 对于未改变的文件，轮询只计算一次哈希就会停止，因此它永远不会改写已经
 应用过的行。
-
-自 7.8.0 起，该检查按 cron [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
-运行（默认 `* * * * *`），管理员也可以在**作业 > 系统**下该任务的页面中修改它（参见
-[系统任务](../jobs/system-tasks.html)）。它取代了 `CONFIG_SEED_RELOAD_SECONDS`，后者已弃用，但在未设置 cron 时仍会被读取：
-它的 `0` 仍会关闭重新加载。
 
 要立即应用文件而不是等待下一次检查，可以使用以下任一方式：
 

@@ -3,7 +3,7 @@ layout: default
 title: Recarga y arranque
 parent: Semilla de configuración
 nav_order: 3
-translated_from: c3925e2d8707d37ed572380de4f675615ca31a05
+translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
 ---
 
 # Recarga y arranque
@@ -19,18 +19,14 @@ Cambia el archivo sin reiniciar, y qué pasa al arrancar
 
 ## Cambiar el archivo sin reiniciar
 
-La tarea del sistema **Recarga del config seed** vuelve a leer la semilla cada minuto, y la vuelve a aplicar cuando su contenido ha cambiado. Así, un cambio confirmado en git llega
+La semilla se vuelve a leer cada `CONFIG_SEED_RELOAD_SECONDS` (60 por defecto, `0` lo desactiva)
+y se vuelve a aplicar cuando su contenido ha cambiado. Así, un cambio confirmado en git llega
 automáticamente a una instancia en marcha: en Kubernetes, un `ConfigMap` se vuelve a montar en el pod en
 cerca de un minuto, y la siguiente comprobación lo recoge. No hay despliegue ni reinicio, y ningún
 hook tiene que llamar a nada.
 
 Con un archivo sin cambios, la consulta calcula un hash y se detiene, así que nunca reescribe una fila que ya
 ha aplicado.
-
-Desde la 7.8.0 la comprobación se ejecuta con un cron, [`CONFIG_SEED_RELOAD_CRON`](../customization/configuration.html#env_CONFIG_SEED_RELOAD_CRON)
-(`* * * * *` por defecto), que un administrador también cambia en la página de la tarea en **Trabajos > Sistema** (consulta
-[Tareas del sistema](../jobs/system-tasks.html)). Sustituye a `CONFIG_SEED_RELOAD_SECONDS`, obsoleta y que se sigue leyendo mientras el
-cron no esté definido: su `0` sigue desactivando la recarga.
 
 Para aplicar el archivo de inmediato en lugar de esperar a la siguiente comprobación, usa cualquiera de estos:
 

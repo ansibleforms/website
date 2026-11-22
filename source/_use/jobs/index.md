@@ -109,7 +109,7 @@ Each topic has a page of its own:
 | [Statuses and types](statuses.html) | Every status a job can have, and the kinds of job |
 | [Following a job](following.html) | Live output, extravars, filters and downloads |
 | [Job actions](actions.html) | Launch, abort, relaunch, approve or reject, and delete a job |
-| [Schedules](schedules.html) | Run a form later or on a cron schedule, and manage every schedule |
+| [Schedules](schedules.html) | Run a form later, on a cron or a rrule, and manage every schedule |
 | [Stored jobs](stored-jobs.html) | Keep the data of a form to load it again later |
 | [Cleanup](cleanup.html) | Jobs cut off by a restart, and how long finished jobs are kept |
 | [System tasks](system-tasks.html) | The maintenance tasks AnsibleForms runs on its own, and when they run |
