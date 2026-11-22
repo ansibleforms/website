@@ -57,7 +57,7 @@ python libraries always go into the image. Baking everything in is reproducible 
 ## The contract
 
 What the controller and an RTE must share is their contract, a number both report. An RTE of an older release keeps working with a newer
-app as long as both speak the same contract; when a release changes it, its release notes say that RTEs must be updated. Each mode
+controller as long as both speak the same contract; when a release changes it, its release notes say that RTEs must be updated. Each mode
 has its own:
 
 | Mode | Contract | On a mismatch |

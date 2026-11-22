@@ -31,7 +31,7 @@ An outbound RTE stays connected while it waits, but gets no job. The controller 
 that they wait for an admin to approve them under **Connections > Runners**, with the fingerprint of their token.
 
 An inbound RTE with an `https://` `RTE_URL` also sends its certificate when it asks to join, and the controller pins it: from then on the
-app dials that RTE only when it presents the same certificate, so a self-signed one works without a CA (see [Inbound](../rte/modes.html#inbound)).
+controller dials that RTE only when it presents the same certificate, so a self-signed one works without a CA (see [Inbound](../rte/modes.html#inbound)).
 
 At most 20 RTEs wait for approval at once: more are refused until some are approved or rejected. A request nobody handles within
 24 hours is removed by the worker, with its credential.
