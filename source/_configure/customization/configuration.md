@@ -27,7 +27,7 @@ Apply a mounted config seed, check it every five minutes, and keep `config.yaml`
 ```yaml
     environment:
       - CONFIG_SEED_PATH=/seed/seed.yaml
-      - CONFIG_SEED_RELOAD_SECONDS=300
+      - "CONFIG_SEED_RELOAD_CRON=*/5 * * * *"
       - ENABLE_CONFIG_IN_DATABASE=1
       - ALLOW_ENV_EDIT=0              # the environment is declared here, not on the settings pages
     volumes:

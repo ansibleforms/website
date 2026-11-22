@@ -35,6 +35,10 @@ approval, is never removed. From 7.7.0 `STORED_JOB_UNUSED_DAYS` also removes, at
 jobs](../jobs/stored-jobs.html#when-it-is-removed) no job was launched from for that many days. These variables
 apply without a restart when they are changed on the settings page.
 
+These times are the defaults. Since 7.8.0 each cleanup, and the nightly backup, is a [system task](../jobs/system-tasks.html) under
+**Jobs > System**, where an admin changes when it runs and sees its runs; the variables of their times are in
+[System tasks](system-tasks.html).
+
 ---
 
 ## Variables

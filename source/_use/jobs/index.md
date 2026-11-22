@@ -57,6 +57,7 @@ The left menu sorts the jobs in time, with the number of jobs in each entry; a s
 | | **Waiting for approval** | Jobs with status `approve`; the count turns orange when one is waiting |
 | **Future** | **Scheduled** | The [Schedules](schedules.html) page (role option `allowScheduledJobs`) |
 | | **Stored** | The [Stored jobs](stored-jobs.html) page (role option `allowStoredJobs`) |
+| | **System** | The [System tasks](system-tasks.html) page, from 7.8.0 (role option `showSettings`, admins) |
 
 The menu has no entry for every job: the header's **Jobs** link shows them all, `warning` jobs included.
 
@@ -111,3 +112,4 @@ Each topic has a page of its own:
 | [Schedules](schedules.html) | Run a form later or on a cron schedule, and manage every schedule |
 | [Stored jobs](stored-jobs.html) | Keep the data of a form to load it again later |
 | [Cleanup](cleanup.html) | Jobs cut off by a restart, and how long finished jobs are kept |
+| [System tasks](system-tasks.html) | The maintenance tasks AnsibleForms runs on its own, and when they run |
