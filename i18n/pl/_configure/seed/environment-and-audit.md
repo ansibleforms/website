@@ -3,7 +3,7 @@ layout: default
 title: Edycja i audyt
 parent: Config seed
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Edycja i audyt
@@ -22,6 +22,9 @@ Blokowanie stron ustawień i co zapisuje dziennik audytu
 `ALLOW_ENV_EDIT=0` czyni strony ustawień tylko do odczytu. Każda zmienna jest nadal pokazywana z
 obowiązującą wartością i powodem, dla którego nie można jej zmienić, a endpoint zapisu odpowiada
 403.
+
+Od wersji 7.8.0 własna sekcja `mcp` seeda oraz język i link do Designera z jego sekcji `defaults` i `links` są nadal stosowane
+przy `ALLOW_ENV_EDIT=0`, choć to zmienne środowiskowe: seed jest deklaracją, którą to ustawienie reprezentuje.
 
 Używaj tego zawsze, gdy środowisko jest zadeklarowane gdzie indziej. W przeciwnym razie strona ustawień zapisuje
 `persistent/.env`, który na efemerycznym wolumenie po cichu ginie przy następnym restarcie, a na

@@ -3,7 +3,7 @@ layout: default
 title: Recàrrega i arrencada
 parent: Llavor de configuració
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # Recàrrega i arrencada
@@ -19,11 +19,18 @@ Canviar el fitxer sense reiniciar, i què passa en arrencar
 
 ## Canviar el fitxer sense reiniciar
 
-La llavor es torna a llegir cada `CONFIG_SEED_RELOAD_SECONDS` (60 per defecte, `0` ho desactiva)
+La llavor la torna a llegir la tasca del sistema **Recàrrega del config seed**, cada minut per defecte,
 i es torna a aplicar quan el seu contingut ha canviat. Per tant, un canvi confirmat a git arriba
 automàticament a una instància en funcionament: a Kubernetes, un `ConfigMap` es torna a muntar sota el pod en
 aproximadament un minut, i la comprovació següent el detecta. No hi ha cap desplegament ni cap reinici, i cap
 hook no ha de cridar res.
+
+Des de la 7.8.0 el seu horari és un cron de 5 camps a `CONFIG_SEED_RELOAD_CRON` (`* * * * *` per defecte), que es defineix a la pàgina
+pròpia de la tasca a **Tasques > Sistema** (vegeu [Tasques](../jobs/)) o a l'entorn. Sense `CONFIG_SEED_PATH` la tasca està aturada.
+
+`CONFIG_SEED_RELOAD_SECONDS`, el seu ajust d'abans, és obsolet des de la 7.8.0 i s'elimina a la 8. Encara es llegeix mentre
+`CONFIG_SEED_RELOAD_CRON` no està definit, amb un avís al registre en arrencar: `60` es llegeix com a `* * * * *`, un múltiple de 60 fins
+a 3600 com a cada tants minuts, i `0` encara desactiva la recàrrega. Defineix `CONFIG_SEED_RELOAD_CRON` en lloc seu.
 
 Per a un fitxer sense canvis, la comprovació calcula un hash i s'atura, de manera que mai no reescriu una fila que ja
 ha aplicat.

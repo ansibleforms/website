@@ -3,7 +3,7 @@ layout: default
 title: Verwaltete Objekte
 parent: Config-Seed
 nav_order: 2
-translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
+translated_from: b007fcc08a96c4035422a238ae335bf4eedd48c5
 ---
 
 # Verwaltete Objekte
@@ -19,7 +19,7 @@ Wie der Seed die aufgeführten Objekte verwaltet und wie er Geheimnisse heraush�
 
 ## Einzeilige Abschnitte gelten ganz oder gar nicht
 
-`ldap`, `settings` und `chat` sind jeweils eine **einzelne Zeile**, daher muss der Seed alle ihre Felder deklarieren; die anderen Abschnitte sind Listen.
+`ldap`, `settings` und `chat_assistant` (`chat` vor 7.8.0) sind jeweils eine **einzelne Zeile**, daher muss der Seed alle ihre Felder deklarieren.
 
 Ein Seed, der ein Feld auslässt, verweigert den Start und nennt es:
 
@@ -32,7 +32,7 @@ Deklarieren Sie einen leeren Wert ausdrücklich mit `""` oder `false`. Einige Fe
 | Abschnitt | Optionale Felder |
 |---|---|
 | `ldap` | `description`, `credential` (Anmeldedaten zum Binden) und `groupfilter` |
-| `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` und `extra_headers` |
+| `chat_assistant` | `auth_type`, `api_version`, `request_user`, `ignore_certs`, `extra_headers`, und `credential` seit 7.8.0 |
 | `settings` | Die `mail_*`-Schlüssel, seit 7.6.0 veraltet (siehe [Beispiel](example.html)) |
 
 `settings` deckt nur die URL und die veralteten Mail-Schlüssel ab; alle übrigen Einstellungen bleiben bearbeitbar.
@@ -51,7 +51,8 @@ Anmeldedaten können auch einen [Secret Store](../secret-stores) verwenden (`sec
 
 ## Verwaltete Objekte
 
-Ein Objekt, das aus dem Seed stammt, wird als **verwaltet** markiert:
+Ein Objekt der Listenabschnitte (`runners`, `secret_stores`, `credentials`, `databases`, `sso`, `repositories`, `syslog`,
+`notifications` und `labels`) oder eines einzeiligen Abschnitts, das aus dem Seed stammt, wird als **verwaltet** markiert:
 
 - Es wird bei **jedem** Start durchgesetzt, sodass die Datei maßgeblich bleibt.
 - Es ist schreibgeschützt: Die API antwortet mit **403**, die Oberfläche deaktiviert Bearbeiten und Löschen, und seine eigene Seite sagt, dass es aus der
@@ -65,6 +66,9 @@ Das Anwenden des Seeds ist idempotent: Datensätze, die bereits passen, bleiben 
 
 Ein deklariertes Repository, dessen Arbeitsverzeichnis fehlt, wird bei jedem Start **erneut geklont**, sodass ein fehlgeschlagener erster Klon
 wiederholt wird. Die Zeile *Repositories* der Seite Status zeigt jedes Repository ohne Arbeitsverzeichnis.
+
+Seit 7.8.0 kann ein [Git-Repository](../repositories/) dieselben Arten von Objekten enthalten. Ein Objekt, das ein Repository enthält, bleibt
+das des Repositorys: Das Element des Seeds dafür wird nicht angewendet, und das Serverprotokoll sagt es. Ein Repository, das der Seed deklariert, bleibt das des Seeds.
 
 ### Ein Objekt entfernen
 
@@ -85,7 +89,27 @@ credentials:
 
 ### Den Seed abschalten
 
-Das Entfernen von `CONFIG_SEED_PATH` gibt **nichts** frei: Der Seed wird nicht mehr angewendet, und die von ihm verwalteten Datensätze bleiben verwaltet
-und schreibgeschützt. Um sie wieder zu bearbeiten, geben Sie sie zuerst frei: Richten Sie `CONFIG_SEED_PATH` auf eine Datei ohne sie (eine leere Datei deklariert
-nichts und gibt jeden Datensatz frei), lassen Sie sie bei einem Start oder Neuladen anwenden und entfernen Sie dann die Variable. Die freigegebenen Datensätze bleiben, wie
-sie sind, und werden bearbeitbar.
+Das Entfernen von `CONFIG_SEED_PATH` schaltet den Seed ab: Der nächste Start gibt jeden Datensatz und jedes Feld frei, das der Seed verwaltet
+hat, wie es ein angewendeter leerer Seed täte. Die Datensätze behalten ihre Werte und werden wieder bearbeitbar, und das Serverprotokoll und das Audit-Protokoll sagen, was freigegeben wurde.
+
+Ein `CONFIG_SEED_PATH`, dessen Datei fehlt, gibt nichts frei: Der Server verweigert stattdessen den Start, weil eine eingehängte Datei
+vielleicht nur verspätet ist.
+
+---
+
+## Einstellungen, die der Seed deklariert
+
+Die in 7.8.0 hinzugekommenen Abschnitte gehören dem Seed weniger streng als die verwalteten Objekte, auf zwei Arten.
+
+| Abschnitte | Wie der Seed sie besitzt |
+|---|---|
+| `defaults`, `logo`, `icon`, `name`, `links`, `mcp` | Feld für Feld: Jedes deklarierte Feld ist auf seiner Seite schreibgeschützt, mit einem Hinweis, und die API weist seine Änderung ab (403) |
+| `users`, `groups`, `announcements`, `disclaimer`, `ssh` | Bei jeder Anwendung angelegt oder geändert, nie gesperrt oder gelöscht |
+
+Ein Feld von `defaults`, `logo`, `icon`, `name`, `links` oder `mcp`, das der Seed nicht mehr deklariert, wird freigegeben, und alle werden es,
+wenn der Seed abgeschaltet wird. Ein Logo oder Symbol aus dem Seed kann in der App weder hochgeladen noch entfernt werden. Wenn ein Repository
+dieselbe Seite enthält, behält der Seed die Felder, die er deklariert, und das Repository enthält die anderen.
+
+Ein Benutzer, eine Gruppe, eine Ankündigung, eine Version des Haftungsausschlusses oder der SSH-Schlüssel und die bekannten Hosts aus dem Seed
+bleiben in der App bearbeitbar, und die nächste Anwendung schreibt die Werte des Seeds wieder, wo sie abweichen. Ein Element aus der Datei zu
+entfernen, lässt es in der App, und `prune` löscht keines davon.

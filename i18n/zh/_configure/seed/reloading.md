@@ -3,7 +3,7 @@ layout: default
 title: 重新加载与启动
 parent: 配置种子
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # 重新加载与启动
@@ -19,11 +19,18 @@ translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
 
 ## 无需重启即可修改文件
 
-种子每隔 `CONFIG_SEED_RELOAD_SECONDS`（默认 60，`0` 表示关闭）重新读取一次，
+种子由系统任务 **配置种子重新加载** 重新读取，默认每分钟一次，
 在其内容发生变化时重新应用。因此，提交到 git 的更改会自动到达
 正在运行的实例：在 Kubernetes 上，`ConfigMap` 会在大约一分钟内重新挂载到 pod 下，
 下一次检查就会读取到它。无需滚动发布，无需重启，也不需要
 任何钩子去调用什么。
+
+自 7.8.0 起，其时间由 `CONFIG_SEED_RELOAD_CRON` 中 5 个字段的 cron 决定（默认 `* * * * *`），可在 **作业 > 系统** 下该任务自己的
+页面（参见 [作业](../jobs/)）或环境中设置。没有 `CONFIG_SEED_PATH` 时，该任务处于关闭状态。
+
+它以前的设置 `CONFIG_SEED_RELOAD_SECONDS` 自 7.8.0 起弃用，并将在 8 中移除。在未设置 `CONFIG_SEED_RELOAD_CRON` 时它仍会被读取，
+启动时日志中会有警告：`60` 读作 `* * * * *`，不超过 3600 的 60 的倍数读作每隔若干分钟，
+`0` 仍会关闭重新加载。请改为设置 `CONFIG_SEED_RELOAD_CRON`。
 
 对于未改变的文件，轮询只计算一次哈希就会停止，因此它永远不会改写已经
 应用过的行。

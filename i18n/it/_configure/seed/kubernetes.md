@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes
 parent: Config seed
 nav_order: 4
-translated_from: faae2b35e3b483f560c320f8999ed5b6d1029aea
+translated_from: d0af2f85ca01d9d785f4333aafd1ca0ae9f2ef9d
 ---
 
 # Kubernetes
@@ -41,8 +41,9 @@ spec:
               value: /seed/seed.yaml
             # a ConfigMap edited in git is remounted here within about a minute and
             # applied from there, so changing the seed does not roll the pod
-            - name: CONFIG_SEED_RELOAD_SECONDS
-              value: "60"
+            # (since 7.8.0 ; CONFIG_SEED_RELOAD_SECONDS before, deprecated)
+            - name: CONFIG_SEED_RELOAD_CRON
+              value: "* * * * *"
             # the environment is declared here, so the settings pages must not
             # write persistent/.env behind this manifest's back
             - name: ALLOW_ENV_EDIT

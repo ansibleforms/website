@@ -3,7 +3,7 @@ layout: default
 title: Objetos gestionados
 parent: Semilla de configuración
 nav_order: 2
-translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
+translated_from: b007fcc08a96c4035422a238ae335bf4eedd48c5
 ---
 
 # Objetos gestionados
@@ -19,7 +19,7 @@ Cómo la semilla se hace dueña de los objetos que lista y cómo mantiene fuera 
 
 ## Las secciones de una sola fila son todo o nada
 
-`ldap`, `settings` y `chat` son **una sola fila** cada una, así que la semilla debe declarar todos sus campos; las demás secciones son listas.
+`ldap`, `settings` y `chat_assistant` (`chat` antes de la 7.8.0) son **una sola fila** cada una, así que la semilla debe declarar todos sus campos.
 
 Una semilla que omite un campo se niega a arrancar y lo nombra:
 
@@ -32,7 +32,7 @@ Declara un valor vacío de forma explícita con `""` o `false`. Unos pocos campo
 | Sección | Campos opcionales |
 |---|---|
 | `ldap` | `description`, `credential` (una credencial con la que hacer bind) y `groupfilter` |
-| `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` y `extra_headers` |
+| `chat_assistant` | `auth_type`, `api_version`, `request_user`, `ignore_certs`, `extra_headers`, y `credential` desde la 7.8.0 |
 | `settings` | Las claves `mail_*`, obsoletas desde la 7.6.0 (consulta [Ejemplo](example.html)) |
 
 `settings` cubre solo la URL y las claves de correo obsoletas; el resto de ajustes siguen siendo editables.
@@ -51,7 +51,8 @@ Las credenciales también pueden usar un [almacén de secretos](../secret-stores
 
 ## Objetos gestionados
 
-Un objeto que viene de la semilla se marca como **gestionado**:
+Un objeto de las secciones de lista (`runners`, `secret_stores`, `credentials`, `databases`, `sso`, `repositories`, `syslog`,
+`notifications` y `labels`) o de una sección de una sola fila que viene de la semilla se marca como **gestionado**:
 
 - Se impone en **cada** arranque, así que el archivo sigue siendo la referencia.
 - Es de solo lectura: la API responde **403**, la interfaz desactiva Editar y Eliminar, y su propia página indica que viene del archivo de
@@ -65,6 +66,9 @@ Aplicar la semilla es idempotente: los registros que ya coinciden no se tocan, a
 
 Un repositorio declarado al que le falta el árbol de trabajo se **vuelve a clonar** en cada arranque, así que un primer clonado fallido
 se reintenta. La fila *Repositorios* de la página Estado muestra cualquier repositorio sin árbol de trabajo.
+
+Desde la 7.8.0 un [repositorio git](../repositories/) puede contener los mismos tipos de objetos. Un objeto que contiene un repositorio sigue
+siendo del repositorio: el elemento de la semilla para él no se aplica, y el log del servidor lo indica. Un repositorio que declara la semilla sigue siendo de la semilla.
 
 ### Quitar un objeto
 
@@ -85,7 +89,27 @@ credentials:
 
 ### Desactivar la semilla
 
-Quitar `CONFIG_SEED_PATH` **no** libera nada: la semilla deja de aplicarse, y los registros que gestionaba siguen gestionados
-y de solo lectura. Para volver a editarlos, libéralos primero: apunta `CONFIG_SEED_PATH` a un archivo sin ellos (un archivo vacío no declara
-nada y libera todos los registros), deja que se aplique en un arranque o una recarga, y después quita la variable. Los registros liberados se quedan como
-están y pasan a ser editables.
+Quitar `CONFIG_SEED_PATH` desactiva la semilla: el siguiente arranque libera todos los registros y campos que gestionaba la semilla, como lo
+haría una semilla vacía aplicada. Los registros conservan sus valores y vuelven a ser editables, y el log del servidor y el log de auditoría indican qué se liberó.
+
+Un `CONFIG_SEED_PATH` cuyo archivo falta no libera nada: el servidor se niega a arrancar en su lugar, porque un archivo montado puede
+simplemente llegar tarde.
+
+---
+
+## Ajustes que declara la semilla
+
+Las secciones añadidas en la 7.8.0 pertenecen a la semilla de forma menos estricta que los objetos gestionados, de dos maneras.
+
+| Secciones | Cómo es dueña de ellas la semilla |
+|---|---|
+| `defaults`, `logo`, `icon`, `name`, `links`, `mcp` | Campo a campo: cada campo declarado es de solo lectura en su página, con un aviso, y la API rechaza cambiarlo (403) |
+| `users`, `groups`, `announcements`, `disclaimer`, `ssh` | Se crean o se cambian en cada aplicación, nunca se bloquean ni se eliminan |
+
+Un campo de `defaults`, `logo`, `icon`, `name`, `links` o `mcp` que la semilla ya no declara se libera, y todos se liberan
+cuando se desactiva la semilla. Un logotipo o un icono de la semilla no se puede subir ni quitar en la aplicación. Cuando un repositorio contiene la
+misma página, la semilla conserva los campos que declara y el repositorio contiene los demás.
+
+Un usuario, un grupo, un anuncio, una versión del aviso legal o la clave SSH y los hosts conocidos de la semilla siguen siendo editables en la
+aplicación, y la siguiente aplicación vuelve a escribir los valores de la semilla donde difieren. Quitar un elemento del archivo lo deja en la
+aplicación, y `prune` no elimina ninguno de ellos.

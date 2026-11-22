@@ -3,7 +3,7 @@ layout: default
 title: Obiekty zarządzane
 parent: Config seed
 nav_order: 2
-translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
+translated_from: b007fcc08a96c4035422a238ae335bf4eedd48c5
 ---
 
 # Obiekty zarządzane
@@ -19,7 +19,7 @@ Jak seed przejmuje obiekty, które wymienia, i jak trzyma sekrety poza plikiem
 
 ## Sekcje jednowierszowe: wszystko albo nic
 
-`ldap`, `settings` i `chat` to każda **pojedynczy wiersz**, więc seed musi deklarować wszystkie ich pola; pozostałe sekcje są listami.
+`ldap`, `settings` i `chat_assistant` (`chat` przed wersją 7.8.0) to każda **pojedynczy wiersz**, więc seed musi deklarować wszystkie ich pola.
 
 Seed, który pomija pole, odmawia startu i podaje to pole:
 
@@ -32,7 +32,7 @@ Pustą wartość deklaruj jawnie przez `""` lub `false`. Kilka pól jest opcjona
 | Sekcja | Pola opcjonalne |
 |---|---|
 | `ldap` | `description`, `credential` (poświadczenie do bind) i `groupfilter` |
-| `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` i `extra_headers` |
+| `chat_assistant` | `auth_type`, `api_version`, `request_user`, `ignore_certs`, `extra_headers` oraz `credential` od wersji 7.8.0 |
 | `settings` | Klucze `mail_*`, przestarzałe od wersji 7.6.0 (zobacz [Przykład](example.html)) |
 
 `settings` obejmuje tylko URL i przestarzałe klucze poczty; wszystkie pozostałe ustawienia można nadal edytować.
@@ -51,7 +51,8 @@ Poświadczenia mogą też używać [magazynu sekretów](../secret-stores) (`secr
 
 ## Obiekty zarządzane
 
-Obiekt, który pochodzi z seeda, jest oznaczony jako **zarządzany**:
+Obiekt sekcji listowych (`runners`, `secret_stores`, `credentials`, `databases`, `sso`, `repositories`, `syslog`,
+`notifications` i `labels`) lub sekcji jednowierszowej, który pochodzi z seeda, jest oznaczony jako **zarządzany**:
 
 - Jest wymuszany przy **każdym** starcie, więc plik pozostaje źródłem prawdy.
 - Jest tylko do odczytu: API odpowiada **403**, interfejs wyłącza Edytuj i Usuń, a jego własna strona mówi, że pochodzi z pliku config
@@ -65,6 +66,9 @@ Stosowanie seeda jest idempotentne: rekordy, które już pasują, zostają bez z
 
 Zadeklarowane repozytorium, którego kopii roboczej brakuje, jest **klonowane ponownie** przy każdym starcie, więc nieudane pierwsze klonowanie jest
 ponawiane. Wiersz *Repozytoria* na stronie Stan pokazuje każde repozytorium bez kopii roboczej.
+
+Od wersji 7.8.0 [repozytorium git](../repositories/) może przechowywać te same rodzaje obiektów. Obiekt, który przechowuje repozytorium, pozostaje
+obiektem repozytorium: element seeda dla niego nie jest stosowany, a dziennik serwera o tym informuje. Repozytorium zadeklarowane przez seed pozostaje obiektem seeda.
 
 ### Usuwanie obiektu
 
@@ -85,7 +89,27 @@ credentials:
 
 ### Wyłączanie seeda
 
-Usunięcie `CONFIG_SEED_PATH` **niczego** nie zwalnia: seed nie jest już stosowany, a rekordy, którymi zarządzał, pozostają zarządzane
-i tylko do odczytu. Aby znów je edytować, najpierw je zwolnij: skieruj `CONFIG_SEED_PATH` na plik bez nich (pusty plik niczego nie deklaruje
-i zwalnia każdy rekord), pozwól mu się zastosować przy starcie lub przeładowaniu, a potem usuń zmienną. Zwolnione rekordy zostają takie, jakie
-są, i można je edytować.
+Usunięcie `CONFIG_SEED_PATH` wyłącza seed: następny start zwalnia każdy rekord i każde pole, którymi seed zarządzał, tak jak zrobiłby to
+zastosowany pusty seed. Rekordy zachowują swoje wartości i znów można je edytować, a dziennik serwera i dziennik audytu podają, co zostało zwolnione.
+
+`CONFIG_SEED_PATH`, którego pliku brakuje, niczego nie zwalnia: serwer zamiast tego odmawia startu, bo zamontowany plik może
+po prostu się spóźniać.
+
+---
+
+## Ustawienia deklarowane przez seed
+
+Sekcje dodane w wersji 7.8.0 seed przejmuje mniej ściśle niż obiekty zarządzane, na dwa sposoby.
+
+| Sekcje | Jak seed je przejmuje |
+|---|---|
+| `defaults`, `logo`, `icon`, `name`, `links`, `mcp` | Pole po polu: każde zadeklarowane pole jest tylko do odczytu na swojej stronie, z informacją, a API odmawia jego zmiany (403) |
+| `users`, `groups`, `announcements`, `disclaimer`, `ssh` | Tworzone lub zmieniane przy każdym zastosowaniu, nigdy nie blokowane ani usuwane |
+
+Pole `defaults`, `logo`, `icon`, `name`, `links` lub `mcp`, którego seed już nie deklaruje, zostaje zwolnione, a wszystkie są zwalniane,
+gdy seed zostaje wyłączony. Logo lub ikony z seeda nie można wgrać ani usunąć w aplikacji. Gdy repozytorium przechowuje tę samą stronę,
+seed zachowuje pola, które deklaruje, a repozytorium przechowuje pozostałe.
+
+Użytkownik, grupa, ogłoszenie, wersja zastrzeżenia albo klucz SSH i znane hosty z seeda pozostają edytowalne w aplikacji, a
+następne zastosowanie ponownie zapisuje wartości seeda tam, gdzie się różnią. Usunięcie elementu z pliku zostawia go w aplikacji, a `prune` nie usuwa
+żadnego z nich.

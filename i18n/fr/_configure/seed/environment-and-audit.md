@@ -3,7 +3,7 @@ layout: default
 title: Modification et audit
 parent: Seed de configuration
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Modification et audit
@@ -22,6 +22,9 @@ Verrouiller les pages de paramètres, et ce qu'enregistre le journal d'audit
 `ALLOW_ENV_EDIT=0` met les pages de paramètres en lecture seule. Chaque variable reste affichée avec
 la valeur en vigueur et la raison pour laquelle elle ne peut pas être modifiée, et l'endpoint d'enregistrement répond par
 403.
+
+Depuis la 7.8.0, la section `mcp` du seed, ainsi que la langue et le lien du Designer de ses sections `defaults` et `links`, sont tout de
+même appliqués avec `ALLOW_ENV_EDIT=0`, bien que ce soient des variables d'environnement : le seed est la déclaration que ce paramètre représente.
 
 Utilisez-la chaque fois que l'environnement est déclaré ailleurs. Sinon, la page de paramètres écrit
 `persistent/.env`, qui sur un volume éphémère est perdu sans bruit au redémarrage suivant, et sur

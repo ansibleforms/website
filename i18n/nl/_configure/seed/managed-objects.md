@@ -3,7 +3,7 @@ layout: default
 title: Beheerde objecten
 parent: Configuratie-seed
 nav_order: 2
-translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
+translated_from: b007fcc08a96c4035422a238ae335bf4eedd48c5
 ---
 
 # Beheerde objecten
@@ -19,7 +19,7 @@ Hoe de seed eigenaar is van de objecten die hij noemt, en hoe hij geheimen buite
 
 ## Secties van één rij zijn alles of niets
 
-`ldap`, `settings` en `chat` zijn elk **één rij**, dus de seed moet al hun velden declareren; de andere secties zijn lijsten.
+`ldap`, `settings` en `chat_assistant` (`chat` vóór 7.8.0) zijn elk **één rij**, dus de seed moet al hun velden declareren.
 
 Een seed die een veld weglaat, weigert te starten en noemt het veld:
 
@@ -32,7 +32,7 @@ Declareer een lege waarde expliciet met `""` of `false`. Een paar velden zijn op
 | Sectie | Optionele velden |
 |---|---|
 | `ldap` | `description`, `credential` (een referentie om mee te binden) en `groupfilter` |
-| `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` en `extra_headers` |
+| `chat_assistant` | `auth_type`, `api_version`, `request_user`, `ignore_certs`, `extra_headers`, en `credential` sinds 7.8.0 |
 | `settings` | De `mail_*`-sleutels, sinds 7.6.0 verouderd (zie [Voorbeeld](example.html)) |
 
 `settings` dekt alleen de URL, en de verouderde mailsleutels; alle andere instellingen blijven bewerkbaar.
@@ -51,7 +51,8 @@ Referenties kunnen ook een [secret store](../secret-stores) gebruiken (`secret_s
 
 ## Beheerde objecten
 
-Een object dat uit de seed komt, wordt gemarkeerd als **beheerd**:
+Een object van de lijstsecties (`runners`, `secret_stores`, `credentials`, `databases`, `sso`, `repositories`, `syslog`,
+`notifications` en `labels`) of van een sectie van één rij dat uit de seed komt, wordt gemarkeerd als **beheerd**:
 
 - Het wordt bij **elke** start afgedwongen, zodat het bestand leidend blijft.
 - Het is alleen-lezen: de API antwoordt met **403**, de interface schakelt Bewerken en Verwijderen uit, en de eigen pagina zegt dat het uit het
@@ -65,6 +66,9 @@ Het toepassen van de seed is idempotent: records die al overeenkomen, blijven on
 
 Een gedeclareerde repository waarvan de werkboom ontbreekt, wordt bij elke start **opnieuw gekloond**, zodat een mislukte eerste kloon
 opnieuw wordt geprobeerd. De rij *Repositories* van de pagina Status toont elke repository zonder werkboom.
+
+Sinds 7.8.0 kan een [git-repository](../repositories/) dezelfde soorten objecten bevatten. Een object dat een repository bevat, blijft van de
+repository: het item van de seed ervoor wordt niet toegepast, en het serverlog meldt dat. Een repository die de seed declareert, blijft van de seed.
 
 ### Een object verwijderen
 
@@ -85,7 +89,27 @@ credentials:
 
 ### De seed uitschakelen
 
-Het verwijderen van `CONFIG_SEED_PATH` geeft **niets** vrij: de seed wordt niet meer toegepast, en de records die hij beheerde blijven beheerd
-en alleen-lezen. Om ze weer te bewerken, geef je ze eerst vrij: laat `CONFIG_SEED_PATH` naar een bestand zonder die records wijzen (een leeg bestand declareert
-niets en geeft elk record vrij), laat het toepassen bij een start of een herlaadbeurt, en verwijder dan de variabele. De vrijgegeven records blijven zoals ze
-zijn, en worden bewerkbaar.
+Het verwijderen van `CONFIG_SEED_PATH` schakelt de seed uit: de volgende start geeft elk record en veld vrij dat de seed beheerde, zoals een
+toegepaste lege seed zou doen. De records behouden hun waarden en worden weer bewerkbaar, en het serverlog en het auditlogboek melden wat is vrijgegeven.
+
+Een `CONFIG_SEED_PATH` waarvan het bestand ontbreekt, geeft niets vrij: de server weigert dan te starten, omdat een gekoppeld bestand misschien
+alleen wat laat is.
+
+---
+
+## Instellingen die de seed declareert
+
+De seed is op twee manieren minder strikt eigenaar van de secties die in 7.8.0 zijn toegevoegd dan van de beheerde objecten.
+
+| Secties | Hoe de seed eigenaar is |
+|---|---|
+| `defaults`, `logo`, `icon`, `name`, `links`, `mcp` | Veld per veld: elk gedeclareerd veld is alleen-lezen op zijn pagina, met een melding, en de API weigert het te wijzigen (403) |
+| `users`, `groups`, `announcements`, `disclaimer`, `ssh` | Bij elke toepassing aangemaakt of gewijzigd, nooit vergrendeld of verwijderd |
+
+Een veld van `defaults`, `logo`, `icon`, `name`, `links` of `mcp` dat de seed niet meer declareert, wordt vrijgegeven, en ze worden allemaal
+vrijgegeven als de seed wordt uitgeschakeld. Een logo of pictogram uit de seed kan in de app niet worden geüpload of verwijderd. Als een repository
+dezelfde pagina bevat, houdt de seed de velden die hij declareert en bevat de repository de andere.
+
+Een gebruiker, een groep, een aankondiging, een disclaimerversie of de SSH-sleutel en known hosts uit de seed blijven bewerkbaar in de app, en de
+volgende toepassing schrijft de waarden van de seed opnieuw waar ze verschillen. Een item uit het bestand verwijderen laat het in de app staan, en
+`prune` verwijdert er geen van.

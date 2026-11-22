@@ -3,7 +3,7 @@ layout: default
 title: Bearbeitung und Audit
 parent: Config-Seed
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Bearbeitung und Audit
@@ -22,6 +22,9 @@ Die Einstellungsseiten sperren, und was das Audit-Protokoll festhält
 `ALLOW_ENV_EDIT=0` macht die Einstellungsseiten schreibgeschützt. Jede Variable wird weiterhin mit
 dem geltenden Wert und dem Grund angezeigt, warum sie nicht geändert werden kann, und der Speicher-Endpunkt antwortet mit
 403.
+
+Seit 7.8.0 werden der eigene Abschnitt `mcp` des Seeds sowie die Sprache und der Link zum Designer seiner Abschnitte `defaults` und `links`
+mit `ALLOW_ENV_EDIT=0` weiterhin angewendet, obwohl sie Umgebungsvariablen sind: Der Seed ist die Deklaration, für die diese Einstellung steht.
 
 Verwenden Sie es immer, wenn die Umgebung anderswo deklariert ist. Sonst schreibt die Einstellungsseite
 `persistent/.env`, die auf einem flüchtigen Volume beim nächsten Neustart stillschweigend verloren geht und auf

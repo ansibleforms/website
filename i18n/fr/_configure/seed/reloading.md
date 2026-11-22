@@ -3,7 +3,7 @@ layout: default
 title: Rechargement et démarrage
 parent: Seed de configuration
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # Rechargement et démarrage
@@ -19,11 +19,18 @@ Modifier le fichier sans redémarrage, et ce qui se passe au démarrage
 
 ## Modifier le fichier sans redémarrer
 
-Le seed est relu toutes les `CONFIG_SEED_RELOAD_SECONDS` (60 par défaut, `0` le désactive)
-et réappliqué quand son contenu a changé. Une modification commitée dans git atteint donc
+Le seed est relu par la tâche système **Rechargement du config seed**, toutes les minutes par défaut, et
+réappliqué quand son contenu a changé. Une modification commitée dans git atteint donc
 automatiquement une instance en cours d'exécution : sur Kubernetes, une `ConfigMap` est remontée sous le pod en
 une minute environ, et la vérification suivante la prend en compte. Il n'y a ni rollout ni redémarrage, et aucun
 hook n'a besoin d'appeler quoi que ce soit.
+
+Depuis la 7.8.0, sa planification est un cron à 5 champs dans `CONFIG_SEED_RELOAD_CRON` (`* * * * *` par défaut), défini sur la page
+de la tâche sous **Jobs > Système** (voir [Jobs](../jobs/)) ou dans l'environnement. Sans `CONFIG_SEED_PATH`, la tâche est désactivée.
+
+`CONFIG_SEED_RELOAD_SECONDS`, son paramètre d'avant, est déprécié depuis la 7.8.0 et supprimé dans la 8. Il est encore lu tant que
+`CONFIG_SEED_RELOAD_CRON` n'est pas défini, avec un avertissement dans le journal au démarrage : `60` se lit comme `* * * * *`, un
+multiple de 60 jusqu'à 3600 comme toutes les N minutes, et `0` désactive toujours le rechargement. Définissez plutôt `CONFIG_SEED_RELOAD_CRON`.
 
 Pour un fichier inchangé, la vérification calcule un hash et s'arrête, si bien qu'elle ne réécrit jamais une ligne qu'elle a
 déjà appliquée.

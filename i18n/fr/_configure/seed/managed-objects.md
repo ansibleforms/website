@@ -3,7 +3,7 @@ layout: default
 title: Objets gérés
 parent: Seed de configuration
 nav_order: 2
-translated_from: 458b4f80ef58f4669f69d2d81bf0c0d1d4629280
+translated_from: b007fcc08a96c4035422a238ae335bf4eedd48c5
 ---
 
 # Objets gérés
@@ -19,7 +19,7 @@ Comment le seed possède les objets qu'il liste, et comment il garde les secrets
 
 ## Les sections à une seule ligne : tout ou rien
 
-`ldap`, `settings` et `chat` sont chacune une **seule ligne**, le seed doit donc déclarer tous leurs champs ; les autres sections sont des listes.
+`ldap`, `settings` et `chat_assistant` (`chat` avant la 7.8.0) sont chacune une **seule ligne**, le seed doit donc déclarer tous leurs champs.
 
 Un seed qui omet un champ refuse de démarrer et le nomme :
 
@@ -32,7 +32,7 @@ Déclarez explicitement une valeur vide avec `""` ou `false`. Quelques champs so
 | Section | Champs facultatifs |
 |---|---|
 | `ldap` | `description`, `credential` (un identifiant avec lequel faire le bind) et `groupfilter` |
-| `chat` | `auth_type`, `api_version`, `request_user`, `ignore_certs` et `extra_headers` |
+| `chat_assistant` | `auth_type`, `api_version`, `request_user`, `ignore_certs`, `extra_headers`, et `credential` depuis la 7.8.0 |
 | `settings` | Les clés `mail_*`, dépréciées depuis la 7.6.0 (voir [Exemple](example.html)) |
 
 `settings` ne couvre que l'URL, et les clés mail dépréciées ; tous les autres paramètres restent modifiables.
@@ -51,7 +51,8 @@ Les identifiants peuvent aussi utiliser un [coffre de secrets](../secret-stores)
 
 ## Objets gérés
 
-Un objet qui vient du seed est marqué **géré** :
+Un objet des sections de liste (`runners`, `secret_stores`, `credentials`, `databases`, `sso`, `repositories`, `syslog`,
+`notifications` et `labels`) ou d'une section à une seule ligne qui vient du seed est marqué **géré** :
 
 - Il est imposé à **chaque** démarrage, si bien que le fichier fait toujours foi.
 - Il est en lecture seule : l'API répond **403**, l'interface désactive Modifier et Supprimer, et sa propre page indique qu'il provient du fichier
@@ -65,6 +66,9 @@ L'application du seed est idempotente : les enregistrements qui correspondent d�
 
 Un dépôt déclaré dont l'arbre de travail manque est **cloné à nouveau** à chaque démarrage, si bien qu'un premier clonage échoué est
 retenté. La ligne *Dépôts* de la page Statut montre tout dépôt sans arbre de travail.
+
+Depuis la 7.8.0, un [dépôt git](../repositories/) peut contenir les mêmes types d'objets. Un objet que contient un dépôt reste celui du
+dépôt : l'élément du seed pour cet objet n'est pas appliqué, et le journal du serveur le signale. Un dépôt que déclare le seed reste celui du seed.
 
 ### Retirer un objet
 
@@ -85,7 +89,28 @@ credentials:
 
 ### Désactiver le seed
 
-Retirer `CONFIG_SEED_PATH` ne libère **rien** : le seed n'est plus appliqué, et les enregistrements qu'il gérait restent gérés
-et en lecture seule. Pour les modifier à nouveau, libérez-les d'abord : pointez `CONFIG_SEED_PATH` vers un fichier qui ne les contient pas (un fichier vide ne déclare
-rien et libère tous les enregistrements), laissez-le s'appliquer à un démarrage ou à un rechargement, puis retirez la variable. Les enregistrements libérés restent tels
-quels, et deviennent modifiables.
+Retirer `CONFIG_SEED_PATH` désactive le seed : le démarrage suivant libère chaque enregistrement et chaque champ que le seed gérait, comme
+le ferait un seed vide appliqué. Les enregistrements gardent leurs valeurs et redeviennent modifiables, et le journal du serveur et le
+journal d'audit indiquent ce qui a été libéré.
+
+Un `CONFIG_SEED_PATH` dont le fichier manque ne libère rien : le serveur refuse plutôt de démarrer, car un fichier monté peut simplement
+être en retard.
+
+---
+
+## Paramètres que déclare le seed
+
+Les sections ajoutées dans la 7.8.0 sont possédées moins strictement que les objets gérés, de deux façons.
+
+| Sections | Comment le seed les possède |
+|---|---|
+| `defaults`, `logo`, `icon`, `name`, `links`, `mcp` | Champ par champ : chaque champ déclaré est en lecture seule sur sa page, avec un avis, et l'API refuse de le modifier (403) |
+| `users`, `groups`, `announcements`, `disclaimer`, `ssh` | Créés ou modifiés à chaque application, jamais verrouillés ni supprimés |
+
+Un champ de `defaults`, `logo`, `icon`, `name`, `links` ou `mcp` que le seed ne déclare plus est libéré, et tous le sont quand le seed
+est désactivé. Un logo ou une icône du seed ne peut être ni téléversé ni retiré dans l'application. Quand un dépôt contient la même page,
+le seed garde les champs qu'il déclare et le dépôt contient les autres.
+
+Un utilisateur, un groupe, une annonce, une version de l'avertissement ou la clé SSH et les hôtes connus du seed restent modifiables dans
+l'application, et la prochaine application du seed réécrit ses valeurs là où elles diffèrent. Retirer un élément du fichier le laisse dans
+l'application, et `prune` n'en supprime aucun.

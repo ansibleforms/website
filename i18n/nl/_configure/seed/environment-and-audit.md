@@ -3,7 +3,7 @@ layout: default
 title: Bewerken en audit
 parent: Configuratie-seed
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Bewerken en audit
@@ -22,6 +22,9 @@ De instellingenpagina's vergrendelen, en wat het auditlogboek vastlegt
 `ALLOW_ENV_EDIT=0` maakt de instellingenpagina's alleen-lezen. Elke variabele wordt nog steeds getoond met
 de geldende waarde en de reden waarom ze niet kan worden gewijzigd, en het endpoint voor opslaan antwoordt met
 403.
+
+Sinds 7.8.0 worden de eigen sectie `mcp` van de seed, en de taal en de Designer-link van zijn secties `defaults` en `links`, nog steeds
+toegepast met `ALLOW_ENV_EDIT=0`, hoewel het omgevingsvariabelen zijn: de seed is de declaratie waar deze instelling voor staat.
 
 Gebruik het wanneer de omgeving elders wordt gedeclareerd. Anders schrijft de instellingenpagina
 `persistent/.env`, dat op een vluchtig volume bij de volgende herstart ongemerkt verloren gaat, en op
