@@ -35,7 +35,7 @@ Sinds 7.8.0 toont de stap **Gebruik** van een repository de gebruikstypen onder 
 | **Playbooks** | De Ansible-playbooks die jobs uitvoeren | `playbooks`, of de root |
 | **Workflows** | De [workflow](../workflows/)bestanden, die de ontwerper er ook in terug opslaat | elke map |
 | **Inventarissen** | Eén inventaris, genoemd naar de repository, waarnaar een formulier verwijst met `inventory:` | de root: `inventory.yaml`, `group_vars`, `host_vars` |
-| **Categorieen**, **Constanten** | De categorieën en de constanten, die de ontwerper ook terug in hun bestand opslaat | het bestand met `controller_categories:` of `controller_constants:` |
+| **Categorieën**, **Constanten** | De categorieën en de constanten, die de ontwerper ook terug in hun bestand opslaat | het bestand met `controller_categories:` of `controller_constants:` |
 
 Elk ander type bewaart instellingen, gebruikers of verbindingen van de app in YAML-bestanden, in beide richtingen gelezen en geschreven: de planners,
 de instellingen van Algemeen, de pagina's van Uiterlijk, de gebruikers, groepen en rollen, de aanmeldingen, de inloggegevens, de runners en de
@@ -45,7 +45,7 @@ andere verbindingen. Ze worden beschreven in [Configuratie in git](config-as-cod
 en elk ander type uit hoogstens één repository. Elke repository wordt gekloond in een submap met haar naam, onder
 [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
 
-De schakelaar **Gebruiken voor configuratie?** van vóór 7.8.0 is vervangen door **Rollen**, **Categorieen** en **Constanten**, elk gelezen uit het
+De schakelaar **Gebruiken voor configuratie?** van vóór 7.8.0 is vervangen door **Rollen**, **Categorieën** en **Constanten**, elk gelezen uit het
 bestand met zijn sleutel; de `config.yaml` van een repository wordt nog gelezen, verouderd (zie
 [Rollen, categorieën en constanten](config-as-code.html#roles-categories-and-constants)).
 
@@ -67,7 +67,7 @@ Met afzonderlijke repositories kunnen teams hun eigen deel beheren, elk met eige
 
 | Repository | Gebruikstypen | Inhoud in de root |
 |---|---|---|
-| `af-platform` | **Rollen**, **Categorieen**, **Constanten**, **Inloggegevens**, **Runners** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-platform` | **Rollen**, **Categorieën**, **Constanten**, **Inloggegevens**, **Runners** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
 | `af-forms-network`, `af-forms-storage` | **Formulieren** | De formulierbestanden van elk team, samengevoegd tot één lijst |
 | `af-playbooks` | **Playbooks** | De playbooks en rollen |
 

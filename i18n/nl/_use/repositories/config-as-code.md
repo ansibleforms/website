@@ -31,7 +31,7 @@ aangevinkt kan worden.
 
 | Kopje | Gebruikstypen (vlag) |
 |---|---|
-| **Ontwerper** | **Categorieen** (`use_for_categories`), **Constanten** (`use_for_constants`), **Formulieren** (`use_for_forms`), **Inventarissen** (`use_for_inventories`), **Playbooks** (`use_for_playbooks`), **Workflows** (`use_for_workflows`) |
+| **Ontwerper** | **Categorieën** (`use_for_categories`), **Constanten** (`use_for_constants`), **Formulieren** (`use_for_forms`), **Inventarissen** (`use_for_inventories`), **Playbooks** (`use_for_playbooks`), **Workflows** (`use_for_workflows`) |
 | **Taken** | **Planners** (`use_for_schedules`) |
 | **Systeem** | **Algemeen** (`use_for_general`) |
 | **Uiterlijk** | **Standaardwaarden** (`use_for_defaults`), **Logo** (`use_for_logo`), **Pictogram** (`use_for_icon`), **Naam** (`use_for_name`), **Links** (`use_for_links`), **Labels** (`use_for_labels`), **Aankondigingen** (`use_for_announcements`) |
@@ -80,7 +80,7 @@ van de repository melden dat. Verplaats elke sleutel naar een eigen bestand, bij
 
 Een sleutel die geen enkele repository bevat, komt zoals vroeger uit de basisconfiguratie: haar kopie in de database, of het bestand op
 [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH). De vroegere schakelaar **Gebruiken voor configuratie** bestaat niet meer: een
-bijgewerkte instantie geeft **Rollen**, **Categorieen** en **Constanten** aan de repository die hem had. De config seed, de items
+bijgewerkte instantie geeft **Rollen**, **Categorieën** en **Constanten** aan de repository die hem had. De config seed, de items
 `controller_repositories:` van een repository en de API aanvaarden `use_for_config` nog als verouderde alias van de drie, met een waarschuwing.
 
 ---

@@ -51,7 +51,7 @@ constants: {} # free objects to re-use over all forms
 
 Sinds 7.8.0 worden de categorieën, de rollen en de constanten elk apart gelezen, uit de eerste bron hieronder die ze bevat.
 
-1. **UIT EEN REPOSITORY** : de repository met het gebruikstype **Categorieen**, **Rollen** of **Constanten**, uit haar bestand met
+1. **UIT EEN REPOSITORY** : de repository met het gebruikstype **Categorieën**, **Rollen** of **Constanten**, uit haar bestand met
    `controller_categories:`, `controller_roles:` of `controller_constants:`, met elke naam en in elke map (zie
    [Configuratie in git](../repositories/config-as-code.html#roles-categories-and-constants))
 2. **UIT DE config.yaml VAN DE REPOSITORY** : de gewone sleutel in de `config.yaml` van die repository, verouderd sinds 7.8.0 en vanaf
@@ -61,7 +61,7 @@ Sinds 7.8.0 worden de categorieën, de rollen en de constanten elk apart gelezen
 4. **UIT EEN LOKAAL BESTAND** : het lokale bestand `config.yaml` (omgevingsvariabele CONFIG_PATH)
 
 {: .warning }
-> **Let op:** de schakelaar **Gebruiken voor configuratie** bestaat niet meer sinds 7.8.0. Een upgrade geeft **Rollen**, **Categorieen** en **Constanten**
+> **Let op:** de schakelaar **Gebruiken voor configuratie** bestaat niet meer sinds 7.8.0. Een upgrade geeft **Rollen**, **Categorieën** en **Constanten**
 > aan de repository die hem had, en `use_for_config` in de config seed of de API is een verouderde alias van de drie.
 
 ---
