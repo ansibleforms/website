@@ -118,7 +118,7 @@ agendamento desligado continua listado com as suas definições, mas não corre 
 
 ## Temporizar um agendamento
 
-Um agendamento é temporizado de uma de três formas, escolhida em **Agendamento** no seu separador **Agendamento**; a rrule é nova na 7.8.0.
+Um agendamento é temporizado de uma de três formas, escolhida em **Tipo de agendamento** no seu separador **Agendamento**; a rrule é nova na 7.8.0.
 
 | Temporização | Executa | Ver |
 |---|---|---|

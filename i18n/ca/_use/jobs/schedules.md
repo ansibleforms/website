@@ -89,7 +89,7 @@ descriure es mostra tal com és. El menú de cada fila ofereix:
 | **Activa** o **Desactiva** | Activa o desactiva la programació, segons correspongui, tal com mostra la seva columna **Activat** |
 | **Suprimeix** | Elimina la programació; deixa d'executar-se immediatament |
 
-**Nou element: programació** en crea una des de zero, en tres passos: **Detalls** (el seu **Nom**, **Descripció** i **Formulari**),
+**Nova programació** en crea una des de zero, en tres passos: **Detalls** (el seu **Nom**, **Descripció** i **Formulari**),
 **Programació** (la seva temporització i el seu final) i **Extra vars**. **Extra vars** és YAML sense cap formulari que l'ompli, així que afegeix-hi
 tu mateix els valors que necessita el playbook, com a diccionari (parelles clau: valor).
 
@@ -118,7 +118,7 @@ d'única espera passat el seu moment fins que es torna a activar. **Executa ara*
 
 ## Temporitzar una programació
 
-Una programació es temporitza d'una de tres maneres, triada a **Programació** a la seva pestanya **Programació**; la rrule és nova a la 7.8.0.
+Una programació es temporitza d'una de tres maneres, triada a **Tipus de programació** a la seva pestanya **Programació**; la rrule és nova a la 7.8.0.
 
 | Temporització | S'executa | Vegeu |
 |---|---|---|

@@ -89,7 +89,7 @@ lässt, wird unverändert angezeigt. Das Menü jeder Zeile bietet:
 | **Aktivieren** oder **Deaktivieren** | Schaltet den Zeitplan ein oder aus, je nachdem, was zutrifft, wie seine Spalte **Aktiviert** zeigt |
 | **Löschen** | Entfernt den Zeitplan; er läuft sofort nicht mehr |
 
-**Neues Zeitplan** erstellt einen von Grund auf, in drei Schritten: **Details** (sein **Name**, seine **Beschreibung** und sein **Formular**),
+**Neuer Zeitplan** erstellt einen von Grund auf, in drei Schritten: **Details** (sein **Name**, seine **Beschreibung** und sein **Formular**),
 **Zeitplan** (seine Zeitsteuerung und sein Ende) und **Extra-Variablen**. **Extra-Variablen** ist YAML ohne Formular, das es füllt; fügen Sie die
 Werte, die das Playbook braucht, also selbst hinzu, als Dictionary (Schlüssel-Wert-Paare).
 

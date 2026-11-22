@@ -89,7 +89,7 @@ puede describir se muestra tal cual. El menú de cada fila ofrece:
 | **Activar** o **Desactivar** | Activa o desactiva la programación, según corresponda, como muestra su columna **Activado** |
 | **Eliminar** | Elimina la programación; deja de ejecutarse al instante |
 
-**Nuevo programación** crea una desde cero, en tres pasos: **Detalles** (su **Nombre**, **Descripción** y **Formulario**),
+**Nueva programación** crea una desde cero, en tres pasos: **Detalles** (su **Nombre**, **Descripción** y **Formulario**),
 **Programación** (su temporización y su fin) y **Variables extra**. **Variables extra** es YAML sin formulario que lo rellene, así que añade tú mismo
 los valores que necesita el playbook, como un diccionario (pares clave: valor).
 
@@ -118,7 +118,7 @@ de una sola vez espera más allá de su momento hasta que se vuelve a activar. *
 
 ## Temporizar una programación
 
-Una programación se temporiza de una de tres formas, elegida en **Programación** en su pestaña **Programación**; la rrule es nueva en 7.8.0.
+Una programación se temporiza de una de tres formas, elegida en **Tipo de programación** en su pestaña **Programación**; la rrule es nueva en 7.8.0.
 
 | Temporización | Se ejecuta | Consulta |
 |---|---|---|

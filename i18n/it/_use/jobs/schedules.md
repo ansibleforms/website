@@ -89,7 +89,7 @@ mostrata così com'è. Il menu di ogni riga offre:
 | **Attiva** o **Disattiva** | Attiva o disattiva la pianificazione, a seconda del caso, come mostra la sua colonna **Abilitato** |
 | **Elimina** | Rimuove la pianificazione; smette subito di girare |
 
-**Nuovo pianificazione** ne crea una da zero, in tre passaggi: **Dettagli** (il suo **Nome**, la **Descrizione** e il **Modulo**),
+**Nuova pianificazione** ne crea una da zero, in tre passaggi: **Dettagli** (il suo **Nome**, la **Descrizione** e il **Modulo**),
 **Pianificazione** (la sua tempistica e la sua fine) e **Variabili extra**. **Variabili extra** è YAML senza un modulo che lo compili, quindi aggiungi tu i
 valori di cui il playbook ha bisogno, come dizionario (coppie chiave: valore).
 
@@ -118,7 +118,7 @@ una tantum attende oltre il suo momento finché non viene riattivata. **Esegui o
 
 ## La tempistica di una pianificazione
 
-Una pianificazione è temporizzata in uno di tre modi, scelto sotto **Pianificazione** nella sua scheda **Pianificazione**; la rrule è nuova nella 7.8.0.
+Una pianificazione è temporizzata in uno di tre modi, scelto sotto **Tipo di pianificazione** nella sua scheda **Pianificazione**; la rrule è nuova nella 7.8.0.
 
 | Pianificazione | Gira | Vedi |
 |---|---|---|

@@ -89,7 +89,7 @@ językiem, jest wyświetlana bez zmian. Menu każdego wiersza oferuje:
 | **Włącz** lub **Wyłącz** | Włącza lub wyłącza harmonogram, zależnie od tego, co pokazuje jego kolumna **Włączony** |
 | **Usuń** | Usuwa harmonogram; od razu przestaje się uruchamiać |
 
-**Nowy element: harmonogram** tworzy harmonogram od zera, w trzech krokach: **Szczegóły** (jego **Nazwa**, **Opis** i **Formularz**),
+**Nowy harmonogram** tworzy harmonogram od zera, w trzech krokach: **Szczegóły** (jego **Nazwa**, **Opis** i **Formularz**),
 **Harmonogram** (jego plan i koniec) oraz **Extra vars**. **Extra vars** to YAML bez formularza, który by go wypełnił, więc sam dodaj
 wartości potrzebne playbookowi, jako słownik (pary klucz: wartość).
 
@@ -101,12 +101,12 @@ Strona harmonogramu zawiera kroki jego okna dialogowego jako karty, z **Uruchom 
 
 | Karta | Co zawiera |
 |---|---|
-| **Szczegóły** | Jego źródło, **Nazwa**, **Opis**, **Formularz**, potem **Ostatnie uruchomienie**, **Uruchomione zadanie**, **Ostatnie uruchomienie**, **Następne uruchomienie** i **Włączony** |
+| **Szczegóły** | Jego źródło, **Nazwa**, **Opis**, **Formularz**, potem **Ostatni start**, **Uruchomione zadanie**, **Ostatnie uruchomienie**, **Następne uruchomienie** i **Włączony** |
 | **Harmonogram** | Jak jest planowany (zobacz [Planowanie harmonogramu](#timing-a-schedule)) i jak się kończy (zobacz [Koniec harmonogramu](#the-end-of-a-schedule)) |
 | **Extra vars** | YAML, który otrzymuje zadanie; dla harmonogramu przechowywanego w git także pytania jego pliku |
 | **Uruchomienia** | Zadania, które uruchomił, od najnowszego; wiersz otwiera zadanie |
 
-Pierwsze pole **Ostatnie uruchomienie** mówi, jak przebiegło jego ostatnie uruchomienie, jako stan: nieudane po najechaniu podaje przyczynę.
+Pole **Ostatni start** mówi, jak przebiegło jego ostatnie uruchomienie, jako stan: nieudane po najechaniu podaje przyczynę.
 **Uruchomione zadanie** prowadzi do zadania, które uruchomił, więc możesz je otworzyć i zobaczyć, jak się zakończyło. Karta **Uruchomienia** wyświetla
 zadania, które możesz widzieć, z użytkownikiem, jako który działały, ich początkiem, końcem, czasem trwania i stanem; ich liczba jest w tytule karty.
 
@@ -118,7 +118,7 @@ czeka po swojej chwili, aż zostanie ponownie włączony. **Uruchom teraz** nada
 
 ## Planowanie harmonogramu
 
-Harmonogram jest planowany na jeden z trzech sposobów, wybierany w **Harmonogram** na jego karcie **Harmonogram**; rrule jest nowością w 7.8.0.
+Harmonogram jest planowany na jeden z trzech sposobów, wybierany w polu **Rodzaj harmonogramu** na jego karcie **Harmonogram**; rrule jest nowością w 7.8.0.
 
 | Plan | Uruchamia się | Zobacz |
 |---|---|---|
@@ -259,7 +259,7 @@ Harmonogram odwołuje się do formularza po nazwie i uruchamia go w postaci zdef
 
 - **Formularz zostaje zmieniony**: następne uruchomienie używa nowej definicji (playbook, szablon, inwentarz) z extravars zapisanymi w
   harmonogramie. Formularz nie jest renderowany, więc żadne pole nie jest przeliczane; dostosuj extra vars harmonogramu.
-- **Formularz zostaje przemianowany lub usunięty**: uruchomienie kończy się błędem, **Stan** zmienia się na `failed`, a **Ostatnie uruchomienie**
+- **Formularz zostaje przemianowany lub usunięty**: uruchomienie kończy się błędem, **Stan** zmienia się na `failed`, a **Ostatni start**
   po najechaniu pokazuje `Failed to launch : No such form '<name>'`. Edytuj harmonogram i wybierz właściwy formularz albo go usuń.
 
 ---

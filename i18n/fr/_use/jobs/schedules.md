@@ -89,7 +89,7 @@ affichée telle quelle. Le menu de chaque ligne propose :
 | **Activer** ou **Désactiver** | Active ou désactive la planification, selon le cas, comme l'indique sa colonne **Activé** |
 | **Supprimer** | Supprime la planification ; elle cesse immédiatement de s'exécuter |
 
-**Nouveau planification** en crée une de zéro, en trois étapes : **Détails** (son **Nom**, sa **Description** et son **Formulaire**),
+**Nouvelle planification** en crée une de zéro, en trois étapes : **Détails** (son **Nom**, sa **Description** et son **Formulaire**),
 **Planification** (sa planification et sa fin) et **Variables supplémentaires**. **Variables supplémentaires** est du YAML sans formulaire pour le remplir :
 ajoutez donc vous-même les valeurs dont le playbook a besoin, sous forme de dictionnaire (paires clé: valeur).
 
@@ -118,7 +118,7 @@ planification unique attend au-delà de son moment jusqu'à ce qu'elle soit réa
 
 ## Quand une planification s'exécute
 
-Une planification s'exécute de l'une de trois façons, choisie sous **Planification** dans son onglet **Planification** ; la rrule est nouvelle dans la 7.8.0.
+Une planification s'exécute de l'une de trois façons, choisie sous **Type de planification** dans son onglet **Planification** ; la rrule est nouvelle dans la 7.8.0.
 
 | Planification | S'exécute | Voir |
 |---|---|---|
