@@ -3,7 +3,7 @@ layout: default
 title: git 中的配置
 parent: Git 仓库
 nav_order: 5
-translated_from: 7d0beda8f50fb1602dd685827ccbf20eb3679501
+translated_from: 81365c1e3028835d57540b008c112e67f1cffbef
 ---
 
 # git 中的配置
