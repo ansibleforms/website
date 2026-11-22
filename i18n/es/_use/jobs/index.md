@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
+translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 ---
 
 # Trabajos
@@ -109,6 +109,6 @@ Cada tema tiene su propia página:
 | [Estados y tipos](statuses.html) | Todos los estados que puede tener un trabajo, y los tipos de trabajo |
 | [Seguir un trabajo](following.html) | Salida en directo, extravars, filtros y descargas |
 | [Acciones de trabajo](actions.html) | Lanzar, abortar, relanzar, aprobar o rechazar, y eliminar un trabajo |
-| [Programaciones](schedules.html) | Ejecutar un formulario más tarde, según un cron o una rrule, y gestionar todas las programaciones |
+| [Programaciones](schedules.html) | Ejecutar un formulario más tarde o según una programación cron, y gestionar todas las programaciones |
 | [Trabajos almacenados](stored-jobs.html) | Guardar los datos de un formulario para volver a cargarlos más tarde |
 | [Limpieza](cleanup.html) | Trabajos cortados por un reinicio, y cuánto tiempo se conservan los trabajos terminados |

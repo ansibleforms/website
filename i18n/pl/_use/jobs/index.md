@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
+translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 ---
 
 # Zadania
@@ -109,6 +109,6 @@ Każdy temat ma własną stronę:
 | [Stany i typy](statuses.html) | Każdy stan, jaki może mieć zadanie, i rodzaje zadań |
 | [Śledzenie zadania](following.html) | Wynik na żywo, extravars, filtry i pobieranie |
 | [Akcje na zadaniach](actions.html) | Uruchamianie, przerywanie, ponowne uruchamianie, zatwierdzanie lub odrzucanie i usuwanie zadania |
-| [Harmonogramy](schedules.html) | Uruchamianie formularza później, według crona lub reguły rrule, i zarządzanie wszystkimi harmonogramami |
+| [Harmonogramy](schedules.html) | Uruchamianie formularza później lub według harmonogramu cron i zarządzanie wszystkimi harmonogramami |
 | [Zapisane zadania](stored-jobs.html) | Przechowywanie danych formularza, aby wczytać je później |
 | [Czyszczenie](cleanup.html) | Zadania przerwane przez restart i jak długo przechowywane są zakończone zadania |

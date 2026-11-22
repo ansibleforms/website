@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
+translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 ---
 
 # ジョブ
@@ -109,6 +109,6 @@ translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
 | [ステータスと種類](statuses.html) | ジョブがとりうるすべてのステータスと、ジョブの種類 |
 | [ジョブの追跡](following.html) | ライブ出力、extravars、フィルター、ダウンロード |
 | [ジョブの操作](actions.html) | ジョブの起動、中止、再起動、承認または却下、削除 |
-| [スケジュール](schedules.html) | フォームを後で、または cron や rrule で実行し、すべてのスケジュールを管理する |
+| [スケジュール](schedules.html) | フォームを後で、または cron スケジュールで実行し、すべてのスケジュールを管理する |
 | [保存済みジョブ](stored-jobs.html) | フォームのデータを保存して後で再び読み込む |
 | [クリーンアップ](cleanup.html) | 再起動で中断されたジョブと、終了したジョブの保持期間 |

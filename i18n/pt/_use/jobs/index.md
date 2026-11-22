@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: f76701e12bb63b309bfce1e532bdb52a23f6161c
+translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 ---
 
 # Tarefas
@@ -109,6 +109,6 @@ Cada tema tem a sua própria página:
 | [Estados e tipos](statuses.html) | Todos os estados que uma tarefa pode ter, e os tipos de tarefa |
 | [Acompanhar uma tarefa](following.html) | Resultado em direto, extravars, filtros e transferências |
 | [Ações sobre tarefas](actions.html) | Lançar, interromper, relançar, aprovar ou rejeitar, e eliminar uma tarefa |
-| [Agendamentos](schedules.html) | Executar um formulário mais tarde, segundo um cron ou uma rrule, e gerir todos os agendamentos |
+| [Agendamentos](schedules.html) | Executar um formulário mais tarde ou segundo um agendamento cron, e gerir todos os agendamentos |
 | [Tarefas guardadas](stored-jobs.html) | Guardar os dados de um formulário para os carregar de novo mais tarde |
 | [Limpeza](cleanup.html) | Tarefas interrompidas por um reinício, e durante quanto tempo se guardam as tarefas terminadas |
