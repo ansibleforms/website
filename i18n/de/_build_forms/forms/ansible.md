@@ -3,7 +3,7 @@ layout: default
 title: Ansible-Formulare
 parent: Formulare
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 ---
 
 # Ansible-Formulare
@@ -30,6 +30,17 @@ Formulare, die ein lokales Ansible-Playbook ausführen
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## Das Repository, aus dem ein Playbook läuft
+
+Seit 7.8.0 kann ein Formular mit `playbookRepository` das Repository nennen, aus dem sein Playbook läuft.
+
+Ohne diesen Schlüssel läuft das Playbook wie bisher aus dem ersten für Playbooks verwendeten Repository, aus dessen Ordner
+`playbooks` (sonst aus dessen Stammverzeichnis). Mit ihm läuft das Playbook aus dem Stammverzeichnis des genannten Repositorys,
+sodass dessen `ansible.cfg`, `roles/` und relative Inventarpfade gelten, und `playbook` wird ab dem Stammverzeichnis angegeben
+(`playbooks/site.yml`). Der Aufbau und ein vollständiges Beispiel stehen unter [Ein Repository im Aufbau von Ansible](../repositories/ansible-layout.html).
 
 ---
 

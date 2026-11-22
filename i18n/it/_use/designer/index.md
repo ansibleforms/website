@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
 ---
 
 # Designer
@@ -42,7 +42,7 @@ Ogni sezione modifica un tipo di file, conservato in locale o in un [repository]
 | **Categorie** | Le categorie di `config.yaml` |
 | **Costanti** | Le costanti di `config.yaml` |
 | **File di variabili** | I file di variabili caricati dai moduli |
-| **Playbook** | I playbook eseguiti da moduli e workflow |
+| **Playbook** | I playbook eseguiti da moduli e workflow: quelli del primo repository di playbook, poi ogni altro in una cartella con il suo nome |
 | **Inventari** | Gli inventari: `inventory.yaml`, `group_vars` e `host_vars` |
 | **Workflow** | I file di [workflow](../workflows/) |
 
@@ -67,7 +67,7 @@ Cosa mostrano le schede Visuale e Anteprima, sezione per sezione:
 
 | Sezione | Visuale | Anteprima |
 |---|---|---|
-| **Moduli** | Le impostazioni del modulo e i suoi campi, con elenchi dei playbook, inventari e workflow del designer | Il modulo com'è ora, modifiche non salvate comprese; il suo invio non esegue nulla |
+| **Moduli** | Le impostazioni del modulo e i suoi campi, con elenchi dei playbook (e del loro repository), inventari e workflow del designer | Il modulo com'è ora, modifiche non salvate comprese; il suo invio non esegue nulla |
 | **Categorie** | Le categorie come tabella, modificabile | Il menu della pagina Moduli, costruito a partire da esse |
 | **Costanti** | Le costanti come struttura ad albero, modificabile (una chiave si sposta con i tasti freccia) | Ogni costante con il suo riferimento, `$(NAME)`, da copiare, e i moduli che la usano |
 | **File di variabili** | Le variabili, modificabili | Ogni variabile con il suo riferimento in un playbook, {% raw %}`{{ name }}`{% endraw %}, da copiare, e i moduli che caricano il file |
@@ -90,7 +90,9 @@ Tutte e tre sono attive per impostazione predefinita e sempre attive per gli adm
 | `designAllPlaybooks` (**Modificare Tutti i Playbook**) | I playbook che i moduli dell'utente eseguono, e quelli che nessun modulo usa ancora |
 | `designAllWorkflows` (**Modificare Tutti i Workflow**) | I file di workflow che i moduli dell'utente eseguono, annidati compresi, e quelli che nessun modulo usa ancora |
 
-Un modulo esegue un playbook tramite il suo `playbook`, i suoi passi ansible e i workflow che esegue. Cosa non può fare un designer limitato:
+Un modulo esegue un playbook tramite il suo `playbook`, i suoi passi ansible e i workflow che esegue, contato con il
+repository che indica (`playbookRepository`, dalla 7.8.0): `playbooks/site.yml` di un repository non è `site.yml` di un altro.
+Vedi [Un repository nella struttura propria di Ansible](../repositories/ansible-layout.html). Cosa non può fare un designer limitato:
 
 - **Vedere un file nascosto.** Non viene mai elencato né nominato: aprirne uno risponde come un file mancante, e un nuovo file con il suo nome
   come un file già presente.

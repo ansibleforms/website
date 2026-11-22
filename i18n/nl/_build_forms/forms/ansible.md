@@ -3,7 +3,7 @@ layout: default
 title: Ansible-formulieren
 parent: Formulieren
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 ---
 
 # Ansible-formulieren
@@ -30,6 +30,17 @@ Formulieren die een lokaal Ansible-playbook uitvoeren
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## De repository waaruit een playbook draait
+
+Sinds 7.8.0 kan een formulier met `playbookRepository` de repository noemen waaruit zijn playbook draait.
+
+Zonder deze sleutel draait het playbook zoals voorheen uit de eerste repository die voor playbooks wordt gebruikt, uit de map
+`playbooks` daarvan (anders uit de root). Met deze sleutel draait het playbook uit de root van de genoemde repository, zodat de
+`ansible.cfg`, `roles/` en relatieve inventarispaden van die repository gelden, en `playbook` geef je vanaf de root op
+(`playbooks/site.yml`). De indeling en een volledig voorbeeld staan in [Een repository in de eigen indeling van Ansible](../repositories/ansible-layout.html).
 
 ---
 

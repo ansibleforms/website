@@ -3,7 +3,7 @@ layout: default
 title: Formularze Ansible
 parent: Formularze
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 ---
 
 # Formularze Ansible
@@ -30,6 +30,17 @@ Formularze, które uruchamiają lokalny playbook Ansible
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## Repozytorium, z którego działa playbook
+
+Od 7.8.0 formularz może wskazać repozytorium, z którego uruchamia się jego playbook, przez `playbookRepository`.
+
+Bez niego playbook działa z pierwszego repozytorium używanego do playbooków, z jego folderu `playbooks` (a w przeciwnym razie
+z katalogu głównego), jak wcześniej. Z nim playbook działa z katalogu głównego wskazanego repozytorium, więc obowiązują
+`ansible.cfg`, `roles/` i względne ścieżki inwentarzy tego repozytorium, a `playbook` podaje się od katalogu głównego
+(`playbooks/site.yml`). Układ i pełny przykład opisuje [Repozytorium we własnym układzie Ansible](../repositories/ansible-layout.html).
 
 ---
 

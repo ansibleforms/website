@@ -3,7 +3,7 @@ layout: default
 title: Editar no designer
 parent: Workflows
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
 ---
 
 # Editar no designer
@@ -53,7 +53,8 @@ existente, ou START para um primeiro.
 1. **O que executa**: o identificador do nó, **Executa** (que tipo de nó é e, para um nó de playbook, onde corre)
    e o que executa: um playbook ou um modelo ou job, um workflow, o nome e o tempo limite de uma aprovação, ou um repositório. Ver
    [Onde corre um nó](#where-a-node-runs).
-2. **Como corre**: as definições de execução: o inventário, as credenciais, o limite, as etiquetas, a verbosidade,
+2. **Como corre**: as definições de execução: para um nó de playbook o **Repositório** a partir do qual corre o seu
+   playbook (com vários repositórios de playbooks), o inventário, as credenciais, o limite, as etiquetas, a verbosidade,
    o modo check e o modo diff, a condição (**Corre quando**) e **Valores de** (ver [o ficheiro do workflow](file.html#run-settings)).
 3. **Para onde vai**: o nó depois do qual corre, e em que caso.
 
@@ -90,7 +91,7 @@ Clicar num nó abre o seu diálogo, em quatro separadores:
 | Separador | O que contém |
 |---|---|
 | **O que executa** | O identificador, **Executa**, o que executa e, para um nó de playbook, o runner |
-| **Como corre** | As definições de execução; as credenciais escolhem-se de uma lista, cada uma adicionada com `+` |
+| **Como corre** | As definições de execução, com o **Repositório** de um nó de playbook; as credenciais escolhem-se de uma lista, cada uma adicionada com `+` |
 | **Corre depois de** | As ligações para o nó, e **Todos os pais têm de convergir** |
 | **Executa a seguir** | As ligações que saem dele, com **Ligar a um nó existente:** e **Ligar a um novo nó:** |
 

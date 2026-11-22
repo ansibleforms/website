@@ -3,7 +3,7 @@ layout: default
 title: Formulaires Ansible
 parent: Formulaires
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 ---
 
 # Formulaires Ansible
@@ -30,6 +30,17 @@ Des formulaires qui exécutent un playbook Ansible local
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## Le dépôt depuis lequel s'exécute un playbook
+
+Depuis 7.8.0, un formulaire peut nommer le dépôt depuis lequel son playbook s'exécute, avec `playbookRepository`.
+
+Sans lui, le playbook s'exécute depuis le premier dépôt utilisé pour les playbooks, depuis son dossier `playbooks` (sinon sa
+racine), comme avant. Avec lui, le playbook s'exécute depuis la racine du dépôt nommé : le `ansible.cfg`, les `roles/` et
+les chemins d'inventaire relatifs de ce dépôt s'appliquent, et `playbook` se donne depuis la racine (`playbooks/site.yml`).
+La structure et un exemple complet sont dans [Un dépôt dans la structure propre à Ansible](../repositories/ansible-layout.html).
 
 ---
 

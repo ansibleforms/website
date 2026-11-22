@@ -3,7 +3,7 @@ layout: default
 title: Bewerken in de ontwerper
 parent: Workflows
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
 ---
 
 # Bewerken in de ontwerper
@@ -53,7 +53,8 @@ knooppunt, of START voor een eerste.
 1. **Wat het uitvoert**: de identifier van het knooppunt, **Voert uit** (wat voor knooppunt het is en, bij een playbookknooppunt, waar het draait)
    en wat het uitvoert: een playbook of een sjabloon of job, een workflow, de naam en time-out van een goedkeuring, of een repository. Zie
    [Waar een knooppunt draait](#where-a-node-runs).
-2. **Hoe het draait**: de uitvoeringsinstellingen: de inventaris, de referenties, de limiet, de tags, de uitgebreidheid,
+2. **Hoe het draait**: de uitvoeringsinstellingen: bij een playbookknooppunt de **Repository** waaruit zijn playbook draait
+   (bij meerdere playbookrepositories), de inventaris, de referenties, de limiet, de tags, de uitgebreidheid,
    check- en diff-modus, de voorwaarde (**Draait als**) en **Waarden uit** (zie [het workflowbestand](file.html#run-settings)).
 3. **Waar het heen gaat**: het knooppunt waarna het draait, en wanneer.
 
@@ -90,7 +91,7 @@ Klik je op een knooppunt, dan opent zijn dialoog, met vier tabbladen:
 | Tabblad | Wat erin staat |
 |---|---|
 | **Wat het uitvoert** | De identifier, **Voert uit**, wat het uitvoert en, bij een playbookknooppunt, de runner |
-| **Hoe het draait** | De uitvoeringsinstellingen; referenties kies je uit een lijst, elk toegevoegd met `+` |
+| **Hoe het draait** | De uitvoeringsinstellingen, met de **Repository** van een playbookknooppunt; referenties kies je uit een lijst, elk toegevoegd met `+` |
 | **Draait na** | De koppelingen naar het knooppunt toe, en **Alle ouders moeten samenkomen** |
 | **Daarna** | De koppelingen vanuit het knooppunt, met **Koppelen aan een bestaand knooppunt:** en **Koppelen aan een nieuw knooppunt:** |
 

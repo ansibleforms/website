@@ -3,7 +3,7 @@ layout: default
 title: Edycja w projektancie
 parent: Workflowy
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
 ---
 
 # Edycja w projektancie
@@ -53,7 +53,8 @@ węźle albo START dla pierwszego.
 1. **Co uruchamia**: identyfikator węzła, **Uruchamia** (jakiego rodzaju jest węzeł i, dla węzła playbooka, gdzie działa)
    oraz to, co uruchamia: playbook albo szablon lub zadanie, workflow, nazwę i limit czasu zatwierdzenia albo repozytorium. Zobacz
    [Gdzie działa węzeł](#where-a-node-runs).
-2. **Jak działa**: ustawienia uruchamiania: inwentarz, poświadczenia, limit, tagi, szczegółowość,
+2. **Jak działa**: ustawienia uruchamiania: dla węzła playbooka **Repozytorium**, z którego działa jego playbook (przy
+   kilku repozytoriach playbooków), inwentarz, poświadczenia, limit, tagi, szczegółowość,
    tryb check i diff, warunek (**Działa, gdy**) oraz **Wartości z** (zobacz [plik workflow](file.html#run-settings)).
 3. **Dokąd prowadzi**: węzeł, po którym się uruchamia, i w jakiej sytuacji.
 
@@ -90,7 +91,7 @@ Kliknięcie węzła otwiera jego okno dialogowe z czterema kartami:
 | Karta | Co zawiera |
 |---|---|
 | **Co uruchamia** | Identyfikator, **Uruchamia**, to, co uruchamia, oraz, dla węzła playbooka, runner |
-| **Jak działa** | Ustawienia uruchamiania; poświadczenia wybiera się z listy, każde dodaje się przez `+` |
+| **Jak działa** | Ustawienia uruchamiania, z **Repozytorium** węzła playbooka; poświadczenia wybiera się z listy, każde dodaje się przez `+` |
 | **Uruchamia się po** | Połączenia prowadzące do węzła oraz **Wszyscy rodzice muszą się zbiec** |
 | **Uruchamia potem** | Połączenia wychodzące z niego, z **Połącz z istniejącym węzłem:** i **Połącz z nowym węzłem:** |
 

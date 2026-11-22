@@ -3,7 +3,7 @@ layout: default
 title: Formularios de Ansible
 parent: Formularios
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 ---
 
 # Formularios de Ansible
@@ -30,6 +30,17 @@ Formularios que ejecutan un playbook de Ansible local
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## El repositorio desde el que se ejecuta un playbook
+
+Desde 7.8.0 un formulario puede nombrar el repositorio desde el que se ejecuta su playbook, con `playbookRepository`.
+
+Sin él, el playbook se ejecuta desde el primer repositorio usado para playbooks, desde su carpeta `playbooks` (si no, su raíz),
+como antes. Con él, el playbook se ejecuta desde la raíz del repositorio nombrado, así que se aplican el `ansible.cfg`, los
+`roles/` y las rutas de inventario relativas de ese repositorio, y `playbook` se da desde la raíz (`playbooks/site.yml`). La
+estructura y un ejemplo completo están en [Un repositorio con la estructura propia de Ansible](../repositories/ansible-layout.html).
 
 ---
 

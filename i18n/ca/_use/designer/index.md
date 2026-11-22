@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
 ---
 
 # Dissenyador
@@ -42,7 +42,7 @@ Cada secció edita un tipus de fitxer, desat localment o en un [repositori](../r
 | **Categories** | Les categories de `config.yaml` |
 | **Constants** | Les constants de `config.yaml` |
 | **Fitxers de variables** | Els fitxers de variables que carreguen els formularis |
-| **Playbooks** | Els playbooks que executen els formularis i els workflows |
+| **Playbooks** | Els playbooks que executen els formularis i els workflows: els del primer repositori de playbooks, i després cada altre en una carpeta amb el seu nom |
 | **Inventaris** | Els inventaris: `inventory.yaml`, `group_vars` i `host_vars` |
 | **Fluxos de treball** | Els fitxers de [workflow](../workflows/) |
 
@@ -67,7 +67,7 @@ Què mostren les pestanyes Visual i Previsualització, secció per secció:
 
 | Secció | Visual | Previsualització |
 |---|---|---|
-| **Formularis** | La configuració del formulari i els seus camps, amb llistes dels playbooks, inventaris i workflows del dissenyador | El formulari tal com és ara, edicions no desades incloses; el seu enviament no executa res |
+| **Formularis** | La configuració del formulari i els seus camps, amb llistes dels playbooks (i el seu repositori), inventaris i workflows del dissenyador | El formulari tal com és ara, edicions no desades incloses; el seu enviament no executa res |
 | **Categories** | Les categories com a taula, editables | El menú de la pàgina Formularis, construït a partir d'elles |
 | **Constants** | Les constants com un esquema, editables (una clau es mou amb les tecles de fletxa) | Cada constant amb la seva referència, `$(NAME)`, per copiar-la, i els formularis que la fan servir |
 | **Fitxers de variables** | Les variables, editables | Cada variable amb la seva referència en un playbook, {% raw %}`{{ name }}`{% endraw %}, per copiar-la, i els formularis que carreguen el fitxer |
@@ -90,7 +90,9 @@ Totes tres estan activades per defecte i sempre activades per als admins:
 | `designAllPlaybooks` (**Editar Tots els Playbooks**) | Els playbooks que executen els formularis de l'usuari, i els que cap formulari fa servir encara |
 | `designAllWorkflows` (**Editar Tots els Fluxos de treball**) | Els fitxers de workflow que executen els formularis de l'usuari, inclosos els imbricats, i els que cap formulari fa servir encara |
 
-Un formulari executa un playbook amb el seu `playbook`, els seus passos d'ansible i els workflows que executa. El que un dissenyador limitat no pot fer:
+Un formulari executa un playbook amb el seu `playbook`, els seus passos d'ansible i els workflows que executa, comptat amb el
+repositori que indica (`playbookRepository`, des de la 7.8.0): `playbooks/site.yml` d'un repositori no és `site.yml` d'un altre.
+Vegeu [Un repositori amb l'estructura pròpia d'Ansible](../repositories/ansible-layout.html). El que un dissenyador limitat no pot fer:
 
 - **Veure un fitxer amagat.** Mai no es llista ni s'anomena: obrir-ne un respon com un fitxer que no existeix, i un fitxer nou amb el seu nom
   com un fitxer que ja existeix.

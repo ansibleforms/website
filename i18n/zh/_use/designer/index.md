@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
 ---
 
 # 设计器
@@ -42,7 +42,7 @@ translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 | **类别** | `config.yaml` 中的类别 |
 | **常量** | `config.yaml` 中的常量 |
 | **变量文件** | 表单加载的变量文件 |
-| **Playbook** | 表单和工作流运行的 playbook |
+| **Playbook** | 表单和工作流运行的 playbook：第一个 playbook 仓库的，然后是其他每个仓库，位于以其命名的文件夹中 |
 | **清单** | 清单： `inventory.yaml` 、 `group_vars` 和 `host_vars` |
 | **工作流** | [工作流](../workflows/)文件 |
 
@@ -67,7 +67,7 @@ translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 
 | 部分 | 可视化 | 预览 |
 |---|---|---|
-| **表单** | 表单的设置及其字段，带有设计器中 playbook、清单和工作流的列表 | 表单的当前样子，包括未保存的编辑；提交时不运行任何内容 |
+| **表单** | 表单的设置及其字段，带有设计器中 playbook（及其仓库）、清单和工作流的列表 | 表单的当前样子，包括未保存的编辑；提交时不运行任何内容 |
 | **类别** | 以表格形式编辑类别 | 由类别生成的表单页面菜单 |
 | **常量** | 以大纲形式编辑常量（用方向键移动键） | 每个常量及其可复制的引用 `$(NAME)` ，以及使用它的表单 |
 | **变量文件** | 编辑变量 | 每个变量及其在 playbook 中可复制的引用 {% raw %}`{{ name }}`{% endraw %} ，以及加载该文件的表单 |
@@ -90,7 +90,9 @@ translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
 | `designAllPlaybooks` （ **编辑所有 playbook** ） | 用户的表单运行的 playbook，以及尚无表单使用的 playbook |
 | `designAllWorkflows` （ **编辑所有工作流** ） | 用户的表单运行的工作流文件（包括嵌套的），以及尚无表单使用的工作流文件 |
 
-表单通过其 `playbook`、其 ansible 步骤以及它运行的工作流来运行 playbook。受限的设计者不能：
+表单通过其 `playbook`、其 ansible 步骤以及它运行的工作流来运行 playbook，并连同它指定的仓库一起计算
+（`playbookRepository`，自 7.8.0 起）：一个仓库的 `playbooks/site.yml` 不是另一个仓库的 `site.yml`。参见
+[采用 Ansible 自己布局的仓库](../repositories/ansible-layout.html)。受限的设计者不能：
 
 - **看到隐藏的文件。** 它从不被列出或提及：打开它时的响应如同文件不存在，用它的名称新建文件时的响应如同文件已存在。
 - **指向隐藏的文件。** 把隐藏表单作为子表单的表单不会显示它的任何内容；指定隐藏 playbook 或工作流的表单或工作流文件会被拒绝。

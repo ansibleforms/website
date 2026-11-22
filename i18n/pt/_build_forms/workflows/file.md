@@ -3,7 +3,7 @@ layout: default
 title: O ficheiro do workflow
 parent: Workflows
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: ecfbb5d87ca61b3b6cc5083094e1aa5c267db1ea
 ---
 
 # O ficheiro do workflow
@@ -151,11 +151,12 @@ sobre o `extra_data` do nó, tal como fazem as respostas de um survey no AWX.
 
 ## Chaves próprias do AnsibleForms
 
-Três chaves de um nó são próprias do AnsibleForms, e o AWX ignora-as, para que um workflow possa fazer o que faz um formulário multistep:
+Quatro chaves de um nó são próprias do AnsibleForms, e o AWX ignora-as, para que um workflow possa fazer o que faz um formulário multistep:
 
 | Chave | O que faz |
 |---|---|
 | `runner` | Num nó `job_template`, executa o modelo ou job desse runner em vez de um playbook do designer: AWX, AAP, Ascender, Semaphore, Rundeck ou Jenkins. Um runner RTE executa aí o playbook do nó. Um mesmo workflow pode misturá-los. |
+| `playbook_repository` | Num nó de playbook, o repositório a partir do qual corre o seu playbook, na sua raiz, como o `playbookRepository` de um formulário (desde 7.8.0): o playbook do nó indica-se então a partir dessa raiz (`playbooks/site.yml`). Ver [Um repositório na estrutura própria do Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | O nó só corre quando esta extra var é `true`, como o `ifExtraVar` de um passo multistep. Se não se cumprir, o nó é saltado, e o que vem a seguir corre como depois de um sucesso. Não se aplica a um nó de aprovação, que corre sempre. |
 | `extra_vars_key` | O nó recebe só esta chave das extra vars, com o utilizador copiado, como a `key` de um passo multistep |
 

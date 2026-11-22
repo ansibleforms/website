@@ -3,7 +3,7 @@ layout: default
 title: El archivo del workflow
 parent: Workflows
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: ecfbb5d87ca61b3b6cc5083094e1aa5c267db1ea
 ---
 
 # El archivo del workflow
@@ -151,11 +151,12 @@ sobre el `extra_data` del nodo, igual que las respuestas de un survey en AWX.
 
 ## Claves propias de AnsibleForms
 
-Tres claves de un nodo son propias de AnsibleForms, y AWX las ignora, de modo que un workflow puede hacer lo mismo que un formulario de varios pasos:
+Cuatro claves de un nodo son propias de AnsibleForms, y AWX las ignora, de modo que un workflow puede hacer lo mismo que un formulario de varios pasos:
 
 | Clave | Qué hace |
 |---|---|
 | `runner` | En un nodo `job_template`, ejecuta la plantilla o el job de ese runner en lugar de un playbook del diseñador: AWX, AAP, Ascender, Semaphore, Rundeck o Jenkins. Un runner RTE ejecuta allí el playbook del nodo. Un mismo workflow puede combinarlos. |
+| `playbook_repository` | En un nodo de playbook, el repositorio desde cuya raíz se ejecuta su playbook, como el `playbookRepository` de un formulario (desde 7.8.0): el playbook del nodo se nombra entonces desde esa raíz (`playbooks/site.yml`). Consulta [Un repositorio con la estructura propia de Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | El nodo solo se ejecuta cuando esta extra var es `true`, como el `ifExtraVar` de un paso de multistep. Si no se cumple, el nodo se omite, y lo que va después se ejecuta como tras un éxito. No en un nodo de aprobación, que siempre se ejecuta. |
 | `extra_vars_key` | El nodo recibe solo esta clave de las extra vars, con el usuario copiado dentro, como la `key` de un paso de multistep |
 

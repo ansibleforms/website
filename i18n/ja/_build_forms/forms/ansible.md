@@ -3,7 +3,7 @@ layout: default
 title: Ansible フォーム
 parent: フォーム
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 ---
 
 # Ansible フォーム
@@ -30,6 +30,17 @@ translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## playbook を実行するリポジトリ
+
+7.8.0 以降、フォームは `playbookRepository` で playbook を実行するリポジトリを指定できます。
+
+指定しない場合、playbook はこれまでどおり、playbook に使用する最初のリポジトリの `playbooks` フォルダー (なければルート) から
+実行されます。指定した場合、playbook は指定したリポジトリのルートから実行されるため、そのリポジトリの `ansible.cfg`、 `roles/`、
+相対パスのインベントリが適用され、 `playbook` はルートから指定します (`playbooks/site.yml`)。レイアウトと完全な例は
+[Ansible 標準のレイアウトのリポジトリ](../repositories/ansible-layout.html) にあります。
 
 ---
 
