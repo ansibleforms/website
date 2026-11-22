@@ -47,8 +47,11 @@ translated_from: 71a26c1bda0006fdb0e0c0b3325e8a53a5c3a125
    **配置** 选项卡中设置时：`1` 读取数据库，`0` 读取文件。
 2. 否则，使用数据库中保存的配置来源（`file` 或 `database`），即 6.3.0 之前搭建的实例
    在设置页面上所作的选择。
-3. 否则，使用文件：启用了 **用于配置** 的仓库中的 `config.yaml`；没有时使用启用了
-   **用于表单** 的仓库中的；再没有时使用 [`CONFIG_PATH`](paths.html#env_CONFIG_PATH) 处的文件。
+3. 否则，使用 [`CONFIG_PATH`](paths.html#env_CONFIG_PATH) 处的文件。
+
+从 7.8.0 起，仓库所包含的键会覆盖在这一基础配置之上：具有 **角色**、**类别** 或 **常量** 用途类型的仓库
+从给出 `controller_roles:`、`controller_categories:` 或 `controller_constants:` 的文件中提供该键，
+否则从其 `config.yaml`（已弃用）中提供。参见 [git 中的配置](../repositories/config-as-code.html#roles-categories-and-constants)。
 
 显式设置的 `ENABLE_CONFIG_IN_DATABASE` 始终优先，即使是 `0` 也优先于保存的 `database`。每次加载
 配置时都会读取它，因此更改无需重启即可生效。**状态** 页面的 **信息** 选项卡显示正在使用的来源。
