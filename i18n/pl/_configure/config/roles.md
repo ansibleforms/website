@@ -31,7 +31,7 @@ W **Ustawienia > Dostęp > Role** przycisk **Dodaj rolę** otwiera kreator **Now
 
 | Etap | O co pyta |
 |---|---|
-| **Szczegóły** | Nazwa, unikalna wśród ról, i opis. **Następna** czeka na nazwę, której nie ma żadna inna rola |
+| **Szczegóły** | Nazwa, unikalna wśród ról, i opis. **Dalej** czeka na nazwę, której nie ma żadna inna rola |
 | **Uprawnienia** | [Opcje roli](#role-options) w czterech grupach, zaczynając od wartości domyślnych dla wszystkich |
 | **Użytkownicy** | Użytkownicy wymienieni w roli, każdy wybrany przez **Dodaj użytkownika** |
 | **Grupy** | Grupy wymienione w roli, każda wybrana przez **Dodaj grupę** |

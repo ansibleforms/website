@@ -12,12 +12,12 @@ translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 Dodawanie użytkownika lokalnego i karty jego strony
 {: .fs-6 .fw-300 }
 
-**Dodaj użytkownika** otwiera czteroetapowy kreator **Nowy element: użytkownik**:
+**Dodaj użytkownika** otwiera czteroetapowy kreator **Nowy użytkownik**:
 
 | Etap | O co pyta |
 |---|---|
 | **Użytkownik** | Nazwa użytkownika, opis i e-mail; wymagana jest tylko nazwa użytkownika |
-| **Hasło** | Hasło wpisane dwa razy: **Następna** czeka, aż oba będą takie same |
+| **Hasło** | Hasło wpisane dwa razy: **Dalej** czeka, aż oba będą takie same |
 | **Grupa** | Grupa lokalna, do której należy użytkownik i która daje mu role grupy |
 | **Role** | Role nadane samemu użytkownikowi, każda wybrana przez **Dodaj rolę**; żadna nie jest wymagana |
 

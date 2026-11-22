@@ -12,7 +12,7 @@ translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 Ajouter un utilisateur local, et les onglets de sa page
 {: .fs-6 .fw-300 }
 
-**Ajouter un utilisateur** ouvre l'assistant **Nouveau utilisateur** en quatre étapes :
+**Ajouter un utilisateur** ouvre l'assistant **Nouvel utilisateur** en quatre étapes :
 
 | Étape | Ce qu'elle demande |
 |---|---|

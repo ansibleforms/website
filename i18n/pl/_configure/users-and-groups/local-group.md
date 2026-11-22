@@ -12,7 +12,7 @@ translated_from: 41f71dbf24df7e6a6f6a619a7d5147f28e80d466
 Strona grupy lokalnej i jej karty
 {: .fs-6 .fw-300 }
 
-Od wersji 7.8.0 **Dodaj grupę** otwiera trzyetapowy kreator **Nowy element: grupa**: **Szczegóły** (nazwa i opis), **Użytkownicy**
+Od wersji 7.8.0 **Dodaj grupę** otwiera trzyetapowy kreator **Nowa grupa**: **Szczegóły** (nazwa i opis), **Użytkownicy**
 (użytkownicy lokalni, których należy dodać do grupy) i **Role** (role, które grupa ma otrzymać, aby mieli je jej użytkownicy). Wymagana
 jest tylko nazwa. **Zapisz** na ostatnim etapie tworzy grupę, a potem dodaje użytkowników i nadaje role: to, co się nie uda, jest
 wymienione w komunikacie, a grupa zostaje.

@@ -12,7 +12,7 @@ translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 Afegir un usuari local, i les pestanyes de la seva pàgina
 {: .fs-6 .fw-300 }
 
-**Afegeix un usuari** obre l'assistent **Nou element: usuari** en quatre passos:
+**Afegeix un usuari** obre l'assistent **Nou usuari** en quatre passos:
 
 | Pas | Què demana |
 |---|---|

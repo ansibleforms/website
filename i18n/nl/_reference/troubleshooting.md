@@ -219,7 +219,7 @@ De basisconfiguratie (`config.yaml`) kon niet worden gelezen of is niet geldig. 
 **Hoe je het oplost**
 
 Corrigeer het bestand dat [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) noemt, of het bestand met de sleutel in de
-repository met het gebruikstype **Rollen**, **Categorieen** of **Constanten**. Als er bestanden ontbreken, laat je [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) en
+repository met het gebruikstype **Rollen**, **Categorieën** of **Constanten**. Als er bestanden ontbreken, laat je [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) en
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) naar een beschrijfbare, persistente locatie wijzen. Zie
 [config.yaml](config/) voor de structuur.
 
