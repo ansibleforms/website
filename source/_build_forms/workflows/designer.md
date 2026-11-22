@@ -52,8 +52,9 @@ node, or START for a first one.
 1. **What it runs**: the node's identifier, **Runs** (what kind of node it is and, for a playbook node, where it runs)
    and what it runs: a playbook or a template or job, a workflow, an approval's name and timeout, or a repository. See
    [Where a node runs](#where-a-node-runs).
-2. **How it runs**: the run settings: the inventory, the credentials, the limit, the tags, the verbosity,
-   check and diff mode, the condition (**Runs when**) and **Values from** (see [the workflow file](file.html#run-settings)).
+2. **How it runs**: the run settings: for a playbook node the **Repository** its playbook runs from (with several
+   playbooks repositories), the inventory, the credentials, the limit, the tags, the verbosity, check and diff mode,
+   the condition (**Runs when**) and **Values from** (see [the workflow file](file.html#run-settings)).
 3. **Where it goes**: the node it runs after, and on what.
 
 **Create** adds the node to the YAML.
@@ -89,7 +90,7 @@ Clicking a node opens its dialog, in four tabs:
 | Tab | What it holds |
 |---|---|
 | **What it runs** | The identifier, **Runs**, what it runs and, for a playbook node, the runner |
-| **How it runs** | The run settings; credentials are picked from a list, each added with `+` |
+| **How it runs** | The run settings, with the **Repository** of a playbook node; credentials are picked from a list, each added with `+` |
 | **Runs after** | The links into the node, and **All parents must converge** |
 | **Runs next** | The links out of it, with **Link to an existing node:** and **Link to a new node:** |
 

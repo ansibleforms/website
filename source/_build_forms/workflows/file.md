@@ -150,11 +150,12 @@ over the node's `extra_data`, as a survey's answers do in AWX.
 
 ## AnsibleForms' own keys
 
-Three keys of a node are AnsibleForms' own, and AWX ignores them, so a workflow can do what a multistep form does:
+Four keys of a node are AnsibleForms' own, and AWX ignores them, so a workflow can do what a multistep form does:
 
 | Key | What it does |
 |---|---|
 | `runner` | On a `job_template` node, runs that runner's template or job instead of a designer playbook: AWX, AAP, Ascender, Semaphore, Rundeck or Jenkins. An RTE runner runs the node's playbook there. One workflow can mix them. |
+| `playbook_repository` | On a playbook node, the repository its playbook runs from, at its root, as a form's `playbookRepository` (since 7.8.0): the node's playbook is then named from that root (`playbooks/site.yml`). See [A repository in Ansible's own layout](../repositories/ansible-layout.html) |
 | `if_extra_var` | The node runs only when this extra var is `true`, as a multistep step's `ifExtraVar`. Not met, the node is skipped, and what follows it runs as after a success. Not on an approval node, which always runs. |
 | `extra_vars_key` | The node gets only this key of the extra vars, with the user copied in, as a multistep step's `key` |
 
