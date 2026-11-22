@@ -3,7 +3,7 @@ layout: default
 title: 邮件
 parent: 通知通道
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # 邮件
@@ -50,5 +50,6 @@ translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
 
 从 7.6.0 起，当没有邮件通道作为默认通道，或默认通道已关闭时，应用不会发送任何邮件。之前，它会退回使用设置页面或配置种子中的
 邮件设置。升级到 7.6.0 时，如果还没有任何活动的邮件通道，这些设置会被转换为默认邮件通道 `default`：有登录信息时，它引用
-新的 smtp 凭据 `mail-login`；对于中继，它使用自身的服务器，不带凭据。在 [配置种子](../seed/) 中，请在 `notification_channels:`
-下声明邮件通道（参见 [示例](../seed/example.html)）：`settings:` 下旧的 `mail_*` 键仍然有效，但已弃用。
+新的 smtp 凭据 `mail-login`；对于中继，它使用自身的服务器，不带凭据。在 [配置种子](../seed/) 中，请在 `notifications:`
+下声明邮件通道（7.8.0 之前为 `notification_channels:`，仍会读取但已弃用；参见 [示例](../seed/example.html)）：`settings:` 下旧的 `mail_*` 键仍然有效，
+但同样已弃用。

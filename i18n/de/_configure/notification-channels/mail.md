@@ -3,7 +3,7 @@ layout: default
 title: Mail
 parent: Benachrichtigungskanäle
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Mail
@@ -52,5 +52,6 @@ Ab 7.6.0 sendet die App überhaupt keine Mails, solange kein Mail-Kanal der Stan
 ist. Zuvor griff sie auf die Mail-Einstellungen der Einstellungsseite oder des Config-Seeds zurück. Das Upgrade auf 7.6.0 macht aus
 diesen Einstellungen den Standard-Mail-Kanal `default`, wenn noch kein Mail-Kanal aktiv war: Mit einer Anmeldung nennt er neue
 smtp-Anmeldedaten `mail-login`, für ein Relay hat er seinen eigenen Server und keine Anmeldedaten. Deklarieren Sie im
-[Config-Seed](../seed/) einen Mail-Kanal unter `notification_channels:` (siehe [Beispiel](../seed/example.html)): Die alten
-`mail_*`-Schlüssel unter `settings:` funktionieren weiterhin, sind aber veraltet.
+[Config-Seed](../seed/) einen Mail-Kanal unter `notifications:` (vor 7.8.0 `notification_channels:`, weiterhin gelesen,
+aber veraltet; siehe [Beispiel](../seed/example.html)): Die alten `mail_*`-Schlüssel unter `settings:` funktionieren weiterhin, sind aber
+ebenfalls veraltet.

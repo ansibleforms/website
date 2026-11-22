@@ -3,7 +3,7 @@ layout: default
 title: Mail
 parent: Canaux de notification
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Mail
@@ -52,4 +52,5 @@ Depuis la 7.6.0, l'application n'envoie aucun mail tant qu'aucun canal mail n'es
 elle se rabattait sur les paramètres mail de la page des paramètres ou du seed de configuration. La mise à jour vers la 7.6.0 transforme ces paramètres
 en canal mail par défaut `default` quand aucun canal mail n'était encore actif : avec un accès, il nomme un nouvel identifiant smtp `mail-login` ;
 pour un relais, il a son propre serveur et aucun identifiant. Dans le [seed de configuration](../seed/), déclarez un canal mail sous
-`notification_channels:` (voir [Exemple](../seed/example.html)) : les anciennes clés `mail_*` sous `settings:` fonctionnent toujours mais sont dépréciées.
+`notifications:` (`notification_channels:` avant 7.8.0, toujours lu mais déprécié ; voir [Exemple](../seed/example.html)) : les anciennes clés `mail_*`
+sous `settings:` fonctionnent toujours mais sont dépréciées elles aussi.

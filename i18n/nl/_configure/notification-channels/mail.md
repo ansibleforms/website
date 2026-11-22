@@ -3,7 +3,7 @@ layout: default
 title: Mail
 parent: Meldingskanalen
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Mail
@@ -52,4 +52,5 @@ Vanaf 7.6.0 verstuurt de app helemaal geen mail zolang geen enkel mailkanaal de 
 Daarvoor viel ze terug op de mailinstellingen van de instellingenpagina of de configuratie-seed. De upgrade naar 7.6.0 maakt van die instellingen
 het standaardmailkanaal `default` als er nog geen mailkanaal actief was: met een aanmelding noemt het een nieuwe smtp-referentie `mail-login`;
 voor een relay heeft het een eigen server en geen referentie. Declareer in de [configuratie-seed](../seed/) een mailkanaal onder
-`notification_channels:` (zie [Voorbeeld](../seed/example.html)): de oude `mail_*`-sleutels onder `settings:` werken nog, maar zijn verouderd.
+`notifications:` (`notification_channels:` vóór 7.8.0, nog gelezen maar verouderd; zie [Voorbeeld](../seed/example.html)): de oude
+`mail_*`-sleutels onder `settings:` werken nog, maar zijn eveneens verouderd.
