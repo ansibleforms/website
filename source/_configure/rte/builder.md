@@ -25,7 +25,7 @@ When someone builds a runtime environment, the controller writes its Dockerfile 
 with the registry login and the signing key sealed for that builder. The builder builds its image with BuildKit, pushes it, signs it when asked,
 and streams the build's log back as a job on the **Jobs** page.
 
-A builder needs a controller with runtime environments, AnsibleForms 7.8.0 or later. It never reads the controller's database nor its repositories, and runs no playbook.
+A builder needs a controller with runtime environments, AnsibleForms 7.9.0 or later. It never reads the controller's database nor its repositories, and runs no playbook.
 
 ---
 

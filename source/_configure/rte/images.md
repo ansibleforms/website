@@ -56,7 +56,7 @@ python libraries always go into the image. Baking everything in is reproducible 
 
 ## Build it in the Designer
 
-From 7.8.0 you describe a runtime environment in the Designer; a [builder](builder.html) builds its image, pushes and signs it.
+From 7.9.0 you describe a runtime environment in the Designer; a [builder](builder.html) builds its image, pushes and signs it.
 
 1. Give a repository the **Runtime environments** usage (Settings > Repositories); it holds the definitions.
 2. In the Designer, open **Runtime environments** and click **New**: fill it in on the **Visual** tab, or write it on the **YAML** tab.
@@ -106,7 +106,7 @@ Every key but the name can be left out; the **YAML** tab's toolbar sets each par
 | `ansible_collections` | The collections, each its `name` (namespace.name) and an optional `version`; the latest when left out. What each collection needs itself, its `requirements.txt` and `bindep.txt` (or its `meta/execution-environment.yml`), is installed with it, as ansible-builder does |
 | `python_packages` | Python packages, as lines of a `requirements.txt` |
 | `os_packages` | Debian 13 (trixie) packages |
-| `registry` | `credential`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.8.0`), so a rebuild follows each upgrade, or a tag of your own |
+| `registry` | `credential`: a **Container registry** credential, which holds the registry's address and login; `path`: the image's path in it, its name when left out; `tag`: `app`, the app's release (`7.9.0`), so a rebuild follows each upgrade, or a tag of your own |
 | `sbom` | `true` attaches a software bill of materials to the image |
 | `sign` | `credential`: a **Signing key** credential, with which the builder signs the image with cosign 3; check it with cosign 3's `cosign verify --key <public key>` (cosign 2 does not read its signatures) |
 
