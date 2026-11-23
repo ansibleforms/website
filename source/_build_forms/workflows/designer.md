@@ -53,7 +53,7 @@ node, or START for a first one.
    and what it runs: a playbook or a template or job, a workflow, an approval's name and timeout, or a repository. See
    [Where a node runs](#where-a-node-runs).
 2. **How it runs**: the run settings: for a playbook node the **Repository** its playbook runs from (with several
-   playbooks repositories), the inventory, the credentials, the limit, the tags, the verbosity, check and diff mode,
+   playbooks repositories; **This workflow's repository (name)** is the one the workflow file is in), the inventory, the credentials, the limit, the tags, the verbosity, check and diff mode,
    the condition (**Runs when**) and **Values from** (see [the workflow file](file.html#run-settings)).
 3. **Where it goes**: the node it runs after, and on what.
 

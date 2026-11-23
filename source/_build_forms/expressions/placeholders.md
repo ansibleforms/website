@@ -45,12 +45,19 @@ A placeholder names a field of the form, or one of these, which every form has:
 | `$(field)` | the value of another field of the form |
 | `$(name)`, a constant | a [constant](../config/constants.html) of `config.yaml`, or a value from the form's `varsFiles` |
 | `$(__user__)` | the signed-in user: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | the repository the form is read from (since 7.8.0): its `name`, and its `path`, its folder on the server |
 | `$(__parent__.field)` | in a [subform](../forms/subform.html) (a list row, a wizard step), a value of the parent form |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+With `__repository__` a form reads a file kept in its repository without naming the repository or its folder. Its
+[subforms](../forms/subform.html) (list rows, wizard steps) read the form's, and a form in no repository (the local forms
+folder) reads both `name` and `path` empty. A server expression takes it from the form the server loaded, never from the
+browser. `__user__` and `__repository__` are reserved: no field of a form may take either name.
 
 ---
 

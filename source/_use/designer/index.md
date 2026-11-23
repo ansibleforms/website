@@ -90,7 +90,8 @@ All three are on by default and always on for admins:
 | `designAllWorkflows` (**Edit All Workflows**) | The workflow files the user's forms run, nested ones included, and the ones no form uses yet |
 
 A form runs a playbook through its `playbook`, its ansible steps and the workflows it runs, counted with the repository it
-names (`playbookRepository`, since 7.8.0): `playbooks/site.yml` of one repository is not `site.yml` of another. See
+names (`playbookRepository`, since 7.8.0, `__self__` being the one the form is in): `playbooks/site.yml` of one repository is not
+`site.yml` of another. See
 [A repository in Ansible's own layout](../repositories/ansible-layout.html). What a limited designer cannot do:
 
 - **See a hidden file.** It is never listed nor named: opening one answers as a missing file, and a new file with its name

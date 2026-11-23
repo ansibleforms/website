@@ -85,6 +85,27 @@ An `ansible` step of a [multistep form](../forms/multistep.html) names its own `
 
 ---
 
+## The repository the form is in
+
+Since 7.8.0 a form kept in the same repository as its playbook names it `__self__`, instead of repeating its name.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` is the repository the form is read from, and it must have the **Playbooks** usage type, as any repository a form
+names. On a playbook node of a workflow, `playbook_repository: __self__` is the repository the workflow file is in.
+
+A form in the local forms folder is in no repository, so its `__self__` names none. The form then gets a load error naming
+it, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, and its
+launch is refused, saying why. A workflow node's `__self__` in a file of the local workflows folder fails the node's job.
+
+---
+
 ## Several playbooks repositories
 
 Since 7.8.0 several repositories may have the **Playbooks** usage type; before, only the first one was used, with a warning.
@@ -105,9 +126,9 @@ The designer offers the repository and the playbooks that go with it, on a form 
 
 | Where | What it shows |
 |---|---|
-| A form's **Visual** tab | **Repository**, above **Playbook**, when there are several playbooks repositories or the form names one. Its first option, **First playbooks repository**, removes the key |
+| A form's **Visual** tab | **Repository**, above **Playbook**, when there are several playbooks repositories or the form names one. Its first option, **First playbooks repository**, removes the key; the second, **This form's repository (name)**, writes `__self__` |
 | **Playbook** | The playbooks of the repository picked, named from its root; with **First playbooks repository**, the first one's, as it runs them |
-| A workflow's playbook node | The same **Repository** field, on its **How it runs** tab, and the playbooks of that repository on **What it runs** |
+| A workflow's playbook node | The same **Repository** field, on its **How it runs** tab, with **This workflow's repository (name)** for `__self__`, and the playbooks of that repository on **What it runs** |
 | The **Playbooks** section | The first repository's playbooks, from its `playbooks` folder (else its root), then every other repository whole, in a folder named after it |
 
 The [**Edit all playbooks**](../designer/#limited-designers) role option counts a playbook by its repository and its path: a

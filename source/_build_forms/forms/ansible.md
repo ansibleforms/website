@@ -41,6 +41,10 @@ before. With it, the playbook runs from the root of the repository named, so tha
 relative inventory paths apply, and `playbook` is given from the root (`playbooks/site.yml`). The layout and a full example
 are in [A repository in Ansible's own layout](../repositories/ansible-layout.html).
 
+`playbookRepository: __self__` names the repository the form itself is read from, so a form kept with its playbook never
+names its repository. A form in no repository (the local forms folder) cannot use it: its launch is refused. See
+[The repository the form is in](../repositories/ansible-layout.html#the-repository-the-form-is-in).
+
 ---
 
 ## Properties
