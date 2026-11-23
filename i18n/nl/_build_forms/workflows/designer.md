@@ -3,7 +3,7 @@ layout: default
 title: Bewerken in de ontwerper
 parent: Workflows
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Bewerken in de ontwerper
@@ -54,7 +54,7 @@ knooppunt, of START voor een eerste.
    en wat het uitvoert: een playbook of een sjabloon of job, een workflow, de naam en time-out van een goedkeuring, of een repository. Zie
    [Waar een knooppunt draait](#where-a-node-runs).
 2. **Hoe het draait**: de uitvoeringsinstellingen: bij een playbookknooppunt de **Repository** waaruit zijn playbook draait
-   (bij meerdere playbookrepositories), de inventaris, de referenties, de limiet, de tags, de uitgebreidheid,
+   (bij meerdere playbookrepositories; **Repository van deze workflow (name)** is die waarin het workflowbestand staat), de inventaris, de referenties, de limiet, de tags, de uitgebreidheid,
    check- en diff-modus, de voorwaarde (**Draait als**) en **Waarden uit** (zie [het workflowbestand](file.html#run-settings)).
 3. **Waar het heen gaat**: het knooppunt waarna het draait, en wanneer.
 

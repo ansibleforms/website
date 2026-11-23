@@ -3,7 +3,7 @@ layout: default
 title: Edició al dissenyador
 parent: Workflows
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Edició al dissenyador
@@ -54,7 +54,7 @@ existent, o START per al primer.
    i què executa: un playbook o una plantilla o job, un workflow, el nom i el temps límit d'una aprovació, o un repositori. Vegeu
    [On s'executa un node](#where-a-node-runs).
 2. **Com s'executa**: les opcions d'execució: per a un node de playbook, el **Repositori** des del qual s'executa el seu
-   playbook (amb diversos repositoris de playbooks), l'inventari, les credencials, el límit, les etiquetes, la verbositat,
+   playbook (amb diversos repositoris de playbooks; **Repositori d'aquest workflow (name)** és aquell on és el fitxer del workflow), l'inventari, les credencials, el límit, les etiquetes, la verbositat,
    el mode check i el mode diff, la condició (**S'executa si**) i **Valors de** (vegeu [el fitxer de workflow](file.html#run-settings)).
 3. **On va**: el node després del qual s'executa, i en quin cas.
 

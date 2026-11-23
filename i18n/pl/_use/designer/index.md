@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Projektant
@@ -91,7 +91,7 @@ Wszystkie trzy są domyślnie włączone i zawsze włączone dla adminów:
 | `designAllWorkflows` (**Edytować Wszystkie Przepływy pracy**) | Pliki workflow uruchamiane przez formularze użytkownika, łącznie z zagnieżdżonymi, oraz te, których nie używa jeszcze żaden formularz |
 
 Formularz uruchamia playbook przez swój `playbook`, swoje kroki ansible i workflowy, które uruchamia, liczony razem z
-repozytorium, które wskazuje (`playbookRepository`, od 7.8.0): `playbooks/site.yml` jednego repozytorium to nie `site.yml`
+repozytorium, które wskazuje (`playbookRepository`, od 7.8.0, przy czym `__self__` to repozytorium, w którym jest formularz): `playbooks/site.yml` jednego repozytorium to nie `site.yml`
 innego. Zobacz [Repozytorium we własnym układzie Ansible](../repositories/ansible-layout.html). Czego ograniczony projektant
 nie może zrobić:
 

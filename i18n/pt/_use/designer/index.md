@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Designer
@@ -91,7 +91,7 @@ As três estão ligadas por predefinição e sempre ligadas para os admins:
 | `designAllWorkflows` (**Editar Todos os Fluxos de trabalho**) | Os ficheiros de workflow que os formulários do utilizador executam, aninhados incluídos, e os que nenhum formulário usa ainda |
 
 Um formulário executa um playbook através do seu `playbook`, dos seus passos ansible e dos workflows que executa, contado
-com o repositório que indica (`playbookRepository`, desde 7.8.0): `playbooks/site.yml` de um repositório não é `site.yml` de
+com o repositório que indica (`playbookRepository`, desde 7.8.0, sendo `__self__` aquele em que está o formulário): `playbooks/site.yml` de um repositório não é `site.yml` de
 outro. Ver [Um repositório na estrutura própria do Ansible](../repositories/ansible-layout.html). O que um designer limitado
 não pode fazer:
 

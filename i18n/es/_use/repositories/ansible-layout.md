@@ -3,7 +3,7 @@ layout: default
 title: La estructura propia de Ansible
 parent: Repositorios git
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Un repositorio con la estructura propia de Ansible
@@ -86,6 +86,29 @@ de playbook de un [workflow](../workflows/file.html#ansibleforms-own-keys) lo no
 
 ---
 
+## El repositorio en el que está el formulario
+
+Desde 7.8.0, un formulario guardado en el mismo repositorio que su playbook lo nombra `__self__`, en lugar de repetir su nombre.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` es el repositorio del que se lee el formulario, y debe tener el tipo de uso **Playbooks**, como cualquier repositorio
+que nombra un formulario. En un nodo de playbook de un workflow, `playbook_repository: __self__` es el repositorio en el que
+está el archivo del workflow.
+
+Un formulario de la carpeta local de formularios no está en ningún repositorio, así que su `__self__` no nombra ninguno. El
+formulario recibe entonces un error de carga que lo nombra, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, y su
+lanzamiento se rechaza, indicando el motivo. El `__self__` de un nodo en un archivo de la carpeta local de workflows hace fallar
+el job del nodo.
+
+---
+
 ## Varios repositorios de playbooks
 
 Desde 7.8.0 varios repositorios pueden tener el tipo de uso **Playbooks**; antes solo se usaba el primero, con un aviso.
@@ -106,9 +129,9 @@ El diseñador ofrece el repositorio y los playbooks que le corresponden, en un f
 
 | Dónde | Qué muestra |
 |---|---|
-| La pestaña **Visual** de un formulario | **Repositorio**, encima de **Playbook**, cuando hay varios repositorios de playbooks o el formulario nombra uno. Su primera opción, **Primer repositorio de playbooks**, quita la clave |
+| La pestaña **Visual** de un formulario | **Repositorio**, encima de **Playbook**, cuando hay varios repositorios de playbooks o el formulario nombra uno. Su primera opción, **Primer repositorio de playbooks**, quita la clave; la segunda, **Repositorio de este formulario (name)**, escribe `__self__` |
 | **Playbook** | Los playbooks del repositorio elegido, nombrados desde su raíz; con **Primer repositorio de playbooks**, los del primero, tal como los ejecuta |
-| El nodo de playbook de un workflow | El mismo campo **Repositorio**, en su pestaña **Cómo se ejecuta**, y los playbooks de ese repositorio en **Qué ejecuta** |
+| El nodo de playbook de un workflow | El mismo campo **Repositorio**, en su pestaña **Cómo se ejecuta**, con **Repositorio de este workflow (name)** para `__self__`, y los playbooks de ese repositorio en **Qué ejecuta** |
 | La sección **Playbooks** | Los playbooks del primer repositorio, desde su carpeta `playbooks` (si no, su raíz), y luego cada otro repositorio entero, en una carpeta con su nombre |
 
 La opción de rol [**Editar todos los playbooks**](../designer/#limited-designers) cuenta un playbook por su repositorio y su ruta:

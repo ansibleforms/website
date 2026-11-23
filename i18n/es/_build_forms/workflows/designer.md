@@ -3,7 +3,7 @@ layout: default
 title: Editar en el diseñador
 parent: Workflows
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Editar en el diseñador
@@ -54,7 +54,7 @@ existente, o START para el primero.
    y lo que ejecuta: un playbook o una plantilla o job, un workflow, el nombre y el tiempo de espera de una aprobación, o un repositorio. Consulta
    [Dónde se ejecuta un nodo](#where-a-node-runs).
 2. **Cómo se ejecuta**: los ajustes de ejecución: para un nodo de playbook, el **Repositorio** desde el que se ejecuta su
-   playbook (con varios repositorios de playbooks), el inventario, las credenciales, el limit, los tags, el nivel de detalle,
+   playbook (con varios repositorios de playbooks; **Repositorio de este workflow (name)** es aquel en el que está el archivo del workflow), el inventario, las credenciales, el limit, los tags, el nivel de detalle,
    los modos check y diff, la condición (**Se ejecuta si**) y **Valores de** (consulta [el archivo del workflow](file.html#run-settings)).
 3. **Dónde va**: el nodo tras el que se ejecuta, y en qué caso.
 

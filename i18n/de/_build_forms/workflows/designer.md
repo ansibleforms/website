@@ -3,7 +3,7 @@ layout: default
 title: Im Designer bearbeiten
 parent: Workflows
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Im Designer bearbeiten
@@ -54,7 +54,7 @@ Knoten, oder START für einen ersten.
    und was er ausführt: ein Playbook oder eine Vorlage oder einen Job, einen Workflow, Name und Zeitlimit einer Genehmigung oder ein Repository. Siehe
    [Wo ein Knoten läuft](#where-a-node-runs).
 2. **Wie er läuft**: die Ausführungseinstellungen: bei einem Playbook-Knoten das **Repository**, aus dem sein Playbook läuft
-   (bei mehreren Playbook-Repositories), das Inventar, die Zugangsdaten, das Limit, die Tags, die Ausführlichkeit,
+   (bei mehreren Playbook-Repositories; **Repository dieses Workflows (name)** ist das, in dem die Workflow-Datei liegt), das Inventar, die Zugangsdaten, das Limit, die Tags, die Ausführlichkeit,
    Check- und Diff-Modus, die Bedingung (**Läuft, wenn**) und **Werte aus** (siehe [die Workflow-Datei](file.html#run-settings)).
 3. **Wohin er führt**: der Knoten, nach dem er läuft, und wann.
 

@@ -3,7 +3,7 @@ layout: default
 title: Placeholders
 parent: Expressies
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Placeholders
@@ -46,12 +46,19 @@ Een placeholder noemt een veld van het formulier, of een van deze, die elk formu
 | `$(field)` | de waarde van een ander veld van het formulier |
 | `$(name)`, een constante | een [constante](../config/constants.html) uit `config.yaml`, of een waarde uit de `varsFiles` van het formulier |
 | `$(__user__)` | de aangemelde gebruiker: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | de repository waaruit het formulier wordt gelezen (sinds 7.8.0): haar `name`, en haar `path`, haar map op de server |
 | `$(__parent__.field)` | in een [subformulier](../forms/subform.html) (een rij van een lijst, een stap van een wizard), een waarde van het bovenliggende formulier |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Met `__repository__` leest een formulier een bestand uit zijn repository zonder de repository of haar map te noemen. Zijn
+[subformulieren](../forms/subform.html) (lijstrijen, wizardstappen) lezen die van het formulier, en een formulier in geen enkele
+repository (de lokale formulierenmap) leest `name` en `path` leeg. Een serverexpressie neemt hem uit het formulier dat de server
+heeft geladen, nooit van de browser. `__user__` en `__repository__` zijn gereserveerd: geen veld van een formulier mag zo heten.
 
 ---
 

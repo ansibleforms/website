@@ -3,7 +3,7 @@ layout: default
 title: Własny układ Ansible
 parent: Repozytoria git
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Repozytorium we własnym układzie Ansible
@@ -86,6 +86,29 @@ Krok `ansible` [formularza wieloetapowego](../forms/multistep.html) wskazuje wł
 
 ---
 
+## Repozytorium, w którym jest formularz
+
+Od 7.8.0 formularz trzymany w tym samym repozytorium co jego playbook wskazuje je jako `__self__`, zamiast powtarzać jego nazwę.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` to repozytorium, z którego formularz jest czytany, i musi ono mieć typ użycia **Playbooki**, jak każde repozytorium
+wskazane przez formularz. W węźle playbooka workflowu `playbook_repository: __self__` to repozytorium, w którym jest plik
+workflowu.
+
+Formularz z lokalnego folderu formularzy nie jest w żadnym repozytorium, więc jego `__self__` nie wskazuje żadnego. Formularz
+dostaje wtedy błąd wczytania, który go wymienia, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, a
+jego uruchomienie jest odrzucane z podaniem przyczyny. `__self__` węzła w pliku lokalnego folderu workflowów kończy zadanie
+węzła błędem.
+
+---
+
 ## Kilka repozytoriów playbooków
 
 Od 7.8.0 kilka repozytoriów może mieć typ użycia **Playbooki**; wcześniej używane było tylko pierwsze, z ostrzeżeniem.
@@ -106,9 +129,9 @@ Projektant oferuje repozytorium i odpowiadające mu playbooki, w formularzu i w 
 
 | Gdzie | Co pokazuje |
 |---|---|
-| Karta **Wizualny** formularza | **Repozytorium**, nad **Playbook**, gdy jest kilka repozytoriów playbooków albo formularz jakieś wskazuje. Jego pierwsza opcja, **Pierwsze repozytorium playbooków**, usuwa klucz |
+| Karta **Wizualny** formularza | **Repozytorium**, nad **Playbook**, gdy jest kilka repozytoriów playbooków albo formularz jakieś wskazuje. Jego pierwsza opcja, **Pierwsze repozytorium playbooków**, usuwa klucz; druga, **Repozytorium tego formularza (name)**, zapisuje `__self__` |
 | **Playbook** | Playbooki wybranego repozytorium, podane od jego katalogu głównego; z **Pierwsze repozytorium playbooków** playbooki pierwszego, tak jak je uruchamia |
-| Węzeł playbooka workflowu | To samo pole **Repozytorium**, na jego karcie **Jak działa**, oraz playbooki tego repozytorium na **Co uruchamia** |
+| Węzeł playbooka workflowu | To samo pole **Repozytorium**, na jego karcie **Jak działa**, z **Repozytorium tego workflow (name)** dla `__self__`, oraz playbooki tego repozytorium na **Co uruchamia** |
 | Sekcja **Playbooki** | Playbooki pierwszego repozytorium, z jego folderu `playbooks` (a w przeciwnym razie z katalogu głównego), a potem każde inne repozytorium w całości, w folderze nazwanym jak ono |
 
 Opcja roli [**Edytować wszystkie playbooki**](../designer/#limited-designers) liczy playbook według repozytorium i ścieżki:

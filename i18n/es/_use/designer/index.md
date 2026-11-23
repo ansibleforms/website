@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Diseñador
@@ -91,7 +91,7 @@ Las tres están activadas por defecto y siempre activadas para los admins:
 | `designAllWorkflows` (**Editar Todos los Flujos de trabajo**) | Los archivos de workflow que ejecutan los formularios del usuario, anidados incluidos, y los que ningún formulario usa aún |
 
 Un formulario ejecuta un playbook mediante su `playbook`, sus pasos de ansible y los workflows que ejecuta, contado con el
-repositorio que nombra (`playbookRepository`, desde 7.8.0): `playbooks/site.yml` de un repositorio no es `site.yml` de otro.
+repositorio que nombra (`playbookRepository`, desde 7.8.0, siendo `__self__` aquel en el que está el formulario): `playbooks/site.yml` de un repositorio no es `site.yml` de otro.
 Consulta [Un repositorio con la estructura propia de Ansible](../repositories/ansible-layout.html). Lo que un diseñador limitado no puede hacer:
 
 - **Ver un archivo oculto.** Nunca se lista ni se nombra: abrir uno responde como un archivo que no existe, y un archivo nuevo con su nombre

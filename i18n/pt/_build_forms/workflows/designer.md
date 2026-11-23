@@ -3,7 +3,7 @@ layout: default
 title: Editar no designer
 parent: Workflows
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Editar no designer
@@ -54,7 +54,7 @@ existente, ou START para um primeiro.
    e o que executa: um playbook ou um modelo ou job, um workflow, o nome e o tempo limite de uma aprovação, ou um repositório. Ver
    [Onde corre um nó](#where-a-node-runs).
 2. **Como corre**: as definições de execução: para um nó de playbook o **Repositório** a partir do qual corre o seu
-   playbook (com vários repositórios de playbooks), o inventário, as credenciais, o limite, as etiquetas, a verbosidade,
+   playbook (com vários repositórios de playbooks; **Repositório deste workflow (name)** é aquele em que está o ficheiro do workflow), o inventário, as credenciais, o limite, as etiquetas, a verbosidade,
    o modo check e o modo diff, a condição (**Corre quando**) e **Valores de** (ver [o ficheiro do workflow](file.html#run-settings)).
 3. **Para onde vai**: o nó depois do qual corre, e em que caso.
 

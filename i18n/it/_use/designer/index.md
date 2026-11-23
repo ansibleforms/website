@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Designer
@@ -91,7 +91,7 @@ Tutte e tre sono attive per impostazione predefinita e sempre attive per gli adm
 | `designAllWorkflows` (**Modificare Tutti i Workflow**) | I file di workflow che i moduli dell'utente eseguono, annidati compresi, e quelli che nessun modulo usa ancora |
 
 Un modulo esegue un playbook tramite il suo `playbook`, i suoi passi ansible e i workflow che esegue, contato con il
-repository che indica (`playbookRepository`, dalla 7.8.0): `playbooks/site.yml` di un repository non è `site.yml` di un altro.
+repository che indica (`playbookRepository`, dalla 7.8.0, dove `__self__` è quello in cui si trova il modulo): `playbooks/site.yml` di un repository non è `site.yml` di un altro.
 Vedi [Un repository nella struttura propria di Ansible](../repositories/ansible-layout.html). Cosa non può fare un designer limitato:
 
 - **Vedere un file nascosto.** Non viene mai elencato né nominato: aprirne uno risponde come un file mancante, e un nuovo file con il suo nome

@@ -3,7 +3,7 @@ layout: default
 title: Ansible フォーム
 parent: フォーム
 nav_order: 2
-translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Ansible フォーム
@@ -41,6 +41,10 @@ translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
 実行されます。指定した場合、playbook は指定したリポジトリのルートから実行されるため、そのリポジトリの `ansible.cfg`、 `roles/`、
 相対パスのインベントリが適用され、 `playbook` はルートから指定します (`playbooks/site.yml`)。レイアウトと完全な例は
 [Ansible 標準のレイアウトのリポジトリ](../repositories/ansible-layout.html) にあります。
+
+`playbookRepository: __self__` はフォーム自身の読み込み元のリポジトリを指すため、playbook と一緒に置かれたフォームは
+リポジトリを名前で指定する必要がありません。どのリポジトリにもないフォーム (ローカルのフォームフォルダー) では使えず、起動は拒否されます。
+[フォームがあるリポジトリ](../repositories/ansible-layout.html#the-repository-the-form-is-in) を参照してください。
 
 ---
 

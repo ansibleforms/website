@@ -3,7 +3,7 @@ layout: default
 title: プレースホルダー
 parent: 式
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # プレースホルダー
@@ -46,12 +46,19 @@ translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
 | `$(field)` | フォームのほかのフィールドの値 |
 | `$(name)`、定数 | `config.yaml` の [定数](../config/constants.html)、またはフォームの `varsFiles` の値 |
 | `$(__user__)` | サインインしているユーザー: `username`、 `type`、 `groups`、 `roles` |
+| `$(__repository__)` | フォームの読み込み元のリポジトリ (7.8.0 以降): `name` と、サーバー上のフォルダーである `path` |
 | `$(__parent__.field)` | [サブフォーム](../forms/subform.html) (list の行、ウィザードのステップ) で、親フォームの値 |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+`__repository__` を使うと、フォームはリポジトリやそのフォルダーを名前で指定せずに、自分のリポジトリにあるファイルを読めます。
+[サブフォーム](../forms/subform.html) (リストの行、ウィザードのステップ) はフォームのものを読み、どのリポジトリにもないフォーム
+(ローカルのフォームフォルダー) では `name` と `path` は空です。サーバー側の式は、ブラウザーからではなく、サーバーが読み込んだ
+フォームからこれを取ります。 `__user__` と `__repository__` は予約名で、フォームのフィールドにこれらの名前は付けられません。
 
 ---
 

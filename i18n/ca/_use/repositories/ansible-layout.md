@@ -3,7 +3,7 @@ layout: default
 title: L'estructura pròpia d'Ansible
 parent: Repositoris Git
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Un repositori amb l'estructura pròpia d'Ansible
@@ -86,6 +86,29 @@ playbook d'un [workflow](../workflows/file.html#ansibleforms-own-keys) l'indica 
 
 ---
 
+## El repositori on és el formulari
+
+Des de la 7.8.0, un formulari desat al mateix repositori que el seu playbook l'indica amb `__self__`, en lloc de repetir-ne el nom.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` és el repositori des del qual es llegeix el formulari, i ha de tenir el tipus d'ús **Playbooks**, com qualsevol
+repositori que indica un formulari. En un node de playbook d'un workflow, `playbook_repository: __self__` és el repositori on és
+el fitxer del workflow.
+
+Un formulari de la carpeta local de formularis no és a cap repositori, així que el seu `__self__` no n'indica cap. El formulari
+rep llavors un error de càrrega que l'anomena, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, i el seu
+llançament es rebutja, indicant-ne el motiu. El `__self__` d'un node en un fitxer de la carpeta local de workflows fa fallar el
+job del node.
+
+---
+
 ## Diversos repositoris de playbooks
 
 Des de la 7.8.0 diversos repositoris poden tenir el tipus d'ús **Playbooks**; abans només s'utilitzava el primer, amb un avís.
@@ -106,9 +129,9 @@ El dissenyador ofereix el repositori i els playbooks que li corresponen, en un f
 
 | On | Què mostra |
 |---|---|
-| La pestanya **Visual** d'un formulari | **Repositori**, a sobre de **Playbook**, quan hi ha diversos repositoris de playbooks o el formulari n'indica un. La seva primera opció, **Primer repositori de playbooks**, treu la clau |
+| La pestanya **Visual** d'un formulari | **Repositori**, a sobre de **Playbook**, quan hi ha diversos repositoris de playbooks o el formulari n'indica un. La seva primera opció, **Primer repositori de playbooks**, treu la clau; la segona, **Repositori d'aquest formulari (name)**, escriu `__self__` |
 | **Playbook** | Els playbooks del repositori triat, indicats des de la seva arrel; amb **Primer repositori de playbooks**, els del primer, tal com els executa |
-| El node de playbook d'un workflow | El mateix camp **Repositori**, a la seva pestanya **Com s'executa**, i els playbooks d'aquest repositori a **Què executa** |
+| El node de playbook d'un workflow | El mateix camp **Repositori**, a la seva pestanya **Com s'executa**, amb **Repositori d'aquest workflow (name)** per a `__self__`, i els playbooks d'aquest repositori a **Què executa** |
 | La secció **Playbooks** | Els playbooks del primer repositori, des de la seva carpeta `playbooks` (si no, l'arrel), i després cada altre repositori sencer, en una carpeta amb el seu nom |
 
 L'opció de rol [**Editar tots els playbooks**](../designer/#limited-designers) compta un playbook pel seu repositori i la seva

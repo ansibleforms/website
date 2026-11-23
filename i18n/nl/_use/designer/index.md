@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Ontwerper
@@ -91,7 +91,7 @@ Alle drie staan standaard aan en altijd aan voor admins:
 | `designAllWorkflows` (**Alle workflows bewerken**) | De workflowbestanden die de formulieren van de gebruiker uitvoeren, geneste inbegrepen, en die nog geen formulier gebruikt |
 
 Een formulier voert een playbook uit via zijn `playbook`, zijn ansible-stappen en de workflows die het uitvoert, geteld met de
-repository die het noemt (`playbookRepository`, sinds 7.8.0): `playbooks/site.yml` van de ene repository is niet `site.yml` van
+repository die het noemt (`playbookRepository`, sinds 7.8.0, waarbij `__self__` die is waarin het formulier staat): `playbooks/site.yml` van de ene repository is niet `site.yml` van
 een andere. Zie [Een repository in de eigen indeling van Ansible](../repositories/ansible-layout.html). Wat een beperkte ontwerper niet kan:
 
 - **Een verborgen bestand zien.** Het wordt nooit getoond of genoemd: wie er een opent, krijgt het antwoord van een ontbrekend bestand, en een

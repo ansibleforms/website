@@ -3,7 +3,7 @@ layout: default
 title: Il file di workflow
 parent: Workflow
 nav_order: 1
-translated_from: ecfbb5d87ca61b3b6cc5083094e1aa5c267db1ea
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # Il file di workflow
@@ -156,7 +156,7 @@ Quattro chiavi di un nodo sono proprie di AnsibleForms, e AWX le ignora, così u
 | Chiave | Cosa fa |
 |---|---|
 | `runner` | Su un nodo `job_template`, esegue il template o job di quel runner invece di un playbook del designer: AWX, AAP, Ascender, Semaphore, Rundeck o Jenkins. Un runner RTE esegue lì il playbook del nodo. Un workflow può mescolarli. |
-| `playbook_repository` | Su un nodo playbook, il repository da cui gira il suo playbook, dalla sua radice, come il `playbookRepository` di un modulo (dalla 7.8.0): il playbook del nodo si indica allora da quella radice (`playbooks/site.yml`). Vedi [Un repository nella struttura propria di Ansible](../repositories/ansible-layout.html) |
+| `playbook_repository` | Su un nodo playbook, il repository da cui gira il suo playbook, dalla sua radice, come il `playbookRepository` di un modulo (dalla 7.8.0): il playbook del nodo si indica allora da quella radice (`playbooks/site.yml`). `__self__` è il repository in cui si trova il file del workflow. Vedi [Un repository nella struttura propria di Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | Il nodo gira solo quando questa extra var è `true`, come l'`ifExtraVar` di un passo multistep. Se non è soddisfatta, il nodo viene saltato, e ciò che lo segue gira come dopo un successo. Non su un nodo di approvazione, che gira sempre. |
 | `extra_vars_key` | Il nodo riceve solo questa chiave delle extra vars, con l'utente copiato dentro, come la `key` di un passo multistep |
 

@@ -3,7 +3,7 @@ layout: default
 title: Espaces réservés
 parent: Expressions
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Espaces réservés
@@ -46,12 +46,20 @@ Un espace réservé nomme un champ du formulaire, ou l'une des références suiv
 | `$(field)` | la valeur d'un autre champ du formulaire |
 | `$(name)`, une constante | une [constante](../config/constants.html) de `config.yaml`, ou une valeur des `varsFiles` du formulaire |
 | `$(__user__)` | l'utilisateur connecté : `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | le dépôt depuis lequel le formulaire est lu (depuis 7.8.0) : son `name`, et son `path`, son dossier sur le serveur |
 | `$(__parent__.field)` | dans un [sous-formulaire](../forms/subform.html) (une ligne de liste, une étape d'assistant), une valeur du formulaire parent |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Avec `__repository__`, un formulaire lit un fichier gardé dans son dépôt sans nommer le dépôt ni son dossier. Ses
+[sous-formulaires](../forms/subform.html) (lignes de liste, étapes d'un wizard) lisent celui du formulaire, et un formulaire qui
+n'est dans aucun dépôt (le dossier local des formulaires) lit `name` et `path` vides. Une expression côté serveur le prend du
+formulaire que le serveur a chargé, jamais du navigateur. `__user__` et `__repository__` sont réservés : aucun champ d'un
+formulaire ne peut porter ces noms.
 
 ---
 

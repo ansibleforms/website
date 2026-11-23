@@ -3,7 +3,7 @@ layout: default
 title: Der Aufbau von Ansible
 parent: Git-Repositories
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Ein Repository im Aufbau von Ansible
@@ -86,6 +86,29 @@ Playbook-Knoten eines [Workflows](../workflows/file.html#ansibleforms-own-keys) 
 
 ---
 
+## Das Repository, in dem das Formular liegt
+
+Seit 7.8.0 nennt ein Formular, das im selben Repository wie sein Playbook liegt, dieses `__self__`, statt seinen Namen zu wiederholen.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` ist das Repository, aus dem das Formular gelesen wird, und es muss den Verwendungstyp **Playbooks** haben, wie
+jedes Repository, das ein Formular nennt. Auf einem Playbook-Knoten eines Workflows ist `playbook_repository: __self__` das
+Repository, in dem die Workflow-Datei liegt.
+
+Ein Formular im lokalen Formularordner liegt in keinem Repository, also nennt sein `__self__` keines. Das Formular bekommt
+dann einen Ladefehler, der es nennt, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, und sein
+Start wird mit Begründung abgelehnt. Das `__self__` eines Knotens in einer Datei des lokalen Workflow-Ordners lässt den Job
+des Knotens fehlschlagen.
+
+---
+
 ## Mehrere Playbook-Repositories
 
 Seit 7.8.0 können mehrere Repositories den Verwendungstyp **Playbooks** haben; vorher wurde nur das erste verwendet, mit einer Warnung.
@@ -106,9 +129,9 @@ Der Designer bietet das Repository und die dazugehörigen Playbooks an, auf eine
 
 | Wo | Was er zeigt |
 |---|---|
-| Der Tab **Visuell** eines Formulars | **Repository**, über **Playbook**, wenn es mehrere Playbook-Repositories gibt oder das Formular eines nennt. Seine erste Option, **Erstes Playbook-Repository**, entfernt den Schlüssel |
+| Der Tab **Visuell** eines Formulars | **Repository**, über **Playbook**, wenn es mehrere Playbook-Repositories gibt oder das Formular eines nennt. Seine erste Option, **Erstes Playbook-Repository**, entfernt den Schlüssel; die zweite, **Repository dieses Formulars (name)**, schreibt `__self__` |
 | **Playbook** | Die Playbooks des gewählten Repositorys, ab seinem Stammverzeichnis benannt; mit **Erstes Playbook-Repository** die des ersten, so wie es sie ausführt |
-| Ein Playbook-Knoten eines Workflows | Dasselbe Feld **Repository**, auf seinem Tab **Wie er läuft**, und die Playbooks dieses Repositorys auf **Was er ausführt** |
+| Ein Playbook-Knoten eines Workflows | Dasselbe Feld **Repository**, auf seinem Tab **Wie er läuft**, mit **Repository dieses Workflows (name)** für `__self__`, und die Playbooks dieses Repositorys auf **Was er ausführt** |
 | Der Bereich **Playbooks** | Die Playbooks des ersten Repositorys, aus dessen Ordner `playbooks` (sonst aus dessen Stammverzeichnis), dann jedes weitere Repository vollständig, in einem Ordner mit seinem Namen |
 
 Die Rollenoption [**Alle Playbooks bearbeiten**](../designer/#limited-designers) zählt ein Playbook nach seinem Repository und

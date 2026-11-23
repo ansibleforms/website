@@ -3,7 +3,7 @@ layout: default
 title: Formulaires Ansible
 parent: Formulaires
 nav_order: 2
-translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Formulaires Ansible
@@ -41,6 +41,10 @@ Sans lui, le playbook s'exécute depuis le premier dépôt utilisé pour les pla
 racine), comme avant. Avec lui, le playbook s'exécute depuis la racine du dépôt nommé : le `ansible.cfg`, les `roles/` et
 les chemins d'inventaire relatifs de ce dépôt s'appliquent, et `playbook` se donne depuis la racine (`playbooks/site.yml`).
 La structure et un exemple complet sont dans [Un dépôt dans la structure propre à Ansible](../repositories/ansible-layout.html).
+
+`playbookRepository: __self__` nomme le dépôt depuis lequel le formulaire lui-même est lu, de sorte qu'un formulaire gardé
+avec son playbook ne nomme jamais son dépôt. Un formulaire qui n'est dans aucun dépôt (le dossier local des formulaires) ne
+peut pas l'utiliser : son lancement est refusé. Voir [Le dépôt où se trouve le formulaire](../repositories/ansible-layout.html#the-repository-the-form-is-in).
 
 ---
 

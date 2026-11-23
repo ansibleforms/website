@@ -3,7 +3,7 @@ layout: default
 title: De eigen indeling van Ansible
 parent: Git-repositories
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Een repository in de eigen indeling van Ansible
@@ -86,6 +86,29 @@ playbookknooppunt van een [workflow](../workflows/file.html#ansibleforms-own-key
 
 ---
 
+## De repository waarin het formulier staat
+
+Sinds 7.8.0 noemt een formulier dat in dezelfde repository als zijn playbook staat, die `__self__`, in plaats van haar naam te herhalen.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` is de repository waaruit het formulier wordt gelezen, en die moet het gebruikstype **Playbooks** hebben, zoals elke
+repository die een formulier noemt. Op een playbookknooppunt van een workflow is `playbook_repository: __self__` de repository
+waarin het workflowbestand staat.
+
+Een formulier in de lokale formulierenmap staat in geen enkele repository, dus noemt zijn `__self__` er geen. Het formulier
+krijgt dan een laadfout die het noemt, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, en zijn
+start wordt geweigerd, met de reden. De `__self__` van een knooppunt in een bestand van de lokale workflowmap laat de job van
+het knooppunt mislukken.
+
+---
+
 ## Meerdere playbookrepositories
 
 Sinds 7.8.0 kunnen meerdere repositories het gebruikstype **Playbooks** hebben; voorheen werd alleen de eerste gebruikt, met een waarschuwing.
@@ -106,9 +129,9 @@ De ontwerper biedt de repository en de bijbehorende playbooks aan, op een formul
 
 | Waar | Wat het toont |
 |---|---|
-| Het tabblad **Visueel** van een formulier | **Repository**, boven **Playbook**, wanneer er meerdere playbookrepositories zijn of het formulier er een noemt. De eerste optie, **Eerste playbook-repository**, verwijdert de sleutel |
+| Het tabblad **Visueel** van een formulier | **Repository**, boven **Playbook**, wanneer er meerdere playbookrepositories zijn of het formulier er een noemt. De eerste optie, **Eerste playbook-repository**, verwijdert de sleutel; de tweede, **Repository van dit formulier (name)**, schrijft `__self__` |
 | **Playbook** | De playbooks van de gekozen repository, benoemd vanaf de root; met **Eerste playbook-repository** die van de eerste, zoals die ze uitvoert |
-| Een playbookknooppunt van een workflow | Hetzelfde veld **Repository**, op het tabblad **Hoe het draait**, en de playbooks van die repository op **Wat het uitvoert** |
+| Een playbookknooppunt van een workflow | Hetzelfde veld **Repository**, op het tabblad **Hoe het draait**, met **Repository van deze workflow (name)** voor `__self__`, en de playbooks van die repository op **Wat het uitvoert** |
 | De sectie **Playbooks** | De playbooks van de eerste repository, uit de map `playbooks` daarvan (anders de root), daarna elke andere repository in zijn geheel, in een map met haar naam |
 
 De rolinstelling [**Alle playbooks bewerken**](../designer/#limited-designers) telt een playbook naar zijn repository en zijn

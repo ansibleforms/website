@@ -3,7 +3,7 @@ layout: default
 title: Edycja w projektancie
 parent: Workflowy
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Edycja w projektancie
@@ -54,7 +54,7 @@ węźle albo START dla pierwszego.
    oraz to, co uruchamia: playbook albo szablon lub zadanie, workflow, nazwę i limit czasu zatwierdzenia albo repozytorium. Zobacz
    [Gdzie działa węzeł](#where-a-node-runs).
 2. **Jak działa**: ustawienia uruchamiania: dla węzła playbooka **Repozytorium**, z którego działa jego playbook (przy
-   kilku repozytoriach playbooków), inwentarz, poświadczenia, limit, tagi, szczegółowość,
+   kilku repozytoriach playbooków; **Repozytorium tego workflow (name)** to to, w którym jest plik workflowu), inwentarz, poświadczenia, limit, tagi, szczegółowość,
    tryb check i diff, warunek (**Działa, gdy**) oraz **Wartości z** (zobacz [plik workflow](file.html#run-settings)).
 3. **Dokąd prowadzi**: węzeł, po którym się uruchamia, i w jakiej sytuacji.
 

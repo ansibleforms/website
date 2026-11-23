@@ -3,7 +3,7 @@ layout: default
 title: ワークフローファイル
 parent: ワークフロー
 nav_order: 1
-translated_from: ecfbb5d87ca61b3b6cc5083094e1aa5c267db1ea
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # ワークフローファイル
@@ -156,7 +156,7 @@ workflow_job_templates:
 | キー | 内容 |
 |---|---|
 | `runner` | `job_template` ノードで、デザイナーの playbook の代わりに、そのランナーのテンプレートまたはジョブを実行します: AWX、AAP、Ascender、Semaphore、Rundeck、Jenkins。RTE ランナーの場合は、ノードの playbook をそこで実行します。1 つのワークフローでこれらを混在させられます。 |
-| `playbook_repository` | playbook ノードで、playbook を実行するリポジトリ (そのルートから)。フォームの `playbookRepository` と同じです (7.8.0 以降)。ノードの playbook はそのルートからの名前で指定します (`playbooks/site.yml`)。 [Ansible 標準のレイアウトのリポジトリ](../repositories/ansible-layout.html) を参照してください |
+| `playbook_repository` | playbook ノードで、playbook を実行するリポジトリ (そのルートから)。フォームの `playbookRepository` と同じです (7.8.0 以降)。ノードの playbook はそのルートからの名前で指定します (`playbooks/site.yml`)。 `__self__` はワークフローファイルがあるリポジトリです。 [Ansible 標準のレイアウトのリポジトリ](../repositories/ansible-layout.html) を参照してください |
 | `if_extra_var` | マルチステップのステップの `ifExtraVar` と同じく、この extra var が `true` の場合にだけノードを実行します。満たされない場合、ノードはスキップされ、その後に続くものは成功の後と同じように実行されます。常に実行される承認ノードには使えません。 |
 | `extra_vars_key` | マルチステップのステップの `key` と同じく、ノードは extra vars のこのキーだけを、ユーザー情報をコピーした状態で受け取ります |
 

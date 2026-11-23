@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Dissenyador
@@ -91,7 +91,7 @@ Totes tres estan activades per defecte i sempre activades per als admins:
 | `designAllWorkflows` (**Editar Tots els Fluxos de treball**) | Els fitxers de workflow que executen els formularis de l'usuari, inclosos els imbricats, i els que cap formulari fa servir encara |
 
 Un formulari executa un playbook amb el seu `playbook`, els seus passos d'ansible i els workflows que executa, comptat amb el
-repositori que indica (`playbookRepository`, des de la 7.8.0): `playbooks/site.yml` d'un repositori no és `site.yml` d'un altre.
+repositori que indica (`playbookRepository`, des de la 7.8.0, on `__self__` és aquell on és el formulari): `playbooks/site.yml` d'un repositori no és `site.yml` d'un altre.
 Vegeu [Un repositori amb l'estructura pròpia d'Ansible](../repositories/ansible-layout.html). El que un dissenyador limitat no pot fer:
 
 - **Veure un fitxer amagat.** Mai no es llista ni s'anomena: obrir-ne un respon com un fitxer que no existeix, i un fitxer nou amb el seu nom

@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Designer
@@ -91,7 +91,7 @@ Alle drei sind standardmäßig eingeschaltet und für Admins immer eingeschaltet
 | `designAllWorkflows` (**Alle Workflows bearbeiten**) | Die Workflow-Dateien, die die Formulare des Benutzers ausführen, verschachtelte eingeschlossen, und die, die noch kein Formular verwendet |
 
 Ein Formular führt ein Playbook über sein `playbook`, seine Ansible-Schritte und die Workflows aus, die es ausführt, gezählt
-mit dem Repository, das es nennt (`playbookRepository`, seit 7.8.0): `playbooks/site.yml` eines Repositorys ist nicht `site.yml`
+mit dem Repository, das es nennt (`playbookRepository`, seit 7.8.0, wobei `__self__` das ist, in dem das Formular liegt): `playbooks/site.yml` eines Repositorys ist nicht `site.yml`
 eines anderen. Siehe [Ein Repository im Aufbau von Ansible](../repositories/ansible-layout.html). Was ein eingeschränkter Designer nicht kann:
 
 - **Eine ausgeblendete Datei sehen.** Sie wird nie aufgelistet oder genannt: Wer eine öffnet, erhält die Antwort einer fehlenden Datei, und eine

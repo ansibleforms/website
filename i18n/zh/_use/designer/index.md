@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # 设计器
@@ -91,7 +91,7 @@ translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
 | `designAllWorkflows` （ **编辑所有工作流** ） | 用户的表单运行的工作流文件（包括嵌套的），以及尚无表单使用的工作流文件 |
 
 表单通过其 `playbook`、其 ansible 步骤以及它运行的工作流来运行 playbook，并连同它指定的仓库一起计算
-（`playbookRepository`，自 7.8.0 起）：一个仓库的 `playbooks/site.yml` 不是另一个仓库的 `site.yml`。参见
+（`playbookRepository`，自 7.8.0 起，`__self__` 即表单所在的仓库）：一个仓库的 `playbooks/site.yml` 不是另一个仓库的 `site.yml`。参见
 [采用 Ansible 自己布局的仓库](../repositories/ansible-layout.html)。受限的设计者不能：
 
 - **看到隐藏的文件。** 它从不被列出或提及：打开它时的响应如同文件不存在，用它的名称新建文件时的响应如同文件已存在。

@@ -3,7 +3,7 @@ layout: default
 title: La struttura propria di Ansible
 parent: Repository Git
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Un repository nella struttura propria di Ansible
@@ -87,6 +87,29 @@ playbook di un [workflow](../workflows/file.html#ansibleforms-own-keys) lo indic
 
 ---
 
+## Il repository in cui si trova il modulo
+
+Dalla 7.8.0 un modulo tenuto nello stesso repository del suo playbook lo indica con `__self__`, invece di ripeterne il nome.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` è il repository da cui viene letto il modulo, e deve avere il tipo di utilizzo **Playbook**, come ogni repository
+indicato da un modulo. In un nodo playbook di un workflow, `playbook_repository: __self__` è il repository in cui si trova il
+file del workflow.
+
+Un modulo nella cartella locale dei moduli non si trova in nessun repository, quindi il suo `__self__` non ne indica nessuno. Il
+modulo riceve allora un errore di caricamento che lo nomina, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, e il
+suo avvio viene rifiutato, spiegando il motivo. Il `__self__` di un nodo in un file della cartella locale dei workflow fa
+fallire il job del nodo.
+
+---
+
 ## Più repository di playbook
 
 Dalla 7.8.0 più repository possono avere il tipo di utilizzo **Playbook**; prima si usava solo il primo, con un avviso.
@@ -107,9 +130,9 @@ Il designer offre il repository e i playbook che lo accompagnano, su un modulo e
 
 | Dove | Cosa mostra |
 |---|---|
-| La scheda **Visuale** di un modulo | **Repository**, sopra **Playbook**, quando ci sono più repository di playbook o il modulo ne indica uno. La sua prima opzione, **Primo repository di playbook**, toglie la chiave |
+| La scheda **Visuale** di un modulo | **Repository**, sopra **Playbook**, quando ci sono più repository di playbook o il modulo ne indica uno. La sua prima opzione, **Primo repository di playbook**, toglie la chiave; la seconda, **Repository di questo modulo (name)**, scrive `__self__` |
 | **Playbook** | I playbook del repository scelto, indicati dalla sua radice; con **Primo repository di playbook**, quelli del primo, come li esegue |
-| Un nodo playbook di un workflow | Lo stesso campo **Repository**, nella sua scheda **Come viene eseguito**, e i playbook di quel repository in **Cosa esegue** |
+| Un nodo playbook di un workflow | Lo stesso campo **Repository**, nella sua scheda **Come viene eseguito**, con **Repository di questo workflow (name)** per `__self__`, e i playbook di quel repository in **Cosa esegue** |
 | La sezione **Playbook** | I playbook del primo repository, dalla sua cartella `playbooks` (altrimenti dalla radice), poi ogni altro repository per intero, in una cartella con il suo nome |
 
 L'opzione di ruolo [**Modificare tutti i playbook**](../designer/#limited-designers) conta un playbook per il suo repository e

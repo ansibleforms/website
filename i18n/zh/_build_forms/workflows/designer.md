@@ -3,7 +3,7 @@ layout: default
 title: 在设计器中编辑
 parent: 工作流
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # 在设计器中编辑
@@ -53,7 +53,7 @@ translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
 1. **运行什么**：节点的标识符、**运行**（节点的类型，对于 playbook 节点还包括它在哪里运行）
    以及它运行的内容：playbook、模板或作业、工作流、审批的名称和超时，或者仓库。参见
    [节点在哪里运行](#where-a-node-runs)。
-2. **如何运行**：运行设置：对于 playbook 节点，有运行其 playbook 的**仓库**（有多个 playbook 仓库时），
+2. **如何运行**：运行设置：对于 playbook 节点，有运行其 playbook 的**仓库**（有多个 playbook 仓库时；**此工作流的仓库 (name)** 是工作流文件所在的仓库），
    然后是清单、凭据、限制、标签、详细程度、检查模式和差异模式、条件（**运行条件**）以及**取值自**（参见[工作流文件](file.html#run-settings)）。
 3. **去向**：它在哪个节点之后运行，以及在什么条件下运行。
 

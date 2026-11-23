@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Concepteur
@@ -91,7 +91,7 @@ Toutes trois sont activées par défaut et toujours activées pour les admins :
 | `designAllWorkflows` (**Modifier Tous les Workflows**) | Les fichiers de workflow qu'exécutent les formulaires de l'utilisateur, imbriqués compris, et ceux qu'aucun formulaire n'utilise encore |
 
 Un formulaire exécute un playbook par son `playbook`, ses étapes ansible et les workflows qu'il exécute, compté avec le dépôt
-qu'il nomme (`playbookRepository`, depuis 7.8.0) : `playbooks/site.yml` d'un dépôt n'est pas `site.yml` d'un autre. Voir
+qu'il nomme (`playbookRepository`, depuis 7.8.0, `__self__` étant celui où se trouve le formulaire) : `playbooks/site.yml` d'un dépôt n'est pas `site.yml` d'un autre. Voir
 [Un dépôt dans la structure propre à Ansible](../repositories/ansible-layout.html). Ce qu'un concepteur limité ne peut pas faire :
 
 - **Voir un fichier masqué.** Il n'est jamais listé ni nommé : en ouvrir un répond comme un fichier absent, et un nouveau fichier portant son

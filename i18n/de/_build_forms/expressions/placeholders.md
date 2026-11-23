@@ -3,7 +3,7 @@ layout: default
 title: Platzhalter
 parent: Ausdrücke
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Platzhalter
@@ -46,12 +46,19 @@ Ein Platzhalter nennt ein Feld des Formulars oder eines der folgenden, die jedes
 | `$(field)` | den Wert eines anderen Felds des Formulars |
 | `$(name)`, eine Konstante | eine [Konstante](../config/constants.html) aus `config.yaml` oder einen Wert aus den `varsFiles` des Formulars |
 | `$(__user__)` | den angemeldeten Benutzer: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | das Repository, aus dem das Formular gelesen wird (seit 7.8.0): sein `name` und sein `path`, sein Ordner auf dem Server |
 | `$(__parent__.field)` | in einem [Unterformular](../forms/subform.html) (eine Listenzeile, ein Wizard-Schritt) einen Wert des übergeordneten Formulars |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Mit `__repository__` liest ein Formular eine Datei aus seinem Repository, ohne das Repository oder dessen Ordner zu nennen.
+Seine [Unterformulare](../forms/subform.html) (Listenzeilen, Wizard-Schritte) lesen das des Formulars, und ein Formular in keinem
+Repository (dem lokalen Formularordner) liest `name` und `path` leer. Ein Server-Ausdruck nimmt es aus dem Formular, das der
+Server geladen hat, nie vom Browser. `__user__` und `__repository__` sind reserviert: kein Feld eines Formulars darf so heißen.
 
 ---
 

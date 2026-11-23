@@ -3,7 +3,7 @@ layout: default
 title: Moduli Ansible
 parent: Moduli
 nav_order: 2
-translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Moduli Ansible
@@ -41,6 +41,10 @@ Senza, il playbook gira dal primo repository usato per i playbook, dalla sua car
 come prima. Con esso, il playbook gira dalla radice del repository indicato, quindi l'`ansible.cfg`, i `roles/` e i percorsi
 di inventario relativi di quel repository si applicano, e `playbook` si indica dalla radice (`playbooks/site.yml`). La
 struttura e un esempio completo sono in [Un repository nella struttura propria di Ansible](../repositories/ansible-layout.html).
+
+`playbookRepository: __self__` indica il repository da cui viene letto il modulo stesso, così un modulo tenuto insieme al suo
+playbook non indica mai il suo repository. Un modulo che non si trova in nessun repository (la cartella locale dei moduli) non
+può usarlo: il suo avvio viene rifiutato. Vedi [Il repository in cui si trova il modulo](../repositories/ansible-layout.html#the-repository-the-form-is-in).
 
 ---
 

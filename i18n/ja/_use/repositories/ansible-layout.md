@@ -3,7 +3,7 @@ layout: default
 title: Ansible 標準のレイアウト
 parent: Git リポジトリ
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Ansible 標準のレイアウトのリポジトリ
@@ -86,6 +86,27 @@ roles:
 
 ---
 
+## フォームがあるリポジトリ
+
+7.8.0 以降、playbook と同じリポジトリに置かれたフォームは、そのリポジトリの名前を繰り返さずに `__self__` で指定します。
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` はフォームの読み込み元のリポジトリで、フォームが指定するほかのリポジトリと同じく **Playbook** の用途タイプが必要です。
+ワークフローの playbook ノードでは、 `playbook_repository: __self__` はワークフローファイルがあるリポジトリです。
+
+ローカルのフォームフォルダーにあるフォームはどのリポジトリにもないため、その `__self__` はどのリポジトリも指しません。
+フォームにはそのフォームを名指しする読み込みエラー `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none` が出て、
+起動は理由を示して拒否されます。ローカルのワークフローフォルダーのファイルにあるノードの `__self__` は、そのノードのジョブを失敗させます。
+
+---
+
 ## 複数の playbook リポジトリ
 
 7.8.0 以降、複数のリポジトリに **Playbook** の用途タイプを設定できます。以前は最初のリポジトリだけが使われ、警告が出ていました。
@@ -106,9 +127,9 @@ roles:
 
 | 場所 | 表示内容 |
 |---|---|
-| フォームの **ビジュアル** タブ | **Playbook** の上の **リポジトリ**。playbook リポジトリが複数ある場合、またはフォームがリポジトリを指定している場合に表示されます。最初の選択肢 **最初の playbook リポジトリ** はキーを削除します |
+| フォームの **ビジュアル** タブ | **Playbook** の上の **リポジトリ**。playbook リポジトリが複数ある場合、またはフォームがリポジトリを指定している場合に表示されます。最初の選択肢 **最初の playbook リポジトリ** はキーを削除します。2 番目の **このフォームのリポジトリ (name)** は `__self__` を書き込みます |
 | **Playbook** | 選んだリポジトリの playbook (ルートからの名前)。 **最初の playbook リポジトリ** の場合は、最初のリポジトリの playbook を実行時と同じ名前で |
-| ワークフローの playbook ノード | **実行のしかた** タブに同じ **リポジトリ** フィールド、 **実行するもの** にそのリポジトリの playbook |
+| ワークフローの playbook ノード | **実行のしかた** タブに同じ **リポジトリ** フィールド ( `__self__` には **このワークフローのリポジトリ (name)** )、 **実行するもの** にそのリポジトリの playbook |
 | **Playbook** セクション | 最初のリポジトリの playbook (その `playbooks` フォルダー、なければルートから)、続いてほかの各リポジトリ全体を、その名前のフォルダーに |
 
 [**すべての playbook を編集**](../designer/#limited-designers) ロールオプションは、playbook をリポジトリとパスで数えます。

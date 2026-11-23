@@ -3,7 +3,7 @@ layout: default
 title: Ansible 自己的布局
 parent: Git 仓库
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # 采用 Ansible 自己布局的仓库
@@ -85,6 +85,27 @@ roles:
 
 ---
 
+## 表单所在的仓库
+
+自 7.8.0 起，与其 playbook 放在同一仓库中的表单用 `__self__` 指定该仓库，而不必重复其名称。
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` 是读取表单的仓库，与表单指定的任何仓库一样，它必须具有 **Playbook** 用途类型。在工作流的 playbook 节点上，
+`playbook_repository: __self__` 是工作流文件所在的仓库。
+
+本地表单文件夹中的表单不在任何仓库中，因此其 `__self__` 不指向任何仓库。此时该表单会出现一个指明它的加载错误
+`Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`，其运行会被拒绝，并说明原因。
+本地工作流文件夹的文件中，节点的 `__self__` 会使该节点的作业失败。
+
+---
+
 ## 多个 playbook 仓库
 
 自 7.8.0 起，多个仓库可以具有 **Playbook** 用途类型；以前只使用第一个仓库，并给出警告。
@@ -105,9 +126,9 @@ roles:
 
 | 位置 | 显示内容 |
 |---|---|
-| 表单的**可视化**选项卡 | **Playbook** 上方的**仓库**，在有多个 playbook 仓库或表单指定了仓库时显示。其第一个选项**第一个 playbook 仓库**会删除该键 |
+| 表单的**可视化**选项卡 | **Playbook** 上方的**仓库**，在有多个 playbook 仓库或表单指定了仓库时显示。其第一个选项**第一个 playbook 仓库**会删除该键；第二个选项**此表单的仓库 (name)**会写入 `__self__` |
 | **Playbook** | 所选仓库的 playbook，以从其根目录起的名称列出；选择**第一个 playbook 仓库**时，列出第一个仓库的 playbook，名称与运行时相同 |
-| 工作流的 playbook 节点 | **如何运行**选项卡上同样的**仓库**字段，以及**运行什么**上该仓库的 playbook |
+| 工作流的 playbook 节点 | **如何运行**选项卡上同样的**仓库**字段（`__self__` 对应**此工作流的仓库 (name)**），以及**运行什么**上该仓库的 playbook |
 | **Playbook** 部分 | 第一个仓库的 playbook，取自其 `playbooks` 文件夹（否则为根目录），然后是其他每个仓库的全部内容，位于以其命名的文件夹中 |
 
 [**编辑所有 playbook**](../designer/#limited-designers) 角色选项按仓库和路径计算 playbook：运行 `infra` 的

@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: 3b0217210d6636a6dbd1d1eebce6a2b397c80626
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # デザイナー
@@ -91,7 +91,7 @@ YAML を読み取れない場合、ビジュアルタブとプレビュータブ
 | `designAllWorkflows` ( **すべてのワークフローを編集** ) | ユーザーのフォームが実行するワークフローファイル (入れ子のものを含む) と、まだどのフォームも使っていないものだけ |
 
 フォームは `playbook`、ansible ステップ、実行するワークフローを通じて playbook を実行し、指定したリポジトリ
-(`playbookRepository`、7.8.0 以降) とともに数えられます。あるリポジトリの `playbooks/site.yml` は、別のリポジトリの `site.yml` とは別物です。
+(`playbookRepository`、7.8.0 以降。 `__self__` はフォームがあるリポジトリ) とともに数えられます。あるリポジトリの `playbooks/site.yml` は、別のリポジトリの `site.yml` とは別物です。
 [Ansible 標準のレイアウトのリポジトリ](../repositories/ansible-layout.html) を参照してください。制限されたデザイナー利用者には次のことができません:
 
 - **非表示のファイルを見ること。** 一覧に出ることも名前が示されることもありません。開こうとすると存在しないファイルとして応答し、

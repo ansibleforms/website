@@ -3,7 +3,7 @@ layout: default
 title: Modifier dans le concepteur
 parent: Workflows
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Modifier dans le concepteur
@@ -54,7 +54,7 @@ existant, ou START pour un premier nœud.
    et ce qu'il exécute : un playbook, un modèle ou un job, un workflow, le nom et le délai d'une approbation, ou un dépôt. Voir
    [Où un nœud s'exécute](#where-a-node-runs).
 2. **Comment il s'exécute** : les réglages d'exécution : pour un nœud playbook, le **Dépôt** depuis lequel son playbook
-   s'exécute (avec plusieurs dépôts de playbooks), l'inventaire, les identifiants, la limite, les tags, la verbosité,
+   s'exécute (avec plusieurs dépôts de playbooks ; **Dépôt de ce workflow (name)** est celui où se trouve le fichier du workflow), l'inventaire, les identifiants, la limite, les tags, la verbosité,
    les modes check et diff, la condition (**S'exécute si**) et **Valeurs de** (voir [le fichier de workflow](file.html#run-settings)).
 3. **Où il va** : le nœud après lequel il s'exécute, et dans quel cas.
 

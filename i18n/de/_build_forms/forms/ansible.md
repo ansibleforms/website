@@ -3,7 +3,7 @@ layout: default
 title: Ansible-Formulare
 parent: Formulare
 nav_order: 2
-translated_from: c9c505dbb3f8ef679df3f48fcf44850e0a4dc593
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Ansible-Formulare
@@ -41,6 +41,10 @@ Ohne diesen Schlüssel läuft das Playbook wie bisher aus dem ersten für Playbo
 `playbooks` (sonst aus dessen Stammverzeichnis). Mit ihm läuft das Playbook aus dem Stammverzeichnis des genannten Repositorys,
 sodass dessen `ansible.cfg`, `roles/` und relative Inventarpfade gelten, und `playbook` wird ab dem Stammverzeichnis angegeben
 (`playbooks/site.yml`). Der Aufbau und ein vollständiges Beispiel stehen unter [Ein Repository im Aufbau von Ansible](../repositories/ansible-layout.html).
+
+`playbookRepository: __self__` nennt das Repository, aus dem das Formular selbst gelesen wird, sodass ein Formular, das bei
+seinem Playbook liegt, sein Repository nie nennt. Ein Formular in keinem Repository (dem lokalen Formularordner) kann es nicht
+verwenden: sein Start wird abgelehnt. Siehe [Das Repository, in dem das Formular liegt](../repositories/ansible-layout.html#the-repository-the-form-is-in).
 
 ---
 

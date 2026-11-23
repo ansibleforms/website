@@ -3,7 +3,7 @@ layout: default
 title: Het workflowbestand
 parent: Workflows
 nav_order: 1
-translated_from: ecfbb5d87ca61b3b6cc5083094e1aa5c267db1ea
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # Het workflowbestand
@@ -156,7 +156,7 @@ Vier sleutels van een knooppunt zijn eigen aan AnsibleForms, en AWX negeert ze, 
 | Sleutel | Wat het doet |
 |---|---|
 | `runner` | Op een `job_template`-knooppunt: voert de template of job van die runner uit in plaats van een playbook uit de ontwerper: AWX, AAP, Ascender, Semaphore, Rundeck of Jenkins. Een RTE-runner voert daar het playbook van het knooppunt uit. Eén workflow kan ze combineren. |
-| `playbook_repository` | Op een playbookknooppunt de repository waaruit zijn playbook draait, vanaf de root, zoals `playbookRepository` van een formulier (sinds 7.8.0): het playbook van het knooppunt wordt dan vanaf die root benoemd (`playbooks/site.yml`). Zie [Een repository in de eigen indeling van Ansible](../repositories/ansible-layout.html) |
+| `playbook_repository` | Op een playbookknooppunt de repository waaruit zijn playbook draait, vanaf de root, zoals `playbookRepository` van een formulier (sinds 7.8.0): het playbook van het knooppunt wordt dan vanaf die root benoemd (`playbooks/site.yml`). `__self__` is de repository waarin het workflowbestand staat. Zie [Een repository in de eigen indeling van Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | Het knooppunt draait alleen wanneer deze extra var `true` is, zoals `ifExtraVar` van een multistep-stap. Wordt er niet aan voldaan, dan wordt het knooppunt overgeslagen en draait wat erna komt als na een succes. Niet op een goedkeuringsknooppunt, dat altijd draait. |
 | `extra_vars_key` | Het knooppunt krijgt alleen deze sleutel van de extra vars, met de gebruiker erin gekopieerd, zoals `key` van een multistep-stap |
 

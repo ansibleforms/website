@@ -3,7 +3,7 @@ layout: default
 title: La structure propre à Ansible
 parent: Dépôts git
 nav_order: 6
-translated_from: e34dd6322dd3240a3c390d4786ed9f933a1cd267
+translated_from: ea915eac819df2b716a2a5bdb21e4884d44c6ca4
 ---
 
 # Un dépôt dans la structure propre à Ansible
@@ -87,6 +87,29 @@ playbook d'un [workflow](../workflows/file.html#ansibleforms-own-keys) le nomme 
 
 ---
 
+## Le dépôt où se trouve le formulaire
+
+Depuis 7.8.0, un formulaire gardé dans le même dépôt que son playbook le nomme `__self__`, au lieu de répéter son nom.
+
+```yaml
+name: Deploy the web servers
+type: ansible
+playbookRepository: __self__
+playbook: playbooks/site.yml
+inventory: inventories/production/hosts.yaml
+```
+
+`__self__` est le dépôt depuis lequel le formulaire est lu, et il doit avoir le type d'utilisation **Playbooks**, comme tout
+dépôt qu'un formulaire nomme. Sur un nœud playbook d'un workflow, `playbook_repository: __self__` est le dépôt où se trouve le
+fichier du workflow.
+
+Un formulaire du dossier local des formulaires n'est dans aucun dépôt, donc son `__self__` n'en nomme aucun. Le formulaire
+reçoit alors une erreur de chargement qui le nomme, `Form '<name>': playbookRepository __self__ names the repository the form is in, and the form is in none`, et son
+lancement est refusé, avec la raison. Le `__self__` d'un nœud dans un fichier du dossier local des workflows fait échouer le
+job du nœud.
+
+---
+
 ## Plusieurs dépôts de playbooks
 
 Depuis 7.8.0, plusieurs dépôts peuvent avoir le type d'utilisation **Playbooks** ; avant, seul le premier servait, avec un avertissement.
@@ -107,9 +130,9 @@ Le concepteur propose le dépôt et les playbooks qui vont avec, sur un formulai
 
 | Où | Ce qu'il montre |
 |---|---|
-| L'onglet **Visuel** d'un formulaire | **Dépôt**, au-dessus de **Playbook**, quand il y a plusieurs dépôts de playbooks ou que le formulaire en nomme un. Sa première option, **Premier dépôt de playbooks**, retire la clé |
+| L'onglet **Visuel** d'un formulaire | **Dépôt**, au-dessus de **Playbook**, quand il y a plusieurs dépôts de playbooks ou que le formulaire en nomme un. Sa première option, **Premier dépôt de playbooks**, retire la clé ; la deuxième, **Dépôt de ce formulaire (name)**, écrit `__self__` |
 | **Playbook** | Les playbooks du dépôt choisi, nommés depuis sa racine ; avec **Premier dépôt de playbooks**, ceux du premier, tels qu'il les exécute |
-| Un nœud playbook d'un workflow | Le même champ **Dépôt**, sur son onglet **Comment il s'exécute**, et les playbooks de ce dépôt sur **Ce qu'il exécute** |
+| Un nœud playbook d'un workflow | Le même champ **Dépôt**, sur son onglet **Comment il s'exécute**, avec **Dépôt de ce workflow (name)** pour `__self__`, et les playbooks de ce dépôt sur **Ce qu'il exécute** |
 | La section **Playbooks** | Les playbooks du premier dépôt, depuis son dossier `playbooks` (sinon sa racine), puis chaque autre dépôt entier, dans un dossier à son nom |
 
 L'option de rôle [**Modifier tous les playbooks**](../designer/#limited-designers) compte un playbook par son dépôt et son

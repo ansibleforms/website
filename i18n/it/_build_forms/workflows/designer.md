@@ -3,7 +3,7 @@ layout: default
 title: Modifica nel designer
 parent: Workflow
 nav_order: 2
-translated_from: 2b5eceac3004d2a9fcc24d9e2c9e4e685f3345d2
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Modifica nel designer
@@ -54,7 +54,7 @@ esistente, oppure START per il primo.
    e cosa esegue: un playbook o un template o job, un workflow, il nome e il timeout di un'approvazione, o un repository. Vedi
    [Dove gira un nodo](#where-a-node-runs).
 2. **Come viene eseguito**: le impostazioni di esecuzione: per un nodo playbook il **Repository** da cui gira il suo
-   playbook (con più repository di playbook), l'inventario, le credenziali, il limite, i tag, la verbosità,
+   playbook (con più repository di playbook; **Repository di questo workflow (name)** è quello in cui si trova il file del workflow), l'inventario, le credenziali, il limite, i tag, la verbosità,
    la modalità check e diff, la condizione (**Gira quando**) e **Valori da** (vedi [il file di workflow](file.html#run-settings)).
 3. **Dove va**: il nodo dopo il quale gira, e in quale caso.
 
