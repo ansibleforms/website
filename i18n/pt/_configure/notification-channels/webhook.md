@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: Canais de notificação
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ O seu passo **Conteúdo** contém **Cabeçalhos**, cabeçalhos adicionais como u
 | `{{title}}` | O título da notificação |
 | `{{text}}` | O seu texto |
 | `{{status}}` | O estado da tarefa |
+| `{{statusMessage}}` | Porque é que a tarefa [requer atenção](../jobs/statuses.html#a-job-that-needs-attention) (estado `warning`); vazio caso contrário (a partir da 7.8.0) |
 | `{{event}}` | O evento da tarefa |
 | `{{jobId}}` | O id da tarefa |
 | `{{form}}` | O nome do formulário |

@@ -3,7 +3,7 @@ layout: default
 title: 通知
 parent: フォーム
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # 通知
@@ -19,7 +19,7 @@ translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
 - **誰に**: メールアドレスの `recipients` と、
   [通知チャネル](../notification-channels.html) (メール、Slack、Microsoft Teams、Telegram、Webhook) の名前の `channels` です。2 つのうち
   少なくとも一方が必要です。
-- **いつ**: ジョブが終了したとき ( `success`、 `failed`、 `aborted`、 `warning`、 `any` ) の `onStatus` と、ジョブに
+- **いつ**: ジョブが終了したとき ( `success`、 `failed`、 `aborted`、 `warning` ( [対応が必要](../jobs/statuses.html#a-job-that-needs-attention) なジョブ)、 `any` ) の `onStatus` と、ジョブに
   何かが起きたとき ( `launch`、 `relaunch`、 `delete`、 `approve`、 `reject`、 `any` ) の `onEvent` です。
 
 ```yaml

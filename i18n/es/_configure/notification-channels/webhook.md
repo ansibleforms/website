@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: Canales de notificación
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ Su paso **Contenido** contiene las **Cabeceras**, cabeceras adicionales como un 
 | `{{title}}` | El título de la notificación |
 | `{{text}}` | Su texto |
 | `{{status}}` | El estado del trabajo |
+| `{{statusMessage}}` | Por qué el trabajo [requiere atención](../jobs/statuses.html#a-job-that-needs-attention) (estado `warning`); vacío en otro caso (desde la 7.8.0) |
 | `{{event}}` | El evento del trabajo |
 | `{{jobId}}` | El id del trabajo |
 | `{{form}}` | El nombre del formulario |

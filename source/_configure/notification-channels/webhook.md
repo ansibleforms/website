@@ -30,6 +30,7 @@ Its **Payload** step holds **Headers**, extra headers as a JSON object such as `
 | `{{title}}` | The notification's title |
 | `{{text}}` | Its text |
 | `{{status}}` | The job status |
+| `{{statusMessage}}` | Why the job [needs attention](../jobs/statuses.html#a-job-that-needs-attention) (status `warning`); empty otherwise (from 7.8.0) |
 | `{{event}}` | The job event |
 | `{{jobId}}` | The job id |
 | `{{form}}` | The form name |

@@ -18,7 +18,8 @@ The `notifications` of a form say who hears about its jobs, and when:
 - **Who**: `recipients`, email addresses, and `channels`, the names of
   [notification channels](../notification-channels.html) (mail, Slack, Microsoft Teams, Telegram, a webhook). At least one
   of the two is required.
-- **When**: `onStatus`, when a job ends (`success`, `failed`, `aborted`, `warning`, or `any`), and `onEvent`, when
+- **When**: `onStatus`, when a job ends (`success`, `failed`, `aborted`, `warning` - a job that
+  [needs attention](../jobs/statuses.html#a-job-that-needs-attention) -, or `any`), and `onEvent`, when
   something happens to a job (`launch`, `relaunch`, `delete`, `approve`, `reject`, or `any`).
 
 ```yaml

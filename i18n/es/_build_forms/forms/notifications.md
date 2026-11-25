@@ -3,7 +3,7 @@ layout: default
 title: Notificaciones
 parent: Formularios
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # Notificaciones
@@ -19,7 +19,8 @@ Las `notifications` de un formulario indican quién se entera de sus trabajos, y
 - **Quién**: `recipients`, direcciones de correo, y `channels`, los nombres de
   [canales de notificación](../notification-channels.html) (correo, Slack, Microsoft Teams, Telegram, un webhook). Se requiere
   al menos uno de los dos.
-- **Cuándo**: `onStatus`, cuando un trabajo termina (`success`, `failed`, `aborted`, `warning` o `any`), y `onEvent`, cuando
+- **Cuándo**: `onStatus`, cuando un trabajo termina (`success`, `failed`, `aborted`, `warning` - un trabajo que
+  [requiere atención](../jobs/statuses.html#a-job-that-needs-attention) - o `any`), y `onEvent`, cuando
   le ocurre algo a un trabajo (`launch`, `relaunch`, `delete`, `approve`, `reject` o `any`).
 
 ```yaml

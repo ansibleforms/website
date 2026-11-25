@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: 通知通道
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ Webhook 通道向任意 HTTP 端点发送 JSON 请求。其 **端点** 步骤说
 | `{{title}}` | 通知的标题 |
 | `{{text}}` | 通知的正文 |
 | `{{status}}` | 作业状态 |
+| `{{statusMessage}}` | 作业[需要关注](../jobs/statuses.html#a-job-that-needs-attention)的原因（状态 `warning` ）；否则为空（从 7.8.0 起） |
 | `{{event}}` | 作业事件 |
 | `{{jobId}}` | 作业 ID |
 | `{{form}}` | 表单名称 |

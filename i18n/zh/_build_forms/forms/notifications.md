@@ -3,7 +3,7 @@ layout: default
 title: 通知
 parent: 表单
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # 通知
@@ -19,7 +19,7 @@ translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
 - **谁**： `recipients` ，即邮件地址；以及 `channels` ，即
   [通知通道](../notification-channels.html)的名称（邮件、Slack、Microsoft Teams、Telegram、webhook）。两者
   至少需要其一。
-- **何时**： `onStatus` ，在作业结束时（ `success` 、 `failed` 、 `aborted` 、 `warning` 或 `any` ）；以及 `onEvent` ，在
+- **何时**： `onStatus` ，在作业结束时（ `success` 、 `failed` 、 `aborted` 、 `warning` （即[需要关注](../jobs/statuses.html#a-job-that-needs-attention)的作业）或 `any` ）；以及 `onEvent` ，在
   作业发生某些事情时（ `launch` 、 `relaunch` 、 `delete` 、 `approve` 、 `reject` 或 `any` ）。
 
 ```yaml
