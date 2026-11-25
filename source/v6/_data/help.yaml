@@ -4480,7 +4480,7 @@
             with_types: table, list
             short: Allow table/list delete
             description: |
-              A table can be used to modify existing data.  If you don't was recoreds to be deleted, set this property to false.
+              A table can be used to modify existing data.  If you don't want records to be deleted, set this property to false.
           - name: deleteMarker
             type: string
             group: output
