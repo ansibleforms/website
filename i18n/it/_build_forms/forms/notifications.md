@@ -3,7 +3,7 @@ layout: default
 title: Notifiche
 parent: Moduli
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # Notifiche
@@ -19,7 +19,8 @@ Le `notifications` di un modulo indicano chi viene informato dei suoi job, e qua
 - **Chi**: `recipients`, indirizzi email, e `channels`, i nomi dei
   [canali di notifica](../notification-channels.html) (mail, Slack, Microsoft Teams, Telegram, un webhook). È obbligatorio
   almeno uno dei due.
-- **Quando**: `onStatus`, quando un job termina (`success`, `failed`, `aborted`, `warning` o `any`), e `onEvent`, quando
+- **Quando**: `onStatus`, quando un job termina (`success`, `failed`, `aborted`, `warning` - un job che
+  [richiede attenzione](../jobs/statuses.html#a-job-that-needs-attention) - o `any`), e `onEvent`, quando
   succede qualcosa a un job (`launch`, `relaunch`, `delete`, `approve`, `reject` o `any`).
 
 ```yaml

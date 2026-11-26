@@ -3,7 +3,7 @@ layout: default
 title: Notificacions
 parent: Formularis
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # Notificacions
@@ -19,7 +19,8 @@ Les `notifications` d'un formulari indiquen qui s'assabenta de les seves tasques
 - **Qui**: `recipients`, adreces de correu electrònic, i `channels`, els noms dels
   [canals de notificació](../notification-channels.html) (correu, Slack, Microsoft Teams, Telegram, un webhook). Cal com a mínim
   un dels dos.
-- **Quan**: `onStatus`, quan una tasca acaba (`success`, `failed`, `aborted`, `warning` o `any`), i `onEvent`, quan
+- **Quan**: `onStatus`, quan una tasca acaba (`success`, `failed`, `aborted`, `warning` - una tasca que
+  [requereix atenció](../jobs/statuses.html#a-job-that-needs-attention) - o `any`), i `onEvent`, quan
   li passa alguna cosa a una tasca (`launch`, `relaunch`, `delete`, `approve`, `reject` o `any`).
 
 ```yaml

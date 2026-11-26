@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: Meldingskanalen
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ De stap **Inhoud** bevat **Headers**, extra headers als JSON-object zoals `{ "X-
 | `{{title}}` | De titel van de melding |
 | `{{text}}` | De tekst ervan |
 | `{{status}}` | De jobstatus |
+| `{{statusMessage}}` | Waarom de job [aandacht vraagt](../jobs/statuses.html#a-job-that-needs-attention) (status `warning`); anders leeg (vanaf 7.8.0) |
 | `{{event}}` | Het jobevent |
 | `{{jobId}}` | Het job-id |
 | `{{form}}` | De formuliernaam |

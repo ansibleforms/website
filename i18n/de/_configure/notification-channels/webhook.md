@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: Benachrichtigungskanäle
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ Sein Schritt **Inhalt** enthält die **Header**, zusätzliche Header als JSON-Ob
 | `{{title}}` | Der Titel der Benachrichtigung |
 | `{{text}}` | Ihr Text |
 | `{{status}}` | Der Jobstatus |
+| `{{statusMessage}}` | Warum der Job [Aufmerksamkeit erfordert](../jobs/statuses.html#a-job-that-needs-attention) (Status `warning`); sonst leer (ab 7.8.0) |
 | `{{event}}` | Das Job-Ereignis |
 | `{{jobId}}` | Die Job-ID |
 | `{{form}}` | Der Formularname |

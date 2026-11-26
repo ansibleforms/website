@@ -3,7 +3,7 @@ layout: default
 title: Benachrichtigungen
 parent: Formulare
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # Benachrichtigungen
@@ -19,7 +19,8 @@ Die `notifications` eines Formulars legen fest, wer über seine Jobs informiert 
 - **Wer**: `recipients`, E-Mail-Adressen, und `channels`, die Namen von
   [Benachrichtigungskanälen](../notification-channels.html) (Mail, Slack, Microsoft Teams, Telegram, ein Webhook). Mindestens eines
   der beiden ist erforderlich.
-- **Wann**: `onStatus`, wenn ein Job endet (`success`, `failed`, `aborted`, `warning` oder `any`), und `onEvent`, wenn
+- **Wann**: `onStatus`, wenn ein Job endet (`success`, `failed`, `aborted`, `warning` - ein Job, der
+  [Aufmerksamkeit erfordert](../jobs/statuses.html#a-job-that-needs-attention) - oder `any`), und `onEvent`, wenn
   etwas mit einem Job geschieht (`launch`, `relaunch`, `delete`, `approve`, `reject` oder `any`).
 
 ```yaml

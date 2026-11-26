@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: Kanały powiadomień
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ Jego krok **Treść** zawiera **Nagłówki**, czyli dodatkowe nagłówki jako ob
 | `{{title}}` | Tytuł powiadomienia |
 | `{{text}}` | Jego tekst |
 | `{{status}}` | Status zadania |
+| `{{statusMessage}}` | Dlaczego zadanie [wymaga uwagi](../jobs/statuses.html#a-job-that-needs-attention) (status `warning`); w przeciwnym razie puste (od wersji 7.8.0) |
 | `{{event}}` | Zdarzenie zadania |
 | `{{jobId}}` | Id zadania |
 | `{{form}}` | Nazwa formularza |

@@ -3,7 +3,7 @@ layout: default
 title: Webhook
 parent: Canaux de notification
 nav_order: 4
-translated_from: 99bafedd6f37d6afe3104cd7d8819c3891b518d0
+translated_from: 1a5cc40cf0c26955edbc88786cf2d916f286b30e
 ---
 
 # Webhook
@@ -31,6 +31,7 @@ Son étape **Contenu** contient les **En-têtes**, des en-têtes supplémentaire
 | `{{title}}` | Le titre de la notification |
 | `{{text}}` | Son texte |
 | `{{status}}` | Le statut du job |
+| `{{statusMessage}}` | Pourquoi le job [requiert une attention](../jobs/statuses.html#a-job-that-needs-attention) (statut `warning`) ; vide sinon (depuis la 7.8.0) |
 | `{{event}}` | L'événement du job |
 | `{{jobId}}` | L'id du job |
 | `{{form}}` | Le nom du formulaire |

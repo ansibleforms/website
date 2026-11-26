@@ -3,7 +3,7 @@ layout: default
 title: Meldingen
 parent: Formulieren
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # Meldingen
@@ -19,7 +19,8 @@ De `notifications` van een formulier bepalen wie over zijn jobs hoort, en wannee
 - **Wie**: `recipients`, e-mailadressen, en `channels`, de namen van
   [meldingskanalen](../notification-channels.html) (mail, Slack, Microsoft Teams, Telegram, een webhook). Minstens een
   van de twee is verplicht.
-- **Wanneer**: `onStatus`, wanneer een job eindigt (`success`, `failed`, `aborted`, `warning` of `any`), en `onEvent`, wanneer
+- **Wanneer**: `onStatus`, wanneer een job eindigt (`success`, `failed`, `aborted`, `warning` - een job die
+  [aandacht vraagt](../jobs/statuses.html#a-job-that-needs-attention) -, of `any`), en `onEvent`, wanneer
   er iets met een job gebeurt (`launch`, `relaunch`, `delete`, `approve`, `reject` of `any`).
 
 ```yaml

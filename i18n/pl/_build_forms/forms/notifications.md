@@ -3,7 +3,7 @@ layout: default
 title: Powiadomienia
 parent: Formularze
 nav_order: 9
-translated_from: 3c44a310353f7884a0d2d1e3a827f8a757f7d25d
+translated_from: cdd8855e144abc9154af9c3a32871667ed30fe5d
 ---
 
 # Powiadomienia
@@ -19,7 +19,8 @@ Właściwość `notifications` formularza określa, kto i kiedy dowiaduje się o
 - **Kto**: `recipients`, czyli adresy e-mail, oraz `channels`, czyli nazwy
   [kanałów powiadomień](../notification-channels.html) (poczta, Slack, Microsoft Teams, Telegram, webhook). Wymagane jest
   co najmniej jedno z nich.
-- **Kiedy**: `onStatus`, gdy zadanie się kończy (`success`, `failed`, `aborted`, `warning` lub `any`), oraz `onEvent`, gdy
+- **Kiedy**: `onStatus`, gdy zadanie się kończy (`success`, `failed`, `aborted`, `warning` - zadanie, które
+  [wymaga uwagi](../jobs/statuses.html#a-job-that-needs-attention) - lub `any`), oraz `onEvent`, gdy
   coś dzieje się z zadaniem (`launch`, `relaunch`, `delete`, `approve`, `reject` lub `any`).
 
 ```yaml
