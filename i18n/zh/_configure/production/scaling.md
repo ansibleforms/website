@@ -3,13 +3,13 @@ layout: default
 title: 扩展
 parent: 生产环境运行
 nav_order: 4
-translated_from: 5b76f1bfb7520ff2b072919d714d2ab72b1e5d5e
+translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
 ---
 
 # 扩展
 {: .no_toc }
 
-将 AnsibleForms 拆分到多个应用节点和一个 worker 上，并搭配一个或多个 RTE
+将 AnsibleForms 拆分到多个控制器节点和一个 worker 上，并搭配一个或多个 RTE
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -23,13 +23,16 @@ translated_from: 5b76f1bfb7520ff2b072919d714d2ab72b1e5d5e
 
 | `AF_ROLE` | 镜像 | 运行内容 | 数量 |
 |---|---|---|---|
-| `all`（未设置） | `ansibleforms` | 在一个进程中运行 Web 应用和 worker：默认值 | 1 |
-| `app` | `ansibleforms` | Web 界面和 API | 任意多个，放在负载均衡器之后 |
+| `all`（未设置） | `ansibleforms` | 在一个进程中运行控制器的 Web 界面和 API，以及 worker：默认值 | 1 |
+| `controller` | `ansibleforms` | Web 界面和 API | 任意多个，放在负载均衡器之后 |
 | `worker` | `ansibleforms` | 后台工作：数据库 schema 及其升级、配置种子、调度、每晚备份、仓库同步和清理 | 同一时间一个在工作；更多的则等待接管 |
 | `rte` | `ansibleforms-rte-full`（或 `-rte-core`、`-rte-base`） | playbook | 任意多个 |
 
 最小的安装是一个不设置 `AF_ROLE` 的容器加一个 RTE：这就是 [Docker Compose 项目](../installation/docker-compose.html)
 和 [Helm chart](../installation/kubernetes.html) 所运行的方式。`AF_ROLE` 的任何其他值都会使进程在启动时停止。
+
+在 7.7 及更早版本中，`controller` 角色叫作 `app`。从 7.8.0 起，`AF_ROLE=app` 已弃用，并将在 8.0 中移除：它仍以 `controller` 运行，
+启动时在日志中给出警告，并且节点保留其 `app-` 名称，因此升级后仍能找回自己的作业。
 
 ---
 
@@ -41,24 +44,24 @@ RTE，即运行 playbook 的运行时环境，有单独的章节：[运行时环
 
 ---
 
-## 多个应用节点
+## 多个控制器节点
 
-为了服务更多用户，或在失去一个节点时继续运行，请将应用拆分为放在负载均衡器之后的 `app` 节点和一个 `worker`。
+为了服务更多用户，或在失去一个节点时继续运行，请将它拆分为放在负载均衡器之后的 `controller` 节点和一个 `worker`。
 
 ### 节点共享的内容
 {: .no_toc }
 
 各节点通过数据库和一个共享卷彼此协调：
 
-* **数据库**：作业、worker 锁、设计器锁、节点列表、运行器租约（哪个应用节点持有
+* **数据库**：作业、worker 锁、设计器锁、节点列表、运行器租约（哪个控制器节点持有
   每个 RTE 的套接字），以及让每个节点的缓存保持最新的变更通知。在一个节点上编辑的凭据、运行器或调度
   会在 5 秒内在所有节点上生效
 * **持久化卷**（`/app/dist/persistent`）：表单、配置、仓库、上传文件、备份和托管的 `.env`。
-  每个应用节点和 worker 都以读写方式挂载同一个卷
+  每个控制器节点和 worker 都以读写方式挂载同一个卷
 * **ssh 文件夹**（`/home/node/.ssh`）：通过 ssh 访问 git 所用的密钥和已知主机；worker 在首次启动时创建密钥
-* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)**：在每个应用节点上都必须相同，否则由一个节点签发的
-  令牌会被下一个节点拒绝。没有它，应用节点会拒绝启动
-* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)**：在每个应用节点和 worker 上都必须相同，否则
+* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)**：在每个控制器节点上都必须相同，否则由一个节点签发的
+  令牌会被下一个节点拒绝。没有它，控制器节点会拒绝启动
+* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)**：在每个控制器节点和 worker 上都必须相同，否则
   由一个节点保存的凭据无法被另一个节点读取。套接字模式的 RTE 从不读取它；只有自行注册的、已弃用的数据库模式 RTE
   才需要它
 
@@ -81,17 +84,17 @@ worker 都指向同一个数据库节点。
 每个容器都以 `<role>-<hostname>-<port>` 为自己命名，无需任何设置，**状态** 页面会列出所有容器及其角色
 和版本、哪一个是 worker，并在它们运行不同版本时发出警告。
 
-在 RTE 上运行的作业属于该 RTE，即使启动它的应用节点离开也会继续运行。其他任何作业（AWX 或其他运行器上的模板作业、
-工作流作业，或已弃用的多步骤表单的各个步骤）都属于启动它的应用节点。重启的容器会结束自己未完成的作业，
+在 RTE 上运行的作业属于该 RTE，即使启动它的控制器节点离开也会继续运行。其他任何作业（AWX 或其他运行器上的模板作业、
+工作流作业，或已弃用的多步骤表单的各个步骤）都属于启动它的控制器节点。重启的容器会结束自己未完成的作业，
 worker 则会结束已有两分钟没有应答的容器的作业，例如被替换的 pod。
 
-向任意节点发送 `SIGHUP` 都会重新应用 [配置种子](../seed/)：应用节点会请 worker 来执行。
+向任意节点发送 `SIGHUP` 都会重新应用 [配置种子](../seed/)：控制器节点会请 worker 来执行。
 
 ### 升级
 {: .no_toc }
 
-**先升级 worker**，然后再升级应用节点。worker 负责修补 schema，新版本的应用节点会等待
-schema 修补完成，并记录它在等待什么。先升级的应用节点在 worker 跟上之前一直处于未就绪状态，而旧节点会继续
+**先升级 worker**，然后再升级控制器节点。worker 负责修补 schema，新版本的控制器节点会等待
+schema 修补完成，并记录它在等待什么。先升级的控制器节点在 worker 跟上之前一直处于未就绪状态，而旧节点会继续
 提供服务。RTE 可以在任何时候跟进，只要它们使用相同的协议约定。
 
 ### 限制
@@ -99,8 +102,8 @@ schema 修补完成，并记录它在等待什么。先升级的应用节点在 
 
 有几项功能只能留在一个节点上：
 
-* **聊天助手** 将其对话保存在单个应用节点的内存中：请在负载均衡器上使用会话保持（nginx
-  `ip_hash`），或只使用一个应用节点
+* **聊天助手** 将其对话保存在单个控制器节点的内存中：请在负载均衡器上使用会话保持（nginx
+  `ip_hash`），或只使用一个控制器节点
 * **日志** 保留在每个容器中。请将 [`LOG_PATH`](../customization/logging.html#env_LOG_PATH) 设在共享卷之外，因为多个
   进程轮转同一个文件会丢失日志行。日志查看器显示的是应答请求的那个节点的日志，因此请集中收集日志
 * **设置** 在设置页面上修改后会写入共享卷上的托管 `.env`，并在每个节点上生效；需要重启的设置
@@ -115,17 +118,17 @@ schema 修补完成，并记录它在等待什么。先升级的应用节点在 
 | 服务 | 镜像 | 角色 |
 |---|---|---|
 | `db` | `mariadb:11` | 数据库，其用户只对 `AnsibleForms` schema 有权限 |
-| `app1`、`app2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=app`，位于负载均衡器之后 |
+| `controller1`、`controller2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=controller`，位于负载均衡器之后 |
 | `worker1`、`worker2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=worker`：第二个等待并接管 |
-| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | 以 `RTE_MODE=inbound` 和 `RTE_FILES=local` 运行 playbook：由应用连接它 |
-| `lb` | `nginx:stable` | 在 8443 端口上终止 HTTPS，并用 `ip_hash` 将浏览器分配到各应用节点 |
+| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | 以 `RTE_MODE=inbound` 和 `RTE_FILES=local` 运行 playbook：由控制器连接它 |
+| `lb` | `nginx:stable` | 在 8443 端口上终止 HTTPS，并用 `ip_hash` 将浏览器分配到各控制器节点 |
 
 RTE 的运行器 `rte` 及其登录所用的凭据（其地址 `http://rte:8000` 和 `RTE_TOKEN`）在
 [配置种子](../seed/) `seed.yaml` 中声明，worker 每次启动时都会应用它；RTE 不设置 `RTE_URL`，也不在主机上发布。
 
-应用节点和 worker 共用一个 `.env`，其中包含数据库用户、`ENCRYPTION_SECRET`、`ACCESS_TOKEN_SECRET`、`RTE_TOKEN`、
+控制器节点和 worker 共用一个 `.env`，其中包含数据库用户、`ENCRYPTION_SECRET`、`ACCESS_TOKEN_SECRET`、`RTE_TOKEN`、
 `CONFIG_SEED_PATH`、负载均衡器之后的 `HTTPS=0`，以及设在共享卷之外的 `LOG_PATH`。RTE 没有 `env_file`：它只从
-`compose.yaml` 获得 `RTE_TOKEN`，因此不持有数据库密码。应用节点、worker 和 RTE 挂载相同的
+`compose.yaml` 获得 `RTE_TOKEN`，因此不持有数据库密码。控制器节点、worker 和 RTE 挂载相同的
 持久化卷和 ssh 卷：
 
 ```bash

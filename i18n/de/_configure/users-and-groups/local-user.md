@@ -3,7 +3,7 @@ layout: default
 title: Ein lokaler Benutzer
 parent: Benutzer und Gruppen
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Ein lokaler Benutzer
@@ -12,7 +12,18 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Einen lokalen Benutzer hinzufügen und die Tabs seiner Seite
 {: .fs-6 .fw-300 }
 
-**Benutzer hinzufügen** öffnet einen Assistenten in drei Schritten: **Benutzer** (Benutzername, Beschreibung, E-Mail), **Passwort** und **Gruppe**.
+**Benutzer hinzufügen** öffnet den Assistenten **Neuer Benutzer** in vier Schritten:
+
+| Schritt | Was er abfragt |
+|---|---|
+| **Benutzer** | Den Benutzernamen, die Beschreibung und die E-Mail; nur der Benutzername ist erforderlich |
+| **Passwort** | Das Passwort, zweimal eingegeben: **Weiter** wartet, bis beide gleich sind |
+| **Gruppe** | Die lokale Gruppe, zu der der Benutzer gehört und die ihm die Rollen der Gruppe gibt |
+| **Rollen** | Die Rollen, die der Benutzer selbst erhält, jede mit **Rolle hinzufügen** ausgewählt; keine ist nötig |
+
+Der Schritt **Rollen** und das zweimal eingegebene Passwort sind neu in 7.8.0. **Speichern** im letzten Schritt erstellt den Benutzer und
+vergibt ihm dann die ausgewählten Rollen: Eine Rolle, die nicht vergeben werden konnte, wird in einer Meldung genannt, und der Benutzer wird
+trotzdem erstellt.
 
 Die Seite eines Benutzers, `/settings/users/<id>`, hat diese Tabs:
 

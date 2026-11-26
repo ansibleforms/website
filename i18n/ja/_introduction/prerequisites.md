@@ -2,7 +2,7 @@
 layout: default
 title: 前提条件
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # 前提条件
@@ -120,9 +120,9 @@ Web アプリケーションは最新のブラウザー向けに作られてい�
 
 ## スケーリング
 
-既定では、1 つの AnsibleForms コンテナーが Web アプリとバックグラウンド処理をまとめて実行し、その隣で 1 つの RTE が動きます。
+既定では、1 つの AnsibleForms コンテナーがコントローラーの Web インターフェースとバックグラウンド処理をまとめて実行し、その隣で 1 つの RTE が動きます。
 
-より多くのユーザーに対応するには、ロードバランサーの背後で複数のアプリノード（ `AF_ROLE=app` ）を、ワーカー（ `AF_ROLE=worker` ）と並べて動かします。ワーカーは
+より多くのユーザーに対応するには、ロードバランサーの背後で複数のコントローラーノード（ `AF_ROLE=controller` 、7.8.0 より前は `app` ）を、ワーカー（ `AF_ROLE=worker` ）と並べて動かします。ワーカーは
 スケジュール、バックアップ、その他のバックグラウンド処理を実行します。同時に動くワーカーは 1 つだけで、2 つ目は引き継ぎに備えて待機します。これらは
 データベース、永続フォルダー、 `ACCESS_TOKEN_SECRET` 、 `ENCRYPTION_SECRET` を共有します。 [スケーリング](production/scaling.html) を参照してください。より多くのプレイブックを同時に実行するには、
 RTE を増やします。 [複数の RTE](rte/several.html) を参照してください。

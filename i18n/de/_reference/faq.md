@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Häufig gestellte Fragen
@@ -26,25 +26,26 @@ das persistente Volume.
 
 Um mehrere Replikas hinter einem Load Balancer zu betreiben, teilen Sie den Prozess mit `AF_ROLE` auf:
 
-- `app`-Knoten stellen die Weboberfläche und die API bereit: betreiben Sie so viele, wie Sie möchten, jeden mit demselben `ACCESS_TOKEN_SECRET`
+- `controller`-Knoten (vor 7.8.0 `app`, bis 8.0 weiterhin gelesen) stellen die Weboberfläche und die API bereit: betreiben Sie so viele, wie Sie möchten, jeden mit demselben `ACCESS_TOKEN_SECRET`
 - ein `worker` erledigt die Hintergrundarbeit: das Schema und seine Aktualisierungen, den Konfigurations-Seed, die Zeitpläne, das nächtliche Backup, die Repository-
   Synchronisierungen und die Aufräumarbeiten. Ein Worker arbeitet gleichzeitig und hält dabei eine Datenbanksperre; ein zweiter wartet und übernimmt, wenn der erste stoppt
 - `rte`-Container führen die Playbooks aus: betreiben Sie mehr davon, um mehr Playbooks gleichzeitig auszuführen
 
-Die App-Knoten und der Worker teilen sich die Datenbank, das persistente Volume und `ENCRYPTION_SECRET`. Eine RTE in einem Socket-Modus (ausgehend oder
+Die Controller-Knoten und der Worker teilen sich die Datenbank, das persistente Volume und `ENCRYPTION_SECRET`. Eine RTE in einem Socket-Modus (ausgehend oder
 eingehend, siehe [Modi](rte/modes.html)) braucht weder die Datenbank noch `ENCRYPTION_SECRET`. Der Chat-Assistent braucht Sticky Sessions, und
 jeder Knoten führt sein eigenes Protokoll. Siehe [Skalierung](production/scaling.html) und das Setup
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
 
 ### Formulare aus mehreren Repositories verwalten
 
-Formulare aus jedem Git-Repository mit eingeschaltetem **Für Formulare verwenden?** werden automatisch zusammengeführt; bei doppelten Formularnamen gewinnt das erste,
-und eine Warnung wird protokolliert. Behalten Sie `config.yaml` in nur einem Repository. Siehe [Git-Repositories](repositories/).
+Formulare aus jedem Git-Repository mit dem Verwendungstyp **Formulare** werden automatisch zusammengeführt; bei doppelten Formularnamen gewinnt das erste,
+und eine Warnung wird protokolliert. Die Rollen, die Kategorien und die Konstanten kommen jeweils aus einem Repository, dem mit diesem
+Verwendungstyp. Siehe [Git-Repositories](repositories/).
 
 ### Über Repositories
 
 AnsibleForms klont und pullt Git-Repositories unter dem Repository-Pfad (`REPO_PATH`), verwaltet unter **Einstellungen > Repositories**.
-Schalter an jedem Repository legen fest, was es enthält: Konfiguration, Formulare, Playbooks oder Vars-Dateien. Siehe [Git-Repositories](repositories/).
+Die Verwendungstypen eines Repositorys legen fest, was es enthält: Formulare, Playbooks, Rollen, Anmeldedaten und jede andere in git aufbewahrte Einstellung. Siehe [Git-Repositories](repositories/).
 
 ### VS-Code-Validierung für Formulardateien
 

@@ -5,7 +5,7 @@ nav_order: 9
 has_children: true
 has_toc: false
 permalink: /customization/
-translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
+translated_from: 5b17f8a7d6426c911d68d3b832f3dd2368f49aa8
 ---
 
 # 环境变量
@@ -39,8 +39,8 @@ translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
 无法在那里修改：页面会将其显示为 *已在环境变量中设置，因此无法在此处更改。*
 少数变量，例如 `ENCRYPTION_SECRET` 和 `ACCESS_TOKEN_SECRET`，永远无法通过页面修改。
 
-RTE 读取的变量，例如 `AF_ROLE`、`RTE_MODE`、`APP_URL` 或 `RTE_MAX_JOBS`，根本不在设置页面上：
-应用不使用它们，因此请在 RTE 运行的环境中设置。应用本身读取的 `RTE_*` 变量，
+RTE 读取的变量，例如 `AF_ROLE`、`RTE_MODE`、`CONTROLLER_URL` 或 `RTE_MAX_JOBS`，根本不在设置页面上：
+控制器不使用它们，因此请在 RTE 运行的环境中设置。控制器本身读取的 `RTE_*` 变量，
 即 `RTE_QUEUE_MINUTES` 和 `RTE_FILES_MAX_MB`，是例外，仍保留在页面上。`RTE_MAX_JOBS`、
 `RTE_CACHE_MB`、`RTE_FILES` 和 `RTE_DRAIN_SECONDS` 这四个 RTE 变量也可以改为在每个 RTE 的运行器页面上设置，那里的值优先于
 变量（参见 [RTE 的设置](../runners/runner-page.html#an-rtes-settings)）。

@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Najczęściej zadawane pytania
@@ -26,25 +26,26 @@ wolumenu trwałego.
 
 Aby uruchomić kilka replik za load balancerem, podziel proces za pomocą `AF_ROLE`:
 
-- węzły `app` obsługują interfejs webowy i API: uruchom ich tyle, ile chcesz, każdy z tym samym `ACCESS_TOKEN_SECRET`
+- węzły `controller` (`app` przed wersją 7.8.0, nadal odczytywane do wersji 8.0) obsługują interfejs webowy i API: uruchom ich tyle, ile chcesz, każdy z tym samym `ACCESS_TOKEN_SECRET`
 - `worker` wykonuje pracę w tle: schemat i jego aktualizacje, config seed, harmonogramy, nocną kopię zapasową, synchronizację
   repozytoriów i porządki. Naraz pracuje jeden worker, trzymając blokadę w bazie danych; drugi czeka i przejmuje pracę, gdy pierwszy się zatrzyma
 - kontenery `rte` uruchamiają playbooki: uruchom ich więcej, aby uruchamiać więcej playbooków jednocześnie
 
-Węzły aplikacji i worker współdzielą bazę danych, wolumen trwały i `ENCRYPTION_SECRET`. RTE w trybie gniazda (wychodzącym lub
+Węzły kontrolera i worker współdzielą bazę danych, wolumen trwały i `ENCRYPTION_SECRET`. RTE w trybie gniazda (wychodzącym lub
 przychodzącym, zobacz [Tryby](rte/modes.html)) nie potrzebuje ani bazy danych, ani `ENCRYPTION_SECRET`. Asystent czatu wymaga sesji sticky, a
 każdy węzeł prowadzi własny dziennik. Zobacz [Skalowanie](production/scaling.html) i konfigurację
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
 
 ### Zarządzanie formularzami z wielu repozytoriów
 
-Formularze z każdego repozytorium Git z włączoną opcją **Używać do formularzy?** są scalane automatycznie; przy powtarzających się nazwach formularzy wygrywa
-pierwszy, a w dzienniku zapisywane jest ostrzeżenie. Trzymaj `config.yaml` tylko w jednym repozytorium. Zobacz [Repozytoria git](repositories/).
+Formularze z każdego repozytorium Git z typem zastosowania **Formularze** są scalane automatycznie; przy powtarzających się nazwach formularzy wygrywa
+pierwszy, a w dzienniku zapisywane jest ostrzeżenie. Role, kategorie i stałe pochodzą każde z jednego repozytorium, tego z tym
+typem zastosowania. Zobacz [Repozytoria git](repositories/).
 
 ### O repozytoriach
 
 AnsibleForms klonuje i pobiera repozytoria Git w ścieżce repozytoriów (`REPO_PATH`), zarządzane w **Ustawienia > Repozytoria**.
-Przełączniki w każdym repozytorium określają, co ono zawiera: konfigurację, formularze, playbooki lub pliki zmiennych. Zobacz [Repozytoria git](repositories/).
+Jego typy zastosowania określają, co ono zawiera: formularze, playbooki, role, poświadczenia i wszystkie inne ustawienia przechowywane w git. Zobacz [Repozytoria git](repositories/).
 
 ### Walidacja plików formularzy w VS Code
 

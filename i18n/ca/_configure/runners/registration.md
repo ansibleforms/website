@@ -3,7 +3,7 @@ layout: default
 title: Registre
 parent: Runners
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Registre
@@ -19,25 +19,25 @@ Com un RTE demana unir-se i s'aprova, els tokens d'unió per a instal·lacions d
 
 ## Demanar unir-se
 
-Des de la 7.3.0, un RTE en un mode de sòcol (`outbound` o `inbound`) que l'aplicació encara no coneix demana unir-se, i un admin l'aprova.
-Es presenta amb el seu propi `RTE_TOKEN` i el seu `RTE_NAME`: un RTE sortint quan truca per primer cop a l'aplicació, un d'entrant en la seva única
-crida de registre. Sense token d'unió, l'aplicació llavors:
+Des de la 7.3.0, un RTE en un mode de sòcol (`outbound` o `inbound`) que el controlador encara no coneix demana unir-se, i un admin l'aprova.
+Es presenta amb el seu propi `RTE_TOKEN` i el seu `RTE_NAME`: un RTE sortint quan truca per primer cop al controlador, un d'entrant en la seva única
+crida de registre. Sense token d'unió, el controlador llavors:
 
 1. Desa l'`RTE_TOKEN` de l'RTE en una credencial nova de tipus RTE anomenada `<name>-rte` (amb un número afegit quan aquest nom ja està agafat), i
    per a un RTE entrant la seva adreça, `RTE_URL`
 2. Afegeix un runner amb el nom de l'`RTE_NAME`, de tipus RTE, en el mode de l'RTE, que inicia sessió amb aquesta credencial, marcat com a **Pendent d'aprovació**
    i desactivat. La seva descripció indica l'host des d'on ho ha demanat
 
-Un RTE sortint es manté connectat mentre espera, però no rep cap tasca. L'aplicació no truca a un d'entrant fins que no està aprovat. Tots dos registren
+Un RTE sortint es manté connectat mentre espera, però no rep cap tasca. El controlador no truca a un d'entrant fins que no està aprovat. Tots dos registren
 que esperen que un admin els aprovi a **Connexions > Runners**, amb l'empremta del seu token.
 
-Un RTE entrant amb un `RTE_URL` `https://` també envia el seu certificat quan demana unir-se, i l'aplicació el fixa: a partir d'aleshores
-l'aplicació només truca a aquest RTE quan presenta el mateix certificat, de manera que un d'autosignat funciona sense CA (vegeu [Entrant](../rte/modes.html#inbound)).
+Un RTE entrant amb un `RTE_URL` `https://` també envia el seu certificat quan demana unir-se, i el controlador el fixa: a partir d'aleshores
+el controlador només truca a aquest RTE quan presenta el mateix certificat, de manera que un d'autosignat funciona sense CA (vegeu [Entrant](../rte/modes.html#inbound)).
 
 Com a màxim hi pot haver 20 RTE esperant aprovació alhora: els altres es rebutgen fins que se n'aprovin o rebutgin alguns. Una sol·licitud que ningú no gestiona en
 24 hores l'elimina el worker, juntament amb la seva credencial.
 
-Un RTE amb el nom d'un runner que l'aplicació ja coneix, però amb un altre token, es rebutja i no demana unir-se. Dona-li el token d'aquell
+Un RTE amb el nom d'un runner que el controlador ja coneix, però amb un altre token, es rebutja i no demana unir-se. Dona-li el token d'aquell
 runner, o suprimeix el runner perquè demani unir-se. Un [token d'unió](#join-tokens) només ajuda mentre aquell runner encara espera aprovació.
 
 ---
@@ -54,11 +54,11 @@ La seva pàgina mostra les mateixes dades en un requadre groc, **Aquest RTE ha d
 | Camp | Què mostra |
 |---|---|
 | Empremta | Els 8 primers dígits hexadecimals del SHA-256 del seu `RTE_TOKEN`, com a `abcd-ef12`. L'RTE la registra en arrencar, i l'[instal·lador](../installation/installer.html#a-runner) la mostra al final. Ha de ser la mateixa |
-| Empremta del certificat | Al diàleg, per a un RTE entrant per HTTPS: els 8 primers dígits hexadecimals del SHA-256 del certificat que fixa l'aplicació (els seus bytes DER), com a `abcd-ef12`. L'RTE la registra en arrencar i l'[instal·lador](../installation/installer.html#a-runner) la mostra al final. Ha de ser la mateixa |
+| Empremta del certificat | Al diàleg, per a un RTE entrant per HTTPS: els 8 primers dígits hexadecimals del SHA-256 del certificat que fixa el controlador (els seus bytes DER), com a `abcd-ef12`. L'RTE la registra en arrencar i l'[instal·lador](../installation/installer.html#a-runner) la mostra al final. Ha de ser la mateixa |
 | Host | L'host on s'executa |
-| Adreça IP | L'adreça des d'on ha trucat a l'aplicació |
+| Adreça IP | L'adreça des d'on ha trucat al controlador |
 | Mode | Sortint o Entrant |
-| URI | L'adreça d'un RTE entrant, on hi truca l'aplicació |
+| URI | L'adreça d'un RTE entrant, on hi truca el controlador |
 | Versió | La seva versió |
 | Sol·licitat el | Quan ha demanat unir-se |
 

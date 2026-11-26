@@ -2,7 +2,7 @@
 layout: default
 title: Requisitos previos
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Requisitos previos
@@ -120,9 +120,9 @@ Los navegadores más antiguos no son compatibles.
 
 ## Escalado
 
-Por defecto, un contenedor de AnsibleForms ejecuta a la vez la aplicación web y el trabajo en segundo plano, junto a un RTE.
+Por defecto, un contenedor de AnsibleForms ejecuta a la vez la interfaz web del controlador y el trabajo en segundo plano, junto a un RTE.
 
-Para atender a más usuarios, ejecuta varios nodos de aplicación detrás de un balanceador de carga (`AF_ROLE=app`) junto a un worker (`AF_ROLE=worker`), que ejecuta las
+Para atender a más usuarios, ejecuta varios nodos del controlador detrás de un balanceador de carga (`AF_ROLE=controller`, `app` antes de la 7.8.0) junto a un worker (`AF_ROLE=worker`), que ejecuta las
 programaciones, las copias de seguridad y el resto del trabajo en segundo plano; solo trabaja un worker a la vez, y un segundo espera para tomar el relevo. Comparten
 la base de datos, la carpeta persistente, `ACCESS_TOKEN_SECRET` y `ENCRYPTION_SECRET`. Consulta [Escalado](production/scaling.html). Ejecuta más
 RTE para ejecutar más playbooks a la vez: consulta [Varios RTE](rte/several.html).

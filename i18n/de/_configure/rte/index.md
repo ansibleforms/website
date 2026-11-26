@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 75a4facc8ad51d9d74b8fccfd2bbfd7ba48b17f9
+translated_from: 0c09db801924ebe41185f973548566d2a1829802
 ---
 
 # Laufzeitumgebungen (RTE)
@@ -33,13 +33,13 @@ Für Administratoren: Verstehen Sie die RTE, bevor Sie eine betreiben, dimension
 
 ## Was eine RTE ist
 
-AnsibleForms 7 führt kein Playbook im App-Container aus. Der Job eines `ansible`-Formulars wird an einen [Runner](../runners.html) vom Typ
+AnsibleForms 7 führt kein Playbook im Controller-Container aus. Der Job eines `ansible`-Formulars wird an einen [Runner](../runners.html) vom Typ
 `rte` übergeben, eine Laufzeitumgebung: der AnsibleForms-Server, gestartet mit `AF_ROLE=rte`, neben Python und Ansible, ohne
-Weboberfläche. Sie spricht mit der App über einen WebSocket und hält keine Datenbank-Anmeldedaten
-([`RTE_MODE`](../customization/server.html#env_RTE_MODE) `outbound` oder `inbound`, siehe [Modi](modes.html)): Die App sendet ihr den Job,
-die RTE führt `ansible-playbook` aus, und die App speichert die Ausgabe und den Endstatus, die sie zurückschickt, wo der Browser sie liest.
+Weboberfläche. Sie spricht mit dem Controller über einen WebSocket und hält keine Datenbank-Anmeldedaten
+([`RTE_MODE`](../customization/server.html#env_RTE_MODE) `outbound` oder `inbound`, siehe [Modi](modes.html)): Der Controller sendet ihr den Job,
+die RTE führt `ansible-playbook` aus, und der Controller speichert die Ausgabe und den Endstatus, die sie zurückschickt, wo der Browser sie liest.
 
-Die App löst die Anmeldedaten des Jobs auf und übergibt sie der RTE versiegelt, nur für diese RTE und diesen Job. Die RTE liest weder die
+Der Controller löst die Anmeldedaten des Jobs auf und übergibt sie der RTE versiegelt, nur für diese RTE und diesen Job. Die RTE liest weder die
 Tabelle der Anmeldedaten noch einen Secret Store, und ein Playbook erbt nicht die Umgebungsvariablen von AnsibleForms selbst
 (`ENCRYPTION_SECRET`, `DB_*`, `RTE_TOKEN` und die anderen): Übergeben Sie einen solchen Wert als Extravar oder Anmeldedaten. Die RTE von 7.0 bis 7.2,
 die selbst in der Datenbank las und schrieb, läuft in 7.x weiterhin als veralteter Datenbankmodus (siehe [Datenbankmodus](#database-mode-deprecated)).
@@ -48,14 +48,14 @@ die selbst in der Datenbank las und schrieb, läuft in 7.x weiterhin als veralte
 
 ## Wie die RTE läuft
 
-Die RTE ist ein Container, den Sie selbst betreiben, neben der App oder in einem anderen Netz: AnsibleForms erzeugt nie einen. Dieser Abschnitt geht durch,
-wo sie läuft, was sie mit der App teilt und was in ihr geschieht, vom Start eines Formulars an bis der Prozess des Playbooks
+Die RTE ist ein Container, den Sie selbst betreiben, neben dem Controller oder in einem anderen Netz: AnsibleForms erzeugt nie einen. Dieser Abschnitt geht durch,
+wo sie läuft, was sie mit dem Controller teilt und was in ihr geschieht, vom Start eines Formulars an bis der Prozess des Playbooks
 beendet ist:
 
 <div class="af-diagram" markdown="0">
 <svg viewBox="0 0 760 500" role="img" aria-labelledby="afr-title afr-desc" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:100%;height:auto;color:var(--body-text-color);font-family:inherit">
 <title id="afr-title">Wie die RTE ein Playbook ausführt</title>
-<desc id="afr-desc">Auf einem Container-Host oder in einem Kubernetes-Cluster, beide vom Betreiber betrieben, halten der App-Container und ein oder mehrere RTE-Container jeweils einen WebSocket zwischen sich, geöffnet von der App (eingehend) oder von der RTE (ausgehend). Nur die App spricht mit der Datenbank. 1: Der Browser startet ein Formular in der App. 2: Die App speichert den Job in der Datenbank, wählt den Runner und versiegelt die Geheimnisse des Jobs für ihn. 3: Die App sendet den Job über den Socket. 4: Die RTE übernimmt ihn und holt die Dateien des Jobs aus ihrem Cache oder von der App. 5: Die RTE startet ansible-playbook als Kindprozess, einen pro Job, bis zu RTE_MAX_JOBS. 6: Das Playbook erreicht die verwalteten Hosts. 7: Die RTE schreibt die Ausgabe, die Ereignisse und das Ende in ihren Spool und sendet sie über den Socket; die App speichert sie in der Datenbank und bestätigt sie. 8: Der Browser verfolgt den Job über die App. Das Volume der App wird nur mit RTE_FILES=local in die RTE eingehängt.</desc>
+<desc id="afr-desc">Auf einem Container-Host oder in einem Kubernetes-Cluster, beide vom Betreiber betrieben, halten der Controller-Container und ein oder mehrere RTE-Container jeweils einen WebSocket zwischen sich, geöffnet vom Controller (eingehend) oder von der RTE (ausgehend). Nur der Controller spricht mit der Datenbank. 1: Der Browser startet ein Formular im Controller. 2: Der Controller speichert den Job in der Datenbank, wählt den Runner und versiegelt die Geheimnisse des Jobs für ihn. 3: Der Controller sendet den Job über den Socket. 4: Die RTE übernimmt ihn und holt die Dateien des Jobs aus ihrem Cache oder vom Controller. 5: Die RTE startet ansible-playbook als Kindprozess, einen pro Job, bis zu RTE_MAX_JOBS. 6: Das Playbook erreicht die verwalteten Hosts. 7: Die RTE schreibt die Ausgabe, die Ereignisse und das Ende in ihren Spool und sendet sie über den Socket; der Controller speichert sie in der Datenbank und bestätigt sie. 8: Der Browser verfolgt den Job über den Controller. Das Volume des Controllers wird nur mit RTE_FILES=local in die RTE eingehängt.</desc>
 <style>
 .afr-box{fill:var(--af-accent-soft);stroke:currentColor;stroke-opacity:.45;stroke-width:1.2}
 .afr-main{fill:none;stroke:var(--link-color);stroke-width:1.8}
@@ -121,7 +121,7 @@ beendet ist:
 <text class="afr-s" x="684" y="334" text-anchor="middle">nur RTE_FILES=local</text>
 <rect class="afr-box" x="190" y="430" width="140" height="60" rx="10"/>
 <text class="afr-t" x="260" y="455" text-anchor="middle">MySQL / MariaDB</text>
-<text class="afr-s" x="260" y="473" text-anchor="middle">nur die der App</text>
+<text class="afr-s" x="260" y="473" text-anchor="middle">nur die des Controllers</text>
 <line class="afr-line" x1="130" y1="124" x2="188" y2="124" marker-end="url(#afr-arrow)"/>
 <line class="afr-line" x1="188" y1="152" x2="132" y2="152" marker-end="url(#afr-arrow)"/>
 <line class="afr-ws" x1="330" y1="161" x2="393" y2="161" marker-end="url(#afr-arrow)"/>
@@ -143,88 +143,88 @@ beendet ist:
 </svg>
 </div>
 
-Das Diagramm zeigt einen Socket pro RTE, egal welche Seite ihn geöffnet hat: Die App wählt sich bei einer eingehenden RTE ein, eine ausgehende RTE wählt sich bei der App ein (siehe
-[Modi](modes.html)). Sobald er offen ist, gehen dieselben Nachrichten in beide Richtungen, und nur die App liest und schreibt die Datenbank.
+Das Diagramm zeigt einen Socket pro RTE, egal welche Seite ihn geöffnet hat: Der Controller wählt sich bei einer eingehenden RTE ein, eine ausgehende RTE wählt sich beim Controller ein (siehe
+[Modi](modes.html)). Sobald er offen ist, gehen dieselben Nachrichten in beide Richtungen, und nur der Controller liest und schreibt die Datenbank.
 
 **Wer sie startet.** Eine RTE ist ein langlebiger Container, gestartet von dem, was auch Ihre anderen Container betreibt. Sie wartet auf Jobs und läuft
 zwischen ihnen weiter:
 
 | Wie Sie AnsibleForms betreiben | Wer die RTE startet |
 |---|---|
-| `docker run` oder `podman run` | Sie, mit einem Befehl wie dem in [Eine RTE betreiben](run.html), auf einem beliebigen Host, der die App erreicht oder den die App erreicht |
+| `docker run` oder `podman run` | Sie, mit einem Befehl wie dem in [Eine RTE betreiben](run.html), auf einem beliebigen Host, der den Controller erreicht oder den der Controller erreicht |
 | [Docker Compose](../installation/docker-compose.html) | Der Dienst `rte` von `docker-compose.yml`, neben `app` und `mysqldb`. Sein Config-Seed deklariert ihn als Standard-Runner `rte`, eingehend, unter `http://rte:8000` |
-| [Helm-Chart](../installation/kubernetes.html) | Kubernetes, als zweiter Container namens `rte` im Pod der App (`containers.rte`). Die App wählt sich unter `127.0.0.1` ein, eingehend, und der Seed des Charts deklariert ihn als Standard-Runner |
+| [Helm-Chart](../installation/kubernetes.html) | Kubernetes, als zweiter Container namens `rte` im Pod des Controllers (`containers.rte`). Der Controller wählt sich unter `127.0.0.1` ein, eingehend, und der Seed des Charts deklariert ihn als Standard-Runner |
 | [Das Installationsprogramm](../installation/installer.html) | Docker Compose oder das Helm-Chart wie oben, oder ein systemd-Dienst [ohne Container](../installation/native.html); ein eigener Runner, der um Beitritt bittet und auf die Freigabe eines Admins wartet |
 
 Die Container-Engine gehört Ihnen: Docker oder Podman auf dem Host oder die Container-Runtime Ihres Kubernetes-Clusters, von Ihnen installiert und aktuell
-gehalten. AnsibleForms spricht nie mit ihr. Weder die App noch die RTE ruft Docker oder Podman auf, hängt deren Socket ein oder startet einen
-Container: Die App spricht mit der RTE nur über deren Socket.
+gehalten. AnsibleForms spricht nie mit ihr. Weder der Controller noch die RTE ruft Docker oder Podman auf, hängt deren Socket ein oder startet einen
+Container: Der Controller spricht mit der RTE nur über deren Socket.
 
 **Was drin ist.** Ein Container, mit dem, was zum Ausführen eines Playbooks nötig ist, und nichts weiter:
 
-* **Der Server** : derselbe Node.js-Server wie die App, gestartet mit `AF_ROLE=rte` (im Image gesetzt) unter `tini`
+* **Der Server** : derselbe Node.js-Server wie der Controller, gestartet mit `AF_ROLE=rte` (im Image gesetzt) unter `tini`
 * **Weggelassen** : die Weboberfläche, die Anmeldung, der Zeitplaner, der Worker und jedes Datenbankmodul, die diese Rolle nicht lädt
 * **Worauf sie lauscht** : ihren `PORT` (`8000`): `/live` und `/ready` für Probes und `/metrics` für Prometheus, und eingehend den Socket,
-  bei dem sich die App einwählt, `/rte/v1/socket`. Eine ausgehende RTE nimmt keine Verbindung von der App an
+  bei dem sich der Controller einwählt, `/rte/v1/socket`. Eine ausgehende RTE nimmt keine Verbindung vom Controller an
 * **Python und Ansible** : mitgebracht von der gewählten Image-Schicht (siehe [Die RTE-Images](images.html))
 * **Der Benutzer** : Der Server und jedes Playbook laufen als `node` (uid 1000), nie als root
 
-**Was sie mit der App teilt.** Ihr Token und mit `RTE_FILES=local` die Dateien der App. Mit `RTE_FILES=transfer`, dem Standard, kommen die
+**Was sie mit dem Controller teilt.** Ihr Token und mit `RTE_FILES=local` die Dateien des Controllers. Mit `RTE_FILES=transfer`, dem Standard, kommen die
 Playbooks und Inventare mit jedem Job, und die RTE braucht keine gemeinsame Festplatte:
 
-| Mit der App geteilt | Was die RTE damit tut |
+| Mit dem Controller geteilt | Was die RTE damit tut |
 |---|---|
-| `RTE_TOKEN` | Legt es vor, wenn sie sich bei der App einwählt (ausgehend), oder prüft es, wenn die App sich bei ihr einwählt (eingehend). Die App hält denselben Wert in den RTE-Anmeldedaten des Runners, und die Geheimnisse des Jobs werden damit versiegelt |
+| `RTE_TOKEN` | Legt es vor, wenn sie sich beim Controller einwählt (ausgehend), oder prüft es, wenn der Controller sich bei ihr einwählt (eingehend). Der Controller hält denselben Wert in den RTE-Anmeldedaten des Runners, und die Geheimnisse des Jobs werden damit versiegelt |
 | Das persistente Volume, `/app/dist/persistent`, nur mit `RTE_FILES=local` | Der Playbook-Ordner ([`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH)) oder das Playbook-Repository, das der Worker unter [`REPO_PATH`](../customization/paths.html#env_REPO_PATH) geklont hat, die Inventare ([`INVENTORY_PATH`](../customization/paths.html#env_INVENTORY_PATH) und die Inventar-Repositories) und die Uploads. Die RTE schreibt die Extravars-Dateien des Jobs in den Playbook-Ordner, hängen Sie ihn also mit Schreibzugriff ein |
-| Der ssh-Ordner, `/home/node/.ssh` | Der private Schlüssel und die `known_hosts`, die die SSH-Verbindungen des Playbooks verwenden: Hängen Sie den der App ein, der auf ihren Einstellungsseiten verwaltet wird, oder geben Sie der RTE einen eigenen |
+| Der ssh-Ordner, `/home/node/.ssh` | Der private Schlüssel und die `known_hosts`, die die SSH-Verbindungen des Playbooks verwenden: Hängen Sie den des Controllers ein, der auf seinen Einstellungsseiten verwaltet wird, oder geben Sie der RTE einen eigenen |
 
-Die RTE klont nichts: Ein Repository erreicht sie in den Dateien eines Jobs oder auf dem Volume, das sie mit der App teilt. Collections, Rollen und
+Die RTE klont nichts: Ein Repository erreicht sie in den Dateien eines Jobs oder auf dem Volume, das sie mit dem Controller teilt. Collections, Rollen und
 `ansible.cfg` kommen aus dem Image, aus den Ordnern `/etc/ansible/collections`, `/etc/ansible/roles` und `/etc/ansible/ansible.cfg`, wenn
 Sie sie dort einhängen (das Docker Compose-Projekt tut das), oder aus einer `ansible.cfg` neben den Playbooks.
 
 **Das Leben eines Jobs.** Die Nummern unten sind die Nummern im Diagramm, für ein Playbook-Formular, das aus dem Browser oder über die API gestartet wird:
 
-1. **Start** : Die App prüft das Formular und seine Werte, baut die Extravars und speichert den Job mit dem Status `running`. Ein Formular mit einer
+1. **Start** : Der Controller prüft das Formular und seine Werte, baut die Extravars und speichert den Job mit dem Status `running`. Ein Formular mit einer
    [Genehmigung](../forms/approval.html) hält hier an, bis ein Genehmiger es akzeptiert, und erreicht vorher keine RTE
-2. **Den Runner wählen** : Die App nimmt die RTE, die das Formular mit `runner: <name>` nennt, sonst den Standard-Runner vom Typ RTE, und speichert seinen
-   Namen am Job. Sie löst die Anmeldedaten des Jobs aus der Datenbank oder einem [Secret Store](../secret-stores/) auf, seine Ansible-Anmeldung und sein
+2. **Den Runner wählen** : Der Controller nimmt die RTE, die das Formular mit `runner: <name>` nennt, sonst den Standard-Runner vom Typ RTE, und speichert seinen
+   Namen am Job. Er löst die Anmeldedaten des Jobs aus der Datenbank oder einem [Secret Store](../secret-stores/) auf, seine Ansible-Anmeldung und sein
    Vault-Passwort, und versiegelt sie mit AES-256-GCM unter einem Schlüssel, der aus dem Token dieses Runners und der Job-ID abgeleitet ist
-3. **Übergabe** : Der App-Knoten, der den Socket der RTE hält, sendet ihr den Job: die Extravars, die Optionen des Formulars, die versiegelten Geheimnisse und
-   die Hashes der Dateien des Jobs. Jeder App-Knoten kann den Job starten; der Knoten mit dem Socket sendet ihn innerhalb von zwei Sekunden. Eine volle RTE
+3. **Übergabe** : Der Controller-Knoten, der den Socket der RTE hält, sendet ihr den Job: die Extravars, die Optionen des Formulars, die versiegelten Geheimnisse und
+   die Hashes der Dateien des Jobs. Jeder Controller-Knoten kann den Job starten; der Knoten mit dem Socket sendet ihn innerhalb von zwei Sekunden. Eine volle RTE
    oder eine nicht verbundene lässt den Job warten, bis zu [`RTE_QUEUE_MINUTES`](../customization/server.html#env_RTE_QUEUE_MINUTES)
 4. **Übernahme** : Die RTE antwortet `claimed` oder `refused`, wenn sie voll ist, anhält, die Geheimnisse nicht öffnen kann oder der Job mit einem anderen
    [Vertrag](images.html#the-contract) als ihrem eigenen kommt. Mit `RTE_FILES=transfer` nimmt sie die Playbooks und Inventare anhand ihres Hashs aus ihrem
-   Cache, fragt die App nach einem Hash, den sie nicht hat, und entpackt sie in einen eigenen Ordner des Jobs
+   Cache, fragt den Controller nach einem Hash, den sie nicht hat, und entpackt sie in einen eigenen Ordner des Jobs
 5. **Start des Prozesses** : Im Playbook-Ordner (plus dem `playbookSubPath` des Formulars, der existieren muss) schreibt sie zwei Dateien: `extravars_<id>.json`
    mit den Werten des Formulars und den Anmeldedaten sowie eine versteckte mit der Ansible-Anmeldung. Dann startet sie `ansible-playbook` als eigenen Kindprozess,
    ohne Shell, in einer eigenen Prozessgruppe, mit `-e @` auf diese Dateien, einem `-i` pro Inventar sowie Tags, Limit, Check,
    Diff und Ausführlichkeit des Formulars. Das Vault-Passwort geht über stdin hinein, nie in eine Datei oder auf die Befehlszeile, und der Prozess läuft als
    `node` mit gefilterter Umgebung (siehe unten)
 6. **Ausführung** : Das Playbook verbindet sich vom RTE-Container aus mit den verwalteten Hosts, über SSH mit dem Schlüssel und den `known_hosts` aus
-   `/home/node/.ssh`, mit `sshpass` für eine Passwortanmeldung, oder über die APIs, die seine Module aufrufen. Die RTE, nicht die App, muss sie erreichen
+   `/home/node/.ssh`, mit `sshpass` für eine Passwortanmeldung, oder über die APIs, die seine Module aufrufen. Die RTE, nicht der Controller, muss sie erreichen
 7. **Ausgabe und Ende** : Die RTE bündelt stdout und stderr jede halbe Sekunde oder alle 64 KB, mit maskierten Anmeldedaten, und nummeriert jedes
    Bündel. Sie schreibt jedes Element in den Spool des Jobs auf ihrer Festplatte, bevor sie es sendet: die Ausgabe, die Ereignisse, das Job-Protokoll aus
-   `.joblogs/job_log_<id>.log` (alle 2 Sekunden), den Start und das Ende mit dem Endstatus (`success`, `failed` oder `aborted`). Die App
+   `.joblogs/job_log_<id>.log` (alle 2 Sekunden), den Start und das Ende mit dem Endstatus (`success`, `failed` oder `aborted`). Der Controller
    speichert jedes Element einmal und bestätigt es, und die RTE verwirft den Spool, sobald das Ende gespeichert ist. Jenseits von
    [`PROCESS_MAX_BUFFER`](../customization/server.html#env_PROCESS_MAX_BUFFER) Bytes auf einem Stream (standardmäßig 50 MB) sendet sie nichts mehr, und
-   das Playbook läuft weiter. Die App sendet dann die [Benachrichtigungen](../forms/notifications.html) des Formulars
-8. **Verfolgen** : Der Browser spricht nie mit der RTE: Die Formularseite liest den Job alle 2 Sekunden über die App neu, und die Seite Jobs
-   verfolgt ihn live, während die App jedes Element speichert
+   das Playbook läuft weiter. Der Controller sendet dann die [Benachrichtigungen](../forms/notifications.html) des Formulars
+8. **Verfolgen** : Der Browser spricht nie mit der RTE: Die Formularseite liest den Job alle 2 Sekunden über den Controller neu, und die Seite Jobs
+   verfolgt ihn live, während der Controller jedes Element speichert
 
-**Ein abgerissener Socket.** Das Playbook läuft weiter. Die RTE wählt sich erneut ein (ausgehend), oder ein App-Knoten wählt sich erneut bei ihr ein (eingehend), und sie sendet erneut, was
-die App noch nicht bestätigt hatte: Die App überspringt, was sie bereits gespeichert hat, sodass keine Zeile verloren geht oder doppelt gespeichert wird. Das gilt, solange der Socket
-innerhalb von zwei Minuten zurück ist: Die App schreibt den Heartbeat der RTE nur, solange ihr Socket offen ist, und sobald dieser Heartbeat zwei Minuten
+**Ein abgerissener Socket.** Das Playbook läuft weiter. Die RTE wählt sich erneut ein (ausgehend), oder ein Controller-Knoten wählt sich erneut bei ihr ein (eingehend), und sie sendet erneut, was
+der Controller noch nicht bestätigt hatte: Der Controller überspringt, was er bereits gespeichert hat, sodass keine Zeile verloren geht oder doppelt gespeichert wird. Das gilt, solange der Socket
+innerhalb von zwei Minuten zurück ist: Der Controller schreibt den Heartbeat der RTE nur, solange ihr Socket offen ist, und sobald dieser Heartbeat zwei Minuten
 alt ist, beendet der Worker die laufenden Jobs der RTE als verwaist, auch wenn ihre Playbooks noch laufen. Halten Sie den Spool
 ([`RTE_SPOOL_PATH`](../customization/server.html#env_RTE_SPOOL_PATH)) auf einem Volume, damit eine neu gestartete RTE noch sendet, was sie aufbewahrt hatte. Ein
-Playbook, das lief, als seine RTE neu startete, kann nicht weiterlaufen: Die App beendet seinen Job als verwaist, wenn die RTE ohne ihn zurückkommt.
+Playbook, das lief, als seine RTE neu startete, kann nicht weiterlaufen: Der Controller beendet seinen Job als verwaist, wenn die RTE ohne ihn zurückkommt.
 
-**Abbruch.** Ein Abbruch setzt das Abbruch-Flag des Jobs, und der App-Knoten, der den Socket der RTE hält, sendet innerhalb von zwei Sekunden `cancel`. Die RTE
+**Abbruch.** Ein Abbruch setzt das Abbruch-Flag des Jobs, und der Controller-Knoten, der den Socket der RTE hält, sendet innerhalb von zwei Sekunden `cancel`. Die RTE
 sendet `SIGTERM` an die Prozessgruppe des Playbooks, sodass `ansible-playbook` und jeder von ihm gestartete Fork gemeinsam anhalten, und der Job endet
 `aborted`. Ein Abbruch, der vor seinem Job eintrifft, wird eine Minute aufbewahrt, und der Job startet dann abgebrochen.
 
 **Aufräumen.** Sobald der Prozess endet, unabhängig vom Ergebnis, entfernt die RTE beide Extravars-Dateien (ein Formular mit `keepExtravars`
 behält die sichtbare, nie die versteckte), die Artefaktdatei in `/tmp`, die Job-Protokolldatei und den eigenen Dateiordner des Jobs. Das
-Ende wird einmal gespeichert: Ein zweiter Schreiber, etwa die App, die einen Job fehlschlagen lässt, den die RTE bereits beendet hat, ändert nichts.
+Ende wird einmal gespeichert: Ein zweiter Schreiber, etwa der Controller, der einen Job fehlschlagen lässt, den die RTE bereits beendet hat, ändert nichts.
 
 **Ein Prozess pro Job, nicht ein Container pro Job.** AWX und AAP starten für jeden Job einen neuen Pod oder Container aus einem Execution-Environment-Image.
 AnsibleForms startet nichts: Der RTE-Container läuft bereits, und jeder Job ist ein Kindprozess darin. Ein Job startet,
@@ -238,13 +238,13 @@ teilen sich die Playbooks, die auf einer RTE laufen, deren CPU, Speicher, `/tmp`
 
 Die RTE führt Code aus, den Formularautoren geschrieben haben, daher ist sie so gebaut, dass sie so wenig wie möglich enthält:
 
-* **Nur ihr Token** : Die RTE hält keine Datenbank-Anmeldedaten und kein `ENCRYPTION_SECRET`. Sie nimmt keinen Aufruf an außer dem Socket der App, mit
-  ihrem Token, und hat keine Benutzer, keine Anmeldung und keine Webseiten. Über den Socket kann sie nur die Jobs ausführen, die die App ihr sendet, über sie berichten und
+* **Nur ihr Token** : Die RTE hält keine Datenbank-Anmeldedaten und kein `ENCRYPTION_SECRET`. Sie nimmt keinen Aufruf an außer dem Socket des Controllers, mit
+  ihrem Token, und hat keine Benutzer, keine Anmeldung und keine Webseiten. Über den Socket kann sie nur die Jobs ausführen, die der Controller ihr sendet, über sie berichten und
   nach ihren Dateien fragen: Sie kann keinen Job anlegen, keinen anderen Job lesen und keine Anmeldedaten herausgeben
 * **Versiegelte Geheimnisse** : Um einen Job auszuführen, liest die RTE nie die Tabelle der Anmeldedaten oder einen Secret Store. Sie erhält die Geheimnisse der Jobs, die sie
   ausführt, versiegelt nur für ihr Token und diese Job-ID, sodass sich ein Bündel für eine andere RTE oder einen anderen Job nicht öffnen lässt, und ein geändertes Byte
   wird abgewiesen
-* **Eine geprüfte Verbindung** : Ausgehend prüft die RTE das Zertifikat der App. Eingehend über HTTPS pinnt die App beim Beitritt das eigene Zertifikat der RTE
+* **Eine geprüfte Verbindung** : Ausgehend prüft die RTE das Zertifikat des Controllers. Eingehend über HTTPS pinnt der Controller beim Beitritt das eigene Zertifikat der RTE
   und wählt sich nur ein, wenn sie dieses vorlegt (siehe [Modi](modes.html#inbound)). Eine eingehende RTE über einfaches HTTP gehört
   in ein privates Netz, wie das des Docker Compose-Projekts
 * **Keine geerbte Umgebung** : `ansible-playbook` erhält die Umgebung der RTE ohne jede Variable, die AnsibleForms selbst liest
@@ -255,7 +255,7 @@ Die RTE führt Code aus, den Formularautoren geschrieben haben, daher ist sie so
 * **Nicht root** : Die RTE und ihre Playbooks laufen als `node` (uid 1000), sodass ein Playbook tun kann, was dieser Benutzer im Container kann, etwa
   seine Dateien und den SSH-Schlüssel lesen, und nicht mehr
 
-Behandeln Sie ihren Container, ihr Image und ihre Umgebung mit derselben Sorgfalt wie die der App.
+Behandeln Sie ihren Container, ihr Image und ihre Umgebung mit derselben Sorgfalt wie die des Controllers.
 
 ---
 
@@ -265,11 +265,11 @@ Die RTE von 7.0 bis 7.2, ohne `RTE_MODE`, läuft die ganze Reihe 7.x hindurch un
 
 * **Sie hält die Datenbank** : ihre `DB_*`-Einstellungen und `ENCRYPTION_SECRET`, wenn sie sich selbst registriert
   ([`RTE_REGISTER`](../customization/server.html#env_RTE_REGISTER))
-* **Die Übergabe ist ein HTTP-Aufruf** : Die App ruft `POST <address>/rte/v1/jobs` mit dem Token und den versiegelten Geheimnissen auf, und die RTE übernimmt
+* **Die Übergabe ist ein HTTP-Aufruf** : Der Controller ruft `POST <address>/rte/v1/jobs` mit dem Token und den versiegelten Geheimnissen auf, und die RTE übernimmt
   den Job, indem sie ihren Namen in der Datenbank daran schreibt (Schritte 3 und 4)
 * **Sie schreibt die Ausgabe selbst** : in die Datenbank, gebündelt, ohne Spool (Schritt 7). Ein Abbruch erreicht sie über das Abbruch-Flag des Jobs,
   das sie alle 2 Sekunden liest, und einen Aufruf `/cancel`
-* **Sie liest die Dateien vom Volume der App** : Sie braucht dieselbe Festplatte wie die App, wie bei `RTE_FILES=local`
+* **Sie liest die Dateien vom Volume des Controllers** : Sie braucht dieselbe Festplatte wie der Controller, wie bei `RTE_FILES=local`
 
 Ihre Runner-Seite hat keine der [RTE-Einstellungen](../runners/runner-page.html#an-rtes-settings): Sie liest ihre eigenen Variablen. Um sie in einen
 Socket-Modus zu überführen, siehe [Modi](modes.html#database-deprecated).

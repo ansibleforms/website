@@ -3,7 +3,7 @@ layout: default
 title: Enregistrement
 parent: Runners
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Enregistrement
@@ -19,25 +19,25 @@ Comment un RTE demande à rejoindre et est approuvé, les jetons d'adhésion pou
 
 ## Demander à rejoindre
 
-Depuis la 7.3.0, un RTE en mode socket (`outbound` ou `inbound`) que l'application ne connaît pas encore demande à rejoindre, et un admin l'approuve.
-Il se présente avec son propre `RTE_TOKEN` et son `RTE_NAME` : un RTE sortant lors de son premier contact avec l'application, un RTE entrant lors de son unique
-appel d'enregistrement. Sans jeton d'adhésion, l'application alors :
+Depuis la 7.3.0, un RTE en mode socket (`outbound` ou `inbound`) que le contrôleur ne connaît pas encore demande à rejoindre, et un admin l'approuve.
+Il se présente avec son propre `RTE_TOKEN` et son `RTE_NAME` : un RTE sortant lors de son premier contact avec le contrôleur, un RTE entrant lors de son unique
+appel d'enregistrement. Sans jeton d'adhésion, le contrôleur alors :
 
 1. Stocke le `RTE_TOKEN` du RTE dans un nouvel identifiant de type RTE nommé `<name>-rte` (avec un numéro ajouté quand ce nom est pris), et
    pour un RTE entrant son adresse, `RTE_URL`
 2. Ajoute un runner nommé d'après `RTE_NAME`, de type RTE, dans le mode du RTE, qui se connecte avec cet identifiant, marqué **En attente d'approbation**
    et désactivé. Sa description indique l'hôte depuis lequel il a fait la demande
 
-Un RTE sortant reste connecté pendant qu'il attend, mais ne reçoit aucun job. L'application ne contacte pas un RTE entrant tant qu'il n'est pas approuvé. Les deux journalisent
+Un RTE sortant reste connecté pendant qu'il attend, mais ne reçoit aucun job. Le contrôleur ne contacte pas un RTE entrant tant qu'il n'est pas approuvé. Les deux journalisent
 qu'ils attendent qu'un admin les approuve dans **Connexions > Runners**, avec l'empreinte de leur jeton.
 
-Un RTE entrant avec un `RTE_URL` en `https://` envoie aussi son certificat quand il demande à rejoindre, et l'application l'épingle : à partir de là,
-l'application ne contacte ce RTE que s'il présente le même certificat, si bien qu'un certificat auto-signé fonctionne sans CA (voir [Entrant](../rte/modes.html#inbound)).
+Un RTE entrant avec un `RTE_URL` en `https://` envoie aussi son certificat quand il demande à rejoindre, et le contrôleur l'épingle : à partir de là,
+le contrôleur ne contacte ce RTE que s'il présente le même certificat, si bien qu'un certificat auto-signé fonctionne sans CA (voir [Entrant](../rte/modes.html#inbound)).
 
 Au plus 20 RTE attendent l'approbation en même temps : les suivants sont refusés jusqu'à ce que certains soient approuvés ou refusés. Une demande que personne ne traite dans les
 24 heures est supprimée par le worker, avec son identifiant.
 
-Un RTE nommé d'après un runner que l'application connaît déjà, mais avec un autre jeton, est refusé et ne demande pas à rejoindre. Donnez-lui le jeton de ce runner,
+Un RTE nommé d'après un runner que le contrôleur connaît déjà, mais avec un autre jeton, est refusé et ne demande pas à rejoindre. Donnez-lui le jeton de ce runner,
 ou supprimez le runner pour qu'il demande à rejoindre. Un [jeton d'adhésion](#join-tokens) n'aide que tant que ce runner attend encore l'approbation.
 
 ---
@@ -54,11 +54,11 @@ Sa page montre les mêmes informations dans un encadré jaune, **Ce RTE demande 
 | Champ | Ce qu'il montre |
 |---|---|
 | Empreinte | Les 8 premiers chiffres hexadécimaux du SHA-256 de son `RTE_TOKEN`, sous la forme `abcd-ef12`. Le RTE la journalise à son démarrage, et l'[installeur](../installation/installer.html#a-runner) l'affiche à la fin. Elle doit être identique |
-| Empreinte du certificat | Dans la boîte de dialogue, pour un RTE entrant en HTTPS : les 8 premiers chiffres hexadécimaux du SHA-256 du certificat qu'épingle l'application (ses octets DER), sous la forme `abcd-ef12`. Le RTE la journalise à son démarrage et l'[installeur](../installation/installer.html#a-runner) l'affiche à la fin. Elle doit être identique |
+| Empreinte du certificat | Dans la boîte de dialogue, pour un RTE entrant en HTTPS : les 8 premiers chiffres hexadécimaux du SHA-256 du certificat qu'épingle le contrôleur (ses octets DER), sous la forme `abcd-ef12`. Le RTE la journalise à son démarrage et l'[installeur](../installation/installer.html#a-runner) l'affiche à la fin. Elle doit être identique |
 | Hôte | L'hôte sur lequel il tourne |
-| Adresse IP | L'adresse depuis laquelle il a appelé l'application |
+| Adresse IP | L'adresse depuis laquelle il a appelé le contrôleur |
 | Mode | Sortant ou Entrant |
-| URI | L'adresse d'un RTE entrant, là où l'application le contacte |
+| URI | L'adresse d'un RTE entrant, là où le contrôleur le contacte |
 | Version | Sa version |
 | Demandé le | Quand il a demandé à rejoindre |
 

@@ -3,7 +3,7 @@ layout: default
 title: 单个运行器的页面
 parent: 运行器
 nav_order: 4
-translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
+translated_from: b7be7b15d86552e32ee2c296d4d14f2f49d39846
 ---
 
 # 单个运行器的页面
@@ -45,26 +45,26 @@ translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
 
 ## RTE 的设置
 
-RTE 选项卡让您可以从应用中管理 RTE，而无需在其运行的机器上编辑环境。
+RTE 选项卡让您可以从控制器中管理 RTE，而无需在其运行的机器上编辑环境。
 
-**连接。** 套接字模式的 RTE 会显示一个标记：**已连接** 或 **未连接**。悬停在 **已连接** 上时会显示持有其套接字的应用节点、
-RTE 的版本以及其正在运行的作业数量。**未连接** 表示没有任何应用节点持有到它的套接字：
-请检查 RTE 是否在运行、其地址或 `APP_URL`，以及其令牌。
+**连接。** 套接字模式的 RTE 会显示一个标记：**已连接** 或 **未连接**。悬停在 **已连接** 上时会显示持有其套接字的控制器节点、
+RTE 的版本以及其正在运行的作业数量。**未连接** 表示没有任何控制器节点持有到它的套接字：
+请检查 RTE 是否在运行、其地址或 `CONTROLLER_URL`，以及其令牌。
 
 **设置。** 出站或入站模式的 RTE 有四项设置，默认均为空：
 
 | 设置 | 等同于 | 作用 |
 |---|---|---|
 | 最大并发作业数 | [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | 它同时运行多少个 playbook，默认为 `10`；`0` 表示不限制 |
-| 作业文件缓存 | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | 它保留多少应用发来的作业文件，单位为 MB，默认为 `1024`；`0` 表示不保留 |
+| 作业文件缓存 | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | 它保留多少控制器发来的作业文件，单位为 MB，默认为 `1024`；`0` 表示不保留 |
 | 停止时的等待时间 | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | 正在停止的 RTE 等待其正在运行的 playbook 的时长，默认为 `25` 秒 |
-| 作业文件 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **传输**：应用随作业发送作业的文件。**本地**：它从自己挂载的文件夹运行 |
+| 作业文件 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **传输**：控制器随作业发送作业的文件。**本地**：它从自己挂载的文件夹运行 |
 
 **哪个值优先。** 页面上的值优先于 RTE 上设置的同名变量。留空的字段使用 RTE 自身的变量，
 否则使用默认值。页面会在每个字段下方说明是哪一种：**覆盖 RTE 上设置的 RTE_MAX_JOBS（3）。**，或 **留空：RTE 使用其自身的
 RTE_MAX_JOBS，3。**；占位符显示留空字段所代表的值。
 
-**它们如何到达 RTE。** 这些设置与运行器一起保存在应用的数据库中。应用会在 RTE 连接时以及每次保存时
+**它们如何到达 RTE。** 这些设置与运行器一起保存在控制器的数据库中。控制器会在 RTE 连接时以及每次保存时
 通过 RTE 的套接字发送它们，RTE 会立即应用：缩小的缓存会被裁剪，新的上限从下一个
 作业开始计算。RTE 只将它们保存在内存中，不写入任何文件：重启后，它会在连接时、运行第一个作业之前再次获取它们。
 
@@ -85,7 +85,7 @@ RTE_MAX_JOBS，3。**；占位符显示留空字段所代表的值。
 
 | RTE | 测试读取的内容 | 失败的情况 |
 |---|---|---|
-| 出站或入站 | 每个应用节点所记录的套接字持有者，以及 RTE 连接时所报告的内容。它不调用任何东西 | 没有任何应用节点持有到它的套接字：*the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app*，对于入站 RTE 则为 *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE*。或者 RTE 使用的协议约定不是 3 |
+| 出站或入站 | 每个控制器节点所记录的套接字持有者，以及 RTE 连接时所报告的内容。它不调用任何东西 | 没有任何控制器节点持有到它的套接字：*the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller*，对于入站 RTE 则为 *no controller node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the controller to the RTE*。或者 RTE 使用的协议约定不是 3 |
 | 数据库（已弃用） | 使用其令牌调用 RTE 的 `/rte/v1/health` | RTE 在其地址上没有应答、拒绝令牌，或使用的协议约定不是 2 |
 
 RTE 选项卡的 **连接** 标记无需测试即可显示同样的套接字状态。

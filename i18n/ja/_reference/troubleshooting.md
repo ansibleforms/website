@@ -2,7 +2,7 @@
 layout: default
 title: トラブルシューティング
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: e7fbae523c36f8927860982174a794155aafc228
 ---
 
 # トラブルシューティング
@@ -218,8 +218,8 @@ Failed to get forms list
 
 **解決方法**
 
-[`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) が指すファイル、または設定に使っているリポジトリの
-`config.yaml` を修正します。ファイルがない場合は、 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) と
+[`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) が指すファイル、または用途の種類 **ロール** 、 **カテゴリ** 、
+**定数** を持つリポジトリでそのキーを持つファイルを修正します。ファイルがない場合は、 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) と
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) が書き込み可能な永続的な場所を指すようにします。構造については
 [config.yaml](config/) を参照してください。
 
@@ -610,7 +610,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 **原因**
 
 ジョブは、それを実行または追跡するコンテナーに属します。プレイブックはその RTE に、それ以外のジョブ（AWX のジョブ、マルチステップ
-フォームのステップ）はそれを開始したアプリノードに属します。そのコンテナーが再起動すると、自分の未完了のジョブを終了させます。たとえば Pod が
+フォームのステップ）はそれを開始したコントローラーノードに属します。そのコンテナーが再起動すると、自分の未完了のジョブを終了させます。たとえば Pod が
 置き換えられてコンテナーがなくなった場合は、2 分間応答がなければワーカーがそのジョブを終了させます。ソケットモードの RTE が、実行中だったジョブを持たずに
 戻ってきた場合（たとえばスプールのない新しいコンテナー）は、そのジョブは abandoned で終わります。停止する RTE は、まず
 [`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) の間、プレイブックの終了を待ちます。また 1 時間ごとに、
@@ -621,7 +621,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 
 **解決方法**
 
-プレイブックのジョブを再起動します。RTE やアプリノードの再起動やアップグレードはジョブが実行されていないときに行い、停止する RTE には十分な時間を
+プレイブックのジョブを再起動します。RTE やコントローラーノードの再起動やアップグレードはジョブが実行されていないときに行い、停止する RTE には十分な時間を
 与えてください（ [スケーリング](rte/run.html) を参照）。プレイブックは途中まで実行されている可能性があるため、再起動する前に、管理対象ホストで
 本当に完了したかどうかを確認してください。
 
@@ -632,26 +632,26 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 RTE ランナー（ **接続 > ランナー** ）の **接続テスト** が、次のメッセージで失敗します。
 
 ```
-the RTE '<name>' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app
-the RTE '<name>' (inbound) is not connected: no app node could dial it at <address>: check its RTE_URL, its token and the network from the app to the RTE
+the RTE '<name>' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller
+the RTE '<name>' (inbound) is not connected: no controller node could dial it at <address>: check its RTE_URL, its token and the network from the controller to the RTE
 ```
 
 **原因**
 
-ソケットモードの RTE は、1 本の WebSocket でアプリと通信します。アウトバウンドでは RTE がアプリに接続し、インバウンドではアプリが RTE に接続します（
-[モード](rte/modes.html) を参照）。ソケットが開かない理由は、アプリと RTE のログに出力されます。
+ソケットモードの RTE は、1 本の WebSocket でコントローラーと通信します。アウトバウンドでは RTE がコントローラーに接続し、インバウンドではコントローラーが RTE に接続します（
+[モード](rte/modes.html) を参照）。ソケットが開かない理由は、コントローラーと RTE のログに出力されます。
 
 | メッセージ | 出力される場所 | 意味 |
 |---|---|---|
 | `RTE: refused a socket without the right token from <address>` | RTE（インバウンド） | ランナーの RTE 認証情報のトークンが、RTE の `RTE_TOKEN` と一致しない |
-| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | アプリ（インバウンド） | 同じことをアプリ側から見たもの |
-| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | アプリと、拒否された RTE（ `401` ） | RTE が、アプリがそのランナー用に保持しているものとは別のトークンでサインインしている |
+| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | コントローラー（インバウンド） | 同じことをコントローラー側から見たもの |
+| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | コントローラーと、拒否された RTE（ `401` ） | RTE が、コントローラーがそのランナー用に保持しているものとは別のトークンでサインインしている |
 | `RTE '<name>': waiting for an admin to approve it under Connections > Runners (fingerprint <fingerprint>)` | RTE（アウトバウンド） | 参加を求めて承認を待っている |
-| `RTE '<name>': asked to join as inbound runner '<name>': the app dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | RTE（インバウンド、 `APP_URL` あり） | インバウンドの RTE で同じ状況 |
-| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | アプリと、拒否された RTE（ `409` ） | 設定シードがランナーを `rte_mode` なし、つまりデータベースモードで宣言しており、そのモードはシードが決める。インバウンドの RTE には `rte_mode: inbound` と `(and its credential with the address the app dials, RTE_URL)` が表示される |
-| `RTE: RTE_MODE=inbound with APP_URL registers with the app, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | RTE | 自分自身を登録するインバウンドの RTE には、アプリが接続するアドレスが必要 |
-| `Runner '<name>': dialing <address>: <reason>` | アプリ（ `debug` レベル） | アプリがソケットを開けない。たとえば RTE の証明書が、そのランナーにピン留めされたものと違う |
-| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the app, APP_URL) or RTE_MODE=inbound (the app dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | RTE | データベースモードで動いており、ソケットをまったく開かない |
+| `RTE '<name>': asked to join as inbound runner '<name>': the controller dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | RTE（インバウンド、 `CONTROLLER_URL` あり） | インバウンドの RTE で同じ状況 |
+| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | コントローラーと、拒否された RTE（ `409` ） | 設定シードがランナーを `rte_mode` なし、つまりデータベースモードで宣言しており、そのモードはシードが決める。インバウンドの RTE には `rte_mode: inbound` と `(and its credential with the address the controller dials, RTE_URL)` が表示される |
+| `RTE: RTE_MODE=inbound with CONTROLLER_URL registers with the controller, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | RTE | 自分自身を登録するインバウンドの RTE には、コントローラーが接続するアドレスが必要 |
+| `Runner '<name>': dialing <address>: <reason>` | コントローラー（ `debug` レベル） | コントローラーがソケットを開けない。たとえば RTE の証明書が、そのランナーにピン留めされたものと違う |
+| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the controller, CONTROLLER_URL) or RTE_MODE=inbound (the controller dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | RTE | データベースモードで動いており、ソケットをまったく開かない |
 
 **解決方法**
 
@@ -660,11 +660,11 @@ the RTE '<name>' (inbound) is not connected: no app node could dial it at <addre
   （ [RTE の承認](runners/registration.html#approving-an-rte) を参照）
 * **データベースモードの設定シードで管理されている** : シードのランナーに、RTE の認証情報（インバウンドの場合はそのアドレス付き）とともに
   `rte_mode` を設定し、RTE を再起動します
-* **`RTE_URL` のないインバウンド** : `RTE_URL` にアプリが RTE に到達するアドレスを設定するか、 `APP_URL` を外して、ランナーを
+* **`RTE_URL` のないインバウンド** : `RTE_URL` にコントローラーが RTE に到達するアドレスを設定するか、 `CONTROLLER_URL` を外して、ランナーを
   シードまたは **接続 > ランナー** で宣言します
-* **ピン留めされたものと違う証明書** : HTTPS のインバウンドの RTE は登録時に証明書を送り、アプリはその証明書でのみ
+* **ピン留めされたものと違う証明書** : HTTPS のインバウンドの RTE は登録時に証明書を送り、コントローラーはその証明書でのみ
   接続します。証明書を新しくすると、RTE は登録時にもう一度それを送ります。認証情報の CA バンドルが手動で設定されていた場合、
-  アプリはそれを維持し、次のログを出力します。
+  コントローラーはそれを維持し、次のログを出力します。
   `Runner '<name>': its ca_bundle was set by hand: the certificate its RTE sent (fingerprint <fingerprint>) is not stored. Empty the ca_bundle to have the RTE's certificate pinned again`
 * **[DEPRECATED] の警告** : RTE に `RTE_MODE` を設定し、その環境から `DB_*` を削除して、ランナーをそのモードに設定します（
   [モード](rte/modes.html) を参照）

@@ -3,7 +3,7 @@ layout: default
 title: Een ander datacenter
 parent: RTE
 nav_order: 5
-translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
+translated_from: 09b494da97232b189de77db8b533a76ea9e0d8d2
 ---
 
 # Een RTE in een ander datacenter
@@ -28,18 +28,18 @@ Voor beheerders: wanneer de beheerde hosts van een tweede datacenter vanuit een 
 
 ## Waar je mee eindigt
 
-De app, de worker en de database blijven waar ze zijn, in datacenter 1. Datacenter 2 krijgt een host die één RTE-container in
-uitgaande modus draait ([`RTE_MODE=outbound`](../customization/server.html#env_RTE_MODE), zie [Modi](modes.html#outbound)): ze belt de app via
+De controller, de worker en de database blijven waar ze zijn, in datacenter 1. Datacenter 2 krijgt een host die één RTE-container in
+uitgaande modus draait ([`RTE_MODE=outbound`](../customization/server.html#env_RTE_MODE), zie [Modi](modes.html#outbound)): ze belt de controller via
 HTTPS en houdt één WebSocket open, wordt lid als eigen runner, en draait de playbooks van de formulieren die haar noemen tegen de beheerde
 hosts van datacenter 2.
 
 | Waar | Wat daar draait | Praat met |
 |---|---|---|
-| Datacenter 1 | De app-nodes, de worker, de database (zoals nu) | Niets nieuws: het neemt de socket van de RTE aan op zijn gebruikelijke HTTPS-adres |
-| Datacenter 2, de RTE-host | Docker of Podman, en de RTE-container | De app op `APP_URL` via HTTPS, en de beheerde hosts van datacenter 2 |
+| Datacenter 1 | De controller-nodes, de worker, de database (zoals nu) | Niets nieuws: het neemt de socket van de RTE aan op zijn gebruikelijke HTTPS-adres |
+| Datacenter 2, de RTE-host | Docker of Podman, en de RTE-container | De controller op `CONTROLLER_URL` via HTTPS, en de beheerde hosts van datacenter 2 |
 
 De RTE bevat geen databasereferenties en geen `ENCRYPTION_SECRET`, alleen een eigen token. Niets maakt er verbinding mee, dus ze heeft geen open
-poort, geen DNS-naam en geen certificaat nodig. De app stuurt de playbooks en de inventories met elke job mee (`RTE_FILES=transfer`, de
+poort, geen DNS-naam en geen certificaat nodig. De controller stuurt de playbooks en de inventories met elke job mee (`RTE_FILES=transfer`, de
 standaard), dus de RTE heeft er geen kopie van nodig en geen gedeelde schijf.
 
 Elke opdracht hieronder draait in een terminal op de RTE-host, als een gebruiker met `sudo`, tenzij anders vermeld. Het duurt ongeveer 20 minuten,
@@ -53,14 +53,14 @@ Verzamel het volgende:
 
 | Wat | Waar het vandaan komt |
 |---|---|
-| Het adres van de app | `APP_URL`: het adres dat mensen in een browser openen, zoals `https://forms.example.com`, met het basispad als dat er is |
-| Het certificaat van de app | Ondertekend door een publieke CA, een private CA (je hebt het certificaat ervan nodig, stap 6), of zelfondertekend |
+| Het adres van de controller | `CONTROLLER_URL`: het adres dat mensen in een browser openen, zoals `https://forms.example.com`, met het basispad als dat er is |
+| Het certificaat van de controller | Ondertekend door een publieke CA, een private CA (je hebt het certificaat ervan nodig, stap 6), of zelfondertekend |
 | Een proxy | De `HTTPS_PROXY` die dit datacenter gebruikt om datacenter 1 te bereiken, als die er is |
 | De naam van de RTE | De naam van haar runner onder **Verbindingen > Runners**, die formulieren noemen met `runner:`, zoals `rte-dc2`: letters, cijfers en `_ . : @ -` |
 | Een jointoken | Optioneel: een [jointoken](../runners/registration.html#join-tokens) (`afj_...`) keurt de RTE meteen goed. Zonder jointoken keurt een admin haar goed (stap 8) |
 | De ssh-sleutel | De privésleutel die de playbooks gebruiken om de beheerde hosts te bereiken, of het recht om er een aan te maken |
 
-De app moet 7.3.0 of later draaien. Om een jointoken voor deze ene RTE te maken, roept een admin de API één keer aan (zie
+De controller moet 7.3.0 of later draaien. Om een jointoken voor deze ene RTE te maken, roept een admin de API één keer aan (zie
 [Jointokens](../runners/registration.html#join-tokens)):
 
 ```bash
@@ -79,9 +79,9 @@ De RTE is een container, dus de host heeft een container-engine nodig en verder 
 |---|---|
 | Linux op **x86_64** (amd64) of **aarch64** (arm64) | De RTE-images worden vanaf 7.6.0 voor beide gepubliceerd, daarvoor alleen voor amd64 |
 | 2 CPU's en 4 GB geheugen, of meer | Eén RTE draait tot [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) playbooks tegelijk (10), elk met zijn forks: dimensioneer haar daarvoor |
-| 20 GB vrije schijfruimte | De image `-rte-full` is ongeveer 3,3 GB, plus een image tijdens updates, de jobbestanden die de app stuurt en de tijdelijke bestanden van de jobs |
+| 20 GB vrije schijfruimte | De image `-rte-full` is ongeveer 3,3 GB, plus een image tijdens updates, de jobbestanden die de controller stuurt en de tijdelijke bestanden van de jobs |
 | Docker, of Podman met podman-compose | Om de image te pullen en te draaien |
-| De tijd ingesteld via NTP | De tijden van de jobs worden met die van de app vergeleken |
+| De tijd ingesteld via NTP | De tijden van de jobs worden met die van de controller vergeleken |
 
 **Docker**, op Ubuntu of Debian (andere distributies: [docs.docker.com/engine/install](https://docs.docker.com/engine/install/)):
 
@@ -112,14 +112,14 @@ De RTE opent elke verbinding zelf. Niets bereikt haar van buitenaf:
 
 | Van | Naar | Poort | Waarom |
 |---|---|---|---|
-| De RTE-host | De app, op `APP_URL` (via `HTTPS_PROXY` als die is ingesteld) | De poort van de app, `443` achter de meeste proxy's | De socket waarover de jobs, hun bestanden en hun uitvoer gaan |
+| De RTE-host | De controller, op `CONTROLLER_URL` (via `HTTPS_PROXY` als die is ingesteld) | De poort van de controller, `443` achter de meeste proxy's | De socket waarover de jobs, hun bestanden en hun uitvoer gaan |
 | De RTE-host | De beheerde hosts van datacenter 2 | ssh (`22`), WinRM, hun API's | De playbooks draaien vanaf hier |
 | De RTE-host | `ghcr.io` | `443` | Om de image te pullen, tenzij die uit je eigen registry of een bestand komt (stap 4) |
 
 Open geen inkomende poort voor de RTE. Haar `PORT` (`8000`) bedient alleen `/live`, `/ready` en `/metrics`, voor de probes op deze host.
 
-De RTE belt `APP_URL` met `/api/v2/rte/socket` erachter, als WebSocket. Een reverse proxy voor de app moet de upgrade voor
-dat pad doorgeven (zie [Runner-WebSockets](../production/reverse-proxy.html#runner-websockets)). Controleer vanaf hier of de app antwoordt:
+De RTE belt `CONTROLLER_URL` met `/api/v2/rte/socket` erachter, als WebSocket. Een reverse proxy voor de controller moet de upgrade voor
+dat pad doorgeven (zie [Runner-WebSockets](../production/reverse-proxy.html#runner-websockets)). Controleer vanaf hier of de controller antwoordt:
 
 ```bash
 curl -sS https://forms.example.com/api/v2/version
@@ -138,11 +138,11 @@ sudo touch /opt/af-rte/data/ansible/ansible.cfg /opt/af-rte/data/git/.gitconfig
 
 | Map | In de container | Bevat |
 |---|---|---|
-| `data/` | `/app/dist/persistent` | De spool (`rte-spool`: de uitvoer en het einde van elke job tot de app ze heeft opgeslagen), de jobbestanden die de app stuurde (`rte-files`), een private CA, de python-bibliotheken die een playbook installeert |
+| `data/` | `/app/dist/persistent` | De spool (`rte-spool`: de uitvoer en het einde van elke job tot de controller ze heeft opgeslagen), de jobbestanden die de controller stuurde (`rte-files`), een private CA, de python-bibliotheken die een playbook installeert |
 | `data/ssh/` | `/home/node/.ssh` | De ssh-sleutel en `known_hosts` van de playbooks |
 | `data/ansible/` | `/etc/ansible/...` | Een eigen `ansible.cfg`, rollen en collecties, gekoppeld in plaats van ingebouwd |
 
-Houd `data/` op de host: een herstarte RTE verstuurt dan nog wat de app nog niet had opgeslagen, en behoudt haar cache van jobbestanden.
+Houd `data/` op de host: een herstarte RTE verstuurt dan nog wat de controller nog niet had opgeslagen, en behoudt haar cache van jobbestanden.
 
 **ssh-sleutel.** Kopieer de sleutel die de playbooks in datacenter 1 gebruiken, of maak er een voor dit datacenter en geef de publieke helft aan de beheerde hosts:
 
@@ -169,7 +169,7 @@ Kies een van de twee.
 {: .no_toc }
 
 De gepubliceerde images staan in de GitHub Container Registry, openbaar, zonder aanmelding (zie [Images](images.html) voor de drie lagen).
-Neem dezelfde laag als in datacenter 1. `:7` volgt de nieuwste release van 7, zoals de `:7` van de app:
+Neem dezelfde laag als in datacenter 1. `:7` volgt de nieuwste release van 7, zoals de `:7` van de controller:
 
 ```bash
 docker pull ghcr.io/ansibleforms/ansibleforms-rte-full:7
@@ -204,14 +204,14 @@ EOF
 docker build --pull -t af-rte-dc2 /opt/af-rte/build
 ```
 
-Bouw haar opnieuw bij elke nieuwe release van de app (zie [Je eigen RTE bouwen](images.html#build-your-own-rte)). Bouw met meerdere RTE-hosts
+Bouw haar opnieuw bij elke nieuwe release van de controller (zie [Je eigen RTE bouwen](images.html#build-your-own-rte)). Bouw met meerdere RTE-hosts
 één keer en push naar je eigen registry. Offline doe je `docker save` en `docker load` met de gebouwde image zoals in optie A.
 
 ---
 
 ## 5. Instellingen
 
-Een nieuw eigen [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN), minstens 16 tekens. Het is het wachtwoord van deze RTE: de app
+Een nieuw eigen [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN), minstens 16 tekens. Het is het wachtwoord van deze RTE: de controller
 bewaart het in de RTE-referentie van de runner, en verzegelt er de geheimen van elke job mee.
 
 ```bash
@@ -221,7 +221,7 @@ openssl rand -base64 24
 ```bash
 sudo tee /opt/af-rte/rte.env >/dev/null <<'EOF'
 RTE_MODE=outbound
-APP_URL=https://forms.example.com
+CONTROLLER_URL=https://forms.example.com
 RTE_NAME=rte-dc2
 RTE_TOKEN=<the new token>
 # optional, the first time only : approved at once instead of waiting for an admin
@@ -234,19 +234,21 @@ sudo chmod 600 /opt/af-rte/rte.env
 
 | Variabele | Betekenis |
 |---|---|
-| [`RTE_MODE`](../customization/server.html#env_RTE_MODE) | `outbound`: de RTE belt de app. Zonder deze variabele start de RTE in de verouderde databasemodus |
-| [`APP_URL`](../customization/server.html#env_APP_URL) | Het adres van de app, `http://` of `https://`, met het basispad als dat er is |
+| [`RTE_MODE`](../customization/server.html#env_RTE_MODE) | `outbound`: de RTE belt de controller. Zonder deze variabele start de RTE in de verouderde databasemodus |
+| [`CONTROLLER_URL`](../customization/server.html#env_CONTROLLER_URL) | Het adres van de controller, `http://` of `https://`, met het basispad als dat er is |
 | [`RTE_NAME`](../customization/server.html#env_RTE_NAME) | De naam van haar runner. Niet ingesteld: haar node-id, `rte-<hostname>-<port>`, dat met de container verandert |
 | [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN) | Haar eigen token, minstens 16 tekens. Bewaar het: de runner meldt zich er vanaf nu mee aan |
 | [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN) | Optioneel: een jointoken, alleen gebruikt zolang haar runner nog niet bestaat of op goedkeuring wacht |
+
+Een RTE ouder dan 7.8.0 leest `APP_URL` in plaats van `CONTROLLER_URL`, en `APP_TLS_VERIFY` in plaats van `CONTROLLER_TLS_VERIFY`.
 
 Voeg deze toe als het netwerk ze nodig heeft:
 
 | Variabele | Wanneer |
 |---|---|
-| `HTTPS_PROXY`, `NO_PROXY` | De RTE bereikt de app via een proxy: `HTTPS_PROXY=http://proxy.dc2.example.com:3128`. Een host die in `NO_PROXY` staat (kommagescheiden, `.example.com` voor een domein) wordt rechtstreeks gebeld |
-| `NODE_EXTRA_CA_CERTS` | Het certificaat van de app komt van een private CA: zet het certificaat van de CA in `/opt/af-rte/data/certificates/ca.pem` en stel `NODE_EXTRA_CA_CERTS=/app/dist/persistent/certificates/ca.pem` in |
-| [`APP_TLS_VERIFY`](../customization/server.html#env_APP_TLS_VERIFY) | `0` accepteert elk certificaat van de app, ook een zelfondertekend. Alleen binnen één vertrouwd netwerk: gebruik liever `NODE_EXTRA_CA_CERTS` |
+| `HTTPS_PROXY`, `NO_PROXY` | De RTE bereikt de controller via een proxy: `HTTPS_PROXY=http://proxy.dc2.example.com:3128`. Een host die in `NO_PROXY` staat (kommagescheiden, `.example.com` voor een domein) wordt rechtstreeks gebeld |
+| `NODE_EXTRA_CA_CERTS` | Het certificaat van de controller komt van een private CA: zet het certificaat van de CA in `/opt/af-rte/data/certificates/ca.pem` en stel `NODE_EXTRA_CA_CERTS=/app/dist/persistent/certificates/ca.pem` in |
+| [`CONTROLLER_TLS_VERIFY`](../customization/server.html#env_CONTROLLER_TLS_VERIFY) | `0` accepteert elk certificaat van de controller, ook een zelfondertekend. Alleen binnen één vertrouwd netwerk: gebruik liever `NODE_EXTRA_CA_CERTS` |
 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | `transfer` (standaard) krijgt de playbooks en inventories met elke job mee. Laat het zo, tenzij je ze zelf op de RTE koppelt (`local`) |
 
 De andere instellingen die een RTE leest, staan op [Een RTE draaien](run.html#settings). `RTE_MAX_JOBS`, `RTE_CACHE_MB`, `RTE_FILES` en
@@ -314,21 +316,21 @@ docker run -d --name af_rte_dc2 --restart unless-stopped --stop-timeout 40 \
 ```bash
 docker ps --filter name=af_rte_dc2        # STATUS ends in (healthy): the process listens
 docker logs -f af_rte_dc2                 # Ctrl+C to stop following
-curl -s http://127.0.0.1:8000/ready       # {"status":"ready"} once the socket to the app is open
+curl -s http://127.0.0.1:8000/ready       # {"status":"ready"} once the socket to the controller is open
 ```
 
-Het log toont hoe de RTE start, de app belt en verbinding maakt:
+Het log toont hoe de RTE start, de controller belt en verbinding maakt:
 
 ```
 RTE 'rte-dc2' 7.3.0 (outbound, files transfer) listening on http port 8000, token fingerprint abcd-ef12
-RTE 'rte-dc2': dialing the app at wss://forms.example.com/api/v2/rte/socket
-RTE 'rte-dc2': connected to the app (node af-app1-8000)
+RTE 'rte-dc2': dialing the controller at wss://forms.example.com/api/v2/rte/socket
+RTE 'rte-dc2': connected to the controller (node af-app1-8000)
 ```
 
 Zonder jointoken zegt nog een regel dat ze wacht:
 `RTE 'rte-dc2': waiting for an admin to approve it under Connections > Runners (fingerprint abcd-ef12)`. Noteer de vingerafdruk.
 
-`/ready` antwoordt `503` met `not connected to the app` totdat de socket open is. De healthcheck zegt alleen dat het proces luistert.
+`/ready` antwoordt `503` met `not connected to the controller` totdat de socket open is. De healthcheck zegt alleen dat het proces luistert.
 
 ---
 
@@ -337,9 +339,9 @@ Zonder jointoken zegt nog een regel dat ze wacht:
 Zonder jointoken heeft de RTE gevraagd om lid te worden: **Verbindingen > Runners** toont een oranje melding boven de lijst,
 **1 Runner wacht op goedkeuring**. Open die, controleer dat de **Vingerafdruk** die uit het log van de RTE is en dat **Modus**
 Uitgaand zegt, en klik dan op **Goedkeuren** (zie [Een RTE goedkeuren](../runners/registration.html#approving-an-rte)). Alleen een admin keurt goed. Een aanvraag
-die niemand binnen 24 uur afhandelt, wordt verwijderd, en de RTE vraagt het opnieuw wanneer ze de app de volgende keer belt.
+die niemand binnen 24 uur afhandelt, wordt verwijderd, en de RTE vraagt het opnieuw wanneer ze de controller de volgende keer belt.
 
-Met een jointoken wordt de runner meteen goedgekeurd en noemt de beschrijving het jointoken. In beide gevallen bewaart de app het token van de RTE
+Met een jointoken wordt de runner meteen goedgekeurd en noemt de beschrijving het jointoken. In beide gevallen bewaart de controller het token van de RTE
 in een nieuwe RTE-referentie, `rte-dc2-rte`, en meldt de RTE zich vanaf dan aan met haar eigen `RTE_TOKEN`: `RTE_JOIN_TOKEN` wordt niet meer
 gebruikt, en je kunt het uit `rte.env` verwijderen.
 
@@ -348,9 +350,9 @@ gebruikt, en je kunt het uit `rte.env` verwijderen.
 ## 9. Controleren in AnsibleForms
 
 1. **Verbindingen > Runners** toont de runner `rte-dc2`, type RTE. Zet **Kolommen > Verbinding** aan om **Verbonden** in de lijst te zien
-2. Open hem. Het tabblad **RTE** toont **Modus** Uitgaand en de badge **Verbinding** **Verbonden**; bij aanwijzen noemt die de app-node die
+2. Open hem. Het tabblad **RTE** toont **Modus** Uitgaand en de badge **Verbinding** **Verbonden**; bij aanwijzen noemt die de controller-node die
    de socket vasthoudt, de release van de RTE en hoeveel van haar jobs draaien
-3. Klik op **Verbinding testen**: dat zegt **Runner connection is OK**. Het roept niets aan: het leest welke app-node de socket van de RTE vasthoudt
+3. Klik op **Verbinding testen**: dat zegt **Runner connection is OK**. Het roept niets aan: het leest welke controller-node de socket van de RTE vasthoudt
    (`runner_leases`) en controleert het contract dat de RTE sprak toen ze verbinding maakte
 4. Geef hem een beschrijving, zoals *Datacenter 2*
 5. Laat **Standaard** aan bij de runner van datacenter 1, tenzij elk playbookformulier zonder `runner:` in datacenter 2 moet draaien
@@ -361,7 +363,7 @@ De pagina **Status** toont de nieuwe RTE met haar versie, naast de andere.
 
 ## 10. Een eerste job
 
-Bewijs het hele pad met een playbook dat niets wijzigt. Voeg in de playbooks van de app (de playbookmap of -repository, zoals in
+Bewijs het hele pad met een playbook dat niets wijzigt. Voeg in de playbooks van de controller (de playbookmap of -repository, zoals in
 datacenter 1) `ping-dc2.yaml` toe:
 
 ```yaml
@@ -388,7 +390,7 @@ categories:
 fields: []
 ```
 
-Start het. De app stuurt de playbookmap en de inventory met de job mee, en de RTE bewaart ze op hun hash, zodat een ongewijzigde
+Start het. De controller stuurt de playbookmap en de inventory met de job mee, en de RTE bewaart ze op hun hash, zodat een ongewijzigde
 map nooit twee keer wordt verstuurd. De uitvoer begint met `Running on RTE rte-dc2 (outbound)`, toont `pong` voor elke host, en de job
 eindigt met succes. Een map die groter is dan [`RTE_FILES_MAX_MB`](../customization/server.html#env_RTE_FILES_MAX_MB) (standaard 512) wordt niet
 verstuurd: de job mislukt en zegt dat.
@@ -410,36 +412,36 @@ Zie [Runners](../runners.html) voor de standaardrunner en de andere typen runner
 ## Als er iets misgaat
 
 De RTE schrijft naar `docker logs` vanaf `notice`. Een verbinding die mislukt voordat de socket opengaat (een DNS-naam, een geweigerde poort, een
-certificaat) verschijnt alleen als `RTE: dialing the app again in <n> seconds`, op `info`: stel
+certificaat) verschijnt alleen als `RTE: dialing the controller again in <n> seconds`, op `info`: stel
 [`LOG_CONSOLE_LEVEL=debug`](../customization/logging.html#env_LOG_CONSOLE_LEVEL) in `rte.env` in en herstart haar om
 `RTE: socket to wss://...: <the error>` te zien.
 
 | Wat je ziet | Waar | Wat te doen |
 |---|---|---|
 | `RTE: set RTE_TOKEN (at least 16 characters) ; refusing to start` | `docker logs` | `RTE_TOKEN` ontbreekt of is te kort in `rte.env` |
-| `RTE: RTE_MODE=outbound needs APP_URL, the app's address (https://forms.example.com) ; refusing to start` | `docker logs` | Stel `APP_URL` in `rte.env` in |
-| `RTE: APP_URL must be an http or https address, not ... ; refusing to start` | `docker logs` | `APP_URL` begint met `https://` (of `http://`) |
+| `RTE: RTE_MODE=outbound needs CONTROLLER_URL, the controller's address (https://forms.example.com) ; refusing to start` | `docker logs` | Stel `CONTROLLER_URL` in `rte.env` in |
+| `RTE: CONTROLLER_URL must be an http or https address, not ... ; refusing to start` | `docker logs` | `CONTROLLER_URL` begint met `https://` (of `http://`) |
 | `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set)` | `docker logs` | `RTE_MODE=outbound` ontbreekt in `rte.env` |
-| Geen regel `connected to the app`, `/ready` blijft `503` | `docker logs`, `/ready` | Het netwerk van stap 2: `curl` de app vanaf deze host, de proxy (`HTTPS_PROXY`, `NO_PROXY`), het certificaat van de app (`NODE_EXTRA_CA_CERTS`, stap 5). Stel `LOG_CONSOLE_LEVEL=debug` in om de fout te zien |
-| `the app refused the socket (404)` of een andere status dan 401, 403 en 409 | `docker logs` | Een reverse proxy geeft de WebSocket op `/api/v2/rte/socket` niet door, of `APP_URL` mist het basispad van de app |
-| `the app refused the socket (401): ... the token of RTE 'rte-dc2' is not the one stored for its runner: check its RTE_TOKEN` | `docker logs` | Er bestaat een runner `rte-dc2` met een ander token. Geef de RTE dat token (het wachtwoord van de referentie van de runner), of verwijder de runner zodat ze vraagt om lid te worden |
-| `the app refused the socket (401): ... the join token (RTE_JOIN_TOKEN) is unknown, revoked, expired or used up` | `docker logs` | Maak een nieuw jointoken, of verwijder `RTE_JOIN_TOKEN` en keur de RTE goed (stap 8) |
-| `the app refused the socket (409): ... runner 'rte-dc2' exists and is approved: a join token cannot give it a new token ...` | `docker logs` | De RTE is opnieuw geïnstalleerd met een nieuw token: gebruik het token van de referentie van haar runner, of laat een admin het wijzigen |
-| `the app refused this RTE (401): dialing again in 10 minutes, or restart it once an admin acted` | `docker logs` | Volgt op een weigering. Los de oorzaak op, en doe dan `docker restart af_rte_dc2` in plaats van te wachten |
+| Geen regel `connected to the controller`, `/ready` blijft `503` | `docker logs`, `/ready` | Het netwerk van stap 2: `curl` de controller vanaf deze host, de proxy (`HTTPS_PROXY`, `NO_PROXY`), het certificaat van de controller (`NODE_EXTRA_CA_CERTS`, stap 5). Stel `LOG_CONSOLE_LEVEL=debug` in om de fout te zien |
+| `no RTE socket at this address (HTTP 404 ...)`, of `the app refused the socket` met een andere status dan 401, 403 en 409 | `docker logs` | Een reverse proxy geeft de WebSocket op `/api/v2/rte/socket` niet door, of `CONTROLLER_URL` mist het basispad van de controller |
+| `the controller refused this RTE's token (HTTP 401: the token of RTE 'rte-dc2' is not the one stored for its runner: check its RTE_TOKEN)` | `docker logs` | Er bestaat een runner `rte-dc2` met een ander token. Geef de RTE dat token (het wachtwoord van de referentie van de runner), of verwijder de runner zodat ze vraagt om lid te worden |
+| `the controller refused this RTE's token (HTTP 401: the join token (RTE_JOIN_TOKEN) is unknown, revoked, expired or used up)` | `docker logs` | Maak een nieuw jointoken, of verwijder `RTE_JOIN_TOKEN` en keur de RTE goed (stap 8) |
+| `the controller refused this RTE (HTTP 409: runner 'rte-dc2' exists and is approved: a join token cannot give it a new token ...)` | `docker logs` | De RTE is opnieuw geïnstalleerd met een nieuw token: gebruik het token van de referentie van haar runner, of laat een admin het wijzigen |
+| `the controller refused this RTE (401): dialing again in 10 minutes, or restart it once an admin acted` | `docker logs` | Volgt op een weigering. Los de oorzaak op, en doe dan `docker restart af_rte_dc2` in plaats van te wachten |
 | `waiting for an admin to approve it under Connections > Runners` | `docker logs` | Keur haar goed (stap 8). Ze is verbonden, maar krijgt tot dan geen job |
-| `the app speaks another contract (an upgrade in progress?): dialing again in 60 seconds` | `docker logs` | De app en de RTE draaien releases van een ander [contract](images.html#the-contract): werk de RTE bij naar de release van de app (zie Bijwerken) |
-| **Niet verbonden**, of **Verbinding testen** zegt *the RTE 'rte-dc2' (outbound) is not connected: it has not dialed the app* | De app | Geen enkele app-node houdt haar socket vast: de RTE is gestopt, of kan de app niet bereiken. Lees haar `docker logs` |
-| Een job wacht, en mislukt dan met *no app node holds a socket to RTE 'rte-dc2' and it took no job for 60 minutes (RTE_QUEUE_MINUTES): is it connected?* | De uitvoer van de job | De RTE was niet verbonden terwijl de job wachtte |
+| `the controller speaks another contract (an upgrade in progress?): dialing again in 60 seconds` | `docker logs` | De controller en de RTE draaien releases van een ander [contract](images.html#the-contract): werk de RTE bij naar de release van de controller (zie Bijwerken) |
+| **Niet verbonden**, of **Verbinding testen** zegt *the RTE 'rte-dc2' (outbound) is not connected: it has not dialed the controller* | De controller | Geen enkele controller-node houdt haar socket vast: de RTE is gestopt, of kan de controller niet bereiken. Lees haar `docker logs` |
+| Een job wacht, en mislukt dan met *no controller node holds a socket to RTE 'rte-dc2' and it took no job for 60 minutes (RTE_QUEUE_MINUTES): is it connected?* | De uitvoer van de job | De RTE was niet verbonden terwijl de job wachtte |
 | `Permission denied` op de ssh-sleutel | De uitvoer van de job | De bestanden van `data/` moeten bij uid 1000 horen (stap 3) |
 | `UNREACHABLE` voor de beheerde hosts | De uitvoer van de job | ssh vanaf deze host: de sleutel, `known_hosts`, en de firewall naar de hosts |
 
-Aan de kant van de app verschijnt een geweigerde RTE in het log van de app als `Refused an RTE socket from <address>: <why>`.
+Aan de kant van de controller verschijnt een geweigerde RTE in het log van de controller als `Refused an RTE socket from <address>: <why>`.
 
 ---
 
 ## Bijwerken
 
-Als de app naar een nieuwe release gaat, volg die dan ook op deze host. Een RTE met hetzelfde contract blijft in de tussentijd werken; als een release
+Als de controller naar een nieuwe release gaat, volg die dan ook op deze host. Een RTE met hetzelfde contract blijft in de tussentijd werken; als een release
 het contract wijzigt, zeggen de release notes dat (zie [Het contract](images.html#the-contract)). Met `:7` in `compose.yml`, of in de
 `FROM` van je Dockerfile:
 
@@ -462,8 +464,8 @@ met de nieuwe image (stap 4) vóór `docker compose up -d`.
 cd /opt/af-rte && docker compose down     # or: docker rm -f af_rte_dc2
 ```
 
-De socket sluit, en de runner toont meteen **Niet verbonden**: geen enkele app-node houdt zijn socket nog vast (`runner_leases`). Een host
-die verdwijnt zonder hem te sluiten, toont binnen ongeveer een minuut **Niet verbonden**, zodra de app-node niets meer op de socket hoort. De
+De socket sluit, en de runner toont meteen **Niet verbonden**: geen enkele controller-node houdt zijn socket nog vast (`runner_leases`). Een host
+die verdwijnt zonder hem te sluiten, toont binnen ongeveer een minuut **Niet verbonden**, zodra de controller-node niets meer op de socket hoort. De
 runner blijft: een runner die via een socket lid is geworden, wordt nooit vanzelf verwijderd. Verwijder hem onder **Verbindingen > Runners**, en zijn
 referentie `rte-dc2-rte` onder **Verbindingen > Inloggegevens**. Verwijder eerst de regel `runner:` uit de formulieren die hem noemden: tot
 dan wachten hun jobs op de RTE, tot `RTE_QUEUE_MINUTES`, en mislukken ze.
@@ -482,7 +484,7 @@ eigen runner en neemt tot [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_
 ## Een RTE in databasemodus
 
 Vóór 7.3.0 zette dit runbook een RTE in databasemodus op: die bevatte de referenties van de database (`DB_*`, `ENCRYPTION_SECRET`), maakte via poort `3306`
-verbinding met de database van datacenter 1, en de app riep haar aan op haar poort `8000`. Die modus is sinds 7.3.0 verouderd en wordt
-in 8.0.0 verwijderd. Om zo'n RTE naar uitgaand te verplaatsen zonder nieuwe runner, stel je `RTE_MODE=outbound`, `APP_URL` en `RTE_NAME` (de naam van
+verbinding met de database van datacenter 1, en de controller riep haar aan op haar poort `8000`. Die modus is sinds 7.3.0 verouderd en wordt
+in 8.0.0 verwijderd. Om zo'n RTE naar uitgaand te verplaatsen zonder nieuwe runner, stel je `RTE_MODE=outbound`, `CONTROLLER_URL` en `RTE_NAME` (de naam van
 haar runner) erop in, behoud je haar `RTE_TOKEN`, en verwijder je `DB_*`, `ENCRYPTION_SECRET` en `RTE_REGISTER`: zie
 [Database (verouderd)](modes.html#database-deprecated). Sluit daarna poort `8000` en de databasepoort die ze niet meer nodig heeft.

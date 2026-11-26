@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Veelgestelde vragen
@@ -26,25 +26,26 @@ het persistente volume.
 
 Om meerdere replica's achter een load balancer te draaien, splits je het proces met `AF_ROLE`:
 
-- `app`-nodes bieden de webinterface en de API aan: draai er zoveel als je wilt, elk met hetzelfde `ACCESS_TOKEN_SECRET`
+- `controller`-nodes (`app` vóór 7.8.0, nog gelezen tot 8.0) bieden de webinterface en de API aan: draai er zoveel als je wilt, elk met hetzelfde `ACCESS_TOKEN_SECRET`
 - een `worker` voert het achtergrondwerk uit: het schema en de upgrades ervan, de config seed, de planningen, de nachtelijke back-up, de synchronisatie
   van repositories en de opruimtaken. Er werkt één worker tegelijk, met een vergrendeling in de database; een tweede wacht en neemt het over als de eerste stopt
 - `rte`-containers voeren de playbooks uit: draai er meer om meer playbooks tegelijk uit te voeren
 
-De app-nodes en de worker delen de database, het persistente volume en `ENCRYPTION_SECRET`. Een RTE in een socketmodus (uitgaand of
+De controller-nodes en de worker delen de database, het persistente volume en `ENCRYPTION_SECRET`. Een RTE in een socketmodus (uitgaand of
 inkomend, zie [Modi](rte/modes.html)) heeft de database noch `ENCRYPTION_SECRET` nodig. De chat-assistent heeft sticky sessions nodig, en
 elke node houdt zijn eigen log bij. Zie [Schalen](production/scaling.html) en de opzet in
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
 
 ### Formulieren beheren over meerdere repositories
 
-Formulieren uit elke Git-repository waarbij **Gebruiken voor formulieren** aan staat, worden automatisch samengevoegd; bij dubbele formuliernamen wint
-de eerste en wordt een waarschuwing gelogd. Bewaar `config.yaml` in slechts één repository. Zie [Git-repositories](repositories/).
+Formulieren uit elke Git-repository met het gebruikstype **Formulieren** worden automatisch samengevoegd; bij dubbele formuliernamen wint
+de eerste en wordt een waarschuwing gelogd. De rollen, de categorieën en de constanten komen elk uit één repository, die met dat
+gebruikstype. Zie [Git-repositories](repositories/).
 
 ### Over repositories
 
 AnsibleForms clonet en pullt Git-repositories onder het pad voor repositories (`REPO_PATH`), beheerd onder **Instellingen > Repositories**.
-Schakelaars op elke repository bepalen wat hij bevat: configuratie, formulieren, playbooks of vars-bestanden. Zie [Git-repositories](repositories/).
+De gebruikstypen van een repository bepalen wat hij bevat: formulieren, playbooks, rollen, inloggegevens en elke andere instelling die in git wordt bewaard. Zie [Git-repositories](repositories/).
 
 ### VS Code-validatie voor formulierbestanden
 

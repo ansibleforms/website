@@ -11,7 +11,17 @@ nav_order: 1
 Adding a local user, and its page's tabs
 {: .fs-6 .fw-300 }
 
-**Add user** opens a wizard in three steps: **User** (username, description, email), **Password** and **Group**.
+**Add user** opens the **New user** wizard in four steps:
+
+| Step | What it asks |
+|---|---|
+| **User** | The username, the description and the email; only the username is required |
+| **Password** | The password, typed twice: **Next** waits until both are the same |
+| **Group** | The local group the user belongs to, and that gives it the group's roles |
+| **Roles** | The roles given to the user itself, each picked with **Add role**; none is needed |
+
+The **Roles** step and the password typed twice are new in 7.8.0. **Save**, on the last step, creates the user and then gives it the
+roles picked: a role it could not be given is named in a message, and the user is created all the same.
 
 A user's page, `/settings/users/<id>`, has these tabs:
 

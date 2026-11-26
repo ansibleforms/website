@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Perguntas frequentes
@@ -26,25 +26,26 @@ do volume persistente.
 
 Para executar várias réplicas por trás de um balanceador de carga, divida o processo com `AF_ROLE`:
 
-- os nós `app` servem a interface web e a API: execute quantos quiser, cada um com o mesmo `ACCESS_TOKEN_SECRET`
+- os nós `controller` (`app` antes da 7.8.0, ainda lido até à 8.0) servem a interface web e a API: execute quantos quiser, cada um com o mesmo `ACCESS_TOKEN_SECRET`
 - um `worker` executa o trabalho em segundo plano: o esquema e as suas atualizações, o config seed, os agendamentos, a cópia de segurança noturna, as sincronizações
   dos repositórios e as limpezas. Trabalha um worker de cada vez, que detém um bloqueio na base de dados; um segundo espera e assume quando o primeiro para
 - os contentores `rte` executam os playbooks: execute mais para executar mais playbooks em simultâneo
 
-Os nós da aplicação e o worker partilham a base de dados, o volume persistente e o `ENCRYPTION_SECRET`. Um RTE num modo socket (outbound ou
+Os nós do controlador e o worker partilham a base de dados, o volume persistente e o `ENCRYPTION_SECRET`. Um RTE num modo socket (outbound ou
 inbound, consulte [Modos](rte/modes.html)) não precisa nem da base de dados nem do `ENCRYPTION_SECRET`. O assistente de chat precisa de sessões persistentes (sticky sessions), e
 cada nó mantém o seu próprio registo. Consulte [Escalar](production/scaling.html) e a configuração
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
 
 ### Gestão de formulários em vários repositórios
 
-Os formulários de todos os repositórios Git com **Usar para formulários ?** ativado são juntados automaticamente; em caso de nomes de formulários duplicados, o primeiro
-ganha e é registado um aviso. Mantenha o `config.yaml` num único repositório. Consulte [Repositórios git](repositories/).
+Os formulários de todos os repositórios Git com o tipo de utilização **Formulários** são juntados automaticamente; em caso de nomes de formulários duplicados, o primeiro
+ganha e é registado um aviso. As funções, as categorias e as constantes vêm cada uma de um só repositório, o que tem esse
+tipo de utilização. Consulte [Repositórios git](repositories/).
 
 ### Sobre os repositórios
 
 O AnsibleForms clona e atualiza repositórios Git no caminho dos repositórios (`REPO_PATH`), geridos em **Definições > Repositórios**.
-Os interruptores de cada repositório definem o que ele contém: configuração, formulários, playbooks ou ficheiros de variáveis. Consulte [Repositórios git](repositories/).
+Os seus tipos de utilização definem o que ele contém: formulários, playbooks, funções, credenciais e todas as outras definições guardadas em git. Consulte [Repositórios git](repositories/).
 
 ### Validação no VS Code para ficheiros de formulários
 

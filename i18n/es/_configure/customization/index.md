@@ -5,7 +5,7 @@ nav_order: 9
 has_children: true
 has_toc: false
 permalink: /customization/
-translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
+translated_from: 5b17f8a7d6426c911d68d3b832f3dd2368f49aa8
 ---
 
 # Variables de entorno
@@ -39,8 +39,8 @@ se aplican en cuanto se guardan; las demás se guardan pero necesitan un reinici
 el entorno del proceso no se puede cambiar ahí: la página la muestra como *Definida en el entorno, no se puede cambiar aquí.*
 Algunas variables, como `ENCRYPTION_SECRET` y `ACCESS_TOKEN_SECRET`, no se pueden cambiar nunca desde la página.
 
-Las variables que lee un RTE, como `AF_ROLE`, `RTE_MODE`, `APP_URL` o `RTE_MAX_JOBS`, no están en las páginas de configuración: la
-aplicación no las usa, así que defínelas en el entorno donde se ejecuta el RTE. Las variables `RTE_*` que lee la propia aplicación,
+Las variables que lee un RTE, como `AF_ROLE`, `RTE_MODE`, `CONTROLLER_URL` o `RTE_MAX_JOBS`, no están en las páginas de configuración: el
+controlador no las usa, así que defínelas en el entorno donde se ejecuta el RTE. Las variables `RTE_*` que lee el propio controlador,
 `RTE_QUEUE_MINUTES` y `RTE_FILES_MAX_MB`, son la excepción y siguen en las páginas. Cuatro variables del RTE, `RTE_MAX_JOBS`,
 `RTE_CACHE_MB`, `RTE_FILES` y `RTE_DRAIN_SECONDS`, se pueden definir por RTE en su página de runner, donde un valor gana a la
 variable (consulta [La configuración de un RTE](../runners/runner-page.html#an-rtes-settings)).

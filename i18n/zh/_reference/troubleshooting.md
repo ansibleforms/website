@@ -2,7 +2,7 @@
 layout: default
 title: 故障排查
 nav_order: 4
-translated_from: cf4a83f32bf033b73fd0636ab37a8c4a51d1ff3f
+translated_from: e7fbae523c36f8927860982174a794155aafc228
 ---
 
 # 故障排查
@@ -218,8 +218,8 @@ Failed to get forms list
 
 **解决方法**
 
-修正 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 所指的文件，或用于配置的仓库中的
-`config.yaml`。如果缺少文件，请让 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 和
+修正 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 所指的文件，或具有 **角色**、**类别** 或 **常量**
+用途类型的仓库中给出该键的文件。如果缺少文件，请让 [`CONFIG_PATH`](customization/paths.html#env_CONFIG_PATH) 和
 [`FORMS_FOLDER_PATH`](customization/paths.html#env_FORMS_FOLDER_PATH) 指向一个可写的持久化位置。结构
 参见 [config.yaml](config/)。
 
@@ -610,7 +610,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 **原因**
 
 作业属于运行或跟踪它的容器：playbook 属于其 RTE，其他任何作业（AWX 作业、多步骤
-表单的步骤）属于启动它的应用节点。当该容器重启时，它会结束自己未完成的作业。当它消失时，例如 pod
+表单的步骤）属于启动它的控制器节点。当该容器重启时，它会结束自己未完成的作业。当它消失时，例如 pod
 被替换，worker 会在它两分钟没有响应后结束其作业。socket 模式的 RTE 回来时如果没有
 它原先运行的某个作业，例如新容器没有其 spool，该作业会以 abandoned 结束。正在停止的 RTE 会先等待
 [`RTE_DRAIN_SECONDS`](customization/server.html#env_RTE_DRAIN_SECONDS) 让其 playbook 结束。每小时，运行超过
@@ -621,7 +621,7 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 
 **解决方法**
 
-重新运行 playbook 作业。请在没有作业运行时重启或升级 RTE 和应用节点，并给正在停止的 RTE 留出足够时间
+重新运行 playbook 作业。请在没有作业运行时重启或升级 RTE 和控制器节点，并给正在停止的 RTE 留出足够时间
 （参见 [扩展](rte/run.html)）。重新运行之前，请检查 playbook 是否真的在受管主机上完成了，
 因为它可能只运行了一部分。
 
@@ -632,26 +632,26 @@ RTE: stopping with <n> job(s) still running: they end as abandoned
 RTE 运行器上（**连接 > 运行器**）的 **测试连接** 失败，显示：
 
 ```
-the RTE '<name>' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app
-the RTE '<name>' (inbound) is not connected: no app node could dial it at <address>: check its RTE_URL, its token and the network from the app to the RTE
+the RTE '<name>' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller
+the RTE '<name>' (inbound) is not connected: no controller node could dial it at <address>: check its RTE_URL, its token and the network from the controller to the RTE
 ```
 
 **原因**
 
-socket 模式的 RTE 通过一条 WebSocket 与应用通信：出站时由它连接应用，入站时由应用连接它（参见
-[模式](rte/modes.html)）。应用和 RTE 的日志会说明 socket 为什么没有打开：
+socket 模式的 RTE 通过一条 WebSocket 与控制器通信：出站时由它连接控制器，入站时由控制器连接它（参见
+[模式](rte/modes.html)）。控制器和 RTE 的日志会说明 socket 为什么没有打开：
 
 | 消息 | 位置 | 含义 |
 |---|---|---|
 | `RTE: refused a socket without the right token from <address>` | RTE（入站） | 运行器 RTE 凭据中的令牌与 RTE 的 `RTE_TOKEN` 不一致 |
-| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | 应用（入站） | 同上，从应用一侧看到 |
-| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | 应用，以及被拒绝的 RTE（`401`） | RTE 登录所用的令牌与应用为其运行器保存的令牌不同 |
+| `Runner '<name>': the RTE at <address> refused the socket (401): check its RTE_TOKEN` | 控制器（入站） | 同上，从控制器一侧看到 |
+| `the token of RTE '<name>' is not the one stored for its runner: check its RTE_TOKEN` | 控制器，以及被拒绝的 RTE（`401`） | RTE 登录所用的令牌与控制器为其运行器保存的令牌不同 |
 | `RTE '<name>': waiting for an admin to approve it under Connections > Runners (fingerprint <fingerprint>)` | RTE（出站） | 它已请求加入，正在等待批准 |
-| `RTE '<name>': asked to join as inbound runner '<name>': the app dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | RTE（入站，带 `APP_URL`） | 同上，针对入站 RTE |
-| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | 应用，以及被拒绝的 RTE（`409`） | 配置种子声明该运行器时没有 `rte_mode`，因此处于数据库模式，而它的模式由种子决定。入站 RTE 会看到 `rte_mode: inbound` 和 `(and its credential with the address the app dials, RTE_URL)` |
-| `RTE: RTE_MODE=inbound with APP_URL registers with the app, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | RTE | 自行注册的入站 RTE 需要应用连接它所用的地址 |
-| `Runner '<name>': dialing <address>: <reason>` | 应用，`debug` 级别 | 应用无法打开 socket，例如因为 RTE 的证书不是为其运行器固定的那张 |
-| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the app, APP_URL) or RTE_MODE=inbound (the app dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | RTE | 它以数据库模式运行，根本不打开 socket |
+| `RTE '<name>': asked to join as inbound runner '<name>': the controller dials it once an admin approves it under Connections > Runners (fingerprint <fingerprint>)` | RTE（入站，带 `CONTROLLER_URL`） | 同上，针对入站 RTE |
+| `runner '<name>' is managed by the config seed in database mode: set rte_mode: outbound for it in the seed (and its credential), then restart this RTE` | 控制器，以及被拒绝的 RTE（`409`） | 配置种子声明该运行器时没有 `rte_mode`，因此处于数据库模式，而它的模式由种子决定。入站 RTE 会看到 `rte_mode: inbound` 和 `(and its credential with the address the controller dials, RTE_URL)` |
+| `RTE: RTE_MODE=inbound with CONTROLLER_URL registers with the controller, which then dials RTE_URL : set RTE_URL (http://this-host:8000) ; refusing to start` | RTE | 自行注册的入站 RTE 需要控制器连接它所用的地址 |
+| `Runner '<name>': dialing <address>: <reason>` | 控制器，`debug` 级别 | 控制器无法打开 socket，例如因为 RTE 的证书不是为其运行器固定的那张 |
+| `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set): it holds the database's credentials and reads and writes it itself. Set RTE_MODE=outbound (it dials the controller, CONTROLLER_URL) or RTE_MODE=inbound (the controller dials it, RTE_URL), and drop DB_* from its environment. Database mode is removed in 8.0.0.` | RTE | 它以数据库模式运行，根本不打开 socket |
 
 **解决方法**
 
@@ -660,11 +660,11 @@ socket 模式的 RTE 通过一条 WebSocket 与应用通信：出站时由它连
   （参见 [批准 RTE](runners/registration.html#approving-an-rte)）
 * **由数据库模式的配置种子管理**：在种子中为该运行器设置 `rte_mode`，并配上一个 RTE 凭据（入站时还要有其
   地址），然后重启 RTE
-* **入站但没有 `RTE_URL`**：把 `RTE_URL` 设为应用访问 RTE 所用的地址，或者去掉 `APP_URL`，在
+* **入站但没有 `RTE_URL`**：把 `RTE_URL` 设为控制器访问 RTE 所用的地址，或者去掉 `CONTROLLER_URL`，在
   种子中或在 **连接 > 运行器** 下声明该运行器
-* **证书不是固定的那张**：通过 HTTPS 的入站 RTE 在注册时发送其证书，应用只用那张证书
+* **证书不是固定的那张**：通过 HTTPS 的入站 RTE 在注册时发送其证书，控制器只用那张证书
   连接它。换了新证书后，RTE 会在注册时再次发送；如果凭据的 CA 证书包是
-  手动设置的，应用会保留它并记录
+  手动设置的，控制器会保留它并记录
   `Runner '<name>': its ca_bundle was set by hand: the certificate its RTE sent (fingerprint <fingerprint>) is not stored. Empty the ca_bundle to have the RTE's certificate pinned again`
 * **[DEPRECATED] 警告**：在 RTE 上设置 `RTE_MODE`，从其环境中删除 `DB_*`，并把其运行器设为该模式（参见
   [模式](rte/modes.html)）

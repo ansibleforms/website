@@ -28,7 +28,7 @@ The page under **Connections > Runners** lists every runner with these columns:
 | Description | What it is for. |
 
 **Columns** adds two more, off by default: **Mode**, an RTE's mode (Outbound, Inbound or Database (deprecated), see
-[Modes](../rte/modes.html)), and **Connection**, whether an app node holds a socket to an RTE in a socket mode: **Connected** or
+[Modes](../rte/modes.html)), and **Connection**, whether a controller node holds a socket to an RTE in a socket mode: **Connected** or
 **Not connected**.
 
 From 7.3.0 the runners waiting for approval are not in the list but in a notice above it, see [Approving an RTE](registration.html#approving-an-rte).

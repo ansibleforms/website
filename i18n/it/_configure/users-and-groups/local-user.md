@@ -3,7 +3,7 @@ layout: default
 title: Un utente locale
 parent: Utenti e gruppi
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Un utente locale
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Aggiungere un utente locale, e le schede della sua pagina
 {: .fs-6 .fw-300 }
 
-**Aggiungi utente** apre una procedura guidata in tre passaggi: **Utente** (nome utente, descrizione, email), **Password** e **Gruppo**.
+**Aggiungi utente** apre la procedura guidata **Nuovo utente** in quattro passaggi:
+
+| Passaggio | Cosa chiede |
+|---|---|
+| **Utente** | Il nome utente, la descrizione e l'email; solo il nome utente è obbligatorio |
+| **Password** | La password, digitata due volte: **Successivo** attende finché le due non coincidono |
+| **Gruppo** | Il gruppo locale a cui appartiene l'utente, e che gli dà i ruoli del gruppo |
+| **Ruoli** | I ruoli dati all'utente stesso, ciascuno scelto con **Aggiungi ruolo**; nessuno è necessario |
+
+Il passaggio **Ruoli** e la password digitata due volte sono novità della 7.8.0. **Salva**, all'ultimo passaggio, crea l'utente e poi gli dà i
+ruoli scelti: un ruolo che non è stato possibile dargli viene indicato in un messaggio, e l'utente viene creato comunque.
 
 La pagina di un utente, `/settings/users/<id>`, ha queste schede:
 

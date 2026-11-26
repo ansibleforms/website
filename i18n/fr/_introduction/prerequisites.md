@@ -2,7 +2,7 @@
 layout: default
 title: Prérequis
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Prérequis
@@ -120,9 +120,9 @@ Les navigateurs plus anciens ne sont pas pris en charge.
 
 ## Mise à l'échelle
 
-Par défaut, un seul conteneur AnsibleForms fait tourner ensemble l'application web et le travail en arrière-plan, à côté d'un RTE.
+Par défaut, un seul conteneur AnsibleForms fait tourner ensemble l'interface web du contrôleur et le travail en arrière-plan, à côté d'un RTE.
 
-Pour servir plus d'utilisateurs, faites tourner plusieurs nœuds d'application derrière un répartiteur de charge (`AF_ROLE=app`) à côté d'un worker (`AF_ROLE=worker`), qui exécute
+Pour servir plus d'utilisateurs, faites tourner plusieurs nœuds du contrôleur derrière un répartiteur de charge (`AF_ROLE=controller`, `app` avant la 7.8.0) à côté d'un worker (`AF_ROLE=worker`), qui exécute
 les planifications, les sauvegardes et le reste du travail en arrière-plan ; un seul worker travaille à la fois, et un second attend pour prendre le relais. Ils partagent
 la base de données, le dossier persistant, `ACCESS_TOKEN_SECRET` et `ENCRYPTION_SECRET`. Voir [Mise à l'échelle](production/scaling.html). Ajoutez des
 RTE pour exécuter plus de playbooks à la fois : voir [Plusieurs RTE](rte/several.html).

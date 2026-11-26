@@ -3,7 +3,7 @@ layout: default
 title: Użytkownik lokalny
 parent: Użytkownicy i grupy
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Użytkownik lokalny
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Dodawanie użytkownika lokalnego i karty jego strony
 {: .fs-6 .fw-300 }
 
-**Dodaj użytkownika** otwiera trzyetapowy kreator: **Użytkownik** (nazwa użytkownika, opis, e-mail), **Hasło** i **Grupa**.
+**Dodaj użytkownika** otwiera czteroetapowy kreator **Nowy użytkownik**:
+
+| Etap | O co pyta |
+|---|---|
+| **Użytkownik** | Nazwa użytkownika, opis i e-mail; wymagana jest tylko nazwa użytkownika |
+| **Hasło** | Hasło wpisane dwa razy: **Dalej** czeka, aż oba będą takie same |
+| **Grupa** | Grupa lokalna, do której należy użytkownik i która daje mu role grupy |
+| **Role** | Role nadane samemu użytkownikowi, każda wybrana przez **Dodaj rolę**; żadna nie jest wymagana |
+
+Etap **Role** i hasło wpisywane dwa razy są nowe w wersji 7.8.0. **Zapisz** na ostatnim etapie tworzy użytkownika, a potem nadaje mu
+wybrane role: rola, której nie udało się nadać, jest wymieniona w komunikacie, a użytkownik i tak zostaje utworzony.
 
 Strona użytkownika, `/settings/users/<id>`, ma te karty:
 

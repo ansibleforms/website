@@ -3,7 +3,7 @@ layout: default
 title: Role
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Role
@@ -22,6 +22,23 @@ Mapuj użytkowników i grupy na role i ustalaj, co każda rola może robić.
 Lista `roles` najwyższego poziomu w config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Dodawanie roli
+
+W **Ustawienia > Dostęp > Role** przycisk **Dodaj rolę** otwiera kreator **Nowa rola**, od wersji 7.8.0 w czterech etapach:
+
+| Etap | O co pyta |
+|---|---|
+| **Szczegóły** | Nazwa, unikalna wśród ról, i opis. **Dalej** czeka na nazwę, której nie ma żadna inna rola |
+| **Uprawnienia** | [Opcje roli](#role-options) w czterech grupach, zaczynając od wartości domyślnych dla wszystkich |
+| **Użytkownicy** | Użytkownicy wymienieni w roli, każdy wybrany przez **Dodaj użytkownika** |
+| **Grupy** | Grupy wymienione w roli, każda wybrana przez **Dodaj grupę** |
+
+**Zapisz** na ostatnim etapie dodaje rolę i zapisuje role; gdy zapis zostanie odrzucony, kreator pozostaje otwarty i nic nie jest
+dodawane. Rola ma wtedy własną stronę, na której można zmienić jej uprawnienia, użytkowników i grupy. **Dodaj rolę** jest wyłączony,
+dopóki ról nie można zapisać ze strony, na przykład gdy pochodzą z szablonu ytt.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Rôles
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Rôles
@@ -22,6 +22,23 @@ Associez les utilisateurs et les groupes à des rôles, et définissez ce que ch
 La liste `roles` de premier niveau de config.yaml :
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Ajouter un rôle
+
+Sous **Paramètres > Accès > Rôles**, **Ajouter un rôle** ouvre l'assistant **Nouveau rôle**, en quatre étapes depuis la 7.8.0 :
+
+| Étape | Ce qu'elle demande |
+|---|---|
+| **Détails** | Le nom, unique parmi les rôles, et la description. **Suivant** attend un nom qu'aucun autre rôle ne porte |
+| **Autorisations** | Les [options de rôle](#role-options), dans leurs quatre groupes, en partant des valeurs par défaut de tous |
+| **Utilisateurs** | Les utilisateurs que nomme le rôle, chacun choisi avec **Ajouter un utilisateur** |
+| **Groupes** | Les groupes que nomme le rôle, chacun choisi avec **Ajouter un groupe** |
+
+**Enregistrer**, à la dernière étape, ajoute le rôle et enregistre les rôles ; si l'enregistrement est refusé, l'assistant reste ouvert et rien n'est ajouté.
+Le rôle a ensuite sa propre page, où ses autorisations, ses utilisateurs et ses groupes peuvent être modifiés. **Ajouter un rôle** est désactivé tant que
+les rôles ne peuvent pas être enregistrés depuis la page, par exemple quand ils viennent d'un modèle ytt.
 
 ---
 

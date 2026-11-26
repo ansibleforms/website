@@ -25,25 +25,26 @@ the persistent volume.
 
 To run several replicas behind a load balancer, split the process with `AF_ROLE`:
 
-- `app` nodes serve the web interface and the API: run as many as you like, each with the same `ACCESS_TOKEN_SECRET`
+- `controller` nodes (`app` before 7.8.0, still read until 8.0) serve the web interface and the API: run as many as you like, each with the same `ACCESS_TOKEN_SECRET`
 - a `worker` runs the background work: the schema and its upgrades, the config seed, the schedules, the nightly backup, the repository
   syncs and the cleanups. One worker works at a time, holding a database lock; a second one waits and takes over when the first stops
 - `rte` containers run the playbooks: run more of them to run more playbooks at once
 
-The app nodes and the worker share the database, the persistent volume and `ENCRYPTION_SECRET`. An RTE in a socket mode (outbound or
+The controller nodes and the worker share the database, the persistent volume and `ENCRYPTION_SECRET`. An RTE in a socket mode (outbound or
 inbound, see [Modes](rte/modes.html)) needs neither the database nor `ENCRYPTION_SECRET`. The chat assistant needs sticky sessions, and
 each node keeps its own log. See [Scaling](production/scaling.html) and the
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) setup.
 
 ### Multi-Repository Form Management
 
-Forms from every Git repository with **use for forms** enabled are merged automatically; on duplicate form names the first one
-wins and a warning is logged. Keep `config.yaml` in only one repository. See [Git repositories](repositories/).
+Forms from every Git repository with the **Forms** usage type are merged automatically; on duplicate form names the first one
+wins and a warning is logged. The roles, the categories and the constants each come from one repository, the one with that
+usage type. See [Git repositories](repositories/).
 
 ### About Repositories
 
 AnsibleForms clones and pulls Git repositories under the repositories path (`REPO_PATH`), managed under **Settings > Repositories**.
-Switches on each repository set what it holds: config, forms, playbooks or vars files. See [Git repositories](repositories/).
+Its usage types set what it holds: forms, playbooks, roles, credentials and every other setting kept in git. See [Git repositories](repositories/).
 
 ### VS Code Validation for Form Files
 

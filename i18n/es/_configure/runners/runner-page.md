@@ -3,7 +3,7 @@ layout: default
 title: "La página de un runner"
 parent: Runners
 nav_order: 4
-translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
+translated_from: b7be7b15d86552e32ee2c296d4d14f2f49d39846
 ---
 
 # La página de un runner
@@ -45,26 +45,26 @@ en la parte superior de su página, y es de solo lectura.
 
 ## Los ajustes de un RTE
 
-La pestaña RTE gestiona un RTE desde la aplicación, sin editar su entorno en la máquina en la que se ejecuta.
+La pestaña RTE gestiona un RTE desde el controlador, sin editar su entorno en la máquina en la que se ejecuta.
 
-**Conexión.** Un RTE en un modo de socket muestra una etiqueta: **Conectado** o **No conectado**. Al pasar el ratón, **Conectado** muestra el nodo de la aplicación
-que tiene su socket, la versión del RTE y cuántos de sus trabajos se están ejecutando. **No conectado** significa que ningún nodo de la aplicación tiene un socket con él:
-comprueba que el RTE se está ejecutando, su dirección o `APP_URL`, y su token.
+**Conexión.** Un RTE en un modo de socket muestra una etiqueta: **Conectado** o **No conectado**. Al pasar el ratón, **Conectado** muestra el nodo del controlador
+que tiene su socket, la versión del RTE y cuántos de sus trabajos se están ejecutando. **No conectado** significa que ningún nodo del controlador tiene un socket con él:
+comprueba que el RTE se está ejecutando, su dirección o `CONTROLLER_URL`, y su token.
 
 **Ajustes.** Un RTE en modo saliente o entrante tiene cuatro ajustes, todos vacíos por defecto:
 
 | Ajuste | Equivale a | Qué hace |
 |---|---|---|
 | Máximo de trabajos simultáneos | [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | Cuántos playbooks ejecuta a la vez, `10` por defecto; `0` no pone límite |
-| Caché de archivos | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | Cuánto de los archivos de los trabajos que le envió la aplicación conserva, en MB, `1024` por defecto; `0` no conserva ninguno |
+| Caché de archivos | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | Cuánto de los archivos de los trabajos que le envió el controlador conserva, en MB, `1024` por defecto; `0` no conserva ninguno |
 | Tiempo de espera al parar | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | Cuánto espera un RTE que se detiene a sus playbooks en ejecución, `25` segundos por defecto |
-| Archivos de trabajo | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Transferencia**: la aplicación envía los archivos de un trabajo con el trabajo. **Local**: se ejecuta desde sus propias carpetas montadas |
+| Archivos de trabajo | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Transferencia**: el controlador envía los archivos de un trabajo con el trabajo. **Local**: se ejecuta desde sus propias carpetas montadas |
 
 **Qué valor prevalece.** Un valor en la página prevalece sobre la misma variable definida en el RTE. Un campo vacío usa la variable propia del RTE,
 o si no el valor predeterminado. Bajo cada campo la página indica cuál: **Sustituye a RTE_MAX_JOBS definida en el RTE (3)**, o **Vacío: el RTE usa su
 propia RTE_MAX_JOBS, 3**; el marcador de posición muestra el valor que representa un campo vacío.
 
-**Cómo llegan al RTE.** Los ajustes se guardan con el runner en la base de datos de la aplicación. La aplicación los envía por el socket del RTE
+**Cómo llegan al RTE.** Los ajustes se guardan con el runner en la base de datos del controlador. El controlador los envía por el socket del RTE
 cuando se conecta y cada vez que se guardan, y el RTE los aplica al momento: una caché más pequeña se recorta, un nuevo límite cuenta a partir del
 siguiente trabajo. El RTE los guarda solo en memoria y no escribe ningún archivo: tras un reinicio los vuelve a recibir al conectarse, antes de su primer trabajo.
 
@@ -85,7 +85,7 @@ correcta**, o por qué ha fallado. No ejecuta ningún trabajo. Para un RTE compr
 
 | RTE | Qué lee la prueba | Cuándo falla |
 |---|---|---|
-| Saliente o Entrante | Quién tiene su socket, según lo registra cada nodo de la aplicación, y lo que dijo el RTE al conectarse. No llama a nada | Ningún nodo de la aplicación tiene un socket con él: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app*, o para uno entrante, *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE*. O el RTE habla un contrato distinto de 3 |
+| Saliente o Entrante | Quién tiene su socket, según lo registra cada nodo del controlador, y lo que dijo el RTE al conectarse. No llama a nada | Ningún nodo del controlador tiene un socket con él: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller*, o para uno entrante, *no controller node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the controller to the RTE*. O el RTE habla un contrato distinto de 3 |
 | Base de datos (obsoleto) | El `/rte/v1/health` del RTE, llamado con su token | El RTE no responde en su dirección, rechaza el token, o habla un contrato distinto de 2 |
 
 La etiqueta **Conexión** de la pestaña RTE muestra el mismo estado del socket sin necesidad de una prueba.

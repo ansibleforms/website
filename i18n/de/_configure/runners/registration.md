@@ -3,7 +3,7 @@ layout: default
 title: Registrierung
 parent: Runner
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Registrierung
@@ -19,25 +19,25 @@ Wie eine RTE um Beitritt bittet und freigegeben wird, Beitrittstoken für unbeau
 
 ## Um Beitritt bitten
 
-Seit 7.3.0 bittet eine RTE in einem Socket-Modus (`outbound` oder `inbound`), die die App noch nicht kennt, um Beitritt, und ein Admin gibt sie frei.
-Sie meldet sich mit ihrem eigenen `RTE_TOKEN` und ihrem `RTE_NAME`: eine ausgehende RTE, wenn sie sich zum ersten Mal bei der App einwählt, eine eingehende in ihrem einen
-Registrierungsaufruf. Ohne Beitrittstoken tut die App dann Folgendes:
+Seit 7.3.0 bittet eine RTE in einem Socket-Modus (`outbound` oder `inbound`), die der Controller noch nicht kennt, um Beitritt, und ein Admin gibt sie frei.
+Sie meldet sich mit ihrem eigenen `RTE_TOKEN` und ihrem `RTE_NAME`: eine ausgehende RTE, wenn sie sich zum ersten Mal beim Controller einwählt, eine eingehende in ihrem einen
+Registrierungsaufruf. Ohne Beitrittstoken tut der Controller dann Folgendes:
 
 1. Sie speichert das `RTE_TOKEN` der RTE in neuen Anmeldedaten vom Typ RTE namens `<name>-rte` (mit angehängter Nummer, wenn der Name vergeben ist) und
    bei einer eingehenden RTE deren Adresse, `RTE_URL`
 2. Sie fügt einen nach `RTE_NAME` benannten Runner hinzu, Typ RTE, im Modus der RTE, der sich mit diesen Anmeldedaten anmeldet, markiert als **Wartet auf Freigabe**
    und ausgeschaltet. Seine Beschreibung nennt den Host, von dem die Anfrage kam
 
-Eine ausgehende RTE bleibt verbunden, während sie wartet, erhält aber keinen Job. Bei einer eingehenden wählt sich die App erst ein, wenn sie freigegeben ist. Beide protokollieren,
+Eine ausgehende RTE bleibt verbunden, während sie wartet, erhält aber keinen Job. Bei einer eingehenden wählt sich der Controller erst ein, wenn sie freigegeben ist. Beide protokollieren,
 dass sie darauf warten, dass ein Admin sie unter **Verbindungen > Runner** freigibt, mit dem Fingerabdruck ihres Tokens.
 
-Eine eingehende RTE mit einer `https://`-`RTE_URL` sendet beim Bitten um Beitritt außerdem ihr Zertifikat, und die App pinnt es: Ab dann
-wählt sich die App bei dieser RTE nur ein, wenn sie dasselbe Zertifikat vorlegt, daher funktioniert ein selbstsigniertes ohne CA (siehe [Eingehend](../rte/modes.html#inbound)).
+Eine eingehende RTE mit einer `https://`-`RTE_URL` sendet beim Bitten um Beitritt außerdem ihr Zertifikat, und der Controller pinnt es: Ab dann
+wählt sich der Controller bei dieser RTE nur ein, wenn sie dasselbe Zertifikat vorlegt, daher funktioniert ein selbstsigniertes ohne CA (siehe [Eingehend](../rte/modes.html#inbound)).
 
 Höchstens 20 RTEs warten gleichzeitig auf Freigabe: Weitere werden abgewiesen, bis einige freigegeben oder abgelehnt sind. Eine Anfrage, die niemand innerhalb von
 24 Stunden bearbeitet, wird vom Worker entfernt, samt ihren Anmeldedaten.
 
-Eine RTE, die nach einem Runner benannt ist, den die App bereits kennt, aber ein anderes Token hat, wird abgewiesen und bittet nicht um Beitritt. Geben Sie ihr das Token
+Eine RTE, die nach einem Runner benannt ist, den der Controller bereits kennt, aber ein anderes Token hat, wird abgewiesen und bittet nicht um Beitritt. Geben Sie ihr das Token
 dieses Runners oder löschen Sie den Runner, damit sie um Beitritt bittet. Ein [Beitrittstoken](#join-tokens) hilft nur, solange dieser Runner noch auf Freigabe wartet.
 
 ---
@@ -54,11 +54,11 @@ Seine Seite zeigt dieselben Fakten in einem gelben Kasten, **Diese RTE möchte b
 | Feld | Was es zeigt |
 |---|---|
 | Fingerabdruck | Die ersten 8 Hexadezimalziffern des SHA-256 ihres `RTE_TOKEN`, als `abcd-ef12`. Die RTE protokolliert ihn bei ihrem Start, und das [Installationsprogramm](../installation/installer.html#a-runner) gibt ihn am Ende aus. Er muss derselbe sein |
-| Zertifikat-Fingerabdruck | Im Dialog, bei einer eingehenden RTE über HTTPS: die ersten 8 Hexadezimalziffern des SHA-256 des Zertifikats, das die App pinnt (seine DER-Bytes), als `abcd-ef12`. Die RTE protokolliert ihn bei ihrem Start, und das [Installationsprogramm](../installation/installer.html#a-runner) gibt ihn am Ende aus. Er muss derselbe sein |
+| Zertifikat-Fingerabdruck | Im Dialog, bei einer eingehenden RTE über HTTPS: die ersten 8 Hexadezimalziffern des SHA-256 des Zertifikats, das der Controller pinnt (seine DER-Bytes), als `abcd-ef12`. Die RTE protokolliert ihn bei ihrem Start, und das [Installationsprogramm](../installation/installer.html#a-runner) gibt ihn am Ende aus. Er muss derselbe sein |
 | Host | Der Host, auf dem sie läuft |
-| IP-Adresse | Die Adresse, von der aus sie die App aufgerufen hat |
+| IP-Adresse | Die Adresse, von der aus sie den Controller aufgerufen hat |
 | Modus | Ausgehend oder Eingehend |
-| URI | Die Adresse einer eingehenden RTE, unter der sich die App einwählt |
+| URI | Die Adresse einer eingehenden RTE, unter der sich der Controller einwählt |
 | Version | Ihr Release |
 | Angefragt am | Wann sie um Beitritt gebeten hat |
 

@@ -3,13 +3,13 @@ layout: default
 title: Skalierung
 parent: Betrieb in Produktion
 nav_order: 4
-translated_from: 5b76f1bfb7520ff2b072919d714d2ab72b1e5d5e
+translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
 ---
 
 # Skalierung
 {: .no_toc }
 
-AnsibleForms aufgeteilt auf mehrere App-Knoten und einen Worker, neben einer oder mehreren RTEs
+AnsibleForms aufgeteilt auf mehrere Controller-Knoten und einen Worker, neben einer oder mehreren RTEs
 {: .fs-6 .fw-300 }
 
 1. TOC
@@ -23,13 +23,16 @@ Jeder AnsibleForms-Container führt denselben Servercode aus, und [`AF_ROLE`](..
 
 | `AF_ROLE` | Image | Führt aus | Wie viele |
 |---|---|---|---|
-| `all` (nicht gesetzt) | `ansibleforms` | Die Web-App und den Worker in einem Prozess: der Standard | 1 |
-| `app` | `ansibleforms` | Die Weboberfläche und die API | Beliebig viele, hinter einem Load Balancer |
+| `all` (nicht gesetzt) | `ansibleforms` | Die Weboberfläche und die API des Controllers sowie den Worker in einem Prozess: der Standard | 1 |
+| `controller` | `ansibleforms` | Die Weboberfläche und die API | Beliebig viele, hinter einem Load Balancer |
 | `worker` | `ansibleforms` | Die Hintergrundarbeit: das Datenbankschema und seine Upgrades, den Config-Seed, die Zeitpläne, das nächtliche Backup, die Synchronisierung der Repositories und die Bereinigungen | Einer arbeitet; weitere warten und übernehmen |
 | `rte` | `ansibleforms-rte-full` (oder `-rte-core`, `-rte-base`) | Die Playbooks | Beliebig viele |
 
 Die kleinste Installation ist ein Container ohne `AF_ROLE` neben einer RTE: Das ist es, was das [Docker Compose-Projekt](../installation/docker-compose.html)
 und das [Helm-Chart](../installation/kubernetes.html) ausführen. Jeder andere Wert von `AF_ROLE` beendet den Prozess bei seinem Start.
+
+Bis 7.7 hieß die Rolle `controller` `app`. Ab 7.8.0 ist `AF_ROLE=app` veraltet und wird in 8.0 entfernt: Es läuft weiterhin als
+`controller`, mit einer Warnung im Protokoll beim Start, und der Knoten behält seinen Namen `app-`, sodass er nach dem Upgrade seine eigenen Jobs wiederfindet.
 
 ---
 
@@ -41,24 +44,24 @@ Replikate und [eine RTE in einem anderen Rechenzentrum](../rte/another-datacente
 
 ---
 
-## Mehrere App-Knoten
+## Mehrere Controller-Knoten
 
-Um mehr Benutzer zu bedienen oder den Ausfall eines Knotens zu überstehen, teilen Sie die App in `app`-Knoten hinter einem Load Balancer und einen `worker` auf.
+Um mehr Benutzer zu bedienen oder den Ausfall eines Knotens zu überstehen, teilen Sie AnsibleForms in `controller`-Knoten hinter einem Load Balancer und einen `worker` auf.
 
 ### Was die Knoten teilen
 {: .no_toc }
 
 Die Knoten stimmen sich über die Datenbank und ein gemeinsames Volume miteinander ab:
 
-* **Die Datenbank** : die Jobs, die Worker-Sperre, die Designer-Sperre, die Liste der Knoten, die Runner-Leases (welcher App-Knoten den
+* **Die Datenbank** : die Jobs, die Worker-Sperre, die Designer-Sperre, die Liste der Knoten, die Runner-Leases (welcher Controller-Knoten den
   Socket jeder RTE hält) und die Änderungsmeldungen, die die Caches jedes Knotens aktuell halten. Anmeldedaten, ein Runner oder ein Zeitplan, auf
   einem Knoten bearbeitet, gelten innerhalb von 5 Sekunden auf allen
 * **Das persistente Volume** (`/app/dist/persistent`) : Formulare, die Konfiguration, Repositories, Uploads, Backups und die verwaltete `.env`.
-  Jeder App-Knoten und der Worker hängen dasselbe ein, mit Lese- und Schreibzugriff
+  Jeder Controller-Knoten und der Worker hängen dasselbe ein, mit Lese- und Schreibzugriff
 * **Der ssh-Ordner** (`/home/node/.ssh`) : der Schlüssel und die bekannten Hosts für Git über SSH; der Worker erzeugt den Schlüssel bei seinem ersten Start
-* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : auf jedem App-Knoten gleich, sonst wird ein von einem
-  Knoten signiertes Token vom nächsten abgewiesen. Ein App-Knoten verweigert ohne es den Start
-* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : auf jedem App-Knoten und Worker gleich, sonst können
+* **[`ACCESS_TOKEN_SECRET`](../customization/security.html#env_ACCESS_TOKEN_SECRET)** : auf jedem Controller-Knoten gleich, sonst wird ein von einem
+  Knoten signiertes Token vom nächsten abgewiesen. Ein Controller-Knoten verweigert ohne es den Start
+* **[`ENCRYPTION_SECRET`](../customization/security.html#env_ENCRYPTION_SECRET)** : auf jedem Controller-Knoten und Worker gleich, sonst können
   von einem gespeicherte Anmeldedaten von einem anderen nicht gelesen werden. Eine RTE im Socket-Modus liest es nie; nur eine veraltete RTE im Datenbankmodus,
   die sich selbst registriert, braucht es
 
@@ -81,17 +84,17 @@ Worker auf denselben Datenbankknoten.
 Jeder Container benennt sich selbst als `<role>-<hostname>-<port>`, ohne dass etwas zu setzen ist, und die Seite **Status** listet sie alle mit ihrer Rolle
 und Version auf, welcher der Worker ist, und eine Warnung, wenn sie unterschiedliche Versionen ausführen.
 
-Ein Job, der auf einer RTE läuft, gehört dieser RTE und läuft weiter, wenn der App-Knoten, der ihn gestartet hat, wegfällt. Jeder andere Job (ein Template-Job
-auf AWX oder einem anderen Runner, ein Workflow-Job oder die Schritte eines veralteten mehrstufigen Formulars) gehört dem App-Knoten, der ihn gestartet hat. Ein Container, der neu startet, beendet seine eigenen unvollendeten Jobs, und der
+Ein Job, der auf einer RTE läuft, gehört dieser RTE und läuft weiter, wenn der Controller-Knoten, der ihn gestartet hat, wegfällt. Jeder andere Job (ein Template-Job
+auf AWX oder einem anderen Runner, ein Workflow-Job oder die Schritte eines veralteten mehrstufigen Formulars) gehört dem Controller-Knoten, der ihn gestartet hat. Ein Container, der neu startet, beendet seine eigenen unvollendeten Jobs, und der
 Worker beendet die Jobs eines Containers, der zwei Minuten lang nicht mehr geantwortet hat, etwa eines ersetzten Pods.
 
-Ein an einen beliebigen Knoten gesendetes `SIGHUP` wendet den [Config-Seed](../seed/) erneut an: Ein App-Knoten bittet den Worker darum.
+Ein an einen beliebigen Knoten gesendetes `SIGHUP` wendet den [Config-Seed](../seed/) erneut an: Ein Controller-Knoten bittet den Worker darum.
 
 ### Upgrade
 {: .no_toc }
 
-Aktualisieren Sie **zuerst den Worker**, dann die App-Knoten. Der Worker patcht das Schema, und ein App-Knoten der neuen Version wartet, bis das
-Schema gepatcht ist, und protokolliert, worauf er wartet. Zuerst aktualisierte App-Knoten bleiben nicht bereit, bis der Worker nachzieht, während die alten weiter
+Aktualisieren Sie **zuerst den Worker**, dann die Controller-Knoten. Der Worker patcht das Schema, und ein Controller-Knoten der neuen Version wartet, bis das
+Schema gepatcht ist, und protokolliert, worauf er wartet. Zuerst aktualisierte Controller-Knoten bleiben nicht bereit, bis der Worker nachzieht, während die alten weiter
 bedienen. RTEs können jederzeit folgen, solange sie denselben Vertrag sprechen.
 
 ### Grenzen
@@ -99,8 +102,8 @@ bedienen. RTEs können jederzeit folgen, solange sie denselben Vertrag sprechen.
 
 Einige Dinge bleiben bei einem Knoten:
 
-* **Der Chat-Assistent** hält seine Unterhaltungen im Speicher eines App-Knotens: Verwenden Sie Sticky Sessions am Load Balancer (nginx
-  `ip_hash`) oder einen einzigen App-Knoten
+* **Der Chat-Assistent** hält seine Unterhaltungen im Speicher eines Controller-Knotens: Verwenden Sie Sticky Sessions am Load Balancer (nginx
+  `ip_hash`) oder einen einzigen Controller-Knoten
 * **Protokolle** bleiben in jedem Container. Legen Sie [`LOG_PATH`](../customization/logging.html#env_LOG_PATH) außerhalb des gemeinsamen Volumes ab, da mehrere
   Prozesse, die eine Datei rotieren, Zeilen verlieren. Der Protokoll-Viewer zeigt das Protokoll des antwortenden Knotens, sammeln Sie die Protokolle also zentral
 * **Einstellungen**, die auf den Einstellungsseiten geändert werden, werden in die verwaltete `.env` auf dem gemeinsamen Volume geschrieben und gelten auf jedem Knoten; die,
@@ -115,17 +118,17 @@ Das App-Repository hat einen vollständigen Ausgangspunkt in [examples/scale](ht
 | Dienst | Image | Rolle |
 |---|---|---|
 | `db` | `mariadb:11` | Die Datenbank, mit einem Benutzer, der nur Rechte auf das Schema `AnsibleForms` hat |
-| `app1`, `app2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=app`, hinter dem Load Balancer |
+| `controller1`, `controller2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=controller`, hinter dem Load Balancer |
 | `worker1`, `worker2` | `ghcr.io/ansibleforms/ansibleforms:7` | `AF_ROLE=worker`: der zweite wartet und übernimmt |
-| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Führt die Playbooks mit `RTE_MODE=inbound` und `RTE_FILES=local` aus: die App wählt sich bei ihr ein |
-| `lb` | `nginx:stable` | Terminiert HTTPS auf Port 8443 und verteilt die Browser mit `ip_hash` auf die App-Knoten |
+| `rte` | `ghcr.io/ansibleforms/ansibleforms-rte-full:7` | Führt die Playbooks mit `RTE_MODE=inbound` und `RTE_FILES=local` aus: der Controller wählt sich bei ihr ein |
+| `lb` | `nginx:stable` | Terminiert HTTPS auf Port 8443 und verteilt die Browser mit `ip_hash` auf die Controller-Knoten |
 
 Der Runner `rte` der RTE und die Anmeldedaten, mit denen er sich anmeldet (ihre Adresse `http://rte:8000` und `RTE_TOKEN`), sind im
 [Config-Seed](../seed/) `seed.yaml` deklariert, den der Worker bei jedem Start anwendet; die RTE setzt kein `RTE_URL` und wird auf dem Host nicht veröffentlicht.
 
-Die App-Knoten und die Worker teilen eine `.env`, mit dem Datenbankbenutzer, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
+Die Controller-Knoten und die Worker teilen eine `.env`, mit dem Datenbankbenutzer, `ENCRYPTION_SECRET`, `ACCESS_TOKEN_SECRET`, `RTE_TOKEN`,
 `CONFIG_SEED_PATH`, `HTTPS=0` hinter dem Load Balancer und einem `LOG_PATH` außerhalb des gemeinsamen Volumes. Die RTE hat keine `env_file`: Sie erhält
-nur `RTE_TOKEN` aus `compose.yaml` und enthält daher kein Datenbankpasswort. Die App-Knoten, die Worker und die RTE hängen dieselben
+nur `RTE_TOKEN` aus `compose.yaml` und enthält daher kein Datenbankpasswort. Die Controller-Knoten, die Worker und die RTE hängen dieselben
 persistenten und ssh-Volumes ein:
 
 ```bash

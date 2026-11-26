@@ -2,7 +2,7 @@
 layout: default
 title: Requisits previs
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Requisits previs
@@ -120,9 +120,9 @@ Els navegadors més antics no són compatibles.
 
 ## Escalat
 
-Per defecte, un contenidor d'AnsibleForms executa alhora l'aplicació web i la feina en segon pla, al costat d'un RTE.
+Per defecte, un contenidor d'AnsibleForms executa alhora la interfície web del controlador i la feina en segon pla, al costat d'un RTE.
 
-Per atendre més usuaris, executa diversos nodes d'aplicació darrere d'un balancejador de càrrega (`AF_ROLE=app`) al costat d'un worker (`AF_ROLE=worker`), que executa les
+Per atendre més usuaris, executa diversos nodes del controlador darrere d'un balancejador de càrrega (`AF_ROLE=controller`, `app` abans de la 7.8.0) al costat d'un worker (`AF_ROLE=worker`), que executa les
 programacions, les còpies de seguretat i la resta de la feina en segon pla; només treballa un worker alhora, i un segon espera per prendre-li el relleu. Comparteixen
 la base de dades, la carpeta persistent, `ACCESS_TOKEN_SECRET` i `ENCRYPTION_SECRET`. Consulta [Escalat](production/scaling.html). Executa més
 RTE per executar més playbooks alhora: consulta [Diversos RTE](rte/several.html).

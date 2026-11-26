@@ -2,7 +2,7 @@
 layout: default
 title: 前提条件
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # 前提条件
@@ -120,9 +120,9 @@ Web 应用面向当前的浏览器构建：Chrome 或 Edge 111、Firefox 114、S
 
 ## 扩展
 
-默认情况下，一个 AnsibleForms 容器同时运行 Web 应用和后台任务，旁边是一个 RTE。
+默认情况下，一个 AnsibleForms 容器同时运行控制器的 Web 界面和后台任务，旁边是一个 RTE。
 
-要服务更多用户，请在负载均衡器后面运行多个应用节点（`AF_ROLE=app`），并配一个 worker（`AF_ROLE=worker`），由它运行
+要服务更多用户，请在负载均衡器后面运行多个控制器节点（`AF_ROLE=controller`，7.8.0 之前为 `app`），并配一个 worker（`AF_ROLE=worker`），由它运行
 调度、备份和其他后台任务；同一时间只有一个 worker 在工作，第二个 worker 会等待接管。它们共享
 数据库、持久化文件夹、`ACCESS_TOKEN_SECRET` 和 `ENCRYPTION_SECRET`。参见 [扩展](production/scaling.html)。要同时运行更多 playbook，
 请运行更多 RTE：参见 [多个 RTE](rte/several.html)。

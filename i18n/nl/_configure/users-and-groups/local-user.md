@@ -3,7 +3,7 @@ layout: default
 title: Een lokale gebruiker
 parent: Gebruikers en groepen
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Een lokale gebruiker
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Een lokale gebruiker toevoegen, en de tabbladen van zijn pagina
 {: .fs-6 .fw-300 }
 
-**Gebruiker toevoegen** opent een wizard in drie stappen: **Gebruiker** (gebruikersnaam, beschrijving, e-mail), **Wachtwoord** en **Groep**.
+**Gebruiker toevoegen** opent de wizard **Nieuwe gebruiker** in vier stappen:
+
+| Stap | Wat ze vraagt |
+|---|---|
+| **Gebruiker** | De gebruikersnaam, de beschrijving en het e-mailadres; alleen de gebruikersnaam is verplicht |
+| **Wachtwoord** | Het wachtwoord, twee keer getypt: **Volgende** wacht tot beide gelijk zijn |
+| **Groep** | De lokale groep waartoe de gebruiker behoort, en die hem de rollen van de groep geeft |
+| **Rollen** | De rollen die de gebruiker zelf krijgt, elk gekozen met **Rol toevoegen**; er is er geen nodig |
+
+De stap **Rollen** en het twee keer getypte wachtwoord zijn nieuw in 7.8.0. **Opslaan**, op de laatste stap, maakt de gebruiker aan en geeft
+hem daarna de gekozen rollen: een rol die hij niet kon krijgen, wordt in een melding genoemd, en de gebruiker wordt toch aangemaakt.
 
 De pagina van een gebruiker, `/settings/users/<id>`, heeft deze tabbladen:
 

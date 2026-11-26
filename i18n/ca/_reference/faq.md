@@ -2,7 +2,7 @@
 layout: default
 title: PMF
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Preguntes més freqüents
@@ -26,25 +26,26 @@ del volum persistent.
 
 Per executar diverses rèpliques darrere d'un balancejador de càrrega, divideix el procés amb `AF_ROLE`:
 
-- els nodes `app` serveixen la interfície web i l'API: executa'n tants com vulguis, cadascun amb el mateix `ACCESS_TOKEN_SECRET`
+- els nodes `controller` (`app` abans de la 7.8.0, encara llegit fins a la 8.0) serveixen la interfície web i l'API: executa'n tants com vulguis, cadascun amb el mateix `ACCESS_TOKEN_SECRET`
 - un `worker` executa la feina en segon pla: l'esquema i les seves actualitzacions, el config seed, les programacions, la còpia de seguretat nocturna, les
   sincronitzacions de repositoris i les neteges. Només treballa un worker alhora, amb un bloqueig a la base de dades; un segon espera i pren el relleu quan el primer s'atura
 - els contenidors `rte` executen els playbooks: executa'n més per executar més playbooks alhora
 
-Els nodes d'aplicació i el worker comparteixen la base de dades, el volum persistent i `ENCRYPTION_SECRET`. Un RTE en un mode de socket (outbound o
+Els nodes del controlador i el worker comparteixen la base de dades, el volum persistent i `ENCRYPTION_SECRET`. Un RTE en un mode de socket (outbound o
 inbound, consulta [Modes](rte/modes.html)) no necessita ni la base de dades ni `ENCRYPTION_SECRET`. L'assistent de xat necessita sessions persistents (sticky sessions), i
 cada node manté el seu propi registre. Consulta [Escalat](production/scaling.html) i la configuració
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
 
 ### Gestió de formularis en diversos repositoris
 
-Els formularis de tots els repositoris git amb **Utilitzar per als formularis ?** activat es fusionen automàticament; si hi ha noms de formulari duplicats, guanya
-el primer i es registra un avís. Mantén `config.yaml` en un sol repositori. Consulta [Repositoris git](repositories/).
+Els formularis de tots els repositoris git amb el tipus d'ús **Formularis** es fusionen automàticament; si hi ha noms de formulari duplicats, guanya
+el primer i es registra un avís. Els rols, les categories i les constants venen cadascun d'un sol repositori, el que té aquest
+tipus d'ús. Consulta [Repositoris git](repositories/).
 
 ### Sobre els repositoris
 
 AnsibleForms clona i fa pull dels repositoris git sota la ruta de repositoris (`REPO_PATH`), que es gestionen a **Configuració > Repositoris**.
-Els interruptors de cada repositori defineixen què conté: configuració, formularis, playbooks o fitxers de variables. Consulta [Repositoris git](repositories/).
+Els seus tipus d'ús defineixen què conté: formularis, playbooks, rols, credencials i qualsevol altre ajust guardat a git. Consulta [Repositoris git](repositories/).
 
 ### Validació a VS Code dels fitxers de formulari
 

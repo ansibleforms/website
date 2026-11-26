@@ -3,7 +3,7 @@ layout: default
 title: Ruoli
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Ruoli
@@ -22,6 +22,23 @@ Associa utenti e gruppi ai ruoli, e stabilisci cosa può fare ogni ruolo.
 La lista `roles` di primo livello di config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Aggiungere un ruolo
+
+In **Impostazioni > Accesso > Ruoli**, **Aggiungi ruolo** apre la procedura guidata **Nuovo ruolo**, in quattro passaggi dalla 7.8.0:
+
+| Passaggio | Cosa chiede |
+|---|---|
+| **Dettagli** | Il nome, unico tra i ruoli, e la descrizione. **Successivo** attende un nome che nessun altro ruolo abbia |
+| **Permessi** | Le [opzioni dei ruoli](#role-options), nei loro quattro gruppi, partendo dai valori predefiniti di tutti |
+| **Utenti** | Gli utenti che il ruolo indica, ciascuno scelto con **Aggiungi utente** |
+| **Gruppi** | I gruppi che il ruolo indica, ciascuno scelto con **Aggiungi gruppo** |
+
+**Salva**, all'ultimo passaggio, aggiunge il ruolo e salva i ruoli; se il salvataggio viene rifiutato, la procedura guidata resta aperta e non viene aggiunto nulla.
+Il ruolo ha poi una propria pagina, dove si possono modificare i suoi permessi, utenti e gruppi. **Aggiungi ruolo** è disattivato finché i ruoli
+non possono essere salvati dalla pagina, ad esempio quando provengono da un modello ytt.
 
 ---
 

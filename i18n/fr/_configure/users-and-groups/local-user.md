@@ -3,7 +3,7 @@ layout: default
 title: Un utilisateur local
 parent: Utilisateurs et groupes
 nav_order: 1
-translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
+translated_from: 830382a6160c7dd5632ad0f8d89b7ad520d7ae52
 ---
 
 # Un utilisateur local
@@ -12,7 +12,17 @@ translated_from: 9b36582b1f0f8b333a6e9dbb4524eb10723af183
 Ajouter un utilisateur local, et les onglets de sa page
 {: .fs-6 .fw-300 }
 
-**Ajouter un utilisateur** ouvre un assistant en trois étapes : **Utilisateur** (nom d'utilisateur, description, e-mail), **Mot de passe** et **Groupe**.
+**Ajouter un utilisateur** ouvre l'assistant **Nouvel utilisateur** en quatre étapes :
+
+| Étape | Ce qu'elle demande |
+|---|---|
+| **Utilisateur** | Le nom d'utilisateur, la description et l'e-mail ; seul le nom d'utilisateur est requis |
+| **Mot de passe** | Le mot de passe, saisi deux fois : **Suivant** attend que les deux soient identiques |
+| **Groupe** | Le groupe local auquel appartient l'utilisateur, et qui lui donne les rôles du groupe |
+| **Rôles** | Les rôles donnés à l'utilisateur lui-même, chacun choisi avec **Ajouter un rôle** ; aucun n'est nécessaire |
+
+L'étape **Rôles** et le mot de passe saisi deux fois sont nouveaux dans la 7.8.0. **Enregistrer**, à la dernière étape, crée l'utilisateur puis lui donne
+les rôles choisis : un rôle qui n'a pas pu lui être donné est nommé dans un message, et l'utilisateur est créé malgré tout.
 
 La page d'un utilisateur, `/settings/users/<id>`, a ces onglets :
 

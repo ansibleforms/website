@@ -3,7 +3,7 @@ layout: default
 title: Un groupe local
 parent: Utilisateurs et groupes
 nav_order: 3
-translated_from: 21a406f84bc977e2006ab3bc6f201bf202a39330
+translated_from: 41f71dbf24df7e6a6f6a619a7d5147f28e80d466
 ---
 
 # Un groupe local
@@ -11,6 +11,10 @@ translated_from: 21a406f84bc977e2006ab3bc6f201bf202a39330
 
 La page d'un groupe local et ses onglets
 {: .fs-6 .fw-300 }
+
+Depuis la 7.8.0, **Ajouter un groupe** ouvre l'assistant **Nouveau groupe** en trois étapes : **Détails** (le nom et la description), **Utilisateurs**
+(les utilisateurs locaux à mettre dans le groupe) et **Rôles** (les rôles à lui donner, pour que ses utilisateurs les aient). Seul le nom est requis.
+**Enregistrer**, à la dernière étape, crée le groupe, puis ajoute les utilisateurs et donne les rôles : celui qui échoue est nommé dans un message, et le groupe reste.
 
 La page d'un groupe, `/settings/groups/<id>`, a ces onglets :
 

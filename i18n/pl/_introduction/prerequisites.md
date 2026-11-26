@@ -2,7 +2,7 @@
 layout: default
 title: Wymagania wstępne
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Wymagania wstępne
@@ -120,9 +120,9 @@ Starsze przeglądarki nie są obsługiwane.
 
 ## Skalowanie
 
-Domyślnie jeden kontener AnsibleForms uruchamia razem aplikację webową i pracę w tle, obok jednego RTE.
+Domyślnie jeden kontener AnsibleForms uruchamia razem interfejs webowy kontrolera i pracę w tle, obok jednego RTE.
 
-Aby obsłużyć więcej użytkowników, uruchom kilka węzłów aplikacji za load balancerem (`AF_ROLE=app`) obok workera (`AF_ROLE=worker`), który uruchamia
+Aby obsłużyć więcej użytkowników, uruchom kilka węzłów kontrolera za load balancerem (`AF_ROLE=controller`, `app` przed wersją 7.8.0) obok workera (`AF_ROLE=worker`), który uruchamia
 harmonogramy, kopie zapasowe i pozostałą pracę w tle; naraz pracuje tylko jeden worker, a drugi czeka, aby przejąć jego rolę. Współdzielą one
 bazę danych, folder trwały, `ACCESS_TOKEN_SECRET` i `ENCRYPTION_SECRET`. Zobacz [Skalowanie](production/scaling.html). Uruchom więcej
 RTE, aby uruchamiać więcej playbooków jednocześnie: zobacz [Kilka RTE](rte/several.html).

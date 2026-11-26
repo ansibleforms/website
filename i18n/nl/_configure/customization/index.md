@@ -5,7 +5,7 @@ nav_order: 9
 has_children: true
 has_toc: false
 permalink: /customization/
-translated_from: e0bc1d7c5bd2df4a3f9036a2d9413a276b228156
+translated_from: 5b17f8a7d6426c911d68d3b832f3dd2368f49aa8
 ---
 
 # Omgevingsvariabelen
@@ -39,8 +39,8 @@ gelden zodra ze zijn opgeslagen; de andere worden opgeslagen maar vereisen een h
 de procesomgeving is ingesteld, kan daar niet worden gewijzigd: de pagina toont haar als *Ingesteld in de omgeving en hier niet aanpasbaar.*
 Een paar variabelen, zoals `ENCRYPTION_SECRET` en `ACCESS_TOKEN_SECRET`, kunnen nooit vanaf de pagina worden gewijzigd.
 
-De variabelen die een RTE leest, zoals `AF_ROLE`, `RTE_MODE`, `APP_URL` of `RTE_MAX_JOBS`, staan helemaal niet op de instellingenpagina's: de
-app gebruikt ze niet, dus stel ze in in de omgeving waar de RTE draait. De `RTE_*`-variabelen die de app zelf leest,
+De variabelen die een RTE leest, zoals `AF_ROLE`, `RTE_MODE`, `CONTROLLER_URL` of `RTE_MAX_JOBS`, staan helemaal niet op de instellingenpagina's: de
+controller gebruikt ze niet, dus stel ze in in de omgeving waar de RTE draait. De `RTE_*`-variabelen die de controller zelf leest,
 `RTE_QUEUE_MINUTES` en `RTE_FILES_MAX_MB`, zijn de uitzondering en blijven op de pagina's. Vier RTE-variabelen, `RTE_MAX_JOBS`,
 `RTE_CACHE_MB`, `RTE_FILES` en `RTE_DRAIN_SECONDS`, kunnen in plaats daarvan per RTE op de runnerpagina worden ingesteld, waar een waarde voorgaat op de
 variabele (zie [De instellingen van een RTE](../runners/runner-page.html#an-rtes-settings)).

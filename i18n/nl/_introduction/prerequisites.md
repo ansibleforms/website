@@ -2,7 +2,7 @@
 layout: default
 title: Vereisten
 nav_order: 5
-translated_from: 730eff82a2f1ae75eaf5d1cb57f10f6e1019d14b
+translated_from: 0cbf4810f2b3d378df0d48b2bc30e88f99f84ebc
 ---
 
 # Vereisten
@@ -120,9 +120,9 @@ Oudere browsers worden niet ondersteund.
 
 ## Schalen
 
-Standaard draait één AnsibleForms-container de webapp en het achtergrondwerk samen, naast één RTE.
+Standaard draait één AnsibleForms-container de webinterface van de controller en het achtergrondwerk samen, naast één RTE.
 
-Om meer gebruikers te bedienen, draai je meerdere app-nodes achter een load balancer (`AF_ROLE=app`) naast een worker (`AF_ROLE=worker`), die de
+Om meer gebruikers te bedienen, draai je meerdere controller-nodes achter een load balancer (`AF_ROLE=controller`, `app` vóór 7.8.0) naast een worker (`AF_ROLE=worker`), die de
 planningen, de back-ups en het andere achtergrondwerk uitvoert; er werkt maar één worker tegelijk, en een tweede wacht om het over te nemen. Ze delen
 de database, de persistente map, `ACCESS_TOKEN_SECRET` en `ENCRYPTION_SECRET`. Zie [Schalen](production/scaling.html). Draai meer
 RTE's om meer playbooks tegelijk te draaien: zie [Meerdere RTE's](rte/several.html).

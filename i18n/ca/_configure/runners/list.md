@@ -3,7 +3,7 @@ layout: default
 title: La pàgina de runners
 parent: Runners
 nav_order: 1
-translated_from: 622b7c995b553611b6b3eb2eb16d076f669f0476
+translated_from: 046a5f5e3b2de033da4a88bc7c4c82e6493194fc
 ---
 
 # La pàgina de runners
@@ -29,7 +29,7 @@ La pàgina de **Connexions > Runners** llista tots els runners amb aquestes colu
 | Descripció | Per a què serveix. |
 
 **Columnes** n'afegeix dues més, desactivades per defecte: **Mode**, el mode d'un RTE (Sortint, Entrant o Base de dades (obsolet), vegeu
-[Modes](../rte/modes.html)), i **Connexió**, si un node d'aplicació té un sòcol amb un RTE en un mode de sòcol: **Connectat** o
+[Modes](../rte/modes.html)), i **Connexió**, si un node del controlador té un sòcol amb un RTE en un mode de sòcol: **Connectat** o
 **No connectat**.
 
 Des de la 7.3.0 els runners pendents d'aprovació no són a la llista sinó en un avís damunt seu, vegeu [Aprovar un RTE](registration.html#approving-an-rte).

@@ -3,7 +3,7 @@ layout: default
 title: Rollen
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Rollen
@@ -22,6 +22,23 @@ Gebruikers en groepen aan rollen koppelen, en instellen wat elke rol mag doen.
 De lijst `roles` op het hoogste niveau van config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Een rol toevoegen
+
+Onder **Instellingen > Toegang > Rollen** opent **Rol toevoegen** de wizard **Nieuwe rol**, sinds 7.8.0 in vier stappen:
+
+| Stap | Wat ze vraagt |
+|---|---|
+| **Details** | De naam, uniek onder de rollen, en de beschrijving. **Volgende** wacht op een naam die geen andere rol heeft |
+| **Rechten** | De [rolinstellingen](#role-options), in hun vier groepen, met de standaardwaarden van iedereen als begin |
+| **Gebruikers** | De gebruikers die de rol noemt, elk gekozen met **Gebruiker toevoegen** |
+| **Groepen** | De groepen die de rol noemt, elk gekozen met **Groep toevoegen** |
+
+**Opslaan**, op de laatste stap, voegt de rol toe en slaat de rollen op; als het opslaan wordt geweigerd, blijft de wizard open en wordt er niets
+toegevoegd. De rol heeft daarna een eigen pagina, waar je zijn rechten, gebruikers en groepen kunt wijzigen. **Rol toevoegen** is uitgeschakeld
+zolang de rollen niet vanaf de pagina kunnen worden opgeslagen, bijvoorbeeld als ze uit een ytt-sjabloon komen.
 
 ---
 

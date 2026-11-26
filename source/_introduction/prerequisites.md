@@ -119,9 +119,9 @@ Older browsers are not supported.
 
 ## Scaling
 
-By default one AnsibleForms container runs the web app and the background work together, next to one RTE.
+By default one AnsibleForms container runs the controller's web interface and the background work together, next to one RTE.
 
-To serve more users, run several app nodes behind a load balancer (`AF_ROLE=app`) next to a worker (`AF_ROLE=worker`), which runs the
+To serve more users, run several controller nodes behind a load balancer (`AF_ROLE=controller`, `app` before 7.8.0) next to a worker (`AF_ROLE=worker`), which runs the
 schedules, the backups and the other background work; only one worker works at a time, and a second one waits to take over. They share
 the database, the persistent folder, `ACCESS_TOKEN_SECRET` and `ENCRYPTION_SECRET`. See [Scaling](production/scaling.html). Run more
 RTEs to run more playbooks at once: see [Several RTEs](rte/several.html).

@@ -3,7 +3,7 @@ layout: default
 title: "De pagina van een runner"
 parent: Runners
 nav_order: 4
-translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
+translated_from: b7be7b15d86552e32ee2c296d4d14f2f49d39846
 ---
 
 # De pagina van een runner
@@ -45,26 +45,26 @@ dat boven aan zijn pagina, en is alleen-lezen.
 
 ## De instellingen van een RTE
 
-Het tabblad RTE beheert een RTE vanuit de app, zonder de omgeving te bewerken op de machine waarop hij draait.
+Het tabblad RTE beheert een RTE vanuit de controller, zonder de omgeving te bewerken op de machine waarop hij draait.
 
-**Verbinding.** Een RTE in een socketmodus toont een badge: **Verbonden** of **Niet verbonden**. Bij aanwijzen toont **Verbonden** de app-node
-die zijn socket vasthoudt, de release van de RTE, en hoeveel van zijn jobs draaien. **Niet verbonden** betekent dat geen enkele app-node een socket naar hem vasthoudt:
-controleer of de RTE draait, zijn adres of `APP_URL`, en zijn token.
+**Verbinding.** Een RTE in een socketmodus toont een badge: **Verbonden** of **Niet verbonden**. Bij aanwijzen toont **Verbonden** de controller-node
+die zijn socket vasthoudt, de release van de RTE, en hoeveel van zijn jobs draaien. **Niet verbonden** betekent dat geen enkele controller-node een socket naar hem vasthoudt:
+controleer of de RTE draait, zijn adres of `CONTROLLER_URL`, en zijn token.
 
 **Instellingen.** Een RTE in uitgaande of inkomende modus heeft vier instellingen, elk standaard leeg:
 
 | Instelling | Hetzelfde als | Wat ze doet |
 |---|---|---|
 | Max. gelijktijdige jobs | [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | Hoeveel playbooks hij tegelijk draait, standaard `10`; `0` stelt geen limiet in |
-| Cache voor jobbestanden | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | Hoeveel van de jobbestanden die de app hem stuurde hij bewaart, in MB, standaard `1024`; `0` bewaart niets |
+| Cache voor jobbestanden | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | Hoeveel van de jobbestanden die de controller hem stuurde hij bewaart, in MB, standaard `1024`; `0` bewaart niets |
 | Wachttijd bij stoppen | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | Hoe lang een stoppende RTE op zijn lopende playbooks wacht, standaard `25` seconden |
-| Jobbestanden | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Overdracht**: de app stuurt de bestanden van een job met de job mee. **Lokaal**: hij draait vanuit zijn eigen gekoppelde mappen |
+| Jobbestanden | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Overdracht**: de controller stuurt de bestanden van een job met de job mee. **Lokaal**: hij draait vanuit zijn eigen gekoppelde mappen |
 
 **Welke waarde wint.** Een waarde op de pagina wint van dezelfde variabele die op de RTE is ingesteld. Een veld dat leeg blijft, gebruikt de eigen variabele van de RTE,
 anders de standaard. Onder elk veld zegt de pagina welke: **Overschrijft RTE_MAX_JOBS op de RTE (3).**, of **Leeg: de RTE gebruikt zijn
 eigen RTE_MAX_JOBS, 3.**; de placeholder toont de waarde waarvoor een leeg veld staat.
 
-**Hoe ze de RTE bereiken.** De instellingen worden met de runner in de database van de app opgeslagen. De app stuurt ze over de socket van de RTE
+**Hoe ze de RTE bereiken.** De instellingen worden met de runner in de database van de controller opgeslagen. De controller stuurt ze over de socket van de RTE
 wanneer die verbinding maakt en telkens wanneer ze worden opgeslagen, en de RTE past ze meteen toe: een kleinere cache wordt ingekort, een nieuwe limiet telt vanaf de
 volgende job. De RTE bewaart ze alleen in het geheugen en schrijft geen bestand: na een herstart krijgt hij ze opnieuw als hij verbinding maakt, vóór zijn eerste job.
 
@@ -85,7 +85,7 @@ OK**, of waarom het mislukte. Er draait geen job. Voor een RTE controleert het o
 
 | RTE | Wat de test leest | Wanneer hij mislukt |
 |---|---|---|
-| Uitgaand of Inkomend | Wie zijn socket vasthoudt, zoals elke app-node dat vastlegt, en wat de RTE zei toen hij verbinding maakte. Hij roept niets aan | Geen enkele app-node houdt een socket naar hem vast: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app*, of voor een inkomende, *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE*. Of de RTE spreekt een ander contract dan 3 |
+| Uitgaand of Inkomend | Wie zijn socket vasthoudt, zoals elke controller-node dat vastlegt, en wat de RTE zei toen hij verbinding maakte. Hij roept niets aan | Geen enkele controller-node houdt een socket naar hem vast: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller*, of voor een inkomende, *no controller node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the controller to the RTE*. Of de RTE spreekt een ander contract dan 3 |
 | Database (verouderd) | De `/rte/v1/health` van de RTE, aangeroepen met zijn token | De RTE antwoordt niet op zijn adres, weigert het token, of spreekt een ander contract dan 2 |
 
 De badge **Verbinding** van het tabblad RTE toont dezelfde socketstatus zonder test.

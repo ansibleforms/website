@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # Questions fréquentes
@@ -26,25 +26,26 @@ le volume persistant.
 
 Pour faire tourner plusieurs réplicas derrière un répartiteur de charge, séparez le processus avec `AF_ROLE` :
 
-- les nœuds `app` servent l'interface web et l'API : faites-en tourner autant que vous voulez, chacun avec le même `ACCESS_TOKEN_SECRET`
+- les nœuds `controller` (`app` avant la 7.8.0, encore lu jusqu'à la 8.0) servent l'interface web et l'API : faites-en tourner autant que vous voulez, chacun avec le même `ACCESS_TOKEN_SECRET`
 - un `worker` s'occupe du travail en arrière-plan : le schéma et ses mises à niveau, le seed de configuration, les planifications, la sauvegarde nocturne, les synchronisations
   des dépôts et les nettoyages. Un seul worker travaille à la fois, en détenant un verrou de base de données ; un second attend et prend le relais quand le premier s'arrête
 - les conteneurs `rte` exécutent les playbooks : faites-en tourner davantage pour exécuter plus de playbooks à la fois
 
-Les nœuds d'application et le worker partagent la base de données, le volume persistant et `ENCRYPTION_SECRET`. Un RTE en mode socket (sortant ou
+Les nœuds du contrôleur et le worker partagent la base de données, le volume persistant et `ENCRYPTION_SECRET`. Un RTE en mode socket (sortant ou
 entrant, voir [Modes](rte/modes.html)) n'a besoin ni de la base de données ni d'`ENCRYPTION_SECRET`. L'assistant de chat a besoin de sessions persistantes (sticky sessions), et
 chaque nœud garde son propre journal. Voir [Mise à l'échelle](production/scaling.html) et la configuration
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
 
 ### Gestion des formulaires sur plusieurs dépôts
 
-Les formulaires de chaque dépôt Git qui a **Utiliser pour les formulaires ?** activé sont fusionnés automatiquement ; en cas de noms de formulaires en double, le premier
-l'emporte et un avertissement est journalisé. Ne gardez `config.yaml` que dans un seul dépôt. Voir [Dépôts git](repositories/).
+Les formulaires de chaque dépôt Git ayant le type d'usage **Formulaires** sont fusionnés automatiquement ; en cas de noms de formulaires en double, le premier
+l'emporte et un avertissement est journalisé. Les rôles, les catégories et les constantes viennent chacun d'un seul dépôt, celui qui a ce
+type d'usage. Voir [Dépôts git](repositories/).
 
 ### À propos des dépôts
 
 AnsibleForms clone et met à jour les dépôts Git sous le chemin des dépôts (`REPO_PATH`), gérés sous **Paramètres > Dépôts**.
-Des interrupteurs sur chaque dépôt définissent ce qu'il contient : configuration, formulaires, playbooks ou fichiers de variables. Voir [Dépôts git](repositories/).
+Ses types d'usage définissent ce qu'il contient : formulaires, playbooks, rôles, identifiants et tout autre paramètre conservé dans git. Voir [Dépôts git](repositories/).
 
 ### Validation VS Code des fichiers de formulaires
 

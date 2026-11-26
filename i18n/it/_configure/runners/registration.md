@@ -3,7 +3,7 @@ layout: default
 title: Registrazione
 parent: Runner
 nav_order: 3
-translated_from: 79dc369b64c0e733cc0dc8d4d863289fc64c75ab
+translated_from: 25a4ccd913b138b5ba14aaaf34b7ad8c6523bc16
 ---
 
 # Registrazione
@@ -19,25 +19,25 @@ Come un RTE chiede di unirsi e viene approvato, i join token per le installazion
 
 ## Chiedere di unirsi
 
-Dalla 7.3.0, un RTE in una modalità socket (`outbound` o `inbound`) che l'app non conosce ancora chiede di unirsi, e un admin lo approva.
-Si presenta con il proprio `RTE_TOKEN` e il suo `RTE_NAME`: un RTE in uscita quando contatta l'app la prima volta, uno in entrata nella sua unica
-chiamata di registrazione. Senza un join token, l'app allora:
+Dalla 7.3.0, un RTE in una modalità socket (`outbound` o `inbound`) che il controller non conosce ancora chiede di unirsi, e un admin lo approva.
+Si presenta con il proprio `RTE_TOKEN` e il suo `RTE_NAME`: un RTE in uscita quando contatta il controller la prima volta, uno in entrata nella sua unica
+chiamata di registrazione. Senza un join token, il controller allora:
 
 1. Salva l'`RTE_TOKEN` dell'RTE in una nuova credenziale di tipo RTE chiamata `<name>-rte` (con un numero aggiunto quando quel nome è già in uso), e
    per un RTE in entrata il suo indirizzo, `RTE_URL`
 2. Aggiunge un runner chiamato come `RTE_NAME`, tipo RTE, nella modalità dell'RTE, che accede con quella credenziale, contrassegnato come **In attesa di approvazione**
    e disattivato. La sua descrizione indica l'host da cui ha fatto la richiesta
 
-Un RTE in uscita resta connesso mentre attende, ma non riceve job. L'app non contatta uno in entrata finché non è approvato. Entrambi registrano
+Un RTE in uscita resta connesso mentre attende, ma non riceve job. Il controller non contatta uno in entrata finché non è approvato. Entrambi registrano
 che attendono l'approvazione di un admin in **Connessioni > Runner**, con l'impronta del loro token.
 
-Un RTE in entrata con un `RTE_URL` `https://` invia anche il suo certificato quando chiede di unirsi, e l'app lo fissa: da quel momento
-l'app contatta quell'RTE solo quando presenta lo stesso certificato, quindi uno autofirmato funziona senza una CA (vedi [In entrata](../rte/modes.html#inbound)).
+Un RTE in entrata con un `RTE_URL` `https://` invia anche il suo certificato quando chiede di unirsi, e il controller lo fissa: da quel momento
+il controller contatta quell'RTE solo quando presenta lo stesso certificato, quindi uno autofirmato funziona senza una CA (vedi [In entrata](../rte/modes.html#inbound)).
 
 Al massimo 20 RTE possono attendere l'approvazione contemporaneamente: gli altri vengono rifiutati finché alcuni non vengono approvati o rifiutati. Una richiesta che nessuno gestisce entro
 24 ore viene rimossa dal worker, con la sua credenziale.
 
-Un RTE che porta il nome di un runner che l'app conosce già, ma con un altro token, viene rifiutato e non chiede di unirsi. Dagli il token di quel runner,
+Un RTE che porta il nome di un runner che il controller conosce già, ma con un altro token, viene rifiutato e non chiede di unirsi. Dagli il token di quel runner,
 o elimina il runner così che chieda di unirsi. Un [join token](#join-tokens) aiuta solo finché quel runner attende ancora l'approvazione.
 
 ---
@@ -54,11 +54,11 @@ La sua pagina mostra gli stessi dati in un riquadro giallo, **Questo RTE ha chie
 | Campo | Cosa mostra |
 |---|---|
 | Impronta | Le prime 8 cifre esadecimali dello SHA-256 del suo `RTE_TOKEN`, come `abcd-ef12`. L'RTE la registra al suo avvio, e l'[installer](../installation/installer.html#a-runner) la stampa alla fine. Deve essere la stessa |
-| Impronta del certificato | Nella finestra di dialogo, per un RTE in entrata su HTTPS: le prime 8 cifre esadecimali dello SHA-256 del certificato che l'app fissa (i suoi byte DER), come `abcd-ef12`. L'RTE la registra al suo avvio e l'[installer](../installation/installer.html#a-runner) la stampa alla fine. Deve essere la stessa |
+| Impronta del certificato | Nella finestra di dialogo, per un RTE in entrata su HTTPS: le prime 8 cifre esadecimali dello SHA-256 del certificato che il controller fissa (i suoi byte DER), come `abcd-ef12`. L'RTE la registra al suo avvio e l'[installer](../installation/installer.html#a-runner) la stampa alla fine. Deve essere la stessa |
 | Host | L'host su cui gira |
-| Indirizzo IP | L'indirizzo da cui ha chiamato l'app |
+| Indirizzo IP | L'indirizzo da cui ha chiamato il controller |
 | Modalità | In uscita o In entrata |
-| URI | L'indirizzo di un RTE in entrata, dove l'app lo contatta |
+| URI | L'indirizzo di un RTE in entrata, dove il controller lo contatta |
 | Versione | La sua versione |
 | Richiesto il | Quando ha chiesto di unirsi |
 

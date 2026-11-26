@@ -3,7 +3,7 @@ layout: default
 title: Funções
 parent: config.yaml
 nav_order: 2
-translated_from: 204f9e089bcb7000e0be4712ad4590ad3b3fd74b
+translated_from: 36e350ca0895957fa17182ed07a568ae21800f1b
 ---
 
 # Funções
@@ -22,6 +22,24 @@ Mapear utilizadores e grupos para funções, e definir o que cada função pode 
 A lista `roles` de topo do config.yaml:
 
 {% include config_attribute.html name="roles" %}
+
+---
+
+## Adicionar uma função
+
+Em **Definições > Acesso > Funções**, **Adicionar função** abre o assistente **Nova função**, em quatro passos desde a 7.8.0:
+
+| Passo | O que pede |
+|---|---|
+| **Detalhes** | O nome, único entre as funções, e a descrição. **Seguinte** espera por um nome que nenhuma outra função tenha |
+| **Permissões** | As [opções de função](#role-options), nos seus quatro grupos, a partir das predefinições de todos |
+| **Utilizadores** | Os utilizadores que a função nomeia, cada um escolhido com **Adicionar utilizador** |
+| **Grupos** | Os grupos que a função nomeia, cada um escolhido com **Adicionar grupo** |
+
+**Guardar**, no último passo, adiciona a função e guarda as funções; quando a gravação é recusada, o assistente fica aberto e nada é
+adicionado. A função passa então a ter a sua própria página, onde as suas permissões, utilizadores e grupos podem ser alterados.
+**Adicionar função** fica desativado enquanto as funções não puderem ser guardadas a partir da página, por exemplo quando vêm de um
+modelo ytt.
 
 ---
 

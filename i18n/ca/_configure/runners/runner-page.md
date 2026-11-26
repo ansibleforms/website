@@ -3,7 +3,7 @@ layout: default
 title: "La pàgina d'un runner"
 parent: Runners
 nav_order: 4
-translated_from: 4260f9b8ce60f26e8808cf17bf4a4c3993229c5d
+translated_from: b7be7b15d86552e32ee2c296d4d14f2f49d39846
 ---
 
 # La pàgina d'un runner
@@ -45,26 +45,26 @@ a la part superior de la seva pàgina, i és només de lectura.
 
 ## La configuració d'un RTE
 
-La pestanya RTE gestiona un RTE des de l'aplicació, sense editar-ne l'entorn a la màquina on s'executa.
+La pestanya RTE gestiona un RTE des del controlador, sense editar-ne l'entorn a la màquina on s'executa.
 
-**Connexió.** Un RTE en un mode de sòcol mostra una insígnia: **Connectat** o **No connectat**. En passar-hi el punter, **Connectat** mostra el node d'aplicació
-que té el seu sòcol, la versió de l'RTE, i quantes de les seves tasques s'executen. **No connectat** vol dir que cap node d'aplicació no hi té un sòcol:
-comprova que l'RTE s'executa, la seva adreça o `APP_URL`, i el seu token.
+**Connexió.** Un RTE en un mode de sòcol mostra una insígnia: **Connectat** o **No connectat**. En passar-hi el punter, **Connectat** mostra el node del controlador
+que té el seu sòcol, la versió de l'RTE, i quantes de les seves tasques s'executen. **No connectat** vol dir que cap node del controlador no hi té un sòcol:
+comprova que l'RTE s'executa, la seva adreça o `CONTROLLER_URL`, i el seu token.
 
 **Configuració.** Un RTE en mode sortint o entrant té quatre ajustos, cadascun buit per defecte:
 
 | Ajust | El mateix que | Què fa |
 |---|---|---|
 | Màxim de treballs simultanis | [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) | Quants playbooks executa alhora, `10` per defecte; `0` no posa cap límit |
-| Memòria cau de fitxers | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | Quant dels fitxers de tasca que li ha enviat l'aplicació conserva, en MB, `1024` per defecte; `0` no en conserva cap |
+| Memòria cau de fitxers | [`RTE_CACHE_MB`](../customization/server.html#env_RTE_CACHE_MB) | Quant dels fitxers de tasca que li ha enviat el controlador conserva, en MB, `1024` per defecte; `0` no en conserva cap |
 | Temps d'espera en aturar | [`RTE_DRAIN_SECONDS`](../customization/server.html#env_RTE_DRAIN_SECONDS) | Quant de temps espera un RTE que s'atura els seus playbooks en execució, `25` segons per defecte |
-| Fitxers de treball | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Transferència**: l'aplicació envia els fitxers d'una tasca amb la tasca. **Local**: s'executa des de les seves pròpies carpetes muntades |
+| Fitxers de treball | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | **Transferència**: el controlador envia els fitxers d'una tasca amb la tasca. **Local**: s'executa des de les seves pròpies carpetes muntades |
 
 **Quin valor guanya.** Un valor a la pàgina guanya a la mateixa variable definida a l'RTE. Un camp deixat buit fa servir la variable pròpia de l'RTE,
 o si no el valor predeterminat. Sota cada camp la pàgina indica quin: **Substitueix RTE_MAX_JOBS definida a l'RTE (3).**, o **Buit: l'RTE fa servir la seva
 RTE_MAX_JOBS, 3.**; el text indicatiu mostra el valor que representa un camp buit.
 
-**Com arriben a l'RTE.** Els ajustos es desen amb el runner a la base de dades de l'aplicació. L'aplicació els envia pel sòcol de l'RTE
+**Com arriben a l'RTE.** Els ajustos es desen amb el runner a la base de dades del controlador. El controlador els envia pel sòcol de l'RTE
 quan es connecta i cada vegada que es desen, i l'RTE els aplica a l'instant: una memòria cau més petita es retalla, un límit nou compta a partir de la
 tasca següent. L'RTE només els conserva a la memòria i no escriu cap fitxer: després d'un reinici els torna a rebre en connectar-se, abans de la seva primera tasca.
 
@@ -85,7 +85,7 @@ OK**, o per què ha fallat. No executa cap tasca. Per a un RTE també comprova e
 
 | RTE | Què llegeix la prova | Quan falla |
 |---|---|---|
-| Sortint o Entrant | Qui té el seu sòcol, tal com ho registra cada node d'aplicació, i el que ha dit l'RTE quan s'ha connectat. No crida res | Cap node d'aplicació no hi té un sòcol: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the app: check its APP_URL, its token and the network from the RTE to the app*, o per a un d'entrant, *no app node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the app to the RTE*. O l'RTE parla un altre contracte que no és el 3 |
+| Sortint o Entrant | Qui té el seu sòcol, tal com ho registra cada node del controlador, i el que ha dit l'RTE quan s'ha connectat. No crida res | Cap node del controlador no hi té un sòcol: *the RTE '&lt;name&gt;' (outbound) is not connected: it has not dialed the controller: check its CONTROLLER_URL, its token and the network from the RTE to the controller*, o per a un d'entrant, *no controller node could dial it at &lt;address&gt;: check its RTE_URL, its token and the network from the controller to the RTE*. O l'RTE parla un altre contracte que no és el 3 |
 | Base de dades (obsolet) | El `/rte/v1/health` de l'RTE, cridat amb el seu token | L'RTE no respon a la seva adreça, rebutja el token, o parla un altre contracte que no és el 2 |
 
 La insígnia de **Connexió** de la pestanya RTE mostra el mateix estat del sòcol sense cap prova.

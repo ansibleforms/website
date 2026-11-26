@@ -2,7 +2,7 @@
 layout: default
 title: 常见问题
 nav_order: 2
-translated_from: 487a25c7f3b24b3a0c0d4df08c858a52d48f8556
+translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
 ---
 
 # 常见问题
@@ -26,25 +26,25 @@ RTE 容器。请为它设置重启策略（例如 Docker 中的 `restart: unless
 
 要在负载均衡器后面运行多个副本，请用 `AF_ROLE` 拆分进程：
 
-- `app` 节点提供 Web 界面和 API：可以运行任意多个，每个都使用相同的 `ACCESS_TOKEN_SECRET`
+- `controller` 节点（7.8.0 之前为 `app`，8.0 之前仍会读取）提供 Web 界面和 API：可以运行任意多个，每个都使用相同的 `ACCESS_TOKEN_SECRET`
 - 一个 `worker` 运行后台任务：schema 及其升级、配置种子、调度、每晚备份、仓库
   同步和清理。同一时间只有一个 worker 在工作，它持有一个数据库锁；第二个 worker 会等待，并在第一个停止时接管
 - `rte` 容器运行 playbook：运行更多 RTE 容器就能同时运行更多 playbook
 
-应用节点和 worker 共享数据库、持久卷和 `ENCRYPTION_SECRET`。socket 模式（出站或
+控制器节点和 worker 共享数据库、持久卷和 `ENCRYPTION_SECRET`。socket 模式（出站或
 入站，参见 [模式](rte/modes.html)）的 RTE 既不需要数据库也不需要 `ENCRYPTION_SECRET`。聊天助手需要会话保持，
 每个节点各自保存日志。参见 [扩展](production/scaling.html) 和
 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) 示例配置。
 
 ### 多仓库表单管理
 
-所有启用了 **用于表单** 的 Git 仓库中的表单会自动合并；表单名称重复时，第一个
-生效并记录一条警告。请只在一个仓库中保留 `config.yaml`。参见 [Git 仓库](repositories/)。
+所有具有 **表单** 用途类型的 Git 仓库中的表单会自动合并；表单名称重复时，第一个
+生效并记录一条警告。角色、类别和常量各自来自一个仓库，即具有该用途类型的仓库。参见 [Git 仓库](repositories/)。
 
 ### 关于仓库
 
 AnsibleForms 在仓库路径（`REPO_PATH`）下克隆和拉取 Git 仓库，在 **设置 > 仓库** 下管理。
-每个仓库上的开关决定它包含什么：配置、表单、playbook 或变量文件。参见 [Git 仓库](repositories/)。
+它的用途类型决定它包含什么：表单、playbook、角色、凭据以及保存在 git 中的其他所有设置。参见 [Git 仓库](repositories/)。
 
 ### VS Code 中表单文件的验证
 

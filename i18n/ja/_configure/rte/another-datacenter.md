@@ -3,7 +3,7 @@ layout: default
 title: 別のデータセンター
 parent: RTE
 nav_order: 5
-translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
+translated_from: 09b494da97232b189de77db8b533a76ea9e0d8d2
 ---
 
 # 別のデータセンターの RTE
@@ -28,18 +28,18 @@ translated_from: 92cb04f1c4c3d482f8036977a99551fde6ce2797
 
 ## 最終的な構成
 
-アプリ、そのワーカー、データベースは、データセンター 1 のそのままの場所に残ります。データセンター 2 には、アウトバウンドモード
+コントローラー、そのワーカー、データベースは、データセンター 1 のそのままの場所に残ります。データセンター 2 には、アウトバウンドモード
 （ [`RTE_MODE=outbound`](../customization/server.html#env_RTE_MODE) 。 [モード](modes.html#outbound) を参照）の RTE コンテナーを一つ実行するホストを置きます。RTE は HTTPS で
-アプリに接続して WebSocket を一本開いたままにし、独自のランナーとして参加し、それを指定するフォームのプレイブックをデータセンター 2 の管理対象
+コントローラーに接続して WebSocket を一本開いたままにし、独自のランナーとして参加し、それを指定するフォームのプレイブックをデータセンター 2 の管理対象
 ホストに対して実行します。
 
 | 場所 | そこで動作するもの | 通信先 |
 |---|---|---|
-| データセンター 1 | アプリノード、ワーカー、データベース（現状のまま） | 新しいものはありません。いつもの HTTPS のアドレスで RTE のソケットを受けます |
-| データセンター 2 の RTE ホスト | Docker または Podman と、RTE のコンテナー | HTTPS で `APP_URL` のアプリ、およびデータセンター 2 の管理対象ホスト |
+| データセンター 1 | コントローラーノード、ワーカー、データベース（現状のまま） | 新しいものはありません。いつもの HTTPS のアドレスで RTE のソケットを受けます |
+| データセンター 2 の RTE ホスト | Docker または Podman と、RTE のコンテナー | HTTPS で `CONTROLLER_URL` のコントローラー、およびデータセンター 2 の管理対象ホスト |
 
 RTE はデータベースの認証情報も `ENCRYPTION_SECRET` も持たず、自分のトークンだけを持ちます。RTE に接続してくるものはないので、開いた
-ポートも、DNS 名も、証明書も不要です。アプリはプレイブックとインベントリを各ジョブとともに送るので（ `RTE_FILES=transfer` 、
+ポートも、DNS 名も、証明書も不要です。コントローラーはプレイブックとインベントリを各ジョブとともに送るので（ `RTE_FILES=transfer` 、
 既定）、RTE にそのコピーも共有ディスクも不要です。
 
 特に記載がない限り、以下のコマンドはすべて RTE のホスト上のターミナルで、 `sudo` を使えるユーザーとして実行します。所要時間は約 20 分で、
@@ -53,14 +53,14 @@ RTE はデータベースの認証情報も `ENCRYPTION_SECRET` も持たず、�
 
 | もの | 入手先 |
 |---|---|
-| アプリのアドレス | `APP_URL` ：利用者がブラウザーで開くアドレス。例： `https://forms.example.com` 。ベースパスがあればそれも含めます |
-| アプリの証明書 | 公的な CA、プライベート CA（その証明書が必要です。手順 6）、または自己署名の証明書 |
+| コントローラーのアドレス | `CONTROLLER_URL` ：利用者がブラウザーで開くアドレス。例： `https://forms.example.com` 。ベースパスがあればそれも含めます |
+| コントローラーの証明書 | 公的な CA、プライベート CA（その証明書が必要です。手順 6）、または自己署名の証明書 |
 | プロキシ | このデータセンターがデータセンター 1 に到達するのに使う `HTTPS_PROXY` （ある場合） |
 | RTE の名前 | **接続 > ランナー** でのランナーの名前で、フォームは `runner:` でこれを指定します。例： `rte-dc2` 。英字、数字、 `_ . : @ -` |
 | 参加トークン | 任意： [参加トークン](../runners/registration.html#join-tokens) （ `afj_...` ）があれば RTE はすぐに承認されます。ない場合は管理者が承認します（手順 8） |
 | ssh キー | プレイブックが管理対象ホストへの接続に使う秘密鍵、またはそれを作成する権限 |
 
-アプリは 7.3.0 以降である必要があります。この RTE 専用の参加トークンを作るには、管理者が API を一度呼び出します（
+コントローラーは 7.3.0 以降である必要があります。この RTE 専用の参加トークンを作るには、管理者が API を一度呼び出します（
 [参加トークン](../runners/registration.html#join-tokens) を参照）。
 
 ```bash
@@ -79,9 +79,9 @@ RTE はコンテナーなので、ホストに必要なのはコンテナーエ�
 |---|---|
 | **x86_64** （amd64）または **aarch64** （arm64）の Linux | RTE イメージは 7.6.0 からは両方向けに公開されています。それより前は amd64 向けのみです |
 | 2 CPU と 4 GB 以上のメモリ | 一つの RTE は最大 [`RTE_MAX_JOBS`](../customization/server.html#env_RTE_MAX_JOBS) 個（10）のプレイブックを同時に、それぞれのフォークとともに実行します。それに合わせてサイズを決めてください |
-| 20 GB の空きディスク | `-rte-full` イメージは約 3.3 GB で、さらに更新時のイメージ、アプリが送るジョブのファイル、ジョブの一時ファイルが加わります |
+| 20 GB の空きディスク | `-rte-full` イメージは約 3.3 GB で、さらに更新時のイメージ、コントローラーが送るジョブのファイル、ジョブの一時ファイルが加わります |
 | Docker、または podman-compose を伴う Podman | イメージを取得して実行するため |
-| NTP で合わせた時刻 | ジョブの時刻はアプリの時刻と比較されます |
+| NTP で合わせた時刻 | ジョブの時刻はコントローラーの時刻と比較されます |
 
 **Docker** 、Ubuntu または Debian の場合（ほかのディストリビューション： [docs.docker.com/engine/install](https://docs.docker.com/engine/install/) ）：
 
@@ -112,14 +112,14 @@ RTE はすべての接続を自分で開きます。外部から RTE に届く�
 
 | 送信元 | 宛先 | ポート | 理由 |
 |---|---|---|---|
-| RTE のホスト | `APP_URL` のアプリ（設定されていれば `HTTPS_PROXY` 経由） | アプリのポート。多くのプロキシの背後では `443` | ジョブ、そのファイル、その出力が流れるソケット |
+| RTE のホスト | `CONTROLLER_URL` のコントローラー（設定されていれば `HTTPS_PROXY` 経由） | コントローラーのポート。多くのプロキシの背後では `443` | ジョブ、そのファイル、その出力が流れるソケット |
 | RTE のホスト | データセンター 2 の管理対象ホスト | ssh（ `22` ）、WinRM、それらの API | プレイブックはここから実行されます |
 | RTE のホスト | `ghcr.io` | `443` | イメージを取得するため。独自のレジストリやファイルから取得する場合は不要です（手順 4） |
 
 RTE のために着信ポートは開かないでください。その `PORT` （ `8000` ）が提供するのは、このホスト上のプローブ用の `/live` 、 `/ready` 、 `/metrics` だけです。
 
-RTE は、 `APP_URL` に `/api/v2/rte/socket` を付けたアドレスに WebSocket として接続します。アプリの前にあるリバースプロキシは、そのパスで
-アップグレードを通す必要があります（ [ランナーの WebSocket](../production/reverse-proxy.html#runner-websockets) を参照）。ここからアプリが応答することを確認します。
+RTE は、 `CONTROLLER_URL` に `/api/v2/rte/socket` を付けたアドレスに WebSocket として接続します。コントローラーの前にあるリバースプロキシは、そのパスで
+アップグレードを通す必要があります（ [ランナーの WebSocket](../production/reverse-proxy.html#runner-websockets) を参照）。ここからコントローラーが応答することを確認します。
 
 ```bash
 curl -sS https://forms.example.com/api/v2/version
@@ -138,11 +138,11 @@ sudo touch /opt/af-rte/data/ansible/ansible.cfg /opt/af-rte/data/git/.gitconfig
 
 | フォルダー | コンテナー内 | 保持するもの |
 |---|---|---|
-| `data/` | `/app/dist/persistent` | スプール（ `rte-spool` ：アプリが保存するまでの各ジョブの出力と終了）、アプリが送ったジョブのファイル（ `rte-files` ）、プライベート CA、プレイブックがインストールする python ライブラリ |
+| `data/` | `/app/dist/persistent` | スプール（ `rte-spool` ：コントローラーが保存するまでの各ジョブの出力と終了）、コントローラーが送ったジョブのファイル（ `rte-files` ）、プライベート CA、プレイブックがインストールする python ライブラリ |
 | `data/ssh/` | `/home/node/.ssh` | プレイブックの ssh キーと `known_hosts` |
 | `data/ansible/` | `/etc/ansible/...` | 組み込む代わりにマウントする、独自の `ansible.cfg` 、ロール、コレクション |
 
-`data/` はホスト上に置いてください。再起動した RTE も、アプリが保存していなかったものを送り、ジョブのファイルのキャッシュを保持します。
+`data/` はホスト上に置いてください。再起動した RTE も、コントローラーが保存していなかったものを送り、ジョブのファイルのキャッシュを保持します。
 
 **ssh キー。** データセンター 1 でプレイブックが使っているキーをコピーするか、このデータセンター用に作成して、その公開鍵を管理対象ホストに渡します。
 
@@ -169,7 +169,7 @@ sudo chmod 700 /opt/af-rte/data/ssh && sudo chmod 600 /opt/af-rte/data/ssh/id_*
 {: .no_toc }
 
 公開されているイメージは GitHub Container Registry にあり、公開されていてログインは不要です（三つのレイヤーについては [イメージ](images.html) を参照）。
-データセンター 1 と同じレイヤーを使ってください。 `:7` は、アプリの `:7` と同じく最新の 7 系リリースに追従します。
+データセンター 1 と同じレイヤーを使ってください。 `:7` は、コントローラーの `:7` と同じく最新の 7 系リリースに追従します。
 
 ```bash
 docker pull ghcr.io/ansibleforms/ansibleforms-rte-full:7
@@ -204,14 +204,14 @@ EOF
 docker build --pull -t af-rte-dc2 /opt/af-rte/build
 ```
 
-アプリの新しいリリースのたびにリビルドしてください（ [独自の RTE のビルド](images.html#build-your-own-rte) を参照）。複数の RTE ホストがある場合は、一度ビルドして
+コントローラーの新しいリリースのたびにリビルドしてください（ [独自の RTE のビルド](images.html#build-your-own-rte) を参照）。複数の RTE ホストがある場合は、一度ビルドして
 独自のレジストリにプッシュします。オフラインの場合は、選択肢 A と同じようにビルドしたイメージを `docker save` と `docker load` で移します。
 
 ---
 
 ## 5. 設定
 
-16 文字以上の、新しい独自の [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN) を用意します。これがこの RTE のパスワードです。アプリは
+16 文字以上の、新しい独自の [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN) を用意します。これがこの RTE のパスワードです。コントローラーは
 それをランナーの RTE 認証情報に保持し、それで各ジョブのシークレットを封印します。
 
 ```bash
@@ -221,7 +221,7 @@ openssl rand -base64 24
 ```bash
 sudo tee /opt/af-rte/rte.env >/dev/null <<'EOF'
 RTE_MODE=outbound
-APP_URL=https://forms.example.com
+CONTROLLER_URL=https://forms.example.com
 RTE_NAME=rte-dc2
 RTE_TOKEN=<the new token>
 # optional, the first time only : approved at once instead of waiting for an admin
@@ -234,19 +234,21 @@ sudo chmod 600 /opt/af-rte/rte.env
 
 | 変数 | 意味 |
 |---|---|
-| [`RTE_MODE`](../customization/server.html#env_RTE_MODE) | `outbound` ：RTE がアプリに接続します。これがないと、RTE は非推奨のデータベースモードで起動します |
-| [`APP_URL`](../customization/server.html#env_APP_URL) | アプリのアドレス。 `http://` または `https://` で、ベースパスがあればそれも含めます |
+| [`RTE_MODE`](../customization/server.html#env_RTE_MODE) | `outbound` ：RTE がコントローラーに接続します。これがないと、RTE は非推奨のデータベースモードで起動します |
+| [`CONTROLLER_URL`](../customization/server.html#env_CONTROLLER_URL) | コントローラーのアドレス。 `http://` または `https://` で、ベースパスがあればそれも含めます |
 | [`RTE_NAME`](../customization/server.html#env_RTE_NAME) | ランナーの名前。未設定の場合はノード ID `rte-<hostname>-<port>` で、コンテナーとともに変わります |
 | [`RTE_TOKEN`](../customization/server.html#env_RTE_TOKEN) | 独自のトークン。16 文字以上。保管しておいてください。以降、ランナーはこれでサインインします |
 | [`RTE_JOIN_TOKEN`](../customization/server.html#env_RTE_JOIN_TOKEN) | 任意：参加トークン。ランナーがまだ存在しないか承認待ちの間だけ使われます |
+
+7.8.0 より前の RTE は、 `CONTROLLER_URL` の代わりに `APP_URL` を、 `CONTROLLER_TLS_VERIFY` の代わりに `APP_TLS_VERIFY` を読み込みます。
 
 ネットワークに必要な場合は、次のものを追加します。
 
 | 変数 | 使う場面 |
 |---|---|
-| `HTTPS_PROXY` 、 `NO_PROXY` | RTE がプロキシ経由でアプリに到達する場合： `HTTPS_PROXY=http://proxy.dc2.example.com:3128` 。 `NO_PROXY` に記載したホスト（カンマ区切り。ドメインは `.example.com` ）には直接接続します |
-| `NODE_EXTRA_CA_CERTS` | アプリの証明書がプライベート CA のものである場合：CA の証明書を `/opt/af-rte/data/certificates/ca.pem` に置き、 `NODE_EXTRA_CA_CERTS=/app/dist/persistent/certificates/ca.pem` を設定します |
-| [`APP_TLS_VERIFY`](../customization/server.html#env_APP_TLS_VERIFY) | `0` は、自己署名のものも含め、アプリのどの証明書も受け入れます。信頼できる一つのネットワークの中でだけ使い、 `NODE_EXTRA_CA_CERTS` を優先してください |
+| `HTTPS_PROXY` 、 `NO_PROXY` | RTE がプロキシ経由でコントローラーに到達する場合： `HTTPS_PROXY=http://proxy.dc2.example.com:3128` 。 `NO_PROXY` に記載したホスト（カンマ区切り。ドメインは `.example.com` ）には直接接続します |
+| `NODE_EXTRA_CA_CERTS` | コントローラーの証明書がプライベート CA のものである場合：CA の証明書を `/opt/af-rte/data/certificates/ca.pem` に置き、 `NODE_EXTRA_CA_CERTS=/app/dist/persistent/certificates/ca.pem` を設定します |
+| [`CONTROLLER_TLS_VERIFY`](../customization/server.html#env_CONTROLLER_TLS_VERIFY) | `0` は、自己署名のものも含め、コントローラーのどの証明書も受け入れます。信頼できる一つのネットワークの中でだけ使い、 `NODE_EXTRA_CA_CERTS` を優先してください |
 | [`RTE_FILES`](../customization/server.html#env_RTE_FILES) | `transfer` （既定）はプレイブックとインベントリを各ジョブとともに受け取ります。自分で RTE にマウントする（ `local` ）場合を除き、そのままにします |
 
 RTE が読み込むその他の設定は [RTE の実行](run.html#settings) にあります。 `RTE_MAX_JOBS` 、 `RTE_CACHE_MB` 、 `RTE_FILES` 、
@@ -314,21 +316,21 @@ docker run -d --name af_rte_dc2 --restart unless-stopped --stop-timeout 40 \
 ```bash
 docker ps --filter name=af_rte_dc2        # STATUS ends in (healthy): the process listens
 docker logs -f af_rte_dc2                 # Ctrl+C to stop following
-curl -s http://127.0.0.1:8000/ready       # {"status":"ready"} once the socket to the app is open
+curl -s http://127.0.0.1:8000/ready       # {"status":"ready"} once the socket to the controller is open
 ```
 
-ログには、RTE が起動し、アプリに接続し、接続が確立したことが表示されます。
+ログには、RTE が起動し、コントローラーに接続し、接続が確立したことが表示されます。
 
 ```
 RTE 'rte-dc2' 7.3.0 (outbound, files transfer) listening on http port 8000, token fingerprint abcd-ef12
-RTE 'rte-dc2': dialing the app at wss://forms.example.com/api/v2/rte/socket
-RTE 'rte-dc2': connected to the app (node af-app1-8000)
+RTE 'rte-dc2': dialing the controller at wss://forms.example.com/api/v2/rte/socket
+RTE 'rte-dc2': connected to the controller (node af-app1-8000)
 ```
 
 参加トークンがない場合は、待機中であることを示す行がもう一つ表示されます。
 `RTE 'rte-dc2': waiting for an admin to approve it under Connections > Runners (fingerprint abcd-ef12)` 。フィンガープリントを控えておいてください。
 
-ソケットが開くまで、 `/ready` は `not connected to the app` とともに `503` を返します。ヘルスチェックが示すのは、プロセスが待ち受けていることだけです。
+ソケットが開くまで、 `/ready` は `not connected to the controller` とともに `503` を返します。ヘルスチェックが示すのは、プロセスが待ち受けていることだけです。
 
 ---
 
@@ -337,9 +339,9 @@ RTE 'rte-dc2': connected to the app (node af-app1-8000)
 参加トークンがない場合、RTE は参加を申請しています。 **接続 > ランナー** では、リストの上にオレンジ色の通知
 **1 件のランナーが承認を待っています** が表示されます。それを開き、 **フィンガープリント** が RTE のログのものと同じで、 **モード** が
 アウトバウンドであることを確認してから、 **承認** します（ [RTE の承認](../runners/registration.html#approving-an-rte) を参照）。承認できるのは管理者だけです。24 時間以内に
-誰も処理しなかった申請は削除され、RTE は次にアプリに接続したときに再び申請します。
+誰も処理しなかった申請は削除され、RTE は次にコントローラーに接続したときに再び申請します。
 
-参加トークンがある場合、ランナーはすぐに承認され、その説明には参加トークンの名前が入ります。どちらの場合も、アプリは RTE のトークンを
+参加トークンがある場合、ランナーはすぐに承認され、その説明には参加トークンの名前が入ります。どちらの場合も、コントローラーは RTE のトークンを
 新しい RTE 認証情報 `rte-dc2-rte` に保持し、以降 RTE は自分の `RTE_TOKEN` でサインインします。 `RTE_JOIN_TOKEN` はもう
 使われないので、 `rte.env` から削除してかまいません。
 
@@ -349,8 +351,8 @@ RTE 'rte-dc2': connected to the app (node af-app1-8000)
 
 1. **接続 > ランナー** に、種類 RTE のランナー `rte-dc2` が表示されます。 **列 > 接続** をオンにすると、リストに **接続済み** が表示されます
 2. それを開きます。 **RTE** タブには **モード** アウトバウンドと、 **接続** のバッジ **接続済み** が表示されます。ポインターを重ねると、
-   ソケットを持つアプリノード、RTE のリリース、実行中のジョブの数が表示されます
-3. **接続テスト** をクリックすると、 **Runner connection is OK** と表示されます。何も呼び出さず、どのアプリノードが RTE のソケットを持っているか
+   ソケットを持つコントローラーノード、RTE のリリース、実行中のジョブの数が表示されます
+3. **接続テスト** をクリックすると、 **Runner connection is OK** と表示されます。何も呼び出さず、どのコントローラーノードが RTE のソケットを持っているか
    （ `runner_leases` ）を読み、RTE が接続時に使った契約を確認します
 4. *データセンター 2* のような説明を付けます
 5. `runner:` のないすべてのプレイブックフォームをデータセンター 2 で実行したい場合を除き、 **既定** はデータセンター 1 のランナーのままにします
@@ -361,7 +363,7 @@ RTE 'rte-dc2': connected to the app (node af-app1-8000)
 
 ## 10. 最初のジョブ
 
-何も変更しないプレイブックで、経路全体を確かめます。アプリのプレイブック（データセンター 1 と同じく、そのプレイブックのフォルダーまたは
+何も変更しないプレイブックで、経路全体を確かめます。コントローラーのプレイブック（データセンター 1 と同じく、そのプレイブックのフォルダーまたは
 リポジトリ）に `ping-dc2.yaml` を追加します。
 
 ```yaml
@@ -388,7 +390,7 @@ categories:
 fields: []
 ```
 
-起動します。アプリはプレイブックのフォルダーとインベントリをジョブとともに送り、RTE はそれらをハッシュで保持するので、変更されていない
+起動します。コントローラーはプレイブックのフォルダーとインベントリをジョブとともに送り、RTE はそれらをハッシュで保持するので、変更されていない
 フォルダーが二度送られることはありません。出力は `Running on RTE rte-dc2 (outbound)` で始まり、すべてのホストで `pong` と表示され、ジョブは
 成功で終わります。 [`RTE_FILES_MAX_MB`](../customization/server.html#env_RTE_FILES_MAX_MB) （既定は 512）より大きいフォルダーは
 送られず、ジョブは失敗してその旨を示します。
@@ -410,36 +412,36 @@ runner: rte-dc2
 ## 失敗したとき
 
 RTE は `notice` 以上を `docker logs` に書き込みます。ソケットが開く前に失敗した接続（DNS 名、拒否されたポート、
-証明書）は、 `info` で `RTE: dialing the app again in <n> seconds` としか表示されません。
+証明書）は、 `info` で `RTE: dialing the controller again in <n> seconds` としか表示されません。
 `rte.env` に [`LOG_CONSOLE_LEVEL=debug`](../customization/logging.html#env_LOG_CONSOLE_LEVEL) を設定して再起動すると、
 `RTE: socket to wss://...: <the error>` が表示されます。
 
 | 表示されるもの | 場所 | 対処 |
 |---|---|---|
 | `RTE: set RTE_TOKEN (at least 16 characters) ; refusing to start` | `docker logs` | `rte.env` に `RTE_TOKEN` がないか、短すぎます |
-| `RTE: RTE_MODE=outbound needs APP_URL, the app's address (https://forms.example.com) ; refusing to start` | `docker logs` | `rte.env` に `APP_URL` を設定します |
-| `RTE: APP_URL must be an http or https address, not ... ; refusing to start` | `docker logs` | `APP_URL` は `https://` （または `http://` ）で始めます |
+| `RTE: RTE_MODE=outbound needs CONTROLLER_URL, the controller's address (https://forms.example.com) ; refusing to start` | `docker logs` | `rte.env` に `CONTROLLER_URL` を設定します |
+| `RTE: CONTROLLER_URL must be an http or https address, not ... ; refusing to start` | `docker logs` | `CONTROLLER_URL` は `https://` （または `http://` ）で始めます |
 | `[DEPRECATED] This RTE runs in database mode (RTE_MODE is not set)` | `docker logs` | `rte.env` に `RTE_MODE=outbound` がありません |
-| `connected to the app` の行がなく、 `/ready` が `503` のまま | `docker logs` 、 `/ready` | 手順 2 のネットワーク：このホストからアプリに `curl` し、プロキシ（ `HTTPS_PROXY` 、 `NO_PROXY` ）とアプリの証明書（ `NODE_EXTRA_CA_CERTS` 、手順 5）を確認します。エラーを見るには `LOG_CONSOLE_LEVEL=debug` を設定します |
-| `the app refused the socket (404)` 、または 401、403、409 以外のステータス | `docker logs` | リバースプロキシが `/api/v2/rte/socket` で WebSocket を通していないか、 `APP_URL` にアプリのベースパスがありません |
-| `the app refused the socket (401): ... the token of RTE 'rte-dc2' is not the one stored for its runner: check its RTE_TOKEN` | `docker logs` | 別のトークンを持つランナー `rte-dc2` が存在します。RTE にそのトークン（ランナーの認証情報のパスワード）を与えるか、ランナーを削除して RTE に参加を申請させます |
-| `the app refused the socket (401): ... the join token (RTE_JOIN_TOKEN) is unknown, revoked, expired or used up` | `docker logs` | 新しい参加トークンを作るか、 `RTE_JOIN_TOKEN` を削除して RTE を承認します（手順 8） |
-| `the app refused the socket (409): ... runner 'rte-dc2' exists and is approved: a join token cannot give it a new token ...` | `docker logs` | RTE が新しいトークンで再インストールされました。ランナーの認証情報のトークンを使うか、管理者に変更してもらいます |
-| `the app refused this RTE (401): dialing again in 10 minutes, or restart it once an admin acted` | `docker logs` | 拒否の後に表示されます。原因を修正したら、待たずに `docker restart af_rte_dc2` を実行します |
+| `connected to the controller` の行がなく、 `/ready` が `503` のまま | `docker logs` 、 `/ready` | 手順 2 のネットワーク：このホストからコントローラーに `curl` し、プロキシ（ `HTTPS_PROXY` 、 `NO_PROXY` ）とコントローラーの証明書（ `NODE_EXTRA_CA_CERTS` 、手順 5）を確認します。エラーを見るには `LOG_CONSOLE_LEVEL=debug` を設定します |
+| `no RTE socket at this address (HTTP 404 ...)`、または 401、403、409 以外のステータスでの `the app refused the socket` | `docker logs` | リバースプロキシが `/api/v2/rte/socket` で WebSocket を通していないか、 `CONTROLLER_URL` にコントローラーのベースパスがありません |
+| `the controller refused this RTE's token (HTTP 401: the token of RTE 'rte-dc2' is not the one stored for its runner: check its RTE_TOKEN)` | `docker logs` | 別のトークンを持つランナー `rte-dc2` が存在します。RTE にそのトークン（ランナーの認証情報のパスワード）を与えるか、ランナーを削除して RTE に参加を申請させます |
+| `the controller refused this RTE's token (HTTP 401: the join token (RTE_JOIN_TOKEN) is unknown, revoked, expired or used up)` | `docker logs` | 新しい参加トークンを作るか、 `RTE_JOIN_TOKEN` を削除して RTE を承認します（手順 8） |
+| `the controller refused this RTE (HTTP 409: runner 'rte-dc2' exists and is approved: a join token cannot give it a new token ...)` | `docker logs` | RTE が新しいトークンで再インストールされました。ランナーの認証情報のトークンを使うか、管理者に変更してもらいます |
+| `the controller refused this RTE (401): dialing again in 10 minutes, or restart it once an admin acted` | `docker logs` | 拒否の後に表示されます。原因を修正したら、待たずに `docker restart af_rte_dc2` を実行します |
 | `waiting for an admin to approve it under Connections > Runners` | `docker logs` | 承認します（手順 8）。接続はしていますが、それまではジョブを受け取りません |
-| `the app speaks another contract (an upgrade in progress?): dialing again in 60 seconds` | `docker logs` | アプリと RTE が異なる [契約](images.html#the-contract) のリリースで動作しています。RTE をアプリのリリースに更新します（「更新」を参照） |
-| **未接続** 、または **接続テスト** で *the RTE 'rte-dc2' (outbound) is not connected: it has not dialed the app* と表示される | アプリ | どのアプリノードもそのソケットを持っていません。RTE が停止しているか、アプリに到達できません。その `docker logs` を確認します |
-| ジョブが待機した後、 *no app node holds a socket to RTE 'rte-dc2' and it took no job for 60 minutes (RTE_QUEUE_MINUTES): is it connected?* で失敗する | ジョブの出力 | ジョブが待機している間、RTE が接続していませんでした |
+| `the controller speaks another contract (an upgrade in progress?): dialing again in 60 seconds` | `docker logs` | コントローラーと RTE が異なる [契約](images.html#the-contract) のリリースで動作しています。RTE をコントローラーのリリースに更新します（「更新」を参照） |
+| **未接続** 、または **接続テスト** で *the RTE 'rte-dc2' (outbound) is not connected: it has not dialed the controller* と表示される | コントローラー | どのコントローラーノードもそのソケットを持っていません。RTE が停止しているか、コントローラーに到達できません。その `docker logs` を確認します |
+| ジョブが待機した後、 *no controller node holds a socket to RTE 'rte-dc2' and it took no job for 60 minutes (RTE_QUEUE_MINUTES): is it connected?* で失敗する | ジョブの出力 | ジョブが待機している間、RTE が接続していませんでした |
 | ssh キーで `Permission denied` | ジョブの出力 | `data/` のファイルは uid 1000 の所有である必要があります（手順 3） |
 | 管理対象ホストで `UNREACHABLE` | ジョブの出力 | このホストからの ssh：キー、 `known_hosts` 、ホストへのファイアウォール |
 
-アプリ側では、拒否された RTE はアプリのログに `Refused an RTE socket from <address>: <why>` として表示されます。
+コントローラー側では、拒否された RTE はコントローラーのログに `Refused an RTE socket from <address>: <why>` として表示されます。
 
 ---
 
 ## 更新
 
-アプリが新しいリリースに移ったら、このホストでも追従してください。同じ契約の RTE はその間も動作し続けます。リリースで
+コントローラーが新しいリリースに移ったら、このホストでも追従してください。同じ契約の RTE はその間も動作し続けます。リリースで
 契約が変わる場合は、そのリリースノートに記載されます（ [契約](images.html#the-contract) を参照）。 `compose.yml` 、または Dockerfile の
 `FROM` に `:7` を指定している場合：
 
@@ -462,8 +464,8 @@ docker image prune -f               # removes the image it no longer uses
 cd /opt/af-rte && docker compose down     # or: docker rm -f af_rte_dc2
 ```
 
-ソケットが閉じ、ランナーはすぐに **未接続** と表示されます。どのアプリノードもそのソケットを持たなくなるためです（ `runner_leases` ）。ソケットを閉じずに
-いなくなったホストは、アプリノードがソケットから何も受け取らなくなってから約 1 分以内に **未接続** と表示されます。
+ソケットが閉じ、ランナーはすぐに **未接続** と表示されます。どのコントローラーノードもそのソケットを持たなくなるためです（ `runner_leases` ）。ソケットを閉じずに
+いなくなったホストは、コントローラーノードがソケットから何も受け取らなくなってから約 1 分以内に **未接続** と表示されます。
 ランナーは残ります。ソケットで参加したランナーが自動的に削除されることはありません。 **接続 > ランナー** でランナーを、
 **接続 > 認証情報** でその認証情報 `rte-dc2-rte` を削除してください。先に、それを指定していたフォームから `runner:` の行を削除します。そうしないと、
 それらのジョブは最大 `RTE_QUEUE_MINUTES` の間 RTE を待ち、失敗します。
@@ -482,7 +484,7 @@ cd /opt/af-rte && docker compose down     # or: docker rm -f af_rte_dc2
 ## データベースモードの RTE
 
 7.3.0 より前は、この手順書でデータベースモードの RTE を構成していました。データベースの認証情報（ `DB_*` 、 `ENCRYPTION_SECRET` ）を保持し、
-ポート `3306` でデータセンター 1 のデータベースに接続し、アプリはポート `8000` で RTE を呼び出していました。このモードは 7.3.0 から非推奨で、
-8.0.0 で削除されます。新しいランナーを作らずにこうした RTE をアウトバウンドに移すには、 `RTE_MODE=outbound` 、 `APP_URL` 、 `RTE_NAME` （その
+ポート `3306` でデータセンター 1 のデータベースに接続し、コントローラーはポート `8000` で RTE を呼び出していました。このモードは 7.3.0 から非推奨で、
+8.0.0 で削除されます。新しいランナーを作らずにこうした RTE をアウトバウンドに移すには、 `RTE_MODE=outbound` 、 `CONTROLLER_URL` 、 `RTE_NAME` （その
 ランナーの名前）を設定し、 `RTE_TOKEN` はそのままにして、 `DB_*` 、 `ENCRYPTION_SECRET` 、 `RTE_REGISTER` を削除します。
 [データベース（非推奨）](modes.html#database-deprecated) を参照してください。その後、不要になったポート `8000` とデータベースのポートを閉じます。
