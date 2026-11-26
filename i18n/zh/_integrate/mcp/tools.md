@@ -3,7 +3,7 @@ layout: default
 title: 工具
 parent: MCP 服务器
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # 工具
@@ -29,7 +29,7 @@ MCP 服务器最多提供 15 个工具。其中 6 个提供给每个用户；其
 | `relaunch_job` | 修改部分字段后再次启动作业。见下文。 | 始终 |
 | `get_job` | 作业的状态和输出（`tail` 把输出限制为最后几行）。 | 始终 |
 | `plan_job` | 以该用户身份在稍后运行一次表单：即表单上 **稍后运行（一次性）** 所做的事。 | `allowPlannedJobs` |
-| `create_schedule` | 创建一个调度，周期性的（`cron`）或一次性的（`run_at`），与 **调度** 页面上相同。 | `allowScheduledJobs` |
+| `create_schedule` | 创建一个调度，周期性的（`cron` 或 `rrule`）或一次性的（`one_time_run`），与 **作业 > 已计划** 下相同。 | `allowScheduledJobs` |
 | `list_schedules` | 用户可以看到的调度：有 `allowScheduledJobs` 时为全部调度，否则为其计划的运行。 | `allowPlannedJobs` 或 `allowScheduledJobs` |
 | `get_schedule` | 一个调度，带有其额外变量（看起来像密钥的会被遮盖）以及其上次运行的输出。 | `allowPlannedJobs` 或 `allowScheduledJobs` |
 | `delete_schedule` | 取消一次计划的运行，或删除用户可以看到的调度。 | `allowPlannedJobs` 或 `allowScheduledJobs` |
@@ -74,8 +74,11 @@ MCP 服务器最多提供 15 个工具。其中 6 个提供给每个用户；其
 并验证，并在运行触发时再次检查，与浏览器中的 [计划的运行](../jobs/schedules.html#planned-runs) 相同。
 响应会给出 UTC 时间和应用时钟下的运行时间。
 
-`create_schedule` 接受 `form`、`name`、`cron`（五个字段，例如 `0 22 * * 1-5`）或 `run_at` 二者之一，以及作业获得的
-`extraVars`。这样的调度以 `Schedule Service` 身份运行，不经过表单的验证；要以该用户身份运行一次表单，
+`create_schedule` 接受 `form`、`name`、恰好一种时间安排，以及作业获得的 `extraVars`。时间安排为 `cron`（五个字段，
+例如 `0 22 * * 1-5`）、`rrule`（一行的 [重复规则](../jobs/schedules.html#recurrence-rules)）或 `one_time_run`（其唯一一次运行的时间，
+带偏移量或 `Z` 的 ISO 8601 时间）；`run_at` 是它在 7.8.0 之前的名称，已弃用，将在 8 中移除。从 7.8.0 起，它还接受调度的
+[结束](../jobs/schedules.html#the-end-of-a-schedule)：`ends`（`never`、`date` 或 `count`）、`end_at`、`end_count` 和 `end_action`（`disable` 或 `remove`），
+一次性调度则为 `remove_after_run`。这样的调度以 `Schedule Service` 身份运行，不经过表单的验证；要以该用户身份运行一次表单，
 请使用 `plan_job`。调度名称是唯一的。
 
 ---

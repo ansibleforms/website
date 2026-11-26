@@ -3,7 +3,7 @@ layout: default
 title: Herramientas
 parent: Servidor MCP
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Herramientas
@@ -29,7 +29,7 @@ sin una opción no se le ofrecen sus herramientas en absoluto:
 | `relaunch_job` | Vuelve a lanzar un trabajo con algunos campos cambiados. Consulta más abajo. | siempre |
 | `get_job` | Estado y salida de un trabajo (`tail` limita la salida a las últimas líneas). | siempre |
 | `plan_job` | Ejecuta el formulario una vez, más tarde, como el usuario: lo que hace **Ejecutar más tarde (una sola vez)** en el formulario. | `allowPlannedJobs` |
-| `create_schedule` | Crea una programación, recurrente (`cron`) o de una sola vez (`run_at`), como en la página **Programaciones**. | `allowScheduledJobs` |
+| `create_schedule` | Crea una programación, recurrente (`cron` o `rrule`) o de una sola vez (`one_time_run`), como en **Trabajos > Programados**. | `allowScheduledJobs` |
 | `list_schedules` | Las programaciones que el usuario puede ver: todas con `allowScheduledJobs`, y si no, las ejecuciones que ha planificado. | `allowPlannedJobs` o `allowScheduledJobs` |
 | `get_schedule` | Una programación, con sus extra vars (las que parecen secretos, enmascaradas) y la salida de su última ejecución. | `allowPlannedJobs` o `allowScheduledJobs` |
 | `delete_schedule` | Cancela una ejecución planificada o elimina una programación que el usuario puede ver. | `allowPlannedJobs` o `allowScheduledJobs` |
@@ -73,8 +73,12 @@ hora ISO 8601 con su desfase o `Z` (`2026-10-15T22:00:00+02:00`); se rechaza una
 y validan en ese momento, y se vuelven a comprobar cuando se dispara la ejecución, como en una [ejecución planificada](../jobs/schedules.html#planned-runs) en el
 navegador. La respuesta da la hora de ejecución en UTC y en el reloj de la aplicación.
 
-`create_schedule` acepta un `form`, un `name`, o bien `cron` (cinco campos, como `0 22 * * 1-5`) o bien `run_at`, y las
-`extraVars` que recibe el trabajo. Una programación así se ejecuta como el `Schedule Service`, sin la validación del formulario; para ejecutar un formulario una vez como
+`create_schedule` acepta un `form`, un `name`, exactamente una temporización, y las `extraVars` que recibe el trabajo. La temporización es `cron`
+(cinco campos, como `0 22 * * 1-5`), `rrule` (una [regla de recurrencia](../jobs/schedules.html#recurrence-rules) en una línea) o
+`one_time_run` (el momento de su única ejecución, una hora ISO 8601 con su desfase o `Z`); `run_at`, su nombre antes de 7.8.0, está
+obsoleto y se elimina en 8. Desde 7.8.0 acepta también el [fin](../jobs/schedules.html#the-end-of-a-schedule) de la programación:
+`ends` (`never`, `date` o `count`), `end_at`, `end_count` y `end_action` (`disable` o `remove`), o `remove_after_run`
+para una programación de una sola vez. Una programación así se ejecuta como el `Schedule Service`, sin la validación del formulario; para ejecutar un formulario una vez como
 el usuario, usa `plan_job`. Los nombres de las programaciones son únicos.
 
 ---

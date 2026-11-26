@@ -3,7 +3,7 @@ layout: default
 title: Tools
 parent: MCP-server
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Tools
@@ -29,7 +29,7 @@ zonder een optie krijgt de bijbehorende tools helemaal niet aangeboden:
 | `relaunch_job` | Start een job opnieuw met enkele gewijzigde velden. Zie hieronder. | altijd |
 | `get_job` | Status en uitvoer van een job (`tail` beperkt de uitvoer tot de laatste regels). | altijd |
 | `plan_job` | Voert het formulier één keer uit, later, als de gebruiker: wat **Later uitvoeren (eenmalig)** op het formulier doet. | `allowPlannedJobs` |
-| `create_schedule` | Maakt een planning, terugkerend (`cron`) of eenmalig (`run_at`), zoals op de pagina **Planner**. | `allowScheduledJobs` |
+| `create_schedule` | Maakt een planning, terugkerend (`cron` of `rrule`) of eenmalig (`one_time_run`), zoals onder **Jobs > Gepland**. | `allowScheduledJobs` |
 | `list_schedules` | De planningen die de gebruiker mag zien: allemaal met `allowScheduledJobs`, anders de runs die hij zelf heeft gepland. | `allowPlannedJobs` of `allowScheduledJobs` |
 | `get_schedule` | Eén planning, met de extra vars (die op secrets lijken gemaskeerd) en de uitvoer van de laatste run. | `allowPlannedJobs` of `allowScheduledJobs` |
 | `delete_schedule` | Annuleert een geplande run of verwijdert een planning die de gebruiker mag zien. | `allowPlannedJobs` of `allowScheduledJobs` |
@@ -74,8 +74,12 @@ ISO 8601-tijd met de offset of `Z` (`2026-10-15T22:00:00+02:00`); een tijd zonde
 en gevalideerd, en opnieuw gecontroleerd als de run afgaat, zoals bij een [geplande run](../jobs/schedules.html#planned-runs) in de
 browser. Het antwoord geeft de runtijd in UTC en volgens de klok van de app.
 
-`create_schedule` neemt een `form`, een `name`, ofwel `cron` (vijf velden, zoals `0 22 * * 1-5`) of `run_at`, en de
-`extraVars` die de job krijgt. Zo'n planning draait als de `Schedule Service`, zonder de validatie van het formulier; om een formulier één keer als
+`create_schedule` neemt een `form`, een `name`, precies één timing, en de `extraVars` die de job krijgt. De timing is `cron` (vijf
+velden, zoals `0 22 * * 1-5`), `rrule` (een [herhalingsregel](../jobs/schedules.html#recurrence-rules) op één regel) of
+`one_time_run` (het moment van de enige run, een ISO 8601-tijd met de offset of `Z`); `run_at`, de naam van vóór 7.8.0, is
+verouderd en verdwijnt in 8. Vanaf 7.8.0 neemt het ook het [einde](../jobs/schedules.html#the-end-of-a-schedule) van de planning:
+`ends` (`never`, `date` of `count`), `end_at`, `end_count` en `end_action` (`disable` of `remove`), of `remove_after_run`
+voor een eenmalige planning. Zo'n planning draait als de `Schedule Service`, zonder de validatie van het formulier; om een formulier één keer als
 de gebruiker uit te voeren, gebruik je `plan_job`. Namen van planningen zijn uniek.
 
 ---

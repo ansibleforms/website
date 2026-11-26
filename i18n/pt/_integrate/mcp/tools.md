@@ -3,7 +3,7 @@ layout: default
 title: Ferramentas
 parent: Servidor MCP
 nav_order: 2
-translated_from: 6bfa05650a56ae0b3617d51c583ae601a8207d3d
+translated_from: d8e8b6b60817bf2226db9a7b87c548b2278fece4
 ---
 
 # Ferramentas
@@ -29,7 +29,7 @@ sem uma opção não são sequer oferecidas as respetivas ferramentas:
 | `relaunch_job` | Lança novamente uma tarefa com alguns campos alterados. Ver abaixo. | sempre |
 | `get_job` | Estado e saída de uma tarefa (`tail` limita a saída às últimas linhas). | sempre |
 | `plan_job` | Executa o formulário uma vez, mais tarde, como o utilizador: o que **Executar mais tarde (única)** faz no formulário. | `allowPlannedJobs` |
-| `create_schedule` | Cria um agendamento, recorrente (`cron`) ou único (`run_at`), como na página **Agendamentos**. | `allowScheduledJobs` |
+| `create_schedule` | Cria um agendamento, recorrente (`cron` ou `rrule`) ou único (`one_time_run`), como em **Tarefas > Agendados**. | `allowScheduledJobs` |
 | `list_schedules` | Os agendamentos que o utilizador pode ver: todos com `allowScheduledJobs`, caso contrário as execuções que planeou. | `allowPlannedJobs` ou `allowScheduledJobs` |
 | `get_schedule` | Um agendamento, com as suas extra vars (as que parecem segredos ficam mascaradas) e a saída da sua última execução. | `allowPlannedJobs` ou `allowScheduledJobs` |
 | `delete_schedule` | Cancela uma execução planeada ou elimina um agendamento que o utilizador pode ver. | `allowPlannedJobs` ou `allowScheduledJobs` |
@@ -74,8 +74,12 @@ hora ISO 8601 com o seu desvio ou `Z` (`2026-10-15T22:00:00+02:00`); uma hora se
 e validados agora, e verificados novamente quando a execução dispara, tal como numa [execução planeada](../jobs/schedules.html#planned-runs) no
 navegador. A resposta indica a hora da execução em UTC e no relógio da aplicação.
 
-`create_schedule` aceita um `form`, um `name`, ou `cron` (cinco campos, como `0 22 * * 1-5`) ou `run_at`, e as
-`extraVars` que a tarefa recebe. Um agendamento destes é executado como o `Schedule Service`, sem a validação do formulário; para executar um formulário uma vez como
+`create_schedule` aceita um `form`, um `name`, exatamente uma temporização, e as `extraVars` que a tarefa recebe. A temporização é `cron` (cinco
+campos, como `0 22 * * 1-5`), `rrule` (uma [regra de recorrência](../jobs/schedules.html#recurrence-rules) numa linha) ou
+`one_time_run` (o momento da sua única execução, uma hora ISO 8601 com o seu desvio ou `Z`); `run_at`, o seu nome antes da 7.8.0, está
+obsoleto e é removido na 8. A partir da 7.8.0 aceita também o [fim](../jobs/schedules.html#the-end-of-a-schedule) do agendamento:
+`ends` (`never`, `date` ou `count`), `end_at`, `end_count` e `end_action` (`disable` ou `remove`), ou `remove_after_run`
+para um agendamento único. Um agendamento destes é executado como o `Schedule Service`, sem a validação do formulário; para executar um formulário uma vez como
 o utilizador, use `plan_job`. Os nomes dos agendamentos são únicos.
 
 ---
