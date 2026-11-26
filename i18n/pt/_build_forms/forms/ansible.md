@@ -3,7 +3,7 @@ layout: default
 title: Formulários de Ansible
 parent: Formulários
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Formulários de Ansible
@@ -30,6 +30,21 @@ Formulários que executam um playbook de Ansible local
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## O repositório a partir do qual corre um playbook
+
+Desde 7.8.0 um formulário pode indicar o repositório a partir do qual corre o seu playbook, com `playbookRepository`.
+
+Sem ele, o playbook corre a partir do primeiro repositório usado para playbooks, da sua pasta `playbooks` (senão da sua raiz),
+como antes. Com ele, o playbook corre a partir da raiz do repositório indicado, pelo que o `ansible.cfg`, as `roles/` e os
+caminhos de inventário relativos desse repositório se aplicam, e o `playbook` é dado a partir da raiz (`playbooks/site.yml`).
+A estrutura e um exemplo completo estão em [Um repositório na estrutura própria do Ansible](../repositories/ansible-layout.html).
+
+`playbookRepository: __self__` indica o repositório a partir do qual o próprio formulário é lido, por isso um formulário
+guardado com o seu playbook nunca indica o seu repositório. Um formulário que não está em nenhum repositório (a pasta local de
+formulários) não o pode usar: o seu início é recusado. Ver [O repositório em que está o formulário](../repositories/ansible-layout.html#the-repository-the-form-is-in).
 
 ---
 

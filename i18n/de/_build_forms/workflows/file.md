@@ -3,7 +3,7 @@ layout: default
 title: Die Workflow-Datei
 parent: Workflows
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # Die Workflow-Datei
@@ -151,11 +151,12 @@ vor dem `extra_data` des Knotens haben, so wie die Antworten eines Surveys in AW
 
 ## Eigene Schlüssel von AnsibleForms
 
-Drei Schlüssel eines Knotens gehören AnsibleForms selbst, und AWX ignoriert sie, sodass ein Workflow das kann, was ein mehrstufiges Formular kann:
+Vier Schlüssel eines Knotens gehören AnsibleForms selbst, und AWX ignoriert sie, sodass ein Workflow das kann, was ein mehrstufiges Formular kann:
 
 | Schlüssel | Was er bewirkt |
 |---|---|
 | `runner` | Führt auf einem `job_template`-Knoten die Vorlage oder den Job dieses Runners statt eines Playbooks des Designers aus: AWX, AAP, Ascender, Semaphore, Rundeck oder Jenkins. Ein RTE-Runner führt das Playbook des Knotens dort aus. Ein Workflow kann sie mischen. |
+| `playbook_repository` | Auf einem Playbook-Knoten das Repository, aus dessen Stammverzeichnis sein Playbook läuft, wie `playbookRepository` eines Formulars (seit 7.8.0): das Playbook des Knotens wird dann ab diesem Stammverzeichnis benannt (`playbooks/site.yml`). `__self__` ist das Repository, in dem die Workflow-Datei liegt. Siehe [Ein Repository im Aufbau von Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | Der Knoten läuft nur, wenn diese Extra-Var `true` ist, wie `ifExtraVar` eines Multistep-Schritts. Ist sie nicht erfüllt, wird der Knoten übersprungen, und was ihm folgt, läuft wie nach einem Erfolg. Nicht auf einem Genehmigungsknoten, der immer läuft. |
 | `extra_vars_key` | Der Knoten erhält nur diesen Schlüssel der Extra-Vars, mit dem Benutzer hineinkopiert, wie der `key` eines Multistep-Schritts |
 

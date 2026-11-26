@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Ontwerper
@@ -42,7 +42,7 @@ Elke sectie bewerkt één soort bestand, lokaal bewaard of in een [repository](.
 | **Categorieën** | De categorieën van `config.yaml` |
 | **Constanten** | De constanten van `config.yaml` |
 | **Variabelenbestanden** | De variabelenbestanden die formulieren laden |
-| **Playbooks** | De playbooks die formulieren en workflows uitvoeren |
+| **Playbooks** | De playbooks die formulieren en workflows uitvoeren: die van de eerste playbookrepository, daarna elke andere in een map met haar naam |
 | **Inventarissen** | De inventarissen: `inventory.yaml`, `group_vars` en `host_vars` |
 | **Workflows** | De [workflow](../workflows/)bestanden |
 
@@ -67,7 +67,7 @@ Wat de tabbladen Visueel en Voorbeeld tonen, per sectie:
 
 | Sectie | Visueel | Voorbeeld |
 |---|---|---|
-| **Formulieren** | De instellingen en de velden van het formulier, met lijsten van de playbooks, inventarissen en workflows van de ontwerper | Het formulier zoals het nu is, niet-opgeslagen wijzigingen inbegrepen; verzenden voert niets uit |
+| **Formulieren** | De instellingen en de velden van het formulier, met lijsten van de playbooks (en hun repository), inventarissen en workflows van de ontwerper | Het formulier zoals het nu is, niet-opgeslagen wijzigingen inbegrepen; verzenden voert niets uit |
 | **Categorieën** | De categorieën als tabel, bewerkbaar | Het menu van de pagina Formulieren, daaruit opgebouwd |
 | **Constanten** | De constanten als overzicht, bewerkbaar (een sleutel verplaats je met de pijltjestoetsen) | Elke constante met haar verwijzing, `$(NAME)`, om te kopiëren, en de formulieren die haar gebruiken |
 | **Variabelenbestanden** | De variabelen, bewerkbaar | Elke variabele met haar verwijzing in een playbook, {% raw %}`{{ name }}`{% endraw %}, om te kopiëren, en de formulieren die het bestand laden |
@@ -90,7 +90,9 @@ Alle drie staan standaard aan en altijd aan voor admins:
 | `designAllPlaybooks` (**Alle playbooks bewerken**) | De playbooks die de formulieren van de gebruiker uitvoeren, en die nog geen formulier gebruikt |
 | `designAllWorkflows` (**Alle workflows bewerken**) | De workflowbestanden die de formulieren van de gebruiker uitvoeren, geneste inbegrepen, en die nog geen formulier gebruikt |
 
-Een formulier voert een playbook uit via zijn `playbook`, zijn ansible-stappen en de workflows die het uitvoert. Wat een beperkte ontwerper niet kan:
+Een formulier voert een playbook uit via zijn `playbook`, zijn ansible-stappen en de workflows die het uitvoert, geteld met de
+repository die het noemt (`playbookRepository`, sinds 7.8.0, waarbij `__self__` die is waarin het formulier staat): `playbooks/site.yml` van de ene repository is niet `site.yml` van
+een andere. Zie [Een repository in de eigen indeling van Ansible](../repositories/ansible-layout.html). Wat een beperkte ontwerper niet kan:
 
 - **Een verborgen bestand zien.** Het wordt nooit getoond of genoemd: wie er een opent, krijgt het antwoord van een ontbrekend bestand, en een
   nieuw bestand met zijn naam dat van een bestand dat er al is.

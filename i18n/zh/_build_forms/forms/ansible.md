@@ -3,7 +3,7 @@ layout: default
 title: Ansible 表单
 parent: 表单
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Ansible 表单
@@ -30,6 +30,19 @@ translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## 运行 playbook 的仓库
+
+自 7.8.0 起，表单可以用 `playbookRepository` 指定运行其 playbook 的仓库。
+
+不指定时，playbook 与以前一样，从第一个用于 playbook 的仓库的 `playbooks` 文件夹（否则为其根目录）运行。指定时，playbook
+从所指定仓库的根目录运行，因此该仓库的 `ansible.cfg`、 `roles/` 和相对路径的清单都会生效，并且 `playbook` 从根目录给出
+（`playbooks/site.yml`）。布局和完整示例见[采用 Ansible 自己布局的仓库](../repositories/ansible-layout.html)。
+
+`playbookRepository: __self__` 指向读取表单本身的仓库，因此与 playbook 放在一起的表单无需指定其仓库。
+不在任何仓库中的表单（本地表单文件夹）不能使用它：其运行会被拒绝。参见[表单所在的仓库](../repositories/ansible-layout.html#the-repository-the-form-is-in)。
 
 ---
 

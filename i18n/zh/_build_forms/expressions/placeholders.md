@@ -3,7 +3,7 @@ layout: default
 title: 占位符
 parent: 表达式
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # 占位符
@@ -46,12 +46,18 @@ translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
 | `$(field)` | 表单中另一个字段的值 |
 | `$(name)` ，常量 | `config.yaml` 中的[常量](../config/constants.html)，或表单 `varsFiles` 中的值 |
 | `$(__user__)` | 已登录用户： `username` 、 `type` 、 `groups` 、 `roles` |
+| `$(__repository__)` | 读取表单的仓库（自 7.8.0 起）： `name` ，以及 `path` ，即它在服务器上的文件夹 |
 | `$(__parent__.field)` | 在[子表单](../forms/subform.html)中（列表行、向导步骤），父表单的某个值 |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+借助 `__repository__`，表单无需指定仓库或其文件夹即可读取保存在其仓库中的文件。其[子表单](../forms/subform.html)（列表行、
+向导步骤）读取的是表单的值，不在任何仓库中的表单（本地表单文件夹）读取到的 `name` 和 `path` 均为空。服务器端表达式从服务器
+加载的表单中获取它，从不取自浏览器。`__user__` 和 `__repository__` 是保留名称：表单的任何字段都不能使用这两个名称。
 
 ---
 

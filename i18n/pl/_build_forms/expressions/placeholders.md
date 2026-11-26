@@ -3,7 +3,7 @@ layout: default
 title: Symbole zastępcze
 parent: Wyrażenia
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Symbole zastępcze
@@ -46,12 +46,19 @@ Symbol zastępczy wskazuje pole formularza albo jedną z poniższych wartości, 
 | `$(field)` | wartość innego pola formularza |
 | `$(name)`, stała | [stała](../config/constants.html) z `config.yaml` albo wartość z `varsFiles` formularza |
 | `$(__user__)` | zalogowany użytkownik: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | repozytorium, z którego formularz jest czytany (od 7.8.0): jego `name` oraz `path`, jego folder na serwerze |
 | `$(__parent__.field)` | w [podformularzu](../forms/subform.html) (wiersz listy, krok kreatora) wartość formularza nadrzędnego |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Dzięki `__repository__` formularz czyta plik trzymany w swoim repozytorium bez podawania repozytorium ani jego folderu. Jego
+[podformularze](../forms/subform.html) (wiersze listy, kroki wizarda) czytają wartość formularza, a formularz spoza repozytoriów
+(z lokalnego folderu formularzy) czyta puste `name` i `path`. Wyrażenie po stronie serwera bierze ją z formularza wczytanego przez
+serwer, nigdy z przeglądarki. `__user__` i `__repository__` są zarezerwowane: żadne pole formularza nie może mieć takiej nazwy.
 
 ---
 

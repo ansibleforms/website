@@ -3,7 +3,7 @@ layout: default
 title: Le fichier de workflow
 parent: Workflows
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # Le fichier de workflow
@@ -151,11 +151,12 @@ sur l'`extra_data` du nœud, comme les réponses d'un survey dans AWX.
 
 ## Les clés propres à AnsibleForms
 
-Trois clés d'un nœud sont propres à AnsibleForms, et AWX les ignore : un workflow peut ainsi faire ce que fait un formulaire multistep :
+Quatre clés d'un nœud sont propres à AnsibleForms, et AWX les ignore : un workflow peut ainsi faire ce que fait un formulaire multistep :
 
 | Clé | Ce qu'elle fait |
 |---|---|
 | `runner` | Sur un nœud `job_template`, exécute le template ou le job de ce runner au lieu d'un playbook du concepteur : AWX, AAP, Ascender, Semaphore, Rundeck ou Jenkins. Un runner RTE y exécute le playbook du nœud. Un même workflow peut les mélanger. |
+| `playbook_repository` | Sur un nœud playbook, le dépôt depuis lequel son playbook s'exécute, à sa racine, comme le `playbookRepository` d'un formulaire (depuis 7.8.0) : le playbook du nœud se nomme alors depuis cette racine (`playbooks/site.yml`). `__self__` est le dépôt où se trouve le fichier du workflow. Voir [Un dépôt dans la structure propre à Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | Le nœud ne s'exécute que si cette extra var vaut `true`, comme l'`ifExtraVar` d'une étape multistep. Si la condition n'est pas remplie, le nœud est ignoré, et ce qui le suit s'exécute comme après un succès. Pas sur un nœud d'approbation, qui s'exécute toujours. |
 | `extra_vars_key` | Le nœud ne reçoit que cette clé des extra vars, avec l'utilisateur recopié, comme la `key` d'une étape multistep |
 

@@ -3,7 +3,7 @@ layout: default
 title: Modifica nel designer
 parent: Workflow
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Modifica nel designer
@@ -53,7 +53,8 @@ esistente, oppure START per il primo.
 1. **Cosa esegue**: l'identificatore del nodo, **Esegue** (che tipo di nodo è e, per un nodo playbook, dove gira)
    e cosa esegue: un playbook o un template o job, un workflow, il nome e il timeout di un'approvazione, o un repository. Vedi
    [Dove gira un nodo](#where-a-node-runs).
-2. **Come viene eseguito**: le impostazioni di esecuzione: l'inventario, le credenziali, il limite, i tag, la verbosità,
+2. **Come viene eseguito**: le impostazioni di esecuzione: per un nodo playbook il **Repository** da cui gira il suo
+   playbook (con più repository di playbook; **Repository di questo workflow (name)** è quello in cui si trova il file del workflow), l'inventario, le credenziali, il limite, i tag, la verbosità,
    la modalità check e diff, la condizione (**Gira quando**) e **Valori da** (vedi [il file di workflow](file.html#run-settings)).
 3. **Dove va**: il nodo dopo il quale gira, e in quale caso.
 
@@ -90,7 +91,7 @@ Facendo clic su un nodo si apre la sua finestra di dialogo, con quattro schede:
 | Scheda | Cosa contiene |
 |---|---|
 | **Cosa esegue** | L'identificatore, **Esegue**, cosa esegue e, per un nodo playbook, il runner |
-| **Come viene eseguito** | Le impostazioni di esecuzione; le credenziali si scelgono da un elenco, ognuna aggiunta con `+` |
+| **Come viene eseguito** | Le impostazioni di esecuzione, con il **Repository** di un nodo playbook; le credenziali si scelgono da un elenco, ognuna aggiunta con `+` |
 | **Esegue dopo** | I collegamenti verso il nodo, e **Tutti i genitori devono convergere** |
 | **Esegue dopo di sé** | I collegamenti in uscita, con **Collega a un nodo esistente:** e **Collega a un nuovo nodo:** |
 

@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Concepteur
@@ -42,7 +42,7 @@ Chaque section modifie un type de fichier, conservé localement ou dans un [dép
 | **Catégories** | Les catégories de `config.yaml` |
 | **Constantes** | Les constantes de `config.yaml` |
 | **Fichiers de variables** | Les fichiers de variables que chargent les formulaires |
-| **Playbooks** | Les playbooks qu'exécutent les formulaires et les workflows |
+| **Playbooks** | Les playbooks qu'exécutent les formulaires et les workflows : ceux du premier dépôt de playbooks, puis chaque autre dans un dossier à son nom |
 | **Inventaires** | Les inventaires : `inventory.yaml`, `group_vars` et `host_vars` |
 | **Workflows** | Les fichiers de [workflow](../workflows/) |
 
@@ -67,7 +67,7 @@ Ce que montrent les onglets Visuel et Aperçu, section par section :
 
 | Section | Visuel | Aperçu |
 |---|---|---|
-| **Formulaires** | Les réglages du formulaire et ses champs, avec des listes des playbooks, inventaires et workflows du concepteur | Le formulaire tel qu'il est maintenant, modifications non enregistrées comprises ; sa soumission n'exécute rien |
+| **Formulaires** | Les réglages du formulaire et ses champs, avec des listes des playbooks (et de leur dépôt), inventaires et workflows du concepteur | Le formulaire tel qu'il est maintenant, modifications non enregistrées comprises ; sa soumission n'exécute rien |
 | **Catégories** | Les catégories sous forme de tableau, modifiable | Le menu de la page Formulaires, construit à partir d'elles |
 | **Constantes** | Les constantes sous forme d'arborescence, modifiable (une clé se déplace avec les touches fléchées) | Chaque constante avec sa référence, `$(NAME)`, à copier, et les formulaires qui l'utilisent |
 | **Fichiers de variables** | Les variables, modifiables | Chaque variable avec sa référence dans un playbook, {% raw %}`{{ name }}`{% endraw %}, à copier, et les formulaires qui chargent le fichier |
@@ -90,7 +90,9 @@ Toutes trois sont activées par défaut et toujours activées pour les admins :
 | `designAllPlaybooks` (**Modifier Tous les Playbooks**) | Les playbooks qu'exécutent les formulaires de l'utilisateur, et ceux qu'aucun formulaire n'utilise encore |
 | `designAllWorkflows` (**Modifier Tous les Workflows**) | Les fichiers de workflow qu'exécutent les formulaires de l'utilisateur, imbriqués compris, et ceux qu'aucun formulaire n'utilise encore |
 
-Un formulaire exécute un playbook par son `playbook`, ses étapes ansible et les workflows qu'il exécute. Ce qu'un concepteur limité ne peut pas faire :
+Un formulaire exécute un playbook par son `playbook`, ses étapes ansible et les workflows qu'il exécute, compté avec le dépôt
+qu'il nomme (`playbookRepository`, depuis 7.8.0, `__self__` étant celui où se trouve le formulaire) : `playbooks/site.yml` d'un dépôt n'est pas `site.yml` d'un autre. Voir
+[Un dépôt dans la structure propre à Ansible](../repositories/ansible-layout.html). Ce qu'un concepteur limité ne peut pas faire :
 
 - **Voir un fichier masqué.** Il n'est jamais listé ni nommé : en ouvrir un répond comme un fichier absent, et un nouveau fichier portant son
   nom comme un fichier déjà présent.

@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Projektant
@@ -42,7 +42,7 @@ Każda sekcja edytuje jeden rodzaj pliku, przechowywany lokalnie lub w [repozyto
 | **Kategorie** | Kategorie z `config.yaml` |
 | **Stałe** | Stałe z `config.yaml` |
 | **Pliki zmiennych** | Pliki zmiennych ładowane przez formularze |
-| **Playbooki** | Playbooki uruchamiane przez formularze i workflowy |
+| **Playbooki** | Playbooki uruchamiane przez formularze i workflowy: te z pierwszego repozytorium playbooków, a potem każde inne w folderze nazwanym jak ono |
 | **Inwentarze** | Inwentarze: `inventory.yaml`, `group_vars` i `host_vars` |
 | **Przepływy pracy** | Pliki [workflow](../workflows/) |
 
@@ -67,7 +67,7 @@ Co pokazują karty Wizualny i Podgląd w poszczególnych sekcjach:
 
 | Sekcja | Wizualny | Podgląd |
 |---|---|---|
-| **Formularze** | Ustawienia formularza i jego pola, z listami playbooków, inwentarzy i workflowów projektanta | Formularz w obecnej postaci, łącznie z niezapisanymi zmianami; jego wysłanie niczego nie uruchamia |
+| **Formularze** | Ustawienia formularza i jego pola, z listami playbooków (i ich repozytorium), inwentarzy i workflowów projektanta | Formularz w obecnej postaci, łącznie z niezapisanymi zmianami; jego wysłanie niczego nie uruchamia |
 | **Kategorie** | Kategorie jako tabela, do edycji | Menu strony Formularze, zbudowane z nich |
 | **Stałe** | Stałe jako konspekt, do edycji (klucz przesuwa się klawiszami strzałek) | Każda stała z odwołaniem do niej, `$(NAME)`, do skopiowania, oraz formularze, które jej używają |
 | **Pliki zmiennych** | Zmienne, do edycji | Każda zmienna z odwołaniem do niej w playbooku, {% raw %}`{{ name }}`{% endraw %}, do skopiowania, oraz formularze, które ładują plik |
@@ -90,7 +90,10 @@ Wszystkie trzy są domyślnie włączone i zawsze włączone dla adminów:
 | `designAllPlaybooks` (**Edytować Wszystkie Playbooki**) | Playbooki uruchamiane przez formularze użytkownika oraz te, których nie używa jeszcze żaden formularz |
 | `designAllWorkflows` (**Edytować Wszystkie Przepływy pracy**) | Pliki workflow uruchamiane przez formularze użytkownika, łącznie z zagnieżdżonymi, oraz te, których nie używa jeszcze żaden formularz |
 
-Formularz uruchamia playbook przez swój `playbook`, swoje kroki ansible i workflowy, które uruchamia. Czego ograniczony projektant nie może zrobić:
+Formularz uruchamia playbook przez swój `playbook`, swoje kroki ansible i workflowy, które uruchamia, liczony razem z
+repozytorium, które wskazuje (`playbookRepository`, od 7.8.0, przy czym `__self__` to repozytorium, w którym jest formularz): `playbooks/site.yml` jednego repozytorium to nie `site.yml`
+innego. Zobacz [Repozytorium we własnym układzie Ansible](../repositories/ansible-layout.html). Czego ograniczony projektant
+nie może zrobić:
 
 - **Zobaczyć ukrytego pliku.** Nigdy nie jest wyświetlany na liście ani wymieniany: otwarcie go odpowiada jak brakujący plik, a nowy plik o jego
   nazwie jak plik, który już istnieje.

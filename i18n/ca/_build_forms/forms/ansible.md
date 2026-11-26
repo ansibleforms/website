@@ -3,7 +3,7 @@ layout: default
 title: Formularis d'Ansible
 parent: Formularis
 nav_order: 2
-translated_from: 804c2e6a40f7cec1287a7aa1df63085190c4ac36
+translated_from: 9ddbe366d28db1f9e009d33eb7358354339a5f77
 ---
 
 # Formularis d'Ansible
@@ -30,6 +30,21 @@ Formularis que executen un playbook d'Ansible local
 {% endhighlight %}
 {% endfor %}
 {% endif %}
+
+---
+
+## El repositori des del qual s'executa un playbook
+
+Des de la 7.8.0 un formulari pot indicar el repositori des del qual s'executa el seu playbook, amb `playbookRepository`.
+
+Sense aquesta clau, el playbook s'executa des del primer repositori utilitzat per als playbooks, des de la seva carpeta
+`playbooks` (si no, l'arrel), com abans. Amb ella, el playbook s'executa des de l'arrel del repositori indicat, de manera que
+s'apliquen l'`ansible.cfg`, els `roles/` i les rutes d'inventari relatives d'aquest repositori, i `playbook` s'indica des de
+l'arrel (`playbooks/site.yml`). L'estructura i un exemple complet són a [Un repositori amb l'estructura pròpia d'Ansible](../repositories/ansible-layout.html).
+
+`playbookRepository: __self__` indica el repositori des del qual es llegeix el mateix formulari, de manera que un formulari
+desat amb el seu playbook no indica mai el seu repositori. Un formulari que no és a cap repositori (la carpeta local de
+formularis) no el pot fer servir: el seu llançament es rebutja. Vegeu [El repositori on és el formulari](../repositories/ansible-layout.html#the-repository-the-form-is-in).
 
 ---
 

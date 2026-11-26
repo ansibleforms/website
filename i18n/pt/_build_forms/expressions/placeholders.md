@@ -3,7 +3,7 @@ layout: default
 title: Marcadores
 parent: Expressões
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Marcadores
@@ -46,12 +46,20 @@ Um marcador indica um campo do formulário, ou um destes, que todos os formulár
 | `$(field)` | o valor de outro campo do formulário |
 | `$(name)`, uma constante | uma [constante](../config/constants.html) do `config.yaml`, ou um valor dos `varsFiles` do formulário |
 | `$(__user__)` | o utilizador com sessão iniciada: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | o repositório a partir do qual o formulário é lido (desde 7.8.0): o seu `name`, e o seu `path`, a sua pasta no servidor |
 | `$(__parent__.field)` | num [subformulário](../forms/subform.html) (uma linha de lista, um passo de um wizard), um valor do formulário pai |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Com `__repository__` um formulário lê um ficheiro guardado no seu repositório sem indicar o repositório nem a sua pasta. Os
+seus [subformulários](../forms/subform.html) (linhas de uma lista, passos de um wizard) leem o do formulário, e um formulário
+que não está em nenhum repositório (a pasta local de formulários) lê `name` e `path` vazios. Uma expressão do servidor obtém-no
+do formulário que o servidor carregou, nunca do navegador. `__user__` e `__repository__` são reservados: nenhum campo de um
+formulário pode ter esses nomes.
 
 ---
 

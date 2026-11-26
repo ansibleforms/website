@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Diseñador
@@ -42,7 +42,7 @@ Cada sección edita un tipo de archivo, guardado en local o en un [repositorio](
 | **Categorías** | Las categorías de `config.yaml` |
 | **Constantes** | Las constantes de `config.yaml` |
 | **Archivos de variables** | Los archivos de variables que cargan los formularios |
-| **Playbooks** | Los playbooks que ejecutan los formularios y los workflows |
+| **Playbooks** | Los playbooks que ejecutan los formularios y los workflows: los del primer repositorio de playbooks, y luego cada otro en una carpeta con su nombre |
 | **Inventarios** | Los inventarios: `inventory.yaml`, `group_vars` y `host_vars` |
 | **Flujos de trabajo** | Los archivos de [workflow](../workflows/) |
 
@@ -67,7 +67,7 @@ Lo que muestran las pestañas Visual y Vista previa, sección por sección:
 
 | Sección | Visual | Vista previa |
 |---|---|---|
-| **Formularios** | La configuración del formulario y sus campos, con listas de los playbooks, inventarios y workflows del diseñador | El formulario tal como está, cambios sin guardar incluidos; su envío no ejecuta nada |
+| **Formularios** | La configuración del formulario y sus campos, con listas de los playbooks (y su repositorio), inventarios y workflows del diseñador | El formulario tal como está, cambios sin guardar incluidos; su envío no ejecuta nada |
 | **Categorías** | Las categorías como tabla, editables | El menú de la página Formularios, construido a partir de ellas |
 | **Constantes** | Las constantes como esquema, editables (una clave se mueve con las flechas del teclado) | Cada constante con su referencia, `$(NAME)`, para copiar, y los formularios que la usan |
 | **Archivos de variables** | Las variables, editables | Cada variable con su referencia en un playbook, {% raw %}`{{ name }}`{% endraw %}, para copiar, y los formularios que cargan el archivo |
@@ -90,7 +90,9 @@ Las tres están activadas por defecto y siempre activadas para los admins:
 | `designAllPlaybooks` (**Editar Todos los Playbooks**) | Los playbooks que ejecutan los formularios del usuario, y los que ningún formulario usa aún |
 | `designAllWorkflows` (**Editar Todos los Flujos de trabajo**) | Los archivos de workflow que ejecutan los formularios del usuario, anidados incluidos, y los que ningún formulario usa aún |
 
-Un formulario ejecuta un playbook mediante su `playbook`, sus pasos de ansible y los workflows que ejecuta. Lo que un diseñador limitado no puede hacer:
+Un formulario ejecuta un playbook mediante su `playbook`, sus pasos de ansible y los workflows que ejecuta, contado con el
+repositorio que nombra (`playbookRepository`, desde 7.8.0, siendo `__self__` aquel en el que está el formulario): `playbooks/site.yml` de un repositorio no es `site.yml` de otro.
+Consulta [Un repositorio con la estructura propia de Ansible](../repositories/ansible-layout.html). Lo que un diseñador limitado no puede hacer:
 
 - **Ver un archivo oculto.** Nunca se lista ni se nombra: abrir uno responde como un archivo que no existe, y un archivo nuevo con su nombre
   como un archivo que ya existe.

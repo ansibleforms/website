@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Designer
@@ -42,7 +42,7 @@ Jeder Bereich bearbeitet eine Dateiart, lokal oder in einem [Repository](../repo
 | **Kategorien** | Die Kategorien von `config.yaml` |
 | **Konstanten** | Die Konstanten von `config.yaml` |
 | **Variablendateien** | Die Variablendateien, die Formulare laden |
-| **Playbooks** | Die Playbooks, die Formulare und Workflows ausführen |
+| **Playbooks** | Die Playbooks, die Formulare und Workflows ausführen: die des ersten Playbook-Repositorys, dann jedes weitere in einem Ordner mit seinem Namen |
 | **Inventare** | Die Inventare: `inventory.yaml`, `group_vars` und `host_vars` |
 | **Workflows** | Die [Workflow](../workflows/)-Dateien |
 
@@ -67,7 +67,7 @@ Was die Tabs Visuell und Vorschau zeigen, Bereich für Bereich:
 
 | Bereich | Visuell | Vorschau |
 |---|---|---|
-| **Formulare** | Die Einstellungen des Formulars und seine Felder, mit Listen der Playbooks, Inventare und Workflows des Designers | Das Formular, wie es gerade ist, nicht gespeicherte Änderungen eingeschlossen; sein Absenden führt nichts aus |
+| **Formulare** | Die Einstellungen des Formulars und seine Felder, mit Listen der Playbooks (und ihres Repositorys), Inventare und Workflows des Designers | Das Formular, wie es gerade ist, nicht gespeicherte Änderungen eingeschlossen; sein Absenden führt nichts aus |
 | **Kategorien** | Die Kategorien als Tabelle, bearbeitbar | Das Menü der Seite Formulare, daraus aufgebaut |
 | **Konstanten** | Die Konstanten als Gliederung, bearbeitbar (ein Schlüssel lässt sich mit den Pfeiltasten verschieben) | Jede Konstante mit ihrem Verweis, `$(NAME)`, zum Kopieren, und die Formulare, die sie verwenden |
 | **Variablendateien** | Die Variablen, bearbeitbar | Jede Variable mit ihrem Verweis in einem Playbook, {% raw %}`{{ name }}`{% endraw %}, zum Kopieren, und die Formulare, die die Datei laden |
@@ -90,7 +90,9 @@ Alle drei sind standardmäßig eingeschaltet und für Admins immer eingeschaltet
 | `designAllPlaybooks` (**Alle Playbooks bearbeiten**) | Die Playbooks, die die Formulare des Benutzers ausführen, und die, die noch kein Formular verwendet |
 | `designAllWorkflows` (**Alle Workflows bearbeiten**) | Die Workflow-Dateien, die die Formulare des Benutzers ausführen, verschachtelte eingeschlossen, und die, die noch kein Formular verwendet |
 
-Ein Formular führt ein Playbook über sein `playbook`, seine Ansible-Schritte und die Workflows aus, die es ausführt. Was ein eingeschränkter Designer nicht kann:
+Ein Formular führt ein Playbook über sein `playbook`, seine Ansible-Schritte und die Workflows aus, die es ausführt, gezählt
+mit dem Repository, das es nennt (`playbookRepository`, seit 7.8.0, wobei `__self__` das ist, in dem das Formular liegt): `playbooks/site.yml` eines Repositorys ist nicht `site.yml`
+eines anderen. Siehe [Ein Repository im Aufbau von Ansible](../repositories/ansible-layout.html). Was ein eingeschränkter Designer nicht kann:
 
 - **Eine ausgeblendete Datei sehen.** Sie wird nie aufgelistet oder genannt: Wer eine öffnet, erhält die Antwort einer fehlenden Datei, und eine
   neue Datei mit ihrem Namen die Antwort einer Datei, die es schon gibt.

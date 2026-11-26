@@ -3,7 +3,7 @@ layout: default
 title: Edició al dissenyador
 parent: Workflows
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Edició al dissenyador
@@ -53,7 +53,8 @@ existent, o START per al primer.
 1. **Què executa**: l'identificador del node, **Executa** (quin tipus de node és i, per a un node de playbook, on s'executa)
    i què executa: un playbook o una plantilla o job, un workflow, el nom i el temps límit d'una aprovació, o un repositori. Vegeu
    [On s'executa un node](#where-a-node-runs).
-2. **Com s'executa**: les opcions d'execució: l'inventari, les credencials, el límit, les etiquetes, la verbositat,
+2. **Com s'executa**: les opcions d'execució: per a un node de playbook, el **Repositori** des del qual s'executa el seu
+   playbook (amb diversos repositoris de playbooks; **Repositori d'aquest workflow (name)** és aquell on és el fitxer del workflow), l'inventari, les credencials, el límit, les etiquetes, la verbositat,
    el mode check i el mode diff, la condició (**S'executa si**) i **Valors de** (vegeu [el fitxer de workflow](file.html#run-settings)).
 3. **On va**: el node després del qual s'executa, i en quin cas.
 
@@ -90,7 +91,7 @@ En fer clic en un node s'obre el seu diàleg, amb quatre pestanyes:
 | Pestanya | Què conté |
 |---|---|
 | **Què executa** | L'identificador, **Executa**, què executa i, per a un node de playbook, el runner |
-| **Com s'executa** | Les opcions d'execució; les credencials es trien d'una llista, i cadascuna s'afegeix amb `+` |
+| **Com s'executa** | Les opcions d'execució, amb el **Repositori** d'un node de playbook; les credencials es trien d'una llista, i cadascuna s'afegeix amb `+` |
 | **S'executa després de** | Els enllaços que arriben al node, i **Tots els pares han de convergir** |
 | **Executa després** | Els enllaços que en surten, amb **Enllaçar a un node existent:** i **Enllaçar a un node nou:** |
 

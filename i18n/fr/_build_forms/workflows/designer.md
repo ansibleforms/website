@@ -3,7 +3,7 @@ layout: default
 title: Modifier dans le concepteur
 parent: Workflows
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Modifier dans le concepteur
@@ -53,7 +53,8 @@ existant, ou START pour un premier nœud.
 1. **Ce qu'il exécute** : l'identifiant du nœud, **Exécute** (le genre de nœud et, pour un nœud playbook, où il s'exécute)
    et ce qu'il exécute : un playbook, un modèle ou un job, un workflow, le nom et le délai d'une approbation, ou un dépôt. Voir
    [Où un nœud s'exécute](#where-a-node-runs).
-2. **Comment il s'exécute** : les réglages d'exécution : l'inventaire, les identifiants, la limite, les tags, la verbosité,
+2. **Comment il s'exécute** : les réglages d'exécution : pour un nœud playbook, le **Dépôt** depuis lequel son playbook
+   s'exécute (avec plusieurs dépôts de playbooks ; **Dépôt de ce workflow (name)** est celui où se trouve le fichier du workflow), l'inventaire, les identifiants, la limite, les tags, la verbosité,
    les modes check et diff, la condition (**S'exécute si**) et **Valeurs de** (voir [le fichier de workflow](file.html#run-settings)).
 3. **Où il va** : le nœud après lequel il s'exécute, et dans quel cas.
 
@@ -90,7 +91,7 @@ Cliquer sur un nœud ouvre sa boîte de dialogue, en quatre onglets :
 | Onglet | Ce qu'il contient |
 |---|---|
 | **Ce qu'il exécute** | L'identifiant, **Exécute**, ce qu'il exécute et, pour un nœud playbook, le runner |
-| **Comment il s'exécute** | Les réglages d'exécution ; les identifiants sont choisis dans une liste, chacun ajouté avec `+` |
+| **Comment il s'exécute** | Les réglages d'exécution, avec le **Dépôt** d'un nœud playbook ; les identifiants sont choisis dans une liste, chacun ajouté avec `+` |
 | **S'exécute après** | Les liens qui mènent au nœud, et **Tous les parents doivent converger** |
 | **Exécute ensuite** | Les liens qui en partent, avec **Lier à un nœud existant :** et **Lier à un nouveau nœud :** |
 

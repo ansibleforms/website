@@ -3,7 +3,7 @@ layout: default
 title: Im Designer bearbeiten
 parent: Workflows
 nav_order: 2
-translated_from: dd4e281ec223f5c4995d804e774ac49e4d5934da
+translated_from: 9e5b095f10ab00565d1fad77141e14ceb8e7c151
 ---
 
 # Im Designer bearbeiten
@@ -53,7 +53,8 @@ Knoten, oder START für einen ersten.
 1. **Was er ausführt**: der Bezeichner des Knotens, **Führt aus** (welche Art von Knoten es ist und, bei einem Playbook-Knoten, wo er läuft)
    und was er ausführt: ein Playbook oder eine Vorlage oder einen Job, einen Workflow, Name und Zeitlimit einer Genehmigung oder ein Repository. Siehe
    [Wo ein Knoten läuft](#where-a-node-runs).
-2. **Wie er läuft**: die Ausführungseinstellungen: das Inventar, die Zugangsdaten, das Limit, die Tags, die Ausführlichkeit,
+2. **Wie er läuft**: die Ausführungseinstellungen: bei einem Playbook-Knoten das **Repository**, aus dem sein Playbook läuft
+   (bei mehreren Playbook-Repositories; **Repository dieses Workflows (name)** ist das, in dem die Workflow-Datei liegt), das Inventar, die Zugangsdaten, das Limit, die Tags, die Ausführlichkeit,
    Check- und Diff-Modus, die Bedingung (**Läuft, wenn**) und **Werte aus** (siehe [die Workflow-Datei](file.html#run-settings)).
 3. **Wohin er führt**: der Knoten, nach dem er läuft, und wann.
 
@@ -90,7 +91,7 @@ Ein Klick auf einen Knoten öffnet seinen Dialog, mit vier Tabs:
 | Tab | Was er enthält |
 |---|---|
 | **Was er ausführt** | Den Bezeichner, **Führt aus**, was er ausführt und, bei einem Playbook-Knoten, den Runner |
-| **Wie er läuft** | Die Ausführungseinstellungen; Zugangsdaten werden aus einer Liste gewählt, jede mit `+` hinzugefügt |
+| **Wie er läuft** | Die Ausführungseinstellungen, mit dem **Repository** eines Playbook-Knotens; Zugangsdaten werden aus einer Liste gewählt, jede mit `+` hinzugefügt |
 | **Läuft nach** | Die Verbindungen in den Knoten hinein, und **Alle Eltern müssen zusammenlaufen** |
 | **Danach** | Die Verbindungen aus ihm heraus, mit **Mit einem vorhandenen Knoten verbinden:** und **Mit einem neuen Knoten verbinden:** |
 

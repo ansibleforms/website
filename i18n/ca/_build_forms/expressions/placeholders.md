@@ -3,7 +3,7 @@ layout: default
 title: Marcadors
 parent: Expressions
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Marcadors
@@ -46,12 +46,20 @@ Un marcador anomena un camp del formulari, o un d'aquests, que tenen tots els fo
 | `$(field)` | el valor d'un altre camp del formulari |
 | `$(name)`, una constant | una [constant](../config/constants.html) de `config.yaml`, o un valor dels `varsFiles` del formulari |
 | `$(__user__)` | l'usuari que ha iniciat la sessió: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | el repositori des del qual es llegeix el formulari (des de la 7.8.0): el seu `name`, i el seu `path`, la seva carpeta al servidor |
 | `$(__parent__.field)` | en un [subformulari](../forms/subform.html) (una fila d'una llista, un pas d'un assistent), un valor del formulari pare |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Amb `__repository__` un formulari llegeix un fitxer desat al seu repositori sense indicar el repositori ni la seva carpeta. Els
+seus [subformularis](../forms/subform.html) (files d'una llista, passos d'un wizard) llegeixen el del formulari, i un formulari
+que no és a cap repositori (la carpeta local de formularis) llegeix `name` i `path` buits. Una expressió del servidor el pren del
+formulari que ha carregat el servidor, mai del navegador. `__user__` i `__repository__` són reservats: cap camp d'un formulari
+no pot tenir aquests noms.
 
 ---
 

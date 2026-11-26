@@ -3,7 +3,7 @@ layout: default
 title: Segnaposto
 parent: Espressioni
 nav_order: 0.5
-translated_from: 7b1ef975e0d5d92c446f050ffda02ee4acfa97aa
+translated_from: 5544c0ca0fe71364116c2f176fa945cced931f96
 ---
 
 # Segnaposto
@@ -46,12 +46,20 @@ Un segnaposto nomina un campo del modulo, oppure uno di questi, che ogni modulo 
 | `$(field)` | il valore di un altro campo del modulo |
 | `$(name)`, una costante | una [costante](../config/constants.html) di `config.yaml`, o un valore dai `varsFiles` del modulo |
 | `$(__user__)` | l'utente che ha effettuato l'accesso: `username`, `type`, `groups`, `roles` |
+| `$(__repository__)` | il repository da cui viene letto il modulo (dalla 7.8.0): il suo `name`, e il suo `path`, la sua cartella sul server |
 | `$(__parent__.field)` | in un [sottomodulo](../forms/subform.html) (una riga di lista, un passo di wizard), un valore del modulo padre |
 
 ```yaml
 expression: "'$(__user__.username)'"
 expression: $(__user__.groups)
+expression: "fn.fnReadYamlFile('$(__repository__.path)/extra_vars/my_defined_variables.yml', '.my_list')"
 ```
+
+Con `__repository__` un modulo legge un file tenuto nel suo repository senza indicare il repository né la sua cartella. I suoi
+[sottomoduli](../forms/subform.html) (righe di una lista, passi di un wizard) leggono quello del modulo, e un modulo che non si
+trova in nessun repository (la cartella locale dei moduli) legge `name` e `path` vuoti. Un'espressione lato server lo prende dal
+modulo caricato dal server, mai dal browser. `__user__` e `__repository__` sono riservati: nessun campo di un modulo può avere
+questi nomi.
 
 ---
 

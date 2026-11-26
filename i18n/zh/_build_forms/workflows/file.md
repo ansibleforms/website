@@ -3,7 +3,7 @@ layout: default
 title: 工作流文件
 parent: 工作流
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # 工作流文件
@@ -151,11 +151,12 @@ workflow_job_templates:
 
 ## AnsibleForms 专有的键
 
-节点有三个键是 AnsibleForms 专有的，AWX 会忽略它们，因此工作流可以做到多步骤表单能做的事：
+节点有四个键是 AnsibleForms 专有的，AWX 会忽略它们，因此工作流可以做到多步骤表单能做的事：
 
 | 键 | 作用 |
 |---|---|
 | `runner` | 在 `job_template` 节点上，运行该运行器的模板或作业，而不是设计器中的 playbook：AWX、AAP、Ascender、Semaphore、Rundeck 或 Jenkins。RTE 运行器则在该处运行节点的 playbook。一个工作流可以混用它们。 |
+| `playbook_repository` | 在 playbook 节点上，运行其 playbook 的仓库（从其根目录），与表单的 `playbookRepository` 相同（自 7.8.0 起）：节点的 playbook 随后从该根目录命名（`playbooks/site.yml`）。`__self__` 是工作流文件所在的仓库。参见[采用 Ansible 自己布局的仓库](../repositories/ansible-layout.html) |
 | `if_extra_var` | 只有当此 extra var 为 `true` 时节点才运行，与多步骤表单步骤的 `ifExtraVar` 相同。条件不满足时，节点被跳过，其后的内容按成功后的情况运行。不适用于审批节点，审批节点始终运行。 |
 | `extra_vars_key` | 节点只收到 extra vars 中的这个键，并复制进用户信息，与多步骤表单步骤的 `key` 相同 |
 

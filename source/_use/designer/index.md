@@ -41,7 +41,7 @@ Each section edits one kind of file, kept locally or in a [repository](../reposi
 | **Categories** | The categories of `config.yaml` |
 | **Constants** | The constants of `config.yaml` |
 | **Vars files** | The vars files that forms load |
-| **Playbooks** | The playbooks that forms and workflows run |
+| **Playbooks** | The playbooks that forms and workflows run: the first playbooks repository's, then each other one in a folder named after it |
 | **Inventories** | The inventories: `inventory.yaml`, `group_vars` and `host_vars` |
 | **Workflows** | The [workflow](../workflows/) files |
 
@@ -66,7 +66,7 @@ What the Visual and Preview tabs show, section by section:
 
 | Section | Visual | Preview |
 |---|---|---|
-| **Forms** | The form's settings and its fields, with lists of the designer's playbooks, inventories and workflows | The form as it is now, unsaved edits included; its submit runs nothing |
+| **Forms** | The form's settings and its fields, with lists of the designer's playbooks (and their repository), inventories and workflows | The form as it is now, unsaved edits included; its submit runs nothing |
 | **Categories** | The categories as a table, edited | The Forms page's menu, built from them |
 | **Constants** | The constants as an outline, edited (a key moves with the arrow keys) | Each constant with its reference, `$(NAME)`, to copy, and the forms that use it |
 | **Vars files** | The variables, edited | Each variable with its reference in a playbook, {% raw %}`{{ name }}`{% endraw %}, to copy, and the forms that load the file |
@@ -89,7 +89,10 @@ All three are on by default and always on for admins:
 | `designAllPlaybooks` (**Edit All Playbooks**) | The playbooks the user's forms run, and the ones no form uses yet |
 | `designAllWorkflows` (**Edit All Workflows**) | The workflow files the user's forms run, nested ones included, and the ones no form uses yet |
 
-A form runs a playbook through its `playbook`, its ansible steps and the workflows it runs. What a limited designer cannot do:
+A form runs a playbook through its `playbook`, its ansible steps and the workflows it runs, counted with the repository it
+names (`playbookRepository`, since 7.8.0, `__self__` being the one the form is in): `playbooks/site.yml` of one repository is not
+`site.yml` of another. See
+[A repository in Ansible's own layout](../repositories/ansible-layout.html). What a limited designer cannot do:
 
 - **See a hidden file.** It is never listed nor named: opening one answers as a missing file, and a new file with its name
   as a file that is already there.

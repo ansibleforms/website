@@ -3,7 +3,7 @@ layout: default
 title: El fitxer de workflow
 parent: Workflows
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # El fitxer de workflow
@@ -151,11 +151,12 @@ sobre l'`extra_data` del node, com passa amb les respostes d'un survey a AWX.
 
 ## Claus pròpies d'AnsibleForms
 
-Tres claus d'un node són pròpies d'AnsibleForms, i AWX les ignora, de manera que un workflow pot fer el que fa un formulari multipas:
+Quatre claus d'un node són pròpies d'AnsibleForms, i AWX les ignora, de manera que un workflow pot fer el que fa un formulari multipas:
 
 | Clau | Què fa |
 |---|---|
 | `runner` | En un node `job_template`, executa la plantilla o el job d'aquest runner en lloc d'un playbook del dissenyador: AWX, AAP, Ascender, Semaphore, Rundeck o Jenkins. Un runner RTE hi executa el playbook del node. Un mateix workflow els pot combinar. |
+| `playbook_repository` | En un node de playbook, el repositori des de l'arrel del qual s'executa el seu playbook, com el `playbookRepository` d'un formulari (des de la 7.8.0): el playbook del node s'indica llavors des d'aquesta arrel (`playbooks/site.yml`). `__self__` és el repositori on és el fitxer del workflow. Vegeu [Un repositori amb l'estructura pròpia d'Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | El node només s'executa quan aquesta extra var és `true`, com l'`ifExtraVar` d'un pas multistep. Si no es compleix, el node s'omet, i el que el segueix s'executa com després d'un èxit. No en un node d'aprovació, que sempre s'executa. |
 | `extra_vars_key` | El node només rep aquesta clau de les extra vars, amb l'usuari copiat a dins, com la `key` d'un pas multistep |
 

@@ -3,7 +3,7 @@ layout: default
 title: Plik workflow
 parent: Workflowy
 nav_order: 1
-translated_from: bb4d3027e33a5bfd11443369b621eb34c4af2f68
+translated_from: 14a187c33f8b249455a43e7d27e16e484e7d8547
 ---
 
 # Plik workflow
@@ -151,11 +151,12 @@ przed `extra_data` węzła, tak jak odpowiedzi ankiety w AWX.
 
 ## Własne klucze AnsibleForms
 
-Trzy klucze węzła należą do AnsibleForms, a AWX je ignoruje, dzięki czemu workflow może robić to, co formularz wieloetapowy:
+Cztery klucze węzła należą do AnsibleForms, a AWX je ignoruje, dzięki czemu workflow może robić to, co formularz wieloetapowy:
 
 | Klucz | Co robi |
 |---|---|
 | `runner` | W węźle `job_template` uruchamia szablon lub zadanie tego runnera zamiast playbooka projektanta: AWX, AAP, Ascender, Semaphore, Rundeck lub Jenkins. Runner RTE uruchamia tam playbook węzła. Jeden workflow może je łączyć. |
+| `playbook_repository` | W węźle playbooka repozytorium, z którego działa jego playbook, z katalogu głównego, jak `playbookRepository` formularza (od 7.8.0): playbook węzła podaje się wtedy od tego katalogu głównego (`playbooks/site.yml`). `__self__` to repozytorium, w którym jest plik workflowu. Zobacz [Repozytorium we własnym układzie Ansible](../repositories/ansible-layout.html) |
 | `if_extra_var` | Węzeł uruchamia się tylko wtedy, gdy ta extra var ma wartość `true`, jak `ifExtraVar` kroku formularza wieloetapowego. Gdy warunek nie jest spełniony, węzeł jest pomijany, a to, co następuje po nim, działa jak po sukcesie. Nie dotyczy węzła zatwierdzenia, który zawsze działa. |
 | `extra_vars_key` | Węzeł otrzymuje tylko ten klucz extra vars, ze skopiowanym użytkownikiem, jak `key` kroku formularza wieloetapowego |
 

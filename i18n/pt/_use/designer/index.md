@@ -5,7 +5,7 @@ nav_order: 1
 has_children: true
 has_toc: false
 permalink: /designer/
-translated_from: bf0bdf119ae004ec2da8640d18a254483027098c
+translated_from: a7cdded9e86ceacae2af8b4ccb48a83d520d0257
 ---
 
 # Designer
@@ -42,7 +42,7 @@ Cada secção edita um tipo de ficheiro, guardado localmente ou num [repositóri
 | **Categorias** | As categorias do `config.yaml` |
 | **Constantes** | As constantes do `config.yaml` |
 | **Ficheiros de variáveis** | Os ficheiros de variáveis que os formulários carregam |
-| **Playbooks** | Os playbooks que os formulários e os workflows executam |
+| **Playbooks** | Os playbooks que os formulários e os workflows executam: os do primeiro repositório de playbooks, e depois cada um dos outros numa pasta com o seu nome |
 | **Inventários** | Os inventários: `inventory.yaml`, `group_vars` e `host_vars` |
 | **Fluxos de trabalho** | Os ficheiros de [workflow](../workflows/) |
 
@@ -67,7 +67,7 @@ O que mostram os separadores Visual e Pré-visualização, secção a secção:
 
 | Secção | Visual | Pré-visualização |
 |---|---|---|
-| **Formulários** | As definições do formulário e os seus campos, com listas dos playbooks, inventários e workflows do designer | O formulário tal como está agora, incluindo as edições não guardadas; o seu envio não executa nada |
+| **Formulários** | As definições do formulário e os seus campos, com listas dos playbooks (e do seu repositório), inventários e workflows do designer | O formulário tal como está agora, incluindo as edições não guardadas; o seu envio não executa nada |
 | **Categorias** | As categorias como tabela, editadas | O menu da página Formulários, construído a partir delas |
 | **Constantes** | As constantes como estrutura em árvore, editadas (uma chave move-se com as teclas de seta) | Cada constante com a sua referência, `$(NAME)`, para copiar, e os formulários que a usam |
 | **Ficheiros de variáveis** | As variáveis, editadas | Cada variável com a sua referência num playbook, {% raw %}`{{ name }}`{% endraw %}, para copiar, e os formulários que carregam o ficheiro |
@@ -90,7 +90,10 @@ As três estão ligadas por predefinição e sempre ligadas para os admins:
 | `designAllPlaybooks` (**Editar Todos os Playbooks**) | Os playbooks que os formulários do utilizador executam, e os que nenhum formulário usa ainda |
 | `designAllWorkflows` (**Editar Todos os Fluxos de trabalho**) | Os ficheiros de workflow que os formulários do utilizador executam, aninhados incluídos, e os que nenhum formulário usa ainda |
 
-Um formulário executa um playbook através do seu `playbook`, dos seus passos ansible e dos workflows que executa. O que um designer limitado não pode fazer:
+Um formulário executa um playbook através do seu `playbook`, dos seus passos ansible e dos workflows que executa, contado
+com o repositório que indica (`playbookRepository`, desde 7.8.0, sendo `__self__` aquele em que está o formulário): `playbooks/site.yml` de um repositório não é `site.yml` de
+outro. Ver [Um repositório na estrutura própria do Ansible](../repositories/ansible-layout.html). O que um designer limitado
+não pode fazer:
 
 - **Ver um ficheiro escondido.** Nunca é listado nem nomeado: abrir um responde como um ficheiro que não existe, e um ficheiro novo com o seu
   nome como um ficheiro que já existe.
