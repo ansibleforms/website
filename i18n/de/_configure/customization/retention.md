@@ -3,7 +3,7 @@ layout: default
 title: Backups und Aufbewahrung
 parent: Umgebungsvariablen
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Backups und Aufbewahrung
@@ -35,6 +35,10 @@ Eine tägliche Aufgabe entfernt um 2:30 Uhr abgeschlossene Jobs, die älter sind
 Freigabe wartet, wird nie entfernt. Ab 7.7.0 entfernt `STORED_JOB_UNUSED_DAYS` außerdem um 4:00 Uhr die [gespeicherten
 Jobs](../jobs/stored-jobs.html#when-it-is-removed), aus denen so viele Tage lang kein Job gestartet wurde. Diese Variablen
 gelten ohne Neustart, wenn sie auf der Einstellungsseite geändert werden.
+
+Diese Zeiten sind die Standards. Seit 7.8.0 ist jede Bereinigung, und die nächtliche Sicherung, eine [Systemaufgabe](../jobs/system-tasks.html) unter
+**Jobs > System**, wo ein Administrator ändert, wann sie läuft, und ihre Läufe sieht; die Variablen ihrer Zeiten stehen unter
+[Systemaufgaben](system-tasks.html).
 
 ---
 

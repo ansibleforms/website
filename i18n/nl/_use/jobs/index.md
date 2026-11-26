@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Jobs
@@ -58,6 +58,7 @@ Het linkermenu ordent de jobs in de tijd, met het aantal jobs bij elk item; een 
 | | **Wacht op goedkeuring** | Jobs met status `approve`; het aantal wordt oranje zodra er een wacht |
 | **Toekomst** | **Gepland** | De pagina [Planner](schedules.html) (roloptie `allowScheduledJobs`) |
 | | **Opgeslagen** | De pagina [Opgeslagen invoer](stored-jobs.html) (roloptie `allowStoredJobs`) |
+| | **Systeem** | De pagina [Systeemtaken](system-tasks.html), vanaf 7.8.0 (roloptie `showSettings`, beheerders) |
 
 Het menu heeft geen item voor alle jobs: de link **Taken** in de kopbalk toont ze allemaal, `warning`-jobs inbegrepen.
 
@@ -109,6 +110,7 @@ Elk onderwerp heeft een eigen pagina:
 | [Statussen en typen](statuses.html) | Elke status die een job kan hebben, en de soorten jobs |
 | [Een job volgen](following.html) | Live uitvoer, extravars, filters en downloads |
 | [Jobacties](actions.html) | Een job starten, afbreken, herstarten, goedkeuren of afwijzen, en verwijderen |
-| [Planningen](schedules.html) | Een formulier later of volgens een cron-schema uitvoeren, en elke planning beheren |
+| [Planningen](schedules.html) | Een formulier later, volgens een cron of een rrule, uitvoeren, en elke planning beheren |
 | [Opgeslagen jobs](stored-jobs.html) | De gegevens van een formulier bewaren om ze later weer te laden |
 | [Opruimen](cleanup.html) | Jobs die door een herstart zijn afgebroken, en hoe lang afgeronde jobs bewaard blijven |
+| [Systeemtaken](system-tasks.html) | De onderhoudstaken die AnsibleForms zelf uitvoert, en wanneer ze draaien |

@@ -5,7 +5,7 @@ parent: Draaien in productie
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # Back-ups
@@ -22,7 +22,8 @@ Nachtelijke back-ups, wat ze bevatten, terugzetten, en wat je verder moet beware
 ## Nachtelijke back-ups
 
 AnsibleForms maakt elke nacht om middernacht een back-up van zichzelf, in de tijdzone van [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(standaard UTC). Deze instellingen sturen dat:
+(standaard UTC). Sinds 7.8.0 is dit de systeemtaak **Nachtelijke back-up**, waarvan een beheerder de tijd wijzigt onder **Jobs > Systeem**
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)); zie [Systeemtaken](../jobs/system-tasks.html). Deze instellingen sturen dat:
 
 | Variabele | Standaard | Betekenis |
 |----------|---------|---------|

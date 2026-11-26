@@ -3,7 +3,7 @@ layout: default
 title: Dzienniki
 parent: Środowisko produkcyjne
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Dzienniki
@@ -115,11 +115,14 @@ Dwa codzienne zadania z ustawieniem chronią bazę danych przed nieograniczonym 
 | Zmienna | Domyślnie | Uruchamia się o | Usuwa |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Wpisy audytu starsze niż ta wartość |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (zachowaj wszystko) | 2:30 | Zakończone zadania starsze niż ta wartość, z ich wynikiem |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | Zakończone zadania starsze niż ta wartość, z ich wynikiem |
 
 `0` zachowuje wszystko w obu przypadkach. Dwa kolejne codzienne zadania nie mają ustawienia: o 3:00 usuwane są zapisane tokeny odświeżania starsze niż 30 dni i
 wygasłe unieważnienia tokenów, a o 4:00 [zapisane zadania](../jobs/stored-jobs.html), których termin ważności minął.
 Godziny są w strefie czasowej [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), a uruchamia je worker.
+
+To są godziny domyślne. Od wersji 7.8.0 każde z tych zadań jest [procesem systemowym](../jobs/system-tasks.html) w **Zadania > System**,
+gdzie administrator zmienia, kiedy działa, i widzi każde uruchomienie z jego wynikiem.
 
 Wynik zadań to zwykle najszybciej rosnąca tabela: strona **Stan** raportuje jej rozmiar
 i ostrzega, gdy przekroczy 1 GB bez ustawionej retencji. Działające zadania i zadania czekające na zatwierdzenie nigdy nie są usuwane.

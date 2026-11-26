@@ -3,7 +3,7 @@ layout: default
 title: 日志
 parent: 生产环境运行
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # 日志
@@ -115,11 +115,14 @@ IP 地址是 AnsibleForms 看到的地址，在代理之后运行时就是代理
 | 变量 | 默认值 | 运行时间 | 删除内容 |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | 早于此期限的审计条目 |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0`（全部保留） | 2:30 | 早于此期限的已完成作业及其输出 |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | 早于此期限的已完成作业及其输出 |
 
 对两者而言，`0` 都表示全部保留。另有两个每日任务没有设置：3:00 删除超过 30 天的已保存刷新令牌和
 已过期的令牌撤销记录，4:00 删除已过期的 [保存的作业](../jobs/stored-jobs.html)。
 时间以 [`LOG_TZ`](../customization/logging.html#env_LOG_TZ) 的时区为准，由 worker 执行。
+
+这些是默认时间。自 7.8.0 起，这些任务中的每一个都是**作业 > 系统**下的一个[系统任务](../jobs/system-tasks.html)，
+管理员可在那里修改其运行时间，并查看每次运行及其结果。
 
 作业输出通常是增长最快的表：**状态** 页面会报告其大小，
 并在其超过 1 GB 且未设置保留时发出警告。正在运行的作业和等待批准的作业永远不会被删除。

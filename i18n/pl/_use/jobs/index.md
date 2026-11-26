@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Zadania
@@ -58,6 +58,7 @@ Lewe menu porządkuje zadania w czasie, z liczbą zadań przy każdej pozycji; p
 | | **Oczekuje na zatwierdzenie** | Zadania o stanie `approve`; licznik zmienia kolor na pomarańczowy, gdy któreś czeka |
 | **Przyszłe** | **Zaplanowane** | Strona [Harmonogramy](schedules.html) (opcja roli `allowScheduledJobs`) |
 | | **Zapisane** | Strona [Zapisane zadania](stored-jobs.html) (opcja roli `allowStoredJobs`) |
+| | **System** | Strona [Procesy systemowe](system-tasks.html), od wersji 7.8.0 (opcja roli `showSettings`, administratorzy) |
 
 Menu nie ma pozycji dla wszystkich zadań: link **Zadania** w nagłówku pokazuje je wszystkie, łącznie z zadaniami `warning`.
 
@@ -109,6 +110,7 @@ Każdy temat ma własną stronę:
 | [Stany i typy](statuses.html) | Każdy stan, jaki może mieć zadanie, i rodzaje zadań |
 | [Śledzenie zadania](following.html) | Wynik na żywo, extravars, filtry i pobieranie |
 | [Akcje na zadaniach](actions.html) | Uruchamianie, przerywanie, ponowne uruchamianie, zatwierdzanie lub odrzucanie i usuwanie zadania |
-| [Harmonogramy](schedules.html) | Uruchamianie formularza później lub według harmonogramu cron i zarządzanie wszystkimi harmonogramami |
+| [Harmonogramy](schedules.html) | Uruchamianie formularza później, według crona lub reguły rrule, i zarządzanie wszystkimi harmonogramami |
 | [Zapisane zadania](stored-jobs.html) | Przechowywanie danych formularza, aby wczytać je później |
 | [Czyszczenie](cleanup.html) | Zadania przerwane przez restart i jak długo przechowywane są zakończone zadania |
+| [Procesy systemowe](system-tasks.html) | Procesy konserwacji, które AnsibleForms uruchamia sam, i kiedy działają |

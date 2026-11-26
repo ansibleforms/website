@@ -3,7 +3,7 @@ layout: default
 title: Registres
 parent: En producció
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Registres
@@ -115,11 +115,14 @@ Dues tasques diàries amb un ajust eviten que la base de dades creixi sense lím
 | Variable | Predeterminat | S'executa a les | Elimina |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Les entrades d'auditoria més antigues que això |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (ho conserva tot) | 2:30 | Les tasques acabades més antigues que això, amb la seva sortida |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | Les tasques acabades més antigues que això, amb la seva sortida |
 
 `0` ho conserva tot en tots dos casos. Dues tasques diàries més no tenen cap ajust: a les 3:00 s'eliminen els refresh tokens desats de més de 30 dies i
 les revocacions de tokens caducades, i a les 4:00 les [tasques desades](../jobs/stored-jobs.html) que han passat la seva caducitat.
 Les hores són a la zona horària de [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), i les executa el worker.
+
+Aquestes són les hores predeterminades. Des de la 7.8.0 cadascun d'aquests processos és un [procés del sistema](../jobs/system-tasks.html) a **Tasques > Sistema**,
+on un administrador canvia quan s'executa i en veu cada execució amb el seu resultat.
 
 La sortida de les tasques sol ser la taula que creix més de pressa: la pàgina **Estat** n'indica la mida
 i avisa quan passa d'1 GB sense cap retenció definida. Les tasques en execució i les que esperen aprovació no s'eliminen mai.

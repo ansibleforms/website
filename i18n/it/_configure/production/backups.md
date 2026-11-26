@@ -5,7 +5,7 @@ parent: In produzione
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # Backup
@@ -22,7 +22,8 @@ Backup notturni, cosa contengono, ripristini, e cos'altro conservare
 ## Backup notturni
 
 AnsibleForms fa il backup di se stesso ogni notte a mezzanotte, nel fuso orario di [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(UTC per impostazione predefinita). Queste impostazioni lo controllano:
+(UTC per impostazione predefinita). Dalla 7.8.0 è l'attività di sistema **Backup notturno**, di cui un admin cambia l'orario sotto **Job > Sistema**
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)); vedi [Attività di sistema](../jobs/system-tasks.html). Queste impostazioni lo controllano:
 
 | Variabile | Predefinito | Significato |
 |----------|---------|---------|

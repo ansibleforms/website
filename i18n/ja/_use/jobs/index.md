@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # ジョブ
@@ -58,6 +58,7 @@ translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 | | **承認待ち** | ステータスが `approve` のジョブ。待機中のジョブがあると件数がオレンジ色になります |
 | **未来** | **スケジュール済み** | [スケジュール](schedules.html) ページ (ロールオプション `allowScheduledJobs` ) |
 | | **保存済み** | [保存済みジョブ](stored-jobs.html) ページ (ロールオプション `allowStoredJobs` ) |
+| | **システム** | [システム処理](system-tasks.html) ページ、7.8.0 から (ロールオプション `showSettings` 、管理者) |
 
 メニューにはすべてのジョブを表示する項目はありません。ヘッダーの **ジョブ** リンクで、 `warning` のジョブも含めてすべてが表示されます。
 
@@ -109,6 +110,7 @@ translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 | [ステータスと種類](statuses.html) | ジョブがとりうるすべてのステータスと、ジョブの種類 |
 | [ジョブの追跡](following.html) | ライブ出力、extravars、フィルター、ダウンロード |
 | [ジョブの操作](actions.html) | ジョブの起動、中止、再起動、承認または却下、削除 |
-| [スケジュール](schedules.html) | フォームを後で、または cron スケジュールで実行し、すべてのスケジュールを管理する |
+| [スケジュール](schedules.html) | フォームを後で、または cron や rrule で実行し、すべてのスケジュールを管理する |
 | [保存済みジョブ](stored-jobs.html) | フォームのデータを保存して後で再び読み込む |
 | [クリーンアップ](cleanup.html) | 再起動で中断されたジョブと、終了したジョブの保持期間 |
+| [システム処理](system-tasks.html) | AnsibleForms が自動で実行するメンテナンス処理と、その実行タイミング |

@@ -5,7 +5,7 @@ parent: 生产环境运行
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # 备份
@@ -22,7 +22,9 @@ translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
 ## 每晚备份
 
 AnsibleForms 每晚午夜自动备份，时区为 [`LOG_TZ`](../customization/logging.html#env_LOG_TZ) 所设
-（默认为 UTC）。以下设置控制备份：
+（默认为 UTC）。自 7.8.0 起，这是系统任务**夜间备份**，管理员可在**作业 > 系统**下修改其时间
+（[`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)）；参见[系统任务](../jobs/system-tasks.html)。
+以下设置控制备份：
 
 | 变量 | 默认值 | 含义 |
 |----------|---------|---------|

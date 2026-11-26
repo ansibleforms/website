@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Jobs
@@ -58,6 +58,7 @@ Das linke Menü ordnet die Jobs zeitlich, mit der Anzahl der Jobs in jedem Eintr
 | | **Wartet auf Genehmigung** | Jobs mit Status `approve`; die Anzahl wird orange, wenn einer wartet |
 | **Zukunft** | **Geplant** | Die Seite [Zeitpläne](schedules.html) (Rollenoption `allowScheduledJobs`) |
 | | **Gespeichert** | Die Seite [Gespeicherte Jobs](stored-jobs.html) (Rollenoption `allowStoredJobs`) |
+| | **System** | Die Seite [Systemaufgaben](system-tasks.html), ab 7.8.0 (Rollenoption `showSettings`, Administratoren) |
 
 Das Menü hat keinen Eintrag für alle Jobs: Der Link **Jobs** im Kopfbereich zeigt sie alle, auch die `warning`-Jobs.
 
@@ -109,6 +110,7 @@ Jedes Thema hat eine eigene Seite:
 | [Status und Typen](statuses.html) | Jeder Status, den ein Job haben kann, und die Arten von Jobs |
 | [Einen Job verfolgen](following.html) | Live-Ausgabe, Extravars, Filter und Downloads |
 | [Job-Aktionen](actions.html) | Einen Job starten, abbrechen, neu starten, genehmigen oder ablehnen und löschen |
-| [Zeitpläne](schedules.html) | Ein Formular später oder nach einem Cron-Zeitplan ausführen, und alle Zeitpläne verwalten |
+| [Zeitpläne](schedules.html) | Ein Formular später, nach einem Cron oder einer rrule ausführen, und alle Zeitpläne verwalten |
 | [Gespeicherte Jobs](stored-jobs.html) | Die Daten eines Formulars aufbewahren, um sie später wieder zu laden |
 | [Bereinigung](cleanup.html) | Durch einen Neustart abgeschnittene Jobs, und wie lange beendete Jobs aufbewahrt werden |
+| [Systemaufgaben](system-tasks.html) | Die Wartungsaufgaben, die AnsibleForms selbst ausführt, und wann sie laufen |

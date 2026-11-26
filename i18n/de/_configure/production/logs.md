@@ -3,7 +3,7 @@ layout: default
 title: Protokolle
 parent: Betrieb in Produktion
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Protokolle
@@ -115,11 +115,14 @@ Zwei tägliche Aufgaben mit einer Einstellung verhindern, dass die Datenbank unb
 | Variable | Standard | Läuft um | Entfernt |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Audit-Einträge, die älter sind |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (alle behalten) | 2:30 | Abgeschlossene Jobs, die älter sind, samt ihrer Ausgabe |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | Abgeschlossene Jobs, die älter sind, samt ihrer Ausgabe |
 
 `0` behält bei beiden alles. Zwei weitere tägliche Aufgaben haben keine Einstellung: Um 3:00 werden die gespeicherten Refresh-Token, die älter als 30 Tage sind, und
 die abgelaufenen Token-Sperren entfernt, und um 4:00 die [gespeicherten Jobs](../jobs/stored-jobs.html), deren Ablauf verstrichen ist.
 Die Zeiten gelten in der Zeitzone von [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), und der Worker führt sie aus.
+
+Das sind die Standardzeiten. Seit 7.8.0 ist jede dieser Aufgaben eine [Systemaufgabe](../jobs/system-tasks.html) unter **Jobs > System**,
+wo ein Administrator ändert, wann sie läuft, und jeden Lauf mit seinem Ergebnis sieht.
 
 Die Jobausgabe ist meist die am schnellsten wachsende Tabelle: Die Seite **Status** meldet ihre Größe
 und warnt, wenn sie 1 GB überschreitet, ohne dass eine Aufbewahrung gesetzt ist. Laufende Jobs und Jobs, die auf Genehmigung warten, werden nie entfernt.

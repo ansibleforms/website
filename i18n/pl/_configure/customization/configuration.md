@@ -3,7 +3,7 @@ layout: default
 title: Konfiguracja
 parent: Zmienne środowiskowe
 nav_order: 5
-translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
+translated_from: c15df1be69f79cf42094233023cb5766d2f56452
 ---
 
 # Konfiguracja
@@ -28,7 +28,7 @@ Zastosuj zamontowany config seed, sprawdzaj go co pięć minut i trzymaj `config
 ```yaml
     environment:
       - CONFIG_SEED_PATH=/seed/seed.yaml
-      - CONFIG_SEED_RELOAD_SECONDS=300
+      - "CONFIG_SEED_RELOAD_CRON=*/5 * * * *"
       - ENABLE_CONFIG_IN_DATABASE=1
       - ALLOW_ENV_EDIT=0              # the environment is declared here, not on the settings pages
     volumes:
@@ -47,8 +47,11 @@ Kategorie, role i stałe pochodzą z `config.yaml` na dysku lub z jego kopii w b
    karcie **Konfiguracja** strony ustawień: `1` odczytuje bazę danych, `0` odczytuje plik.
 2. W przeciwnym razie źródło konfiguracji zapisane w bazie danych (`file` lub `database`), które instancje skonfigurowane
    przed wersją 6.3.0 wybrały na stronie ustawień.
-3. W przeciwnym razie plik: `config.yaml` repozytorium z włączonym **Używać do konfiguracji?**, a jeśli takiego nie ma, repozytorium z włączonym
-   **Używać do formularzy?**, a jeśli i takiego nie ma, ten z [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+3. W przeciwnym razie plik z [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+
+Od wersji 7.8.0 klucz, który zawiera repozytorium, jest nakładany na tę bazę: repozytorium z typem zastosowania **Role**, **Kategorie** lub
+**Stałe** podaje ten klucz ze swojego pliku podającego `controller_roles:`, `controller_categories:` lub
+`controller_constants:`, a w przeciwnym razie ze swojego `config.yaml` (przestarzałe). Zobacz [Konfiguracja w git](../repositories/config-as-code.html#roles-categories-and-constants).
 
 Jawnie ustawiona `ENABLE_CONFIG_IN_DATABASE` zawsze wygrywa, nawet `0` z zapisanym `database`. Jest odczytywana przy każdym
 wczytaniu konfiguracji, więc zmiana działa bez restartu. Strona **Stan** pokazuje używane źródło na karcie **Informacje**.

@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Tarefas
@@ -58,6 +58,7 @@ O menu da esquerda organiza as tarefas no tempo, com o número de tarefas em cad
 | | **À espera de aprovação** | Tarefas com o estado `approve`; a contagem fica laranja quando há uma à espera |
 | **Futuro** | **Agendados** | A página [Agendamentos](schedules.html) (opção de função `allowScheduledJobs`) |
 | | **Guardados** | A página [Tarefas guardadas](stored-jobs.html) (opção de função `allowStoredJobs`) |
+| | **Sistema** | A página [Processos do sistema](system-tasks.html), a partir da 7.8.0 (opção de função `showSettings`, administradores) |
 
 O menu não tem nenhuma entrada para todas as tarefas: a ligação **Tarefas** do cabeçalho mostra-as todas, incluindo as tarefas `warning`.
 
@@ -109,6 +110,7 @@ Cada tema tem a sua própria página:
 | [Estados e tipos](statuses.html) | Todos os estados que uma tarefa pode ter, e os tipos de tarefa |
 | [Acompanhar uma tarefa](following.html) | Resultado em direto, extravars, filtros e transferências |
 | [Ações sobre tarefas](actions.html) | Lançar, interromper, relançar, aprovar ou rejeitar, e eliminar uma tarefa |
-| [Agendamentos](schedules.html) | Executar um formulário mais tarde ou segundo um agendamento cron, e gerir todos os agendamentos |
+| [Agendamentos](schedules.html) | Executar um formulário mais tarde, segundo um cron ou uma rrule, e gerir todos os agendamentos |
 | [Tarefas guardadas](stored-jobs.html) | Guardar os dados de um formulário para os carregar de novo mais tarde |
 | [Limpeza](cleanup.html) | Tarefas interrompidas por um reinício, e durante quanto tempo se guardam as tarefas terminadas |
+| [Processos do sistema](system-tasks.html) | Os processos de manutenção que o AnsibleForms executa sozinho, e quando correm |

@@ -3,7 +3,7 @@ layout: default
 title: ログ
 parent: 本番環境での運用
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # ログ
@@ -115,11 +115,14 @@ IP アドレスは AnsibleForms から見えるもので、プロキシの背後
 | 変数 | 既定値 | 実行時刻 | 削除するもの |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | これより古い監査エントリ |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` （すべて保持） | 2:30 | これより古い終了済みのジョブとその出力 |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | これより古い終了済みのジョブとその出力 |
 
 どちらも `0` ですべてを保持します。設定のない毎日のタスクがさらに二つあります。3:00 には 30 日より古い保存済みのリフレッシュトークンと
 期限切れのトークン失効情報が削除され、4:00 には有効期限を過ぎた [保存済みジョブ](../jobs/stored-jobs.html) が削除されます。
 時刻は [`LOG_TZ`](../customization/logging.html#env_LOG_TZ) のタイムゾーンで、ワーカーがこれらを実行します。
+
+これらは既定の時刻です。7.8.0 からは、これらのタスクはそれぞれ **ジョブ > システム** の [システム処理](../jobs/system-tasks.html) で、
+管理者が実行タイミングを変更し、各実行とその結果を確認できます。
 
 通常、最も速く大きくなるテーブルはジョブの出力です。 **ステータス** ページはそのサイズを報告し、
 保持期間が設定されないまま 1 GB を超えると警告します。実行中のジョブと承認待ちのジョブは削除されません。

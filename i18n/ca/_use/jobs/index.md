@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Tasques
@@ -58,6 +58,7 @@ El menú de l'esquerra ordena les tasques en el temps, amb el nombre de tasques 
 | | **Esperant aprovació** | Tasques amb l'estat `approve`; el comptador es torna taronja quan n'hi ha una d'esperant |
 | **Futur** | **Programats** | La pàgina [Programacions](schedules.html) (opció de rol `allowScheduledJobs`) |
 | | **Desats** | La pàgina [Tasques desades](stored-jobs.html) (opció de rol `allowStoredJobs`) |
+| | **Sistema** | La pàgina [Processos del sistema](system-tasks.html), des de la 7.8.0 (opció de rol `showSettings`, administradors) |
 
 El menú no té cap entrada per a totes les tasques: l'enllaç **Tasques** de la capçalera les mostra totes, incloses les tasques `warning`.
 
@@ -109,6 +110,7 @@ Cada tema té la seva pròpia pàgina:
 | [Estats i tipus](statuses.html) | Tots els estats que pot tenir una tasca, i els tipus de tasca |
 | [Seguir una tasca](following.html) | Sortida en directe, extravars, filtres i baixades |
 | [Accions sobre les tasques](actions.html) | Llançar, avortar, rellançar, aprovar o rebutjar, i suprimir una tasca |
-| [Programacions](schedules.html) | Executar un formulari més tard o segons una programació cron, i gestionar totes les programacions |
+| [Programacions](schedules.html) | Executar un formulari més tard, segons un cron o una rrule, i gestionar totes les programacions |
 | [Tasques desades](stored-jobs.html) | Guardar les dades d'un formulari per tornar-les a carregar més tard |
 | [Neteja](cleanup.html) | Tasques interrompudes per un reinici, i quant de temps es conserven les tasques acabades |
+| [Processos del sistema](system-tasks.html) | Els processos de manteniment que AnsibleForms executa sol, i quan s'executen |

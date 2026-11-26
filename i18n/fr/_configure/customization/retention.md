@@ -3,7 +3,7 @@ layout: default
 title: Sauvegardes et conservation
 parent: Variables d'environnement
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Sauvegardes et conservation
@@ -35,6 +35,10 @@ Une tâche quotidienne supprime les jobs terminés plus anciens que cela à 2 h 
 approbation, n'est jamais supprimé. Depuis la 7.7.0, `STORED_JOB_UNUSED_DAYS` supprime aussi, à 4 h 00, les [jobs
 enregistrés](../jobs/stored-jobs.html#when-it-is-removed) depuis lesquels aucun job n'a été lancé pendant ce nombre de jours. Ces variables
 s'appliquent sans redémarrage quand elles sont modifiées sur la page de paramètres.
+
+Ces heures sont les valeurs par défaut. Depuis la 7.8.0, chaque nettoyage, et la sauvegarde nocturne, est une [tâche système](../jobs/system-tasks.html) sous
+**Jobs > Système**, où un admin modifie quand elle s'exécute et voit ses exécutions ; les variables de leurs horaires sont dans
+[Tâches système](system-tasks.html).
 
 ---
 

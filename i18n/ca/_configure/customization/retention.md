@@ -3,7 +3,7 @@ layout: default
 title: Còpies de seguretat i retenció
 parent: Variables d'entorn
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Còpies de seguretat i retenció
@@ -35,6 +35,10 @@ Una tasca diària elimina les tasques acabades més antigues que això a les 2:3
 aprovació, no s'elimina mai. Des de la 7.7.0 `STORED_JOB_UNUSED_DAYS` també elimina, a les 4:00, les [tasques
 desades](../jobs/stored-jobs.html#when-it-is-removed) des de les quals no s'ha llançat cap tasca durant aquests dies. Aquestes variables
 s'apliquen sense reiniciar quan es canvien a la pàgina de configuració.
+
+Aquestes hores són les predeterminades. Des de la 7.8.0 cada neteja, i la còpia nocturna, és un [procés del sistema](../jobs/system-tasks.html) a
+**Tasques > Sistema**, on un administrador canvia quan s'executa i en veu les execucions; les variables de les seves hores són a
+[Processos del sistema](system-tasks.html).
 
 ---
 

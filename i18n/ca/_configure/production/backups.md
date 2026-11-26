@@ -5,7 +5,7 @@ parent: En producció
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # Còpies de seguretat
@@ -22,7 +22,8 @@ Còpies nocturnes, què contenen, restauracions, i què més cal conservar
 ## Còpies nocturnes
 
 AnsibleForms fa una còpia de seguretat de si mateix cada nit a mitjanit, a la zona horària de [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(UTC per defecte). Aquests ajustos la controlen:
+(UTC per defecte). Des de la 7.8.0 és el procés del sistema **Còpia nocturna**, l'hora del qual un administrador canvia a **Tasques > Sistema**
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)); vegeu [Processos del sistema](../jobs/system-tasks.html). Aquests ajustos la controlen:
 
 | Variable | Predeterminat | Significat |
 |----------|---------|---------|

@@ -21,7 +21,8 @@ Nightly backups, what they contain, restores, and what else to keep
 ## Nightly backups
 
 AnsibleForms backs itself up every night at midnight, in the timezone of [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(UTC by default). These settings control it:
+(UTC by default). Since 7.8.0 this is the system task **Nightly backup**, whose time an admin changes under **Jobs > System**
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)); see [System tasks](../jobs/system-tasks.html). These settings control it:
 
 | Variable | Default | Meaning |
 |----------|---------|---------|

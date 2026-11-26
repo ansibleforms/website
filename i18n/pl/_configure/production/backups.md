@@ -5,7 +5,7 @@ parent: Środowisko produkcyjne
 nav_order: 2
 redirect_from:
   - /production/backups-and-logs.html
-translated_from: 85cd29062adaaa52a93b688dcaddda94ef40a7bd
+translated_from: a99c80df6ec084f2a8ff58e454e8c7841def2f98
 ---
 
 # Kopie zapasowe
@@ -22,7 +22,9 @@ Nocne kopie zapasowe, ich zawartość, przywracanie i co jeszcze warto zachować
 ## Nocne kopie zapasowe
 
 AnsibleForms tworzy własną kopię zapasową każdej nocy o północy, w strefie czasowej [`LOG_TZ`](../customization/logging.html#env_LOG_TZ)
-(domyślnie UTC). Sterują tym te ustawienia:
+(domyślnie UTC). Od wersji 7.8.0 to proces systemowy **Nocna kopia zapasowa**, którego godzinę administrator zmienia w **Zadania > System**
+([`NIGHTLY_BACKUP_CRON`](../customization/system-tasks.html#env_NIGHTLY_BACKUP_CRON)); zobacz [Procesy systemowe](../jobs/system-tasks.html).
+Sterują tym te ustawienia:
 
 | Zmienna | Domyślnie | Znaczenie |
 |----------|---------|---------|

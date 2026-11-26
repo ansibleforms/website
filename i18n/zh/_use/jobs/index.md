@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # 作业
@@ -58,6 +58,7 @@ translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 | | **等待审批** | 状态为 `approve` 的作业；有作业等待时计数变为橙色 |
 | **未来** | **已计划** | [调度](schedules.html)页面（角色选项 `allowScheduledJobs` ） |
 | | **已保存** | [保存的作业](stored-jobs.html)页面（角色选项 `allowStoredJobs` ） |
+| | **系统** | [系统任务](system-tasks.html)页面，从 7.8.0 起（角色选项 `showSettings` ，管理员） |
 
 菜单中没有显示所有作业的条目：标题栏中的**作业**链接会显示所有作业，包括 `warning` 作业。
 
@@ -109,6 +110,7 @@ translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
 | [状态和类型](statuses.html) | 作业可能具有的每种状态，以及作业的种类 |
 | [跟踪作业](following.html) | 实时输出、extravars、筛选和下载 |
 | [作业操作](actions.html) | 运行、中止、重新运行、批准或拒绝以及删除作业 |
-| [调度](schedules.html) | 稍后运行表单或按 cron 调度运行，以及管理所有调度 |
+| [调度](schedules.html) | 稍后运行表单，或按 cron 或 rrule 运行，以及管理所有调度 |
 | [保存的作业](stored-jobs.html) | 保存表单的数据，以便以后再次加载 |
 | [清理](cleanup.html) | 因重启而中断的作业，以及已结束作业的保留时长 |
+| [系统任务](system-tasks.html) | AnsibleForms 自动运行的维护任务，以及它们的运行时间 |

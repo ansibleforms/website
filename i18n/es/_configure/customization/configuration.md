@@ -3,7 +3,7 @@ layout: default
 title: Configuración
 parent: Variables de entorno
 nav_order: 5
-translated_from: 51c4c53141d3ab723a6ffc8e3ca5518c5b786598
+translated_from: c15df1be69f79cf42094233023cb5766d2f56452
 ---
 
 # Configuración
@@ -28,7 +28,7 @@ Aplica una semilla de configuración montada, compruébala cada cinco minutos y 
 ```yaml
     environment:
       - CONFIG_SEED_PATH=/seed/seed.yaml
-      - CONFIG_SEED_RELOAD_SECONDS=300
+      - "CONFIG_SEED_RELOAD_CRON=*/5 * * * *"
       - ENABLE_CONFIG_IN_DATABASE=1
       - ALLOW_ENV_EDIT=0              # the environment is declared here, not on the settings pages
     volumes:
@@ -47,8 +47,11 @@ Las categorías, los roles y las constantes salen de `config.yaml` en disco o de
    pestaña **Configuración** de la página de configuración: `1` lee la base de datos, `0` lee el archivo.
 2. Si no, el origen de configuración guardado en la base de datos (`file` o `database`), que las instancias configuradas
    antes de la 6.3.0 eligieron en la página de configuración.
-3. Si no, el archivo: el `config.yaml` del repositorio con **¿Usar para configuración?** activado, si no el de un repositorio con
-   **¿Usar para formularios?** activado, y si no el de [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+3. Si no, el archivo de [`CONFIG_PATH`](paths.html#env_CONFIG_PATH).
+
+Desde 7.8.0 una clave que contiene un repositorio se superpone a esta base: el repositorio con el tipo de uso **Roles**, **Categorías** o
+**Constantes** da esa clave desde su archivo que da `controller_roles:`, `controller_categories:` o `controller_constants:`, y si no desde
+su `config.yaml` (obsoleto). Consulta [Configuración en git](../repositories/config-as-code.html#roles-categories-and-constants).
 
 Un `ENABLE_CONFIG_IN_DATABASE` definido explícitamente siempre gana, incluso `0` frente a un `database` guardado. Se lee cada vez que
 se carga la configuración, así que un cambio se aplica sin reiniciar. La página **Estado** muestra el origen en uso en su pestaña **Información**.

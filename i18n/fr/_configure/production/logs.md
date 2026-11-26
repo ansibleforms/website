@@ -3,7 +3,7 @@ layout: default
 title: Journaux
 parent: Exploitation en production
 nav_order: 3
-translated_from: 17d3894c528610d4916fbdcf4beb5bbbacd2b266
+translated_from: 3e14efc9c9637a928d32037bd4fe2f86427c0386
 ---
 
 # Journaux
@@ -115,11 +115,14 @@ Deux tâches quotidiennes avec un paramètre empêchent la base de données de g
 | Variable | Défaut | S'exécute à | Supprime |
 |----------|---------|---------|---------|
 | [`AUDIT_RETENTION_DAYS`](../customization/retention.html#env_AUDIT_RETENTION_DAYS) | `365` | 3:30 | Les entrées d'audit plus anciennes que cela |
-| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `0` (tout garder) | 2:30 | Les jobs terminés plus anciens que cela, avec leur sortie |
+| [`JOB_RETENTION_DAYS`](../customization/retention.html#env_JOB_RETENTION_DAYS) | `90` | 2:30 | Les jobs terminés plus anciens que cela, avec leur sortie |
 
 `0` garde tout pour les deux. Deux autres tâches quotidiennes n'ont pas de paramètre : à 3:00, les refresh tokens stockés de plus de 30 jours et
 les révocations de jetons expirées sont supprimés, et à 4:00 les [jobs enregistrés](../jobs/stored-jobs.html) dont l'échéance est passée.
 Les heures sont dans le fuseau horaire de [`LOG_TZ`](../customization/logging.html#env_LOG_TZ), et c'est le worker qui exécute ces tâches.
+
+Ce sont les heures par défaut. Depuis la 7.8.0, chacune de ces tâches est une [tâche système](../jobs/system-tasks.html) sous **Jobs > Système**,
+où un admin modifie quand elle s'exécute et voit chaque exécution avec son résultat.
 
 La sortie des jobs est généralement la table qui grossit le plus vite : la page **Statut** indique sa taille
 et avertit quand elle dépasse 1 Go sans conservation définie. Les jobs en cours et les jobs en attente d'approbation ne sont jamais supprimés.

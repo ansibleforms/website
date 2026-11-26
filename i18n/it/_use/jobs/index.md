@@ -7,7 +7,7 @@ has_toc: false
 redirect_from:
   - /jobs.html
 permalink: /jobs/
-translated_from: 5ebe08c87f55b79169432884bb849e27dde03cb2
+translated_from: 3bdc1d81296ad5d056901f5a6595b78856e79e63
 ---
 
 # Job
@@ -58,6 +58,7 @@ Il menu a sinistra ordina i job nel tempo, con il numero di job in ogni voce; un
 | | **In attesa di approvazione** | I job con stato `approve`; il contatore diventa arancione quando uno è in attesa |
 | **Futuro** | **Pianificati** | La pagina [Pianificazioni](schedules.html) (opzione di ruolo `allowScheduledJobs`) |
 | | **Salvati** | La pagina [Job salvati](stored-jobs.html) (opzione di ruolo `allowStoredJobs`) |
+| | **Sistema** | La pagina [Attività di sistema](system-tasks.html), dalla 7.8.0 (opzione di ruolo `showSettings`, admin) |
 
 Il menu non ha una voce per tutti i job: il link **Job** dell'intestazione li mostra tutti, compresi i job `warning`.
 
@@ -109,6 +110,7 @@ Ogni argomento ha una pagina dedicata:
 | [Stati e tipi](statuses.html) | Tutti gli stati che un job può avere, e i tipi di job |
 | [Seguire un job](following.html) | Output in diretta, extravars, filtri e download |
 | [Azioni sui job](actions.html) | Avviare, interrompere, rilanciare, approvare o rifiutare, ed eliminare un job |
-| [Pianificazioni](schedules.html) | Eseguire un modulo più tardi o secondo una pianificazione cron, e gestire tutte le pianificazioni |
+| [Pianificazioni](schedules.html) | Eseguire un modulo più tardi, secondo un cron o una rrule, e gestire tutte le pianificazioni |
 | [Job salvati](stored-jobs.html) | Conservare i dati di un modulo per ricaricarli più tardi |
 | [Pulizia](cleanup.html) | I job interrotti da un riavvio, e per quanto tempo vengono conservati i job terminati |
+| [Attività di sistema](system-tasks.html) | Le attività di manutenzione che AnsibleForms esegue da solo, e quando girano |

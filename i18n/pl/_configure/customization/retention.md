@@ -3,7 +3,7 @@ layout: default
 title: Kopie zapasowe i retencja
 parent: Zmienne środowiskowe
 nav_order: 3
-translated_from: ce6a769abd4e2fa8cb270d1280019cb15953de25
+translated_from: 1cac64b6467ce96bce3aac71718f07d7ecd10d89
 ---
 
 # Kopie zapasowe i retencja
@@ -35,6 +35,10 @@ Codzienne zadanie usuwa starsze zakończone zadania o 2:30, a wpisy audytu o 3:3
 zatwierdzenie, nigdy nie jest usuwane. Od wersji 7.7.0 `STORED_JOB_UNUSED_DAYS` usuwa także, o 4:00, [zapisane
 zadania](../jobs/stored-jobs.html#when-it-is-removed), z których przez tyle dni nie uruchomiono żadnego zadania. Te zmienne
 działają bez restartu, gdy zmienia się je na stronie ustawień.
+
+To są godziny domyślne. Od wersji 7.8.0 każde czyszczenie i nocna kopia zapasowa to [proces systemowy](../jobs/system-tasks.html) w
+**Zadania > System**, gdzie administrator zmienia, kiedy działa, i widzi jego uruchomienia; zmienne ich godzin są na stronie
+[Procesy systemowe](system-tasks.html).
 
 ---
 
