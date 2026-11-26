@@ -3,7 +3,7 @@ layout: default
 title: Edició i auditoria
 parent: Llavor de configuració
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Edició i auditoria
@@ -22,6 +22,9 @@ Bloquejar les pàgines de configuració, i què registra el registre d'auditoria
 `ALLOW_ENV_EDIT=0` fa que les pàgines de configuració siguin només de lectura. Cada variable es continua mostrant amb
 el valor vigent i el motiu pel qual no es pot canviar, i l'endpoint de desament respon amb
 403.
+
+Des de la 7.8.0 la secció `mcp` pròpia de la llavor, i l'idioma i l'enllaç del Designer de les seves seccions `defaults` i `links`, encara
+s'apliquen amb `ALLOW_ENV_EDIT=0`, tot i que són variables d'entorn: la llavor és la declaració que aquest ajust representa.
 
 Fes-lo servir sempre que l'entorn es declari en un altre lloc. Si no, la pàgina de configuració escriu
 `persistent/.env`, que en un volum efímer es perd sense avís al següent reinici, i en

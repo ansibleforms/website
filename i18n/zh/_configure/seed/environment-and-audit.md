@@ -3,7 +3,7 @@ layout: default
 title: 编辑与审计
 parent: 配置种子
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # 编辑与审计
@@ -22,6 +22,9 @@ translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
 `ALLOW_ENV_EDIT=0` 使设置页面变为只读。每个变量仍会显示
 当前生效的值以及无法修改的原因，保存端点则返回
 403。
+
+自 7.8.0 起，种子自身的 `mcp` 部分，以及其 `defaults` 和 `links` 部分中的语言和设计器链接，即使是环境变量，
+在 `ALLOW_ENV_EDIT=0` 时仍会被应用：种子正是此设置所代表的声明。
 
 只要环境是在其他地方声明的，就请使用它。否则设置页面会写入
 `persistent/.env`，在临时卷上它会在下次重启时悄无声息地丢失，在

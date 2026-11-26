@@ -3,7 +3,7 @@ layout: default
 title: Recarga y arranque
 parent: Semilla de configuración
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # Recarga y arranque
@@ -19,11 +19,18 @@ Cambia el archivo sin reiniciar, y qué pasa al arrancar
 
 ## Cambiar el archivo sin reiniciar
 
-La semilla se vuelve a leer cada `CONFIG_SEED_RELOAD_SECONDS` (60 por defecto, `0` lo desactiva)
-y se vuelve a aplicar cuando su contenido ha cambiado. Así, un cambio confirmado en git llega
+La semilla la vuelve a leer la tarea del sistema **Recarga del config seed**, cada minuto por defecto, y
+se vuelve a aplicar cuando su contenido ha cambiado. Así, un cambio confirmado en git llega
 automáticamente a una instancia en marcha: en Kubernetes, un `ConfigMap` se vuelve a montar en el pod en
 cerca de un minuto, y la siguiente comprobación lo recoge. No hay despliegue ni reinicio, y ningún
 hook tiene que llamar a nada.
+
+Desde la 7.8.0 su horario es un cron de 5 campos en `CONFIG_SEED_RELOAD_CRON` (`* * * * *` por defecto), definido en la página propia de la
+tarea en **Trabajos > Sistema** (consulta [Trabajos](../jobs/)) o en el entorno. Sin `CONFIG_SEED_PATH` la tarea está desactivada.
+
+`CONFIG_SEED_RELOAD_SECONDS`, su ajuste anterior, está obsoleto desde la 7.8.0 y se elimina en la 8. Se sigue leyendo mientras
+`CONFIG_SEED_RELOAD_CRON` no esté definido, con un aviso en el log al arrancar: `60` se lee como `* * * * *`, un múltiplo de 60 hasta 3600
+como cada tantos minutos, y `0` sigue desactivando la recarga. Define `CONFIG_SEED_RELOAD_CRON` en su lugar.
 
 Con un archivo sin cambios, la consulta calcula un hash y se detiene, así que nunca reescribe una fila que ya
 ha aplicado.

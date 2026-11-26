@@ -3,7 +3,7 @@ layout: default
 title: Correo
 parent: Canales de notificación
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Correo
@@ -52,5 +52,6 @@ Desde la 7.6.0, la aplicación no envía ningún correo mientras ningún canal d
 desactivado. Antes, recurría a los ajustes de correo de la página de ajustes o de la semilla de configuración. La actualización a la 7.6.0
 convierte esos ajustes en el canal de correo predeterminado `default` cuando todavía no había ningún canal de correo activo: con un inicio de
 sesión, nombra una nueva credencial smtp `mail-login`; para un relay, tiene su propio servidor y ninguna credencial. En la
-[semilla de configuración](../seed/), declara un canal de correo en `notification_channels:` (consulta [Ejemplo](../seed/example.html)):
-las antiguas claves `mail_*` de `settings:` siguen funcionando, pero están obsoletas.
+[semilla de configuración](../seed/), declara un canal de correo en `notifications:` (`notification_channels:` antes de 7.8.0,
+aún leído pero obsoleto; consulta [Ejemplo](../seed/example.html)): las antiguas claves `mail_*` de `settings:` siguen funcionando, pero
+también están obsoletas.

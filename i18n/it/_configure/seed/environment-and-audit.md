@@ -3,7 +3,7 @@ layout: default
 title: Modifica e audit
 parent: Config seed
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Modifica e audit
@@ -22,6 +22,9 @@ Bloccare le pagine delle impostazioni, e cosa registra il log di audit
 `ALLOW_ENV_EDIT=0` rende le pagine delle impostazioni in sola lettura. Ogni variabile viene comunque mostrata con
 il valore in vigore e il motivo per cui non si può modificare, e l'endpoint di salvataggio risponde con
 403.
+
+Dalla 7.8.0 la sezione `mcp` del seed, e la lingua e il collegamento del Designer delle sue sezioni `defaults` e `links`, vengono
+comunque applicati con `ALLOW_ENV_EDIT=0`, anche se sono variabili d'ambiente: il seed è la dichiarazione che questa impostazione rappresenta.
 
 Usala ogni volta che l'ambiente è dichiarato altrove. Altrimenti la pagina delle impostazioni scrive
 `persistent/.env`, che su un volume effimero va perso senza avviso al riavvio successivo, e su

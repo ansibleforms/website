@@ -3,7 +3,7 @@ layout: default
 title: Przykład
 parent: Config seed
 nav_order: 1
-translated_from: 3b80574712dfc8f514f0ff20403fc53f1d521279
+translated_from: 4c570ca726391f1d55f86eafe947111c14a8ca11
 ---
 
 # Przykład
@@ -12,10 +12,15 @@ translated_from: 3b80574712dfc8f514f0ff20403fc53f1d521279
 Kompletny plik seed, sekcja po sekcji
 {: .fs-6 .fw-300 }
 
+1. TOC
+{:toc}
+
 ---
 
-Poniższy plik seed deklaruje każdą sekcję poza `oauth2` i przestarzałą `awx`; sekrety pochodzą ze zmiennych środowiskowych,
-takich jak `${SEED_AWX_TOKEN}`:
+## Plik
+
+Poniższy plik seed deklaruje każdą sekcję poza przestarzałą `awx`. Sekrety pochodzą ze zmiennych środowiskowych, takich jak
+`${SEED_AWX_TOKEN}`, a sekcje używają nazw z wersji 7.8.0 (zobacz [Przemianowane sekcje](./#renamed-sections)):
 
 ```yaml
 version: 1
@@ -83,6 +88,15 @@ databases:                       # from 7.5.0
       description: The CMDB
       credential: production-db  # a credential of the credentials section, of type database
 
+sso:                             # oauth2 before 7.8.0
+  items:
+    - name: corp
+      provider: entraid          # entraid (Microsoft Entra ID, azuread before 7.8.0) or oidc
+      tenant_id: ${SEED_ENTRA_TENANT}
+      client_id: ${SEED_ENTRA_CLIENT_ID}
+      client_secret: ${SEED_ENTRA_SECRET}   # or credential: an entraid credential
+      enable: true
+
 repositories:
   prune: true
   items:
@@ -90,10 +104,12 @@ repositories:
       uri: https://git.example.com/forms.git
       branch: main
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true        # since 7.8.0, with use_for_categories and use_for_constants
+      use_for_categories: true   # instead of use_for_config
+      use_for_constants: true
       rebase_on_start: true
 
-syslog_servers:
+syslog:                          # syslog_servers before 7.8.0
   items:
     - name: siem
       host: siem.example.com
@@ -107,7 +123,7 @@ syslog_servers:
       level: notice              # the lowest level of the server log it gets (info by default)
       receives: log
 
-notification_channels:
+notifications:                   # notification_channels before 7.8.0
   items:
     - name: mail
       type: mail                 # mail, slack, teams, telegram or webhook
@@ -136,8 +152,8 @@ labels:
       enabled: true
       position: 1                # its place among the labels, lowest first
 
-# ldap is a single-row section, so EVERY field must be declared - see "Single-row
-# sections are all or nothing" below. Empty is a perfectly good value.
+# ldap is a single-row section, so EVERY field must be declared : see "Single-row
+# sections are all or nothing" on Managed objects. Empty is a perfectly good value.
 ldap:
   server: ldap.example.com
   port: 389
@@ -156,14 +172,14 @@ ldap:
   group_member_attribute: ""
   group_member_user_attribute: ""
   mail_attribute: mail
-  groupfilter: ""            # optional, see below
+  groupfilter: ""            # optional
 
 settings:
   url: https://forms.example.com   # the only key it needs from 7.6.0
 
-chat:                        # the chat assistant's model provider (6.5)
+chat_assistant:              # the chat assistant's model provider ; chat before 7.8.0
   provider: anthropic        # see below, or "" (chat off)
-  api_key: ${SEED_CHAT_API_KEY}
+  api_key: ${SEED_CHAT_API_KEY}   # or "" with credential: an api credential (since 7.8.0)
   base_url: ""               # empty for the provider default ; azure and custom need one
   model: claude-opus-5-5
   max_turns: 20
@@ -177,32 +193,84 @@ chat:                        # the chat assistant's model provider (6.5)
   ignore_certs: false        # true skips the certificate check (a self-signed proxy) - insecure
   extra_headers:             # a mapping of extra request headers
     X-Org: ops
+
+# since 7.8.0 : made or changed at each apply, never deleted
+groups:
+  items:
+    - name: operators
+      description: Run the day-to-day forms
+      users:                 # its members : usernames of local users
+        - alice
+
+users:
+  items:
+    - username: alice        # a local user (type: local, the default)
+      email: alice@example.com
+      password: ${SEED_ALICE_PW}
+    - username: jdoe
+      type: ldap             # ldap, entraid or oidc : only description and blocked
+      blocked: true
+      description: Left on 2026-10-31
+
+# since 7.8.0 : each declared field read only on its Settings page
+defaults:
+  default_theme: dark        # system, light or dark
+  default_language: fr
+  default_timezone: Europe/Brussels
+  default_date_format: DD/MM/YYYY
+  default_forms_view: tiles
+
+logo:
+  logo: images/logo.png      # relative to the seed file ; "" restores the bundled one
+
+icon:
+  icon: images/icon.svg
+
+name:
+  app_name: ACME Automation
+
+links:
+  show_designer: true
+  header_links:
+    - id: docs
+      label: Docs
+      url: https://docs.example.com
+      icon: book
+      newTab: true
+
+mcp:                         # environment variable names in lower case
+  enable_mcp: true
+  mcp_read_only: true
+  mcp_chat_forms_only: false
+
+# since 7.8.0 : made or changed at each apply, never read only
+announcements:
+  items:
+    - name: Maintenance
+      message: The app is down on Sunday from 8 to 10.
+      level: warning           # info, warning or danger
+      start_at: 2030-01-06T08:00:00Z
+      end_at: 2030-01-06T10:00:00Z
+
+disclaimer:
+  items:
+    - version: 2
+      title: Terms of use
+      text: Use this tool for your own team's systems only.
+      checkbox_label: I agree
+      enabled: true          # the version in force, one at most
+      ask_again: true        # a changed text asks everyone who accepted it again
+
+ssh:
+  private_key: ${SEED_SSH_PRIVATE_KEY}
+  known_hosts:               # one known_hosts line each ; [] clears them
+    - git.example.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
 ```
+Poniższe sekcje wyjaśniają części, które wymagają czegoś więcej niż komentarza.
 
-`provider` to jedno z:
+---
 
-* `anthropic`
-* `openai`
-* `azure`
-* `gemini`
-* `grok`
-* `mistral`
-* `deepseek`
-* `groq`
-* `openrouter`
-* `ollama`
-* `custom` : dowolny inny endpoint zgodny z OpenAI
-
-Tak jak `ldap`, sekcja `chat` to pojedynczy wiersz, więc każde pole jest wymagane poza
-opcjonalnymi; pominięte pole opcjonalne pozostaje bez zmian.
-
-Asystent czatu wymaga też `ENABLE_CHAT=1`; zobacz stronę [Asystent czatu](../chat).
-
-Poczta przechodzi przez kanały pocztowe z `notification_channels:` (zobacz [Poczta](../notification-channels/mail.html)). Klucze
-`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password` i `mail_from` w `settings:` są przestarzałe od wersji 7.6.0
-i zostaną usunięte w 8.0.0. Nadal działają i raz zapisują ostrzeżenie: seed robi z nich kanał pocztowy o nazwie `default`, z poświadczeniem
-smtp `mail-login`, gdy jest `mail_username`, albo z własnym serwerem dla przekaźnika. Zamiast tego zadeklaruj kanał pocztowy i jego
-poświadczenie samodzielnie, tak jak `mail` i `smtp-login` w powyższym pliku.
+## Runnery
 
 Od wersji 7.3.0 runner loguje się poświadczeniem swojego typu, które zawiera adres jego serwera w `url`. Runner z własnym `token`
 albo `username` i `password` nadal działa: seed zapisuje ostrzeżenie w dzienniku i zamienia je na takie poświadczenie, nazwane od runnera.
@@ -234,3 +302,128 @@ odpowiadać, zamiast tworzyć drugi runner dla tego samego RTE.
 
 Od wersji 7.5.0 sekcja `databases` deklaruje [bazy danych](../databases.html), które odpytują formularze. Element ma `name`, `credential`
 typu baza danych i opcjonalny `description`; seed stosuje go po poświadczeniach i odrzuca poświadczenie innego typu.
+
+---
+
+## SSO
+
+Sekcja `sso` (`oauth2` przed wersją 7.8.0) deklaruje [dostawców SSO](../authentication/), każdego z jego klientem: `client_id` i
+`client_secret` albo `credential` z sekcji poświadczeń.
+
+Od wersji 7.8.0 Microsoft Entra ID to `provider: entraid`, tak jak zapisują go repozytoria. `provider: azuread`, jego wcześniejsza nazwa, jest nadal
+odczytywany tak samo, przestarzały od wersji 7.8.0 i usunięty w 8, z ostrzeżeniem w dzienniku serwera. Drugi dostawca to `oidc`, a tylko jeden
+dostawca każdego rodzaju może mieć `enable: true`.
+
+---
+
+## Repozytoria
+
+Element repozytorium ma `name`, `uri`, opcjonalną `branch` (po pominięciu domyślną gałąź zdalnego repozytorium), `credential`, `rebase_on_start`,
+harmonogram pobierania `cron` i jedną flagę `use_for_*` dla każdego typu użycia: to, co aplikacja z niego odczytuje.
+
+Od wersji 7.8.0 każdy typ użycia ma swoją flagę. `use_for_forms`, `use_for_playbooks`, `use_for_workflows` i `use_for_inventories` istniały
+wcześniej; pozostałe są nowe:
+
+| Kategoria | Flagi |
+|---|---|
+| Designer | `use_for_categories`, `use_for_constants`, `use_for_forms`, `use_for_inventories`, `use_for_playbooks`, `use_for_workflows` |
+| Zadania | `use_for_schedules` |
+| System | `use_for_general` |
+| Wygląd | `use_for_defaults`, `use_for_logo`, `use_for_icon`, `use_for_name`, `use_for_links`, `use_for_labels`, `use_for_announcements` |
+| Dostęp | `use_for_disclaimer`, `use_for_users`, `use_for_groups`, `use_for_roles`, `use_for_ldap`, `use_for_sso` |
+| Połączenia | `use_for_repositories`, `use_for_credentials`, `use_for_secret_stores`, `use_for_databases`, `use_for_runners`, `use_for_ssh`, `use_for_notifications`, `use_for_chat_assistant`, `use_for_mcp`, `use_for_syslog` |
+
+Formularze, workflowy i inwentarze może przechowywać kilka repozytoriów. Każdy inny typ przechowuje co najwyżej jedno repozytorium: seed, który
+ustawia tę samą z tych flag na dwóch repozytoriach, jest odrzucany. To, co każdy typ trzyma w gicie, opisuje strona
+[Repozytoria git](../repositories/).
+
+`use_for_config` jest przestarzałe od wersji 7.8.0 i zostanie usunięte w 8. Jest nadal odczytywane, jako `use_for_roles`, `use_for_categories` i
+`use_for_constants`, z ostrzeżeniem w dzienniku serwera. Gdy deklaruje je kilka repozytoriów, te trzy zachowuje repozytorium, które już je ma
+(w przeciwnym razie pierwsze w pliku), a pozostałe nie dostają żadnej. Zamiast tego zadeklaruj te trzy flagi.
+
+---
+
+## Poczta
+
+Poczta przechodzi przez kanały pocztowe z `notifications:` (zobacz [Poczta](../notification-channels/mail.html)). Klucze
+`mail_server`, `mail_port`, `mail_secure`, `mail_username`, `mail_password` i `mail_from` w `settings:` są przestarzałe od wersji 7.6.0
+i zostaną usunięte w 8.0.0. Nadal działają i raz zapisują ostrzeżenie: seed robi z nich kanał pocztowy o nazwie `default`, z poświadczeniem
+smtp `mail-login`, gdy jest `mail_username`, albo z własnym serwerem dla przekaźnika. Zamiast tego zadeklaruj kanał pocztowy i jego
+poświadczenie samodzielnie, tak jak `mail` i `smtp-login` w powyższym pliku.
+
+---
+
+## Asystent czatu
+
+Sekcja `chat_assistant` (`chat` przed wersją 7.8.0) ustawia dostawcę modelu asystenta czatu. `provider` to jedno z:
+
+* `anthropic`
+* `openai`
+* `azure`
+* `gemini`
+* `grok`
+* `mistral`
+* `deepseek`
+* `groq`
+* `openrouter`
+* `ollama`
+* `custom` : dowolny inny endpoint zgodny z OpenAI
+
+Tak jak `ldap`, sekcja `chat_assistant` to pojedynczy wiersz, więc każde pole jest wymagane poza
+opcjonalnymi; pominięte pole opcjonalne pozostaje bez zmian.
+
+Od wersji 7.8.0 przyjmuje też `credential`, poświadczenie api z sekcji poświadczeń, którego hasło jest kluczem, zamiast
+`api_key` (wtedy zadeklaruj `api_key: ""`). Asystent czatu wymaga też `ENABLE_CHAT=1`, którego seed nie ustawia; zobacz stronę
+[Asystent czatu](../chat/).
+
+---
+
+## Użytkownicy i grupy
+
+Od wersji 7.8.0 sekcje `groups` i `users` deklarują lokalne grupy i użytkowników. Są tworzeni lub zmieniani przy każdym zastosowaniu, nigdy usuwani,
+i pozostają edytowalni w aplikacji (zobacz [Użytkownicy i grupy](../users-and-groups.html)).
+
+Element grupy ma `name`, opcjonalny `description` i jej członków w `users`: nazwy lokalnych użytkowników. Element użytkownika nie mówi
+nic o jego grupach, więc grupa wymienia swoich członków w jednym miejscu. Seed stosuje grupy przed użytkownikami.
+
+Element użytkownika ma `username` i `type`:
+
+| Typ | Co podaje jego element |
+|---|---|
+| `local` (domyślny) | `email`, `description`, `blocked` i `password` jako odwołanie `${ENV}`, jak każdy sekret seeda |
+| `ldap`, `entraid`, `oidc` | Tylko `description` i `blocked`: reszta pochodzi z jego katalogu przy każdym logowaniu |
+
+Nowy lokalny użytkownik dostaje grupy seeda, które go wymieniają, więc daj mu co najmniej jedną. Bez `password` nie może się zalogować, dopóki
+admin nie ustawi go w aplikacji. Użytkownik katalogu jest tworzony, zanim w ogóle się zaloguje, więc osoba odchodząca jest zablokowana, zanim spróbuje.
+Wbudowanego admina nigdy się nie deklaruje: pozostaje drogą powrotu.
+
+---
+
+## Wygląd, MCP i SSH
+
+Od wersji 7.8.0 seed deklaruje też ustawienia, które aplikacja ma w jednym egzemplarzu, każdą sekcję w formacie tej samej strony w repozytorium git.
+
+| Sekcja | Strona | Klucze |
+|---|---|---|
+| `defaults` | **Ustawienia > Wygląd > Wartości domyślne** | `default_theme`, `default_theme_color`, `default_forms_view`, `default_timezone`, `default_date_format`, `default_language` |
+| `logo`, `icon` | **Logo** i **Ikona** | `logo` lub `icon`: ścieżka pliku obrazu, względna wobec pliku seed; `""` przywraca dołączony |
+| `name` | **Nazwa** | `app_name` |
+| `links` | **Linki** | `header_links` (każdy z `id`, `label`, `url`, `icon`, `newTab`, `parent`) i `show_designer` |
+| `mcp` | **Ustawienia > Połączenia > MCP** | `enable_mcp`, `mcp_read_only`, `mcp_chat_forms_only` |
+| `ssh` | **Ustawienia > Połączenia > SSH** | `private_key` i `known_hosts` |
+| `announcements` | **Ustawienia > Wygląd > Ogłoszenia** | Elementy z `name`, `message`, `level`, `enabled`, `start_at`, `end_at` |
+| `disclaimer` | **Ustawienia > Dostęp > Zastrzeżenie** | Elementy z `version`, `title`, `text`, `checkbox_label`, `enabled`, `ask_again` |
+
+Każdy klucz jest opcjonalny: to, co sekcja pomija, pozostaje takie, jak ma to aplikacja. Logo i ikona są sprawdzane jak przy wgrywaniu (obraz,
+najwyżej 900 KB dla logo i 256 KB dla ikony).
+
+Klucze `mcp` to zmienne środowiskowe [serwera MCP](../mcp/) zapisane małymi literami. Zmienna, którą ustawia rzeczywiste
+środowisko, zachowuje wartość ze środowiska: dziennik serwera o tym informuje, a start trwa dalej.
+
+`ssh` zawiera prywatny klucz aplikacji jako odwołanie `${ENV}` (jej klucz publiczny jest z niego tworzony) i serwery, którym aplikacja ufa, każdy
+jako jeden wiersz known_hosts (hosty, typ klucza i klucz). Jest stosowany przy każdym starcie.
+
+Ogłoszenie, którego `end_at` minął, jest pomijane. `version` zastrzeżenia to liczba, co najwyżej jedna jest `enabled`, a zmieniony tekst
+poprawia tę wersję; z `ask_again: true` każdy, kto ją zaakceptował, jest pytany ponownie.
+
+To, w jakim stopniu seed przejmuje każdą z nich, opisuje strona [Obiekty zarządzane](managed-objects.html#settings-the-seed-declares).

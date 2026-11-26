@@ -3,7 +3,7 @@ layout: default
 title: Neuladen und Start
 parent: Config-Seed
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # Neuladen und Start
@@ -19,11 +19,18 @@ Die Datei ohne Neustart ändern, und was beim Start passiert
 
 ## Die Datei ohne Neustart ändern
 
-Der Seed wird alle `CONFIG_SEED_RELOAD_SECONDS` neu gelesen (standardmäßig 60, `0` schaltet es ab)
+Der Seed wird von der Systemaufgabe **Config-Seed neu laden** neu gelesen, standardmäßig jede Minute,
 und erneut angewendet, wenn sich sein Inhalt geändert hat. Eine in Git committete Änderung erreicht daher
 eine laufende Instanz automatisch: Auf Kubernetes wird eine `ConfigMap` innerhalb von etwa einer Minute unter dem Pod neu
 eingehängt, und die nächste Prüfung übernimmt sie. Es gibt keinen Rollout und keinen Neustart, und kein
 Hook muss etwas aufrufen.
+
+Seit 7.8.0 ist ihr Zeitplan ein Cron mit 5 Feldern in `CONFIG_SEED_RELOAD_CRON` (standardmäßig `* * * * *`), gesetzt auf der eigenen Seite
+der Aufgabe unter **Jobs > System** (siehe [Jobs](../jobs/)) oder in der Umgebung. Ohne `CONFIG_SEED_PATH` ist die Aufgabe aus.
+
+`CONFIG_SEED_RELOAD_SECONDS`, ihre frühere Einstellung, ist seit 7.8.0 veraltet und wird in 8 entfernt. Sie wird weiterhin gelesen, solange
+`CONFIG_SEED_RELOAD_CRON` nicht gesetzt ist, mit einer Warnung im Protokoll beim Start: `60` wird als `* * * * *` gelesen, ein Vielfaches von 60 bis 3600
+als alle so viele Minuten, und `0` schaltet das Neuladen weiterhin ab. Setzen Sie stattdessen `CONFIG_SEED_RELOAD_CRON`.
 
 Bei einer unveränderten Datei berechnet die Abfrage einen Hash und hört auf, sodass sie nie eine bereits
 angewendete Zeile neu schreibt.

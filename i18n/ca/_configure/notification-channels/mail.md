@@ -3,7 +3,7 @@ layout: default
 title: Correu
 parent: Canals de notificació
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Correu
@@ -52,5 +52,6 @@ Des de la 7.6.0, l'aplicació no envia cap correu mentre cap canal de correu no 
 desactivat. Abans, recorria als ajustos de correu de la pàgina de configuració o de la llavor de configuració. L'actualització a la 7.6.0
 converteix aquests ajustos en el canal de correu predeterminat `default` quan encara no hi havia cap canal de correu actiu: amb un inici de
 sessió, nomena una credencial smtp nova `mail-login`; per a un relay, té el seu propi servidor i cap credencial. A la
-[llavor de configuració](../seed/), declara un canal de correu a `notification_channels:` (vegeu [Exemple](../seed/example.html)): les
-antigues claus `mail_*` de `settings:` continuen funcionant, però estan obsoletes.
+[llavor de configuració](../seed/), declara un canal de correu a `notifications:` (`notification_channels:` abans de la 7.8.0, encara
+llegit però obsolet; vegeu [Exemple](../seed/example.html)): les antigues claus `mail_*` de `settings:` continuen funcionant, però
+també estan obsoletes.

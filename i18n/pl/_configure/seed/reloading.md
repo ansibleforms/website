@@ -3,7 +3,7 @@ layout: default
 title: Przeładowanie i start
 parent: Config seed
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # Przeładowanie i start
@@ -19,11 +19,18 @@ Zmiana pliku bez restartu i co się dzieje przy starcie
 
 ## Zmiana pliku bez restartu
 
-Seed jest ponownie odczytywany co `CONFIG_SEED_RELOAD_SECONDS` (domyślnie 60, `0` to wyłącza)
+Seed jest ponownie odczytywany przez zadanie systemowe **Ponowne wczytanie config seed**, domyślnie co minutę,
 i ponownie stosowany, gdy jego zawartość się zmieniła. Zmiana zatwierdzona w gicie trafia więc
 automatycznie do działającej instancji: na Kubernetes `ConfigMap` jest ponownie montowany w podzie w ciągu
 około minuty, a następne sprawdzenie go wychwytuje. Nie ma rolloutu ani restartu i żaden
 hook nie musi niczego wywoływać.
+
+Od wersji 7.8.0 jego harmonogram to cron z 5 pól w `CONFIG_SEED_RELOAD_CRON` (domyślnie `* * * * *`), ustawiany na stronie
+samego zadania w **Zadania > System** (zobacz [Zadania](../jobs/)) lub w środowisku. Bez `CONFIG_SEED_PATH` zadanie jest wyłączone.
+
+`CONFIG_SEED_RELOAD_SECONDS`, jego wcześniejsze ustawienie, jest przestarzałe od wersji 7.8.0 i zostanie usunięte w 8. Jest nadal
+odczytywane, dopóki `CONFIG_SEED_RELOAD_CRON` nie jest ustawione, z ostrzeżeniem w dzienniku przy starcie: `60` czytane jest jako `* * * * *`,
+wielokrotność 60 do 3600 jako co tyle minut, a `0` nadal wyłącza przeładowanie. Zamiast tego ustaw `CONFIG_SEED_RELOAD_CRON`.
 
 Dla niezmienionego pliku odpytanie oblicza jeden hash i kończy, więc nigdy nie przepisuje wiersza, który już
 zastosowało.

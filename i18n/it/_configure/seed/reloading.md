@@ -3,7 +3,7 @@ layout: default
 title: Ricaricamento e avvio
 parent: Config seed
 nav_order: 3
-translated_from: d6cc2dfaf45589a284b52223737ed04ac4330e67
+translated_from: 6cb646436cb2361c1ad2402e0d57b5b56c934630
 ---
 
 # Ricaricamento e avvio
@@ -19,11 +19,18 @@ Modificare il file senza riavvio, e cosa succede all'avvio
 
 ## Modificare il file senza riavviare
 
-Il seed viene riletto ogni `CONFIG_SEED_RELOAD_SECONDS` (60 per impostazione predefinita, `0` lo disattiva)
-e riapplicato quando il suo contenuto è cambiato. Una modifica di cui si fa commit in git raggiunge quindi
+Il seed viene riletto dall'attività di sistema **Ricarica del config seed**, ogni minuto per impostazione predefinita, e
+riapplicato quando il suo contenuto è cambiato. Una modifica di cui si fa commit in git raggiunge quindi
 automaticamente un'istanza in esecuzione: su Kubernetes, una `ConfigMap` viene rimontata nel pod entro
 circa un minuto, e il controllo successivo la rileva. Non c'è nessun rollout né riavvio, e nessun
 hook deve chiamare nulla.
+
+Dalla 7.8.0 la sua pianificazione è un cron di 5 campi in `CONFIG_SEED_RELOAD_CRON` (`* * * * *` per impostazione predefinita),
+impostato nella pagina dell'attività sotto **Job > Sistema** (vedi [Job](../jobs/)) o nell'ambiente. Senza `CONFIG_SEED_PATH` l'attività è spenta.
+
+`CONFIG_SEED_RELOAD_SECONDS`, la sua impostazione di prima, è deprecata dalla 7.8.0 e rimossa nella 8. Viene ancora letta finché
+`CONFIG_SEED_RELOAD_CRON` non è impostata, con un avviso nel log all'avvio: `60` si legge come `* * * * *`, un multiplo di 60 fino a
+3600 come ogni N minuti, e `0` disattiva ancora il ricaricamento. Imposta invece `CONFIG_SEED_RELOAD_CRON`.
 
 Per un file invariato, il controllo calcola un hash e si ferma, quindi non riscrive mai una riga che ha
 già applicato.

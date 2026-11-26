@@ -50,5 +50,6 @@ the **Details** tab of a mail channel's page does the same.
 From 7.6.0, the app sends no mail at all while no mail channel is the default, or while the default one is turned off. Before, it
 fell back to the mail settings of the settings page or the config seed. The upgrade to 7.6.0 turns those settings into the default
 mail channel `default` when no mail channel was active yet: with a login, it names a new smtp credential `mail-login`; for a relay,
-it has its own server and no credential. In the [config seed](../seed/), declare a mail channel under `notification_channels:`
-(see [Example](../seed/example.html)): the old `mail_*` keys under `settings:` still work but are deprecated.
+it has its own server and no credential. In the [config seed](../seed/), declare a mail channel under `notifications:`
+(`notification_channels:` before 7.8.0, still read but deprecated; see [Example](../seed/example.html)): the old `mail_*` keys
+under `settings:` still work but are deprecated too.

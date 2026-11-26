@@ -3,7 +3,7 @@ layout: default
 title: Edición y auditoría
 parent: Semilla de configuración
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Edición y auditoría
@@ -22,6 +22,9 @@ Bloquea las páginas de ajustes, y qué registra el log de auditoría
 `ALLOW_ENV_EDIT=0` deja las páginas de ajustes en solo lectura. Cada variable se sigue mostrando con
 el valor vigente y el motivo por el que no se puede cambiar, y el endpoint de guardado responde con
 403.
+
+Desde la 7.8.0 la propia sección `mcp` de la semilla, y el idioma y el enlace del Designer de sus secciones `defaults` y `links`, se siguen
+aplicando con `ALLOW_ENV_EDIT=0`, aunque sean variables de entorno: la semilla es la declaración que representa este ajuste.
 
 Úsalo siempre que el entorno se declare en otro sitio. Si no, la página de ajustes escribe
 `persistent/.env`, que en un volumen efímero se pierde sin aviso en el siguiente reinicio y, en

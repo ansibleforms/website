@@ -3,7 +3,7 @@ layout: default
 title: Poczta
 parent: Kanały powiadomień
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Poczta
@@ -51,5 +51,6 @@ na karcie **Szczegóły** strony kanału pocztowego działa tak samo.
 Od wersji 7.6.0 aplikacja nie wysyła żadnej poczty, dopóki żaden kanał pocztowy nie jest domyślny lub dopóki domyślny jest wyłączony.
 Wcześniej wracała do ustawień poczty ze strony ustawień lub z config seed. Aktualizacja do 7.6.0 zamienia te ustawienia w domyślny
 kanał pocztowy `default`, gdy żaden kanał pocztowy nie był jeszcze aktywny: z logowaniem wskazuje on nowe poświadczenie smtp `mail-login`,
-a dla przekaźnika ma własny serwer i nie ma poświadczenia. W [config seed](../seed/) zadeklaruj kanał pocztowy w `notification_channels:`
-(zobacz [Przykład](../seed/example.html)): stare klucze `mail_*` w `settings:` nadal działają, ale są przestarzałe.
+a dla przekaźnika ma własny serwer i nie ma poświadczenia. W [config seed](../seed/) zadeklaruj kanał pocztowy w `notifications:`
+(przed 7.8.0 `notification_channels:`, nadal odczytywane, ale przestarzałe; zobacz [Przykład](../seed/example.html)): stare klucze `mail_*`
+w `settings:` nadal działają, ale również są przestarzałe.

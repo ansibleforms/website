@@ -3,7 +3,7 @@ layout: default
 title: Mail
 parent: Canali di notifica
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Mail
@@ -52,4 +52,5 @@ Dalla 7.6.0, l'app non invia nessuna mail finché nessun canale mail è il prede
 ricadeva sulle impostazioni mail della pagina delle impostazioni o del config seed. L'aggiornamento alla 7.6.0 trasforma quelle impostazioni
 nel canale mail predefinito `default` quando nessun canale mail era ancora attivo: con un accesso, indica una nuova credenziale smtp
 `mail-login`; per un relay, ha il proprio server e nessuna credenziale. Nel [config seed](../seed/), dichiara un canale mail sotto
-`notification_channels:` (vedi [Esempio](../seed/example.html)): le vecchie chiavi `mail_*` sotto `settings:` funzionano ancora ma sono deprecate.
+`notifications:` (`notification_channels:` prima della 7.8.0, ancora letto ma deprecato; vedi [Esempio](../seed/example.html)): le vecchie chiavi
+`mail_*` sotto `settings:` funzionano ancora ma sono anch'esse deprecate.

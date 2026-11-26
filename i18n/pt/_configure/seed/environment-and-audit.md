@@ -3,7 +3,7 @@ layout: default
 title: Edição e auditoria
 parent: Config seed
 nav_order: 5
-translated_from: 84af9202344ae1fc62b7b882fdc12f1799dd1bd3
+translated_from: 96693b9c5bf7161cd290164552b525cac615e32b
 ---
 
 # Edição e auditoria
@@ -22,6 +22,9 @@ Bloquear as páginas de definições, e o que o registo de auditoria regista
 `ALLOW_ENV_EDIT=0` torna as páginas de definições só de leitura. Todas as variáveis continuam a ser mostradas com
 o valor em vigor e o motivo por que não podem ser alteradas, e o endpoint de gravação responde com
 403.
+
+Desde a 7.8.0, a secção `mcp` do próprio seed, e o idioma e a ligação do Designer das suas secções `defaults` e `links`, continuam a
+ser aplicados com `ALLOW_ENV_EDIT=0`, embora sejam variáveis de ambiente: o seed é a declaração que esta definição representa.
 
 Use-o sempre que o ambiente estiver declarado noutro sítio. Caso contrário, a página de definições escreve
 `persistent/.env`, que num volume efémero se perde silenciosamente no reinício seguinte, e num

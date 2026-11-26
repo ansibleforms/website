@@ -3,7 +3,7 @@ layout: default
 title: Email
 parent: Canais de notificação
 nav_order: 1
-translated_from: 912c390487fa6b9e65cd83eb1e626c18c44f981a
+translated_from: 46b46a0152b0e7ba76d3b141e9dedb08c6d97afe
 ---
 
 # Email
@@ -53,5 +53,6 @@ desligado. Antes, recorria às definições de email da página de definições 
 definições no canal de email predefinido `default` quando ainda não havia nenhum canal de email ativo: com um acesso, nomeia uma nova
 credencial smtp `mail-login`; para um relay, tem o seu próprio servidor e nenhuma credencial.
 
-No [config seed](../seed/), declare um canal de email em `notification_channels:` (ver [Exemplo](../seed/example.html)): as antigas
-chaves `mail_*` em `settings:` continuam a funcionar, mas estão obsoletas e deixam de existir na 8.0.0.
+No [config seed](../seed/), declare um canal de email em `notifications:` (`notification_channels:` antes da 7.8.0, ainda lido mas
+obsoleto; ver [Exemplo](../seed/example.html)): as antigas chaves `mail_*` em `settings:` continuam a funcionar, mas também estão obsoletas
+e deixam de existir na 8.0.0.
