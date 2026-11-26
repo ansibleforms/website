@@ -3,7 +3,7 @@ layout: default
 title: Afegir un repositori
 parent: Repositoris Git
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # Afegir un repositori
@@ -39,7 +39,7 @@ pull portarà. El menú de cada fila conté aquestes accions:
 |---|---|
 | **Edita** | Canvia els camps de més avall |
 | **Pull** | Clona el repositori, o en fa pull quan la còpia de treball ja existeix |
-| **Push** | Fa commit i push de la còpia de treball; només en els repositoris que es fan servir per a formularis, configuració, playbooks, workflows o inventaris, i només està activat quan hi ha canvis que encara no s'han enviat |
+| **Push** | Fa commit i push de la còpia de treball; només en els repositoris amb algun tipus d'ús marcat, i només està activat quan hi ha canvis que encara no s'han enviat |
 | **Restableix** | Esborra la còpia de treball i la torna a clonar, cosa que descarta els canvis locals |
 | **Canvia les credencials** | Obre la pestanya **Credencials** del repositori, per triar la credencial que fa servir git |
 | **Mostra la sortida de l'últim pull** | Mostra la sortida de git de l'últim clonatge, pull o restabliment, amb la contrasenya emmascarada |
@@ -69,7 +69,7 @@ del pull**), i AnsibleForms comença el clonatge en segon pla tan bon punt deses
 | **Activa el pull programat** | no | Fa pull del repositori segons una programació |
 | **Programació del pull** | no | Quan es fa el pull, com a expressió cron; es mostra un cop activat el pull programat |
 | **Descripció** | sí | Una descripció en text lliure |
-| **Utilitzar per a la configuració ?** ... **Fer servir per a inventaris?** | no | Què conté el repositori, vegeu [més amunt](./#what-a-repository-is-for) |
+| **Ús** | no | Els tipus d'ús, el que conté el repositori: una casella cadascun, sota sis encapçalaments, vegeu [Configuració a git](config-as-code.html#the-usage-types) |
 | **Fes pull en iniciar l'aplicació** | no | Clona el repositori, o en fa pull, cada vegada que s'inicia AnsibleForms |
 
 Reanomenar un repositori mou la seva còpia de treball a la carpeta nova i també hi mou la seva programació de pull. Un repositori d'abans
@@ -83,7 +83,7 @@ El contingut d'un repositori es converteix en el que AnsibleForms carrega i exec
 
 - afegir o suprimir un repositori;
 - canviar-ne l'**URI** o la **Branca**;
-- activar o desactivar cap dels seus indicadors **Utilitzar per a**.
+- marcar o desmarcar cap dels seus tipus d'ús.
 
 Encara en pot canviar la descripció, la programació del pull i la credencial, i en pot fer pull, push o restablir-lo. Una credencial que fa servir un runner,
 una connexió o un inici de sessió no la pot triar; el rebuig l'anomena, i no diu res del que conté.
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ Els camps són els de la pàgina, inclosos `credential` (una credencial del seed
 l'aplicació**) i `cron` (la programació del pull); `user` i `password` encara s'accepten en lloc d'una credencial. Un
 repositori del seed és de només lectura a la interfície, i es torna a clonar en arrencar quan falta la seva còpia de treball; vegeu
 [Objectes gestionats](../seed/managed-objects.html).
+
+Cada tipus d'ús és un indicador `use_for_<type>`, com ara `use_for_credentials`. Des de la 7.8.0 `use_for_config` és un àlies obsolet de
+`use_for_roles`, `use_for_categories` i `use_for_constants`, que encara es llegeix amb un avís i s'elimina a la 8.0.

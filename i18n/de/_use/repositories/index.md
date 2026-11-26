@@ -7,46 +7,56 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Git-Repositories
 {: .no_toc }
 
-Formulare, Variablendateien, Konfiguration und Playbooks in git aufbewahren
+Formulare, Playbooks, Einstellungen und Verbindungen in git aufbewahren
 {: .fs-6 .fw-300 }
 
 ---
 
-Für Admins, die Formulare, Konfiguration und Playbooks in git aufbewahren: was ein Repository enthalten kann und welche Quelle Vorrang hat.
+Für Admins, die Formulare, Playbooks und die Konfiguration der App in git aufbewahren: was ein Repository enthalten kann und welche Quelle Vorrang hat.
 
 ---
 
 ## Wofür ein Repository da ist
 
-Ein Repository ist ein git-Remote, das AnsibleForms klont und aktuell hält, und jedes hat Schalter, die sagen, was es enthält:
+Ein Repository ist ein git-Remote, das AnsibleForms klont und aktuell hält, und seine Verwendungstypen sagen, was die App daraus übernimmt.
 
-| Schalter | Was AnsibleForms daraus liest | Ordner im Repository |
+Seit 7.8.0 listet der Schritt **Verwendung** eines Repositorys die Verwendungstypen unter sechs Überschriften auf: **Designer**, **Jobs**, **System**,
+**Erscheinungsbild**, **Zugriff** und **Verbindungen**. Die Typen unter **Designer** sind Dateien, die die App so liest, wie sie sind:
+
+| Verwendungstyp | Was AnsibleForms daraus liest | Wo im Repository |
 |---|---|---|
-| **Für Konfiguration verwenden?** | `config.yaml` mit den Kategorien, Rollen und Konstanten | das Stammverzeichnis |
-| **Für Formulare verwenden?** | Die Formulardateien, die der Designer auch dorthin zurückspeichert, und ihre Variablendateien | `forms` oder das Stammverzeichnis; Variablendateien in `vars` |
-| **Für Playbooks verwenden?** | Die Ansible-Playbooks, die Jobs ausführen | `playbooks` oder das Stammverzeichnis |
-| **Für Workflows verwenden?** | Die [Workflow](../workflows/)-Dateien, die der Designer auch dorthin zurückspeichert | jeder Ordner |
-| **Für Inventare verwenden?** | Ein Inventar, nach dem Repository benannt, das ein Formular mit `inventory:` nennt | das Stammverzeichnis: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Formulare** | Die Formulardateien, die der Designer auch dorthin zurückspeichert, und ihre Variablendateien | `forms` oder das Stammverzeichnis; Variablendateien in `vars` |
+| **Playbooks** | Die Ansible-Playbooks, die Jobs ausführen | `playbooks` oder das Stammverzeichnis |
+| **Workflows** | Die [Workflow](../workflows/)-Dateien, die der Designer auch dorthin zurückspeichert | jeder Ordner |
+| **Inventare** | Ein Inventar, nach dem Repository benannt, das ein Formular mit `inventory:` nennt | das Stammverzeichnis: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Kategorien**, **Konstanten** | Die Kategorien und die Konstanten, die der Designer auch in ihre Datei zurückspeichert | die Datei mit `controller_categories:` oder `controller_constants:` |
 
-Ohne den Unterordner wird das Stammverzeichnis des Repositorys verwendet. Ein Repository kann alles enthalten; wenn Sie aufteilen, dürfen nur **Für
-Formulare verwenden**, **Für Workflows verwenden** und **Für Inventare verwenden** bei mehreren eingeschaltet sein: Die anderen Schalter nehmen das erste Repository
-und protokollieren eine Warnung.
+Jeder andere Typ hält Einstellungen, Benutzer oder Verbindungen der App in YAML-Dateien, in beide Richtungen gelesen und geschrieben: die Zeitpläne,
+die Einstellungen unter Allgemein, die Seiten des Erscheinungsbilds, die Benutzer, Gruppen und Rollen, die Anmeldungen, die Anmeldedaten, die Runner und
+die anderen Verbindungen. Sie sind in [Konfiguration in git](config-as-code.html) beschrieben.
 
-Jedes Repository wird in einen nach ihm benannten Unterordner unter [`REPO_PATH`](../customization/paths.html#env_REPO_PATH) geklont.
+**Formulare**, **Playbooks**, **Workflows** und **Inventare** dürfen bei mehreren Repositories angehakt sein, jeder andere Typ
+bei höchstens einem Repository. Ein Formular führt die Playbooks des ersten **Playbooks**-Repositorys aus, außer es nennt mit
+`playbookRepository` sein eigenes. Jedes Repository wird in einen nach ihm benannten Unterordner unter
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH) geklont.
+
+Der Schalter **Für Konfiguration verwenden?** von vor 7.8.0 ist durch **Rollen**, **Kategorien** und **Konstanten** ersetzt, jeweils aus der
+Datei mit ihrem Schlüssel gelesen; die `config.yaml` eines Repositorys wird noch gelesen, veraltet (siehe
+[Rollen, Kategorien und Konstanten](config-as-code.html#roles-categories-and-constants)).
 
 ### Ein Repository für alles
 
-Ein einzelnes Repository kann Formulare, Variablendateien, Konfiguration und Playbooks enthalten, mit eingeschalteten Schaltern und einem Unterordner pro Art.
+Ein einzelnes Repository kann Formulare, Variablendateien, Konfiguration und Playbooks enthalten, mit angehakten Verwendungstypen und einem Unterordner pro Art.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +64,15 @@ forms-repo/
 
 ### Ein Repository pro Zweck
 
-Getrennte Repositories lassen Teams ihren Teil besitzen, mit je einem Schalter und den Dateien direkt im Stammverzeichnis.
+Getrennte Repositories lassen Teams ihren Teil besitzen, jedes mit seinen eigenen Verwendungstypen und den Dateien direkt im Stammverzeichnis.
 
-| Repository | Schalter | Inhalt im Stammverzeichnis |
+| Repository | Verwendungstypen | Inhalt im Stammverzeichnis |
 |---|---|---|
-| `af-config` | **Für Konfiguration verwenden?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Für Formulare verwenden?** | Die Formulardateien jedes Teams, zu einer Liste zusammengeführt |
-| `af-playbooks` | **Für Playbooks verwenden?** | Die Playbooks und Rollen |
+| `af-platform` | **Rollen**, **Kategorien**, **Konstanten**, **Anmeldedaten**, **Runner** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Formulare** | Die Formulardateien jedes Teams, zu einer Liste zusammengeführt |
+| `af-playbooks` | **Playbooks** | Die Playbooks und Rollen |
 
-Nur Formulare können aus mehreren Repositories kommen; Konfiguration und Playbooks kommen jeweils aus einem. Die Variablendateien kommen aus dem Ordner `vars`
-des ersten Formular-Repositorys, das einen hat.
+Die Variablendateien kommen aus dem Ordner `vars` des ersten Formular-Repositorys, das einen hat.
 
 ---
 
@@ -73,14 +82,14 @@ Der Inhalt eines Repositorys ersetzt den passenden lokalen Ordner; diese Tabelle
 
 | Inhalt | Gelesen aus, der erste Treffer gewinnt |
 |---|---|
-| Konfiguration | 1. der Datenbank, wenn die Konfiguration dort gehalten wird ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. `config.yaml` des Repositorys **Für Konfiguration verwenden** <br> 3. `config.yaml` eines Repositorys **Für Formulare verwenden**, wenn kein Repository für die Konfiguration verwendet wird <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Formulare | Jedes Repository **Für Formulare verwenden** plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) nur, wenn es keines gibt |
-| Playbooks | Das Repository **Für Playbooks verwenden**, sonst [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Variablendateien | Der Ordner `vars` des ersten Repositorys **Für Formulare verwenden**, das einen hat, sonst [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflows | Jedes Repository **Für Workflows verwenden** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), zusammen |
+| Rollen, Kategorien, Konstanten | Jeder Schlüssel für sich: 1. die Datei mit `controller_roles:`, `controller_categories:` oder `controller_constants:` im Repository mit diesem Verwendungstyp <br> 2. die `config.yaml` dieses Repositorys (veraltet) <br> 3. die Basiskonfiguration: die Datenbank, wenn die Konfiguration dort gehalten wird ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), sonst [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Formulare | Jedes Repository mit **Formulare** plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) nur, wenn es keines gibt |
+| Playbooks | Das Repository mit **Playbooks**, sonst [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| Variablendateien | Der Ordner `vars` des ersten Repositorys mit **Formulare**, das einen hat, sonst [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflows | Jedes Repository mit **Workflows** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), zusammen |
 
-Formulare aus mehreren Repositories werden zu einer Liste zusammengeführt. Enthalten zwei davon ein Formular mit demselben Namen, wird das zuerst
-geladene behalten und die Warnung `skipping duplicate form <name>` protokolliert; halten Sie Formularnamen also über alle Repositories hinweg eindeutig.
+Formulare aus mehreren Repositories werden in der Reihenfolge gelesen, in der die Repositories hinzugefügt wurden. Enthalten zwei davon ein Formular mit
+demselben Namen, wird die Kopie des zuerst hinzugefügten Repositorys verwendet, und eine Warnung nennt beide Kopien; halten Sie Formularnamen also über alle Repositories hinweg eindeutig.
 
 ---
 
@@ -108,3 +117,4 @@ Jedes Thema hat eine eigene Seite:
 | [Authentifizierung](authentication.html) | HTTPS mit einem Token, SSH mit dem erzeugten Schlüssel und eigene git-Befehle |
 | [Änderungen pullen](pulling.html) | Geplante, manuelle und API-Pulls, und lokale Änderungen |
 | [Designer und Push](designer.html) | Formulare im Designer bearbeiten und ins Repository pushen |
+| [Konfiguration in git](config-as-code.html) | Jede Einstellung in einem git-Repository aufbewahrt, in beide Richtungen gelesen und geschrieben |

@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ Catégories, rôles et constantes pour tous les formulaires
 
 Pour les administrateurs : le fichier config.yaml qui contient les catégories, les rôles et les constantes partagés par tous les formulaires.
 
-AnsibleForms utilise un fichier config.yaml pour configurer les catégories, les rôles et les constantes. Si aucun fichier n'est fourni, il en génère un avec une configuration minimale. La configuration peut aussi être importée dans la base de données, ce qui rend le fichier config.yaml inutile.
+AnsibleForms utilise un fichier config.yaml pour configurer les catégories, les rôles et les constantes. Si aucun fichier n'est fourni, il en génère un avec une configuration minimale. La configuration peut aussi être importée dans la base de données, ce qui rend le fichier config.yaml inutile, et chacun des trois peut être conservé dans un dépôt git.
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Priorité de chargement de la configuration
 
-AnsibleForms charge le fichier config.yaml dans l'ordre suivant (la première correspondance l'emporte) :
+Depuis la 7.8.0, les catégories, les rôles et les constantes sont lus chacun séparément, depuis la première source ci-dessous qui le contient.
 
-1. **DEPUIS LA BASE DE DONNÉES** : la configuration importée dans la base de données, uniquement quand `ENABLE_CONFIG_IN_DATABASE=1`, ou quand cette
+1. **DEPUIS UN DÉPÔT** : le dépôt ayant le type d'usage **Catégories**, **Rôles** ou **Constantes**, depuis son fichier qui donne
+   `controller_categories:`, `controller_roles:` ou `controller_constants:`, de n'importe quel nom et dans n'importe quel dossier (voir
+   [Configuration dans git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **DEPUIS LE config.yaml DU DÉPÔT** : la clé simple dans le `config.yaml` de ce dépôt, dépréciée depuis la 7.8.0 et plus
+   lue dans la 8.0 ; le journal du serveur, la sortie du pull et la page du dépôt le signalent
+3. **DEPUIS LA BASE DE DONNÉES** : la configuration importée dans la base de données, uniquement quand `ENABLE_CONFIG_IN_DATABASE=1`, ou quand cette
    variable n'est pas définie et que la source de configuration stockée dans la base de données est `database` (une copie vide se rabat sur le fichier)
-2. **DEPUIS UN DÉPÔT (use_for_config)** : le dépôt dont l'interrupteur « use for config » est activé (nouveau dans la 6.1.0)
-3. **DEPUIS UN DÉPÔT (use_for_forms)** : le dépôt dont l'interrupteur « use for forms » est activé (repli pour la rétrocompatibilité)
 4. **DEPUIS LE FICHIER LOCAL** : le fichier local `config.yaml` (variable d'environnement CONFIG_PATH)
 
 {: .warning }
-> **Remarque :** activez « use for config » sur un seul dépôt. Si plusieurs l'ont activé, un avertissement est journalisé et le premier est utilisé.
+> **Remarque :** l'interrupteur **Utiliser pour la configuration** n'existe plus depuis la 7.8.0. Une mise à jour donne **Rôles**, **Catégories** et
+> **Constantes** au dépôt qui l'avait, et `use_for_config` dans le config seed ou l'API est un alias déprécié des trois.
 
 ---
 

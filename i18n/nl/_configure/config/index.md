@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ Categorieën, rollen en constanten voor alle formulieren
 
 Voor beheerders: het bestand config.yaml met de categorieën, rollen en constanten die alle formulieren delen.
 
-AnsibleForms gebruikt een bestand config.yaml om categorieën, rollen en constanten te configureren. Als er geen bestand is, wordt er een gegenereerd met een minimale configuratie. De configuratie kan ook in de database worden geïmporteerd, zodat er geen bestand config.yaml meer nodig is.
+AnsibleForms gebruikt een bestand config.yaml om categorieën, rollen en constanten te configureren. Als er geen bestand is, wordt er een gegenereerd met een minimale configuratie. De configuratie kan ook in de database worden geïmporteerd, zodat er geen bestand config.yaml meer nodig is, en elk van de drie kan in een git-repository worden bewaard.
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Prioriteit bij het laden van de configuratie
 
-AnsibleForms laadt het bestand config.yaml in de volgende volgorde (de eerste treffer wint):
+Sinds 7.8.0 worden de categorieën, de rollen en de constanten elk apart gelezen, uit de eerste bron hieronder die ze bevat.
 
-1. **UIT DE DATABASE** : de configuratie die in de database is geïmporteerd, alleen als `ENABLE_CONFIG_IN_DATABASE=1`, of als die
+1. **UIT EEN REPOSITORY** : de repository met het gebruikstype **Categorieën**, **Rollen** of **Constanten**, uit haar bestand met
+   `controller_categories:`, `controller_roles:` of `controller_constants:`, met elke naam en in elke map (zie
+   [Configuratie in git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **UIT DE config.yaml VAN DE REPOSITORY** : de gewone sleutel in de `config.yaml` van die repository, verouderd sinds 7.8.0 en vanaf
+   8.0 niet meer gelezen; de serverlog, de pull-uitvoer en de pagina van de repository melden dat
+3. **UIT DE DATABASE** : de configuratie die in de database is geïmporteerd, alleen als `ENABLE_CONFIG_IN_DATABASE=1`, of als die
    variabele niet is ingesteld en de configuratiebron die in de database is opgeslagen `database` is (een lege kopie valt terug op het bestand)
-2. **UIT EEN REPOSITORY (use_for_config)** : de repository met de schakelaar "gebruiken voor configuratie" ingeschakeld (nieuw in 6.1.0)
-3. **UIT EEN REPOSITORY (use_for_forms)** : de repository met de schakelaar "gebruiken voor formulieren" ingeschakeld (terugvaloptie voor achterwaartse compatibiliteit)
 4. **UIT EEN LOKAAL BESTAND** : het lokale bestand `config.yaml` (omgevingsvariabele CONFIG_PATH)
 
 {: .warning }
-> **Let op:** schakel "gebruiken voor configuratie" op slechts één repository in. Als meerdere het ingeschakeld hebben, wordt een waarschuwing gelogd en wordt de eerste gebruikt.
+> **Let op:** de schakelaar **Gebruiken voor configuratie** bestaat niet meer sinds 7.8.0. Een upgrade geeft **Rollen**, **Categorieën** en **Constanten**
+> aan de repository die hem had, en `use_for_config` in de config seed of de API is een verouderde alias van de drie.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Añadir un repositorio
 parent: Repositorios git
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # Añadir un repositorio
@@ -39,7 +39,7 @@ trae un pull. El menú de cada fila contiene estas acciones:
 |---|---|
 | **Editar** | Cambiar los campos de abajo |
 | **Pull** | Clonar el repositorio, o hacer pull cuando el árbol de trabajo ya existe |
-| **Push** | Hacer commit y push del árbol de trabajo; solo en repositorios usados para formularios, configuración, playbooks, workflows o inventarios, y activo solo mientras haya cambios aún sin enviar |
+| **Push** | Hacer commit y push del árbol de trabajo; solo en repositorios con algún tipo de uso marcado, y activo solo mientras haya cambios aún sin enviar |
 | **Restablecer** | Borrar el árbol de trabajo y volver a clonarlo, lo que descarta los cambios locales |
 | **Cambiar credenciales** | Abrir la pestaña **Credenciales** del repositorio, para elegir la credencial que usa git |
 | **Mostrar salida del último pull** | Mostrar la salida de git del último clone, pull o reset, con la contraseña enmascarada |
@@ -69,7 +69,7 @@ Haz clic en **Añadir repositorio**: un asistente pide los campos en cuatro paso
 | **Activar el pull programado** | no | Hacer pull del repositorio según una programación |
 | **Programación del pull** | no | Cuándo hacer pull, como expresión cron; se muestra una vez activado el pull programado |
 | **Descripción** | sí | Una descripción de texto libre |
-| **¿Usar para configuración?** ... **¿Usar para inventarios?** | no | Qué contiene el repositorio, consulta [más arriba](./#what-a-repository-is-for) |
+| **Uso** | no | Los tipos de uso, lo que contiene el repositorio: una casilla cada uno, bajo seis encabezados, consulta [Configuración en git](config-as-code.html#the-usage-types) |
 | **Hacer pull al iniciar la aplicación** | no | Clonar el repositorio, o hacer pull, cada vez que AnsibleForms se inicia |
 
 Renombrar un repositorio mueve su árbol de trabajo a la nueva carpeta y mueve también su programación de pull. Un repositorio de
@@ -83,7 +83,7 @@ El contenido de un repositorio pasa a ser lo que AnsibleForms carga y ejecuta, a
 
 - añadir ni eliminar un repositorio;
 - cambiar su **Uri** ni su **Rama**;
-- activar ni desactivar ninguno de sus indicadores **Usar para**.
+- marcar ni desmarcar ninguno de sus tipos de uso.
 
 Sí puede cambiar su descripción, su programación de pull y su credencial, y hacer pull, push o reset. No puede elegir una credencial
 que use un runner, una conexión o un inicio de sesión; el rechazo la nombra, y no dice nada de lo que contiene.
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ Los campos son los de la página, incluidos `credential` (una credencial del see
 iniciar la aplicación**) y `cron` (la programación del pull); `user` y `password` se siguen aceptando en lugar de una credencial. Un
 repositorio del seed es de solo lectura en la interfaz, y se vuelve a clonar al iniciar cuando falta su árbol de trabajo; consulta
 [Objetos gestionados](../seed/managed-objects.html).
+
+Cada tipo de uso es un indicador `use_for_<type>`, como `use_for_credentials`. Desde 7.8.0 `use_for_config` es un alias obsoleto de
+`use_for_roles`, `use_for_categories` y `use_for_constants`, que aún se lee con un aviso y se elimina en 8.0.

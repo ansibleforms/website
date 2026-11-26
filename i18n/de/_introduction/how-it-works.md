@@ -2,7 +2,7 @@
 layout: default
 title: Wie es funktioniert
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Wie es funktioniert
@@ -132,7 +132,7 @@ Die Komponenten im Diagramm haben jeweils eine eigene Rolle:
 | **Persistenter Ordner** | Enthält `config.yaml`, die Formulardateien, die Playbooks, die Protokolle und die Backups |
 | **Datenquellen** | Füllen die Felder: [Datenbankabfragen](formfields/enum.html), [REST-APIs](expressions/rest-apis.html), Dateien und [andere Funktionen](expressions/remote.html) |
 | **Secret Stores** | Liefern Benutzer und Passwort von Anmeldedaten zum Zeitpunkt der Verwendung, siehe [Secret Stores](secret-stores/) |
-| **Git-Repositories** | Halten die Formulare, die Playbooks und `config.yaml` unter Versionskontrolle |
+| **Git-Repositories** | Halten die Formulare, die Playbooks und die Einstellungen der App unter Versionskontrolle |
 | **Anmeldeanbieter** | Melden die Benutzer an: [LDAP, Entra ID und OIDC](authentication/), neben den lokalen Benutzern |
 | **Benachrichtigungskanäle** | Transportieren die [Benachrichtigungen](forms/notifications.html) und die Genehmigungsanfragen: [Mail, Slack, Microsoft Teams, Telegram oder ein Webhook](notification-channels.html) |
 | **Syslog-Server** | Empfangen das Protokoll und den Audit-Trail, während sie geschrieben werden, siehe [Syslog](production/logs.html#syslog) |

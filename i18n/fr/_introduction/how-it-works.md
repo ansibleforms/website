@@ -2,7 +2,7 @@
 layout: default
 title: Comment ça marche
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Comment ça marche
@@ -132,7 +132,7 @@ Chaque composant du schéma a son propre rôle :
 | **Dossier persistant** | Contient `config.yaml`, les fichiers de formulaires, les playbooks, les journaux et les sauvegardes |
 | **Sources de données** | Alimentent les champs : [requêtes de base de données](formfields/enum.html), [API REST](expressions/rest-apis.html), fichiers et [autres fonctions](expressions/remote.html) |
 | **Coffres de secrets** | Fournissent l'utilisateur et le mot de passe d'un identifiant au moment de son utilisation, voir [Coffres de secrets](secret-stores/) |
-| **Dépôts git** | Gardent les formulaires, les playbooks et `config.yaml` sous contrôle de version |
+| **Dépôts git** | Gardent les formulaires, les playbooks et les paramètres de l'application sous contrôle de version |
 | **Fournisseurs de connexion** | Connectent les utilisateurs : [LDAP, Entra ID et OIDC](authentication/), en plus des utilisateurs locaux |
 | **Canaux de notification** | Transportent les [notifications](forms/notifications.html) et les demandes d'approbation : [mail, Slack, Microsoft Teams, Telegram ou un webhook](notification-channels.html) |
 | **Serveurs syslog** | Reçoivent le journal et la piste d'audit au fur et à mesure de leur écriture, voir [Syslog](production/logs.html#syslog) |

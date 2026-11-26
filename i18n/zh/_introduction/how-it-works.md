@@ -2,7 +2,7 @@
 layout: default
 title: 工作原理
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # 工作原理
@@ -130,7 +130,7 @@ YAML 文件读取表单，自身不运行任何东西：它把每个作业交给
 | **持久化文件夹** | 保存 `config.yaml`、表单文件、playbook、日志和备份 |
 | **数据源** | 填充字段：[数据库查询](formfields/enum.html)、[REST API](expressions/rest-apis.html)、文件和 [其他函数](expressions/remote.html) |
 | **密钥库** | 在使用时提供凭据的用户名和密码，参见 [密钥库](secret-stores/) |
-| **Git 仓库** | 对表单、playbook 和 `config.yaml` 进行版本控制 |
+| **Git 仓库** | 对表单、playbook 和应用的设置进行版本控制 |
 | **登录提供方** | 让用户登录：[LDAP、Entra ID 和 OIDC](authentication/)，以及本地用户 |
 | **通知通道** | 传递 [通知](forms/notifications.html) 和审批请求：[邮件、Slack、Microsoft Teams、Telegram 或 webhook](notification-channels.html) |
 | **Syslog 服务器** | 在日志和审计记录写入时接收它们，参见 [Syslog](production/logs.html#syslog) |

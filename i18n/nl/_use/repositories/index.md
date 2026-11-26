@@ -7,46 +7,56 @@ has_toc: false
 redirect_from:
   - /repositories.html
 permalink: /repositories/
-translated_from: 8eb2dfed1f173597f36522be4b3bb4cb606557d6
+translated_from: 5595dcc0c5adf343f1f347feef0f5586f0312a4b
 ---
 
 # Git-repositories
 {: .no_toc }
 
-Bewaar formulieren, variabelenbestanden, configuratie en playbooks in git
+Bewaar formulieren, playbooks, instellingen en verbindingen in git
 {: .fs-6 .fw-300 }
 
 ---
 
-Voor beheerders die formulieren, configuratie en playbooks in git bewaren: wat een repository kan bevatten en welke bron wint.
+Voor beheerders die formulieren, playbooks en de configuratie van de app in git bewaren: wat een repository kan bevatten en welke bron wint.
 
 ---
 
 ## Waarvoor een repository dient
 
-Een repository is een git-remote die AnsibleForms kloont en bijwerkt, en elke repository heeft schakelaars die zeggen wat ze bevat:
+Een repository is een git-remote die AnsibleForms kloont en bijwerkt, en haar gebruikstypen zeggen wat de app eruit haalt.
 
-| Schakelaar | Wat AnsibleForms eruit leest | Map in de repository |
+Sinds 7.8.0 toont de stap **Gebruik** van een repository de gebruikstypen onder zes kopjes: **Ontwerper**, **Taken**, **Systeem**,
+**Uiterlijk**, **Toegang** en **Verbindingen**. De typen onder **Ontwerper** zijn bestanden die de app leest zoals ze zijn:
+
+| Gebruikstype | Wat AnsibleForms eruit leest | Waar in de repository |
 |---|---|---|
-| **Gebruiken voor configuratie?** | `config.yaml` met de categorieën, rollen en constanten | de root |
-| **Gebruiken voor formulieren?** | De formulierbestanden, die de ontwerper er ook in terug opslaat, en hun variabelenbestanden | `forms`, of de root; variabelenbestanden in `vars` |
-| **Gebruiken voor playbooks?** | De Ansible-playbooks die jobs uitvoeren | `playbooks`, of de root |
-| **Gebruiken voor workflows?** | De [workflow](../workflows/)bestanden, die de ontwerper er ook in terug opslaat | elke map |
-| **Gebruiken voor inventarissen?** | Eén inventaris, genoemd naar de repository, waarnaar een formulier verwijst met `inventory:` | de root: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Formulieren** | De formulierbestanden, die de ontwerper er ook in terug opslaat, en hun variabelenbestanden | `forms`, of de root; variabelenbestanden in `vars` |
+| **Playbooks** | De Ansible-playbooks die jobs uitvoeren | `playbooks`, of de root |
+| **Workflows** | De [workflow](../workflows/)bestanden, die de ontwerper er ook in terug opslaat | elke map |
+| **Inventarissen** | Eén inventaris, genoemd naar de repository, waarnaar een formulier verwijst met `inventory:` | de root: `inventory.yaml`, `group_vars`, `host_vars` |
+| **Categorieën**, **Constanten** | De categorieën en de constanten, die de ontwerper ook terug in hun bestand opslaat | het bestand met `controller_categories:` of `controller_constants:` |
 
-Zonder de submap wordt de root van de repository gebruikt. Eén repository kan alles bevatten; verdeel je het, dan mogen alleen **Gebruiken voor
-formulieren**, **Gebruiken voor workflows** en **Gebruiken voor inventarissen** op meerdere repositories aanstaan: de andere schakelaars nemen de eerste repository
-en loggen een waarschuwing.
+Elk ander type bewaart instellingen, gebruikers of verbindingen van de app in YAML-bestanden, in beide richtingen gelezen en geschreven: de planners,
+de instellingen van Algemeen, de pagina's van Uiterlijk, de gebruikers, groepen en rollen, de aanmeldingen, de inloggegevens, de runners en de
+andere verbindingen. Ze worden beschreven in [Configuratie in git](config-as-code.html).
 
-Elke repository wordt gekloond in een submap met haar naam, onder [`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+**Formulieren**, **Playbooks**, **Workflows** en **Inventarissen** mogen op meerdere repositories aangevinkt zijn, elk ander type
+op hoogstens één repository. Een formulier voert de playbooks van de eerste **Playbooks**-repository uit, tenzij het met
+`playbookRepository` zijn eigen noemt. Elke repository wordt gekloond in een submap met haar naam, onder
+[`REPO_PATH`](../customization/paths.html#env_REPO_PATH).
+
+De schakelaar **Gebruiken voor configuratie?** van vóór 7.8.0 is vervangen door **Rollen**, **Categorieën** en **Constanten**, elk gelezen uit het
+bestand met zijn sleutel; de `config.yaml` van een repository wordt nog gelezen, verouderd (zie
+[Rollen, categorieën en constanten](config-as-code.html#roles-categories-and-constants)).
 
 ### Eén repository voor alles
 
-Eén repository kan formulieren, variabelenbestanden, configuratie en playbooks bevatten, met de schakelaars aan en één submap per soort.
+Eén repository kan formulieren, variabelenbestanden, configuratie en playbooks bevatten, met de gebruikstypen aangevinkt en één submap per soort.
 
 ```
 forms-repo/
-├── config.yaml        # categories, roles and constants
+├── config/            # categories.yaml, constants.yaml, roles.yaml
 ├── forms/             # form files (*.yaml)
 ├── playbooks/         # Ansible playbooks and roles
 └── vars/              # vars files used by forms
@@ -54,16 +64,15 @@ forms-repo/
 
 ### Eén repository per doel
 
-Met afzonderlijke repositories kunnen teams hun eigen deel beheren, met elk één schakelaar en de bestanden direct in de root.
+Met afzonderlijke repositories kunnen teams hun eigen deel beheren, elk met eigen gebruikstypen en de bestanden direct in de root.
 
-| Repository | Schakelaar | Inhoud in de root |
+| Repository | Gebruikstypen | Inhoud in de root |
 |---|---|---|
-| `af-config` | **Gebruiken voor configuratie?** | `config.yaml` |
-| `af-forms-network`, `af-forms-storage` | **Gebruiken voor formulieren?** | De formulierbestanden van elk team, samengevoegd tot één lijst |
-| `af-playbooks` | **Gebruiken voor playbooks?** | De playbooks en rollen |
+| `af-platform` | **Rollen**, **Categorieën**, **Constanten**, **Inloggegevens**, **Runners** | `roles.yaml`, `categories.yaml`, `constants.yaml`, `connections.yaml` |
+| `af-forms-network`, `af-forms-storage` | **Formulieren** | De formulierbestanden van elk team, samengevoegd tot één lijst |
+| `af-playbooks` | **Playbooks** | De playbooks en rollen |
 
-Alleen formulieren kunnen uit meerdere repositories komen; configuratie en playbooks komen elk uit één. De variabelenbestanden komen uit de map `vars`
-van de eerste formulierenrepository die er een heeft.
+De variabelenbestanden komen uit de map `vars` van de eerste formulierenrepository die er een heeft.
 
 ---
 
@@ -73,14 +82,14 @@ De inhoud van een repository vervangt de bijbehorende lokale map; deze tabel vat
 
 | Inhoud | Gelezen uit, de eerste treffer wint |
 |---|---|
-| Configuratie | 1. de database, wanneer de configuratie daar wordt bewaard ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)) <br> 2. `config.yaml` van de repository met **Gebruiken voor configuratie** <br> 3. `config.yaml` van een repository met **Gebruiken voor formulieren**, wanneer geen repository voor configuratie wordt gebruikt <br> 4. [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
-| Formulieren | Elke repository met **Gebruiken voor formulieren** plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) alleen als er geen is |
-| Playbooks | De repository met **Gebruiken voor playbooks**, anders [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
-| Variabelenbestanden | De map `vars` van de eerste repository met **Gebruiken voor formulieren** die er een heeft, anders [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
-| Workflows | Elke repository met **Gebruiken voor workflows** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), samen |
+| Rollen, categorieën, constanten | Elke sleutel apart: 1. het bestand met `controller_roles:`, `controller_categories:` of `controller_constants:` in de repository met dat gebruikstype <br> 2. de `config.yaml` van die repository (verouderd) <br> 3. de basisconfiguratie: de database, wanneer de configuratie daar wordt bewaard ([`ENABLE_CONFIG_IN_DATABASE`](../customization/configuration.html#env_ENABLE_CONFIG_IN_DATABASE)), anders [`CONFIG_PATH`](../customization/paths.html#env_CONFIG_PATH) |
+| Formulieren | Elke repository met **Formulieren** plus `FORMS_STAGING_PATH`; [`FORMS_FOLDER_PATH`](../customization/paths.html#env_FORMS_FOLDER_PATH) alleen als er geen is |
+| Playbooks | De repository met **Playbooks**, anders [`ANSIBLE_PATH`](../customization/paths.html#env_ANSIBLE_PATH) |
+| Variabelenbestanden | De map `vars` van de eerste repository met **Formulieren** die er een heeft, anders [`VARS_FILES_PATH`](../customization/paths.html#env_VARS_FILES_PATH) |
+| Workflows | Elke repository met **Workflows** plus [`WORKFLOWS_PATH`](../customization/paths.html#env_WORKFLOWS_PATH), samen |
 
-Formulieren uit meerdere repositories worden samengevoegd tot één lijst. Bevatten twee ervan een formulier met dezelfde naam, dan blijft het eerst
-geladen formulier behouden en wordt de waarschuwing `skipping duplicate form <name>` gelogd, dus houd formuliernamen uniek over alle repositories.
+Formulieren uit meerdere repositories worden gelezen in de volgorde waarin de repositories zijn toegevoegd. Bevatten twee ervan een formulier met dezelfde
+naam, dan wordt de kopie van de eerst toegevoegde repository gebruikt en noemt een waarschuwing beide kopieën, dus houd formuliernamen uniek over alle repositories.
 
 ---
 
@@ -108,3 +117,4 @@ Elk onderwerp heeft een eigen pagina:
 | [Authenticatie](authentication.html) | HTTPS met een token, SSH met de gegenereerde sleutel, en eigen git-commando's |
 | [Wijzigingen pullen](pulling.html) | Geplande, handmatige en API-pulls, en lokale wijzigingen |
 | [Ontwerper en push](designer.html) | Formulieren bewerken in de ontwerper en ze naar de repository pushen |
+| [Configuratie in git](config-as-code.html) | Elke instelling bewaard in een git-repository, in beide richtingen gelezen en geschreven |

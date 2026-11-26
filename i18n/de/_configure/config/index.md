@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ Kategorien, Rollen und Konstanten für alle Formulare
 
 Für Administratoren: die Datei config.yaml, die die Kategorien, Rollen und Konstanten enthält, die alle Formulare gemeinsam nutzen.
 
-AnsibleForms verwendet eine Datei config.yaml, um Kategorien, Rollen und Konstanten zu konfigurieren. Wird keine Datei bereitgestellt, wird eine mit einer minimalen Konfiguration erzeugt. Die Konfiguration kann auch in die Datenbank importiert werden, wodurch keine Datei config.yaml mehr nötig ist.
+AnsibleForms verwendet eine Datei config.yaml, um Kategorien, Rollen und Konstanten zu konfigurieren. Wird keine Datei bereitgestellt, wird eine mit einer minimalen Konfiguration erzeugt. Die Konfiguration kann auch in die Datenbank importiert werden, wodurch keine Datei config.yaml mehr nötig ist, und jedes der drei kann in einem git-Repository aufbewahrt werden.
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Ladereihenfolge der Konfiguration
 
-AnsibleForms lädt die Datei config.yaml in der folgenden Reihenfolge (der erste Treffer gewinnt):
+Seit 7.8.0 werden die Kategorien, die Rollen und die Konstanten jeweils für sich gelesen, aus der ersten der folgenden Quellen, die sie enthält.
 
-1. **AUS DER DATENBANK** : die in die Datenbank importierte Konfiguration, nur wenn `ENABLE_CONFIG_IN_DATABASE=1` gilt oder wenn diese
+1. **AUS EINEM REPOSITORY** : das Repository mit dem Verwendungstyp **Kategorien**, **Rollen** oder **Konstanten**, aus seiner Datei mit
+   `controller_categories:`, `controller_roles:` oder `controller_constants:`, mit beliebigem Namen in beliebigem Ordner (siehe
+   [Konfiguration in git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **AUS DER config.yaml DES REPOSITORYS** : der einfache Schlüssel in der `config.yaml` dieses Repositorys, veraltet seit 7.8.0 und ab
+   8.0 nicht mehr gelesen; das Serverprotokoll, die Pull-Ausgabe und die Seite des Repositorys weisen darauf hin
+3. **AUS DER DATENBANK** : die in die Datenbank importierte Konfiguration, nur wenn `ENABLE_CONFIG_IN_DATABASE=1` gilt oder wenn diese
    Variable nicht gesetzt ist und die in der Datenbank gespeicherte Konfigurationsquelle `database` ist (eine leere Kopie fällt auf die Datei zurück)
-2. **AUS EINEM REPOSITORY (use_for_config)** : das Repository mit eingeschaltetem Schalter „Für Konfiguration verwenden“ (neu in 6.1.0)
-3. **AUS EINEM REPOSITORY (use_for_forms)** : das Repository mit eingeschaltetem Schalter „Für Formulare verwenden“ (Rückfall aus Gründen der Abwärtskompatibilität)
 4. **AUS DER LOKALEN DATEI** : die lokale Datei `config.yaml` (Umgebungsvariable CONFIG_PATH)
 
 {: .warning }
-> **Hinweis:** Schalten Sie „Für Konfiguration verwenden“ nur bei einem Repository ein. Ist es bei mehreren eingeschaltet, wird eine Warnung protokolliert und das erste verwendet.
+> **Hinweis:** Den Schalter **Für Konfiguration verwenden** gibt es seit 7.8.0 nicht mehr. Ein Upgrade gibt **Rollen**, **Kategorien** und **Konstanten**
+> dem Repository, das ihn hatte, und `use_for_config` im Config-Seed oder in der API ist ein veralteter Alias der drei.
 
 ---
 

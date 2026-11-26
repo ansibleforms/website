@@ -2,7 +2,7 @@
 layout: default
 title: 仕組み
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # 仕組み
@@ -130,7 +130,7 @@ YAML ファイルから読み取り、自分では何も実行しません。各
 | **永続フォルダー** | `config.yaml` 、フォームファイル、プレイブック、ログ、バックアップを保持します |
 | **データソース** | フィールドを埋めます。 [データベースのクエリ](formfields/enum.html) 、 [REST API](expressions/rest-apis.html) 、ファイル、 [その他の関数](expressions/remote.html) です |
 | **シークレットストア** | 使用時に認証情報のユーザーとパスワードを提供します。 [シークレットストア](secret-stores/) を参照してください |
-| **Git リポジトリ** | フォーム、プレイブック、 `config.yaml` をバージョン管理します |
+| **Git リポジトリ** | フォーム、プレイブック、アプリの設定をバージョン管理します |
 | **ログインプロバイダー** | ローカルユーザーに加えて、 [LDAP、Entra ID、OIDC](authentication/) でユーザーをサインインさせます |
 | **通知チャネル** | [通知](forms/notifications.html) と承認依頼を運びます。 [メール、Slack、Microsoft Teams、Telegram、Webhook](notification-channels.html) です |
 | **Syslog サーバー** | ログと監査証跡を書き込まれるそばから受け取ります。 [Syslog](production/logs.html#syslog) を参照してください |

@@ -17,7 +17,7 @@ Categories, roles and constants for all forms
 
 For administrators: the config.yaml file that holds the categories, roles and constants shared by all forms.
 
-AnsibleForms uses a config.yaml file to configure categories, roles and constants. If no file is provided, one is generated with a minimal configuration. The configuration can also be imported into the database, which removes the need for a config.yaml file.
+AnsibleForms uses a config.yaml file to configure categories, roles and constants. If no file is provided, one is generated with a minimal configuration. The configuration can also be imported into the database, which removes the need for a config.yaml file, and each of the three can be kept in a git repository.
 
 ---
 
@@ -48,16 +48,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Configuration Loading Priority
 
-AnsibleForms loads the config.yaml file in the following order (first match wins):
+Since 7.8.0 the categories, the roles and the constants are read each on its own, from the first source below that holds it.
 
-1. **FROM DATABASE** : the configuration imported into the database, only when `ENABLE_CONFIG_IN_DATABASE=1`, or when that
+1. **FROM A REPOSITORY** : the repository with the **Categories**, **Roles** or **Constants** usage type, from its file giving
+   `controller_categories:`, `controller_roles:` or `controller_constants:`, any name and any folder (see
+   [Configuration in git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **FROM THE REPOSITORY'S config.yaml** : the plain key in the `config.yaml` of that repository, deprecated since 7.8.0 and no
+   longer read in 8.0; the server log, the pull output and the repository's page say so
+3. **FROM DATABASE** : the configuration imported into the database, only when `ENABLE_CONFIG_IN_DATABASE=1`, or when that
    variable is unset and the configuration source stored in the database is `database` (an empty copy falls back to the file)
-2. **FROM REPOSITORY (use_for_config)** : the repository with the "use for config" switch enabled (new in 6.1.0)
-3. **FROM REPOSITORY (use_for_forms)** : the repository with the "use for forms" switch enabled (fallback for backward compatibility)
 4. **FROM LOCAL FILE** : the local `config.yaml` file (CONFIG_PATH environment variable)
 
 {: .warning }
-> **Note:** Enable "use for config" on only one repository. If several have it enabled, a warning is logged and the first one is used.
+> **Note:** The **Use for config** switch is gone since 7.8.0. An upgrade gives **Roles**, **Categories** and **Constants** to
+> the repository that had it, and `use_for_config` in the config seed or the API is a deprecated alias of the three.
 
 ---
 

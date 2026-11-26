@@ -2,7 +2,7 @@
 layout: default
 title: Hoe het werkt
 nav_order: 2
-translated_from: e802a9168b87771c9d1a2d2d9af9368646b4f39f
+translated_from: f5710ab47f7373fc6776ab3131dadbcfc92babcf
 ---
 
 # Hoe het werkt
@@ -132,7 +132,7 @@ De onderdelen in het diagram hebben elk een eigen rol:
 | **Persistente map** | Bevat `config.yaml`, de formulierbestanden, de playbooks, de logs en de back-ups |
 | **Gegevensbronnen** | Vullen de velden: [databasequery's](formfields/enum.html), [REST API's](expressions/rest-apis.html), bestanden en [andere functies](expressions/remote.html) |
 | **Secret stores** | Leveren de gebruiker en het wachtwoord van een referentie op het moment van gebruik, zie [Secret stores](secret-stores/) |
-| **Git-repositories** | Houden de formulieren, de playbooks en `config.yaml` onder versiebeheer |
+| **Git-repositories** | Houden de formulieren, de playbooks en de instellingen van de app onder versiebeheer |
 | **Aanmeldproviders** | Melden de gebruikers aan: [LDAP, Entra ID en OIDC](authentication/), naast de lokale gebruikers |
 | **Meldingskanalen** | Brengen de [meldingen](forms/notifications.html) en de goedkeuringsverzoeken over: [mail, Slack, Microsoft Teams, Telegram of een webhook](notification-channels.html) |
 | **Syslogservers** | Ontvangen het log en het audittrail terwijl ze worden geschreven, zie [Syslog](production/logs.html#syslog) |

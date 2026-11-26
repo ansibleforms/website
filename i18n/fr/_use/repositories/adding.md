@@ -3,7 +3,7 @@ layout: default
 title: Ajouter un dépôt
 parent: Dépôts git
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # Ajouter un dépôt
@@ -39,7 +39,7 @@ pull rapatrie. Le menu de chaque ligne contient ces actions :
 |---|---|
 | **Modifier** | Modifier les champs ci-dessous |
 | **Pull** | Cloner le dépôt, ou faire un pull quand l'arbre de travail existe déjà |
-| **Push** | Committer et pousser l'arbre de travail ; uniquement sur les dépôts utilisés pour les formulaires, la configuration, les playbooks, les workflows ou les inventaires, et activé seulement tant qu'il y a des modifications non encore poussées |
+| **Push** | Committer et pousser l'arbre de travail ; uniquement sur les dépôts ayant un type d'usage coché, et activé seulement tant qu'il y a des modifications non encore poussées |
 | **Réinitialiser** | Supprimer l'arbre de travail et le cloner de nouveau, ce qui abandonne les modifications locales |
 | **Modifier les identifiants** | Ouvrir l'onglet **Identifiants** du dépôt, pour choisir l'identifiant qu'utilise git |
 | **Afficher la sortie du dernier pull** | Afficher la sortie de git pour le dernier clonage, pull ou réinitialisation, avec le mot de passe masqué |
@@ -69,7 +69,7 @@ du pull**), et AnsibleForms lance le clonage en arrière-plan dès que vous enre
 | **Activer le pull planifié** | non | Faire un pull du dépôt selon une planification |
 | **Planification du pull** | non | Quand faire le pull, sous forme d'expression cron ; affiché une fois le pull planifié activé |
 | **Description** | oui | Une description libre |
-| **Utiliser pour la configuration ?** ... **Utiliser pour les inventaires ?** | non | Ce que contient le dépôt, voir [ci-dessus](./#what-a-repository-is-for) |
+| **Utilisation** | non | Les types d'usage, ce que contient le dépôt : une case chacun, sous six rubriques, voir [Configuration dans git](config-as-code.html#the-usage-types) |
 | **Pull au démarrage de l'application** | non | Cloner le dépôt, ou en faire un pull, à chaque démarrage d'AnsibleForms |
 
 Renommer un dépôt déplace son arbre de travail vers le nouveau dossier, ainsi que sa planification de pull. Un dépôt d'avant
@@ -83,7 +83,7 @@ Le contenu d'un dépôt devient ce qu'AnsibleForms charge et exécute : depuis l
 
 - ajouter ou supprimer un dépôt ;
 - changer son **URI** ou sa **Branche** ;
-- activer ou désactiver l'un de ses interrupteurs **Utiliser pour**.
+- cocher ou décocher l'un de ses types d'usage.
 
 Il peut toujours changer sa description, sa planification de pull et son identifiant, et faire un pull, un push ou une réinitialisation. Un identifiant qu'utilise un runner,
 une connexion ou une méthode de connexion ne peut pas être choisi par lui ; le refus le nomme, et ne dit rien de ce qu'il contient.
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ Les champs sont ceux de la page, `credential` (un identifiant du seed ou de l'ap
 l'application**) et `cron` (la planification du pull) compris ; `user` et `password` sont toujours acceptés à la place d'un identifiant. Un
 dépôt issu du seed est en lecture seule dans l'interface, et il est cloné de nouveau au démarrage quand son arbre de travail est absent ; voir
 [Objets gérés](../seed/managed-objects.html).
+
+Chaque type d'usage est un drapeau `use_for_<type>`, comme `use_for_credentials`. Depuis la 7.8.0, `use_for_config` est un alias déprécié de
+`use_for_roles`, `use_for_categories` et `use_for_constants`, encore lu avec un avertissement et supprimé dans la 8.0.

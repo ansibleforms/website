@@ -3,7 +3,7 @@ layout: default
 title: Een repository toevoegen
 parent: Git-repositories
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # Een repository toevoegen
@@ -39,7 +39,7 @@ pull binnenhaalt. Het menu van elke rij bevat deze acties:
 |---|---|
 | **Bewerken** | De velden hieronder wijzigen |
 | **Pull** | De repository klonen, of pullen als de working tree al bestaat |
-| **Push** | De working tree committen en pushen; alleen bij repositories die voor formulieren, configuratie, playbooks, workflows of inventarissen worden gebruikt, en alleen beschikbaar zolang er wijzigingen zijn die nog niet zijn gepusht |
+| **Push** | De working tree committen en pushen; alleen bij repositories met een aangevinkt gebruikstype, en alleen beschikbaar zolang er wijzigingen zijn die nog niet zijn gepusht |
 | **Resetten** | De working tree verwijderen en opnieuw klonen, waarbij lokale wijzigingen verloren gaan |
 | **Referenties wijzigen** | Het tabblad **Referenties** van de repository openen, om de referentie te kiezen die git gebruikt |
 | **Uitvoer van laatste pull tonen** | De uitvoer van git bij de laatste clone, pull of reset tonen, met het wachtwoord gemaskeerd |
@@ -69,7 +69,7 @@ en AnsibleForms start de clone op de achtergrond zodra je opslaat.
 | **Geplande pull inschakelen** | nee | De repository volgens een schema pullen |
 | **Pull-schema** | nee | Wanneer er wordt gepulld, als cron-expressie; zichtbaar zodra de geplande pull is ingeschakeld |
 | **Beschrijving** | ja | Een vrije beschrijving |
-| **Gebruiken voor configuratie?** ... **Gebruiken voor inventarissen?** | nee | Wat de repository bevat, zie [hierboven](./#what-a-repository-is-for) |
+| **Gebruik** | nee | De gebruikstypen, wat de repository bevat: elk een selectievakje, onder zes kopjes, zie [Configuratie in git](config-as-code.html#the-usage-types) |
 | **Pullen bij het starten van de app** | nee | De repository klonen, of pullen, telkens als AnsibleForms start |
 
 Een repository hernoemen verplaatst de working tree naar de nieuwe map en neemt het pull-schema mee. Een repository van
@@ -83,7 +83,7 @@ De inhoud van een repository wordt wat AnsibleForms laadt en uitvoert, dus vanaf
 
 - een repository toevoegen of verwijderen;
 - de **Uri** of de **Branch** ervan wijzigen;
-- een van de schakelaars **Gebruiken voor** aan- of uitzetten.
+- een van de gebruikstypen aan- of uitvinken.
 
 Hij kan nog wel de beschrijving, het pull-schema en de referentie wijzigen, en de repository pullen, pushen of resetten. Een referentie die een runner,
 een verbinding of een aanmelding gebruikt, kan hij niet kiezen; de weigering noemt haar, en zegt niets over wat ze bevat.
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ De velden zijn die van de pagina, inclusief `credential` (een referentie uit de 
 van de app**) en `cron` (het pull-schema); `user` en `password` worden nog geaccepteerd in plaats van een referentie. Een
 repository uit de seed is in de interface alleen-lezen, en wordt bij het starten opnieuw gekloond als de working tree ontbreekt; zie
 [Beheerde objecten](../seed/managed-objects.html).
+
+Elk gebruikstype is een vlag `use_for_<type>`, zoals `use_for_credentials`. Sinds 7.8.0 is `use_for_config` een verouderde alias van
+`use_for_roles`, `use_for_categories` en `use_for_constants`, nog gelezen met een waarschuwing en verwijderd in 8.0.

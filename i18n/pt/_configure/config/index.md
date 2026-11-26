@@ -5,7 +5,7 @@ nav_order: 5
 has_children: true
 has_toc: false
 permalink: /config/
-translated_from: 6c0e2d282bc1dc386b7392e3af1f60fea593f12b
+translated_from: 8919bfbc931f85d08a064e868a9a6bb42461525a
 ---
 
 # config.yaml
@@ -18,7 +18,7 @@ Categorias, funções e constantes para todos os formulários
 
 Para administradores: o ficheiro config.yaml que contém as categorias, funções e constantes partilhadas por todos os formulários.
 
-O AnsibleForms usa um ficheiro config.yaml para configurar categorias, funções e constantes. Se não for fornecido nenhum ficheiro, é gerado um com uma configuração mínima. A configuração pode também ser importada para a base de dados, o que dispensa o ficheiro config.yaml.
+O AnsibleForms usa um ficheiro config.yaml para configurar categorias, funções e constantes. Se não for fornecido nenhum ficheiro, é gerado um com uma configuração mínima. A configuração pode também ser importada para a base de dados, o que dispensa o ficheiro config.yaml, e cada um dos três pode ser guardado num repositório git.
 
 ---
 
@@ -49,16 +49,20 @@ constants: {} # free objects to re-use over all forms
 
 ## Prioridade de carregamento da configuração
 
-O AnsibleForms carrega o ficheiro config.yaml pela ordem seguinte (a primeira correspondência ganha):
+Desde a 7.8.0, as categorias, as funções e as constantes são lidas cada uma por si, da primeira origem abaixo que a contém.
 
-1. **DA BASE DE DADOS** : a configuração importada para a base de dados, só quando `ENABLE_CONFIG_IN_DATABASE=1`, ou quando essa
+1. **DE UM REPOSITÓRIO** : o repositório com o tipo de utilização **Categorias**, **Funções** ou **Constantes**, do seu ficheiro que dá
+   `controller_categories:`, `controller_roles:` ou `controller_constants:`, com qualquer nome e em qualquer pasta (ver
+   [Configuração em git](../repositories/config-as-code.html#roles-categories-and-constants))
+2. **DO config.yaml DO REPOSITÓRIO** : a chave simples no `config.yaml` desse repositório, obsoleta desde a 7.8.0 e já não
+   lida na 8.0; o registo do servidor, a saída do pull e a página do repositório indicam-no
+3. **DA BASE DE DADOS** : a configuração importada para a base de dados, só quando `ENABLE_CONFIG_IN_DATABASE=1`, ou quando essa
    variável não está definida e a origem da configuração guardada na base de dados é `database` (uma cópia vazia recorre ao ficheiro)
-2. **DE UM REPOSITÓRIO (use_for_config)** : o repositório com o interruptor "use for config" ativado (novo na 6.1.0)
-3. **DE UM REPOSITÓRIO (use_for_forms)** : o repositório com o interruptor "use for forms" ativado (alternativa por compatibilidade com versões anteriores)
 4. **DO FICHEIRO LOCAL** : o ficheiro `config.yaml` local (variável de ambiente CONFIG_PATH)
 
 {: .warning }
-> **Nota:** Ative "use for config" num só repositório. Se vários o tiverem ativado, é registado um aviso e usa-se o primeiro.
+> **Nota:** O interruptor **Usar para a configuração** desapareceu na 7.8.0. Uma atualização dá **Funções**, **Categorias** e **Constantes** ao
+> repositório que o tinha, e `use_for_config` no config seed ou na API é um alias obsoleto dos três.
 
 ---
 

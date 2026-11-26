@@ -129,7 +129,7 @@ The components in the diagram each have a role of their own:
 | **Persistent folder** | Holds `config.yaml`, the form files, the playbooks, the logs and the backups |
 | **Data sources** | Fill the fields: [database queries](formfields/enum.html), [REST APIs](expressions/rest-apis.html), files and [other functions](expressions/remote.html) |
 | **Secret stores** | Supply the user and password of a credential at use time, see [Secret stores](secret-stores/) |
-| **Git repositories** | Keep the forms, the playbooks and `config.yaml` under version control |
+| **Git repositories** | Keep the forms, the playbooks and the settings of the app under version control |
 | **Login providers** | Sign the users in: [LDAP, Entra ID and OIDC](authentication/), next to the local users |
 | **Notification channels** | Carry the [notifications](forms/notifications.html) and the approval requests: [mail, Slack, Microsoft Teams, Telegram or a webhook](notification-channels.html) |
 | **Syslog servers** | Receive the log and the audit trail as they are written, see [Syslog](production/logs.html#syslog) |

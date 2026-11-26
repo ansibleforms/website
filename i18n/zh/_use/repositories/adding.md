@@ -3,7 +3,7 @@ layout: default
 title: 添加仓库
 parent: Git 仓库
 nav_order: 1
-translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
+translated_from: 0a211d4871e6f35618de90c7955c5b6949f59e08
 ---
 
 # 添加仓库
@@ -39,7 +39,7 @@ translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 |---|---|
 | **编辑** | 修改下面的字段 |
 | **拉取** | 克隆仓库；如果工作树已经存在，则拉取它 |
-| **推送** | 提交并推送工作树；仅适用于用于表单、配置、playbook、工作流或清单的仓库，并且只在有尚未推送的更改时才可用 |
+| **推送** | 提交并推送工作树；仅适用于勾选了用途类型的仓库，并且只在有尚未推送的更改时才可用 |
 | **重置** | 删除工作树并重新克隆，这会丢弃本地更改 |
 | **更改凭据** | 打开仓库的**凭据**选项卡，以选择 git 使用的凭据 |
 | **显示上次拉取的输出** | 显示最近一次克隆、拉取或重置的 git 输出，密码会被掩码 |
@@ -69,7 +69,7 @@ translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 | **启用定时拉取** | 否 | 按计划拉取仓库 |
 | **拉取计划** | 否 | 何时拉取，以 cron 表达式表示；启用定时拉取后才会显示 |
 | **描述** | 是 | 自由文本描述 |
-| **用于配置？** …… **用于清单?** | 否 | 仓库包含的内容，参见[上文](./#what-a-repository-is-for) |
+| **用途** | 否 | 用途类型，即仓库包含的内容：每种一个复选框，分布在六个标题下，参见 [git 中的配置](config-as-code.html#the-usage-types) |
 | **应用启动时拉取** | 否 | 每次 AnsibleForms 启动时克隆或拉取该仓库 |
 
 重命名仓库会把其工作树移动到新的文件夹，并把其拉取计划一并移过去。7 之前的仓库如果仍然
@@ -83,7 +83,7 @@ translated_from: bdb93c28d9b570f10db24411cd7f1a1e626c48df
 
 - 添加或删除仓库；
 - 修改其 **URI** 或**分支**；
-- 打开或关闭其任何**用于**标志。
+- 勾选或取消勾选其任何用途类型。
 
 他们仍然可以修改其描述、拉取计划和凭据，并对其进行拉取、推送或重置。被运行器、
 连接或登录方式使用的凭据，他们无法选择；拒绝信息会指出该凭据，但不会透露其中的内容。
@@ -103,7 +103,9 @@ repositories:
       branch: main
       credential: git-bot
       use_for_forms: true
-      use_for_config: true
+      use_for_roles: true
+      use_for_categories: true
+      use_for_constants: true
       rebase_on_start: true
       cron: "*/15 * * * *"
 ```
@@ -112,3 +114,6 @@ repositories:
 拉取**）和 `cron` （拉取计划）；仍然可以用 `user` 和 `password` 代替凭据。
 通过种子创建的仓库在界面中是只读的，如果启动时其工作树缺失，会被重新克隆；参见
 [托管对象](../seed/managed-objects.html)。
+
+每种用途类型都是一个 `use_for_<type>` 标志，例如 `use_for_credentials` 。从 7.8.0 起， `use_for_config` 是 `use_for_roles` 、
+`use_for_categories` 和 `use_for_constants` 的已弃用别名，仍会读取并给出警告，将在 8.0 中移除。
