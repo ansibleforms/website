@@ -157,7 +157,7 @@ A launch goes through the same steps whether it comes from the browser or from t
 1. **Load** : the server sends only the forms the user's [roles](config/roles.html) allow, and evaluates server expressions
 2. **Submit** : the browser turns the field values into extravars and posts them to `POST /api/v2/job`
 3. **Check** : the server reloads the form for the user's roles and, with [launch validation](launch-validation/) on, checks the values
-4. **Record** : the job is stored with status `running`, and its id is added to the extravars as `__jobid__`
+4. **Record** : the job is stored with status `running`, and its id is added to the extravars as `__jobid__`, and the name of the form as `__formname__`
 5. **Approve** : a form with an [`approval`](forms/approval.html) point waits until an approver accepts the job
 6. **Credentials** : for a playbook, the app (never the RTE) reads the form's credentials from the database or a [secret store](secret-stores/)
 7. **Run** : the job goes to its runner, the one the form names with `runner:` or the default of its type. For a playbook, the app sends the job to its
