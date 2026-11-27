@@ -45,6 +45,9 @@ are in [A repository in Ansible's own layout](../repositories/ansible-layout.htm
 names its repository. A form in no repository (the local forms folder) cannot use it: its launch is refused. See
 [The repository the form is in](../repositories/ansible-layout.html#the-repository-the-form-is-in).
 
+Since 7.8.0 the playbook receives the name of the form that started it as the extravar `__formname__`, so a playbook shared
+by several forms can tell which one it was launched from. It is reserved: no field of a form may take that name.
+
 ---
 
 ## Properties
