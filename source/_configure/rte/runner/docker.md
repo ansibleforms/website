@@ -38,7 +38,7 @@ Mount the Docker socket, and give the Runner's user (uid 1000) the socket's grou
 
 ```bash
 docker run -d --name af-runner --restart unless-stopped \
-  -e RTE_MODE=outbound -e CONTROLLER_URL=https://forms.example.com \
+  -e CONTROLLER_URL=https://forms.example.com \
   -e RTE_NAME=runner-1 -e RTE_TOKEN=<at least 16 characters> \
   -e RTE_JOIN_TOKEN=<a join token, afj_...> \
   -v /var/run/docker.sock:/var/run/docker.sock --group-add "$(stat -c %g /var/run/docker.sock)" \
@@ -61,7 +61,6 @@ services:
     image: ghcr.io/ansibleforms/ansibleforms-rte-runner:7
     restart: unless-stopped
     environment:
-      RTE_MODE: outbound
       CONTROLLER_URL: https://forms.example.com
       RTE_NAME: runner-1
       RTE_TOKEN: ${RTE_TOKEN}
@@ -83,7 +82,7 @@ Set `RTE_ENGINE=podman` and mount the Podman socket where the Runner looks for i
 
 ```bash
 podman run -d --name af-runner --restart unless-stopped \
-  -e RTE_MODE=outbound -e CONTROLLER_URL=https://forms.example.com \
+  -e CONTROLLER_URL=https://forms.example.com \
   -e RTE_NAME=runner-1 -e RTE_TOKEN=<at least 16 characters> \
   -e RTE_ENGINE=podman \
   -v /run/podman/podman.sock:/run/podman/podman.sock \
@@ -131,7 +130,7 @@ or Podman, and the binary's user needs access to the socket. It copies itself in
 default to folders under `/app/dist/persistent`: on a host, point `RTE_SPOOL_PATH` and `RTE_CACHE_PATH` at folders of your own.
 
 ```bash
-RTE_MODE=outbound CONTROLLER_URL=https://forms.example.com \
+CONTROLLER_URL=https://forms.example.com \
 RTE_NAME=runner-1 RTE_TOKEN=<at least 16 characters> \
 RTE_SPOOL_PATH=/var/lib/af-runner/spool RTE_CACHE_PATH=/var/lib/af-runner/files \
 ansibleforms-rte-runner

@@ -25,13 +25,39 @@ The Runner makes the job's pod through the Kubernetes API, writes the job on the
 An init container copies the Runner's binary from its own image (`RTE_RUNNER_IMAGE`, by default the Runner's image of its own version),
 and the job's container, of `RTE_IMAGE`, runs it. In a pod the Runner picks the `kubernetes` engine without `RTE_ENGINE`.
 
-The Helm chart does not run the RTE Runner yet: apply its Role with `kubectl` and run its pod yourself, as below.
+From Runner 7.9.0 on, the jobs' pods meet the restricted Pod Security Standard: they run as uid and gid 1000, as non-root, with the
+`RuntimeDefault` seccomp profile, no privilege escalation and every capability dropped. A namespace that enforces it takes them.
+
+---
+
+## With Helm
+
+The AnsibleForms chart runs the Runner in its [runner mode](../../installation/kubernetes.html#a-runner-on-kubernetes), with `runner.podPerJob.enabled`.
+
+```bash
+helm install runner1 ansibleforms/ansibleforms \
+  --namespace runners --create-namespace \
+  --set runner.enabled=true \
+  --set runner.appUrl=https://forms.example.com \
+  --set runner.joinToken=afj_... \
+  --set runner.podPerJob.enabled=true
+```
+
+| Value | What it does |
+|---|---|
+| `runner.podPerJob.enabled` | Runs the RTE Runner instead of the Node RTE, each job in a pod of its own |
+| `runner.podPerJob.image` | The Runner's image, `ghcr.io/ansibleforms/ansibleforms-rte-runner` by default, at the app's version |
+| `containers.rte.image` | The image the jobs' pods run, the Runner's `RTE_IMAGE` |
+
+The chart adds a ServiceAccount, `<release>-rte`, unless `containers.server.serviceAccountName` names one, with the Role and
+RoleBinding below. The jobs' pods take the release's `imagePullSecrets`. The chart's
+[README](https://github.com/ansibleforms/helm-charts/tree/main/charts/ansibleforms#installing-a-runner-on-its-own) has the rest.
 
 ---
 
 ## The Role
 
-The Runner's service account needs a Role on the pods of its jobs' namespace.
+Without Helm, apply the Role yourself: the Runner's service account needs it on the pods of its jobs' namespace.
 
 | Resource | Verbs | What for |
 |---|---|---|
@@ -51,7 +77,7 @@ kubectl apply -n <namespace> \
 
 ## The Runner's pod
 
-Run the Runner's pod with `serviceAccountName: af-runner`, its token in a secret and its state on a volume.
+Without Helm, run the Runner's pod with `serviceAccountName: af-runner`, its token in a secret and its state on a volume.
 
 ```yaml
 apiVersion: apps/v1
@@ -72,7 +98,6 @@ spec:
         - name: runner
           image: ghcr.io/ansibleforms/ansibleforms-rte-runner:7
           env:
-            - { name: RTE_MODE, value: outbound }
             - { name: CONTROLLER_URL, value: https://forms.example.com }
             - { name: RTE_NAME, value: runner-1 }
             - name: RTE_TOKEN

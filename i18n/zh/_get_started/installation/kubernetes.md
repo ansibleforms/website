@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes
 parent: 安装
 nav_order: 6
-translated_from: 57f229acf691cee68f7a5d61b28cc7e879b903a8
+translated_from: e59db6df504741266e2a175e71d6e88ff491b3a2
 ---
 
 # Kubernetes
@@ -288,10 +288,14 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.name` | 它加入时使用的运行器名称（`RTE_NAME`）。为空时使用 release 名称 |
 | `runner.joinToken` | 在应用中生成的 [加入令牌](../runners/registration.html#join-tokens)，首次启动时读取，用于立即批准运行器 |
 | `runner.appTlsVerify` | `false` 表示接受应用的自签名证书（`APP_TLS_VERIFY=0`），仅限在可信网络内使用 |
+| `runner.podPerJob.enabled` | 运行用 Go 编写的 [RTE Runner](../rte/runner/)，每个作业在自己的 Pod 中运行 |
 
 没有加入令牌时，运行器会请求加入，并等待管理员在 **连接 > 运行器** 下批准。获批后，它
 使用自己的 `RTE_TOKEN` 登录，该令牌保存在 `<release>-keys` Secret 中：请让该 Secret 与 release 一起保留。
 当您选择运行器角色和 Kubernetes 时，[安装程序](installer.html#kubernetes) 也会安装这种 runner 模式。
+
+**每个作业一个 Pod。** 设置 `runner.podPerJob.enabled` 后，Pod 运行 Go 的 RTE Runner（`runner.podPerJob.image`）而不是 Node 的 RTE，
+每个作业从 `containers.rte.image` 在自己的 Pod 中运行。参见 [Kubernetes 上的 RTE Runner](../rte/runner/kubernetes.html#with-helm)。
 
 ---
 

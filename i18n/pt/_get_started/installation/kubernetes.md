@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes
 parent: Instalação
 nav_order: 6
-translated_from: 57f229acf691cee68f7a5d61b28cc7e879b903a8
+translated_from: e59db6df504741266e2a175e71d6e88ff491b3a2
 ---
 
 # Kubernetes
@@ -288,10 +288,14 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.name` | O nome de runner com que adere (`RTE_NAME`). Vazio: o nome da release |
 | `runner.joinToken` | Um [token de adesão](../runners/registration.html#join-tokens) criado na aplicação, lido no primeiro arranque para aprovar o Runner de imediato |
 | `runner.appTlsVerify` | `false` aceita o certificado autoassinado da aplicação (`APP_TLS_VERIFY=0`), apenas dentro de uma rede de confiança |
+| `runner.podPerJob.enabled` | Executa o [RTE Runner](../rte/runner/) em Go, cada tarefa num pod próprio |
 
 Sem um token de adesão, o Runner pede para aderir e espera até que um administrador o aprove em **Ligações > Runners**. Depois de aprovado,
 inicia sessão com o seu próprio `RTE_TOKEN`, guardado no Secret `<release>-keys`: mantenha esse Secret com a release. O
 [instalador](installer.html#kubernetes) também instala este modo runner, quando escolhe a função Runner e Kubernetes.
+
+**Um pod por tarefa.** Com `runner.podPerJob.enabled` o pod executa o RTE Runner em Go (`runner.podPerJob.image`) em vez do RTE em Node,
+e cada tarefa corre num pod próprio a partir de `containers.rte.image`. Consulte [O RTE Runner no Kubernetes](../rte/runner/kubernetes.html#with-helm).
 
 ---
 

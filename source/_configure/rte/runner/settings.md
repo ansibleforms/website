@@ -19,11 +19,11 @@ Every environment variable the Runner reads, and its default
 
 ## The controller
 
-These say how the Runner meets the controller; `RTE_MODE` and `RTE_TOKEN` are always required.
+These say how the Runner meets the controller; only `RTE_TOKEN` is always required.
 
 | Variable | What it sets |
 |---|---|
-| `RTE_MODE` | `outbound`: it dials the controller. `inbound`: the controller dials it. No default: set it |
+| `RTE_MODE` | `outbound` (default): it dials the controller. `inbound`: the controller dials it |
 | `CONTROLLER_URL` | The controller's address as people open it: the one it dials (outbound), or registers with (inbound) |
 | `CONTROLLER_TLS_VERIFY` | `1` (default) checks the controller's certificate. `0` accepts a self-signed one, in one trusted network only |
 | `RTE_TOKEN` | Its own token, at least 16 characters: the controller keeps it for it once it joins |
@@ -44,12 +44,14 @@ These say where and how its jobs run.
 |---|---|
 | `RTE_MAX_JOBS` | How many jobs it runs at once, `10` by default (`0`: no limit) |
 | `RTE_FILES` | `transfer` (default): the controller sends each job's files. `local`: they are mounted on the Runner |
+| `RTE_CACHE_MB` | The most its cache of jobs' files takes on disk, in MB, `1024` by default (`0`: no cache) |
+| `RTE_DRAIN_SECONDS` | `25` by default. Taken because the runner's page sets it, and unused: a job's container goes on through a restart |
 | `RTE_IMAGE` | The image each job's container runs, with python and ansible-core in it (default `ghcr.io/ansibleforms/ansibleforms-rte-core:7`) |
 | `RTE_ENGINE` | `docker`, `podman` or `kubernetes`: what runs the jobs' containers (default `kubernetes` in a pod, else `docker`) |
 | `RTE_ENGINE_SOCKET` | The engine's socket (default `DOCKER_HOST` or `CONTAINER_HOST`, else `/var/run/docker.sock` or `/run/podman/podman.sock`) |
 
-`RTE_MAX_JOBS` and `RTE_FILES` can also be set on the runner's page, under the RTE tab, as for the Node RTE: a value there wins over
-the variable (see [An RTE's settings](../../runners/runner-page.html#an-rtes-settings)).
+`RTE_MAX_JOBS`, `RTE_FILES`, `RTE_CACHE_MB` and `RTE_DRAIN_SECONDS` can also be set on the runner's page, under the RTE tab, as for
+the Node RTE: a value there wins over the variable (see [An RTE's settings](../../runners/runner-page.html#an-rtes-settings)).
 
 ---
 

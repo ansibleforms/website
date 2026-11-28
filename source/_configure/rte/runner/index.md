@@ -60,11 +60,11 @@ on where it stopped, and what the controller did not store yet is sent again aft
 
 ## Modes and engines
 
-Two settings shape a Runner: how it meets the controller, and what runs its jobs' containers. `RTE_MODE` has no default: set it.
+Two settings shape a Runner: how it meets the controller, and what runs its jobs' containers.
 
 | `RTE_MODE` | How it joins |
 |---|---|
-| `outbound` | It dials the controller and keeps one socket open: no port to open on the Runner's side |
+| `outbound` (default) | It dials the controller and keeps one socket open: no port to open on the Runner's side |
 | `inbound` | The controller dials it: for a Runner the controller can reach, but not the other way round |
 
 | `RTE_ENGINE` | What the Runner needs |

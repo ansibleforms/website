@@ -3,7 +3,7 @@ layout: default
 title: Imágenes
 parent: RTE
 nav_order: 1
-translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
+translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
 ---
 
 # Imágenes del RTE
@@ -52,6 +52,67 @@ del sistema cambia a `USER root` para ellos y vuelve a `USER node` al final. Par
 Mantén la imagen en la versión del controlador: `:7` sigue al `:7` del controlador. Las colecciones y los roles también se pueden montar en lugar de incluirlos, en
 `/etc/ansible/collections` y `/etc/ansible/roles`. Así no hace falta reconstruir con cada cambio, pero lo que se ejecuta depende de ese volumen;
 las librerías de python van siempre en la imagen. Incluirlo todo en la imagen es reproducible y arranca rápido, por eso es la opción para producción.
+
+---
+
+## Constrúyelo en el Diseñador
+
+Desde 7.9.0 describes un entorno de ejecución en el Diseñador; un [builder](builder.html) construye su imagen, la sube y la firma.
+
+1. Da a un repositorio el uso **Entornos de ejecución** (Configuración > Repositorios); guarda las definiciones.
+2. En el Diseñador, abre **Entornos de ejecución** y haz clic en **Nuevo**: rellénalo en la pestaña **Visual**, o escríbelo en la pestaña **YAML**.
+3. **Guardar**, luego **Push** para hacer commit en el repositorio, y **Compilar**: la compilación es un trabajo en la página **Trabajos**, con su log en vivo.
+
+Cada entorno de ejecución es una carpeta propia en el repositorio, con su nombre, que solo guarda su definición:
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+El Dockerfile, `ansible.cfg` y los archivos de requisitos se escriben de nuevo en cada compilación, a partir de la definición y de la versión
+de la app, así que nunca quedan desfasados en el repositorio. La pestaña **Archivos** los muestra tal como los recibe el builder.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+Todas las claves salvo el nombre se pueden omitir; la barra de herramientas de la pestaña **YAML** ajusta cada parte en un diálogo.
+
+| Clave | Qué es |
+|---|---|
+| `name` | El nombre del entorno de ejecución, el de su carpeta y el de su imagen: letras minúsculas, dígitos, puntos, guiones y guiones bajos |
+| `arch` | `all`, una imagen para amd64 y arm64 como las publicadas, o solo `amd64` o `arm64`; `all` si se omite. Una arquitectura distinta de la del host del builder necesita [QEMU en ese host](builder.html#amd64-and-arm64) |
+| `python` | El python que ejecuta la imagen, de 3.11 a 3.15; 3.15 si se omite |
+| `ansible_core` | Una release de ansible-core (`2.22`) o una versión (`2.22.0`) que funcione con ese python; la más reciente que lo haga si se omite |
+| `ansible_collections` | Las colecciones, cada una con su `name` (namespace.name) y una `version` opcional; la última si se omite. Lo que cada colección necesita, su `requirements.txt` y `bindep.txt` (o su `meta/execution-environment.yml`), se instala con ella, como hace ansible-builder |
+| `python_packages` | Paquetes de python, como líneas de un `requirements.txt` |
+| `os_packages` | Paquetes de Debian 13 (trixie) |
+| `registry` | `credential`: una credencial de **Registro de contenedores**, que guarda la dirección del registro y su login; `path`: la ruta de la imagen en él, su nombre si se omite; `tag`: `app`, la versión de la app (`7.9.0`), para que una recompilación siga cada actualización, o una etiqueta propia |
+| `sbom` | `true` adjunta a la imagen una lista de materiales de software (SBOM) |
+| `sign` | `credential`: una credencial de **Clave de firma**, con la que el builder firma la imagen con cosign 3; compruébala con `cosign verify --key <clave pública>` de cosign 3 (cosign 2 no lee sus firmas) |
+
+Cada entorno de ejecución se construye a partir de `ansibleforms-rte-base` de la versión de la app, así que uno con la etiqueta `app` cuya imagen se
+construyó para una versión anterior aparece como tal en la página **Entornos de ejecución**, con **Recompilarlos**.
 
 ---
 
