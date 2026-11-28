@@ -101,6 +101,14 @@ sudo chown -R 1000:1000 ./data
 
 Coming from 6, whose container ran as root, run the same `chown` once before you start 7. MySQL takes its own folder back when it starts.
 
+The RTE starts each playbook in a container of its own through Docker's socket, so it joins the socket's group. Set that group in `.env`:
+
+```bash
+sed -i "s/^ENGINE_SOCKET_GID=.*/ENGINE_SOCKET_GID=$(stat -c %g /var/run/docker.sock)/" .env
+```
+
+With Podman, set `RTE_ENGINE=podman` and `ENGINE_SOCKET` to Podman's socket, and with rootless Podman `RTE_USER=0` as well.
+
 ---
 
 ## Install a container engine
@@ -228,12 +236,14 @@ The app connects to MySQL as `ansibleforms` (`MYSQLDB_USER`), with all rights on
 elsewhere; root is only for MySQL itself. MySQL creates that user on its first start only: an installation that connected as root
 so far creates it once, as the project's [README](https://github.com/ansibleforms/docker#database) shows.
 
-The RTE is not published on the host. Since 7.3.0 the app dials it on `http://rte:8000` with `RTE_TOKEN` and keeps one WebSocket open
-(`RTE_MODE=inbound`, see [Modes](../rte/modes.html)): the RTE gets no database settings and not the `.env`, only its token and a few
-settings of its own in `docker-compose.yml`. The config seed `data/seed.yaml` declares an RTE credential with the token and that
-address, and the default runner `rte`, mode inbound, that signs in with it. The RTE runs the playbooks from the same `data` folder
-(`RTE_FILES=local`). When your playbooks need more collections or Python libraries, build an RTE of your own
-and point the `rte` service at it (see [Build your own RTE](../rte/images.html#build-your-own-rte)).
+The RTE is the [RTE Runner](../rte/runner/), and it is not published on the host. The app dials it on `http://rte:8000` with `RTE_TOKEN`
+and keeps one WebSocket open (`RTE_MODE=inbound`, see [Modes](../rte/modes.html)): it gets no database settings and not the `.env`'s secrets.
+The config seed `data/seed.yaml` declares an RTE credential with the token and that address, and the default runner `rte`, mode inbound,
+that signs in with it. Since 7.9.0 the Runner starts each playbook in a container of its own from `ansibleforms-rte-full` (`RTE_IMAGE`),
+with the job's files from the same `data` folder (`RTE_FILES=local`), and mounts `data/ansible`, the SSH key and the pip libraries into
+each one (`RTE_JOB_MOUNTS`). It starts them through the engine's socket, which gives it that engine's full rights on the host: keep that
+server for AnsibleForms. When your playbooks need more collections or Python libraries, build an image of your own and set it as
+`RTE_IMAGE` (see [Build your own RTE](../rte/images.html#build-your-own-rte)).
 
 ---
 

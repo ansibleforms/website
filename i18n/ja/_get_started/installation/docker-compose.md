@@ -3,7 +3,7 @@ layout: default
 title: Docker Compose
 parent: インストール
 nav_order: 4
-translated_from: 74a6833ea71d65db337025978672afeab0425666
+translated_from: 25caf8bbfcc4dc5174eb55f39917d45418bacfbe
 ---
 
 # Docker Compose
@@ -101,6 +101,14 @@ sudo chown -R 1000:1000 ./data
 ```
 
 コンテナーが root で動いていた 6 から移行する場合は、7 を起動する前に同じ `chown` を一度実行してください。MySQL は起動時に自分のフォルダーの所有権を取り戻します。
+
+RTE は Docker の socket を通じて各 playbook を専用のコンテナーで起動するため、socket のグループに参加します。そのグループを `.env` に設定してください。
+
+```bash
+sed -i "s/^ENGINE_SOCKET_GID=.*/ENGINE_SOCKET_GID=$(stat -c %g /var/run/docker.sock)/" .env
+```
+
+Podman では `RTE_ENGINE=podman` と、`ENGINE_SOCKET` に Podman の socket を設定し、rootless Podman ではさらに `RTE_USER=0` を設定します。
 
 ---
 
@@ -229,12 +237,13 @@ sudo dnf install -y podman-compose
 それ以外には権限を持ちません。root は MySQL 自体のためだけに使います。MySQL はこのユーザーを初回起動時にのみ作成します。これまで root で接続していた
 インストールでは、プロジェクトの [README](https://github.com/ansibleforms/docker#database) にあるとおり、一度だけ作成してください。
 
-RTE はホストに公開されません。7.3.0 以降、アプリは `RTE_TOKEN` を使って `http://rte:8000` の RTE に接続し、1 本の WebSocket を開いたままにします
-（ `RTE_MODE=inbound` 、 [モード](../rte/modes.html) を参照）。RTE はデータベースの設定も `.env` も受け取らず、受け取るのはトークンと
-`docker-compose.yml` にある自分用のいくつかの設定だけです。設定シード `data/seed.yaml` は、トークンとそのアドレスを持つ RTE の認証情報と、
-それでサインインするモード inbound の既定のランナー `rte` を宣言しています。RTE は同じ `data` フォルダーからプレイブックを実行します
-（ `RTE_FILES=local` ）。プレイブックにさらにコレクションや Python ライブラリが必要な場合は、独自の RTE をビルドし、
-`rte` サービスがそれを使うように設定してください（ [独自の RTE をビルドする](../rte/images.html#build-your-own-rte) を参照）。
+RTE は [RTE Runner](../rte/runner/) で、ホストには公開されません。アプリは `RTE_TOKEN` を使って `http://rte:8000` に接続し、
+1 本の WebSocket を開いたままにします（`RTE_MODE=inbound`、 [モード](../rte/modes.html) を参照）。データベースの設定も `.env` の秘密情報も受け取りません。
+構成シード `data/seed.yaml` は、トークンとそのアドレスを持つ RTE 資格情報と、それでサインインする既定のランナー `rte`（inbound モード）を宣言します。
+7.9.0 以降、Runner は各 playbook を `ansibleforms-rte-full`（`RTE_IMAGE`）から専用のコンテナーで起動し、
+ジョブのファイルは同じ `data` フォルダーから取り（`RTE_FILES=local`）、`data/ansible`、SSH 鍵、pip ライブラリーを各コンテナーにマウントします（`RTE_JOB_MOUNTS`）。
+エンジンの socket を通じて起動するため、そのエンジンのホスト上の全権限を持ちます。そのサーバーは AnsibleForms 専用にしてください。
+playbook に追加のコレクションや Python ライブラリーが必要な場合は、独自のイメージをビルドして `RTE_IMAGE` に設定してください（ [独自の RTE をビルドする](../rte/images.html#build-your-own-rte) を参照）。
 
 ---
 
