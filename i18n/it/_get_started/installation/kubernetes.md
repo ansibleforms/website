@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes
 parent: Installazione
 nav_order: 6
-translated_from: e59db6df504741266e2a175e71d6e88ff491b3a2
+translated_from: 86ca9c99a65359af4d7854ce6d57cf7277b6d71f
 ---
 
 # Kubernetes
@@ -286,7 +286,7 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.enabled` | Installa solo il Runner: niente app, niente MySQL, niente Service, niente Ingress |
 | `runner.appUrl` | L'indirizzo dell'app come lo aprono le persone, con il suo `BASE_URL` se presente. Obbligatorio |
 | `runner.name` | Il nome di runner con cui si unisce (`RTE_NAME`). Vuoto: il nome della release |
-| `runner.joinToken` | Un [token di adesione](../runners/registration.html#join-tokens) creato nell'app, letto al primo avvio per approvare subito il Runner |
+| `runner.joinToken` | Un [token di adesione](../runners/registration.html#join-tokens) creato con l'API dell'app, letto al primo avvio per approvare subito il Runner |
 | `runner.appTlsVerify` | `false` accetta il certificato autofirmato dell'app (`APP_TLS_VERIFY=0`), solo all'interno di una rete fidata |
 | `runner.podPerJob.enabled` | Esegue l'[RTE Runner](../rte/runner/) in Go, ogni job in un pod proprio |
 

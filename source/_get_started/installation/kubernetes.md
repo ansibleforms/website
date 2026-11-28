@@ -285,7 +285,7 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.enabled` | Installs only the Runner: no app, no MySQL, no Service, no Ingress |
 | `runner.appUrl` | The app's address as people open it, with its `BASE_URL` if any. Required |
 | `runner.name` | The runner name it joins as (`RTE_NAME`). Empty: the release name |
-| `runner.joinToken` | A [join token](../runners/registration.html#join-tokens) made in the app, read on the first start to approve the Runner at once |
+| `runner.joinToken` | A [join token](../runners/registration.html#join-tokens) made with the app's API, read on the first start to approve the Runner at once |
 | `runner.appTlsVerify` | `false` accepts the app's self-signed certificate (`APP_TLS_VERIFY=0`), inside one trusted network only |
 | `runner.podPerJob.enabled` | Runs the [RTE Runner](../rte/runner/) in Go, each job in a pod of its own |
 
