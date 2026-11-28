@@ -3,7 +3,7 @@ layout: default
 title: Images
 parent: RTE
 nav_order: 1
-translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
+translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
 ---
 
 # RTE-Images
@@ -52,6 +52,67 @@ wechselt dafür zu `USER root` und am Ende zurück zu `USER node`. Um eigenes Py
 Halten Sie das Image auf dem Release des Controllers: `:7` folgt `:7` des Controllers. Collections und Rollen lassen sich auch einhängen statt einbacken, unter
 `/etc/ansible/collections` und `/etc/ansible/roles`. Dann ist pro Änderung kein Neubau nötig, aber was läuft, hängt von diesem Volume ab;
 Python-Bibliotheken gehören immer ins Image. Alles einzubacken ist reproduzierbar und startet schnell, daher ist es der Weg für die Produktion.
+
+---
+
+## Im Designer bauen
+
+Ab 7.9.0 beschreiben Sie eine Laufzeitumgebung im Designer; ein [Builder](builder.html) baut ihr Image, pusht und signiert es.
+
+1. Geben Sie einem Repository die Verwendung **Laufzeitumgebungen** (Einstellungen > Repositories); es enthält die Definitionen.
+2. Öffnen Sie im Designer **Laufzeitumgebungen** und klicken Sie auf **Neu**: füllen Sie sie im Tab **Visuell** aus, oder schreiben Sie sie im Tab **YAML**.
+3. **Speichern**, dann **Push**, um sie ins Repository zu committen, und **Bauen**: der Build ist ein Job auf der Seite **Jobs**, mit Live-Log.
+
+Jede Laufzeitumgebung ist ein eigener Ordner im Repository, nach ihr benannt, der nur ihre Definition enthält:
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+Das Dockerfile, `ansible.cfg` und die Requirements-Dateien werden bei jedem Build neu geschrieben, aus der Definition und dem Release der App,
+und veralten im Repository daher nie. Der Tab **Dateien** zeigt sie so, wie der Builder sie erhält.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+Jeder Schlüssel außer dem Namen kann entfallen; die Werkzeugleiste des Tabs **YAML** setzt jeden Teil in einem Dialog.
+
+| Schlüssel | Was er ist |
+|---|---|
+| `name` | Der Name der Laufzeitumgebung, ihres Ordners und ihres Images: Kleinbuchstaben, Ziffern, Punkte, Bindestriche und Unterstriche |
+| `arch` | `all`, ein Image für amd64 und arm64 wie die veröffentlichten, oder nur `amd64` oder `arm64`; `all`, wenn er fehlt. Eine andere Architektur als die des Builder-Hosts braucht [QEMU auf diesem Host](builder.html#amd64-and-arm64) |
+| `python` | Das python des Images, von 3.11 bis 3.15; 3.15, wenn er fehlt |
+| `ansible_core` | Ein ansible-core-Release (`2.22`) oder eine Version (`2.22.0`), die auf diesem python läuft; das neueste passende, wenn er fehlt |
+| `ansible_collections` | Die Collections, jede mit ihrem `name` (namespace.name) und einer optionalen `version`; die neueste, wenn sie fehlt. Was jede Collection selbst braucht, ihre `requirements.txt` und `bindep.txt` (oder ihre `meta/execution-environment.yml`), wird mit ihr installiert, wie ansible-builder es tut |
+| `python_packages` | Python-Pakete, als Zeilen einer `requirements.txt` |
+| `os_packages` | Pakete von Debian 13 (trixie) |
+| `registry` | `credential`: Anmeldedaten vom Typ **Container-Registry** mit der Adresse und dem Login der Registry; `path`: der Pfad des Images darin, sein Name, wenn er fehlt; `tag`: `app`, das Release der App (`7.9.0`), damit ein neuer Build jedem Upgrade folgt, oder ein eigener Tag |
+| `sbom` | `true` hängt dem Image eine Software-Stückliste (SBOM) an |
+| `sign` | `credential`: Anmeldedaten vom Typ **Signaturschlüssel**, mit denen der Builder das Image mit cosign 3 signiert; prüfen Sie es mit `cosign verify --key <öffentlicher Schlüssel>` von cosign 3 (cosign 2 liest seine Signaturen nicht) |
+
+Jede Laufzeitumgebung wird aus `ansibleforms-rte-base` des Releases der App gebaut. Eine mit dem Tag `app`, deren Image für ein älteres Release
+gebaut wurde, wird daher auf der Seite **Laufzeitumgebungen** als solche angezeigt, mit **Neu bauen**.
 
 ---
 

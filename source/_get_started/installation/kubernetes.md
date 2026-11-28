@@ -287,10 +287,14 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.name` | The runner name it joins as (`RTE_NAME`). Empty: the release name |
 | `runner.joinToken` | A [join token](../runners/registration.html#join-tokens) made in the app, read on the first start to approve the Runner at once |
 | `runner.appTlsVerify` | `false` accepts the app's self-signed certificate (`APP_TLS_VERIFY=0`), inside one trusted network only |
+| `runner.podPerJob.enabled` | Runs the [RTE Runner](../rte/runner/) in Go, each job in a pod of its own |
 
 Without a join token, the Runner asks to join and waits until an admin approves it under **Connections > Runners**. Once approved, it
 signs in with its own `RTE_TOKEN`, kept in the `<release>-keys` Secret: keep that Secret with the release. The
 [installer](installer.html#kubernetes) installs this runner mode too, when you choose the Runner role and Kubernetes.
+
+**A pod per job.** With `runner.podPerJob.enabled` the pod runs the RTE Runner in Go (`runner.podPerJob.image`) instead of the Node RTE,
+and each job runs in a pod of its own from `containers.rte.image`. See [The RTE Runner on Kubernetes](../rte/runner/kubernetes.html#with-helm).
 
 ---
 

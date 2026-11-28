@@ -3,7 +3,7 @@ layout: default
 title: ランナーの種類
 parent: ランナー
 nav_order: 2
-translated_from: d15bc7b93c01adc1a74f67135e114eca6b432a27
+translated_from: 9625a6d6250be6754dfa05650b11fde2508bc521
 ---
 
 # ランナーの種類
@@ -28,3 +28,5 @@ Ascender は、フレーバー（ `aap` または `ascender` ）を持つ種類 
 AWX、AAP、Ascender のアドレスには API パスを含めます。 `/api/v2` 、AAP 2.5 以降では `/api/controller/v2` です。
 RTE は `AF_ROLE=rte` で起動した AnsibleForms のイメージで、その実行方法は
 [ランタイム環境](../rte/) で説明しています。
+
+Go で書かれた [RTE Runner](../rte/runner/) も RTE です。ジョブごとに専用のコンテナで実行します。

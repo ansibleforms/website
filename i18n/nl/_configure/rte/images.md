@@ -3,7 +3,7 @@ layout: default
 title: Images
 parent: RTE
 nav_order: 1
-translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
+translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
 ---
 
 # RTE-images
@@ -53,6 +53,67 @@ installeert, schakelt daarvoor over naar `USER root` en aan het einde terug naar
 Houd de image op de release van de controller: `:7` volgt de `:7` van de controller. Collecties en rollen kunnen ook worden gekoppeld in plaats van ingebakken, op
 `/etc/ansible/collections` en `/etc/ansible/roles`. Dan is er per wijziging geen nieuwe build nodig, maar hangt wat er draait af van dat volume;
 python-bibliotheken gaan altijd in de image. Alles inbakken is reproduceerbaar en start snel, en is daarom de manier voor productie.
+
+---
+
+## Bouw het in de Designer
+
+Vanaf 7.9.0 beschrijf je een runtime-omgeving in de Designer; een [builder](builder.html) bouwt het image, pusht en ondertekent het.
+
+1. Geef een repository het gebruik **Runtime-omgevingen** (Instellingen > Repositories); het bevat de definities.
+2. Open in de Designer **Runtime-omgevingen** en klik op **Nieuw**: vul het in op het tabblad **Visueel**, of schrijf het op het tabblad **YAML**.
+3. **Opslaan**, dan **Push** om het in de repository te committen, en **Bouwen**: de build is een job op de pagina **Taken**, met zijn log live.
+
+Elke runtime-omgeving is een eigen map in de repository, naar haar genoemd, die alleen haar definitie bevat:
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+Het Dockerfile, `ansible.cfg` en de requirements-bestanden worden bij elke build opnieuw geschreven, uit de definitie en de release van de app,
+dus ze raken in de repository nooit verouderd. Het tabblad **Bestanden** toont ze zoals de builder ze krijgt.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+Elke sleutel behalve de naam mag ontbreken; de werkbalk van het tabblad **YAML** stelt elk deel in een dialoog in.
+
+| Sleutel | Wat het is |
+|---|---|
+| `name` | De naam van de runtime-omgeving, van haar map en van haar image: kleine letters, cijfers, punten, streepjes en underscores |
+| `arch` | `all`, één image voor amd64 en arm64 zoals de gepubliceerde, of alleen `amd64` of `arm64`; `all` als hij ontbreekt. Een andere architectuur dan die van de host van de builder vraagt [QEMU op die host](builder.html#amd64-and-arm64) |
+| `python` | De python van het image, van 3.11 tot 3.15; 3.15 als hij ontbreekt |
+| `ansible_core` | Een ansible-core-release (`2.22`) of -versie (`2.22.0`) die op die python draait; de nieuwste die dat doet als hij ontbreekt |
+| `ansible_collections` | De collections, elk met zijn `name` (namespace.name) en een optionele `version`; de nieuwste als die ontbreekt. Wat elke collection zelf nodig heeft, zijn `requirements.txt` en `bindep.txt` (of zijn `meta/execution-environment.yml`), wordt ermee geïnstalleerd, zoals ansible-builder doet |
+| `python_packages` | Python-pakketten, als regels van een `requirements.txt` |
+| `os_packages` | Pakketten van Debian 13 (trixie) |
+| `registry` | `credential`: inloggegevens van het type **Container-registry**, met het adres en de login van de registry; `path`: het pad van het image daarin, zijn naam als het ontbreekt; `tag`: `app`, de release van de app (`7.9.0`), zodat een nieuwe build elke upgrade volgt, of een eigen tag |
+| `sbom` | `true` voegt een software-stuklijst (SBOM) aan het image toe |
+| `sign` | `credential`: inloggegevens van het type **Ondertekeningssleutel**, waarmee de builder het image ondertekent met cosign 3; controleer het met `cosign verify --key <publieke sleutel>` van cosign 3 (cosign 2 leest zijn handtekeningen niet) |
+
+Elke runtime-omgeving wordt gebouwd op `ansibleforms-rte-base` van de release van de app, dus een met de tag `app` waarvan het image voor een oudere
+release is gebouwd, wordt als zodanig getoond op de pagina **Runtime-omgevingen**, met **Opnieuw bouwen**.
 
 ---
 

@@ -3,7 +3,7 @@ layout: default
 title: Types de runners
 parent: Runners
 nav_order: 2
-translated_from: d15bc7b93c01adc1a74f67135e114eca6b432a27
+translated_from: 9625a6d6250be6754dfa05650b11fde2508bc521
 ---
 
 # Types de runners
@@ -28,3 +28,5 @@ Ascender sont stockés comme un runner de type `awx` avec une variante (`aap` ou
 Une adresse AWX, AAP ou Ascender porte son chemin d'API : `/api/v2`, ou `/api/controller/v2` pour AAP 2.5 et ultérieur.
 Un RTE est l'image AnsibleForms démarrée avec `AF_ROLE=rte` ; la façon d'en exécuter un est décrite dans
 [Environnements d'exécution](../rte/).
+
+Le [RTE Runner](../rte/runner/), écrit en Go, est aussi un RTE : il exécute chaque job dans un conteneur à lui.

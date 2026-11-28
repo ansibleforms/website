@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # Środowiska uruchomieniowe (RTE)
@@ -28,6 +28,7 @@ Dla administratorów: zrozum RTE, zanim je uruchomisz, dobierzesz jego rozmiar l
 | [Uruchamianie RTE](run.html) | Ustawienia każdego trybu i przykład `docker run` dla każdego z nich |
 | [Kilka RTE](several.html) | Pojemność, repliki za jednym adresem i co się dzieje, gdy RTE się zatrzyma lub padnie |
 | [Inne centrum danych](another-datacenter.html) | Runbook: dodanie RTE w drugim centrum danych, od pustego hosta do pierwszego zadania |
+| [RTE Runner](runner/) | Runner w Go: każde zadanie we własnym kontenerze, na Dockerze, Podmanie lub Kubernetesie |
 
 ---
 

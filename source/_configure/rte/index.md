@@ -27,6 +27,7 @@ For administrators: understand the RTE before you run one, size it, or move it t
 | [Run an RTE](run.html) | The settings of each mode, and a `docker run` example of each |
 | [Several RTEs](several.html) | Capacity, replicas behind one address, and what happens when an RTE stops or dies |
 | [Another datacenter](another-datacenter.html) | A runbook: add an RTE in a second datacenter, from a bare host to its first job |
+| [RTE Runner](runner/) | The Runner in Go: each job in a container of its own, on Docker, Podman or Kubernetes |
 
 ---
 

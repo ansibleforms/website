@@ -3,7 +3,7 @@ layout: default
 title: Obrazy
 parent: RTE
 nav_order: 1
-translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
+translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
 ---
 
 # Obrazy RTE
@@ -52,6 +52,67 @@ systemowe, przełącza się na nie na `USER root`, a na końcu z powrotem na `US
 Trzymaj obraz na wydaniu kontrolera: `:7` podąża za `:7` kontrolera. Kolekcje i role można też montować zamiast wbudowywać, w
 `/etc/ansible/collections` i `/etc/ansible/roles`. Wtedy żadna zmiana nie wymaga przebudowy, ale to, co działa, zależy od tego wolumenu;
 biblioteki pythona zawsze trafiają do obrazu. Wbudowanie wszystkiego jest powtarzalne i szybko startuje, dlatego to właściwa droga dla produkcji.
+
+---
+
+## Zbuduj je w Projektancie
+
+Od 7.9.0 opisujesz środowisko uruchomieniowe w Projektancie; [builder](builder.html) buduje jego obraz, wypycha go i podpisuje.
+
+1. Nadaj repozytorium użycie **Środowiska uruchomieniowe** (Ustawienia > Repozytoria); przechowuje ono definicje.
+2. W Projektancie otwórz **Środowiska uruchomieniowe** i kliknij **Nowe**: wypełnij je na karcie **Wizualny** albo napisz na karcie **YAML**.
+3. **Zapisz**, potem **Push**, aby zatwierdzić je w repozytorium, i **Zbuduj**: budowanie jest zadaniem na stronie **Zadania**, z logiem na żywo.
+
+Każde środowisko uruchomieniowe to osobny folder w repozytorium, nazwany jak ono, który zawiera tylko jego definicję:
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+Dockerfile, `ansible.cfg` i pliki wymagań są zapisywane od nowa przy każdym budowaniu, z definicji i wydania aplikacji, więc nigdy
+nie dezaktualizują się w repozytorium. Karta **Pliki** pokazuje je tak, jak otrzymuje je builder.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+Każdy klucz poza nazwą można pominąć; pasek narzędzi karty **YAML** ustawia każdą część w oknie dialogowym.
+
+| Klucz | Co to jest |
+|---|---|
+| `name` | Nazwa środowiska uruchomieniowego, jego folderu i obrazu: małe litery, cyfry, kropki, myślniki i podkreślenia |
+| `arch` | `all`, jeden obraz dla amd64 i arm64 jak opublikowane, albo tylko `amd64` lub `arm64`; `all`, gdy pominięty. Architektura inna niż hosta buildera wymaga [QEMU na tym hoście](builder.html#amd64-and-arm64) |
+| `python` | Python obrazu, od 3.11 do 3.15; 3.15, gdy pominięty |
+| `ansible_core` | Wydanie ansible-core (`2.22`) lub wersja (`2.22.0`) działająca na tym pythonie; najnowsze pasujące, gdy pominięty |
+| `ansible_collections` | Kolekcje, każda ze swoim `name` (namespace.name) i opcjonalną `version`; najnowsza, gdy pominięta. To, czego każda kolekcja potrzebuje, jej `requirements.txt` i `bindep.txt` (lub jej `meta/execution-environment.yml`), jest instalowane razem z nią, jak robi to ansible-builder |
+| `python_packages` | Pakiety pythona, jako wiersze pliku `requirements.txt` |
+| `os_packages` | Pakiety Debiana 13 (trixie) |
+| `registry` | `credential`: poświadczenie typu **Rejestr kontenerów** z adresem rejestru i loginem; `path`: ścieżka obrazu w nim, jego nazwa, gdy pominięta; `tag`: `app`, wydanie aplikacji (`7.9.0`), aby ponowne budowanie podążało za każdą aktualizacją, albo własny tag |
+| `sbom` | `true` dołącza do obrazu wykaz składników oprogramowania (SBOM) |
+| `sign` | `credential`: poświadczenie typu **Klucz podpisu**, którym builder podpisuje obraz za pomocą cosign 3; sprawdź go poleceniem `cosign verify --key <klucz publiczny>` z cosign 3 (cosign 2 nie czyta jego podpisów) |
+
+Każde środowisko uruchomieniowe jest budowane z `ansibleforms-rte-base` wydania aplikacji, więc takie z tagiem `app`, którego obraz zbudowano
+dla starszego wydania, jest oznaczone na stronie **Środowiska uruchomieniowe**, z przyciskiem **Przebuduj je**.
 
 ---
 

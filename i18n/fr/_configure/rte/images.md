@@ -3,7 +3,7 @@ layout: default
 title: Images
 parent: RTE
 nav_order: 1
-translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
+translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
 ---
 
 # Images RTE
@@ -52,6 +52,67 @@ système passe en `USER root` pour eux et revient à `USER node` à la fin. Pour
 Gardez l'image alignée sur la version du contrôleur : `:7` suit le `:7` du contrôleur. Les collections et les rôles peuvent aussi être montés au lieu d'être intégrés, dans
 `/etc/ansible/collections` et `/etc/ansible/roles`. Aucune reconstruction n'est alors nécessaire à chaque modification, mais ce qui s'exécute dépend de ce volume ;
 les bibliothèques python vont toujours dans l'image. Tout intégrer est reproductible et démarre vite, c'est donc la voie à suivre en production.
+
+---
+
+## La construire dans le Designer
+
+Depuis 7.9.0 vous décrivez un environnement d'exécution dans le Designer ; un [builder](builder.html) construit son image, la pousse et la signe.
+
+1. Donnez à un dépôt l'usage **Environnements d'exécution** (Paramètres > Dépôts) ; il contient les définitions.
+2. Dans le Designer, ouvrez **Environnements d'exécution** et cliquez sur **Nouveau** : remplissez-le dans l'onglet **Visuel**, ou écrivez-le dans l'onglet **YAML**.
+3. **Enregistrer**, puis **Push** pour le committer dans le dépôt, et **Construire** : la construction est un job de la page **Jobs**, avec son log en direct.
+
+Chaque environnement d'exécution est un dossier à lui dans le dépôt, à son nom, qui ne contient que sa définition :
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+Le Dockerfile, `ansible.cfg` et les fichiers de dépendances sont réécrits à chaque construction, à partir de la définition et de la version
+de l'app : ils ne sont donc jamais périmés dans le dépôt. L'onglet **Fichiers** les montre tels que le builder les reçoit.
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+Toutes les clés sauf le nom peuvent être omises ; la barre d'outils de l'onglet **YAML** règle chaque partie dans une boîte de dialogue.
+
+| Clé | Ce que c'est |
+|---|---|
+| `name` | Le nom de l'environnement d'exécution, celui de son dossier et de son image : lettres minuscules, chiffres, points, tirets et tirets bas |
+| `arch` | `all`, une image pour amd64 et arm64 comme celles publiées, ou `amd64` ou `arm64` seul ; `all` si omis. Une architecture autre que celle de l'hôte du builder demande [QEMU sur cet hôte](builder.html#amd64-and-arm64) |
+| `python` | Le python de l'image, de 3.11 à 3.15 ; 3.15 si omis |
+| `ansible_core` | Une release d'ansible-core (`2.22`) ou une version (`2.22.0`) qui tourne sur ce python ; la plus récente qui le fait si omis |
+| `ansible_collections` | Les collections, chacune avec son `name` (namespace.name) et une `version` facultative ; la dernière si omise. Ce dont chaque collection a besoin, son `requirements.txt` et son `bindep.txt` (ou son `meta/execution-environment.yml`), est installé avec elle, comme le fait ansible-builder |
+| `python_packages` | Des paquets python, comme les lignes d'un `requirements.txt` |
+| `os_packages` | Des paquets Debian 13 (trixie) |
+| `registry` | `credential` : un identifiant **Registre de conteneurs**, qui contient l'adresse du registre et son login ; `path` : le chemin de l'image dans celui-ci, son nom si omis ; `tag` : `app`, la version de l'app (`7.9.0`), pour qu'une reconstruction suive chaque mise à jour, ou un tag à vous |
+| `sbom` | `true` joint à l'image une nomenclature logicielle (SBOM) |
+| `sign` | `credential` : un identifiant **Clé de signature**, avec lequel le builder signe l'image avec cosign 3 ; vérifiez-la avec `cosign verify --key <clé publique>` de cosign 3 (cosign 2 ne lit pas ses signatures) |
+
+Chaque environnement d'exécution est construit à partir de `ansibleforms-rte-base` de la version de l'app : un environnement au tag `app` dont
+l'image a été construite pour une version plus ancienne est signalé comme tel sur la page **Environnements d'exécution**, avec **Les reconstruire**.
 
 ---
 

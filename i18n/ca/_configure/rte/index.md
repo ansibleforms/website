@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # Entorns d'execució (RTE)
@@ -28,6 +28,7 @@ Per a administradors: entén l'RTE abans d'executar-ne un, de dimensionar-lo o d
 | [Executar un RTE](run.html) | Els ajustos de cada mode, i un exemple de `docker run` de cadascun |
 | [Diversos RTE](several.html) | Capacitat, rèpliques darrere d'una adreça, i què passa quan un RTE s'atura o mor |
 | [Un altre centre de dades](another-datacenter.html) | Un runbook: afegir un RTE en un segon centre de dades, des d'un host buit fins a la seva primera tasca |
+| [RTE Runner](runner/) | El Runner en Go: cada tasca en un contenidor propi, a Docker, Podman o Kubernetes |
 
 ---
 

@@ -27,3 +27,5 @@ Ascender are stored as a runner of type `awx` with a flavour (`aap` or `ascender
 An AWX, AAP or Ascender address carries its API path: `/api/v2`, or `/api/controller/v2` for AAP 2.5 and later.
 An RTE is the AnsibleForms image started with `AF_ROLE=rte`; how to run one is described in
 [Runtime environments](../rte/).
+
+The [RTE Runner](../rte/runner/), written in Go, is an RTE too: it runs each job in a container of its own.

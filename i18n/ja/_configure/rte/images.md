@@ -3,7 +3,7 @@ layout: default
 title: イメージ
 parent: RTE
 nav_order: 1
-translated_from: 04757faa2e6ac2488d86c0c264a1df8be93a9a38
+translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
 ---
 
 # RTE イメージ
@@ -52,6 +52,67 @@ python の環境とコレクションのフォルダーは `node` の所有な�
 イメージはコントローラーのリリースに合わせてください。 `:7` はコントローラーの `:7` に追従します。コレクションとロールは、組み込む代わりに
 `/etc/ansible/collections` と `/etc/ansible/roles` にマウントすることもできます。その場合は変更のたびにリビルドする必要はありませんが、実行されるものはそのボリュームに
 依存します。python ライブラリは常にイメージに含めます。すべてを組み込むと再現性があり起動も速いので、本番環境ではこの方法を使ってください。
+
+---
+
+## デザイナーでビルドする
+
+7.9.0 から、ランタイム環境をデザイナーで記述できます。[ビルダー](builder.html) がそのイメージをビルドし、プッシュして署名します。
+
+1. リポジトリに用途 **ランタイム環境** を設定します（設定 > リポジトリ）。定義はそこに保存されます。
+2. デザイナーで **ランタイム環境** を開き、**新規** をクリックします。**ビジュアル** タブで入力するか、**YAML** タブで記述します。
+3. **保存** し、**プッシュ** でリポジトリにコミットして、**ビルド** します。ビルドは **ジョブ** ページのジョブになり、ログをライブで確認できます。
+
+各ランタイム環境はリポジトリ内のその名前の専用フォルダーで、定義だけを保持します。
+
+```text
+rte-netapp/
+  rte.yaml
+```
+
+Dockerfile、`ansible.cfg`、requirements ファイルは、定義とアプリのリリースからビルドのたびに書き直されるため、
+リポジトリ内で古くなることはありません。**ファイル** タブには、ビルダーが受け取るとおりに表示されます。
+
+```yaml
+runner_rte:
+  - name: rte-netapp
+    description: NetApp playbooks of the storage team
+    arch: all
+    python: "3.15"
+    ansible_core: "2.22"
+    ansible_collections:
+      - name: netapp.ontap
+        version: 23.1.0
+    python_packages:
+      - netapp-lib
+    os_packages:
+      - sshpass
+    registry:
+      credential: ghcr
+      path: af/rte-netapp
+      tag: app
+    sbom: true
+    sign:
+      credential: cosign-key
+```
+
+名前以外のキーはすべて省略できます。**YAML** タブのツールバーで、各部分をダイアログで設定できます。
+
+| キー | 内容 |
+|---|---|
+| `name` | ランタイム環境の名前で、フォルダーとイメージの名前にもなります。小文字、数字、ドット、ダッシュ、アンダースコアが使えます |
+| `arch` | `all` は公開イメージと同じく amd64 と arm64 の 1 つのイメージ、または `amd64` か `arm64` のみ。省略時は `all`。ビルダーのホストと異なるアーキテクチャには [そのホストの QEMU](builder.html#amd64-and-arm64) が必要です |
+| `python` | イメージで実行する python。3.11 から 3.15 まで。省略時は 3.15 |
+| `ansible_core` | その python で動く ansible-core のリリース（`2.22`）またはバージョン（`2.22.0`）。省略時は動く中で最新のもの |
+| `ansible_collections` | コレクション。それぞれ `name`（namespace.name）と任意の `version`。省略時は最新。各コレクション自体が必要とするもの、その `requirements.txt` と `bindep.txt`（または `meta/execution-environment.yml`）は、ansible-builder と同じく一緒にインストールされます |
+| `python_packages` | Python パッケージ。`requirements.txt` の行として記述します |
+| `os_packages` | Debian 13（trixie）のパッケージ |
+| `registry` | `credential`：レジストリのアドレスとログインを保持する **コンテナレジストリ** の認証情報。`path`：その中のイメージのパス、省略時はその名前。`tag`：`app` はアプリのリリース（`7.9.0`）で、再ビルドが各アップグレードに追従します。または独自のタグ |
+| `sbom` | `true` でソフトウェア部品表（SBOM）をイメージに添付します |
+| `sign` | `credential`：ビルダーが cosign 3 でイメージに署名する **署名鍵** の認証情報。cosign 3 の `cosign verify --key <公開鍵>` で確認します（cosign 2 はその署名を読めません） |
+
+各ランタイム環境はアプリのリリースの `ansibleforms-rte-base` からビルドされるため、タグ `app` で古いリリース向けにビルドされたイメージは、
+**ランタイム環境** ページにその旨が **再ビルド** とともに表示されます。
 
 ---
 

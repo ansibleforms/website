@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes
 parent: インストール
 nav_order: 6
-translated_from: 57f229acf691cee68f7a5d61b28cc7e879b903a8
+translated_from: e59db6df504741266e2a175e71d6e88ff491b3a2
 ---
 
 # Kubernetes
@@ -288,10 +288,14 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.name` | 参加するときのランナー名（ `RTE_NAME` ）。空の場合はリリース名 |
 | `runner.joinToken` | アプリで作成した [参加トークン](../runners/registration.html#join-tokens) 。初回起動時に読み取られ、ランナーをすぐに承認します |
 | `runner.appTlsVerify` | `false` にするとアプリの自己署名証明書を受け入れます（ `APP_TLS_VERIFY=0` ）。信頼できる 1 つのネットワーク内でのみ使ってください |
+| `runner.podPerJob.enabled` | Go で書かれた [RTE Runner](../rte/runner/) を実行し、ジョブごとに専用の Pod で実行します |
 
 参加トークンがない場合、ランナーは参加を求め、管理者が **接続 > ランナー** で承認するまで待ちます。承認されると、
 `<release>-keys` Secret に保存された自分の `RTE_TOKEN` でサインインします。この Secret はリリースと一緒に保持してください。
 ランナーの役割と Kubernetes を選んだ場合、 [インストーラー](installer.html#kubernetes) もこのランナーモードをインストールします。
+
+**ジョブごとの Pod。** `runner.podPerJob.enabled` を指定すると、Pod は Node の RTE の代わりに Go の RTE Runner（`runner.podPerJob.image`）を実行し、
+各ジョブは `containers.rte.image` から専用の Pod で実行されます。[Kubernetes 上の RTE Runner](../rte/runner/kubernetes.html#with-helm) を参照してください。
 
 ---
 
