@@ -3,7 +3,7 @@ layout: default
 title: Docker Compose
 parent: Installatie
 nav_order: 4
-translated_from: 74a6833ea71d65db337025978672afeab0425666
+translated_from: 25caf8bbfcc4dc5174eb55f39917d45418bacfbe
 ---
 
 # Docker Compose
@@ -101,6 +101,14 @@ sudo chown -R 1000:1000 ./data
 ```
 
 Kom je van 6, waarvan de container als root draaide, voer dan dezelfde `chown` één keer uit voordat je 7 start. MySQL neemt zijn eigen map bij het starten weer over.
+
+De RTE start elk playbook in een eigen container via de socket van Docker en wordt daarvoor lid van de groep van de socket. Zet die groep in `.env`:
+
+```bash
+sed -i "s/^ENGINE_SOCKET_GID=.*/ENGINE_SOCKET_GID=$(stat -c %g /var/run/docker.sock)/" .env
+```
+
+Met Podman zet u `RTE_ENGINE=podman` en `ENGINE_SOCKET` op de socket van Podman, en met rootless Podman ook `RTE_USER=0`.
 
 ---
 
@@ -229,12 +237,14 @@ De app maakt verbinding met MySQL als `ansibleforms` (`MYSQLDB_USER`), met alle 
 anders; root is alleen voor MySQL zelf. MySQL maakt die gebruiker alleen bij de eerste start aan: een installatie die tot nu toe als root
 verbond, maakt hem één keer aan, zoals de [README](https://github.com/ansibleforms/docker#database) van het project laat zien.
 
-De RTE wordt niet op de host gepubliceerd. Sinds 7.3.0 belt de app hem aan op `http://rte:8000` met `RTE_TOKEN` en houdt één WebSocket open
-(`RTE_MODE=inbound`, zie [Modi](../rte/modes.html)): de RTE krijgt geen database-instellingen en niet de `.env`, alleen zijn token en een paar
-eigen instellingen in `docker-compose.yml`. De config seed `data/seed.yaml` declareert een RTE-referentie met het token en dat
-adres, en de standaardrunner `rte`, modus inbound, die zich daarmee aanmeldt. De RTE voert de playbooks uit vanuit dezelfde map `data`
-(`RTE_FILES=local`). Hebben je playbooks meer collections of Python-bibliotheken nodig, bouw dan een eigen RTE
-en laat de service `rte` daarnaar wijzen (zie [Bouw je eigen RTE](../rte/images.html#build-your-own-rte)).
+De RTE is de [RTE Runner](../rte/runner/) en wordt niet op de host gepubliceerd. De app maakt verbinding met `http://rte:8000` met `RTE_TOKEN`
+en houdt één WebSocket open (`RTE_MODE=inbound`, zie [Modi](../rte/modes.html)): hij krijgt geen database-instellingen en niet de geheimen van de `.env`.
+De config-seed `data/seed.yaml` legt een RTE-referentie aan met het token en dat adres, en de standaard-runner `rte`, modus inbound,
+die zich daarmee aanmeldt. Sinds 7.9.0 start de Runner elk playbook in een eigen container uit `ansibleforms-rte-full` (`RTE_IMAGE`),
+met de bestanden van de job uit dezelfde map `data` (`RTE_FILES=local`), en koppelt hij `data/ansible`, de SSH-sleutel en de pip-bibliotheken in
+elke container (`RTE_JOB_MOUNTS`). Hij start ze via de socket van de engine, die hem alle rechten van die engine op de host geeft: houd die
+server voor AnsibleForms. Hebben uw playbooks meer collections of Python-bibliotheken nodig, bouw dan een eigen image en zet het als
+`RTE_IMAGE` (zie [Een eigen RTE bouwen](../rte/images.html#build-your-own-rte)).
 
 ---
 

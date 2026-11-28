@@ -49,6 +49,8 @@ These say where and how its jobs run.
 | `RTE_IMAGE` | The image each job's container runs, with python and ansible-core in it (default `ghcr.io/ansibleforms/ansibleforms-rte-core:7`) |
 | `RTE_ENGINE` | `docker`, `podman` or `kubernetes`: what runs the jobs' containers (default `kubernetes` in a pod, else `docker`) |
 | `RTE_ENGINE_SOCKET` | The engine's socket (default `DOCKER_HOST` or `CONTAINER_HOST`, else `/var/run/docker.sock` or `/run/podman/podman.sock`) |
+| `RTE_JOB_MOUNTS` | Docker and Podman: folders or files every job's container gets, `source:container[:ro\|rw]` separated by commas, read-only unless `rw`. The source is the Runner's own path, the host's folder behind it when it runs in a container |
+| `PYTHONPATH` | Set on the Runner, it reaches every job too: for python libraries mounted with `RTE_JOB_MOUNTS` |
 
 `RTE_MAX_JOBS`, `RTE_FILES`, `RTE_CACHE_MB` and `RTE_DRAIN_SECONDS` can also be set on the runner's page, under the RTE tab, as for
 the Node RTE: a value there wins over the variable (see [An RTE's settings](../../runners/runner-page.html#an-rtes-settings)).

@@ -3,7 +3,7 @@ layout: default
 title: Docker Compose
 parent: 安装
 nav_order: 4
-translated_from: 74a6833ea71d65db337025978672afeab0425666
+translated_from: 25caf8bbfcc4dc5174eb55f39917d45418bacfbe
 ---
 
 # Docker Compose
@@ -101,6 +101,14 @@ sudo chown -R 1000:1000 ./data
 ```
 
 如果您从 6 升级而来（6 的容器以 root 运行），请在启动 7 之前执行一次同样的 `chown`。MySQL 启动时会收回它自己的文件夹。
+
+RTE 通过 Docker 的 socket 在各自的容器中启动每个 playbook，因此会加入该 socket 的组。请在 `.env` 中设置该组：
+
+```bash
+sed -i "s/^ENGINE_SOCKET_GID=.*/ENGINE_SOCKET_GID=$(stat -c %g /var/run/docker.sock)/" .env
+```
+
+使用 Podman 时，设置 `RTE_ENGINE=podman`，并将 `ENGINE_SOCKET` 设为 Podman 的 socket；rootless Podman 还需设置 `RTE_USER=0`。
 
 ---
 
@@ -229,12 +237,13 @@ sudo dnf install -y podman-compose
 没有任何权限；root 只供 MySQL 自身使用。MySQL 只在首次启动时创建该用户：此前一直以 root 连接的安装
 需要手动创建一次，方法见项目的 [README](https://github.com/ansibleforms/docker#database)。
 
-RTE 不会发布到主机上。从 7.3.0 起，应用使用 `RTE_TOKEN` 连接 `http://rte:8000`，并保持一条 WebSocket 连接
-（`RTE_MODE=inbound`，参见 [模式](../rte/modes.html)）：RTE 不获取数据库设置，也不读取 `.env`，只在
-`docker-compose.yml` 中拿到它的令牌和几个自己的设置。配置种子 `data/seed.yaml` 声明一个包含该令牌和
-地址的 RTE 凭据，以及使用该凭据登录的默认运行器 `rte`（inbound 模式）。RTE 从同一个 `data` 文件夹运行 playbook
-（`RTE_FILES=local`）。当您的 playbook 需要更多 collection 或 Python 库时，请构建您自己的 RTE，
-并让 `rte` 服务指向它（参见 [构建您自己的 RTE](../rte/images.html#build-your-own-rte)）。
+RTE 即 [RTE Runner](../rte/runner/)，不会发布到主机上。应用使用 `RTE_TOKEN` 连接到 `http://rte:8000`，
+并保持一个 WebSocket 打开（`RTE_MODE=inbound`，参见 [模式](../rte/modes.html)）：它不会获得数据库设置，也不会获得 `.env` 中的机密。
+配置种子 `data/seed.yaml` 声明一个带有该令牌和该地址的 RTE 凭据，以及使用它登录的默认运行器 `rte`（inbound 模式）。
+自 7.9.0 起，Runner 从 `ansibleforms-rte-full`（`RTE_IMAGE`）在各自的容器中启动每个 playbook，
+作业的文件来自同一个 `data` 文件夹（`RTE_FILES=local`），并把 `data/ansible`、SSH 密钥和 pip 库挂载到每个容器中（`RTE_JOB_MOUNTS`）。
+它通过引擎的 socket 启动这些容器，这使它拥有该引擎在主机上的全部权限：请将该服务器专用于 AnsibleForms。
+如果您的 playbook 需要更多 collection 或 Python 库，请构建自己的镜像并将其设为 `RTE_IMAGE`（参见 [构建自己的 RTE](../rte/images.html#build-your-own-rte)）。
 
 ---
 
