@@ -2,7 +2,7 @@
 layout: default
 title: Desarrollo seguro
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # Desarrollo seguro
@@ -73,8 +73,8 @@ Una versión solo la construye y publica GitHub Actions, nunca la máquina de un
 
 * Una versión se corta desde `main` (o `release/6.x`), con un registro de cambios generado a partir de sus pull requests.
 * Las imágenes las construye el [workflow Publish](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)
-  y se suben al GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, junto a las imágenes del entorno de
-  ejecución. El workflow y sus logs son públicos, así que cualquiera puede ver qué entró en una imagen.
+  y se suben al GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, junto a [las imágenes del entorno de
+  ejecución](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml). El workflow y sus logs son públicos, así que cualquiera puede ver qué entró en una imagen.
 * Las imágenes de la aplicación y del entorno de ejecución se ejecutan como el usuario sin privilegios `node` (uid 1000), nunca como root.
 
 ---

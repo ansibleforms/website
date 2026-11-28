@@ -36,7 +36,7 @@ architecture of the machine that builds it: for arm64 hosts, build it on one, or
 ## Build your own RTE
 
 Build on `ansibleforms-rte-core` and add the collections and python libraries your playbooks use. This NetApp example is one of
-the Dockerfiles in [examples/rte](https://github.com/ansibleforms/ansibleforms/tree/main/examples/rte):
+the Dockerfiles in [ansibleforms/rte](https://github.com/ansibleforms/rte/tree/main/examples):
 
 ```dockerfile
 FROM ghcr.io/ansibleforms/ansibleforms-rte-core:7

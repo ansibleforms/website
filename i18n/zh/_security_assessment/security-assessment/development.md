@@ -2,7 +2,7 @@
 layout: default
 title: 安全开发
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # 安全开发
@@ -73,7 +73,7 @@ AnsibleForms 是开源软件，因此本页的所有内容都可以在仓库中�
 
 * 版本从 `main` （或 `release/6.x` ）切出，附带根据其拉取请求生成的更新日志。
 * 镜像由 [Publish 工作流](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)构建，
-  并推送到 GitHub Container Registry `ghcr.io/ansibleforms/ansibleforms` ，运行时环境镜像
+  并推送到 GitHub Container Registry `ghcr.io/ansibleforms/ansibleforms` ，[运行时环境镜像](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml)
   也在旁边。该工作流及其日志都是公开的，因此任何人都可以看到镜像中包含了什么。
 * 应用程序和运行时环境镜像以非特权用户 `node` （uid 1000）运行，从不以 root 运行。
 

@@ -2,7 +2,7 @@
 layout: default
 title: セキュアな開発
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # セキュアな開発
@@ -73,7 +73,7 @@ AnsibleForms はオープンソースなので、このページの内容はす�
 
 * リリースは `main` (または `release/6.x` ) から作成され、変更履歴はそのプルリクエストから生成されます。
 * イメージは [Publish ワークフロー](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml) でビルドされ、
-  GitHub Container Registry の `ghcr.io/ansibleforms/ansibleforms` に、ランタイム環境のイメージとともに
+  GitHub Container Registry の `ghcr.io/ansibleforms/ansibleforms` に、[ランタイム環境のイメージ](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml)とともに
   プッシュされます。ワークフローとそのログは公開されているため、誰でもイメージに何が含まれたかを確認できます。
 * アプリケーションとランタイム環境のイメージは、root ではなく、特権を持たない `node` ユーザー (uid 1000) として実行されます。
 

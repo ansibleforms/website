@@ -3,7 +3,7 @@ layout: default
 title: イメージ
 parent: RTE
 nav_order: 1
-translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
+translated_from: 793f1c4efa7fb085bdd4b1551161e3b57b52ff12
 ---
 
 # RTE イメージ
@@ -37,7 +37,7 @@ RTE は三つのレイヤーで公開されており、それぞれが前のも�
 ## 独自の RTE のビルド
 
 `ansibleforms-rte-core` の上に構築し、プレイブックが使うコレクションと python ライブラリを追加します。この NetApp の例は、
-[examples/rte](https://github.com/ansibleforms/ansibleforms/tree/main/examples/rte) にある Dockerfile の一つです。
+[ansibleforms/rte](https://github.com/ansibleforms/rte/tree/main/examples) にある Dockerfile の一つです。
 
 ```dockerfile
 FROM ghcr.io/ansibleforms/ansibleforms-rte-core:7

@@ -72,7 +72,7 @@ A release is built and published by GitHub Actions only, never from a developer'
 
 * A release is cut from `main` (or `release/6.x`), with a changelog built from its pull requests.
 * The images are built by the [Publish workflow](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)
-  and pushed to the GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, with the runtime environment images
+  and pushed to the GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, with [the runtime environment images](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml)
   next to it. The workflow and its logs are public, so anyone can see what went into an image.
 * The application and runtime environment images run as the unprivileged `node` user (uid 1000), never as root.
 
