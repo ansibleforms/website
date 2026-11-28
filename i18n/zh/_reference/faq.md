@@ -2,7 +2,7 @@
 layout: default
 title: 常见问题
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # 常见问题
@@ -34,7 +34,7 @@ RTE 容器。请为它设置重启策略（例如 Docker 中的 `restart: unless
 控制器节点和 worker 共享数据库、持久卷和 `ENCRYPTION_SECRET`。socket 模式（出站或
 入站，参见 [模式](rte/modes.html)）的 RTE 既不需要数据库也不需要 `ENCRYPTION_SECRET`。聊天助手需要会话保持，
 每个节点各自保存日志。参见 [扩展](production/scaling.html) 和
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) 示例配置。
+[scale](https://github.com/ansibleforms/docker/tree/main/scale) 示例配置。
 
 ### 多仓库表单管理
 

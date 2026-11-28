@@ -3,7 +3,7 @@ layout: default
 title: Mise à l'échelle
 parent: Exploitation en production
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Mise à l'échelle
@@ -113,7 +113,7 @@ Quelques éléments restent liés à un seul nœud :
 
 ## Exemple de disposition
 
-Le dépôt de l'application contient un point de départ complet dans [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) :
+Le dépôt docker contient un point de départ complet dans [scale](https://github.com/ansibleforms/docker/tree/main/scale) :
 
 | Service | Image | Rôle |
 |---|---|---|

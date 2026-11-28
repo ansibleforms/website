@@ -3,7 +3,7 @@ layout: default
 title: Scalabilità
 parent: In produzione
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Scalabilità
@@ -113,7 +113,7 @@ Alcune cose restano legate a un solo nodo:
 
 ## Esempio di architettura
 
-Il repository dell'app ha un punto di partenza completo in [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+Il repository docker ha un punto di partenza completo in [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Servizio | Immagine | Ruolo |
 |---|---|---|

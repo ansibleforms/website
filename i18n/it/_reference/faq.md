@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Domande frequenti
@@ -34,7 +34,7 @@ Per eseguire più repliche dietro un load balancer, dividi il processo con `AF_R
 I nodi del controller e il worker condividono il database, il volume persistente e `ENCRYPTION_SECRET`. Un RTE in modalità socket (in uscita o
 in entrata, vedi [Modalità](rte/modes.html)) non ha bisogno né del database né di `ENCRYPTION_SECRET`. L'assistente chat ha bisogno di sessioni sticky, e
 ogni nodo tiene il proprio log. Vedi [Scalabilità](production/scaling.html) e la configurazione
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Gestione dei moduli su più repository
 

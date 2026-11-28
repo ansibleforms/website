@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # よくある質問
@@ -34,7 +34,7 @@ AnsibleForms についてよくある質問と回答
 コントローラーノードとワーカーは、データベース、永続ボリューム、 `ENCRYPTION_SECRET` を共有します。ソケットモード（アウトバウンドまたは
 インバウンド、 [モード](rte/modes.html) を参照）の RTE には、データベースも `ENCRYPTION_SECRET` も必要ありません。チャットアシスタントにはスティッキーセッションが必要で、
 各ノードはそれぞれのログを持ちます。 [スケーリング](production/scaling.html) と
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) の構成を参照してください。
+[scale](https://github.com/ansibleforms/docker/tree/main/scale) の構成を参照してください。
 
 ### 複数のリポジトリでのフォーム管理
 

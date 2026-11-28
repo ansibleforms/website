@@ -33,7 +33,7 @@ To run several replicas behind a load balancer, split the process with `AF_ROLE`
 The controller nodes and the worker share the database, the persistent volume and `ENCRYPTION_SECRET`. An RTE in a socket mode (outbound or
 inbound, see [Modes](rte/modes.html)) needs neither the database nor `ENCRYPTION_SECRET`. The chat assistant needs sticky sessions, and
 each node keeps its own log. See [Scaling](production/scaling.html) and the
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) setup.
+[scale](https://github.com/ansibleforms/docker/tree/main/scale) setup.
 
 ### Multi-Repository Form Management
 

@@ -3,7 +3,7 @@ layout: default
 title: スケーリング
 parent: 本番環境での運用
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # スケーリング
@@ -113,7 +113,7 @@ RTE で実行中のジョブはその RTE に属し、それを開始したコ�
 
 ## 構成例
 
-アプリのリポジトリには、 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) に完全な出発点があります。
+docker リポジトリには、 [scale](https://github.com/ansibleforms/docker/tree/main/scale) に完全な出発点があります。
 
 | サービス | イメージ | ロール |
 |---|---|---|

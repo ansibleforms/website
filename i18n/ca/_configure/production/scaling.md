@@ -3,7 +3,7 @@ layout: default
 title: Escalat
 parent: En producció
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Escalat
@@ -113,7 +113,7 @@ Algunes coses es queden en un sol node:
 
 ## Exemple de disposició
 
-El repositori de l'aplicació té un punt de partida complet a [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+El repositori docker té un punt de partida complet a [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Servei | Imatge | Rol |
 |---|---|---|

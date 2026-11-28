@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Najczęściej zadawane pytania
@@ -34,7 +34,7 @@ Aby uruchomić kilka replik za load balancerem, podziel proces za pomocą `AF_RO
 Węzły kontrolera i worker współdzielą bazę danych, wolumen trwały i `ENCRYPTION_SECRET`. RTE w trybie gniazda (wychodzącym lub
 przychodzącym, zobacz [Tryby](rte/modes.html)) nie potrzebuje ani bazy danych, ani `ENCRYPTION_SECRET`. Asystent czatu wymaga sesji sticky, a
 każdy węzeł prowadzi własny dziennik. Zobacz [Skalowanie](production/scaling.html) i konfigurację
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Zarządzanie formularzami z wielu repozytoriów
 

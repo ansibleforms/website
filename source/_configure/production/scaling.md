@@ -112,7 +112,7 @@ A few things stay with one node:
 
 ## Example layout
 
-The app repository has a complete starting point in [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+The docker repository has a complete starting point in [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Service | Image | Role |
 |---|---|---|

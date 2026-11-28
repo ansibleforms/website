@@ -3,7 +3,7 @@ layout: default
 title: 扩展
 parent: 生产环境运行
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # 扩展
@@ -113,7 +113,7 @@ schema 修补完成，并记录它在等待什么。先升级的控制器节点�
 
 ## 示例布局
 
-应用仓库在 [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale) 中提供了一个完整的起点：
+docker 仓库在 [scale](https://github.com/ansibleforms/docker/tree/main/scale) 中提供了一个完整的起点：
 
 | 服务 | 镜像 | 角色 |
 |---|---|---|

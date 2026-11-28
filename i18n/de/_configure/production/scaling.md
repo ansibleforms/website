@@ -3,7 +3,7 @@ layout: default
 title: Skalierung
 parent: Betrieb in Produktion
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Skalierung
@@ -113,7 +113,7 @@ Einige Dinge bleiben bei einem Knoten:
 
 ## Beispielaufbau
 
-Das App-Repository hat einen vollständigen Ausgangspunkt in [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+Das Docker-Repository hat einen vollständigen Ausgangspunkt in [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Dienst | Image | Rolle |
 |---|---|---|

@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Veelgestelde vragen
@@ -34,7 +34,7 @@ Om meerdere replica's achter een load balancer te draaien, splits je het proces 
 De controller-nodes en de worker delen de database, het persistente volume en `ENCRYPTION_SECRET`. Een RTE in een socketmodus (uitgaand of
 inkomend, zie [Modi](rte/modes.html)) heeft de database noch `ENCRYPTION_SECRET` nodig. De chat-assistent heeft sticky sessions nodig, en
 elke node houdt zijn eigen log bij. Zie [Schalen](production/scaling.html) en de opzet in
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Formulieren beheren over meerdere repositories
 
