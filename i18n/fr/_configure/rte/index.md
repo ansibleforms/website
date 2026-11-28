@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # Environnements d'exécution (RTE)
@@ -28,6 +28,7 @@ Pour les administrateurs : comprenez le RTE avant d'en exécuter un, de le dimen
 | [Exécuter un RTE](run.html) | Les paramètres de chaque mode, et un exemple `docker run` pour chacun |
 | [Plusieurs RTE](several.html) | La capacité, les répliques derrière une même adresse, et ce qui se passe quand un RTE s'arrête ou meurt |
 | [Un autre datacenter](another-datacenter.html) | Un runbook : ajouter un RTE dans un second datacenter, d'un hôte nu jusqu'à son premier job |
+| [RTE Runner](runner/) | Le Runner en Go : chaque job dans un conteneur à lui, sur Docker, Podman ou Kubernetes |
 
 ---
 

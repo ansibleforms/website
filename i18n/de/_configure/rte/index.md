@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # Laufzeitumgebungen (RTE)
@@ -28,6 +28,7 @@ Für Administratoren: Verstehen Sie die RTE, bevor Sie eine betreiben, dimension
 | [Eine RTE betreiben](run.html) | Die Einstellungen jedes Modus und jeweils ein Beispiel mit `docker run` |
 | [Mehrere RTEs](several.html) | Kapazität, Replikate hinter einer Adresse und was passiert, wenn eine RTE anhält oder ausfällt |
 | [Ein anderes Rechenzentrum](another-datacenter.html) | Ein Runbook: eine RTE in einem zweiten Rechenzentrum hinzufügen, vom leeren Host bis zu ihrem ersten Job |
+| [RTE Runner](runner/) | Der Runner in Go: jeder Job in einem eigenen Container, auf Docker, Podman oder Kubernetes |
 
 ---
 

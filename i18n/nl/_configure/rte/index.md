@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # Runtime-omgevingen (RTE)
@@ -28,6 +28,7 @@ Voor beheerders: begrijp de RTE voordat je er een draait, haar dimensioneert of 
 | [Een RTE draaien](run.html) | De instellingen van elke modus, en van elke een voorbeeld met `docker run` |
 | [Meerdere RTE's](several.html) | Capaciteit, replica's achter één adres, en wat er gebeurt als een RTE stopt of uitvalt |
 | [Een ander datacenter](another-datacenter.html) | Een runbook: een RTE toevoegen in een tweede datacenter, van een kale host tot de eerste job |
+| [RTE Runner](runner/) | De Runner in Go: elke job in een eigen container, op Docker, Podman of Kubernetes |
 
 ---
 

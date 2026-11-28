@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # 运行时环境（RTE）
@@ -28,6 +28,7 @@ RTE 是什么、它如何运行 playbook，以及它可以接触哪些内容
 | [运行 RTE](run.html) | 每种模式的设置，以及每种模式的 `docker run` 示例 |
 | [多个 RTE](several.html) | 容量、同一地址后的副本，以及 RTE 停止或宕机时会发生什么 |
 | [另一个数据中心](another-datacenter.html) | 操作手册：在第二个数据中心添加 RTE，从一台裸主机到运行第一个作业 |
+| [RTE Runner](runner/) | 用 Go 编写的 Runner：在 Docker、Podman 或 Kubernetes 上，每个作业在自己的容器中运行 |
 
 ---
 

@@ -5,7 +5,7 @@ nav_order: 11
 has_children: true
 has_toc: false
 permalink: /rte/
-translated_from: 0c09db801924ebe41185f973548566d2a1829802
+translated_from: 57f2776a3c0519fa12434e517d2a87a08fbab8f3
 ---
 
 # ランタイム環境（RTE）
@@ -28,6 +28,7 @@ RTE とは何か、プレイブックをどのように実行するか、何に�
 | [RTE の実行](run.html) | 各モードの設定と、それぞれの `docker run` の例 |
 | [複数の RTE](several.html) | 容量、一つのアドレスの背後のレプリカ、RTE が停止または異常終了したときに起きること |
 | [別のデータセンター](another-datacenter.html) | 手順書：何もないホストから最初のジョブまで、2 つ目のデータセンターに RTE を追加します |
+| [RTE Runner](runner/) | Go で書かれた Runner：Docker、Podman、Kubernetes 上で、ジョブごとに専用のコンテナで実行します |
 
 ---
 

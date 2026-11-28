@@ -3,7 +3,7 @@ layout: default
 title: 运行器类型
 parent: 运行器
 nav_order: 2
-translated_from: d15bc7b93c01adc1a74f67135e114eca6b432a27
+translated_from: 9625a6d6250be6754dfa05650b11fde2508bc521
 ---
 
 # 运行器类型
@@ -28,3 +28,5 @@ Ascender 保存为类型为 `awx` 的运行器，并带有产品标识（`aap` �
 AWX、AAP 或 Ascender 的地址包含其 API 路径：`/api/v2`，AAP 2.5 及更高版本为 `/api/controller/v2`。
 RTE 是以 `AF_ROLE=rte` 启动的 AnsibleForms 镜像；如何运行 RTE 参见
 [运行时环境](../rte/)。
+
+用 Go 编写的 [RTE Runner](../rte/runner/) 也是一种 RTE：它在自己的容器中运行每个作业。
