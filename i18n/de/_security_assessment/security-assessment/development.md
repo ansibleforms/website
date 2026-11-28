@@ -2,7 +2,7 @@
 layout: default
 title: Sichere Entwicklung
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # Sichere Entwicklung
@@ -73,7 +73,7 @@ Ein Release wird ausschließlich von GitHub Actions gebaut und veröffentlicht, 
 
 * Ein Release wird aus `main` (oder `release/6.x`) erstellt, mit einem Changelog, das aus seinen Pull Requests gebaut wird.
 * Die Images werden vom [Publish-Workflow](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)
-  gebaut und in die GitHub Container Registry `ghcr.io/ansibleforms/ansibleforms` gepusht, mit den Images der Laufzeitumgebung
+  gebaut und in die GitHub Container Registry `ghcr.io/ansibleforms/ansibleforms` gepusht, mit [den Images der Laufzeitumgebung](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml)
   daneben. Der Workflow und seine Logs sind öffentlich, sodass jeder sehen kann, was in ein Image eingeflossen ist.
 * Die Images der Anwendung und der Laufzeitumgebung laufen als unprivilegierter Benutzer `node` (uid 1000), nie als root.
 

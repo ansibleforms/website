@@ -2,7 +2,7 @@
 layout: default
 title: Bezpieczne wytwarzanie
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # Bezpieczne wytwarzanie
@@ -73,8 +73,8 @@ Wydanie jest budowane i publikowane wyłącznie przez GitHub Actions, nigdy z ma
 
 * Wydanie powstaje z `main` (lub `release/6.x`), z dziennikiem zmian zbudowanym z jego pull requestów.
 * Obrazy są budowane przez [workflow Publish](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)
-  i wypychane do GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, wraz z obrazami środowiska
-  uruchomieniowego. Workflow i jego logi są publiczne, więc każdy może zobaczyć, co trafiło do obrazu.
+  i wypychane do GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, wraz z [obrazami środowiska
+  uruchomieniowego](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml). Workflow i jego logi są publiczne, więc każdy może zobaczyć, co trafiło do obrazu.
 * Obrazy aplikacji i środowiska uruchomieniowego działają jako nieuprzywilejowany użytkownik `node` (uid 1000), nigdy jako root.
 
 ---

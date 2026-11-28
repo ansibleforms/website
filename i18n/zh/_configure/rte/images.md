@@ -3,7 +3,7 @@ layout: default
 title: 镜像
 parent: RTE
 nav_order: 1
-translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
+translated_from: 793f1c4efa7fb085bdd4b1551161e3b57b52ff12
 ---
 
 # RTE 镜像
@@ -37,7 +37,7 @@ RTE 分三层发布，每一层都基于前一层构建，标签与控制器相�
 ## 构建您自己的 RTE
 
 基于 `ansibleforms-rte-core` 构建，并添加您的 playbook 所用的集合和 python 库。这个 NetApp 示例是
-[examples/rte](https://github.com/ansibleforms/ansibleforms/tree/main/examples/rte) 中的 Dockerfile 之一：
+[ansibleforms/rte](https://github.com/ansibleforms/rte/tree/main/examples) 中的 Dockerfile 之一：
 
 ```dockerfile
 FROM ghcr.io/ansibleforms/ansibleforms-rte-core:7

@@ -3,7 +3,7 @@ layout: default
 title: Obrazy
 parent: RTE
 nav_order: 1
-translated_from: 42d2358e58b374791786a5f99e571e566eca4d4a
+translated_from: 793f1c4efa7fb085bdd4b1551161e3b57b52ff12
 ---
 
 # Obrazy RTE
@@ -37,7 +37,7 @@ architektury maszyny, która je buduje: dla hostów arm64 zbuduj je na takim ho�
 ## Zbuduj własne RTE
 
 Buduj na `ansibleforms-rte-core` i dodaj kolekcje i biblioteki pythona, których używają Twoje playbooki. Ten przykład dla NetApp to jeden z
-plików Dockerfile w [examples/rte](https://github.com/ansibleforms/ansibleforms/tree/main/examples/rte):
+plików Dockerfile w [ansibleforms/rte](https://github.com/ansibleforms/rte/tree/main/examples):
 
 ```dockerfile
 FROM ghcr.io/ansibleforms/ansibleforms-rte-core:7

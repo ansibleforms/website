@@ -2,7 +2,7 @@
 layout: default
 title: Sviluppo sicuro
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # Sviluppo sicuro
@@ -73,8 +73,8 @@ Una release viene costruita e pubblicata solo da GitHub Actions, mai dal compute
 
 * Una release viene creata da `main` (o da `release/6.x`), con un changelog costruito dalle sue pull request.
 * Le immagini vengono costruite dal [workflow Publish](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)
-  e inviate al GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, con accanto le immagini dell'ambiente
-  di esecuzione. Il workflow e i suoi log sono pubblici, così chiunque può vedere cosa è entrato in un'immagine.
+  e inviate al GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, con accanto [le immagini dell'ambiente
+  di esecuzione](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml). Il workflow e i suoi log sono pubblici, così chiunque può vedere cosa è entrato in un'immagine.
 * Le immagini dell'applicazione e dell'ambiente di esecuzione girano con l'utente non privilegiato `node` (uid 1000), mai come root.
 
 ---

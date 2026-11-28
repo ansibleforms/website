@@ -2,7 +2,7 @@
 layout: default
 title: Veilige ontwikkeling
 nav_order: 3
-translated_from: b5b66a3ebecfb686b0cf33ed8724fe96622c7d0f
+translated_from: b3e00e95a21f3110307eb7eb680fa2186ea1cab6
 ---
 
 # Veilige ontwikkeling
@@ -73,7 +73,7 @@ Een release wordt uitsluitend door GitHub Actions gebouwd en gepubliceerd, nooit
 
 * Een release wordt gemaakt vanaf `main` (of `release/6.x`), met een changelog die uit de pull requests wordt opgebouwd.
 * De images worden gebouwd door de [Publish-workflow](https://github.com/ansibleforms/ansibleforms/blob/main/.github/workflows/publish.yml)
-  en gepusht naar de GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, met de images van de runtime-omgeving
+  en gepusht naar de GitHub Container Registry, `ghcr.io/ansibleforms/ansibleforms`, met [de images van de runtime-omgeving](https://github.com/ansibleforms/rte/blob/main/.github/workflows/publish.yml)
   ernaast. De workflow en zijn logs zijn openbaar, dus iedereen kan zien wat er in een image is gegaan.
 * De images van de applicatie en de runtime-omgeving draaien als de niet-geprivilegieerde gebruiker `node` (uid 1000), nooit als root.
 
