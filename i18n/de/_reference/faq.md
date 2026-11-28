@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Häufig gestellte Fragen
@@ -34,7 +34,7 @@ Um mehrere Replikas hinter einem Load Balancer zu betreiben, teilen Sie den Proz
 Die Controller-Knoten und der Worker teilen sich die Datenbank, das persistente Volume und `ENCRYPTION_SECRET`. Eine RTE in einem Socket-Modus (ausgehend oder
 eingehend, siehe [Modi](rte/modes.html)) braucht weder die Datenbank noch `ENCRYPTION_SECRET`. Der Chat-Assistent braucht Sticky Sessions, und
 jeder Knoten führt sein eigenes Protokoll. Siehe [Skalierung](production/scaling.html) und das Setup
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Formulare aus mehreren Repositories verwalten
 

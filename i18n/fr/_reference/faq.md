@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Questions fréquentes
@@ -34,7 +34,7 @@ Pour faire tourner plusieurs réplicas derrière un répartiteur de charge, sép
 Les nœuds du contrôleur et le worker partagent la base de données, le volume persistant et `ENCRYPTION_SECRET`. Un RTE en mode socket (sortant ou
 entrant, voir [Modes](rte/modes.html)) n'a besoin ni de la base de données ni d'`ENCRYPTION_SECRET`. L'assistant de chat a besoin de sessions persistantes (sticky sessions), et
 chaque nœud garde son propre journal. Voir [Mise à l'échelle](production/scaling.html) et la configuration
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Gestion des formulaires sur plusieurs dépôts
 

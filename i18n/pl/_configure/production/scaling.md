@@ -3,7 +3,7 @@ layout: default
 title: Skalowanie
 parent: Środowisko produkcyjne
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Skalowanie
@@ -113,7 +113,7 @@ Kilka rzeczy pozostaje przy jednym węźle:
 
 ## Przykładowy układ
 
-Repozytorium aplikacji ma kompletny punkt wyjścia w [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+Repozytorium docker ma kompletny punkt wyjścia w [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Usługa | Obraz | Rola |
 |---|---|---|

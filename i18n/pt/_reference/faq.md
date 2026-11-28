@@ -2,7 +2,7 @@
 layout: default
 title: FAQ
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Perguntas frequentes
@@ -34,7 +34,7 @@ Para executar várias réplicas por trás de um balanceador de carga, divida o p
 Os nós do controlador e o worker partilham a base de dados, o volume persistente e o `ENCRYPTION_SECRET`. Um RTE num modo socket (outbound ou
 inbound, consulte [Modos](rte/modes.html)) não precisa nem da base de dados nem do `ENCRYPTION_SECRET`. O assistente de chat precisa de sessões persistentes (sticky sessions), e
 cada nó mantém o seu próprio registo. Consulte [Escalar](production/scaling.html) e a configuração
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Gestão de formulários em vários repositórios
 

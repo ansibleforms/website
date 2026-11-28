@@ -2,7 +2,7 @@
 layout: default
 title: PMF
 nav_order: 2
-translated_from: fa16e69e2c593a4216d6914f99e3d65de60172e5
+translated_from: 70c0b4f7aea16e027394738d375903b4f5dd92f3
 ---
 
 # Preguntes més freqüents
@@ -34,7 +34,7 @@ Per executar diverses rèpliques darrere d'un balancejador de càrrega, divideix
 Els nodes del controlador i el worker comparteixen la base de dades, el volum persistent i `ENCRYPTION_SECRET`. Un RTE en un mode de socket (outbound o
 inbound, consulta [Modes](rte/modes.html)) no necessita ni la base de dades ni `ENCRYPTION_SECRET`. L'assistent de xat necessita sessions persistents (sticky sessions), i
 cada node manté el seu propi registre. Consulta [Escalat](production/scaling.html) i la configuració
-[examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale).
+[scale](https://github.com/ansibleforms/docker/tree/main/scale).
 
 ### Gestió de formularis en diversos repositoris
 

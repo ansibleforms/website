@@ -3,7 +3,7 @@ layout: default
 title: Escalado
 parent: En producción
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Escalado
@@ -113,7 +113,7 @@ Algunas cosas se quedan en un solo nodo:
 
 ## Ejemplo de despliegue
 
-El repositorio de la aplicación incluye un punto de partida completo en [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+El repositorio docker incluye un punto de partida completo en [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Servicio | Imagen | Rol |
 |---|---|---|

@@ -3,7 +3,7 @@ layout: default
 title: Escalabilidade
 parent: Em produção
 nav_order: 4
-translated_from: f959b538c659c1c6f9b7fadebd5ed2277a0f444d
+translated_from: d18732c9af35c09cfbe63654540f98a730463f43
 ---
 
 # Escalabilidade
@@ -113,7 +113,7 @@ Algumas coisas ficam presas a um nó:
 
 ## Exemplo de disposição
 
-O repositório da aplicação tem um ponto de partida completo em [examples/scale](https://github.com/ansibleforms/ansibleforms/tree/main/examples/scale):
+O repositório docker tem um ponto de partida completo em [scale](https://github.com/ansibleforms/docker/tree/main/scale):
 
 | Serviço | Imagem | Função |
 |---|---|---|
