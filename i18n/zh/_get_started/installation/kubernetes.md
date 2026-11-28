@@ -3,7 +3,7 @@ layout: default
 title: Kubernetes
 parent: 安装
 nav_order: 6
-translated_from: e59db6df504741266e2a175e71d6e88ff491b3a2
+translated_from: 86ca9c99a65359af4d7854ce6d57cf7277b6d71f
 ---
 
 # Kubernetes
@@ -286,7 +286,7 @@ helm install runner1 ansibleforms/ansibleforms \
 | `runner.enabled` | 只安装运行器：没有应用、MySQL、Service 和 Ingress |
 | `runner.appUrl` | 用户打开应用时的地址，如有 `BASE_URL` 也要包含。必填 |
 | `runner.name` | 它加入时使用的运行器名称（`RTE_NAME`）。为空时使用 release 名称 |
-| `runner.joinToken` | 在应用中生成的 [加入令牌](../runners/registration.html#join-tokens)，首次启动时读取，用于立即批准运行器 |
+| `runner.joinToken` | 通过应用的 API 生成的 [加入令牌](../runners/registration.html#join-tokens)，首次启动时读取，用于立即批准运行器 |
 | `runner.appTlsVerify` | `false` 表示接受应用的自签名证书（`APP_TLS_VERIFY=0`），仅限在可信网络内使用 |
 | `runner.podPerJob.enabled` | 运行用 Go 编写的 [RTE Runner](../rte/runner/)，每个作业在自己的 Pod 中运行 |
 
